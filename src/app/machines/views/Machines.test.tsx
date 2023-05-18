@@ -39,14 +39,16 @@ import {
 } from "testing/factories";
 import {
   renderWithBrowserRouter,
-  userEvent,
+  userEvent as userEventCore,
   within,
   screen,
   render,
-  waitFor,
 } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
+const userEvent = userEventCore.setup({
+  advanceTimers: jest.runAllTimers,
+});
 
 describe("Machines", () => {
   let state: RootState;
@@ -197,6 +199,7 @@ describe("Machines", () => {
   });
 
   beforeEach(() => {
+    jest.useFakeTimers();
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       general: generalStateFactory({
@@ -246,6 +249,7 @@ describe("Machines", () => {
   afterEach(() => {
     localStorage.clear();
     jest.restoreAllMocks();
+    jest.useRealTimers();
   });
 
   it("can set the search from the URL", () => {
@@ -295,9 +299,7 @@ describe("Machines", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await waitFor(() => {
-      expect(search).toBe("?status=new");
-    });
+    expect(search).toBe("?status=new");
   });
 
   it("can hide groups", async () => {
@@ -306,10 +308,9 @@ describe("Machines", () => {
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     renderWithBrowserRouter(<Machines />, { route: "/machines", store });
     // Click the button to toggle the group.
-    await user.click(
+    await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
       ).getByRole("button", { name: Label.HideGroup })
@@ -331,7 +332,6 @@ describe("Machines", () => {
       .spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
-    jest.setTimeout(10000);
     // Create two pages of machines.
     state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
       machineFactory()
@@ -388,7 +388,7 @@ describe("Machines", () => {
     expect(localStorage.getItem("grouping")).toBe('"owner"');
   });
 
-  it("uses the default fallback value for invalid stored grouping values", () => {
+  it("uses the default fallback value for invalid stored grouping values", async () => {
     localStorage.setItem("grouping", '"invalid_value"');
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
@@ -414,7 +414,10 @@ describe("Machines", () => {
       "mocked-nanoid-2": machineList,
     };
     const store = mockStore(state);
-    renderWithBrowserRouter(<Machines />, { route: "/machines", store });
+    const { unmount } = renderWithBrowserRouter(<Machines />, {
+      route: "/machines",
+      store,
+    });
     const expected = machineActions.fetch("123456", {
       group_collapsed: [],
     });
@@ -424,15 +427,15 @@ describe("Machines", () => {
     expect(
       fetches[fetches.length - 1].payload.params.group_collapsed
     ).toStrictEqual([]);
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     // Click the button to toggle the group.
-    await user.click(
+    await userEvent.click(
       within(
         screen.getByRole("row", { name: "Deployed machines group" })
       ).getByRole("button", { name: MachineListLabel.HideGroup })
     );
     // Render another machine list, this time it should restore the
     // hidden group state.
+    unmount();
     const store2 = mockStore(state);
     renderWithBrowserRouter(<Machines />, {
       route: "/machines",
