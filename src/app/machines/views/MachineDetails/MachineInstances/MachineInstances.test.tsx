@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { Route, Routes } from "react-router-dom-v5-compat";
 
 import MachineInstances from "./MachineInstances";
 
@@ -15,8 +11,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("MachineInstances", () => {
   let state: RootState;
@@ -48,53 +43,29 @@ describe("MachineInstances", () => {
   });
 
   it("displays the spinner on load", () => {
-    const store = mockStore(state);
+    renderWithBrowserRouter(<MachineInstances />, {
+      state,
+      route: "/machine/fake123/instances",
+    });
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/fake123/instances", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineInstances />}
-                path="/machine/:id/instances"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    expect(screen.getByText(/loading.../i)).toBeInTheDocument();
   });
 
   it("displays the table when data is available", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/instances", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineInstances />}
-                path="/machine/:id/instances"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Routes>
+        <Route element={<MachineInstances />} path="/machine/:id/instances" />
+      </Routes>,
+      {
+        state,
+        route: "/machine/abc123/instances",
+      }
     );
 
-    expect(wrapper.find("MainTable").exists()).toBe(true);
+    expect(
+      screen.getByRole("grid", { name: /machine instances/i })
+    ).toBeInTheDocument();
   });
 
   it("displays instance with mac address and ip address correctly", () => {
@@ -118,32 +89,20 @@ describe("MachineInstances", () => {
         ],
       }),
     ];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/instances", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineInstances />}
-                path="/machine/:id/instances"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Routes>
+        <Route element={<MachineInstances />} path="/machine/:id/instances" />
+      </Routes>,
+      {
+        state,
+        route: "/machine/abc123/instances",
+      }
     );
 
-    expect(wrapper.find("[data-testid='name']").text()).toBe("foo");
-    expect(wrapper.find("[data-testid='mac']").text()).toBe(
-      "00:00:9b:7c:1b:85"
-    );
-    expect(wrapper.find("[data-testid='ip']").text()).toBe("100.100.3.99");
+    expect(screen.getByTestId("name")).toHaveTextContent("foo");
+    expect(screen.getByTestId("mac")).toHaveTextContent("00:00:9b:7c:1b:85");
+    expect(screen.getByTestId("ip")).toHaveTextContent("100.100.3.99");
   });
 
   it("displays instance with mac address correctly", () => {
@@ -162,32 +121,20 @@ describe("MachineInstances", () => {
         ],
       }),
     ];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/instances", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineInstances />}
-                path="/machine/:id/instances"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Routes>
+        <Route element={<MachineInstances />} path="/machine/:id/instances" />
+      </Routes>,
+      {
+        state,
+        route: "/machine/abc123/instances",
+      }
     );
 
-    expect(wrapper.find("[data-testid='name']").text()).toBe("foo");
-    expect(wrapper.find("[data-testid='mac']").text()).toBe(
-      "00:00:9b:7c:1b:85"
-    );
-    expect(wrapper.find("[data-testid='ip']").text()).toBe("");
+    expect(screen.getByTestId("name")).toHaveTextContent("foo");
+    expect(screen.getByTestId("mac")).toHaveTextContent("00:00:9b:7c:1b:85");
+    expect(screen.getByTestId("ip")).toHaveTextContent("");
   });
 
   it("displays multiple instances", () => {
@@ -222,28 +169,18 @@ describe("MachineInstances", () => {
         ],
       }),
     ];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/instances", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineInstances />}
-                path="/machine/:id/instances"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Routes>
+        <Route element={<MachineInstances />} path="/machine/:id/instances" />
+      </Routes>,
+      {
+        state,
+        route: "/machine/abc123/instances",
+      }
     );
 
-    expect(wrapper.find("[data-testid='name']").length).toBe(3);
+    expect(screen.getAllByTestId("name")).toHaveLength(3);
   });
 
   it("displays instances with multiple mac addresses", () => {
@@ -265,38 +202,28 @@ describe("MachineInstances", () => {
         ],
       }),
     ];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/instances", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineInstances />}
-                path="/machine/:id/instances"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Routes>
+        <Route element={<MachineInstances />} path="/machine/:id/instances" />
+      </Routes>,
+      {
+        state,
+        route: "/machine/abc123/instances",
+      }
     );
 
-    expect(wrapper.find("[data-testid='mac']").length).toBe(2);
-    expect(wrapper.find("[data-testid='name']").at(0).text()).toBe("foo");
-    expect(wrapper.find("[data-testid='mac']").at(0).text()).toBe(
+    expect(screen.getAllByTestId("mac")).toHaveLength(2);
+    expect(screen.getAllByTestId("name").at(0)).toHaveTextContent("foo");
+    expect(screen.getAllByTestId("mac").at(0)).toHaveTextContent(
       "00:00:9b:7c:1b:85"
     );
-    expect(wrapper.find("[data-testid='ip']").at(0).text()).toBe("");
-    expect(wrapper.find("[data-testid='name']").at(1).text()).toBe("");
-    expect(wrapper.find("[data-testid='mac']").at(1).text()).toBe(
+    expect(screen.getAllByTestId("ip").at(0)).toHaveTextContent("");
+    expect(screen.getAllByTestId("name").at(1)).toHaveTextContent("");
+    expect(screen.getAllByTestId("mac").at(1)).toHaveTextContent(
       "00:00:9b:7c:1b:01"
     );
-    expect(wrapper.find("[data-testid='ip']").at(1).text()).toBe("");
+    expect(screen.getAllByTestId("ip").at(1)).toHaveTextContent("");
   });
 
   it("displays instances with multiple ip addresses", () => {
@@ -323,35 +250,25 @@ describe("MachineInstances", () => {
         ],
       }),
     ];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/instances", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineInstances />}
-                path="/machine/:id/instances"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Routes>
+        <Route element={<MachineInstances />} path="/machine/:id/instances" />
+      </Routes>,
+      {
+        state,
+        route: "/machine/abc123/instances",
+      }
     );
 
-    expect(wrapper.find("[data-testid='mac']").length).toBe(2);
-    expect(wrapper.find("[data-testid='name']").at(0).text()).toBe("foo");
-    expect(wrapper.find("[data-testid='mac']").at(0).text()).toBe(
+    expect(screen.getAllByTestId("mac")).toHaveLength(2);
+    expect(screen.getAllByTestId("name").at(0)).toHaveTextContent("foo");
+    expect(screen.getAllByTestId("mac").at(0)).toHaveTextContent(
       "00:00:9b:7c:1b:85"
     );
-    expect(wrapper.find("[data-testid='ip']").at(0).text()).toBe("1.2.3.4");
-    expect(wrapper.find("[data-testid='name']").at(1).text()).toBe("");
-    expect(wrapper.find("[data-testid='mac']").at(1).text()).toBe("");
-    expect(wrapper.find("[data-testid='ip']").at(1).text()).toBe("1.2.3.5");
+    expect(screen.getAllByTestId("ip").at(0)).toHaveTextContent("1.2.3.4");
+    expect(screen.getAllByTestId("name").at(1)).toHaveTextContent("");
+    expect(screen.getAllByTestId("mac").at(1)).toHaveTextContent("");
+    expect(screen.getAllByTestId("ip").at(1)).toHaveTextContent("1.2.3.5");
   });
 });
