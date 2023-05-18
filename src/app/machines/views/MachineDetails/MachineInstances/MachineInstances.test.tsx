@@ -1,5 +1,3 @@
-import { Route, Routes } from "react-router-dom-v5-compat";
-
 import MachineInstances from "./MachineInstances";
 
 import type { RootState } from "app/store/root/types";
@@ -53,15 +51,11 @@ describe("MachineInstances", () => {
   });
 
   it("displays the table when data is available", () => {
-    renderWithBrowserRouter(
-      <Routes>
-        <Route element={<MachineInstances />} path="/machine/:id/instances" />
-      </Routes>,
-      {
-        state,
-        route: "/machine/abc123/instances",
-      }
-    );
+    renderWithBrowserRouter(<MachineInstances />, {
+      state,
+      route: "/machine/abc123/instances",
+      routePattern: "/machine/:id/instances",
+    });
 
     expect(
       screen.getByRole("grid", { name: /machine instances/i })
@@ -90,15 +84,11 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(
-      <Routes>
-        <Route element={<MachineInstances />} path="/machine/:id/instances" />
-      </Routes>,
-      {
-        state,
-        route: "/machine/abc123/instances",
-      }
-    );
+    renderWithBrowserRouter(<MachineInstances />, {
+      state,
+      route: "/machine/abc123/instances",
+      routePattern: "/machine/:id/instances",
+    });
 
     expect(screen.getByTestId("name")).toHaveTextContent("foo");
     expect(screen.getByTestId("mac")).toHaveTextContent("00:00:9b:7c:1b:85");
@@ -122,15 +112,11 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(
-      <Routes>
-        <Route element={<MachineInstances />} path="/machine/:id/instances" />
-      </Routes>,
-      {
-        state,
-        route: "/machine/abc123/instances",
-      }
-    );
+    renderWithBrowserRouter(<MachineInstances />, {
+      state,
+      route: "/machine/abc123/instances",
+      routePattern: "/machine/:id/instances",
+    });
 
     expect(screen.getByTestId("name")).toHaveTextContent("foo");
     expect(screen.getByTestId("mac")).toHaveTextContent("00:00:9b:7c:1b:85");
@@ -170,15 +156,11 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(
-      <Routes>
-        <Route element={<MachineInstances />} path="/machine/:id/instances" />
-      </Routes>,
-      {
-        state,
-        route: "/machine/abc123/instances",
-      }
-    );
+    renderWithBrowserRouter(<MachineInstances />, {
+      state,
+      route: "/machine/abc123/instances",
+      routePattern: "/machine/:id/instances",
+    });
 
     expect(screen.getAllByTestId("name")).toHaveLength(3);
   });
@@ -203,15 +185,11 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(
-      <Routes>
-        <Route element={<MachineInstances />} path="/machine/:id/instances" />
-      </Routes>,
-      {
-        state,
-        route: "/machine/abc123/instances",
-      }
-    );
+    renderWithBrowserRouter(<MachineInstances />, {
+      state,
+      route: "/machine/abc123/instances",
+      routePattern: "/machine/:id/instances",
+    });
 
     expect(screen.getAllByTestId("mac")).toHaveLength(2);
     expect(screen.getAllByTestId("name").at(0)).toHaveTextContent("foo");
@@ -251,15 +229,11 @@ describe("MachineInstances", () => {
       }),
     ];
 
-    renderWithBrowserRouter(
-      <Routes>
-        <Route element={<MachineInstances />} path="/machine/:id/instances" />
-      </Routes>,
-      {
-        state,
-        route: "/machine/abc123/instances",
-      }
-    );
+    renderWithBrowserRouter(<MachineInstances />, {
+      state,
+      route: "/machine/abc123/instances",
+      routePattern: "/machine/:id/instances",
+    });
 
     expect(screen.getAllByTestId("mac")).toHaveLength(2);
     expect(screen.getAllByTestId("name").at(0)).toHaveTextContent("foo");
