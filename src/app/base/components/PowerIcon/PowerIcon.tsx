@@ -44,7 +44,11 @@ const PowerIcon = ({
 
   return (
     <span>
-      <Icon className={iconClass} name={iconName} />
+      <Icon
+        aria-label={showSpinner ? "loading" : powerState}
+        className={iconClass}
+        name={iconName}
+      />
       {children}
     </span>
   );
