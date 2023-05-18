@@ -31,7 +31,7 @@ describe("StorageColumn", () => {
       route: "/machines",
     });
 
-    expect(screen.getByTestId("storage-value").textContent).toEqual("2");
-    expect(screen.getByTestId("storage-unit").textContent).toEqual("TB");
+    expect(screen.getByTestId("storage-value")).toHaveTextContent("2");
+    expect(screen.getByTestId("storage-unit")).toHaveTextContent("TB");
   });
 });
