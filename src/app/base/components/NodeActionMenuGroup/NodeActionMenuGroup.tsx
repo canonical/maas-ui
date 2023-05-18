@@ -236,7 +236,6 @@ export const NodeActionMenuGroup = ({
         <span className="p-action-button--wrapper" key={i}>
           {menu}
         </span>
-        // <>{menu}</>
       ))}
       {singleNode &&
         nodes &&

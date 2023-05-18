@@ -32,12 +32,11 @@ import { screen, renderWithBrowserRouter, fireEvent } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
-jest.useFakeTimers();
-
 describe("MachineList", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     const machines = [
       machineFactory({
@@ -220,6 +219,7 @@ describe("MachineList", () => {
   afterEach(() => {
     localStorage.clear();
     jest.restoreAllMocks();
+    jest.useRealTimers();
   });
 
   it("can display an error", () => {
@@ -429,7 +429,6 @@ describe("MachineList", () => {
     );
     // Using fireEvent instead of userEvent here,
     // since using the latter seems to break every other test in this file
-
     // eslint-disable-next-line testing-library/prefer-user-event
     fireEvent.click(screen.getByRole("button", { name: "Next page" }));
     const expected = machineActions.fetch("123456", {
