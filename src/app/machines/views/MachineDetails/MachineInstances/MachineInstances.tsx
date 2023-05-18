@@ -111,6 +111,7 @@ const MachineInstances = (): JSX.Element => {
     <Row>
       <Col size={12}>
         <MainTable
+          aria-label="machine instances"
           headers={[
             {
               content: "Name",
