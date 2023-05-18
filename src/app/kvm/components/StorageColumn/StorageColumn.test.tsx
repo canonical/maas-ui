@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -34,7 +34,7 @@ describe("StorageColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <StorageColumn
           defaultPoolId={pod.default_storage_pool}
@@ -43,10 +43,16 @@ describe("StorageColumn", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "0.1 of 1TB allocated"
-    );
-    expect(wrapper.find("Meter").props().max).toBe(1000000000000);
+    expect(screen.getByText(/0.1 of 1TB allocated/i)).toBeInTheDocument();
+    const segmentWidths = [
+      "width: 7.000000000000001%",
+      "width: 3%",
+      "width: 90%;",
+    ];
+    const segments = screen.getAllByTestId("meter-filled");
+    expect(segments[0]).toHaveStyle(segmentWidths[0]);
+    expect(segments[1]).toHaveStyle(segmentWidths[1]);
+    expect(segments[2]).toHaveStyle(segmentWidths[2]);
   });
 
   it("displays correct storage information for a vmcluster", () => {
@@ -56,14 +62,21 @@ describe("StorageColumn", () => {
       free: 3,
     });
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <StorageColumn pools={{}} storage={resources} />
       </Provider>
     );
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "2 of 6B allocated"
-    );
-    expect(wrapper.find("Meter").props().max).toBe(6);
+    expect(screen.getByText(/2 of 6B allocated/i)).toBeInTheDocument();
+
+    const segmentWidths = [
+      "width: 33.33333333333333%",
+      "width: 16.666666666666664%",
+      "width: 50%;",
+    ];
+    const segments = screen.getAllByTestId("meter-filled");
+    expect(segments[0]).toHaveStyle(segmentWidths[0]);
+    expect(segments[1]).toHaveStyle(segmentWidths[1]);
+    expect(segments[2]).toHaveStyle(segmentWidths[2]);
   });
 });
