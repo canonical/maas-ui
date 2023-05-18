@@ -1,7 +1,9 @@
-import { mount, shallow } from "enzyme";
+// import { mount, shallow } from "enzyme";
 
 import type { Tag } from "./TagSelector";
 import TagSelector from "./TagSelector";
+
+import { fireEvent, render, screen, userEvent, within } from "testing/utils";
 
 describe("TagSelector", () => {
   let tags: Tag[];
@@ -12,9 +14,8 @@ describe("TagSelector", () => {
     ];
   });
 
-  // snapshot tests
-  it("renders and matches the snapshot when closed", () => {
-    const component = shallow(
+  it("doesn't show tags when closed", () => {
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -22,11 +23,17 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    expect(component).toMatchSnapshot();
+    expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", { name: "tag one" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", { name: "tag two" })
+    ).not.toBeInTheDocument();
   });
 
-  it("renders and matches the snapshot when opened", () => {
-    const component = mount(
+  it("shows tags when opened", async () => {
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -34,12 +41,13 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find("Label").first().simulate("click");
-    expect(component).toMatchSnapshot();
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
+    expect(screen.getByRole("option", { name: "tag one" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "tag two" })).toBeInTheDocument();
   });
 
-  it("renders and matches the snapshot with tag descriptions", () => {
-    const component = mount(
+  it("shows tag descriptions if present", async () => {
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -50,13 +58,22 @@ describe("TagSelector", () => {
         ]}
       />
     );
-    component.find("Label").first().simulate("click");
-    expect(component).toMatchSnapshot();
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
+    expect(
+      within(screen.getByRole("option", { name: "tag one" })).getByText(
+        "description one"
+      )
+    ).toBeInTheDocument();
+    expect(
+      within(screen.getByRole("option", { name: "tag two" })).getByText(
+        "description two"
+      )
+    ).toBeInTheDocument();
   });
 
   // unit tests
   it("can have some tags preselected", () => {
-    const component = shallow(
+    render(
       <TagSelector
         initialSelected={[tags[0]]}
         label="Tags"
@@ -65,13 +82,11 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    expect(
-      component.find('[data-testid="selected-tag"] span').at(0).text()
-    ).toBe("tag1");
+    expect(screen.getByTestId("selected-tag")).toHaveTextContent("tag1");
   });
 
   it("opens the dropdown when input is focused", () => {
-    const component = shallow(
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -79,13 +94,13 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    expect(component.find(".tag-selector__dropdown").exists()).toBe(false);
-    component.find(".tag-selector__input").simulate("focus");
-    expect(component.find(".tag-selector__dropdown").exists()).toBe(true);
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
   });
 
-  it("can select existing tags from dropdown", () => {
-    const component = shallow(
+  it("can select existing tags from dropdown", async () => {
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -93,15 +108,13 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    component.find('[data-testid="existing-tag"]').at(0).simulate("click");
-    expect(
-      component.find('[data-testid="selected-tag"] span').at(0).text()
-    ).toBe("tag1");
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getAllByTestId("existing-tag")[0]);
+    expect(screen.getByTestId("selected-tag")).toHaveTextContent("tag1");
   });
 
-  it("can hide the tags that have been selected", () => {
-    const component = shallow(
+  it("can hide the tags that have been selected", async () => {
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -110,16 +123,13 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    component.find('[data-testid="existing-tag"]').at(0).simulate("click");
-    expect(component.find('[data-testid="selected-tag"] span').exists()).toBe(
-      false
-    );
-    expect(component.find(".tag-selector__selected-list").exists()).toBe(false);
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getAllByTestId("existing-tag")[0]);
+    expect(screen.queryByTestId("selected-tag")).not.toBeInTheDocument();
   });
 
-  it("can remove tags that have been selected", () => {
-    const component = shallow(
+  it("can remove tags that have been selected", async () => {
+    render(
       <TagSelector
         initialSelected={tags}
         label="Tags"
@@ -128,17 +138,16 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    expect(component.find('[data-testid="selected-tag"]').length).toBe(2);
-    component.find(".tag-selector__input").simulate("focus");
-    component.find('[data-testid="selected-tag"]').at(0).simulate("click");
-    expect(component.find('[data-testid="selected-tag"]').length).toBe(1);
-    expect(
-      component.find('[data-testid="selected-tag"] span').at(0).text()
-    ).toBe("tag2");
+    // expect(component.find('[data-testid="selected-tag"]').length).toBe(2);
+    expect(screen.getAllByTestId("selected-tag")).toHaveLength(2);
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getAllByTestId("selected-tag")[0]);
+    expect(screen.getAllByTestId("selected-tag")).toHaveLength(1);
+    expect(screen.getAllByTestId("selected-tag")[0]).toHaveTextContent("tag2");
   });
 
-  it("can create and select a new tag", () => {
-    const component = shallow(
+  it("can create and select a new tag", async () => {
+    render(
       <TagSelector
         allowNewTags
         label="Tags"
@@ -147,19 +156,19 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    component
-      .find(".tag-selector__input")
-      .simulate("change", { target: { value: "new-tag" } });
-    component.find('[data-testid="new-tag"]').simulate("click");
-    expect(
-      component.find('[data-testid="selected-tag"] span').at(0).text()
-    ).toBe("new-tag");
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Tags" }),
+      "new-tag"
+    );
+    await userEvent.click(screen.getByTestId("new-tag"));
+    expect(screen.getAllByTestId("selected-tag")[0]).toHaveTextContent(
+      "new-tag"
+    );
   });
 
-  it("can call a provide function to create a new tag", () => {
+  it("can call a provide function to create a new tag", async () => {
     const onAddNewTag = jest.fn();
-    const component = shallow(
+    render(
       <TagSelector
         allowNewTags
         label="Tags"
@@ -169,18 +178,18 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    component
-      .find(".tag-selector__input")
-      .simulate("change", { target: { value: "new-tag" } });
-    component.find('[data-testid="new-tag"]').simulate("click");
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Tags" }),
+      "new-tag"
+    );
+    await userEvent.click(screen.getByTestId("new-tag"));
     expect(onAddNewTag).toHaveBeenCalledWith("new-tag");
     // The input should get cleared.
-    expect(component.find(".tag-selector__input").prop("value")).toBe("");
+    expect(screen.getByRole("textbox", { name: "Tags" })).toHaveValue("");
   });
 
-  it("sanitises text when creating new tag", () => {
-    const component = shallow(
+  it("sanitises text when creating new tag", async () => {
+    render(
       <TagSelector
         allowNewTags
         label="Tags"
@@ -189,18 +198,18 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    component
-      .find(".tag-selector__input")
-      .simulate("change", { target: { value: "tag with spaces" } });
-    component.find('[data-testid="new-tag"]').simulate("click");
-    expect(
-      component.find('[data-testid="selected-tag"] span').at(0).text()
-    ).toBe("tag-with-spaces");
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Tags" }),
+      "Tag with spaces"
+    );
+    await userEvent.click(screen.getByTestId("new-tag"));
+    expect(screen.getByTestId("selected-tag")).toHaveTextContent(
+      "Tag-with-spaces"
+    );
   });
 
-  it("can filter tag list", () => {
-    const component = shallow(
+  it("can filter tag list", async () => {
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -208,16 +217,14 @@ describe("TagSelector", () => {
         tags={[...tags, { displayName: "other", name: "other" }]}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    expect(component.find('[data-testid="existing-tag"]').length).toBe(3);
-    component
-      .find(".tag-selector__input")
-      .simulate("change", { target: { value: "tag" } });
-    expect(component.find('[data-testid="existing-tag"]').length).toBe(2);
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    expect(screen.getAllByTestId("existing-tag")).toHaveLength(3);
+    await userEvent.type(screen.getByRole("textbox", { name: "Tags" }), "tag");
+    expect(screen.getAllByTestId("existing-tag")).toHaveLength(2);
   });
 
-  it("can highlight what matches the filter in existing tags", () => {
-    const component = shallow(
+  it("can highlight what matches the filter in existing tags", async () => {
+    render(
       <TagSelector
         label="Tags"
         onTagsUpdate={jest.fn()}
@@ -228,22 +235,18 @@ describe("TagSelector", () => {
         ]}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    component
-      .find(".tag-selector__input")
-      .simulate("change", { target: { value: "the" } });
+    await userEvent.type(screen.getByRole("textbox", { name: "Tags" }), "the");
+    expect(screen.getAllByTestId("existing-tag")[0]).toHaveTextContent("there");
+    // This child is the <strong> element that highlights the text
     expect(
-      component.find('[data-testid="existing-tag"] > span').at(0).text()
-    ).toBe("there");
+      screen.getAllByTestId("existing-tag")[0].firstChild?.firstChild
+    ).toHaveTextContent("the");
+
+    expect(screen.getAllByTestId("existing-tag")[1]).toHaveTextContent("other");
+    // This child is the <strong> element that highlights the text
     expect(
-      component.find('[data-testid="existing-tag"] > span strong').at(0).text()
-    ).toBe("the");
-    expect(
-      component.find('[data-testid="existing-tag"] > span').at(1).text()
-    ).toBe("other");
-    expect(
-      component.find('[data-testid="existing-tag"] > span strong').at(1).text()
-    ).toBe("the");
+      screen.getAllByTestId("existing-tag")[1].firstChild?.firstChild
+    ).toHaveTextContent("the");
   });
 
   it("can disable tags", () => {
@@ -251,7 +254,7 @@ describe("TagSelector", () => {
       { id: 1, name: "enabledTag" },
       { id: 2, name: "disabledTag" },
     ];
-    const component = shallow(
+    render(
       <TagSelector
         disabledTags={[{ id: 2, name: "disabledTag" }]}
         initialSelected={tags}
@@ -259,18 +262,14 @@ describe("TagSelector", () => {
       />
     );
 
-    expect(
-      component.find('[data-testid="selected-tag"]').at(0).prop("disabled")
-    ).toBe(false);
-    expect(
-      component.find('[data-testid="selected-tag"]').at(1).prop("disabled")
-    ).toBe(true);
+    expect(screen.getAllByTestId("selected-tag")[0]).not.toBeDisabled();
+    expect(screen.getAllByTestId("selected-tag")[1]).toBeDisabled();
   });
 
   it("can display a dropdown header", () => {
-    const component = shallow(
+    render(
       <TagSelector
-        header={<span data-testid="dropdown-header"></span>}
+        header={<span data-testid="dropdown-header">A header</span>}
         label="Tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
@@ -278,16 +277,19 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    const header = component.find(".tag-selector__dropdown");
-    expect(header.exists()).toBe(true);
-    expect(header.find("[data-testid='dropdown-header']").exists()).toBe(true);
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    expect(screen.getByTestId("dropdown-header")).toHaveTextContent("A header");
+    expect(screen.getByTestId("dropdown-header").parentElement).toHaveClass(
+      "tag-selector__dropdown-header"
+    );
   });
 
   it("can customise the dropdown items", () => {
-    const component = shallow(
+    render(
       <TagSelector
-        generateDropdownEntry={() => <span data-testid="dropdown-item"></span>}
+        generateDropdownEntry={() => (
+          <span data-testid="dropdown-item">An item</span>
+        )}
         label="Tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
@@ -295,16 +297,14 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    expect(
-      component
-        .find(".tag-selector__dropdown-button [data-testid='dropdown-item']")
-        .exists()
-    ).toBe(true);
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    expect(screen.getAllByTestId("dropdown-item")[0]).toHaveTextContent(
+      "An item"
+    );
   });
 
   it("can use an external list of selected tags", () => {
-    const component = shallow(
+    render(
       <TagSelector
         externalSelectedTags={[tags[0]]}
         label="Tags"
@@ -312,14 +312,12 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    expect(
-      component.find('[data-testid="selected-tag"] span').at(0).text()
-    ).toBe("tag1");
+    expect(screen.getAllByTestId("selected-tag")[0]).toHaveTextContent("tag1");
   });
 
-  it("handles selecting external tags", () => {
+  it("handles selecting external tags", async () => {
     const onTagsUpdate = jest.fn();
-    const component = shallow(
+    render(
       <TagSelector
         externalSelectedTags={[tags[0]]}
         label="Tags"
@@ -327,8 +325,8 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    component.find(".tag-selector__input").simulate("focus");
-    component.find('[data-testid="existing-tag"]').at(0).simulate("click");
+    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getAllByTestId("existing-tag")[0]);
     expect(onTagsUpdate).toHaveBeenCalledWith([tags[0], tags[1]]);
   });
 });
