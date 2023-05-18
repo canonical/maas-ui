@@ -1,7 +1,3 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import StorageColumn from "./StorageColumn";
 
 import {
@@ -12,8 +8,7 @@ import {
   rootState as rootStateFactory,
   vmClusterResource as vmClusterResourceFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("StorageColumn", () => {
   it("displays correct storage information for a pod", () => {
@@ -33,15 +28,13 @@ describe("StorageColumn", () => {
         items: [pod],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <StorageColumn
-          defaultPoolId={pod.default_storage_pool}
-          pools={{}}
-          storage={pod.resources.storage}
-        />
-      </Provider>
+    renderWithMockStore(
+      <StorageColumn
+        defaultPoolId={pod.default_storage_pool}
+        pools={{}}
+        storage={pod.resources.storage}
+      />,
+      { state }
     );
     expect(screen.getByText(/0.1 of 1TB allocated/i)).toBeInTheDocument();
     const segmentWidths = [
@@ -61,12 +54,8 @@ describe("StorageColumn", () => {
       allocated_tracked: 2,
       free: 3,
     });
-    const store = mockStore(rootStateFactory());
-    render(
-      <Provider store={store}>
-        <StorageColumn pools={{}} storage={resources} />
-      </Provider>
-    );
+
+    renderWithMockStore(<StorageColumn pools={{}} storage={resources} />);
     expect(screen.getByText(/2 of 6B allocated/i)).toBeInTheDocument();
 
     const segmentWidths = [

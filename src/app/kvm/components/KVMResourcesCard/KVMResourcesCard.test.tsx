@@ -24,7 +24,7 @@ describe("KVMResourcesCard", () => {
     jest.restoreAllMocks();
   });
 
-  it("fetches machines on load", async () => {
+  it("fetches machines on load", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [podFactory({ id: 1, type: PodType.LXD })],

@@ -1,19 +1,17 @@
-import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineUSBDevices from "./MachineUSBDevices";
 
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
+import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineUSBDevices", () => {
   it("fetches the machine's node devices on load", () => {
@@ -27,23 +25,13 @@ describe("MachineUSBDevices", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/usb-devices", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineUSBDevices setSidePanelContent={jest.fn()} />}
-                path="/machine/:id/usb-devices"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineUSBDevices setSidePanelContent={jest.fn()} />,
+      {
+        route: "/machine/abc123/usb-devices",
+        routePattern: "/machine/:id/usb-devices",
+        store,
+      }
     );
 
     const expectedAction = nodeDeviceActions.getByNodeId("abc123");
