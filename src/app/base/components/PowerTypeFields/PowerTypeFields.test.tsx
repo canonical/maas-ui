@@ -83,8 +83,11 @@ describe("PowerTypeFields", () => {
       name: "Select with choices",
     });
     expect(selectWithChoices).toBeInTheDocument();
+
+    // Go through each choice in the last field and ensure it's listed as a select option
     powerTypes[0].fields[2].choices.forEach((choice) => {
       expect(
+        // Index 1 is the label for this option
         within(selectWithChoices).getByRole("option", { name: choice[1] })
       ).toBeInTheDocument();
     });
