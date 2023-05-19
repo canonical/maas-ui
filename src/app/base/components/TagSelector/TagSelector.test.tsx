@@ -1,7 +1,7 @@
 import type { Tag } from "./TagSelector";
 import TagSelector from "./TagSelector";
 
-import { fireEvent, render, screen, userEvent, within } from "testing/utils";
+import { render, screen, userEvent, within } from "testing/utils";
 
 describe("TagSelector", () => {
   let tags: Tag[];
@@ -82,7 +82,7 @@ describe("TagSelector", () => {
     expect(screen.getByTestId("selected-tag")).toHaveTextContent("tag1");
   });
 
-  it("opens the dropdown when input is focused", () => {
+  it("opens the dropdown when input is focused", async () => {
     render(
       <TagSelector
         label="Tags"
@@ -92,7 +92,7 @@ describe("TagSelector", () => {
       />
     );
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     expect(screen.getByRole("listbox")).toBeInTheDocument();
   });
 
@@ -105,7 +105,7 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     await userEvent.click(screen.getAllByTestId("existing-tag")[0]);
     expect(screen.getByTestId("selected-tag")).toHaveTextContent("tag1");
   });
@@ -120,7 +120,7 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     await userEvent.click(screen.getAllByTestId("existing-tag")[0]);
     expect(screen.queryByTestId("selected-tag")).not.toBeInTheDocument();
   });
@@ -136,7 +136,7 @@ describe("TagSelector", () => {
       />
     );
     expect(screen.getAllByTestId("selected-tag")).toHaveLength(2);
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     await userEvent.click(screen.getAllByTestId("selected-tag")[0]);
     expect(screen.getAllByTestId("selected-tag")).toHaveLength(1);
     expect(screen.getAllByTestId("selected-tag")[0]).toHaveTextContent("tag2");
@@ -213,7 +213,7 @@ describe("TagSelector", () => {
         tags={[...tags, { displayName: "other", name: "other" }]}
       />
     );
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     expect(screen.getAllByTestId("existing-tag")).toHaveLength(3);
     await userEvent.type(screen.getByRole("textbox", { name: "Tags" }), "tag");
     expect(screen.getAllByTestId("existing-tag")).toHaveLength(2);
@@ -262,7 +262,7 @@ describe("TagSelector", () => {
     expect(screen.getAllByTestId("selected-tag")[1]).toBeDisabled();
   });
 
-  it("can display a dropdown header", () => {
+  it("can display a dropdown header", async () => {
     render(
       <TagSelector
         header={<span data-testid="dropdown-header">A header</span>}
@@ -273,14 +273,14 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     expect(screen.getByTestId("dropdown-header")).toHaveTextContent("A header");
     expect(screen.getByTestId("dropdown-header").parentElement).toHaveClass(
       "tag-selector__dropdown-header"
     );
   });
 
-  it("can customise the dropdown items", () => {
+  it("can customise the dropdown items", async () => {
     render(
       <TagSelector
         generateDropdownEntry={() => (
@@ -293,7 +293,7 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     expect(screen.getAllByTestId("dropdown-item")[0]).toHaveTextContent(
       "An item"
     );
@@ -321,7 +321,7 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
     await userEvent.click(screen.getAllByTestId("existing-tag")[0]);
     expect(onTagsUpdate).toHaveBeenCalledWith([tags[0], tags[1]]);
   });
