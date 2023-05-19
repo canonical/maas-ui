@@ -84,6 +84,7 @@ const MachineHeader = ({
             <div className="u-nudge-left">
               {machine.locked ? (
                 <TooltipButton
+                  aria-label="locked"
                   className="u-nudge-left--small"
                   iconName="locked"
                   message="This machine is locked. You have to unlock it to perform any actions."
