@@ -1,5 +1,3 @@
-// import { mount, shallow } from "enzyme";
-
 import type { Tag } from "./TagSelector";
 import TagSelector from "./TagSelector";
 
@@ -71,7 +69,6 @@ describe("TagSelector", () => {
     ).toBeInTheDocument();
   });
 
-  // unit tests
   it("can have some tags preselected", () => {
     render(
       <TagSelector
@@ -138,7 +135,6 @@ describe("TagSelector", () => {
         tags={tags}
       />
     );
-    // expect(component.find('[data-testid="selected-tag"]').length).toBe(2);
     expect(screen.getAllByTestId("selected-tag")).toHaveLength(2);
     fireEvent.focus(screen.getByRole("textbox", { name: "Tags" }));
     await userEvent.click(screen.getAllByTestId("selected-tag")[0]);
