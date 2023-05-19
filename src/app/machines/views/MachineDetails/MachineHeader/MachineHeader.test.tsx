@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
@@ -21,8 +17,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineHeader", () => {
   let state: RootState;
@@ -42,170 +39,123 @@ describe("MachineHeader", () => {
 
   it("displays a spinner when loading", () => {
     state.machine.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("heading", { name: /loading/i })
+    ).toBeInTheDocument();
   });
 
   it("displays a spinner when loading the details version of the machine", () => {
     state.machine.items = [machineFactory({ system_id: "abc123" })];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("heading", { name: /loading/i })
+    ).toBeInTheDocument();
   });
 
   it("displays machine name if an action is selected", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
-      "test-machine"
-    );
+
+    expect(
+      screen.getByRole("heading", { name: "test-machine" })
+    ).toBeInTheDocument();
   });
 
   it("displays an icon when locked", () => {
     state.machine.items[0].locked = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    expect(
-      wrapper
-        .findWhere((n) => n.name() === "Icon" && n.prop("name") === "locked")
-        .exists()
-    ).toBe(true);
+
+    expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /locked/i })).toHaveClass(
+      "has-icon"
+    );
   });
 
   it("displays power status", () => {
     state.machine.items[0].power_state = PowerState.ON;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    expect(wrapper.find(".p-icon--power-on").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='machine-header-power']").text()).toBe(
-      "Power on"
-    );
+
+    expect(screen.getByText(/power on/i)).toBeInTheDocument();
   });
 
   it("displays power status when checking power", () => {
     state.machine.statuses["abc123"] = machineStatusFactory({
       checkingPower: true,
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    expect(wrapper.find(".p-icon--spinner").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='machine-header-power']").text()).toBe(
-      "Checking power"
-    );
+
+    expect(screen.getByText(/checking power/i)).toBeInTheDocument();
   });
 
   describe("power menu", () => {
-    it("can dispatch the check power action", () => {
+    it("can dispatch the check power action", async () => {
       state.machine.items[0].actions = [];
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineHeader
-                setSidePanelContent={jest.fn()}
-                sidePanelContent={null}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+
+      renderWithBrowserRouter(
+        <MachineHeader
+          setSidePanelContent={jest.fn()}
+          sidePanelContent={null}
+          systemId="abc123"
+        />,
+        { store, route: "/machine/abc123" }
       );
 
-      // Open the power menu dropdown
-      wrapper.find("TableMenu Button").simulate("click");
-      // Click the "Check power" link
-      wrapper
-        .find("TableMenu .p-contextual-menu__link")
-        .at(0)
-        .simulate("click");
+      await userEvent.click(
+        screen.getByRole("button", { name: /take action:/i })
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: /check power/i })
+      );
 
       expect(
         store
@@ -220,26 +170,22 @@ describe("MachineHeader", () => {
       devices: [machineDeviceFactory()],
       system_id: "abc123",
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    expect(wrapper.find(".p-tabs__item").at(1).text()).toBe("Instances");
+
+    expect(
+      screen.getByRole("link", { name: /instances/i })
+    ).toBeInTheDocument();
   });
 
-  it("hides the subtitle when editing the name", () => {
+  it("hides the subtitle when editing the name", async () => {
     state = rootStateFactory({
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({
@@ -257,23 +203,23 @@ describe("MachineHeader", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
     );
-    wrapper.find("Button.node-name--editable").simulate("click");
-    expect(wrapper.find("SectionHeader").prop("subtitle")).toBe(null);
+
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: new RegExp(`${state.machine.items[0].hostname}.maas`),
+      })
+    );
+    expect(
+      screen.queryByTestId("section-header-subtitle")
+    ).not.toBeInTheDocument();
   });
 });
