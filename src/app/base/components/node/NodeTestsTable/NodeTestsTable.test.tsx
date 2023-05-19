@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeTestsTable from "./NodeTestsTable";
@@ -23,8 +19,9 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("NodeTestsTable", () => {
   let controller: ControllerDetails;
@@ -76,22 +73,12 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={machine} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+      { route: "/machine/abc123", state }
     );
 
-    expect(
-      wrapper.find('input[data-testid="suppress-script-results"]').exists()
-    ).toBe(true);
+    expect(screen.getByTestId("suppress-script-results")).toBeInTheDocument();
   });
 
   it("does not show a suppress column if node is a machine and there are no testing script results", () => {
@@ -105,22 +92,14 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={machine} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+      { route: "/machine/abc123", state }
     );
 
     expect(
-      wrapper.find('input[data-testid="suppress-script-results"]').exists()
-    ).toBe(false);
+      screen.queryByTestId("suppress-script-results")
+    ).not.toBeInTheDocument();
   });
 
   it("does not show a suppress column if node is a controller", () => {
@@ -134,22 +113,14 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={controller} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={controller} scriptResults={scriptResults} />,
+      { route: "/controller/abc123", state }
     );
 
     expect(
-      wrapper.find('input[data-testid="suppress-script-results"]').exists()
-    ).toBe(false);
+      screen.queryByTestId("suppress-script-results")
+    ).not.toBeInTheDocument();
   });
 
   it("disables suppress checkbox if test did not fail", () => {
@@ -163,30 +134,20 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={machine} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+      { route: "/machine/abc123", state }
     );
 
+    expect(screen.getByTestId("suppress-script-results")).toBeDisabled();
     expect(
-      wrapper
-        .find('input[data-testid="suppress-script-results"]')
-        .prop("disabled")
-    ).toBe(true);
-    expect(
-      wrapper.find('[data-testid="suppress-tooltip"]').prop("message")
-    ).toBe("Only failed testing scripts can be suppressed.");
+      screen.getByRole("tooltip", {
+        name: "Only failed testing scripts can be suppressed.",
+      })
+    ).toBeInTheDocument();
   });
 
-  it("dispatches suppress for an unsuppressed script result", () => {
+  it("dispatches suppress for an unsuppressed script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
       scriptResultFactory({
@@ -198,25 +159,15 @@ describe("NodeTestsTable", () => {
     ];
     state.scriptresult.items = scriptResults;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={machine} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+      { route: "/machine/abc123", store }
     );
 
-    const checkbox = wrapper.find(
-      'input[data-testid="suppress-script-results"]'
-    );
-    expect(checkbox.props().checked).toEqual(false);
+    const checkbox = screen.getByTestId("suppress-script-results");
+    expect(checkbox).not.toBeChecked();
 
-    const event = { target: { value: "checked" } };
-    checkbox.simulate("change", event);
+    await userEvent.click(checkbox);
     expect(
       store
         .getActions()
@@ -224,7 +175,7 @@ describe("NodeTestsTable", () => {
     );
   });
 
-  it("dispatches unsuppress for an suppressed script result", () => {
+  it("dispatches unsuppress for an suppressed script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
       scriptResultFactory({
@@ -236,25 +187,15 @@ describe("NodeTestsTable", () => {
     ];
     state.scriptresult.items = scriptResults;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={machine} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+      { route: "/machine/abc123", store }
     );
 
-    const checkbox = wrapper.find(
-      'input[data-testid="suppress-script-results"]'
-    );
-    expect(checkbox.props().checked).toEqual(true);
+    const checkbox = screen.getByTestId("suppress-script-results");
+    expect(checkbox).toBeChecked();
 
-    const event = { target: { value: "checked" } };
-    checkbox.simulate("change", event);
+    await userEvent.click(checkbox);
     expect(
       store
         .getActions()
@@ -262,7 +203,7 @@ describe("NodeTestsTable", () => {
     );
   });
 
-  it("sends an analytics event when suppressing a script result", () => {
+  it("sends an analytics event when suppressing a script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
       scriptResultFactory({
@@ -273,23 +214,14 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={machine} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+      { route: "/machine/abc123", state }
     );
 
-    const checkbox = wrapper.find(
-      'input[data-testid="suppress-script-results"]'
-    );
-    checkbox.simulate("change", { target: { value: "checked" } });
+    const checkbox = screen.getByTestId("suppress-script-results");
+
+    await userEvent.click(checkbox);
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([
@@ -299,7 +231,7 @@ describe("NodeTestsTable", () => {
     ]);
   });
 
-  it("sends an analytics event when unsuppressing a script result", () => {
+  it("sends an analytics event when unsuppressing a script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
       scriptResultFactory({
@@ -310,23 +242,14 @@ describe("NodeTestsTable", () => {
       }),
     ];
     state.scriptresult.items = scriptResults;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeTestsTable node={machine} scriptResults={scriptResults} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={scriptResults} />,
+      { route: "/machine/abc123", state }
     );
 
-    const checkbox = wrapper.find(
-      'input[data-testid="suppress-script-results"]'
-    );
-    checkbox.simulate("change", { target: { value: "" } });
+    const checkbox = screen.getByTestId("suppress-script-results");
+
+    await userEvent.click(checkbox);
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([
