@@ -134,7 +134,7 @@ describe("ComposeForm", () => {
           hugepages: {
             allocated_other: 0,
             allocated_tracked: 0,
-            free: 0,
+            free: 8589934592,
           },
           general: {
             allocated_other: 0,
@@ -151,6 +151,7 @@ describe("ComposeForm", () => {
         }),
         podStoragePoolFactory({ name: "pool-2", available: 20000000000 }),
       ],
+      type: "lxd",
     });
     const space = spaceFactory({ id: 1, name: "outer" });
     const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
@@ -182,6 +183,9 @@ describe("ComposeForm", () => {
     );
     await userEvent.click(
       screen.getByRole("button", { name: /Show advanced/i })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Enable hugepages" })
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Domain" }),
@@ -217,7 +221,7 @@ describe("ComposeForm", () => {
           cores: 5,
           domain: 0,
           hostname: "mean-bean-machine",
-          hugepages_backed: false,
+          hugepages_backed: true,
           id: 1,
           interfaces: "",
           memory: 4096,
@@ -246,7 +250,7 @@ describe("ComposeForm", () => {
           hugepages: {
             allocated_other: 0,
             allocated_tracked: 0,
-            free: 0,
+            free: 8589934592,
           },
           general: {
             allocated_other: 0,
@@ -298,6 +302,9 @@ describe("ComposeForm", () => {
     await userEvent.click(
       screen.getByRole("button", { name: /Show advanced/i })
     );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Enable hugepages" })
+    );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Domain" }),
       "0"
@@ -331,7 +338,7 @@ describe("ComposeForm", () => {
           architecture: "amd64/generic",
           domain: 0,
           hostname: "mean-bean-machine",
-          hugepages_backed: false,
+          hugepages_backed: true,
           id: 1,
           interfaces: "",
           memory: 4096,
