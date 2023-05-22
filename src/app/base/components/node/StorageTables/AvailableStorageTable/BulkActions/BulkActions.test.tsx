@@ -1,8 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import { BulkAction } from "../AvailableStorageTable";
 
 import BulkActions from "./BulkActions";
@@ -19,8 +14,6 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter, screen } from "testing/utils";
-
-const mockStore = configureStore();
 
 describe("BulkActions", () => {
   it("disables create volume group button with tooltip if selected devices are not eligible", () => {
