@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ComposeForm, {
@@ -14,14 +9,17 @@ import ComposeForm, {
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
+  domain as domainFactory,
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
   generalState as generalStateFactory,
   podDetails as podDetailsFactory,
+  podResources as podResourcesFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
   podStoragePool as podStoragePoolFactory,
   powerTypesState as powerTypesStateFactory,
+  resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   space as spaceFactory,
@@ -29,12 +27,13 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
+  zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ComposeForm", () => {
   let state: RootState;
@@ -43,6 +42,12 @@ describe("ComposeForm", () => {
     state = rootStateFactory({
       domain: domainStateFactory({
         loaded: true,
+        items: [
+          domainFactory({
+            id: 0,
+            name: "unimaginative-name",
+          }),
+        ],
       }),
       fabric: fabricStateFactory({
         loaded: true,
@@ -51,12 +56,18 @@ describe("ComposeForm", () => {
         powerTypes: powerTypesStateFactory({ loaded: true }),
       }),
       pod: podStateFactory({
-        items: [podDetailsFactory({ id: 1 })],
+        items: [podDetailsFactory({ id: 1, name: "blablabla" })],
         loaded: true,
         statuses: { 1: podStatusFactory() },
       }),
       resourcepool: resourcePoolStateFactory({
         loaded: true,
+        items: [
+          resourcePoolFactory({
+            id: 2,
+            name: "olympic",
+          }),
+        ],
       }),
       space: spaceStateFactory({
         loaded: true,
@@ -69,20 +80,16 @@ describe("ComposeForm", () => {
       }),
       zone: zoneStateFactory({
         genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+        items: [zoneFactory({ id: 3, name: "danger-zone" })],
       }),
     });
   });
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
     const expectedActions = [
       "FETCH_DOMAIN",
@@ -103,25 +110,46 @@ describe("ComposeForm", () => {
 
   it("displays a spinner if data has not loaded", () => {
     state.zone.genericActions.fetch = "idle";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", state }
     );
-    expect(wrapper.find("Spinner").length).toBe(1);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("can compose a machine without pinned cores", () => {
+  it("can compose a machine without pinned cores", async () => {
     const pod = podDetailsFactory({
+      name: "podpodpodpodpod",
       id: 1,
+      default_storage_pool: "1",
+      memory_over_commit_ratio: 1,
+      cpu_over_commit_ratio: 1,
+      resources: podResourcesFactory({
+        cores: {
+          allocated_other: 0,
+          allocated_tracked: 0,
+          free: 16,
+        },
+        memory: {
+          hugepages: {
+            allocated_other: 0,
+            allocated_tracked: 0,
+            free: 0,
+          },
+          general: {
+            allocated_other: 0,
+            allocated_tracked: 0,
+            free: 8589934592,
+          },
+        },
+      }),
       storage_pools: [
-        podStoragePoolFactory({ name: "pool-1" }),
-        podStoragePoolFactory({ name: "pool-2 " }),
+        podStoragePoolFactory({
+          id: "1",
+          name: "pool-1",
+          available: 80000000000,
+        }),
+        podStoragePoolFactory({ name: "pool-2", available: 20000000000 }),
       ],
     });
     const space = spaceFactory({ id: 1, name: "outer" });
@@ -130,54 +158,51 @@ describe("ComposeForm", () => {
     state.space.items = [space];
     state.subnet.items = [subnet];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        architecture: "amd64/generic",
-        bootDisk: 2,
-        cores: 5,
-        disks: [
-          {
-            id: 1,
-            location: "pool-1",
-            size: 16,
-            tags: ["tag1", "tag2"],
-          },
-          {
-            id: 2,
-            location: "pool-2",
-            size: 32,
-            tags: ["tag3"],
-          },
-        ],
-        domain: "0",
-        hostname: "mean-bean-machine",
-        hugepagesBacked: true,
-        id: "1",
-        interfaces: [
-          {
-            id: 1,
-            ipAddress: "192.168.1.1",
-            name: "eth0",
-            space: "1",
-            subnet: "10",
-          },
-        ],
-        memory: 4096,
-        pinnedCores: "",
-        pool: "2",
-        zone: "3",
-      })
+    await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "VM name" }),
+      "mean-bean-machine"
     );
+    await userEvent.clear(screen.getByRole("spinbutton", { name: "Cores" }));
+    await userEvent.type(
+      screen.getByRole("spinbutton", { name: "Cores" }),
+      "5"
+    );
+    await userEvent.clear(
+      screen.getByRole("spinbutton", { name: "RAM (MiB)" })
+    );
+    await userEvent.type(
+      screen.getByRole("spinbutton", { name: "RAM (MiB)" }),
+      "4096"
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: /Show advanced/i })
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Domain" }),
+      "0"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Zone" }),
+      "3"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Resource pool" }),
+      "2"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Architecture" }),
+      "amd64/generic"
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Compose machine" })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "pod/compose")
     ).toStrictEqual({
@@ -192,26 +217,53 @@ describe("ComposeForm", () => {
           cores: 5,
           domain: 0,
           hostname: "mean-bean-machine",
-          hugepages_backed: true,
+          hugepages_backed: false,
           id: 1,
-          interfaces:
-            "eth0:ip=192.168.1.1,space=outer,subnet_cidr=192.168.1.1/24",
+          interfaces: "",
           memory: 4096,
           pool: 2,
-          storage: "2:32(pool-2,tag3),1:16(pool-1,tag1,tag2)",
+          storage: "1:8(pool-1)",
           zone: 3,
         },
       },
     });
   });
 
-  it("can compose a machine with pinned cores", () => {
+  it("can compose a machine with pinned cores", async () => {
     const pod = podDetailsFactory({
+      name: "podpodpodpodpod",
       id: 1,
+      default_storage_pool: "1",
+      memory_over_commit_ratio: 1,
+      cpu_over_commit_ratio: 1,
+      resources: podResourcesFactory({
+        cores: {
+          allocated_other: 0,
+          allocated_tracked: 0,
+          free: 16,
+        },
+        memory: {
+          hugepages: {
+            allocated_other: 0,
+            allocated_tracked: 0,
+            free: 0,
+          },
+          general: {
+            allocated_other: 0,
+            allocated_tracked: 0,
+            free: 8589934592,
+          },
+        },
+      }),
       storage_pools: [
-        podStoragePoolFactory({ name: "pool-1" }),
-        podStoragePoolFactory({ name: "pool-2 " }),
+        podStoragePoolFactory({
+          id: "1",
+          name: "pool-1",
+          available: 80000000000,
+        }),
+        podStoragePoolFactory({ name: "pool-2", available: 20000000000 }),
       ],
+      type: "lxd",
     });
     const space = spaceFactory({ id: 1, name: "outer" });
     const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
@@ -219,54 +271,53 @@ describe("ComposeForm", () => {
     state.space.items = [space];
     state.subnet.items = [subnet];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        architecture: "amd64/generic",
-        bootDisk: 2,
-        cores: "",
-        disks: [
-          {
-            id: 1,
-            location: "pool-1",
-            size: 16,
-            tags: ["tag1", "tag2"],
-          },
-          {
-            id: 2,
-            location: "pool-2",
-            size: 32,
-            tags: ["tag3"],
-          },
-        ],
-        domain: "0",
-        hostname: "mean-bean-machine",
-        hugepagesBacked: true,
-        id: "1",
-        interfaces: [
-          {
-            id: 1,
-            ipAddress: "192.168.1.1",
-            name: "eth0",
-            space: "1",
-            subnet: "10",
-          },
-        ],
-        memory: 4096,
-        pinnedCores: "0-2, 4, 6-7",
-        pool: "2",
-        zone: "3",
-      })
+    await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "VM name" }),
+      "mean-bean-machine"
     );
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Pinned cores" }),
+      "1,3"
+    );
+    await userEvent.clear(
+      screen.getByRole("spinbutton", { name: "RAM (MiB)" })
+    );
+    await userEvent.type(
+      screen.getByRole("spinbutton", { name: "RAM (MiB)" }),
+      "4096"
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: /Show advanced/i })
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Domain" }),
+      "0"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Zone" }),
+      "3"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Resource pool" }),
+      "2"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Architecture" }),
+      "amd64/generic"
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Compose machine" })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "pod/compose")
     ).toStrictEqual({
@@ -280,14 +331,13 @@ describe("ComposeForm", () => {
           architecture: "amd64/generic",
           domain: 0,
           hostname: "mean-bean-machine",
-          hugepages_backed: true,
+          hugepages_backed: false,
           id: 1,
-          interfaces:
-            "eth0:ip=192.168.1.1,space=outer,subnet_cidr=192.168.1.1/24",
+          interfaces: "",
           memory: 4096,
-          pinned_cores: [0, 1, 2, 4, 6, 7],
+          pinned_cores: [1, 3],
           pool: 2,
-          storage: "2:32(pool-2,tag3),1:16(pool-1,tag1,tag2)",
+          storage: "1:8(pool-1)",
           zone: 3,
         },
       },
