@@ -68,6 +68,7 @@ export const UpdateDatastoreFields = ({
           }))}
         />
         <Input
+          aria-label="Mount point"
           data-testid="datastore-mount-point"
           disabled
           label="Mount point"
@@ -75,6 +76,7 @@ export const UpdateDatastoreFields = ({
           value={selectedDatastore?.filesystem?.mount_point || ""}
         />
         <Input
+          aria-label="Size to add"
           data-testid="size-to-add"
           disabled
           label="Size to add"

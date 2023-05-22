@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -19,6 +18,7 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -43,28 +43,24 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={null}
-              selected={selected}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={null}
+        selected={selected}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
     expect(
-      wrapper.find("button[data-testid='create-vg']").prop("disabled")
-    ).toBe(true);
-    expect(wrapper.find("[data-testid='create-vg-tooltip']").exists()).toBe(
-      true
-    );
+      screen.getByRole("button", { name: "Create volume group" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "Select one or more unpartitioned and unformatted storage devices to create a volume group.",
+      })
+    ).toBeInTheDocument();
   });
 
   it("enables create volume group button if selected devices are eligible", () => {
@@ -84,25 +80,19 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={null}
-              selected={selected}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={null}
+        selected={selected}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
     expect(
-      wrapper.find("button[data-testid='create-vg']").prop("disabled")
-    ).toBe(false);
+      screen.getByRole("button", { name: "Create volume group" })
+    ).not.toBeDisabled();
   });
 
   it("renders datastore bulk actions if the detected layout is a VMWare layout", () => {
@@ -119,25 +109,17 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={null}
-              selected={[]}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={null}
+        selected={[]}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='vmware-bulk-actions']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("vmware-bulk-actions")).toBeInTheDocument();
   });
 
   it(`enables the create datastore button if at least one unpartitioned and
@@ -156,25 +138,19 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={null}
-              selected={selected}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={null}
+        selected={selected}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
     expect(
-      wrapper.find("button[data-testid='create-datastore']").prop("disabled")
-    ).toBe(false);
+      screen.getByRole("button", { name: "Create datastore" })
+    ).not.toBeDisabled();
   });
 
   it(`enables the add to existing datastore button if at least one unpartitioned
@@ -197,25 +173,19 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={null}
-              selected={[selected]}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={null}
+        selected={[selected]}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
     expect(
-      wrapper.find("button[data-testid='add-to-datastore']").prop("disabled")
-    ).toBe(false);
+      screen.getByRole("button", { name: "Add to existing datastore" })
+    ).not.toBeDisabled();
   });
 
   it("can render the create datastore form", () => {
@@ -231,23 +201,25 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={BulkAction.CREATE_DATASTORE}
-              selected={[]}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={BulkAction.CREATE_DATASTORE}
+        selected={[]}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    expect(wrapper.find("CreateDatastore").exists()).toBe(true);
+    // Ensure correct form inputs are shown
+    expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Size" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Filesystem" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Create datastore" })
+    ).toBeInTheDocument();
   });
 
   it("can render the create RAID form", () => {
@@ -263,23 +235,35 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={BulkAction.CREATE_RAID}
-              selected={[]}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={BulkAction.CREATE_RAID}
+        selected={[]}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    expect(wrapper.find("CreateRaid").exists()).toBe(true);
+    // Ensure the correct form inputs are shown
+    expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "RAID level" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Size" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Filesystem" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Mount point" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Mount options" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Create RAID" })
+    ).toBeInTheDocument();
   });
 
   it("can render the create volume group form", () => {
@@ -295,31 +279,35 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={BulkAction.CREATE_VOLUME_GROUP}
-              selected={[]}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={BulkAction.CREATE_VOLUME_GROUP}
+        selected={[]}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    expect(wrapper.find("CreateVolumeGroup").exists()).toBe(true);
+    // Ensure the correct form inputs are shown
+    expect(
+      screen.getByRole("button", { name: "Create volume group" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Size" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Type" })).toBeInTheDocument();
   });
 
   it("can render the update datastore form", () => {
+    const datastore = diskFactory({
+      filesystem: fsFactory({ fstype: "vmfs6" }),
+    });
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
             system_id: "abc123",
+            disks: [datastore],
           }),
         ],
         statuses: machineStatusesFactory({
@@ -327,22 +315,25 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <BulkActions
-              bulkAction={BulkAction.UPDATE_DATASTORE}
-              selected={[]}
-              setBulkAction={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <BulkActions
+        bulkAction={BulkAction.UPDATE_DATASTORE}
+        selected={[]}
+        setBulkAction={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    expect(wrapper.find("UpdateDatastore").exists()).toBe(true);
+    // Ensure the correct form inputs are shown
+    expect(
+      screen.getByRole("combobox", { name: "Datastore" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Mount point" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Size to add" })
+    ).toBeInTheDocument();
   });
 });
