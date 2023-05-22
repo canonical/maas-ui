@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AuthenticationCard from "./AuthenticationCard";
@@ -17,6 +13,8 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+
 const mockStore = configureStore();
 
 describe("AuthenticationCard", () => {
@@ -41,39 +39,23 @@ describe("AuthenticationCard", () => {
   it("shows a spinner if pod is not PodDetails type", () => {
     state.pod.items[0] = podFactory({ id: 1 });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationCard hostId={pod.id} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("can open the update certificate form", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationCard hostId={pod.id} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("UpdateCertificate").exists()).toBe(false);
+    renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.queryByText("Update Certificate")).not.toBeInTheDocument();
 
-    wrapper
-      .find("Button[data-testid='show-update-certificate']")
-      .simulate("click");
-    expect(wrapper.find("UpdateCertificate").exists()).toBe(true);
+    userEvent.click(screen.getByTestId("show-update-certificate"));
+    expect(screen.getByText("Update Certificate")).toBeInTheDocument();
   });
 
   it("opens the update certificate form automatically if pod has no certificate", () => {
@@ -82,17 +64,11 @@ describe("AuthenticationCard", () => {
     power_parameters.certificate = undefined;
     power_parameters.key = undefined;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationCard hostId={pod.id} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("UpdateCertificate").exists()).toBe(true);
+    renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
+      route: "/machines",
+      store,
+    });
+
+    expect(screen.getByText("Update Certificate")).toBeInTheDocument();
   });
 });

@@ -1,12 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
-import { generateClusterRows, generateSingleHostRows } from "../LxdTable";
+import { render } from "@testing-library/react";
 
 import LxdKVMHostTable from "./LxdKVMHostTable";
+import { generateClusterRows, generateSingleHostRows } from "./LxdTable";
 
 import { PodType } from "app/store/pod/constants";
 import {
@@ -19,6 +14,7 @@ import {
   vmHost as vmHostFactory,
   vmClusterState as vmClusterStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -52,43 +48,37 @@ describe("LxdKVMHostTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
+      { route: "/kvm", store }
     );
     const getLxdVms = (rowNumber: number) =>
-      wrapper
-        .find("tbody TableRow")
-        .at(rowNumber)
-        .find("[data-testid='machines-count']");
+      screen
+        .getAllByRole("cell")
+        .filter((cell) => cell.dataset.testid === "machines-count")[rowNumber];
 
     // Sorted ascending by name by default
-    expect(getLxdVms(0).text()).toBe("2");
-    expect(getLxdVms(1).text()).toBe("3");
-    expect(getLxdVms(2).text()).toBe("1");
+    expect(getLxdVms(0).textContent).toBe("2");
+    expect(getLxdVms(1).textContent).toBe("3");
+    expect(getLxdVms(2).textContent).toBe("1");
 
     // Change to sort ascending vms
-    wrapper.find("[data-testid='vms-header'] button").simulate("click");
-    expect(getLxdVms(0).text()).toBe("1");
-    expect(getLxdVms(1).text()).toBe("2");
-    expect(getLxdVms(2).text()).toBe("3");
+    screen.getByTestId("vms-header").click();
+    expect(getLxdVms(0).textContent).toBe("1");
+    expect(getLxdVms(1).textContent).toBe("2");
+    expect(getLxdVms(2).textContent).toBe("3");
 
     // Change to descending vms
-    wrapper.find("[data-testid='vms-header'] button").simulate("click");
-    expect(getLxdVms(0).text()).toBe("3");
-    expect(getLxdVms(1).text()).toBe("2");
-    expect(getLxdVms(2).text()).toBe("1");
+    screen.getByTestId("vms-header").click();
+    expect(getLxdVms(0).textContent).toBe("3");
+    expect(getLxdVms(1).textContent).toBe("2");
+    expect(getLxdVms(2).textContent).toBe("1");
 
     // Change to no sort
-    wrapper.find("[data-testid='vms-header'] button").simulate("click");
-    expect(getLxdVms(0).text()).toBe("3");
-    expect(getLxdVms(1).text()).toBe("1");
-    expect(getLxdVms(2).text()).toBe("2");
+    screen.getByTestId("vms-header").click();
+    expect(getLxdVms(0).textContent).toBe("3");
+    expect(getLxdVms(1).textContent).toBe("1");
+    expect(getLxdVms(2).textContent).toBe("2");
   });
 
   it("can update the LXD project sort order", () => {
@@ -115,38 +105,35 @@ describe("LxdKVMHostTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
+      { route: "/kvm", store }
     );
     const getLxdName = (rowNumber: number) =>
-      wrapper.find("tbody TableRow").at(rowNumber).find("[data-testid='name']");
+      screen
+        .getAllByRole("cell")
+        .filter((cell) => cell.dataset.testid === "name")[rowNumber];
 
     // Sorted ascending by name by default
-    expect(getLxdName(0).text()).toBe("pod-1");
-    expect(getLxdName(1).text()).toBe("pod-2");
-    expect(getLxdName(2).text()).toBe("pod-3");
-    expect(getLxdName(3).text()).toBe("pod-4");
+    expect(getLxdName(0).textContent).toBe("pod-1");
+    expect(getLxdName(1).textContent).toBe("pod-2");
+    expect(getLxdName(2).textContent).toBe("pod-3");
+    expect(getLxdName(3).textContent).toBe("pod-4");
 
     // Change to sort descending by name. Groups themselves are not sorted so
     // only the LXD pods in each group should be sorted.
-    wrapper.find("[data-testid='name-header'] button").simulate("click");
-    expect(getLxdName(0).text()).toBe("pod-4");
-    expect(getLxdName(1).text()).toBe("pod-3");
-    expect(getLxdName(2).text()).toBe("pod-2");
-    expect(getLxdName(3).text()).toBe("pod-1");
+    screen.getByTestId("name-header").click();
+    expect(getLxdName(0).textContent).toBe("pod-4");
+    expect(getLxdName(1).textContent).toBe("pod-3");
+    expect(getLxdName(2).textContent).toBe("pod-2");
+    expect(getLxdName(3).textContent).toBe("pod-1");
 
     // Change to no sort
-    wrapper.find("[data-testid='name-header'] button").simulate("click");
-    expect(getLxdName(0).text()).toBe("pod-2");
-    expect(getLxdName(1).text()).toBe("pod-1");
-    expect(getLxdName(2).text()).toBe("pod-3");
-    expect(getLxdName(3).text()).toBe("pod-4");
+    screen.getByTestId("name-header").click();
+    expect(getLxdName(0).textContent).toBe("pod-2");
+    expect(getLxdName(1).textContent).toBe("pod-1");
+    expect(getLxdName(2).textContent).toBe("pod-3");
+    expect(getLxdName(3).textContent).toBe("pod-4");
   });
 
   it("can display a single host type", () => {
@@ -156,19 +143,12 @@ describe("LxdKVMHostTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
+      { route: "/kvm", store }
     );
-    expect(wrapper.find("[data-testid='host-type']").text()).toBe(
-      "Single host"
-    );
-    expect(wrapper.find("[data-testid='hosts-count']").exists()).toBe(false);
+    expect(screen.getByTestId("host-type")).toHaveTextContent("Single host");
+    expect(screen.queryByTestId("hosts-count")).toBeNull();
   });
 
   it("can display a cluster host type", () => {
@@ -182,21 +162,11 @@ describe("LxdKVMHostTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable
-              rows={generateClusterRows(state.vmcluster.items)}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateClusterRows(state.vmcluster.items)} />,
+      { route: "/kvm", store }
     );
-    expect(wrapper.find("[data-testid='host-type']").text()).toBe("Cluster");
-    expect(wrapper.find("[data-testid='hosts-count']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='hosts-count']").text()).toBe(
-      "2 KVM hosts"
-    );
+    expect(screen.getByTestId("host-type")).toHaveTextContent("Cluster");
+    expect(screen.getByTestId("hosts-count")).toHaveTextContent("2 KVM hosts");
   });
 });

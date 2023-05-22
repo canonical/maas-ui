@@ -1,9 +1,9 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ResourcePoolSelect from "./ResourcePoolSelect";
+import { renderWithBrowserRouter } from "./testing/utils";
 
 import {
   resourcePool as resourcePoolFactory,
@@ -25,26 +25,28 @@ describe("ResourcePoolSelect", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
+    const { container } = render(
+      renderWithBrowserRouter(
         <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
           <ResourcePoolSelect name="pool" />
-        </Formik>
-      </Provider>
+        </Formik>,
+        { store, route: "" }
+      )
     );
 
-    expect(wrapper.find("select[name='pool']")).toMatchSnapshot();
+    expect(container.querySelector("select[name='pool']")).toMatchSnapshot();
   });
 
   it("dispatches action to fetch resource pools on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
+    render(
+      renderWithBrowserRouter(
         <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
           <ResourcePoolSelect name="pool" />
-        </Formik>
-      </Provider>
+        </Formik>,
+        { store, route: "" }
+      )
     );
 
     expect(
@@ -59,14 +61,15 @@ describe("ResourcePoolSelect", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
+    const { container } = render(
+      renderWithBrowserRouter(
         <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
           <ResourcePoolSelect name="pool" />
-        </Formik>
-      </Provider>
+        </Formik>,
+        { store, route: "" }
+      )
     );
 
-    expect(wrapper.find("select[name='pool']").prop("disabled")).toBe(true);
+    expect(container.querySelector("select[name='pool']").disabled).toBe(true);
   });
 });

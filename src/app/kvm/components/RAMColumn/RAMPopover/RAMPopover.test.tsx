@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import RAMPopover from "./RAMPopover";
 
@@ -8,10 +8,11 @@ import {
   vmClusterResource as vmClusterResourceFactory,
   vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("RAMPopover", () => {
   it("shows if memory is used by any other projects in the group", () => {
-    const wrapper = mount(
+    render(
       <RAMPopover
         memory={podMemoryResourceFactory({
           general: podResourceFactory({
@@ -26,12 +27,12 @@ describe("RAMPopover", () => {
         Child
       </RAMPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='other']").exists()).toBe(true);
+    screen.getByText("Child").focus();
+    expect(screen.getByTestId("other")).toBeInTheDocument();
   });
 
   it("does not show other memory if no other projects in the group use them", () => {
-    const wrapper = mount(
+    render(
       <RAMPopover
         memory={podMemoryResourceFactory({
           general: podResourceFactory({ allocated_other: 0 }),
@@ -42,28 +43,28 @@ describe("RAMPopover", () => {
         Child
       </RAMPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='other']").exists()).toBe(false);
+    screen.getByText("Child").focus();
+    expect(screen.queryByTestId("other")).not.toBeInTheDocument();
   });
 
   it("shows memory over-commit ratio if it is not equal to 1", () => {
-    const wrapper = mount(
+    render(
       <RAMPopover memory={podMemoryResourceFactory()} overCommit={2}>
         Child
       </RAMPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(true);
+    screen.getByText("Child").focus();
+    expect(screen.getByTestId("overcommit")).toBeInTheDocument();
   });
 
   it("does not show memory over-commit ratio if it is equal to 1", () => {
-    const wrapper = mount(
+    render(
       <RAMPopover memory={podMemoryResourceFactory()} overCommit={1}>
         Child
       </RAMPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(false);
+    screen.getByText("Child").focus();
+    expect(screen.queryByTestId("overcommit")).not.toBeInTheDocument();
   });
 
   it("displays memory for a vmcluster", () => {
@@ -79,11 +80,11 @@ describe("RAMPopover", () => {
         free: 6,
       }),
     });
-    const wrapper = mount(<RAMPopover memory={memory}>Child</RAMPopover>);
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='other']").text()).toBe("5B");
-    expect(wrapper.find("[data-testid='allocated']").text()).toBe("7B");
-    expect(wrapper.find("[data-testid='free']").text()).toBe("9B");
-    expect(wrapper.find("[data-testid='total']").text()).toBe("21B");
+    render(<RAMPopover memory={memory}>Child</RAMPopover>);
+    screen.getByText("Child").focus();
+    expect(screen.getByTestId("other")).toHaveTextContent("5B");
+    expect(screen.getByTestId("allocated")).toHaveTextContent("7B");
+    expect(screen.getByTestId("free")).toHaveTextContent("9B");
+    expect(screen.getByTestId("total")).toHaveTextContent("21B");
   });
 });

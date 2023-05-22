@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddPartition from "./AddPartition";
@@ -16,7 +11,12 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  submitFormikForm,
+  userEvent,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,23 +36,12 @@ describe("AddPartition", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddPartition
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      { route: "/", store }
     );
 
-    expect(wrapper.find("Input[label='Name']").prop("value")).toBe(
-      "floppy-disk-part3"
-    );
+    expect(screen.getByLabelText("Name")).toHaveValue("floppy-disk-part3");
   });
 
   it("sets the initial size to the available space", () => {
@@ -71,20 +60,13 @@ describe("AddPartition", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddPartition
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      { route: "/", store }
     );
-    expect(wrapper.find("Input[name='partitionSize']").prop("value")).toBe(8);
+    expect(
+      screen.getByRole("spinbutton", { name: /Partition Size/i })
+    ).toHaveValue(8);
   });
 
   it("can validate if the size meets the minimum requirement", async () => {
@@ -100,40 +82,23 @@ describe("AddPartition", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddPartition
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      { route: "/", store }
     );
 
     // Set partition size to 0.1MB
-    await act(async () => {
-      wrapper.find("input[name='partitionSize']").simulate("change", {
-        target: { name: "partitionSize", value: "0.1" },
-      } as React.ChangeEvent<HTMLInputElement>);
+    const partitionSize = screen.getByRole("spinbutton", {
+      name: /Partition Size/i,
     });
-    wrapper.update();
-    await act(async () => {
-      wrapper.find("select[name='unit']").simulate("change", {
-        target: { name: "unit", value: "MB" },
-      });
-    });
-    wrapper.update();
+    await userEvent.clear(partitionSize);
+    await userEvent.type(partitionSize, "0.1");
+    const unit = screen.getByLabelText("Unit");
+    await userEvent.selectOptions(unit, "MB");
 
     expect(
-      wrapper
-        .find(".p-form-validation__message")
-        .text()
-        .includes("is required to partition this disk")
-    ).toBe(true);
+      screen.getByText(/is required to partition this disk/i)
+    ).toBeInTheDocument();
   });
 
   it("can validate if the size is less than available disk space", async () => {
@@ -150,34 +115,18 @@ describe("AddPartition", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddPartition
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      { route: "/", store }
     );
 
     // Set logical volume size to 2GB
-    await act(async () => {
-      wrapper.find("input[name='partitionSize']").simulate("change", {
-        target: { name: "partitionSize", value: "2" },
-      } as React.ChangeEvent<HTMLInputElement>);
+    const partitionSize = screen.getByRole("spinbutton", {
+      name: /Partition Size/i,
     });
-    wrapper.update();
-
-    expect(
-      wrapper
-        .find(".p-form-validation__message")
-        .text()
-        .includes("available in this disk")
-    ).toBe(true);
+    await userEvent.clear(partitionSize);
+    await userEvent.type(partitionSize, "2");
+    expect(screen.getByText(/available in this disk/i)).toBeInTheDocument();
   });
 
   it("correctly dispatches an action to create a partition", () => {
@@ -191,21 +140,12 @@ describe("AddPartition", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddPartition
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      { route: "/", store }
     );
 
-    submitFormikForm(wrapper, {
+    submitFormikForm({
       fstype: "fat32",
       mountOptions: "noexec",
       mountPoint: "/path",

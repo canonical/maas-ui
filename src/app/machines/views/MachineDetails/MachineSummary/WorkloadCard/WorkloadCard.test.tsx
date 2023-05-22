@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import WorkloadCard from "./WorkloadCard";
 
 import {
@@ -10,6 +5,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -26,18 +22,11 @@ describe("WorkloadCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <WorkloadCard id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper.find("[data-testid='no-workload-annotations']").exists()
-    ).toBe(true);
+    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
+      route: "/machine/abc123",
+      store,
+    });
+    expect(screen.getByTestId("no-workload-annotations")).toBeInTheDocument();
   });
 
   it("can display a list of workload annotations", () => {
@@ -55,25 +44,14 @@ describe("WorkloadCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <WorkloadCard id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
+      route: "/machine/abc123",
+      store,
+    });
 
-    expect(wrapper.find("[data-testid='workload-annotations'] li").length).toBe(
-      2
-    );
-    expect(wrapper.find("[data-testid='workload-key']").at(0).text()).toBe(
-      "key1"
-    );
-    expect(wrapper.find("[data-testid='workload-value']").at(0).text()).toBe(
-      "value1"
-    );
+    expect(screen.getAllByTestId("workload-annotations-item")).toHaveLength(2);
+    expect(screen.getByTestId("workload-key").textContent).toBe("key1");
+    expect(screen.getByTestId("workload-value").textContent).toBe("value1");
   });
 
   it("displays comma-separated values on new lines", () => {
@@ -90,25 +68,14 @@ describe("WorkloadCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <WorkloadCard id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
+      route: "/machine/abc123",
+      store,
+    });
 
-    expect(
-      wrapper.find("[data-testid='workload-value'] div").at(0).text()
-    ).toBe("comma");
-    expect(
-      wrapper.find("[data-testid='workload-value'] div").at(1).text()
-    ).toBe("separated");
-    expect(
-      wrapper.find("[data-testid='workload-value'] div").at(2).text()
-    ).toBe("value");
+    expect(screen.getByText(/comma/)).toBeInTheDocument();
+    expect(screen.getByText(/separated/)).toBeInTheDocument();
+    expect(screen.getByText(/value/)).toBeInTheDocument();
   });
 
   it("displays links to filter machine list by workload annotation", () => {
@@ -125,17 +92,13 @@ describe("WorkloadCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <WorkloadCard id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<WorkloadCard id="abc123" />, {
+      route: "/machine/abc123",
+      store,
+    });
 
-    expect(wrapper.find("[data-testid='workload-value'] Link").prop("to")).toBe(
+    expect(screen.getByText(/value/)).toHaveAttribute(
+      "href",
       "/machines?workload-key=value"
     );
   });

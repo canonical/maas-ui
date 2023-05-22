@@ -1,14 +1,9 @@
-import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CommissionForm from "../CommissionForm";
 
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -17,11 +12,12 @@ import {
   scriptState as scriptStateFactory,
   script as scriptFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("CommissionForm", () => {
-  let state: RootState;
+  let state: ReturnType<typeof rootStateFactory>;
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -48,7 +44,7 @@ describe("CommissionForm", () => {
                 type: "storage",
               },
             },
-            script_type: ScriptType.TESTING,
+            script_type: "testing",
           }),
           scriptFactory({
             name: "internet-connectivity",
@@ -61,7 +57,7 @@ describe("CommissionForm", () => {
                 required: true,
               },
             },
-            script_type: ScriptType.TESTING,
+            script_type: "testing",
           }),
         ],
       }),
@@ -70,39 +66,26 @@ describe("CommissionForm", () => {
 
   it("displays a field for URL if a selected script has url parameter", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines/add", store }
     );
-    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
-      false
-    );
+    expect(screen.queryByTestId("url-script-input")).not.toBeInTheDocument();
     await act(async () => {
-      wrapper
-        .find(
-          "[data-testid='testing-scripts-selector'] Input .tag-selector__input"
-        )
-        .simulate("focus");
+      userEvent.click(
+        screen.getByLabelText("Select testing script(s)", { exact: false })
+      );
     });
-    wrapper.update();
     await act(async () => {
-      wrapper.find('[data-testid="existing-tag"]').at(0).simulate("click");
+      userEvent.click(
+        screen.getByText(/internet-connectivity/i, { exact: false })
+      );
     });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("url-script-input")).toBeInTheDocument();
   });
 });

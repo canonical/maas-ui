@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UpdateDatastore from "./UpdateDatastore";
@@ -18,7 +14,12 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -55,23 +56,16 @@ describe("UpdateDatastore", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UpdateDatastore
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByTestId } = renderWithBrowserRouter(
+      <UpdateDatastore
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { route: "/", store }
     );
 
-    expect(wrapper.find("Input[data-testid='size-to-add']").prop("value")).toBe(
-      "1.5 GB"
-    );
+    expect(getByTestId("size-to-add").getAttribute("value")).toBe("1.5 GB");
   });
 
   it("correctly dispatches an action to update a datastore", () => {
@@ -94,23 +88,17 @@ describe("UpdateDatastore", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UpdateDatastore
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByTestId, getByText } = renderWithBrowserRouter(
+      <UpdateDatastore
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { route: "/", store }
     );
 
-    submitFormikForm(wrapper, {
-      datastore: datastore.id,
-    });
+    userEvent.type(getByTestId("Datastore ID"), datastore.id);
+    userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     expect(
       store

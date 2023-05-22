@@ -1,11 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import NetworkNotifications from "./NetworkNotifications";
 
-import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
@@ -17,11 +13,12 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("NetworkNotifications", () => {
-  let state: RootState;
+  let state;
   beforeEach(() => {
     state = rootStateFactory({
       general: generalStateFactory({
@@ -55,16 +52,9 @@ describe("NetworkNotifications", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NetworkNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Notification").exists()).toBe(false);
+    const route = { route: "/machine/abc123" };
+    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, route, store);
+    expect(screen.queryByRole("notification")).toBeNull();
   });
 
   it("can show a network connection message", () => {
@@ -75,69 +65,30 @@ describe("NetworkNotifications", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NetworkNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    const route = { route: "/machine/abc123" };
+    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, route, store);
     expect(
-      wrapper
-        .findWhere(
-          (n) =>
-            n.name() === "Notification" &&
-            n.text().includes("Machine must be connected to a network.")
-        )
-        .exists()
-    ).toBe(true);
+      screen.getByText(/Machine must be connected to a network./i)
+    ).toBeInTheDocument();
   });
 
   it("can show a permissions message", () => {
     state.machine.items[0].status = NodeStatus.DEPLOYING;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NetworkNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    const route = { route: "/machine/abc123" };
+    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, route, store);
     expect(
-      wrapper
-        .findWhere(
-          (n) =>
-            n.name() === "Notification" &&
-            n.text().includes("Interface configuration cannot be modified")
-        )
-        .exists()
-    ).toBe(true);
+      screen.getByText(/Interface configuration cannot be modified/i)
+    ).toBeInTheDocument();
   });
 
   it("can display a custom image message", () => {
     state.machine.items[0].osystem = "custom";
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NetworkNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    const route = { route: "/machine/abc123" };
+    renderWithBrowserRouter(<NetworkNotifications id="abc123" />, route, store);
     expect(
-      wrapper
-        .findWhere(
-          (n) =>
-            n.name() === "Notification" &&
-            n.text().includes("Custom images may require special preparation")
-        )
-        .exists()
-    ).toBe(true);
+      screen.getByText(/Custom images may require special preparation/i)
+    ).toBeInTheDocument();
   });
 });

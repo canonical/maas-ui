@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MarkBrokenForm from "./MarkBrokenForm";
@@ -15,7 +10,12 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -39,28 +39,21 @@ describe("MarkBrokenForm", () => {
 
   it("dispatches actions to mark given machines broken", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MarkBrokenForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MarkBrokenForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        comment: "machine is on fire",
-      })
-    );
+    const commentInput = screen.getByLabelText("Comments");
+    userEvent.type(commentInput, "machine is on fire");
+
+    const submitButton = screen.getByRole("button", { name: "Mark Broken" });
+    userEvent.click(submitButton);
 
     expect(
       store
@@ -104,28 +97,18 @@ describe("MarkBrokenForm", () => {
 
   it("dispatches actions to mark selected machines broken without a message", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MarkBrokenForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MarkBrokenForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        comment: "",
-      })
-    );
+    const submitButton = screen.getByRole("button", { name: "Mark Broken" });
+    userEvent.click(submitButton);
 
     expect(
       store.getActions().find((action) => action.type === "machine/markBroken")

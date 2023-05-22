@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CommissionForm from "./CommissionForm";
@@ -19,7 +14,12 @@ import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -66,21 +66,14 @@ describe("CommissionForm", () => {
   it("fetches scripts if they haven't been loaded yet", () => {
     state.script.loaded = false;
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
     expect(
@@ -90,36 +83,27 @@ describe("CommissionForm", () => {
 
   it("correctly dispatches actions to commission given machines", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableSSH: true,
-        skipBMCConfig: true,
-        skipNetworking: true,
-        skipStorage: true,
-        updateFirmware: true,
-        configureHBA: true,
-        testingScripts: [state.script.items[0]],
-        commissioningScripts: [state.script.items[1]],
-        scriptInputs: { testingScript0: { url: "www.url.com" } },
-      })
-    );
+    submitFormikForm({
+      enableSSH: true,
+      skipBMCConfig: true,
+      skipNetworking: true,
+      skipStorage: true,
+      updateFirmware: true,
+      configureHBA: true,
+      testingScripts: [state.script.items[0]],
+      commissioningScripts: [state.script.items[1]],
+      scriptInputs: { testingScript0: { url: "www.url.com" } },
+    });
 
     expect(
       store
@@ -159,36 +143,27 @@ describe("CommissionForm", () => {
 
   it("correctly dispatches an action to commission a machine without tests", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableSSH: true,
-        skipBMCConfig: true,
-        skipNetworking: true,
-        skipStorage: true,
-        updateFirmware: true,
-        configureHBA: true,
-        testingScripts: [],
-        commissioningScripts: [state.script.items[1]],
-        scriptInputs: { testingScript0: { url: "www.url.com" } },
-      })
-    );
+    submitFormikForm({
+      enableSSH: true,
+      skipBMCConfig: true,
+      skipNetworking: true,
+      skipStorage: true,
+      updateFirmware: true,
+      configureHBA: true,
+      testingScripts: [],
+      commissioningScripts: [state.script.items[1]],
+      scriptInputs: { testingScript0: { url: "www.url.com" } },
+    });
 
     expect(
       store.getActions().find((action) => action.type === "machine/commission")

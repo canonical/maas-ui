@@ -1,11 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import RAMColumn from "./RAMColumn";
 
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podMemoryResource as podMemoryResourceFactory,
@@ -16,6 +12,7 @@ import {
   vmClusterResource as vmClusterResourceFactory,
   vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -52,20 +49,22 @@ describe("RAMColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn
-          memory={pod.resources.memory}
-          overCommit={pod.memory_over_commit_ratio}
-        />
-      </Provider>
+    const { container } = render(
+      <RAMColumn
+        memory={pod.resources.memory}
+        overCommit={pod.memory_over_commit_ratio}
+      />,
+      { store }
     );
     // Allocated tracked = 2 + 5 = 7
     // Total = (1 + 2 + 3) + (4 + 5 + 6) = 6 + 15 = 21
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 21B allocated"
+    expect(
+      screen.getByText(/7 of 21B allocated/i, { container })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("meter", { container })).toHaveAttribute(
+      "max",
+      "21"
     );
-    expect(wrapper.find("Meter").prop("max")).toBe(21);
   });
 
   it("can display correct memory information with overcommit", () => {
@@ -85,21 +84,23 @@ describe("RAMColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn
-          memory={pod.resources.memory}
-          overCommit={pod.memory_over_commit_ratio}
-        />
-      </Provider>
+    const { container } = render(
+      <RAMColumn
+        memory={pod.resources.memory}
+        overCommit={pod.memory_over_commit_ratio}
+      />,
+      { store }
     );
     // Allocated tracked = 2 + 5 = 7
     // Hugepages do not take overcommit into account, so
     // Total = ((1 + 2 + 3) * 2) + (4 + 5 + 6) = 12 + 15 = 27
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 27B allocated"
+    expect(
+      screen.getByText(/7 of 27B allocated/i, { container })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("meter", { container })).toHaveAttribute(
+      "max",
+      "27"
     );
-    expect(wrapper.find("Meter").prop("max")).toBe(27);
   });
 
   it("can display when memory has been overcommitted", () => {
@@ -119,19 +120,23 @@ describe("RAMColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn
-          memory={pod.resources.memory}
-          overCommit={pod.memory_over_commit_ratio}
-        />
-      </Provider>
+    const { container } = render(
+      <RAMColumn
+        memory={pod.resources.memory}
+        overCommit={pod.memory_over_commit_ratio}
+      />,
+      { store }
     );
-    expect(wrapper.find("[data-testid='meter-overflow']").exists()).toBe(true);
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 5B allocated"
+    expect(
+      screen.getByTestId("meter-overflow", { container })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/7 of 5B allocated/i, { container })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("meter", { container })).toHaveAttribute(
+      "max",
+      "5"
     );
-    expect(wrapper.find("Meter").prop("max")).toBe(5);
   });
 
   it("can display correct memory for a vmcluster", () => {
@@ -148,14 +153,13 @@ describe("RAMColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn memory={memory} />
-      </Provider>
+    const { container } = render(<RAMColumn memory={memory} />, { store });
+    expect(
+      screen.getByText(/7 of 21B allocated/i, { container })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("meter", { container })).toHaveAttribute(
+      "max",
+      "21"
     );
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 21B allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(21);
   });
 });

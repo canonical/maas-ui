@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateBcache from "./CreateBcache";
@@ -17,7 +13,12 @@ import {
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -58,25 +59,23 @@ describe("CreateBcache", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateBcache
-              closeExpanded={jest.fn()}
-              storageDevice={diskFactory()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <CreateBcache
+        closeExpanded={jest.fn()}
+        storageDevice={diskFactory()}
+        systemId="abc123"
+      />,
+      { store }
     );
 
     // Two bcaches already exist so the next one should be bcache2
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("bcache2");
+    expect(screen.getByRole("textbox", { name: /name/i })).toHaveValue(
+      "bcache2"
+    );
   });
 
-  it("correctly dispatches an action to create a bcache", () => {
+  it("correctly dispatches an action to create a bcache", async () => {
     const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
     const backingDevice = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
@@ -96,29 +95,41 @@ describe("CreateBcache", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateBcache
-              closeExpanded={jest.fn()}
-              storageDevice={backingDevice}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <CreateBcache
+        closeExpanded={jest.fn()}
+        storageDevice={backingDevice}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    submitFormikForm(wrapper, {
-      cacheMode: BcacheModes.WRITE_BACK,
-      cacheSetId: cacheSet.id,
-      fstype: "fat32",
-      mountOptions: "noexec",
-      mountPoint: "/path",
-      name: "bcache0",
-      tags: ["tag1", "tag2"],
-    });
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i }),
+      "bcache0"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /cache mode/i }),
+      BcacheModes.WRITE_BACK
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /fstype/i }),
+      "fat32"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /mount options/i }),
+      "noexec"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /mount point/i }),
+      "/path"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /tags/i }),
+      "tag1, tag2"
+    );
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     expect(
       store

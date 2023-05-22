@@ -1,16 +1,16 @@
-import { mount } from "enzyme";
+import { waitFor, render } from "@testing-library/react";
 import { Formik } from "formik";
 
 import BasePowerField from "./BasePowerField";
 
 import { PowerFieldType } from "app/store/general/types";
 import { powerField as powerFieldFactory } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("BasePowerField", () => {
   it("can be given a custom power parameters name", () => {
     const field = powerFieldFactory({ name: "field-name" });
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField
           field={field}
@@ -18,45 +18,56 @@ describe("BasePowerField", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("input").prop("name")).toBe(
+    const input = container.querySelector("input");
+    expect(input?.getAttribute("name")).toBe(
       "custom-power-parameters.field-name"
     );
   });
 
   it("correctly renders a string field type", () => {
     const field = powerFieldFactory({ field_type: PowerFieldType.STRING });
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
-    expect(wrapper.find("input[type='text']").exists()).toBe(true);
-    expect(wrapper.find("input[type='password']").exists()).toBe(false);
-    expect(wrapper.find("select").exists()).toBe(false);
+    expect(container.querySelector('input[type="text"]')).toBeInTheDocument();
+    expect(
+      container.querySelector('input[type="password"]')
+    ).not.toBeInTheDocument();
+    expect(container.querySelector("select")).not.toBeInTheDocument();
   });
 
   it("correctly renders a password field type", () => {
     const field = powerFieldFactory({ field_type: PowerFieldType.PASSWORD });
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
-    expect(wrapper.find("input[type='text']").exists()).toBe(false);
-    expect(wrapper.find("input[type='password']").exists()).toBe(true);
-    expect(wrapper.find("select").exists()).toBe(false);
+    expect(
+      container.querySelector('input[type="text"]')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('input[type="password"]')
+    ).toBeInTheDocument();
+    expect(container.querySelector("select")).not.toBeInTheDocument();
   });
 
   it("correctly renders a choice field type", () => {
     const field = powerFieldFactory({ field_type: PowerFieldType.CHOICE });
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
-    expect(wrapper.find("input[type='text']").exists()).toBe(false);
-    expect(wrapper.find("input[type='password']").exists()).toBe(false);
-    expect(wrapper.find("select").exists()).toBe(true);
+    expect(
+      container.querySelector('input[type="text"]')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('input[type="password"]')
+    ).not.toBeInTheDocument();
+    expect(container.querySelector("select")).toBeInTheDocument();
   });
 
   it("correctly handles a multiple choice field type", async () => {
@@ -69,26 +80,24 @@ describe("BasePowerField", () => {
       label: "label",
       name: "field",
     });
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Formik
         initialValues={{ power_parameters: { field: ["value1"] } }}
         onSubmit={jest.fn()}
       >
         <BasePowerField field={field} />
-      </Formik>
+      </Formik>,
+      { route: "/machines" }
     );
-    const findCheckbox = (i: number) =>
-      wrapper.find("input[data-testid='multi-choice-checkbox']").at(i);
+    expect(screen.getByTestId("field-label")).toHaveTextContent("label");
+    expect(screen.getByLabelText("label1")).toBeChecked();
+    expect(screen.getByLabelText("label2")).not.toBeChecked();
 
-    expect(wrapper.find("[data-testid='field-label']").text()).toBe("label");
-    expect(findCheckbox(0).prop("checked")).toBe(true);
-    expect(findCheckbox(1).prop("checked")).toBe(false);
-
-    findCheckbox(0).simulate("change");
-    findCheckbox(1).simulate("change");
-    await waitForComponentToPaint(wrapper);
-
-    expect(findCheckbox(0).prop("checked")).toBe(false);
-    expect(findCheckbox(1).prop("checked")).toBe(true);
+    userEvent.click(screen.getByLabelText("label1"));
+    userEvent.click(screen.getByLabelText("label2"));
+    await waitFor(() => {
+      expect(screen.getByLabelText("label1")).not.toBeChecked();
+      expect(screen.getByLabelText("label2")).toBeChecked();
+    });
   });
 });

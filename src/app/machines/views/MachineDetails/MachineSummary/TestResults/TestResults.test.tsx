@@ -1,24 +1,23 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import React from "react";
+
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import TestResults from "./TestResults";
 
 import { HardwareType } from "app/base/enum";
-import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
+import { screen } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("TestResults", () => {
-  let state: RootState;
+  let state;
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory(),
@@ -33,25 +32,21 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.CPU}
-              machine={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const wrapper = renderWithBrowserRouter(
+      <TestResults
+        hardwareType={HardwareType.CPU}
+        machine={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      {
+        route: "/machine/abc123",
+        store,
+      }
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("2");
+      screen.getByTestId("tests").children[0].firstChild
+    ).toHaveTextContent("2");
   });
 
   it("renders a link with a count of pending and running memory tests", () => {
@@ -63,25 +58,22 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.Memory}
-              machine={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const wrapper = renderWithBrowserRouter(
+      <TestResults
+        hardwareType={HardwareType.Memory}
+        machine={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      {
+        route: "/machine/abc123",
+        store,
+      }
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("3");
+      screen.getByTestId("tests").children[0].firstChild
+    ).toHaveTextContent("3");
   });
 
   it("renders a link with a count of failed storage tests", () => {
@@ -92,25 +84,21 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.Storage}
-              machine={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
+    const wrapper = renderWithBrowserRouter(
+      <TestResults
+        hardwareType={HardwareType.Storage}
+        machine={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      {
+        route: "/machine/abc123",
+        store,
+      }
+    );
     expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("5");
+      screen.getByTestId("tests").children[0].firstChild
+    ).toHaveTextContent("5");
   });
 
   it("renders a results link", () => {
@@ -121,25 +109,21 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.CPU}
-              machine={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
+    const wrapper = renderWithBrowserRouter(
+      <TestResults
+        hardwareType={HardwareType.CPU}
+        machine={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      {
+        route: "/machine/abc123",
+        store,
+      }
+    );
     expect(
-      wrapper.find("[data-testid='tests']").childAt(1).find("Link").text()
-    ).toContain("View results");
+      screen.getByTestId("tests").children[1].firstChild
+    ).toHaveTextContent("View results");
   });
 
   it("renders a test network link if no tests run", () => {
@@ -148,24 +132,20 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.Network}
-              machine={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
+    const wrapper = renderWithBrowserRouter(
+      <TestResults
+        hardwareType={HardwareType.Network}
+        machine={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      {
+        route: "/machine/abc123",
+        store,
+      }
+    );
     expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
-    ).toContain("Test network");
+      screen.getByTestId("tests").children[0].firstChild
+    ).toHaveTextContent("Test network");
   });
 });

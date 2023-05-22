@@ -1,6 +1,5 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import TypeColumn from "./TypeColumn";
 
@@ -13,11 +12,13 @@ import {
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("TypeColumn", () => {
   let state: RootState;
+
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -44,13 +45,12 @@ describe("TypeColumn", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <TypeColumn nic={nic} node={state.machine.items[0]} />
-      </Provider>
+    renderWithBrowserRouter(
+      <TypeColumn nic={nic} node={state.machine.items[0]} />,
+      { store, route: "/machines" }
     );
-    expect(wrapper.find("DoubleRow").exists()).toBe(true);
-    expect(wrapper.find("DoubleRow Icon").exists()).toBe(true);
+    expect(screen.getByTestId("double-row").exists()).toBe(true);
+    expect(screen.getByRole("Icon")).toBeTruthy();
   });
 
   it("does not display an icon for single numa nodes", () => {
@@ -64,13 +64,12 @@ describe("TypeColumn", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <TypeColumn nic={nic} node={state.machine.items[0]} />
-      </Provider>
+    renderWithBrowserRouter(
+      <TypeColumn nic={nic} node={state.machine.items[0]} />,
+      { store, route: "/machines" }
     );
-    expect(wrapper.find("DoubleRow").exists()).toBe(true);
-    expect(wrapper.find("DoubleRow Icon").exists()).toBe(false);
+    expect(screen.getByTestId("double-row").exists()).toBe(true);
+    expect(screen.queryByRole("Icon")).toBeNull();
   });
 
   it("displays the full type for parent interfaces", () => {
@@ -88,11 +87,12 @@ describe("TypeColumn", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <TypeColumn nic={nic} node={state.machine.items[0]} />
-      </Provider>
+    renderWithBrowserRouter(
+      <TypeColumn nic={nic} node={state.machine.items[0]} />,
+      { store, route: "/machines" }
     );
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe("Bonded physical");
+    expect(screen.getByTestId("double-row").props().primary).toBe(
+      "Bonded physical"
+    );
   });
 });

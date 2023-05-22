@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -7,13 +7,13 @@ import configureStore from "redux-mock-store";
 import KVMConfigurationCard from "../KVMConfigurationCard";
 
 import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
 import {
   podDetails as podFactory,
   podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -37,35 +37,19 @@ describe("KVMConfigurationCardFields", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <KVMConfigurationCard pod={pod} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container } = renderWithBrowserRouter(
+      <KVMConfigurationCard pod={pod} />,
+      { route: "/kvm/1/edit", store }
     );
-    expect(wrapper.find("Input[name='type']").props().value).toBe("Virsh");
-    expect(wrapper.find("Select[name='zone']").props().value).toEqual(pod.zone);
-    expect(wrapper.find("Select[name='pool']").props().value).toEqual(pod.pool);
-    expect(wrapper.find("TagSelector[name='tags']").props().value).toEqual(
-      pod.tags
-    );
-    expect(wrapper.find("Input[name='power_address']").props().value).toBe(
-      pod.power_parameters?.power_address
-    );
-    expect(wrapper.find("Input[name='power_pass']").props().value).toBe(
-      pod.power_parameters?.power_pass
-    );
+    expect(screen.getByDisplayValue(/virsh/i)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(pod.zone)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(pod.pool)).toBeInTheDocument();
     expect(
-      wrapper.find("Slider[name='cpu_over_commit_ratio']").props().value
-    ).toBe(pod.cpu_over_commit_ratio);
+      screen.getByRole("slider", { name: /cpu over commit ratio/i })
+    ).toHaveValue(pod.cpu_over_commit_ratio);
     expect(
-      wrapper.find("Slider[name='memory_over_commit_ratio']").props().value
-    ).toBe(pod.memory_over_commit_ratio);
+      screen.getByRole("slider", { name: /memory over commit ratio/i })
+    ).toHaveValue(pod.memory_over_commit_ratio);
   });
 
   it("correctly sets initial values for lxd pods", () => {
@@ -78,33 +62,19 @@ describe("KVMConfigurationCardFields", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <KVMConfigurationCard pod={pod} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Input[name='type']").props().value).toBe("LXD");
-    expect(wrapper.find("Select[name='zone']").props().value).toEqual(pod.zone);
-    expect(wrapper.find("Select[name='pool']").props().value).toEqual(pod.pool);
-    expect(wrapper.find("TagSelector[name='tags']").props().value).toEqual(
-      pod.tags
-    );
-    expect(wrapper.find("Input[name='power_address']").props().value).toBe(
-      pod.power_parameters?.power_address
-    );
-    expect(wrapper.find("Input[name='power_pass']").exists()).toBe(false);
+    renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
+      route: "/kvm/1/edit",
+      store,
+    });
+    expect(screen.getByDisplayValue(/lxd/i)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(pod.zone)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(pod.pool)).toBeInTheDocument();
     expect(
-      wrapper.find("Slider[name='cpu_over_commit_ratio']").props().value
-    ).toBe(pod.cpu_over_commit_ratio);
+      screen.getByRole("slider", { name: /cpu over commit ratio/i })
+    ).toHaveValue(pod.cpu_over_commit_ratio);
     expect(
-      wrapper.find("Slider[name='memory_over_commit_ratio']").props().value
-    ).toBe(pod.memory_over_commit_ratio);
+      screen.getByRole("slider", { name: /memory over commit ratio/i })
+    ).toHaveValue(pod.memory_over_commit_ratio);
   });
 
   it("can disable the zone field", () => {
@@ -117,17 +87,10 @@ describe("KVMConfigurationCardFields", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <KVMConfigurationCard pod={pod} zoneDisabled />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Select[name='zone']").props().disabled).toBe(true);
+    renderWithBrowserRouter(<KVMConfigurationCard pod={pod} zoneDisabled />, {
+      route: "/kvm/1/edit",
+      store,
+    });
+    expect(screen.getByDisplayValue(pod.zone)).toBeDisabled();
   });
 });

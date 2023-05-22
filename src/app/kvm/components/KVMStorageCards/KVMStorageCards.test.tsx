@@ -1,19 +1,13 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import KVMStorageCards, { TRUNCATION_POINT } from "./KVMStorageCards";
 
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
 import {
-  config as configFactory,
-  configState as configStateFactory,
   podStoragePoolResource as podStoragePoolFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -24,15 +18,11 @@ describe("KVMStorageCards", () => {
     };
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMStorageCards defaultPoolId="a" pools={pools} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMStorageCards defaultPoolId="a" pools={pools} />,
+      { route: "/kvm/1", store }
     );
-
-    expect(wrapper.find("[data-testid='sort-label']").text()).toBe(
+    expect(screen.getByTestId("sort-label")).toHaveTextContent(
       "(Sorted by id, default first)"
     );
   });
@@ -43,15 +33,11 @@ describe("KVMStorageCards", () => {
     };
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMStorageCards pools={pools} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-testid='sort-label']").text()).toBe(
+    renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
+      route: "/kvm/1",
+      store,
+    });
+    expect(screen.getByTestId("sort-label")).toHaveTextContent(
       "(Sorted by name)"
     );
   });
@@ -66,28 +52,23 @@ describe("KVMStorageCards", () => {
     };
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMStorageCards pools={pools} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("Button[data-testid='show-more-pools']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("Card").length).toBe(TRUNCATION_POINT);
-
-    act(() => {
-      wrapper.find("Button[data-testid='show-more-pools']").simulate("click");
+    renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
+      route: "/kvm/1",
+      store,
     });
-    wrapper.update();
-
     expect(
-      wrapper.find("Button[data-testid='show-more-pools'] span").text()
-    ).toBe("Show less storage pools");
-    expect(wrapper.find("Card").length).toBe(Object.keys(pools).length);
+      screen.getByRole("button", { name: "Show more storage pools" })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("article")).toHaveLength(TRUNCATION_POINT);
+    userEvent.click(
+      screen.getByRole("button", { name: "Show more storage pools" })
+    );
+    expect(
+      screen.getByRole("button", { name: "Show less storage pools" })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("article")).toHaveLength(
+      Object.keys(pools).length
+    );
   });
 
   it("can send an analytics event when expanding pools if analytics enabled", () => {
@@ -104,36 +85,23 @@ describe("KVMStorageCards", () => {
       .mockImplementation(() => mockSendAnalytics);
 
     const state = rootStateFactory({
-      config: configStateFactory({
-        items: [
-          configFactory({
-            name: ConfigNames.ENABLE_ANALYTICS,
-            value: false,
-          }),
-        ],
-      }),
+      config: {
+        items: [{ name: ConfigNames.ENABLE_ANALYTICS, value: true }],
+      },
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <KVMStorageCards pools={pools} />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    act(() => {
-      wrapper.find("Button[data-testid='show-more-pools']").simulate("click");
+    renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
+      route: "/kvm/1",
+      store,
     });
-    wrapper.update();
-
-    expect(mockSendAnalytics).toHaveBeenCalled();
-    expect(mockSendAnalytics.mock.calls[0]).toEqual([
+    userEvent.click(
+      screen.getByRole("button", { name: "Show more storage pools" })
+    );
+    expect(mockSendAnalytics).toHaveBeenCalledWith(
       "KVM details",
       "Toggle expanded storage pools",
-      "Show more storage pools",
-    ]);
-
+      "Show more storage pools"
+    );
     mockUseSendAnalytics.mockRestore();
   });
 });

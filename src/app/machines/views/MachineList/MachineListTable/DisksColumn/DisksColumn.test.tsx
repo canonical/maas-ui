@@ -1,18 +1,15 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { DisksColumn } from "./DisksColumn";
 
 import type { RootState } from "app/store/root/types";
-import { TestStatusStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -37,51 +34,43 @@ describe("DisksColumn", () => {
 
   it("renders", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <DisksColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("DisksColumn")).toMatchSnapshot();
+    renderWithBrowserRouter(<DisksColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByTestId("disks-column")).toMatchSnapshot();
   });
 
   it("displays the physical disk count", () => {
     state.machine.items[0].physical_disk_count = 2;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <DisksColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find('[data-testid="disks"]').text()).toEqual("2");
+    renderWithBrowserRouter(<DisksColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByTestId("disks")).toHaveTextContent("2");
   });
 
   it("correctly shows error icon and tooltip if storage tests failed", () => {
     state.machine.items[0].storage_test_status = testStatusFactory({
-      status: TestStatusStatus.FAILED,
+      status: "FAILED",
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <DisksColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<DisksColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByLabelText(/Storage tests failed/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Storage tests failed/)).toHaveClass(
+      "p-icon--error"
     );
-
-    expect(wrapper.find(".p-icon--error").exists()).toEqual(true);
-    expect(wrapper.find("Tooltip").exists()).toBe(true);
+    expect(screen.getByLabelText(/Storage tests failed/)).toHaveAttribute(
+      "data-tooltip-position",
+      "left"
+    );
+    expect(screen.getByLabelText(/Storage tests failed/)).toHaveAttribute(
+      "data-tooltip",
+      "Storage tests failed"
+    );
   });
 });

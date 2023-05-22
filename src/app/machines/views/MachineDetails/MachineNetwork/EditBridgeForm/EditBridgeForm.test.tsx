@@ -1,8 +1,5 @@
-import { mount } from "enzyme";
+import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditBridgeForm from "./EditBridgeForm";
@@ -23,7 +20,7 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { render, screen, submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -52,71 +49,52 @@ describe("EditBridgeForm", () => {
     });
   });
 
-  it("fetches the necessary data on load", () => {
+  it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditBridgeForm
-              close={jest.fn()}
-              link={link}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    render(
+      <EditBridgeForm
+        close={jest.fn()}
+        link={link}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(store.getActions().some((action) => action.type === "vlan/fetch"));
+    expect(
+      store.getActions().some((action) => action.type === "vlan/fetch")
+    ).toBe(true);
   });
 
-  it("displays a spinner when data is loading", () => {
+  it("displays a spinner when data is loading", async () => {
     state.vlan.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditBridgeForm
-              close={jest.fn()}
-              link={link}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    render(
+      <EditBridgeForm
+        close={jest.fn()}
+        link={link}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
-  it("can dispatch an action to update a bridge", () => {
+  it("can dispatch an action to update a bridge", async () => {
     state.machine.selectedMachines = { items: ["abc123", "def456"] };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditBridgeForm
-              close={jest.fn()}
-              link={link}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    render(
+      <EditBridgeForm
+        close={jest.fn()}
+        link={link}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { store }
     );
 
     act(() =>
-      submitFormikForm(wrapper, {
+      submitFormikForm(screen.getByTestId("form"), {
         bridge_fd: 15,
         bridge_stp: false,
         bridge_type: BridgeType.OVS,
@@ -130,6 +108,7 @@ describe("EditBridgeForm", () => {
         vlan: 1,
       })
     );
+
     expect(
       store
         .getActions()

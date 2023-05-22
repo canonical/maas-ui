@@ -1,18 +1,20 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { SSHKeyForm } from "./SSHKeyForm";
 
-import type { RootState } from "app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  userEvent,
+  renderWithBrowserRouter,
+  screen,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -31,32 +33,16 @@ describe("SSHKeyForm", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("SSHKeyForm").exists()).toBe(true);
+    renderWithBrowserRouter(<SSHKeyForm />, { store });
+    expect(screen.getByTestId("ssh-key-form")).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    const { unmount } = renderWithBrowserRouter(<SSHKeyForm />, { store });
 
     act(() => {
-      wrapper.unmount();
+      unmount();
     });
 
     expect(
@@ -66,20 +52,14 @@ describe("SSHKeyForm", () => {
 
   it("can upload an SSH key", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      submitFormikForm(wrapper, {
-        key: "ssh-rsa...",
-      })
-    );
+    renderWithBrowserRouter(<SSHKeyForm />, { store });
+
+    const sshKeyInput = screen.getByLabelText(/Public Key/);
+    userEvent.type(sshKeyInput, "ssh-rsa...");
+
+    const form = screen.getByTestId("ssh-key-form");
+    act(() => submitFormikForm(form));
+
     expect(
       store.getActions().find((action) => action.type === "sshkey/create")
     ).toStrictEqual({
@@ -98,21 +78,16 @@ describe("SSHKeyForm", () => {
 
   it("can import an SSH key", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      submitFormikForm(wrapper, {
-        auth_id: "wallaroo",
-        protocol: "lp",
-      })
-    );
+    renderWithBrowserRouter(<SSHKeyForm />, { store });
+
+    const authIDInput = screen.getByLabelText("Auth ID");
+    const protocolInput = screen.getByLabelText("Protocol");
+    userEvent.type(authIDInput, "wallaroo");
+    userEvent.type(protocolInput, "lp");
+
+    const form = screen.getByTestId("ssh-key-form");
+    act(() => submitFormikForm(form));
+
     expect(
       store.getActions().find((action) => action.type === "sshkey/import")
     ).toStrictEqual({
@@ -133,20 +108,18 @@ describe("SSHKeyForm", () => {
   it("adds a message when a SSH key is added", () => {
     state.sshkey.saved = true;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    submitFormikForm(wrapper, {
-      auth_id: "wallaroo",
-      protocol: "lp",
-    });
+    renderWithBrowserRouter(<SSHKeyForm />, { store });
+
+    const authIDInput = screen.getByLabelText("Auth ID");
+    const protocolInput = screen.getByLabelText("Protocol");
+    userEvent.type(authIDInput, "wallaroo");
+    userEvent.type(protocolInput, "lp");
+
+    const form = screen.getByTestId("ssh-key-form");
+    submitFormikForm(form);
+
     const actions = store.getActions();
+
     expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true
     );

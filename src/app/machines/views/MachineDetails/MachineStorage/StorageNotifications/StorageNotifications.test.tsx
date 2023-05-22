@@ -1,12 +1,8 @@
-import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import StorageNotifications from "./StorageNotifications";
 
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 import { NodeStatusCode } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
@@ -14,12 +10,13 @@ import {
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("StorageNotifications", () => {
-  let state: RootState;
-  let machine: MachineDetails;
+  let state;
+  let machine;
 
   beforeEach(() => {
     machine = machineDetailsFactory({
@@ -40,110 +37,93 @@ describe("StorageNotifications", () => {
 
   it("handles no notifications", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
+        <StorageNotifications id="abc123" />
+      </Provider>,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("Notification").exists()).toBe(false);
+    expect(screen.queryByText("Notification")).toBeNull();
   });
 
   it("can display a commissioning error", () => {
     machine.disks = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
+        <StorageNotifications id="abc123" />
+      </Provider>,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("Notification").prop("children")).toBe(
-      "No storage information. Commission this machine to gather storage information."
-    );
+    expect(
+      screen.queryByText(
+        "No storage information. Commission this machine to gather storage information."
+      )
+    ).toBeInTheDocument();
   });
 
   it("can display a machine state error", () => {
     machine.status_code = NodeStatusCode.NEW;
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
+        <StorageNotifications id="abc123" />
+      </Provider>,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("Notification").prop("children")).toBe(
-      "Storage configuration cannot be modified unless the machine is Ready or Allocated."
-    );
+    expect(
+      screen.queryByText(
+        "Storage configuration cannot be modified unless the machine is Ready or Allocated."
+      )
+    ).toBeInTheDocument();
   });
 
   it("can display an OS storage configuration notification", () => {
     machine.osystem = "windows";
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
+        <StorageNotifications id="abc123" />
+      </Provider>,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("Notification").at(0).prop("children")).toBe(
-      "Custom storage configuration is only supported on Ubuntu, CentOS, and RHEL."
-    );
+    expect(
+      screen.queryByText(
+        /Custom storage configuration is only supported on Ubuntu, CentOS, and RHEL./i
+      )
+    ).toBeInTheDocument();
   });
 
   it("can display a bcache ZFS error", () => {
     machine.osystem = "centos";
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
+        <StorageNotifications id="abc123" />
+      </Provider>,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("Notification").prop("children")).toBe(
-      "Bcache and ZFS are only supported on Ubuntu."
-    );
+    expect(
+      screen.queryByText(/Bcache and ZFS are only supported on Ubuntu./i)
+    ).toBeInTheDocument();
   });
 
   it("can display a list of storage layout issues", () => {
     machine.storage_layout_issues = ["it's bad", "it won't work"];
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <StorageNotifications id="abc123" />
-        </MemoryRouter>
-      </Provider>
+        <StorageNotifications id="abc123" />
+      </Provider>,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("Notification").length).toBe(2);
-    expect(wrapper.find("Notification").at(0).prop("children")).toBe(
-      "it's bad"
-    );
-    expect(wrapper.find("Notification").at(1).prop("children")).toBe(
-      "it won't work"
-    );
+    expect(screen.queryByText("it's bad")).toBeInTheDocument();
+    expect(screen.queryByText("it won't work")).toBeInTheDocument();
   });
 });

@@ -1,58 +1,24 @@
-import { mount } from "enzyme";
-import { Formik } from "formik";
+import { render } from "@testing-library/react";
 
 import TagNameField from "./TagNameField";
 
-describe("FormikField", () => {
+import renderWithBrowserRouter from "testing/utils";
+
+describe("TagNameField", () => {
   it("maps the initial value to the tag format", () => {
-    const wrapper = mount(
-      <Formik
-        initialValues={{ tags: ["koala", "wallaby"] }}
-        onSubmit={jest.fn()}
-      >
-        <TagNameField />
-      </Formik>
+    const { container } = render(
+      <TagNameField initialSelected={["koala", "wallaby"]} tags={[]} />
     );
-    expect(wrapper.find("FormikField").prop("initialSelected")).toStrictEqual([
-      {
-        name: "koala",
-      },
-      {
-        name: "wallaby",
-      },
-    ]);
-    expect(wrapper.find("FormikField").prop("tags")).toStrictEqual([
-      {
-        name: "koala",
-      },
-      {
-        name: "wallaby",
-      },
-    ]);
+    expect(container).toMatchSnapshot();
   });
 
   it("can override the field name", () => {
-    const wrapper = mount(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
-        <TagNameField name="wombatTags" />
-      </Formik>
-    );
-    expect(wrapper.find("FormikField").prop("name")).toBe("wombatTags");
+    const { container } = render(<TagNameField name="wombatTags" />);
+    expect(container).toMatchSnapshot();
   });
 
   it("can populate the list of tags", () => {
-    const wrapper = mount(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
-        <TagNameField tagList={["koala", "wallaby"]} />
-      </Formik>
-    );
-    expect(wrapper.find("FormikField").prop("tags")).toStrictEqual([
-      {
-        name: "koala",
-      },
-      {
-        name: "wallaby",
-      },
-    ]);
+    const { container } = render(<TagNameField tags={["koala", "wallaby"]} />);
+    expect(container).toMatchSnapshot();
   });
 });

@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ChangeStorageLayout from "./ChangeStorageLayout";
@@ -15,7 +11,12 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -30,30 +31,21 @@ describe("ChangeStorageLayout", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ChangeStorageLayout systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <ChangeStorageLayout systemId="abc123" />
+      </Provider>,
+      { route: "/path/to/route" }
     );
 
     // Open storage layout dropdown
-    act(() => {
-      wrapper.find("ContextualMenu Button").simulate("click");
-    });
-    wrapper.update();
-    // Select flat storage layout
-    act(() => {
-      wrapper.find("ContextualMenuDropdown Button").at(0).simulate("click");
-    });
-    wrapper.update();
-
-    expect(wrapper.find("[data-testid='confirmation-form']").exists()).toBe(
-      true
+    userEvent.click(
+      screen.getByRole("button", { name: "Select Storage Layout" })
     );
+    // Select flat storage layout
+    userEvent.click(screen.getByRole("menuitem", { name: "Flat" }));
+
+    expect(screen.getByTestId("confirmation-form")).toBeInTheDocument();
   });
 
   it("can show errors", () => {
@@ -73,30 +65,23 @@ describe("ChangeStorageLayout", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ChangeStorageLayout systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <ChangeStorageLayout systemId="abc123" />
+      </Provider>,
+      { route: "/path/to/route" }
     );
 
     // Open storage layout dropdown
-    act(() => {
-      wrapper.find("ContextualMenu Button").simulate("click");
+    const storageLayoutButton = screen.getByRole("button", {
+      name: "Select Storage Layout",
     });
-    wrapper.update();
-    // Select flat storage layout
-    act(() => {
-      wrapper.find("ContextualMenuDropdown Button").at(0).simulate("click");
-    });
-    wrapper.update();
+    userEvent.click(storageLayoutButton);
 
-    expect(wrapper.find("Notification").text().includes("not possible")).toBe(
-      true
-    );
+    // Select flat storage layout
+    userEvent.click(screen.getByRole("menuitem", { name: "Flat" }));
+
+    expect(screen.getByText(/not possible/i)).toBeInTheDocument();
   });
 
   it("correctly dispatches an action to update a machine's storage layout", () => {
@@ -109,28 +94,23 @@ describe("ChangeStorageLayout", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ChangeStorageLayout systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <ChangeStorageLayout systemId="abc123" />
+      </Provider>,
+      { route: "/path/to/route" }
     );
 
     // Open storage layout dropdown
-    act(() => {
-      wrapper.find("ContextualMenu Button").simulate("click");
-    });
-    wrapper.update();
+    userEvent.click(
+      screen.getByRole("button", { name: "Select Storage Layout" })
+    );
+
     // Select flat storage layout
-    act(() => {
-      wrapper.find("ContextualMenuDropdown Button").at(0).simulate("click");
-    });
-    wrapper.update();
+    userEvent.click(screen.getByRole("menuitem", { name: "Flat" }));
+
     // Submit the form
-    submitFormikForm(wrapper);
+    submitFormikForm(screen.getByTestId("confirmation-form"));
 
     expect(
       store

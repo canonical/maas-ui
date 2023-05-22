@@ -1,13 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditInterface from "./EditInterface";
 
 import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -17,6 +12,7 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -40,23 +36,19 @@ describe("EditInterface", () => {
   it("displays a spinner when data is loading", () => {
     state.machine.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditInterface
-              close={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        close={jest.fn()}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      {
+        route: "/machines",
+        store,
+      }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays a form for editing a physical interface", () => {
@@ -70,25 +62,21 @@ describe("EditInterface", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditInterface
-              close={jest.fn()}
-              nicId={nic.id}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        close={jest.fn()}
+        nicId={nic.id}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      {
+        route: "/machines",
+        store,
+      }
     );
-    expect(wrapper.find("EditPhysicalForm").exists()).toBe(true);
-    expect(wrapper.find("FormCard").prop("title")).toBe("Edit Physical");
+    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+    expect(screen.getByText(/Edit Physical/i)).toBeInTheDocument();
   });
 
   it("displays a form for editing an alias", () => {
@@ -104,26 +92,22 @@ describe("EditInterface", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditInterface
-              close={jest.fn()}
-              linkId={link.id}
-              nicId={nic.id}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        close={jest.fn()}
+        linkId={link.id}
+        nicId={nic.id}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      {
+        route: "/machines",
+        store,
+      }
     );
-    expect(wrapper.find("EditAliasOrVlanForm").exists()).toBe(true);
-    expect(wrapper.find("FormCard").prop("title")).toBe("Edit Alias");
+    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+    expect(screen.getByText(/Edit Alias/i)).toBeInTheDocument();
   });
 
   it("displays a form for editing a VLAN", () => {
@@ -137,25 +121,21 @@ describe("EditInterface", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditInterface
-              close={jest.fn()}
-              nicId={nic.id}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        close={jest.fn()}
+        nicId={nic.id}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      {
+        route: "/machines",
+        store,
+      }
     );
-    expect(wrapper.find("EditAliasOrVlanForm").exists()).toBe(true);
-    expect(wrapper.find("FormCard").prop("title")).toBe("Edit VLAN");
+    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+    expect(screen.getByText(/Edit VLAN/i)).toBeInTheDocument();
   });
 
   it("displays a form for editing a bridge", () => {
@@ -169,24 +149,20 @@ describe("EditInterface", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditInterface
-              close={jest.fn()}
-              nicId={nic.id}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        close={jest.fn()}
+        nicId={nic.id}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      {
+        route: "/machines",
+        store,
+      }
     );
-    expect(wrapper.find("EditBridgeForm").exists()).toBe(true);
-    expect(wrapper.find("FormCard").prop("title")).toBe("Edit Bridge");
+    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+    expect(screen.getByText(/Edit Bridge/i)).toBeInTheDocument();
   });
 });

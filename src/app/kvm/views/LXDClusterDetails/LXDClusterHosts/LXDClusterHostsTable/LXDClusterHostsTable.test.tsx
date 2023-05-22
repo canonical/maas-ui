@@ -1,7 +1,6 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
@@ -20,6 +19,7 @@ import {
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -56,115 +56,74 @@ describe("LXDClusterHostsTable", () => {
   it("shows a spinner if pods or pools haven't loaded yet", () => {
     const store = mockStore(state);
     state.resourcepool.loaded = false;
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterHostsTable
-              clusterId={1}
-              currentPage={1}
-              hosts={state.pod.items}
-              searchFilter=""
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByTestId } = render(
+      renderWithBrowserRouter(
+        <LXDClusterHostsTable
+          clusterId={1}
+          currentPage={1}
+          hosts={state.pod.items}
+          searchFilter=""
+          setSidePanelContent={jest.fn()}
+        />,
+        { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), store }
+      )
     );
-    expect(wrapper.find("[data-testid='loading']").exists()).toBe(true);
+    expect(getByTestId("loading")).toBeInTheDocument();
   });
 
   it("can link to a host's VMs tab", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterHostsTable
-              clusterId={1}
-              currentPage={1}
-              hosts={state.pod.items}
-              searchFilter=""
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByRole } = render(
+      renderWithBrowserRouter(
+        <LXDClusterHostsTable
+          clusterId={1}
+          currentPage={1}
+          hosts={state.pod.items}
+          searchFilter=""
+          setSidePanelContent={jest.fn()}
+        />,
+        { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), store }
+      )
     );
-    expect(wrapper.find("NameColumn Link").at(0).prop("to")).toBe(
+    expect(getByRole("link", { name: "NameColumn" })).toHaveAttribute(
+      "href",
       urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
     );
   });
 
   it("can show the name of the host's pool", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterHostsTable
-              clusterId={1}
-              currentPage={1}
-              hosts={state.pod.items}
-              searchFilter=""
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByTestId } = render(
+      renderWithBrowserRouter(
+        <LXDClusterHostsTable
+          clusterId={1}
+          currentPage={1}
+          hosts={state.pod.items}
+          searchFilter=""
+          setSidePanelContent={jest.fn()}
+        />,
+        { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), store }
+      )
     );
-    expect(wrapper.find("[data-testid='host-pool-name']").text()).toBe(
-      "swimming"
-    );
+    expect(getByTestId("host-pool-name")).toHaveTextContent("swimming");
   });
 
   it("can open the compose VM form for a host", () => {
     const setSidePanelContent = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterHostsTable
-              clusterId={1}
-              currentPage={1}
-              hosts={state.pod.items}
-              searchFilter=""
-              setSidePanelContent={setSidePanelContent}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByTestId } = render(
+      renderWithBrowserRouter(
+        <LXDClusterHostsTable
+          clusterId={1}
+          currentPage={1}
+          hosts={state.pod.items}
+          searchFilter=""
+          setSidePanelContent={setSidePanelContent}
+        />,
+        { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), store }
+      )
     );
-    wrapper.find("button[data-testid='vm-host-compose']").simulate("click");
+    userEvent.click(getByTestId("vm-host-compose"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
       extras: { hostId: 22 },
@@ -173,64 +132,42 @@ describe("LXDClusterHostsTable", () => {
 
   it("can link to a host's settings page", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterHostsTable
-              clusterId={1}
-              currentPage={1}
-              hosts={state.pod.items}
-              searchFilter=""
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByTestId } = render(
+      renderWithBrowserRouter(
+        <LXDClusterHostsTable
+          clusterId={1}
+          currentPage={1}
+          hosts={state.pod.items}
+          searchFilter=""
+          setSidePanelContent={jest.fn()}
+        />,
+        { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), store }
+      )
     );
-    expect(
-      wrapper.find("Link[data-testid='vm-host-settings']").prop("to")
-    ).toStrictEqual({
-      pathname: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 }),
-    });
-    expect(
-      wrapper.find("Link[data-testid='vm-host-settings']").prop("state")
-    ).toStrictEqual({
-      from: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-    });
+    expect(getByTestId("vm-host-settings")).toHaveAttribute(
+      "href",
+      urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 })
+    );
+    expect(getByTestId("vm-host-settings")).toHaveAttribute(
+      "data-from",
+      urls.kvm.lxd.cluster.hosts({ clusterId: 1 })
+    );
   });
 
   it("displays a message if there are no search results", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterHostsTable
-              clusterId={1}
-              currentPage={1}
-              hosts={[]}
-              searchFilter="nothing"
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { getByTestId } = render(
+      renderWithBrowserRouter(
+        <LXDClusterHostsTable
+          clusterId={1}
+          currentPage={1}
+          hosts={[]}
+          searchFilter="nothing"
+          setSidePanelContent={jest.fn()}
+        />,
+        { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), store }
+      )
     );
-    expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
+    expect(getByTestId("no-hosts")).toBeInTheDocument();
   });
 });

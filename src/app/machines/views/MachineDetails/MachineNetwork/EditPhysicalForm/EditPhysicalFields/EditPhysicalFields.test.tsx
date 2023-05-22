@@ -1,7 +1,5 @@
-import { mount } from "enzyme";
+import { waitFor, render } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import EditPhysicalFields from "./EditPhysicalFields";
@@ -22,7 +20,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -63,38 +61,32 @@ describe("EditPhysicalFields", () => {
 
   it("shows a warning if link speed is higher than interface speed", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <Formik
-            initialValues={{ interface_speed: 0, link_speed: 0 }}
-            onSubmit={jest.fn()}
-          >
-            <EditPhysicalFields nic={nic} />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    const { getByRole, getByText } = renderWithBrowserRouter(
+      <EditPhysicalFields nic={nic} />,
+      { route: "/machines", store }
     );
-    wrapper.find("input[name='interface_speed']").simulate("change", {
-      target: {
-        name: "interface_speed",
-        value: 1,
-      },
+
+    const interfaceSpeedInput = getByRole("textbox", {
+      name: "Interface Speed",
     });
-    await waitForComponentToPaint(wrapper);
-    wrapper.find("input[name='link_speed']").simulate("change", {
-      target: {
-        name: "link_speed",
-        value: 2,
-      },
-    });
-    wrapper.find("input[name='link_speed']").simulate("blur");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find(".p-form-validation__message").exists()).toBe(true);
-    expect(wrapper.find(".p-form-validation__message").text()).toBe(
-      "Caution: Link speed should not be higher than interface speed"
+    const linkSpeedInput = getByRole("textbox", { name: "Link Speed" });
+
+    userEvent.type(interfaceSpeedInput, "1");
+    await waitFor(() => expect(interfaceSpeedInput).toHaveValue("1"));
+
+    userEvent.type(linkSpeedInput, "2");
+    await waitFor(() => expect(linkSpeedInput).toHaveValue("2"));
+    userEvent.tab();
+    await waitFor(() =>
+      screen.getByText(
+        /Caution: Link speed should not be higher than interface speed/i
+      )
     );
+
+    expect(
+      screen.getByText(
+        /Caution: Link speed should not be higher than interface speed/i
+      )
+    ).toBeInTheDocument();
   });
 });

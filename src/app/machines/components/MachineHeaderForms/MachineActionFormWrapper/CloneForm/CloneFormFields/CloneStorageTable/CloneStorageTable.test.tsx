@@ -1,5 +1,3 @@
-import { mount } from "enzyme";
-
 import CloneStorageTable from "./CloneStorageTable";
 
 import {
@@ -8,60 +6,56 @@ import {
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
 } from "testing/factories";
+import { render } from "testing/utils";
 
 describe("CloneStorageTable", () => {
   it("renders empty table if neither loading details nor machine provided", () => {
-    const wrapper = mount(
+    const { queryByTestId } = render(
       <CloneStorageTable machine={null} selected={false} />
     );
-    expect(wrapper.find("MainTable").prop("rows")).toStrictEqual([]);
-    expect(wrapper.find("Placeholder").exists()).toBe(false);
+    expect(queryByTestId("mainTable")).toBeNull();
+    expect(queryByTestId("placeholder")).toBeFalsy();
   });
 
   it("renders placeholder content while machine details are loading", () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <CloneStorageTable
         loadingMachineDetails
         machine={null}
         selected={false}
       />
     );
-    expect(wrapper.find("Placeholder").exists()).toBe(true);
+    expect(getByTestId("placeholder")).toBeTruthy();
   });
 
   it("renders machine storage details if machine is provided", () => {
     const machine = machineDetailsFactory({ disks: [diskFactory()] });
-    const wrapper = mount(
+    const { queryByTestId, queryByText } = render(
       <CloneStorageTable machine={machine} selected={false} />
     );
-    expect(wrapper.find("Placeholder").exists()).toBe(false);
-    expect(wrapper.find("MainTable").prop("rows")).not.toStrictEqual([]);
+    expect(queryByTestId("placeholder")).toBeFalsy();
+    expect(queryByTestId("mainTable")).toBeTruthy();
+    expect(queryByText("Disk 1")).toBeTruthy();
   });
 
   it("shows a tick for available disks", () => {
     const machine = machineDetailsFactory({
       disks: [diskFactory({ available_size: 1000000000, size: 1000000000 })],
     });
-    const wrapper = mount(
+    const { getByTestId } = render(
       <CloneStorageTable machine={machine} selected={false} />
     );
-
-    expect(
-      wrapper.find("Icon[data-testid='disk-available']").prop("name")
-    ).toBe("tick");
+    expect(getByTestId("disk-available")).toHaveAttribute("name", "tick");
   });
 
   it("shows a cross for unavailable disks", () => {
     const machine = machineDetailsFactory({
       disks: [diskFactory({ available_size: 0, size: 1000000000 })],
     });
-    const wrapper = mount(
+    const { getByTestId } = render(
       <CloneStorageTable machine={machine} selected={false} />
     );
-
-    expect(
-      wrapper.find("Icon[data-testid='disk-available']").prop("name")
-    ).toBe("close");
+    expect(getByTestId("disk-available")).toHaveAttribute("name", "close");
   });
 
   it("shows a tick for available partitions", () => {
@@ -70,13 +64,10 @@ describe("CloneStorageTable", () => {
         diskFactory({ partitions: [partitionFactory({ filesystem: null })] }),
       ],
     });
-    const wrapper = mount(
+    const { getByTestId } = render(
       <CloneStorageTable machine={machine} selected={false} />
     );
-
-    expect(
-      wrapper.find("Icon[data-testid='partition-available']").prop("name")
-    ).toBe("tick");
+    expect(getByTestId("partition-available")).toHaveAttribute("name", "tick");
   });
 
   it("shows a cross for unavailable partitions", () => {
@@ -87,12 +78,9 @@ describe("CloneStorageTable", () => {
         }),
       ],
     });
-    const wrapper = mount(
+    const { getByTestId } = render(
       <CloneStorageTable machine={machine} selected={false} />
     );
-
-    expect(
-      wrapper.find("Icon[data-testid='partition-available']").prop("name")
-    ).toBe("close");
+    expect(getByTestId("partition-available")).toHaveAttribute("name", "close");
   });
 });

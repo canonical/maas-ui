@@ -1,14 +1,8 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TestForm from "../TestForm";
 
 import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
 import { ScriptType } from "app/store/script/types";
 import {
   machine as machineFactory,
@@ -18,6 +12,7 @@ import {
   scriptState as scriptStateFactory,
   script as scriptFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -71,38 +66,21 @@ describe("TestForm", () => {
 
   it("displays a field for URL if a selected script has url parameter", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestForm
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={state.machine.items}
-              onTest={jest.fn()}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestForm
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={state.machine.items}
+        onTest={jest.fn()}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines/add", store }
     );
-    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
-      false
-    );
-    await act(async () => {
-      wrapper.find("Input .tag-selector__input").simulate("focus");
-    });
-    wrapper.update();
-    await act(async () => {
-      wrapper.find('[data-testid="existing-tag"]').at(0).simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
-      true
-    );
+    expect(screen.queryByTestId("url-script-input")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("textbox"));
+    await userEvent.click(screen.getByText("commissioning"));
+    expect(screen.getByTestId("url-script-input")).toBeInTheDocument();
   });
 });

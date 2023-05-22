@@ -1,12 +1,11 @@
-import { shallow } from "enzyme";
-
 import VfResources from "./VfResources";
 
 import { podNetworkInterface as interfaceFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 describe("VfResources", () => {
   it("renders", () => {
-    const wrapper = shallow(
+    render(
       <VfResources
         interfaces={[
           interfaceFactory({
@@ -21,17 +20,16 @@ describe("VfResources", () => {
       />
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(screen).toMatchSnapshot();
   });
 
   it("can be made to have a dynamic layout", () => {
-    const wrapper = shallow(<VfResources dynamicLayout interfaces={[]} />);
+    render(<VfResources dynamicLayout interfaces={[]} />);
 
     expect(
-      wrapper
-        .find(".vf-resources")
-        .prop("className")
-        ?.includes("vf-resources--dynamic-layout")
+      screen
+        .getByTestId("vf-resources")
+        .className.includes("vf-resources--dynamic-layout")
     ).toBe(true);
   });
 
@@ -52,40 +50,30 @@ describe("VfResources", () => {
         },
       }),
     ];
-    const wrapper = shallow(
-      <VfResources dynamicLayout interfaces={[hasVfs, noVfs]} />
-    );
+    render(<VfResources dynamicLayout interfaces={[hasVfs, noVfs]} />);
 
-    expect(
-      wrapper.find("tbody tr").at(0).find("[data-testid='has-vfs']").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find("tbody tr").at(0).find("[data-testid='has-no-vfs']").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find("tbody tr").at(1).find("[data-testid='has-vfs']").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find("tbody tr").at(1).find("[data-testid='has-no-vfs']").exists()
-    ).toBe(true);
+    expect(screen.getByTestId("has-vfs")).toBeTruthy();
+    expect(screen.queryByTestId("has-no-vfs")).toBeFalsy();
+    expect(screen.queryByTestId("has-vfs")).toBeFalsy();
+    expect(screen.getByTestId("has-no-vfs")).toBeTruthy();
   });
 
   it("can render as an aggregated meter", () => {
-    const wrapper = shallow(<VfResources interfaces={[]} showAggregated />);
-    expect(wrapper.find("[data-testid='iface-meter']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='iface-table']").exists()).toBe(false);
+    render(<VfResources interfaces={[]} showAggregated />);
+
+    expect(screen.getByTestId("iface-meter")).toBeTruthy();
+    expect(screen.queryByTestId("iface-table")).toBeFalsy();
   });
 
   it("can render as a table", () => {
-    const wrapper = shallow(
-      <VfResources interfaces={[]} showAggregated={false} />
-    );
-    expect(wrapper.find("[data-testid='iface-table']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='iface-meter']").exists()).toBe(false);
+    render(<VfResources interfaces={[]} showAggregated={false} />);
+
+    expect(screen.getByTestId("iface-table")).toBeTruthy();
+    expect(screen.queryByTestId("iface-meter")).toBeFalsy();
   });
 
   it("shows whether an interface has virtual functions or not", () => {
-    const wrapper = shallow(
+    render(
       <VfResources
         interfaces={[
           interfaceFactory({
@@ -115,26 +103,8 @@ describe("VfResources", () => {
         ]}
       />
     );
-    expect(
-      wrapper
-        .find("tbody tr")
-        .at(0)
-        .find("[data-testid='interface-name']")
-        .text()
-    ).toBe("aaa:");
-    expect(
-      wrapper
-        .find("tbody tr")
-        .at(1)
-        .find("[data-testid='interface-name']")
-        .text()
-    ).toBe("bbb:");
-    expect(
-      wrapper
-        .find("tbody tr")
-        .at(2)
-        .find("[data-testid='interface-name']")
-        .text()
-    ).toBe("ccc:");
+    expect(screen.getByTestId("interface-name-aaa").textContent).toBe("aaa:");
+    expect(screen.getByTestId("interface-name-bbb").textContent).toBe("bbb:");
+    expect(screen.getByTestId("interface-name-ccc").textContent).toBe("ccc:");
   });
 });

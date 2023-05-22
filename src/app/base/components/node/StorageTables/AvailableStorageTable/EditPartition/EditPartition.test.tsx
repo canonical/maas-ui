@@ -1,14 +1,10 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import EditPartition from "./EditPartition";
 
 import {
   machineDetails as machineDetailsFactory,
-  machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
@@ -16,7 +12,12 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -27,11 +28,11 @@ describe("EditPartition", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         eventErrors: [
-          machineEventErrorFactory({
+          {
             error: "didn't work",
             event: "updateFilesystem",
             id: "abc123",
-          }),
+          },
         ],
         items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
         statuses: machineStatusesFactory({
@@ -40,24 +41,17 @@ describe("EditPartition", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditPartition
-              closeExpanded={jest.fn()}
-              disk={disk}
-              partition={partition}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditPartition
+        closeExpanded={jest.fn()}
+        disk={disk}
+        partition={partition}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    expect(wrapper.find("Notification").text().includes("didn't work")).toBe(
-      true
-    );
+    expect(screen.getByText(/didn't work/i)).toBeInTheDocument();
   });
 
   it("correctly dispatches an action to edit a partition", () => {
@@ -72,32 +66,26 @@ describe("EditPartition", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditPartition
-              closeExpanded={jest.fn()}
-              disk={disk}
-              partition={partition}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditPartition
+        closeExpanded={jest.fn()}
+        disk={disk}
+        partition={partition}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    submitFormikForm(wrapper, {
-      fstype: "fat32",
-      mountOptions: "noexec",
-      mountPoint: "/path",
-    });
+    userEvent.type(screen.getByLabelText(/fs type/i), "fat32");
+    userEvent.type(screen.getByLabelText(/mount options/i), "noexec");
+    userEvent.type(screen.getByLabelText(/mount point/i), "/path");
+    userEvent.click(screen.getByRole("button", { name: /save/i }));
 
     expect(
       store
         .getActions()
         .find((action) => action.type === "machine/updateFilesystem")
-    ).toStrictEqual({
+    ).toEqual({
       meta: {
         method: "update_filesystem",
         model: "machine",

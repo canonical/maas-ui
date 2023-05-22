@@ -1,12 +1,10 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+```
+import { render, screen } from 'testing/utils';
+import configureStore from 'redux-mock-store';
 
-import CreateVolumeGroup from "./CreateVolumeGroup";
+import CreateVolumeGroup from './CreateVolumeGroup';
 
-import { DiskTypes } from "app/store/types/enum";
+import { DiskTypes } from 'app/store/types/enum';
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -15,13 +13,13 @@ import {
   nodeDisk as diskFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+} from 'testing/factories';
+import { submitFormikForm } from 'testing/utils';
 
 const mockStore = configureStore();
 
-describe("CreateVolumeGroup", () => {
-  it("sets the initial name correctly", () => {
+describe('CreateVolumeGroup', () => {
+  it('sets the initial name correctly', () => {
     const vgs = [
       diskFactory({ type: DiskTypes.VOLUME_GROUP }),
       diskFactory({ type: DiskTypes.VOLUME_GROUP }),
@@ -35,7 +33,7 @@ describe("CreateVolumeGroup", () => {
         items: [
           machineDetailsFactory({
             disks: [...vgs, physicalDisk],
-            system_id: "abc123",
+            system_id: 'abc123',
           }),
         ],
         statuses: machineStatusesFactory({
@@ -44,32 +42,27 @@ describe("CreateVolumeGroup", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateVolumeGroup
-              closeForm={jest.fn()}
-              selected={[physicalDisk]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CreateVolumeGroup
+        closeForm={jest.fn()}
+        selected={[physicalDisk]}
+        systemId='abc123'
+      />,
+      { route: '/machine', store },
     );
 
     // Two volume groups already exist so the next one should be vg2
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("vg2");
+    expect(screen.getByLabelText('vg2').value).toBe('vg2');
   });
 
-  it("shows the details of the selected storage devices", () => {
+  it('shows the details of the selected storage devices', () => {
     const [selectedDisk, selectedPartition] = [
       diskFactory({
-        name: "floppy",
+        name: 'floppy',
         partitions: null,
         type: DiskTypes.PHYSICAL,
       }),
-      partitionFactory({ filesystem: null, name: "flippy" }),
+      partitionFactory({ filesystem: null, name: 'flippy' }),
     ];
     const disks = [
       selectedDisk,
@@ -77,37 +70,28 @@ describe("CreateVolumeGroup", () => {
     ];
     const state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
+        items: [machineDetailsFactory({ disks: disks, system_id: 'abc123' })],
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
         }),
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateVolumeGroup
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CreateVolumeGroup
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId='abc123'
+      />,
+      { route: '/machine', store },
     );
 
-    expect(wrapper.find("tbody TableRow").length).toBe(2);
-    expect(
-      wrapper.find("tbody TableRow").at(0).find("TableCell").at(0).text()
-    ).toBe(selectedDisk.name);
-    expect(
-      wrapper.find("tbody TableRow").at(1).find("TableCell").at(0).text()
-    ).toBe(selectedPartition.name);
+    expect(screen.getAllByRole('row').length).toBe(2);
+    expect(screen.getByText(new RegExp(selectedDisk.name, 'i')));
+    expect(screen.getByText(new RegExp(selectedPartition.name, 'i')));
   });
 
-  it("correctly dispatches an action to create a volume group", () => {
+  it('correctly dispatches an action to create a volume group', () => {
     const [selectedDisk, selectedPartition] = [
       diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
       partitionFactory({ filesystem: null }),
@@ -118,49 +102,45 @@ describe("CreateVolumeGroup", () => {
     ];
     const state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
+        items: [machineDetailsFactory({ disks: disks, system_id: 'abc123' })],
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
         }),
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateVolumeGroup
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CreateVolumeGroup
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId='abc123'
+      />,
+      { route: '/machine', store },
     );
 
-    submitFormikForm(wrapper, {
-      name: "vg1",
+    submitFormikForm(screen, {
+      name: 'vg1',
     });
 
     expect(
       store
         .getActions()
-        .find((action) => action.type === "machine/createVolumeGroup")
-    ).toStrictEqual({
+        .find((action) => action.type === 'machine/createVolumeGroup'),
+    ).toEqual({
       meta: {
-        method: "create_volume_group",
-        model: "machine",
+        method: 'create_volume_group',
+        model: 'machine',
       },
       payload: {
         params: {
           block_devices: [selectedDisk.id],
-          name: "vg1",
+          name: 'vg1',
           partitions: [selectedPartition.id],
-          system_id: "abc123",
+          system_id: 'abc123',
         },
       },
-      type: "machine/createVolumeGroup",
+      type: 'machine/createVolumeGroup',
     });
   });
 });
+```;

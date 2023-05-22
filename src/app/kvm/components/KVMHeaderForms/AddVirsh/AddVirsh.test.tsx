@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { renderWithBrowserRouter, screen, userEvent } from ’testing/utils';
 import configureStore from "redux-mock-store";
 
 import AddVirsh from "./AddVirsh";
@@ -11,8 +7,7 @@ import { ConfigNames } from "app/store/config/types";
 import { actions as generalActions } from "app/store/general";
 import { PodType } from "app/store/pod/constants";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
-import type { RootState } from "app/store/root/types";
-import { actions as zoneActions } from "app/store/zone";
+
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -69,21 +64,13 @@ describe("AddVirsh", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddVirsh clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+        <AddVirsh clearSidePanelContent={jest.fn()} />, { route: "/kvm/add", store }
     );
     const expectedActions = [
       generalActions.fetchPowerTypes(),
       resourcePoolActions.fetch(),
-      zoneActions.fetch(),
+    zoneActions.fetch(),
     ];
     const actualActions = store.getActions();
     expectedActions.forEach((expectedAction) => {
@@ -98,68 +85,35 @@ describe("AddVirsh", () => {
   it("displays a spinner if data hasn't loaded yet", () => {
     state.general.powerTypes.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddVirsh clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const wrapper = renderWithBrowserRouter(
+        <AddVirsh clearSidePanelContent={jest.fn()} />, { route: "/kvm/add", store }
     );
-    expect(wrapper.find("Spinner").length).toBe(1);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays a message if virsh is not supported", () => {
     state.general.powerTypes.data = [];
     state.general.powerTypes.loaded = true;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddVirsh clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const wrapper = renderWithBrowserRouter(
+        <AddVirsh clearSidePanelContent={jest.fn()} />, { route: "/kvm/add", store }
     );
-    expect(wrapper.find("[data-testid='virsh-unsupported']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId('virsh-unsupported')).toBeInTheDocument();
   });
 
   it("can handle saving a virsh KVM", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddVirsh clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const wrapper = renderWithBrowserRouter(
+        <AddVirsh clearSidePanelContent={jest.fn()} />, { route: "/kvm/add", store }
     );
-
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "my-favourite-kvm",
-        pool: 0,
-        // power_parameters should be flattened before being sent through the websocket
-        power_parameters: {
-          power_address: "192.68.1.1",
-          power_pass: "password",
-        },
-        type: PodType.VIRSH,
-        zone: 0,
-      })
-    );
-
+    userEvent.type(screen.getByLabelText(/name/i), "my-favourite-kvm");
+    userEvent.selectOptions(screen.getByLabelText(/pool/i), screen.getByText('test-pool-0'));
+    userEvent.type(screen.getByLabelText(/power address/i), '192.68.1.1');
+    userEvent.type(screen.getByLabelText(/power password/i), 'password');
+    userEvent.selectOptions(screen.getByLabelText(/type/i), screen.getByText(PodType.VIRSH));
+    userEvent.selectOptions(screen.getByLabelText(/zone/i), screen.getByText('test-zone-0'));
+    userEvent.click(screen.getByRole('button', { name: /create vm/i }));
+    
     expect(
       store.getActions().find((action) => action.type === "pod/create")
     ).toStrictEqual({

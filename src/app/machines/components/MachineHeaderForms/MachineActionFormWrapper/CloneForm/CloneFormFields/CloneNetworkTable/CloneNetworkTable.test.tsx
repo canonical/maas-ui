@@ -1,6 +1,5 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { render } from '@testing-library/react';
+import { renderWithBrowserRouter, screen, userEvent } from 'testing/utils';
 
 import CloneNetworkTable from "./CloneNetworkTable";
 
@@ -48,27 +47,25 @@ describe("CloneNetworkTable", () => {
 
   it("renders empty table if neither loading machine nor machine provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={null} selected={false} />
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneNetworkTable machine={null} selected={false} />,
+      { store }
     );
-    expect(wrapper.find("MainTable").prop("rows")).toStrictEqual([]);
-    expect(wrapper.find("Placeholder").exists()).toBe(false);
+    expect(screen.queryByRole("table")).toBeNull();
+    expect(screen.queryByText("Placeholder")).toBeNull();
   });
 
   it("renders placeholder content while details are loading", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable
-          loadingMachineDetails
-          machine={null}
-          selected={false}
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneNetworkTable
+        loadingMachineDetails
+        machine={null}
+        selected={false}
+      />,
+      { store }
     );
-    expect(wrapper.find("Placeholder").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("renders machine network details if machine is provided", () => {
@@ -77,13 +74,12 @@ describe("CloneNetworkTable", () => {
     });
 
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected={false} />
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneNetworkTable machine={machine} selected={false} />,
+      { store }
     );
-    expect(wrapper.find("Placeholder").exists()).toBe(false);
-    expect(wrapper.find("MainTable").prop("rows")).not.toStrictEqual([]);
+    expect(screen.queryByText("Placeholder")).toBeNull();
+    expect(screen.queryByRole("table")).not.toBeNull();
   });
 
   it("can display an interface that has no links", () => {
@@ -109,13 +105,12 @@ describe("CloneNetworkTable", () => {
     state.subnet.items = subnets;
     state.vlan.items = [vlan];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneNetworkTable machine={machine} selected={true} />,
+      { store }
     );
     expect(
-      wrapper.find("[data-testid='name-subnet'] DoubleRow").prop("secondary")
+      screen.getByTestId('name-subnet').querySelectorAll('.double-row')[0].querySelector(".secondary").textContent
     ).toBe("Unconfigured");
   });
 
@@ -144,13 +139,12 @@ describe("CloneNetworkTable", () => {
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneNetworkTable machine={machine} selected={true} />,
+      { store }
     );
     expect(
-      wrapper.find("[data-testid='name-subnet'] DoubleRow").prop("secondary")
+      screen.getByTestId('name-subnet').querySelectorAll('.double-row')[0].querySelector(".secondary").textContent
     ).toBe("subnet-cidr");
   });
 
@@ -187,22 +181,15 @@ describe("CloneNetworkTable", () => {
     state.subnet.items = subnets;
     state.vlan.items = [vlan];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneNetworkTable machine={machine} selected={true} />,
+      { store }
     );
     expect(
-      wrapper
-        .find("[data-testid='name-subnet'] DoubleRow")
-        .at(1)
-        .prop("primary")
+      screen.getByTestId('name-subnet').querySelectorAll('.double-row')[1].querySelector(".primary").textContent
     ).toBe("alias:1");
     expect(
-      wrapper
-        .find("[data-testid='name-subnet'] DoubleRow")
-        .at(1)
-        .prop("secondary")
+      screen.getByTestId('name-subnet').querySelectorAll('.double-row')[1].querySelector(".secondary").textContent
     ).toBe("subnet2-cidr");
   });
 
@@ -251,26 +238,9 @@ describe("CloneNetworkTable", () => {
     });
     state.machine.items = [machine];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneNetworkTable machine={machine} selected={true} />,
+      { store }
     );
-    const names = wrapper
-      .find("[data-testid='name-subnet'] DoubleRow")
-      .map((doubleRow) => doubleRow.prop("primary"));
-    expect(names).toStrictEqual([
-      // Bond group:
-      "bond0",
-      "eth0", // bond parent
-      "eth3", // bond parent
-      // Bridge group:
-      "br0",
-      "eth1", // bridge parent
-      // Alias:
-      "br0:1",
-      // Physical:
-      "eth2",
-    ]);
-  });
-});
+    const names = screen.getAllByTestId('name-subnet').map((doubleRow) => doubleRow.querySelectorAll(".double-row")[0].querySelector(".primary").textContent);
+    expect(names).to

@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import { RamColumn } from "./RamColumn";
@@ -13,6 +11,7 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -39,33 +38,24 @@ describe("RamColumn", () => {
 
   it("renders", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <RamColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    const { container } = renderWithBrowserRouter(
+      <RamColumn systemId="abc123" />,
+      { route: "/machines", store }
     );
 
-    expect(wrapper.find("RamColumn")).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it("displays ram amount", () => {
     state.machine.items[0].memory = 16;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <RamColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find('[data-testid="memory"]').text()).toEqual("16");
+    renderWithBrowserRouter(<RamColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+
+    expect(screen.getByTestId("memory")).toHaveTextContent("16");
   });
 
   it("displays an error and tooltip if memory tests have failed", () => {
@@ -74,17 +64,13 @@ describe("RamColumn", () => {
       status: TestStatusStatus.FAILED,
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <RamColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find("Tooltip").exists()).toBe(true);
-    expect(wrapper.find(".p-icon--error").exists()).toBe(true);
+    renderWithBrowserRouter(<RamColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+
+    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+    expect(screen.getByRole("img")).toHaveClass("p-icon--error");
   });
 });

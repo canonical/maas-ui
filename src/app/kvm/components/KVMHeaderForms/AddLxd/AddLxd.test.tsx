@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
@@ -27,7 +24,7 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -71,21 +68,21 @@ describe("AddLxd", () => {
 
   it("shows the credentials form by default", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { container } = renderWithBrowserRouter(
+      <AddLxd clearSidePanelContent={jest.fn()} />,
+      { route: "/kvm/add", store }
     );
 
-    expect(wrapper.find("CredentialsForm").exists()).toBe(true);
-    expect(wrapper.find("AuthenticationForm").exists()).toBe(false);
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
+    expect(
+      container.querySelector('form[data-testid="credentials-form"]')
+    ).toBeInTheDocument();
+    expect(
+      container.querySelector('form[data-testid="authentication-form"]')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('form[data-testid="select-project-form"]')
+    ).not.toBeInTheDocument();
   });
 
   it(`shows the authentication form if the user has generated a certificate for
@@ -93,82 +90,79 @@ describe("AddLxd", () => {
     const certificate = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
+
     state.general.generatedCertificate.data = certificate;
+
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { container } = renderWithBrowserRouter(
+      <AddLxd clearSidePanelContent={jest.fn()} />,
+      { route: "/kvm/add", store }
     );
 
     // Submit credentials form
-    submitFormikForm(wrapper, {
+    submitFormikForm(container, {
       name: "my-favourite-kvm",
       pool: 0,
       power_address: "192.168.1.1",
       zone: 0,
     });
-    wrapper.update();
 
-    expect(wrapper.find("CredentialsForm").exists()).toBe(false);
-    expect(wrapper.find("AuthenticationForm").exists()).toBe(true);
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
+    expect(
+      container.querySelector('form[data-testid="credentials-form"]')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('form[data-testid="authentication-form"]')
+    ).toBeInTheDocument();
+    expect(
+      container.querySelector('form[data-testid="select-project-form"]')
+    ).not.toBeInTheDocument();
   });
 
   it("shows the project select form once authenticated", () => {
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
+
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { container } = renderWithBrowserRouter(
+      <AddLxd clearSidePanelContent={jest.fn()} />,
+      { route: "/kvm/add", store }
     );
 
     // Submit credentials form
-    submitFormikForm(wrapper, {
+    submitFormikForm(container, {
       name: "my-favourite-kvm",
       pool: 0,
       power_address: "192.168.1.1",
       zone: 0,
     });
-    wrapper.update();
 
-    expect(wrapper.find("CredentialsForm").exists()).toBe(false);
-    expect(wrapper.find("AuthenticationForm").exists()).toBe(false);
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(true);
+    expect(
+      container.querySelector('form[data-testid="credentials-form"]')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('form[data-testid="authentication-form"]')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('form[data-testid="select-project-form"]')
+    ).toBeInTheDocument();
   });
 
   it("clears projects and runs cleanup on unmount", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { unmount } = renderWithBrowserRouter(
+      <AddLxd clearSidePanelContent={jest.fn()} />,
+      { route: "/kvm/add", store }
     );
-    wrapper.unmount();
+
+    unmount();
 
     const expectedActions = [podActions.cleanup(), podActions.clearProjects()];
     const actualActions = store.getActions();
+
     expect(
       actualActions.every((actualAction) =>
         expectedActions.some(
@@ -180,21 +174,31 @@ describe("AddLxd", () => {
 
   it("can display submission errors", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { container } = renderWithBrowserRouter(
+      <AddLxd clearSidePanelContent={jest.fn()} />,
+      { route: "/kvm/add", store }
     );
-    wrapper.find(CredentialsForm).invoke("setSubmissionErrors")("Uh oh!");
-    wrapper.update();
+
+    container
+      .querySelector(`input[name="name"]`)
+      ?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    container
+      .querySelector(`input[name="power_address"]`)
+      ?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    container
+      .querySelector(`input[name="pool"]`)
+      ?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    container
+      .querySelector(`input[name="zone"]`)
+      ?.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+
+    container
+      .querySelector('form[data-testid="credentials-form"]')
+      .dispatchEvent(new Event("submit", { bubbles: true }));
+
     expect(
-      wrapper.find("Notification[data-testid='submission-error']").exists()
-    ).toBe(true);
+      container.querySelector('div[data-testid="submission-error"]')
+    ).toBeInTheDocument();
   });
 });

@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import AddVirsh from "../AddVirsh";
@@ -24,6 +21,7 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -72,25 +70,14 @@ describe("AddVirshFields", () => {
     ];
     state.general.powerTypes.data = powerTypes;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddVirsh clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find("Input[name='power_parameters.field1']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("Input[name='power_parameters.field2']").exists()).toBe(
-      false
-    );
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+      route: "/machines/chassis/add",
+      store: store,
+    });
+
+    expect(screen.getByLabelText(/Field1/i)).toBeTruthy();
+    expect(screen.queryByLabelText(/Field2/i)).toBeFalsy();
+    expect(screen.getByRole("button", { name: /save/i })).toBeTruthy();
   });
 });

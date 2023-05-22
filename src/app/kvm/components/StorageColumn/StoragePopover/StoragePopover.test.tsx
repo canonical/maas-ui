@@ -1,65 +1,49 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 
 import StoragePopover from "./StoragePopover";
 
 import { podStoragePoolResource as podStoragePoolResourceFactory } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("StoragePopover", () => {
-  const body = document.querySelector("body");
-  const app = document.createElement("div");
-  if (body && app) {
-    app.setAttribute("id", "app");
-    body.appendChild(app);
-  }
+  const pools = {
+    poolio: podStoragePoolResourceFactory({
+      allocated_other: 2000,
+      allocated_tracked: 5000,
+      backend: "zfs",
+      path: "/path",
+      total: 15000,
+    }),
+  };
 
   it("correctly displays storage data", () => {
-    const pools = {
-      poolio: podStoragePoolResourceFactory({
-        allocated_other: 2000,
-        allocated_tracked: 5000,
-        backend: "zfs",
-        path: "/path",
-        total: 15000,
-      }),
-    };
-    const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='pool-name']").text()).toBe("poolio");
-    expect(wrapper.find("[data-testid='pool-path']").text()).toBe("/path");
-    expect(wrapper.find("[data-testid='pool-backend']").text()).toBe("zfs");
-    expect(wrapper.find("[data-testid='pool-allocated']").text()).toBe("5KB");
-    expect(wrapper.find("[data-testid='pool-free']").text()).toBe("8KB");
-    expect(wrapper.find("[data-testid='pool-others']").text()).toBe("2KB");
+    render(<StoragePopover pools={pools}>Child</StoragePopover>);
+    userEvent.tab();
+    expect(screen.getByTestId("pool-name").textContent).toBe("poolio");
+    expect(screen.getByTestId("pool-path").textContent).toBe("/path");
+    expect(screen.getByTestId("pool-backend").textContent).toBe("zfs");
+    expect(screen.getByTestId("pool-allocated").textContent).toBe("5KB");
+    expect(screen.getByTestId("pool-free").textContent).toBe("8KB");
+    expect(screen.getByTestId("pool-others").textContent).toBe("2KB");
   });
 
   it("does not display others data if none present", () => {
-    const pools = {
-      poolio: podStoragePoolResourceFactory({
-        allocated_other: 0,
-        allocated_tracked: 5000,
-        backend: "zfs",
-        path: "/path",
-        total: 15000,
-      }),
-    };
-    const wrapper = mount(<StoragePopover pools={pools}>Child</StoragePopover>);
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='others-col']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='pool-others']").exists()).toBe(false);
+    const newPoolsData = { ...pools };
+    newPoolsData.poolio.allocated_other = 0;
+    render(<StoragePopover pools={newPoolsData}>Child</StoragePopover>);
+    userEvent.tab();
+    expect(screen.queryByTestId("others-col")).toBeNull();
+    expect(screen.queryByTestId("pool-others")).toBeNull();
   });
 
   it("shows whether a pool is the default pool", () => {
-    const pools = {
-      poolio: podStoragePoolResourceFactory({ id: "abc123" }),
-    };
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <StoragePopover defaultPoolId="abc123" pools={pools}>
         Child
-      </StoragePopover>
+      </StoragePopover>,
+      "test-route"
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='pool-name']").text()).toBe(
-      "poolio (default)"
-    );
+    userEvent.tab();
+    expect(screen.getByText(/poolio \(default\)/i)).toBeInTheDocument();
   });
 });

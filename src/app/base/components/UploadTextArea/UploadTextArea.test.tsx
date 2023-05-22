@@ -1,13 +1,13 @@
-import { mount } from "enzyme";
-import { Formik } from "formik";
+```
+import { render, screen } from 'testing/utils';
+import { Formik } from 'formik';
+import UploadTextArea from './UploadTextArea';
+import { waitFor } from '@testing-library/react';
 
-import UploadTextArea from "./UploadTextArea";
-
-import { waitForComponentToPaint } from "testing/utils";
 class MockFileReader {
   result: string;
   constructor() {
-    this.result = "test file content";
+    this.result = 'test file content';
   }
   onabort = () => undefined;
   onerror = () => undefined;
@@ -17,14 +17,9 @@ class MockFileReader {
   }
 }
 
-const createFile = (
-  name: string,
-  size: number,
-  type: string,
-  contents = ""
-) => {
+const createFile = (name: string, size: number, type: string, contents = '') => {
   const file = new File([contents], name, { type });
-  Reflect.defineProperty(file, "size", {
+  Reflect.defineProperty(file, 'size', {
     get() {
       return size;
     },
@@ -32,85 +27,73 @@ const createFile = (
   return file;
 };
 
-describe("UploadTextArea", () => {
+describe('UploadTextArea', () => {
   beforeEach(async () => {
-    const mockedFileReader = jest.spyOn(window, "FileReader");
-    (mockedFileReader as jest.Mock).mockImplementation(
-      () => new MockFileReader()
-    );
+    const mockedFileReader = jest.spyOn(window, 'FileReader');
+    (mockedFileReader as jest.Mock).mockImplementation(() => new MockFileReader());
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("accepts files of any mimetype", async () => {
-    const files = [createFile("foo.sh", 2000, "")];
-    const wrapper = mount(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+  it('accepts files of any mimetype', async () => {
+    const files = [createFile('foo.sh', 2000, '')];
+    render(
+      <Formik initialValues={{ key: '' }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" name="key" />
       </Formik>
     );
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField[name='key']").prop("error")).toEqual(null);
+    const input = screen.getByLabelText(/^Upload$/i);
+    userEvent.upload(input, files);
+    await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
   });
 
-  it("displays an error if a file is larger than max size", async () => {
-    const files = [createFile("foo.sh", 2000000, "")];
-    const wrapper = mount(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+  it('displays an error if a file is larger than max size', async () => {
+    const files = [createFile('foo.sh', 2000000, '')];
+    render(
+      <Formik initialValues={{ key: '' }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField[name='key']").prop("error")).toEqual(
-      "File cannot be larger than 1MB."
+    const input = screen.getByLabelText(/^Upload$/i);
+    userEvent.upload(input, files);
+    await waitFor(() =>
+      expect(screen.getByText(/File cannot be larger than 1MB./i)).toBeInTheDocument()
     );
   });
 
-  it("can populate the textarea from the file", async () => {
-    const files = [createFile("foo.sh", 2000, "text/script")];
-    const wrapper = mount(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+  it('can populate the textarea from the file', async () => {
+    const files = [createFile('foo.sh', 2000, 'text/script')];
+    render(
+      <Formik initialValues={{ key: '' }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" name="key" />
       </Formik>
     );
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("textarea[name='key']").prop("value")).toEqual(
-      "test file content"
-    );
+    const input = screen.getByLabelText(/^Upload$/i);
+    userEvent.upload(input, files);
+    await waitFor(() => expect(screen.getByRole('textbox')).toHaveValue('test file content'));
   });
 
-  it("clears errors on textarea change", async () => {
-    const files = [createFile("foo.sh", 2000000, "text/script")];
-    const wrapper = mount(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+  it('clears errors on textarea change', async () => {
+    const files = [createFile('foo.sh', 2000000, 'text/script')];
+    render(
+      <Formik initialValues={{ key: '' }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );
     // Create a max size error
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(
-      wrapper.find("FormikField[name='key']").prop("error")
-    ).not.toBeFalsy();
+    const input = screen.getByLabelText(/^Upload$/i);
+    userEvent.upload(input, files);
+    await waitFor(() =>
+      expect(screen.getByText(/File cannot be larger than 1MB./i)).toBeInTheDocument()
+    );
 
     // Clear error by changing textarea
-    wrapper.find("textarea[name='key']").simulate("change", {
-      target: { name: "key", value: "new-value" },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField[name='key']").prop("error")).toBeFalsy();
+    const textarea = screen.getByRole('textbox') as HTMLInputElement;
+    userEvent.type(textarea, 'new-value');
+    await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
   });
 });
+
+```;

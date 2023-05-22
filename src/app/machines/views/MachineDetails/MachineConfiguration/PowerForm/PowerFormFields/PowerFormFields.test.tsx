@@ -1,6 +1,5 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import PowerFormFields from ".";
@@ -15,6 +14,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -58,28 +58,26 @@ describe("PowerFormFields", () => {
       system_id: "abc123",
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: "manual",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerFormFields machine={machine} />
-        </Formik>
-      </Provider>
+
+    render(
+      <Formik
+        initialValues={{
+          powerParameters: {},
+          powerType: "manual",
+        }}
+        onSubmit={jest.fn()}
+      >
+        <PowerFormFields machine={machine} />
+      </Formik>,
+      { store, route: "/machines" }
     );
 
-    expect(wrapper.find("Select[name='powerType']").prop("disabled")).toBe(
-      true
-    );
+    expect(screen.getByRole("combobox", { name: /Power/ })).toBeDisabled();
     expect(
-      wrapper.find("input[name='powerParameters.node-field']").exists()
-    ).toBe(true);
+      screen.getByLabelText("node-field", { exact: false })
+    ).toBeInTheDocument();
     expect(
-      wrapper.find("input[name='powerParameters.bmc-field']").exists()
-    ).toBe(false);
+      screen.queryByLabelText("bmc-field", { exact: false })
+    ).not.toBeInTheDocument();
   });
 });

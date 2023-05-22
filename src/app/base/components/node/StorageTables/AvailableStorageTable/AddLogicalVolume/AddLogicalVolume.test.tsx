@@ -1,9 +1,5 @@
-import { mount } from "enzyme";
+import { userEvent, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import AddLogicalVolume from "./AddLogicalVolume";
 
@@ -17,7 +13,7 @@ import {
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -62,22 +58,17 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={volumeGroup}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={volumeGroup}
+        systemId="abc123"
+      />,
+      { store, route: "" }
     );
 
     // Two logical volumes already exist so the next one should be lv2
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("lv2");
+    expect(screen.getByRole("textbox", { name: "name" })).toHaveValue("lv2");
   });
 
   it("sets the initial size to the available space", () => {
@@ -120,20 +111,17 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={volumeGroup}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={volumeGroup}
+        systemId="abc123"
+      />,
+      { store, route: "" }
     );
-    expect(wrapper.find("Input[name='size']").prop("value")).toBe(8);
+
+    expect(screen.getByRole("textbox", { name: "size" })).toHaveValue("8");
+    expect(screen.getByLabelText("Unit")).toHaveValue("GB");
   });
 
   it("can validate if the size meets the minimum requirement", async () => {
@@ -151,40 +139,21 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={disk}
+        systemId="abc123"
+      />,
+      { store, route: "" }
     );
 
     // Set logical volume size to 0.1MB
-    await act(async () => {
-      wrapper.find("input[name='size']").simulate("change", {
-        target: { name: "size", value: "0.1" },
-      } as React.ChangeEvent<HTMLInputElement>);
-    });
-    wrapper.update();
-    await act(async () => {
-      wrapper.find("select[name='unit']").simulate("change", {
-        target: { name: "unit", value: "MB" },
-      });
-    });
-    wrapper.update();
-
+    userEvent.type(screen.getByRole("textbox", { name: "size" }), "0.1");
+    userEvent.selectOptions(screen.getByLabelText("Unit"), "MB");
     expect(
-      wrapper
-        .find(".p-form-validation__message")
-        .text()
-        .includes("is required to add a logical volume")
-    ).toBe(true);
+      screen.getByText(/is required to add a logical volume/i)
+    ).toBeInTheDocument();
   });
 
   it("can validate if the size is less than available disk space", async () => {
@@ -202,37 +171,23 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={disk}
+        systemId="abc123"
+      />,
+      { store, route: "" }
     );
 
     // Set logical volume size to 2GB
-    await act(async () => {
-      wrapper.find("input[name='size']").simulate("change", {
-        target: { name: "size", value: "2" },
-      } as React.ChangeEvent<HTMLInputElement>);
-    });
-    wrapper.update();
-
+    userEvent.type(screen.getByRole("textbox", { name: "size" }), "2");
     expect(
-      wrapper
-        .find(".p-form-validation__message")
-        .text()
-        .includes("available in this volume group")
-    ).toBe(true);
+      screen.getByText(/available in this volume group/i)
+    ).toBeInTheDocument();
   });
 
-  it("correctly dispatches an action to create a logical volume", () => {
+  it("correctly dispatches an action to create a logical volume", async () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
       id: 1,
@@ -247,21 +202,16 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={disk}
+        systemId="abc123"
+      />,
+      { store, route: "" }
     );
 
-    submitFormikForm(wrapper, {
+    await submitFormikForm(screen.getByTestId("addlvol-formikform"), {
       fstype: "fat32",
       mountOptions: "noexec",
       mountPoint: "/path",

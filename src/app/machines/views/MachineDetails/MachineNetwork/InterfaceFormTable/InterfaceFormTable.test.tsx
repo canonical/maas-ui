@@ -1,10 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import InterfaceFormTable from "./InterfaceFormTable";
 
-import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -12,6 +10,7 @@ import {
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -32,12 +31,12 @@ describe("InterfaceFormTable", () => {
   it("displays a spinner when loading", () => {
     state.machine.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable interfaces={[]} systemId="abc123" />
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceFormTable interfaces={[]} systemId="abc123" />,
+      { store }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays a table when loaded", () => {
@@ -49,15 +48,12 @@ describe("InterfaceFormTable", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceFormTable interfaces={[{ nicId: nic.id }]} systemId="abc123" />,
+      { store }
     );
-    expect(wrapper.find("MainTable").exists()).toBe(true);
+
+    expect(screen.getByRole("table")).toBeInTheDocument();
   });
 
   it("displays a PXE column by default", () => {
@@ -69,15 +65,12 @@ describe("InterfaceFormTable", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceFormTable interfaces={[{ nicId: nic.id }]} systemId="abc123" />,
+      { store }
     );
-    expect(wrapper.find("PXEColumn").exists()).toBe(true);
+
+    expect(screen.getByText(/PXE/i)).toBeInTheDocument();
   });
 
   it("can show checkboxes to update the selection", () => {
@@ -89,16 +82,16 @@ describe("InterfaceFormTable", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          selectedEditable
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceFormTable
+        interfaces={[{ nicId: nic.id }]}
+        selectedEditable
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("NameColumn").prop("showCheckbox")).toBe(true);
+
+    expect(screen.getByLabelText(/select row/i)).toBeInTheDocument();
   });
 
   it("mutes a row if its not selected", () => {
@@ -110,22 +103,18 @@ describe("InterfaceFormTable", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          selected={[]}
-          selectedEditable
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceFormTable
+        interfaces={[{ nicId: nic.id }]}
+        selected={[]}
+        selectedEditable
+        systemId="abc123"
+      />,
+      { store }
     );
+
     expect(
-      wrapper
-        .find("TableRow")
-        .last()
-        ?.prop("className")
-        ?.includes("p-table__row--muted")
-    ).toBe(true);
+      screen.getByRole("row", { name: `${nic.name} muted row` })
+    ).toHaveClass("p-table__row--muted");
   });
 });

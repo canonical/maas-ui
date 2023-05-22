@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddChassisForm from "../AddChassisForm";
@@ -19,10 +14,11 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("AddChassisFormFields", () => {
+describe("AddChassisForm", () => {
   let state: RootState;
 
   beforeEach(() => {
@@ -41,20 +37,11 @@ describe("AddChassisFormFields", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddChassisForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/chassis/add", store }
     );
-    expect(wrapper.find("AddChassisFormFields").exists()).toBe(true);
+    expect(screen.getByText(/Add chassis/i)).toBeInTheDocument();
   });
 
   it("does not show power type fields that are scoped to nodes", async () => {
@@ -94,32 +81,17 @@ describe("AddChassisFormFields", () => {
         can_probe: true,
       })
     );
+
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddChassisForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/chassis/add", store }
     );
 
-    await act(async () => {
-      wrapper.find("select[name='power_type']").simulate("change", {
-        target: { name: "power_type", value: PowerTypeNames.VIRSH },
-      });
-    });
-    wrapper.update();
-    expect(
-      wrapper.find("Input[name='power_parameters.power_address']").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find("Input[name='power_parameters.power_id']").exists()
-    ).toBe(false);
+    const powerTypeSelect = screen.getByLabelText(/Power type/i);
+    userEvent.selectOptions(powerTypeSelect, PowerTypeNames.VIRSH);
+
+    expect(screen.getByLabelText(/Address/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Virsh VM ID/i)).not.toBeInTheDocument();
   });
 });

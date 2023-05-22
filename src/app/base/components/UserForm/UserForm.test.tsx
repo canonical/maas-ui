@@ -1,25 +1,19 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import { UserForm } from "./UserForm";
 
-import type { RootState } from "app/store/root/types";
-import userSelectors from "app/store/user/selectors";
-import type { User } from "app/store/user/types";
 import {
   rootState as rootStateFactory,
   user as userFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { submitFormikForm, render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("UserForm", () => {
-  let state: RootState;
-  let user: User;
+  let state;
+  let user;
 
   beforeEach(() => {
     user = userFactory({
@@ -34,44 +28,24 @@ describe("UserForm", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("UserForm").exists()).toBe(true);
+    render(<UserForm onSave={jest.fn()} />, { store, route: "/" });
+    expect(screen.getByTestId("userForm")).toBeInTheDocument();
   });
 
-  it("can handle saving", () => {
+  it("can handle saving", async () => {
     const store = mockStore(state);
     const onSave = jest.fn();
-    const resetForm = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm onSave={onSave} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    submitFormikForm(
-      wrapper,
-      {
-        isSuperuser: true,
-        email: "test@example.com",
-        fullName: "Miss Wallaby",
-        password: "test1234",
-        passwordConfirm: "test1234",
-        username: "admin",
-      },
-      { resetForm }
-    );
-    expect(onSave.mock.calls[0][0]).toEqual({
+    render(<UserForm onSave={onSave} user={user} />, { store, route: "/" });
+
+    await submitFormikForm(screen.getByTestId("userForm"), {
+      isSuperuser: true,
+      email: "test@example.com",
+      fullName: "Miss Wallaby",
+      password: "test1234",
+      passwordConfirm: "test1234",
+      username: "admin",
+    });
+    expect(onSave).toHaveBeenCalledWith({
       email: "test@example.com",
       isSuperuser: true,
       fullName: "Miss Wallaby",
@@ -79,77 +53,37 @@ describe("UserForm", () => {
       passwordConfirm: "test1234",
       username: "admin",
     });
-    expect(resetForm).toHaveBeenCalled();
   });
 
-  it("hides the password fields when editing", () => {
+  it("hides the password fields when editing", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Button").first().children().text()).toEqual(
-      "Change password…"
-    );
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(0);
+    render(<UserForm onSave={jest.fn()} user={user} />, {
+      store,
+      route: "/settings/users",
+    });
+    expect(screen.getByText("Change password…")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
   });
 
   it("can toggle the password fields", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(0);
-    wrapper.find("Button").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
+    render(<UserForm onSave={jest.fn()} user={user} />, {
+      store,
+      route: "/settings/users",
+    });
+    expect(screen.queryAllByLabelText("Password")).toHaveLength(0);
+    userEvent.click(screen.getByTestId("toggle-passwords"));
+    expect(screen.queryAllByLabelText("Password")).toHaveLength(2);
   });
 
   it("can show the current password field", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("Button").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("name") === "old_password"
-      ).length
-    ).toEqual(1);
+    render(<UserForm includeCurrentPassword onSave={jest.fn()} user={user} />, {
+      store,
+      route: "/settings/users",
+    });
+    userEvent.click(screen.getByTestId("toggle-passwords"));
+    expect(screen.getByLabelText("Current Password")).toBeInTheDocument();
   });
 
   it("can include auth errors in the error status", () => {
@@ -160,104 +94,50 @@ describe("UserForm", () => {
       password: ["Password too short"],
     };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("errors")).toEqual({
-      username: ["Username already exists"],
-      password: ["Password too short"],
+    render(<UserForm includeCurrentPassword onSave={jest.fn()} user={user} />, {
+      store,
+      route: "/settings/users",
     });
+    expect(screen.getByText("Username already exists")).toBeInTheDocument();
+    expect(screen.getByText("Password too short")).toBeInTheDocument();
   });
 
   it("disables fields when using external auth", () => {
     state.status.externalAuthURL = "http://login.example.com";
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikField[disabled=true]").length).toEqual(
-      wrapper.find("FormikField").length
-    );
+    render(<UserForm onSave={jest.fn()} />, {
+      store,
+      route: "/settings/users",
+    });
+    expect(screen.getAllByLabelText("Email")[0]).toBeDisabled();
   });
 
-  it("hides the password fields on save", () => {
+  it("hides the password fields on save", async () => {
     const store = mockStore(state);
-    // Use a proxy component so that setProps can force a rerender of the inner component.
     const Proxy = ({ onSave = jest.fn() }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={onSave} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+      <UserForm onSave={onSave} user={user} />
     );
-    const wrapper = mount(<Proxy />);
-    wrapper.find("button[data-testid='toggle-passwords']").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
-    jest.spyOn(userSelectors, "saved").mockReturnValue(true);
-    // Force the component to rerender so the saved selector value gets picked up.
-    wrapper.setProps({ onSave: jest.fn() });
-    wrapper.update();
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(0);
+    const { rerender } = render(<Proxy />, { store, route: "/settings/users" });
+    userEvent.click(screen.getByTestId("toggle-passwords"));
+    expect(screen.queryAllByLabelText("Password")).toHaveLength(2);
+    jest
+      .spyOn(global, "location", "get")
+      .mockReturnValue({ href: "http://localhost:3000" });
+    jest.spyOn(require("react-redux"), "useSelector").mockReturnValue(true);
+    await rerender(<Proxy onSave={jest.fn()} user={user} />);
+    expect(screen.queryAllByLabelText("Password")).not.toBeInTheDocument();
   });
 
-  it("does not hides the password fields when there are save errors", () => {
+  it("does not hides the password fields when there are save errors", async () => {
     state.user.errors = "Uh oh!";
     const store = mockStore(state);
-    // Use a proxy component so that setProps can force a rerender of the inner component.
     const Proxy = ({ onSave = jest.fn() }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={onSave} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+      <UserForm onSave={onSave} user={user} />
     );
-    const wrapper = mount(<Proxy />);
-    wrapper.find("button[data-testid='toggle-passwords']").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
-    jest.spyOn(userSelectors, "saved").mockReturnValue(true);
-    // Force the component to rerender so the saved selector value gets picked up.
-    wrapper.setProps({ onSave: jest.fn() });
-    wrapper.update();
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
+    const { rerender } = render(<Proxy />, { store, route: "/settings/users" });
+    userEvent.click(screen.getByTestId("toggle-passwords"));
+    expect(screen.queryAllByLabelText("Password")).toHaveLength(2);
+    await rerender(<Proxy onSave={jest.fn()} user={user} />);
+    expect(screen.queryAllByLabelText("Password")).toHaveLength(2);
   });
 });

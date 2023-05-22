@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -10,7 +11,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -30,7 +31,7 @@ describe("FilesystemFields", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik
           initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
@@ -42,11 +43,13 @@ describe("FilesystemFields", () => {
     );
 
     expect(
-      wrapper.find("FormikField[name='fstype'] option[value='fat32']").exists()
-    ).toBe(true);
+      screen
+        .getByRole("option", { name: /fat32/i, value: "fat32" })
+        .toBeInTheDocument()
+    ).toBeTruthy();
     expect(
-      wrapper.find("FormikField[name='fstype'] option[value='ramfs']").exists()
-    ).toBe(false);
+      screen.queryByRole("option", { name: /ramfs/i, value: "ramfs" })
+    ).toBeNull();
   });
 
   it("disables mount point and options if no fstype selected", () => {
@@ -61,7 +64,7 @@ describe("FilesystemFields", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik
           initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
@@ -72,11 +75,13 @@ describe("FilesystemFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Input[name='mountOptions']").prop("disabled")).toBe(
-      true
+    expect(screen.getByLabelText(/Mount Options/i)).toHaveAttribute(
+      "disabled",
+      "true"
     );
-    expect(wrapper.find("Input[name='mountPoint']").prop("disabled")).toBe(
-      true
+    expect(screen.getByLabelText(/Mount Point/i)).toHaveAttribute(
+      "disabled",
+      "true"
     );
   });
 
@@ -92,7 +97,7 @@ describe("FilesystemFields", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik
           initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
@@ -103,17 +108,19 @@ describe("FilesystemFields", () => {
       </Provider>
     );
 
-    wrapper
-      .find("select[name='fstype']")
-      .simulate("change", { target: { name: "fstype", value: "swap" } });
-    await waitForComponentToPaint(wrapper);
-
-    expect(wrapper.find("Input[name='mountOptions']").prop("disabled")).toBe(
-      false
+    userEvent.selectOptions(
+      screen.getByLabelText(/Filesystem Type/i),
+      screen.getByRole("option", { name: /swap/i, value: "swap" })
     );
-    expect(wrapper.find("Input[name='mountPoint']").prop("disabled")).toBe(
-      true
-    );
-    expect(wrapper.find("Input[name='mountPoint']").prop("value")).toBe("none");
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Mount Options/i)).not.toHaveAttribute(
+        "disabled"
+      );
+      expect(screen.getByLabelText(/Mount Point/i)).toHaveAttribute(
+        "disabled",
+        "true"
+      );
+      expect(screen.getByLabelText(/Mount Point/i)).toHaveValue("none");
+    });
   });
 });

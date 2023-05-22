@@ -1,40 +1,26 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
-import DeviceListControls from "./DeviceListControls";
-
-import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
+```import { render } from '@testing-library/react';
+import { userEvent, renderWithBrowserRouter, screen } from 'testing/utils';
+import configureStore from 'redux-mock-store';
+import DeviceListControls from './DeviceListControls';
+import { rootState as rootStateFactory } from 'testing/factories';
 
 const mockStore = configureStore();
 
-describe("DeviceListControls", () => {
-  let initialState: RootState;
+describe('DeviceListControls', () => {
+  let initialState = rootStateFactory();
 
-  beforeEach(() => {
-    initialState = rootStateFactory();
-  });
-
-  it("changes the search text when the filters change", () => {
+  it('changes the search text when the filters change', () => {
     const store = mockStore(initialState);
     const Proxy = ({ filter }: { filter: string }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <DeviceListControls filter={filter} setFilter={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
+      renderWithBrowserRouter(
+            <DeviceListControls filter={filter} setFilter={jest.fn()} />,
+          { route: '/machines?q=test+search', store }
+          )
     );
-    const wrapper = mount(<Proxy filter="" />);
-    expect(wrapper.find("SearchBox").prop("value")).toBe("");
+    const wrapper = render(<Proxy filter="" />);
+    expect(screen.getByTestId('search-box').value).toBe('');
 
-    wrapper.setProps({ filter: "free-text" });
-    wrapper.update();
-    expect(wrapper.find("SearchBox").prop("value")).toBe("free-text");
+    userEvent.type(screen.getByTestId('search-box'), 'free-text');
+    expect(screen.getByTestId('search-box')).toHaveValue('free-text');
   });
-});
+});```;

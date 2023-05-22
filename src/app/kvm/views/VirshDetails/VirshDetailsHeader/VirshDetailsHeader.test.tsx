@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -7,7 +7,6 @@ import configureStore from "redux-mock-store";
 import VirshDetailsHeader from "./VirshDetailsHeader";
 
 import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podPowerParameters as powerParametersFactory,
@@ -19,11 +18,12 @@ import {
   rootState as rootStateFactory,
   zone as zoneFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("VirshDetailsHeader", () => {
-  let state: RootState;
+  let state;
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -48,23 +48,20 @@ describe("VirshDetailsHeader", () => {
     });
   });
 
-  it("displays a spinner if pod hasn't loaded", () => {
+  it("displays a spinner if pod has not loaded", () => {
     state.pod.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <VirshDetailsHeader
+          id={1}
+          setSidePanelContent={jest.fn()}
+          sidePanelContent={null}
+        />
+      </Provider>,
+      { route: "/kvm/1" }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays the virsh power address", () => {
@@ -72,24 +69,19 @@ describe("VirshDetailsHeader", () => {
       power_address: "qemu+ssh://ubuntu@192.168.1.1/system",
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <VirshDetailsHeader
+          id={1}
+          setSidePanelContent={jest.fn()}
+          sidePanelContent={null}
+        />
+      </Provider>,
+      { route: "/kvm/1/resources" }
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(0).text()).toBe(
-      "qemu+ssh://ubuntu@192.168.1.1/system"
-    );
+    expect(
+      screen.getByText(/qemu\+ssh:\/\/ubuntu@192\.168\.1\.1\/system/i)
+    ).toBeInTheDocument();
   });
 
   it("displays the tracked VMs count", () => {
@@ -97,47 +89,33 @@ describe("VirshDetailsHeader", () => {
       vm_count: podVmCountFactory({ tracked: 5 }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <VirshDetailsHeader
+          id={1}
+          setSidePanelContent={jest.fn()}
+          sidePanelContent={null}
+        />
+      </Provider>,
+      { route: "/kvm/1/resources" }
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(1).text()).toBe(
-      "5 available"
-    );
+    expect(screen.getByText(/5 available/i)).toBeInTheDocument();
   });
 
-  it("displays the pod's zone's name", () => {
+  it("displays the pod zone name", () => {
     state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <VirshDetailsHeader
+          id={1}
+          setSidePanelContent={jest.fn()}
+          sidePanelContent={null}
+        />
+      </Provider>,
+      { route: "/kvm/1/resources" }
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(2).text()).toBe(
-      "danger"
-    );
+    expect(screen.getByText(/danger/i)).toBeInTheDocument();
   });
 });

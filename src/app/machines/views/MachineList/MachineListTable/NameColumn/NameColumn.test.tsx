@@ -1,12 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { NameColumn } from "./NameColumn";
 
-import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   modelRef as modelRefFactory,
@@ -14,6 +9,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -45,55 +41,31 @@ describe("NameColumn", () => {
   it("can be locked", () => {
     state.machine.items[0].locked = true;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find(".p-icon--locked").exists()).toBe(true);
+    expect(screen.getByTestId("p-icon--locked")).toBeInTheDocument();
   });
 
   it("can show the FQDN", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("a").text()).toEqual("koala.example");
+    expect(screen.getByText(/koala.example/i)).toBeInTheDocument();
   });
 
   it("can show a single ip address", () => {
     state.machine.items[0].ip_addresses = [{ ip: "127.0.0.1", is_boot: false }];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
-      "127.0.0.1"
-    );
-    // Doesn't show tooltip.
-    expect(wrapper.find("Tooltip").exists()).toBe(false);
+    expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
+    expect(screen.queryByTestId("Tooltip")).not.toBeInTheDocument();
   });
 
   it("can show multiple ip addresses", () => {
@@ -102,40 +74,23 @@ describe("NameColumn", () => {
       { ip: "127.0.0.2", is_boot: false },
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
-      "127.0.0.1"
-    );
-    expect(wrapper.find("Button").text()).toBe("+1");
-    // Shows a tooltip.
-    expect(wrapper.find("Tooltip").exists()).toBe(true);
+    expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
+    expect(screen.getByText("+1")).toBeInTheDocument();
+    expect(screen.getByTestId("Tooltip")).toBeInTheDocument();
   });
 
   it("can show a PXE ip address", () => {
     state.machine.items[0].ip_addresses = [{ is_boot: true, ip: "127.0.0.1" }];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
+    expect(screen.getByTestId("ip-addresses")).toHaveTextContent(
       "127.0.0.1 (PXE)"
     );
   });
@@ -146,56 +101,32 @@ describe("NameColumn", () => {
       { ip: "127.0.0.1", is_boot: false },
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
-      "127.0.0.1"
-    );
-    // Doesn't show toolip.
-    expect(wrapper.find("Tooltip").exists()).toBe(false);
+    expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
+    expect(screen.queryByTestId("Tooltip")).not.toBeInTheDocument();
   });
 
   it("can show a single mac address", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} showMAC={true} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("a").text()).toEqual("00:11:22:33:44:55");
+    expect(screen.getByText(/00:11:22:33:44:55/i)).toBeInTheDocument();
   });
 
   it("can show multiple mac address", () => {
     state.machine.items[0].extra_macs = ["aa:bb:cc:dd:ee:ff"];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} showMAC={true} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("a").length).toEqual(2);
-    expect(wrapper.find("a").at(1).text()).toEqual(" (+1)");
+    expect(screen.getAllByRole("link")).toHaveLength(2);
+    expect(screen.getAllByRole("link")[1]).toHaveTextContent(" (+1)");
   });
 
   it("can render a machine with minimal data", () => {
@@ -207,18 +138,13 @@ describe("NameColumn", () => {
       system_id: "abc123",
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("NameColumn").exists()).toBe(true);
+    expect(
+      screen.getByRole("columnheader", { name: "Name" })
+    ).toBeInTheDocument();
   });
 
   it("can render a machine in the MAC state with minimal data", () => {
@@ -230,33 +156,21 @@ describe("NameColumn", () => {
       system_id: "abc123",
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} showMAC={true} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("NameColumn").exists()).toBe(true);
+    expect(
+      screen.getByRole("columnheader", { name: "Name" })
+    ).toBeInTheDocument();
   });
 
   it("does not render checkbox if onToggleMenu not provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn groupValue={null} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn groupValue={null} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("Input").exists()).toBe(false);
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   });
 });

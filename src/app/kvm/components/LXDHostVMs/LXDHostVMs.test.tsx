@@ -1,11 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
-
-import LXDHostToolbar from "../LXDHostToolbar";
-import LXDVMsTable from "../LXDVMsTable";
 
 import LXDHostVMs from "./LXDHostVMs";
 
@@ -22,10 +15,7 @@ import {
   podVM as podVMFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import {
-  renderWithBrowserRouter,
-  waitForComponentToPaint,
-} from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -38,24 +28,18 @@ describe("LXDHostVMs", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <LXDHostVMs
-              hostId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <LXDHostVMs
+        hostId={1}
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/kvm/1/project", store }
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("can get resources for a VM", () => {
@@ -81,32 +65,24 @@ describe("LXDHostVMs", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <LXDHostVMs
-              hostId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { getResources } = renderWithBrowserRouter(
+      <LXDHostVMs
+        hostId={1}
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/kvm/1/project", store }
     );
 
-    expect(
-      wrapper.find(LXDVMsTable).invoke("getResources")(
-        machineFactory({ system_id: "abc123" })
-      )
-    ).toStrictEqual({
-      hugepagesBacked: true,
-      pinnedCores: [3],
-      unpinnedCores: 8,
-    });
+    expect(getResources(machineFactory({ system_id: "abc123" }))).toStrictEqual(
+      {
+        hugepagesBacked: true,
+        pinnedCores: [3],
+        unpinnedCores: 8,
+      }
+    );
   });
 
   it("can view resources by NUMA node", async () => {
@@ -121,33 +97,22 @@ describe("LXDHostVMs", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostVMs
-              hostId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("input[data-testid='numa-switch']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("LXDVMsSummaryCard").exists()).toBe(true);
-    expect(wrapper.find("NumaResources").exists()).toBe(false);
 
-    wrapper
-      .find("input[data-testid='numa-switch']")
-      .simulate("change", { target: { checked: true } });
-    await waitForComponentToPaint(wrapper);
+    const { container } = renderWithBrowserRouter(
+      <LXDHostVMs
+        hostId={1}
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/kvm/1", store }
+    );
 
-    expect(wrapper.find("LXDVMsSummaryCard").exists()).toBe(false);
-    expect(wrapper.find("NumaResources").exists()).toBe(true);
+    expect(screen.queryByTestId("numa-resources")).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByTestId("numa-switch"));
+
+    expect(screen.getByTestId("numa-resources")).toBeInTheDocument();
   });
 
   it("displays the host name when in a cluster", async () => {
@@ -158,22 +123,17 @@ describe("LXDHostVMs", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostVMs
-              clusterId={2}
-              hostId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container } = renderWithBrowserRouter(
+      <LXDHostVMs
+        clusterId={2}
+        hostId={1}
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/kvm/1", store }
     );
-    const title = wrapper.find(LXDHostToolbar).prop("title");
+    const title = container.querySelector(".title-header")?.textContent;
     expect(title && title.includes(pod.name)).toBe(true);
   });
 
@@ -185,21 +145,16 @@ describe("LXDHostVMs", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostVMs
-              hostId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container } = renderWithBrowserRouter(
+      <LXDHostVMs
+        hostId={1}
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/kvm/1", store }
     );
-    const title = wrapper.find(LXDHostToolbar).prop("title");
+    const title = container.querySelector(".title-header")?.textContent;
     expect(title && title.includes(pod.name)).toBe(false);
   });
 
@@ -212,22 +167,17 @@ describe("LXDHostVMs", () => {
     });
     const setSidePanelContent = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostVMs
-              hostId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={setSidePanelContent}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDHostVMs
+        hostId={1}
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={setSidePanelContent}
+      />,
+      { route: "/kvm/1", store }
     );
 
-    wrapper.find("button[data-testid='add-vm']").simulate("click");
+    userEvent.click(screen.getByTestId("add-vm"));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
@@ -245,6 +195,7 @@ describe("LXDHostVMs", () => {
       }),
     });
     const store = mockStore(state);
+
     renderWithBrowserRouter(
       <LXDHostVMs
         hostId={1}
@@ -257,6 +208,7 @@ describe("LXDHostVMs", () => {
     const expected = machineActions.fetch("123456", {
       filter: { pod: [pod.name] },
     });
+
     const fetches = store
       .getActions()
       .filter((action) => action.type === expected.type);

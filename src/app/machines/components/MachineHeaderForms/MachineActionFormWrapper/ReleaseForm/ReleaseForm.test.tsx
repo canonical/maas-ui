@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ReleaseForm from "./ReleaseForm";
@@ -18,7 +14,12 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  submitFormikForm,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -73,55 +74,51 @@ describe("ReleaseForm", () => {
         value: true,
       }),
     ];
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ReleaseForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <ReleaseForm
+          clearSidePanelContent={jest.fn()}
+          machines={[]}
+          processingCount={0}
+          viewingDetails={false}
+        />
+      </Provider>,
+      { route: "/machines", store }
     );
 
-    expect(wrapper.find("input[name='enableErase']").prop("value")).toBe(true);
-    expect(wrapper.find("input[name='secureErase']").prop("value")).toBe(false);
-    expect(wrapper.find("input[name='quickErase']").prop("value")).toBe(true);
+    expect(
+      screen.getByRole("checkbox", { name: /Enable erase on release/ })
+    ).toHaveAttribute("checked");
+    expect(
+      screen.getByRole("checkbox", { name: /Secure erase/ })
+    ).not.toHaveAttribute("checked");
+    expect(
+      screen.getByRole("checkbox", { name: /Quick erase/ })
+    ).toHaveAttribute("checked");
   });
 
-  it("correctly dispatches action to release given machines", () => {
+  it("correctly dispatches action to release given machines", async () => {
     const store = mockStore(state);
     state.machine.selectedMachines = { items: ["abc123", "def456"] };
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ReleaseForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <ReleaseForm
+          clearSidePanelContent={jest.fn()}
+          machines={state.machine.items}
+          processingCount={0}
+          viewingDetails={false}
+        />
+      </Provider>,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableErase: true,
-        quickErase: false,
-        secureErase: true,
-      })
+    userEvent.click(
+      screen.getByRole("checkbox", { name: /Enable erase on release/ })
     );
+    userEvent.click(screen.getByRole("checkbox", { name: /Secure erase/ }));
+    userEvent.click(screen.getByRole("checkbox", { name: /Quick erase/ }));
+
+    await submitFormikForm(screen.getByRole("form"));
 
     expect(
       store.getActions().filter((action) => action.type === "machine/release")

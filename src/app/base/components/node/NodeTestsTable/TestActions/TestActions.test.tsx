@@ -1,41 +1,28 @@
-import type { ReactWrapper } from "enzyme";
-import { mount } from "enzyme";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
-
 import TestActions from "./TestActions";
 
-import * as hooks from "app/base/hooks/analytics";
 import urls from "app/base/urls";
-import {
-  ScriptResultStatus,
-  ScriptResultType,
-} from "app/store/scriptresult/types";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
-const openMenu = (wrapper: ReactWrapper) => {
-  wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+const openMenu = () => {
+  userEvent.click(screen.getByRole("button", { name: /actions menu/i }));
 };
 
 describe("TestActions", () => {
   let mockSendAnalytics: jest.Mock;
-  let mockUseSendAnalytics: jest.SpyInstance;
 
   beforeEach(() => {
     mockSendAnalytics = jest.fn();
-    mockUseSendAnalytics = jest
-      .spyOn(hooks, "useSendAnalytics")
-      .mockImplementation(() => mockSendAnalytics);
+    jest.spyOn(hooks, "useSendAnalytics").mockReturnValue(mockSendAnalytics);
   });
 
   afterEach(() => {
-    mockSendAnalytics.mockRestore();
-    mockUseSendAnalytics.mockRestore();
+    jest.restoreAllMocks();
   });
 
   it("can display an action to view machine commissioning script details", () => {
@@ -43,24 +30,19 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory({
       status: ScriptResultStatus.PASSED,
     });
-    const wrapper = mount(
-      <MemoryRouter>
-        <CompatRouter>
-          <TestActions
-            node={machine}
-            resultType={ScriptResultType.COMMISSIONING}
-            scriptResult={scriptResult}
-            setExpanded={jest.fn()}
-          />
-        </CompatRouter>
-      </MemoryRouter>
+    render(
+      <TestActions
+        node={machine}
+        resultType={ScriptResultType.COMMISSIONING}
+        scriptResult={scriptResult}
+        setExpanded={jest.fn()}
+      />
     );
 
-    openMenu(wrapper);
-    expect(wrapper.find("Link[data-testid='view-details']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
+    openMenu();
+
+    expect(screen.getByRole("link", { name: /view-details/i })).toHaveAttribute(
+      "href",
       urls.machines.machine.commissioning.scriptResult({
         id: machine.system_id,
         scriptResultId: scriptResult.id,
@@ -73,25 +55,19 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory({
       status: ScriptResultStatus.PASSED,
     });
-    const wrapper = mount(
-      <MemoryRouter>
-        <CompatRouter>
-          <TestActions
-            node={controller}
-            resultType={ScriptResultType.COMMISSIONING}
-            scriptResult={scriptResult}
-            setExpanded={jest.fn()}
-          />
-        </CompatRouter>
-      </MemoryRouter>
+    render(
+      <TestActions
+        node={controller}
+        resultType={ScriptResultType.COMMISSIONING}
+        scriptResult={scriptResult}
+        setExpanded={jest.fn()}
+      />
     );
 
-    openMenu(wrapper);
-    expect(wrapper.find("Link[data-testid='view-details']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      urls.controllers.controller.commissioning.scriptResult({
+    openMenu();
+    expect(screen.getByRole("link", { name: /view-details/i })).toHaveAttribute(
+      "href",
+      urls.controller.controller.commissioning.scriptResult({
         id: controller.system_id,
         scriptResultId: scriptResult.id,
       })
@@ -103,24 +79,18 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory({
       status: ScriptResultStatus.PASSED,
     });
-    const wrapper = mount(
-      <MemoryRouter>
-        <CompatRouter>
-          <TestActions
-            node={machine}
-            resultType={ScriptResultType.TESTING}
-            scriptResult={scriptResult}
-            setExpanded={jest.fn()}
-          />
-        </CompatRouter>
-      </MemoryRouter>
+    render(
+      <TestActions
+        node={machine}
+        resultType={ScriptResultType.TESTING}
+        scriptResult={scriptResult}
+        setExpanded={jest.fn()}
+      />
     );
 
-    openMenu(wrapper);
-    expect(wrapper.find("Link[data-testid='view-details']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
+    openMenu();
+    expect(screen.getByRole("link", { name: /view-details/i })).toHaveAttribute(
+      "href",
       urls.machines.machine.testing.scriptResult({
         id: machine.system_id,
         scriptResultId: scriptResult.id,
@@ -133,41 +103,37 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory({
       results: [scriptResultResultFactory()],
     });
-    const wrapper = mount(
-      <MemoryRouter>
-        <CompatRouter>
-          <TestActions
-            node={machine}
-            resultType={ScriptResultType.TESTING}
-            scriptResult={scriptResult}
-            setExpanded={jest.fn()}
-          />
-        </CompatRouter>
-      </MemoryRouter>
+    render(
+      <TestActions
+        node={machine}
+        resultType={ScriptResultType.TESTING}
+        scriptResult={scriptResult}
+        setExpanded={jest.fn()}
+      />
     );
 
-    openMenu(wrapper);
-    expect(wrapper.find("[data-testid='view-metrics']").exists()).toBe(true);
+    openMenu();
+    expect(
+      screen.getByRole("button", { name: /view metrics/i })
+    ).toBeInTheDocument();
   });
 
   it("sends an analytics event when clicking the 'View previous tests' button", () => {
     const machine = machineDetailsFactory();
     const scriptResult = scriptResultFactory();
-    const wrapper = mount(
-      <MemoryRouter>
-        <CompatRouter>
-          <TestActions
-            node={machine}
-            resultType={ScriptResultType.TESTING}
-            scriptResult={scriptResult}
-            setExpanded={jest.fn()}
-          />
-        </CompatRouter>
-      </MemoryRouter>
+    render(
+      <TestActions
+        node={machine}
+        resultType={ScriptResultType.TESTING}
+        scriptResult={scriptResult}
+        setExpanded={jest.fn()}
+      />
     );
 
-    openMenu(wrapper);
-    wrapper.find("Button[data-testid='view-previous-tests']").simulate("click");
+    openMenu();
+    userEvent.click(
+      screen.getByRole("button", { name: /view previous tests/i })
+    );
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([
@@ -180,21 +146,17 @@ describe("TestActions", () => {
   it("sends an analytics event when clicking the 'View metrics' button", () => {
     const machine = machineDetailsFactory();
     const scriptResult = scriptResultFactory();
-    const wrapper = mount(
-      <MemoryRouter>
-        <CompatRouter>
-          <TestActions
-            node={machine}
-            resultType={ScriptResultType.TESTING}
-            scriptResult={scriptResult}
-            setExpanded={jest.fn()}
-          />
-        </CompatRouter>
-      </MemoryRouter>
+    render(
+      <TestActions
+        node={machine}
+        resultType={ScriptResultType.TESTING}
+        scriptResult={scriptResult}
+        setExpanded={jest.fn()}
+      />
     );
 
-    openMenu(wrapper);
-    wrapper.find("Button[data-testid='view-metrics']").simulate("click");
+    openMenu();
+    userEvent.click(screen.getByRole("button", { name: /view metrics/i }));
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([

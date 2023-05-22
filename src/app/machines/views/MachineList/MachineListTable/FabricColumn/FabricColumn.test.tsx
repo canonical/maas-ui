@@ -1,23 +1,18 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { FabricColumn } from "./FabricColumn";
-
-import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("FabricColumn", () => {
   let state: RootState;
+
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -42,19 +37,11 @@ describe("FabricColumn", () => {
 
   it("renders", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FabricColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("FabricColumn")).toMatchSnapshot();
+    renderWithBrowserRouter(<FabricColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByTestId("fabricColumn")).toMatchSnapshot();
   });
 
   it("displays the fabric name", () => {
@@ -71,19 +58,11 @@ describe("FabricColumn", () => {
       },
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FabricColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find('[data-testid="fabric"]').text()).toEqual("fabric-2");
+    renderWithBrowserRouter(<FabricColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByTestId("fabric")).toHaveTextContent(/fabric-2/i);
   });
 
   it("displays '-' with no fabric present", () => {
@@ -95,19 +74,11 @@ describe("FabricColumn", () => {
       vlan: null,
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FabricColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find('[data-testid="fabric"]').text()).toEqual("-");
+    renderWithBrowserRouter(<FabricColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByTestId("fabric")).toHaveTextContent("-");
   });
 
   it("displays VLAN name", () => {
@@ -124,18 +95,10 @@ describe("FabricColumn", () => {
       },
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FabricColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find('[data-testid="vlan"]').text()).toEqual("Wombat");
+    renderWithBrowserRouter(<FabricColumn systemId="abc123" />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByTestId("vlan")).toHaveTextContent(/Wombat/i);
   });
 });

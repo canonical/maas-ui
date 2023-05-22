@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { render } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DeviceFilterAccordion from "./DeviceFilterAccordion";
@@ -13,11 +11,13 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("DeviceFilterAccordion", () => {
   let state: RootState;
+
   beforeEach(() => {
     state = rootStateFactory({
       device: deviceStateFactory({
@@ -33,34 +33,23 @@ describe("DeviceFilterAccordion", () => {
   it("is disabled if devices haven't loaded yet", () => {
     state.device.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/devices", key: "testKey" }]}
-        >
-          <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      { route: "/devices", store }
     );
 
-    expect(wrapper.find("FilterAccordion").prop("disabled")).toBe(true);
+    expect(screen.getByTestId("filter-accordion")).toBeDisabled();
   });
 
   it("displays tags", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/devices", key: "testKey" }]}
-        >
-          <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      { route: "/devices", store }
     );
     // Open the menu:
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-testid='filter-tags']").last().text()).toBe(
-      "echidna (1)"
-    );
+    userEvent.click(screen.getByRole("button", { name: "Filter" }));
+
+    expect(screen.getByText(/echidna\(1\)/i)).toBeInTheDocument();
   });
 });

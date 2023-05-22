@@ -1,6 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { OwnerColumn } from "./OwnerColumn";
@@ -18,7 +15,7 @@ import {
   userState as userStateFactory,
   tag as tagFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -57,26 +54,11 @@ describe("OwnerColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("OwnerColumn")).toMatchSnapshot();
-  });
-
   it("displays owner", () => {
     state.machine.items[0].owner = "user1";
     renderWithBrowserRouter(
       <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
-      { state }
+      { state, route: "/machines" }
     );
 
     expect(screen.getByTestId("owner")).toHaveTextContent("user1");
@@ -89,7 +71,7 @@ describe("OwnerColumn", () => {
     ];
     renderWithBrowserRouter(
       <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
-      { state }
+      { state, route: "/machines" }
     );
 
     expect(screen.getByTestId("owner")).toHaveTextContent("User Full Name");
@@ -101,88 +83,62 @@ describe("OwnerColumn", () => {
       tagFactory({ id: 1, name: "minty" }),
       tagFactory({ id: 2, name: "aloof" }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { state, route: "/machines" }
     );
 
-    expect(wrapper.find('[data-testid="tags"]').text()).toEqual("aloof, minty");
+    expect(screen.getByTestId("tags")).toHaveTextContent("aloof, minty");
   });
 
   it("can show a menu item to allocate a machine", () => {
     state.machine.items[0].actions = [NodeActions.ACQUIRE];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    const { container } = renderWithBrowserRouter(
+      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { state, route: "/machines" }
     );
     // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
-      "Allocate..."
-    );
+    userEvent.click(screen.getByRole("button", { name: "Table menu" }));
+    expect(container).toMatchSnapshot();
+    expect(
+      screen.getByRole("link", { name: "Allocate..." })
+    ).toBeInTheDocument();
   });
 
   it("can show a menu item to release a machine", () => {
     state.machine.items[0].actions = [NodeActions.RELEASE];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    const { container } = renderWithBrowserRouter(
+      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { state, route: "/machines" }
     );
     // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
-      "Release..."
-    );
+    userEvent.click(screen.getByRole("button", { name: "Table menu" }));
+    expect(container).toMatchSnapshot();
+    expect(
+      screen.getByRole("link", { name: "Release..." })
+    ).toBeInTheDocument();
   });
 
   it("can show a message when there are no menu items", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    const { container } = renderWithBrowserRouter(
+      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { state, route: "/machines" }
     );
     // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find(".p-contextual-menu__link").at(1).text()).toEqual(
+    userEvent.click(screen.getByRole("button", { name: "Table menu" }));
+    expect(container).toMatchSnapshot();
+    expect(screen.getByTestId("no-actions-message")).toHaveTextContent(
       "No owner actions available"
     );
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OwnerColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("TableMenu").exists()).toBe(false);
+    renderWithBrowserRouter(<OwnerColumn systemId="abc123" />, {
+      state,
+      route: "/machines",
+    });
+    expect(
+      screen.queryByRole("button", { name: "Table menu" })
+    ).not.toBeInTheDocument();
   });
 });

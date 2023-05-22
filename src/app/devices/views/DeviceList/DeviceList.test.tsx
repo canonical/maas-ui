@@ -1,9 +1,4 @@
-import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { useLocation } from "react-router";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceList from "./DeviceList";
@@ -11,6 +6,7 @@ import DeviceListControls from "./DeviceListControls";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -22,24 +18,17 @@ describe("DeviceList", () => {
 
   it("sets the search text from the URL on load", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/devices", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <DeviceList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<DeviceList />, {
+      route: "/devices?q=test+search",
+      store,
+    });
+    expect(screen.getByTestId("device-list-controls")).toHaveProp(
+      "filter",
+      "test search"
     );
-
-    expect(wrapper.find(DeviceListControls).prop("filter")).toBe("test search");
   });
 
-  it("changes the URL when the search text changes", () => {
+  it("changes the URL when the search text changes", async () => {
     let search: string | null = null;
     const store = mockStore(state);
     const FetchRoute = () => {
@@ -47,25 +36,19 @@ describe("DeviceList", () => {
       search = location.search;
       return null;
     };
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <DeviceList />
-            <Route path="*" render={() => <FetchRoute />} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceList>
+        <Route component={FetchRoute} path="*" />
+      </DeviceList>,
+      { route: "/machines?q=test+search", store }
     );
-
-    act(() => {
-      wrapper.find(DeviceListControls).prop("setFilter")("hostname:foo");
+    await act(async () => {
+      await screen.findByTestId("device-list-controls");
+      act(() => {
+        screen.getByLabelText("Search Devices").value = "hostname:foo";
+        screen.getByLabelText("Search Devices").dispatch(new Event("input"));
+      });
     });
-
     expect(search).toBe("?hostname=foo");
   });
 });

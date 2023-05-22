@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -16,6 +16,7 @@ import {
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -30,15 +31,14 @@ describe("LXDClusterSummaryCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
         <LXDClusterSummaryCard clusterId={1} showStorage />
-      </Provider>
+      </Provider>,
+      {}
     );
 
-    expect(wrapper.find("[data-testid='lxd-cluster-storage']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("lxd-cluster-storage")).toBeInTheDocument();
   });
 
   it("displays a spinner when loading pods", () => {
@@ -48,13 +48,14 @@ describe("LXDClusterSummaryCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
         <LXDClusterSummaryCard clusterId={1} showStorage />
-      </Provider>
+      </Provider>,
+      {}
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("can hide the section for storage", () => {
@@ -67,15 +68,14 @@ describe("LXDClusterSummaryCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
         <LXDClusterSummaryCard clusterId={1} showStorage={false} />
-      </Provider>
+      </Provider>,
+      {}
     );
 
-    expect(wrapper.find("[data-testid='lxd-cluster-storage']").exists()).toBe(
-      false
-    );
+    expect(screen.queryByTestId("lxd-cluster-storage")).not.toBeInTheDocument();
   });
 
   it("aggregates the interfaces in the cluster hosts", () => {
@@ -112,14 +112,17 @@ describe("LXDClusterSummaryCard", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
         <LXDClusterSummaryCard clusterId={1} />
-      </Provider>
+      </Provider>,
+      {}
     );
 
-    expect(wrapper.find(VfResources).prop("interfaces")).toStrictEqual(
-      interfaces
+    expect(screen.getByRole("icon")).toBeInTheDocument();
+    expect(screen.getByRole("icon")).toContainElement(
+      document.createElement("i")
     );
+    expect(screen.getByRole("interface")).toHaveValue(interfaces);
   });
 });

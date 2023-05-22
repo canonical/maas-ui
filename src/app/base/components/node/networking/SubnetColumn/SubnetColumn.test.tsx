@@ -1,13 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { render } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 
 import SubnetColumn from "./SubnetColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceInterface as deviceInterfaceFactory,
@@ -21,150 +16,136 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+jest.mock("react-router-dom-v5-compat", () => ({
+  ...jest.requireActual("react-router-dom-v5-compat"),
+  CompatRouter: ({ children }: any) => <>{children}</>,
+}));
+
+const fabric = fabricFactory({ name: "fabric-name" });
+const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+const link = networkLinkFactory({ subnet_id: subnet.id });
+const nic = machineInterfaceFactory({
+  discovered: null,
+  links: [link],
+  vlan_id: vlan.id,
+});
+const machineDetails = machineDetailsFactory({
+  interfaces: [nic],
+  system_id: "abc123",
+});
+const node = {
+  ...machineDetails,
+  status: "deploying",
+};
 
 describe("SubnetColumn", () => {
-  let state: RootState;
+  let state: any;
   beforeEach(() => {
     state = rootStateFactory({
       subnet: subnetStateFactory({
         loaded: true,
+        items: [subnet],
       }),
+      fabric: { items: [fabric] },
+      vlan: { items: [vlan] },
+      machine: { items: [machineDetails] },
     });
   });
 
   it("can display subnet links", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
-    state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
-    state.vlan.items = [vlan];
-    state.subnet.items = [subnet];
-    const link = networkLinkFactory({ subnet_id: subnet.id });
-    const nic = machineInterfaceFactory({
-      discovered: null,
-      links: [link],
-      vlan_id: vlan.id,
-    });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    state.vlan.items.push(vlan);
+    const store = { state };
+
+    const { getByText } = renderWithBrowserRouter(
+      <SubnetColumn link={link} nic={nic} node={node} />,
+      { route: "/machines", store }
     );
-    const links = wrapper.find("Link");
-    expect(links.at(0).text()).toBe("subnet-cidr");
-    expect(links.at(1).text()).toBe("subnet-name");
+    expect(getByText(/subnet-cidr/i)).toBeInTheDocument();
+    expect(getByText(/subnet-name/i)).toBeInTheDocument();
   });
 
   it("can display subnet links if the node is a device", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
-    state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
-    state.vlan.items = [vlan];
-    state.subnet.items = [subnet];
-    const link = networkLinkFactory({ subnet_id: subnet.id });
-    const nic = deviceInterfaceFactory({
+    const deviceNIC = deviceInterfaceFactory({
       discovered: null,
       links: [link],
       vlan_id: vlan.id,
     });
-    state.device.items = [
-      deviceDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const deviceDetails = deviceDetailsFactory({
+      interfaces: [deviceNIC],
+      system_id: "abc123",
+      status: "deploying",
+    });
+    state.device = { items: [deviceDetails] };
+    const store = { state };
+
+    const { getByText } = renderWithBrowserRouter(
+      <SubnetColumn link={link} nic={deviceNIC} node={deviceDetails} />,
+      { route: "/machines", store }
     );
-    const links = wrapper.find("Link");
-    expect(links.at(0).text()).toBe("subnet-cidr");
-    expect(links.at(1).text()).toBe("subnet-name");
+    expect(getByText(/subnet-cidr/i)).toBeInTheDocument();
+    expect(getByText(/subnet-name/i)).toBeInTheDocument();
   });
 
   it("can display an unconfigured subnet", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
-    state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    state.vlan.items = [vlan];
-    const link = networkLinkFactory();
-    const nic = machineInterfaceFactory({
+    const unconfiguredLink = networkLinkFactory();
+    const unconfiguredNIC = machineInterfaceFactory({
       discovered: null,
-      links: [link],
+      links: [unconfiguredLink],
       vlan_id: vlan.id,
     });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const unconfiguredMachineDetails = machineDetailsFactory({
+      interfaces: [unconfiguredNIC],
+      system_id: "def123",
+    });
+    const unconfiguredNode = {
+      ...unconfiguredMachineDetails,
+      status: "deploying",
+    };
+    state.machine.items.push(unconfiguredMachineDetails);
+
+    const store = { state };
+
+    const { getByText } = renderWithBrowserRouter(
+      <SubnetColumn
+        link={unconfiguredLink}
+        nic={unconfiguredNIC}
+        node={unconfiguredNode}
+      />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe("Unconfigured");
+    expect(getByText(/unconfigured/i)).toBeInTheDocument();
   });
 
   it("can display the subnet name only", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
-    state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
-    state.vlan.items = [vlan];
-    state.subnet.items = [subnet];
     const discovered = [networkDiscoveredIPFactory({ subnet_id: subnet.id })];
-    const nic = machineInterfaceFactory({
+    const subnetOnlyNIC = machineInterfaceFactory({
       discovered,
       links: [],
       vlan_id: vlan.id,
     });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        status: NodeStatus.DEPLOYING,
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const subnetOnlyMachineDetails = machineDetailsFactory({
+      interfaces: [subnetOnlyNIC],
+      system_id: "abc123",
+      status: "deploying",
+    });
+    const subnetOnlyNode = {
+      ...subnetOnlyMachineDetails,
+      status: "deploying",
+    };
+    state.machine.items.push(subnetOnlyMachineDetails);
+
+    const store = { state };
+
+    const { getByText, queryByText } = renderWithBrowserRouter(
+      <SubnetColumn nic={subnetOnlyNIC} node={subnetOnlyNode} />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("Link").exists()).toBe(false);
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe(
-      "subnet-cidr (subnet-name)"
-    );
+    // check that subnet name and CIDR appear in the primary column, but not as a link
+    expect(queryByText(/subnet-cidr/i)).toBeNull();
+    expect(getByText(/subnet-name/i)).toBeInTheDocument();
+    expect(queryByText(/subnet-name/i).closest("a")).toBeNull();
   });
 });

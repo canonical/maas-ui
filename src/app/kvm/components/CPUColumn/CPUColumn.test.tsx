@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { render } from "@testing-library/react";
 
 import CPUColumn from "./CPUColumn";
 
@@ -14,6 +12,7 @@ import {
   rootState as rootStateFactory,
   vmClusterResource as vmClusterResourceFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -43,18 +42,15 @@ describe("CPUColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CPUColumn
-          cores={pod.resources.cores}
-          overCommit={pod.cpu_over_commit_ratio}
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <CPUColumn
+        cores={pod.resources.cores}
+        overCommit={pod.cpu_over_commit_ratio}
+      />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "4 of 8 allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(8);
+    expect(screen.getByText(/4 of 8/i)).toBeInTheDocument();
+    expect(screen.getByRole("meter")).toHaveAttribute("max", "8");
   });
 
   it("can display correct cpu core information with overcommit", () => {
@@ -67,18 +63,15 @@ describe("CPUColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CPUColumn
-          cores={pod.resources.cores}
-          overCommit={pod.cpu_over_commit_ratio}
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <CPUColumn
+        cores={pod.resources.cores}
+        overCommit={pod.cpu_over_commit_ratio}
+      />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "4 of 16 allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(16);
+    expect(screen.getByText(/4 of 16/i)).toBeInTheDocument();
+    expect(screen.getByRole("meter")).toHaveAttribute("max", "16");
   });
 
   it("can display when cpu has been overcommitted", () => {
@@ -91,19 +84,16 @@ describe("CPUColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CPUColumn
-          cores={pod.resources.cores}
-          overCommit={pod.cpu_over_commit_ratio}
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <CPUColumn
+        cores={pod.resources.cores}
+        overCommit={pod.cpu_over_commit_ratio}
+      />,
+      { route: "/machines", store }
     );
-    expect(wrapper.find("[data-testid='meter-overflow']").exists()).toBe(true);
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "4 of 3 allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(3);
+    expect(screen.getByTestId("meter-overflow")).toBeInTheDocument();
+    expect(screen.getByText(/4 of 3/i)).toBeInTheDocument();
+    expect(screen.getByRole("meter")).toHaveAttribute("max", "3");
   });
 
   it("can display correct cpu core information for vmclusters", () => {
@@ -113,14 +103,11 @@ describe("CPUColumn", () => {
       free: 3,
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CPUColumn cores={resources} />
-      </Provider>
-    );
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "2 of 6 allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(6);
+    renderWithBrowserRouter(<CPUColumn cores={resources} />, {
+      route: "/machines",
+      store,
+    });
+    expect(screen.getByText(/2 of 6/i)).toBeInTheDocument();
+    expect(screen.getByRole("meter")).toHaveAttribute("max", "6");
   });
 });

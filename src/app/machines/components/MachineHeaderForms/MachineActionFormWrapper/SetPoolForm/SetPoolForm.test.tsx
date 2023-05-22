@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SetPoolForm from "./SetPoolForm";
@@ -17,9 +12,9 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("SetPoolForm", () => {
   let state: RootState;
@@ -56,21 +51,14 @@ describe("SetPoolForm", () => {
 
   it("dispatches action to fetch pools on load", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SetPoolForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SetPoolForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
     expect(
@@ -80,30 +68,24 @@ describe("SetPoolForm", () => {
 
   it("correctly dispatches actions to set pools of given machines", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SetPoolForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SetPoolForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        poolSelection: "select",
-        name: "pool-1",
-        description: "",
-      })
-    );
+    const poolSelection = screen.getByLabelText(/select.*pool/i);
+    userEvent.selectOptions(poolSelection, "1");
+
+    const confirmButton = screen.getByRole("button", {
+      name: /set pool/i,
+    });
+    userEvent.click(confirmButton);
+
     expect(
       store.getActions().filter((action) => action.type === "machine/setPool")
     ).toStrictEqual([
@@ -144,30 +126,27 @@ describe("SetPoolForm", () => {
 
   it("correctly dispatches action to create and set pool of given machines", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SetPoolForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SetPoolForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        poolSelection: "create",
-        name: "pool-1",
-        description: "",
-      })
-    );
+    const poolSelection = screen.getByLabelText(/select.*pool/i);
+    userEvent.selectOptions(poolSelection, "create");
+
+    const nameInput = screen.getByLabelText(/enter pool name/i);
+    userEvent.type(nameInput, "pool-1");
+
+    const confirmButton = screen.getByRole("button", {
+      name: /create and set pool/i,
+    });
+    userEvent.click(confirmButton);
+
     expect(
       store
         .getActions()

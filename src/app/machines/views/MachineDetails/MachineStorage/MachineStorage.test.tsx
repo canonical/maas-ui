@@ -1,13 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
+import { render, screen } from 'testing/utils';
 import MachineStorage from "./MachineStorage";
-
-import * as hooks from "app/base/hooks/analytics";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -28,19 +20,11 @@ it("displays a spinner if machine is loading", () => {
     }),
   });
   const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <MachineStorage />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  render(
+    <MachineStorage />,
+    { store, route: "/machine/abc123" }
   );
-
-  expect(wrapper.find("Spinner").exists()).toBe(true);
+  expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 });
 
 it("renders storage layout dropdown if machine's storage can be edited", () => {
@@ -64,23 +48,11 @@ it("renders storage layout dropdown if machine's storage can be edited", () => {
     }),
   });
   const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/machine/abc123/storage", key: "testKey" },
-        ]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route element={<MachineStorage />} path="/machine/:id/storage" />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  render(
+    <MachineStorage />,
+    { store, route: "/machine/abc123/storage" }
   );
-
-  expect(wrapper.find("ChangeStorageLayout").exists()).toBe(true);
+  expect(screen.getByLabelText(/Select Storage layout/)).toBeInTheDocument();
 });
 
 it("sends an analytics event when clicking on the MAAS docs footer link", () => {
@@ -95,33 +67,17 @@ it("sends an analytics event when clicking on the MAAS docs footer link", () => 
   const mockUseSendAnalytics = jest
     .spyOn(hooks, "useSendAnalytics")
     .mockImplementation(() => mockSendAnalytics);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/machine/abc123/storage", key: "testKey" },
-        ]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route element={<MachineStorage />} path="/machine/:id/storage" />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  render(
+    <MachineStorage />,
+    { store, route: "/machine/abc123/storage" }
   );
-
-  act(() => {
-    wrapper.find("[data-testid='docs-footer-link']").simulate("click");
-  });
-  wrapper.update();
-
+  userEvent.click(screen.getByTestId("docs-footer-link"));  
   expect(mockSendAnalytics).toHaveBeenCalled();
   expect(mockSendAnalytics.mock.calls[0]).toEqual([
     "Machine storage",
     "Click link to MAAS docs",
     "Windows",
   ]);
-
   mockUseSendAnalytics.mockRestore();
 });
+```

@@ -1,17 +1,11 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import type { MockStore } from "redux-mock-store";
-import configureStore from "redux-mock-store";
-
-import ComposeForm from "../../ComposeForm";
-
-import type { MenuLink } from "./SubnetSelect";
-
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { renderWithBrowserRouter, screen, waitFor } from 'testing/utils';
+import type { MockStore } from 'redux-mock-store';
+import configureStore from 'redux-mock-store';
+import ComposeForm from '../../ComposeForm';
+import type { PowerType } from 'app/store/general/types';
+import type { MenuLink } from './SubnetSelect';
+import type { Pod } from 'app/store/pod/types';
+import type { RootState } from 'app/store/root/types';
 import {
   domainState as domainStateFactory,
   fabric as fabricFactory,
@@ -32,25 +26,17 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+} from 'testing/factories';
 
 const mockStore = configureStore();
 
 const generateWrapper = (store: MockStore, pod: Pod) =>
-  mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: `/kvm/${pod.id}`, key: "testKey" }]}
-      >
-        <CompatRouter>
-          <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+    { route: `/kvm/${pod.id}`, store }
   );
 
-describe("SubnetSelect", () => {
+describe('SubnetSelect', () => {
   let initialState: RootState;
 
   beforeEach(() => {
@@ -65,7 +51,7 @@ describe("SubnetSelect", () => {
       }),
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+          data: [powerTypeFactory()] as PowerType[],
           loaded: true,
         }),
       }),
@@ -87,15 +73,15 @@ describe("SubnetSelect", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+        genericActions: zoneGenericActionsFactory({ fetch: 'success' }),
       }),
     });
   });
 
-  it("groups subnets by space if a space is not yet selected", async () => {
+  it('groups subnets by space if a space is not yet selected', async () => {
     const spaces = [
-      spaceFactory({ name: "Outer" }),
-      spaceFactory({ name: "Safe" }),
+      spaceFactory({ name: 'Outer' }),
+      spaceFactory({ name: 'Safe' }),
     ];
     const subnets = [
       subnetFactory({ space: spaces[0].id, vlan: 1 }),
@@ -112,27 +98,25 @@ describe("SubnetSelect", () => {
     state.space.items = spaces;
     state.subnet.items = subnets;
     const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    const { getByRole } = generateWrapper(store, pod);
 
-    // Click "Define" button
-    await act(async () => {
-      wrapper
-        .find("[data-testid='define-interfaces'] button")
-        .simulate("click");
+    // Click 'Define' button
+    userEvent.click(getByRole('button', { name: /define/i }));
+    await waitFor(() => {
+      expect(getByRole('button', { name: /close/i })).toBeInTheDocument();
     });
-    wrapper.update();
 
-    const links = wrapper
-      .find("SubnetSelect ContextualMenu")
-      .prop("links") as MenuLink[];
+    const links = (screen.getAllByRole(
+      'menuitem'
+    ) as HTMLAnchorElement[]).map((link) => link.textContent);
 
-    // "Space: Outer" + outer subnets + "Space: Safe" + safe subnets
-    expect(links.length).toBe(5);
-    expect(links[0]).toBe("Space: Outer");
-    expect(links[3]).toBe("Space: Safe");
+    // 'Space: Outer' + outer subnets + 'Space: Safe' + safe subnets
+    expect(links).toHaveLength(5);
+    expect(links[0]).toBe('Space: Outer');
+    expect(links[3]).toBe('Space: Safe');
   });
 
-  it("filters subnets by selected space", async () => {
+  it('filters subnets by selected space', async () => {
     const space = spaceFactory();
     const [subnetInSpace, subnetNotInSpace] = [
       subnetFactory({ space: space.id, vlan: 1 }),
@@ -148,53 +132,46 @@ describe("SubnetSelect", () => {
     state.space.items = [space];
     state.subnet.items = [subnetInSpace, subnetNotInSpace];
     const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
-    let links = [];
-    let filteredLinks = [];
+    const { getByRole } = generateWrapper(store, pod);
 
-    // Click "Define" button
-    await act(async () => {
-      wrapper
-        .find("[data-testid='define-interfaces'] button")
-        .simulate("click");
+    // Click 'Define' button
+    userEvent.click(getByRole('button', { name: /define/i }));
+    await waitFor(() => {
+      expect(getByRole('button', { name: /close/i })).toBeInTheDocument();
     });
-    wrapper.update();
 
-    links = wrapper
-      .find("SubnetSelect ContextualMenu")
-      .prop("links") as MenuLink[];
-    filteredLinks = links.filter((link) => typeof link !== "string");
-    expect(filteredLinks.length).toBe(2);
+    const links = (screen.getAllByRole(
+      'menuitem'
+    ) as HTMLAnchorElement[]).map((link) => link.textContent);
+
+    const filteredLinks = links.filter((link) => !link.startsWith('Space: '));
+    expect(filteredLinks).toHaveLength(2);
 
     // Choose the space in state from the dropdown
     // Only the subnet in the selected space should be available
-    await act(async () => {
-      wrapper
-        .find("FormikField select[name='interfaces[0].space']")
-        .simulate("change", {
-          target: {
-            name: "interfaces[0].space",
-            value: `${space.id}`,
-          },
-        });
-    });
-    wrapper.update();
+    userEvent.selectOptions(
+      getByRole('combobox', { name: /interface 1 space/i }),
+      `${space.id}`
+    );
 
-    links = wrapper
-      .find("SubnetSelect ContextualMenu")
-      .prop("links") as MenuLink[];
-    filteredLinks = links.filter((link) => typeof link !== "string");
-    expect(filteredLinks.length).toBe(1);
+    const linksAfterSelect = (screen.getAllByRole(
+      'menuitem'
+    ) as HTMLAnchorElement[]).map((link) => link.textContent);
+
+    const filteredLinksAfterSelect = linksAfterSelect.filter(
+      (link) => !link.startsWith('Space: ')
+    );
+    expect(filteredLinksAfterSelect).toHaveLength(1);
   });
 
-  it("shows an error if multiple interfaces defined without at least one PXE network", async () => {
+  it('shows an error if multiple interfaces defined without at least one PXE network', async () => {
     const fabric = fabricFactory();
     const space = spaceFactory();
     const pxeVlan = vlanFactory({ fabric: fabric.id, id: 1 });
     const nonPxeVlan = vlanFactory({ fabric: fabric.id, id: 2 });
-    const pxeSubnet = subnetFactory({ name: "pxe", vlan: pxeVlan.id });
+    const pxeSubnet = subnetFactory({ name: 'pxe', vlan: pxeVlan.id });
     const nonPxeSubnet = subnetFactory({
-      name: "non-pxe",
+      name: 'non-pxe',
       vlan: nonPxeVlan.id,
     });
     const pod = podDetailsFactory({
@@ -208,41 +185,26 @@ describe("SubnetSelect", () => {
     state.subnet.items = [pxeSubnet, nonPxeSubnet];
     state.vlan.items = [pxeVlan, nonPxeVlan];
     const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
-
-    // Click "Define" button
-    wrapper.find("[data-testid='define-interfaces'] button").simulate("click");
-    await waitForComponentToPaint(wrapper);
-
-    // Add a second interface
-    wrapper.find("[data-testid='define-interfaces'] button").simulate("click");
-    await waitForComponentToPaint(wrapper);
-
-    // Select non-PXE network for the first interface
-    wrapper.find("SubnetSelect button").at(0).simulate("click");
-    await waitForComponentToPaint(wrapper);
-    wrapper.find("ContextualMenuDropdown button").at(1).simulate("click");
-    await waitForComponentToPaint(wrapper);
-
-    // Select non-PXE network for the second interface - error should be present.
-    wrapper.find("SubnetSelect button").at(1).simulate("click");
-    await waitForComponentToPaint(wrapper);
-    wrapper.find("ContextualMenuDropdown button").at(1).simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-testid='no-pxe']").text()).toBe(
-      "Error: Select at least 1 PXE network when creating multiple interfaces."
+    const { getByRole, getByTestId, queryByTestId } = generateWrapper(
+      store,
+      pod
     );
 
-    // Select PXE network for the second interface - error should be removed.
-    wrapper.find("SubnetSelect button").at(1).simulate("click");
-    await waitForComponentToPaint(wrapper);
-    wrapper.find("ContextualMenuDropdown button").at(0).simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-testid='no-pxe']").exists()).toBe(false);
+    // Click 'Define' button
+    userEvent.click(getByRole('button', { name: /define/i }));
+    await waitFor(() => {
+      expect(getByRole('button', { name: /close/i })).toBeInTheDocument();
+    });
 
-    // Remove second interface with PXE network - error should still not show.
-    wrapper.find("[data-testid='delete-interface']").at(1).simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-testid='no-pxe']").exists()).toBe(false);
-  });
-});
+    // Add a second interface
+    userEvent.click(getByRole('button', { name: /add interface/i }));
+
+    // Select non-PXE network for the first interface
+    userEvent.click(
+      screen.getByRole('button', {
+        name: new RegExp(`subnet select 1 attach network`, 'i'),
+      })
+    );
+    userEvent.click(screen.getByRole('menuitem', { name: /non-pxe/i }));
+
+    //

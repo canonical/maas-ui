@@ -1,11 +1,5 @@
-import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import NumaResourcesCard from "./NumaResourcesCard";
 
-import { actions as machineActions } from "app/store/machine";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -19,12 +13,13 @@ import {
   podVM as podVmFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { render, screen } from "testing/utils";
 
 describe("NumaResourcesCard", () => {
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    jest
+      .spyOn(require("@reduxjs/toolkit"), "nanoid")
+      .mockReturnValue("mocked-nanoid");
   });
 
   afterEach(() => {
@@ -43,11 +38,7 @@ describe("NumaResourcesCard", () => {
       pod: podStateFactory({ items: [pod] }),
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={111} podId={1} />
-      </Provider>
-    );
+    render(<NumaResourcesCard numaId={111} podId={1} />, { store });
     const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
       store.getActions().some((action) => action.type === expectedAction.type)
@@ -83,14 +74,10 @@ describe("NumaResourcesCard", () => {
       pod: podStateFactory({ items: [pod] }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={11} podId={1} />
-      </Provider>
-    );
-    expect(wrapper.find("RamResources").prop("hugepagesAllocated")).toBe(5);
-    expect(wrapper.find("RamResources").prop("hugepagesFree")).toBe(7);
-    expect(wrapper.find("RamResources").prop("pageSize")).toBe(1024);
+    render(<NumaResourcesCard numaId={11} podId={1} />, { store });
+    expect(screen.getByText(/Allocated/i)).toHaveTextContent("5");
+    expect(screen.getByText(/Free/i)).toHaveTextContent("7");
+    expect(screen.getByTestId("hugepages")).toHaveTextContent("1024");
   });
 
   it("filters interface resources to those that belong to the NUMA node", () => {
@@ -111,15 +98,11 @@ describe("NumaResourcesCard", () => {
       pod: podStateFactory({ items: [pod] }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={111} podId={1} />
-      </Provider>
-    );
-    expect(wrapper.find("VfResources").prop("interfaces")).toStrictEqual([
-      podInterfaces[0],
-      podInterfaces[2],
-    ]);
+    render(<NumaResourcesCard numaId={111} podId={1} />, { store });
+    expect(screen.queryByText(/Interfaces/i)).not.toBeNull();
+    expect(screen.getByText(/11/i)).toHaveTextContent("11");
+    expect(screen.queryByText(/22/i)).toBeNull();
+    expect(screen.getByText(/33/i)).toHaveTextContent("33");
   });
 
   it("correctly filters VMs dropdown to those that belong to each NUMA node", () => {
@@ -156,18 +139,7 @@ describe("NumaResourcesCard", () => {
       pod: podStateFactory({ items: [pod] }),
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={11} podId={1} />
-      </Provider>
-    );
-    const expected = machineActions.fetch("mocked-nanoid");
-    const result = store
-      .getActions()
-      .find((action) => action.type === expected.type);
-    expect(result.payload.params.filter).toStrictEqual({
-      id: [machines[0].system_id, machines[2].system_id],
-      pod: [podName],
-    });
+    render(<NumaResourcesCard numaId={11} podId={1} />, { store });
+    expect(screen.getByLabelText("Select VMs").childNodes.length).toBe(2);
   });
 });

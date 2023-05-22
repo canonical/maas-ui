@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMHeaderForms from "./KVMHeaderForms";
@@ -15,7 +11,7 @@ import {
   podStatus as podStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -39,168 +35,138 @@ describe("KVMHeaderForms", () => {
 
   it("does not render if sidePanelContent is not defined", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { store }
     );
     expect(
-      wrapper.find("[data-testid='kvm-action-form-wrapper']").exists()
-    ).toBe(false);
+      screen.queryByTestId("kvm-action-form-wrapper")
+    ).not.toBeInTheDocument();
   });
 
   it("renders AddLxd if Add LXD host header content provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{ view: KVMHeaderViews.ADD_LXD_HOST }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: KVMHeaderViews.ADD_LXD_HOST }}
+      />,
+      { store }
     );
-
-    expect(wrapper.find("AddLxd").exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: /Add LXD Host/i })
+    ).toBeInTheDocument();
   });
 
   it("renders AddVirsh if Add Virsh host header content provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{ view: KVMHeaderViews.ADD_VIRSH_HOST }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: KVMHeaderViews.ADD_VIRSH_HOST }}
+      />,
+      { store }
     );
-
-    expect(wrapper.find("AddVirsh").exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: /Add Virsh Host/i })
+    ).toBeInTheDocument();
   });
 
   it("renders ComposeForm if Compose header content and host id provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{
-                view: KVMHeaderViews.COMPOSE_VM,
-                extras: { hostId: 1 },
-              }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{
+          view: KVMHeaderViews.COMPOSE_VM,
+          extras: { hostId: 1 },
+        }}
+      />,
+      { store }
     );
-    expect(wrapper.find("ComposeForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: /Compose/i })
+    ).toBeInTheDocument();
   });
 
   it("renders DeleteForm if delete header content and host id provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{
-                view: KVMHeaderViews.DELETE_KVM,
-                extras: { hostId: 1 },
-              }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{
+          view: KVMHeaderViews.DELETE_KVM,
+          extras: { hostId: 1 },
+        }}
+      />,
+      { store }
     );
-    expect(wrapper.find("DeleteForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: /Delete/i })
+    ).toBeInTheDocument();
   });
 
   it("renders DeleteForm if delete header content and cluster id provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{
-                view: KVMHeaderViews.DELETE_KVM,
-                extras: { clusterId: 1 },
-              }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{
+          view: KVMHeaderViews.DELETE_KVM,
+          extras: { clusterId: 1 },
+        }}
+      />,
+      { store }
     );
-    expect(wrapper.find("DeleteForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: /Delete/i })
+    ).toBeInTheDocument();
   });
 
   it("renders RefreshForm if refresh header content and host ids provided", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{
-                view: KVMHeaderViews.REFRESH_KVM,
-                extras: { hostIds: [1] },
-              }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{
+          view: KVMHeaderViews.REFRESH_KVM,
+          extras: { hostIds: [1] },
+        }}
+      />,
+      { store }
     );
-    expect(wrapper.find("RefreshForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: /Refresh/i })
+    ).toBeInTheDocument();
   });
 
   it("renders machine action forms if a machine action is selected", () => {
     state.machine.selectedMachines = { items: ["abc123"] };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMHeaderForms
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{ view: MachineHeaderViews.COMMISSION_MACHINE }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: MachineHeaderViews.COMMISSION_MACHINE }}
+      />,
+      { store }
     );
-
     expect(
-      wrapper.find("MachineActionFormWrapper CommissionForm").exists()
-    ).toBe(true);
+      screen.getByRole("heading", { name: /Commission a Machine/i })
+    ).toBeInTheDocument();
   });
 
   it("renders machine action forms with selected machine count", () => {
     state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    const store = mockStore(state);
     renderWithBrowserRouter(
       <KVMHeaderForms
         setSidePanelContent={jest.fn()}
         sidePanelContent={{ view: MachineHeaderViews.DELETE_MACHINE }}
       />,
-      { route: "/kvm", state }
+      { store, route: "/kvm" }
     );
 
     expect(

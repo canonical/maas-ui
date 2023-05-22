@@ -1,17 +1,12 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { AddLxdSteps } from "../AddLxd";
-import type { NewPodValues } from "../types";
 
-import SelectProjectForm from "./SelectProjectForm";
+import { SelectProjectForm } from "./SelectProjectForm";
 
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
 import {
   podProject as podProjectFactory,
   podState as podStateFactory,
@@ -21,13 +16,11 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
-
-const mockStore = configureStore();
+import { render, screen, submitFormikForm } from "testing/utils";
 
 describe("SelectProjectForm", () => {
-  let state: RootState;
-  let newPodValues: NewPodValues;
+  let state;
+  let newPodValues;
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -58,27 +51,17 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SelectProjectForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setStep={jest.fn()}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container } = render(
+      <SelectProjectForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setStep={jest.fn()}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store: state }
     );
 
-    expect(wrapper.find("[data-testid='lxd-host-details']").text()).toBe(
-      "LXD host: pod-name (192.168.1.1)"
-    );
+    expect(container).toHaveTextContent("LXD host: pod-name (192.168.1.1)");
   });
 
   it("shows an error if attempting to add a project name that already exists", async () => {
@@ -86,35 +69,26 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SelectProjectForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setStep={jest.fn()}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container } = render(
+      <SelectProjectForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setStep={jest.fn()}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store: state }
     );
 
-    wrapper.find("input[name='newProject']").simulate("change", {
-      target: { name: "newProject", value: "foo" },
+    const nameInput = screen.getByRole("textbox", {
+      name: /Name your project/i,
     });
-    wrapper.find("input[name='newProject']").simulate("blur");
-    await waitForComponentToPaint(wrapper);
-
-    expect(
-      wrapper
-        .find("FormikField[name='newProject'] .p-form-validation__message")
-        .text()
-    ).toBe("Error: A project with this name already exists.");
+    userEvent.clear(nameInput);
+    userEvent.type(nameInput, "foo");
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Error: A project with this name already exists.")
+      ).toBeInTheDocument()
+    );
   });
 
   it("can handle creating a LXD KVM with a new project", async () => {
@@ -122,29 +96,20 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SelectProjectForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setStep={jest.fn()}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container, store } = render(
+      <SelectProjectForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setStep={jest.fn()}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store: state }
     );
 
-    submitFormikForm(wrapper, {
+    submitFormikForm(container, {
       existingProject: "",
       newProject: "new-project",
     });
-    wrapper.update();
 
     const expectedAction = podActions.create({
       certificate: "certificate",
@@ -168,28 +133,20 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SelectProjectForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setStep={jest.fn()}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container, store } = render(
+      <SelectProjectForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setStep={jest.fn()}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store: state }
     );
-    submitFormikForm(wrapper, {
+
+    submitFormikForm(container, {
       existingProject: "existing-project",
       newProject: "",
     });
-    wrapper.update();
 
     const expectedAction = podActions.create({
       certificate: "certificate",
@@ -208,29 +165,23 @@ describe("SelectProjectForm", () => {
     expect(actualAction).toStrictEqual(expectedAction);
   });
 
-  it("reverts back to credentials step if attempt to create pod results in error", () => {
+  it("reverts back to credentials step if attempt to create pod results in error", async () => {
     const setStep = jest.fn();
     const setSubmissionErrors = jest.fn();
     state.pod.errors = "it didn't work";
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SelectProjectForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setStep={setStep}
-              setSubmissionErrors={setSubmissionErrors}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { container } = render(
+      <SelectProjectForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setStep={setStep}
+        setSubmissionErrors={setSubmissionErrors}
+      />,
+      { route: "/kvm/add", store: state }
     );
 
-    expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
+    await waitFor(() =>
+      expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS)
+    );
     expect(setSubmissionErrors).toHaveBeenCalledWith("it didn't work");
   });
 });

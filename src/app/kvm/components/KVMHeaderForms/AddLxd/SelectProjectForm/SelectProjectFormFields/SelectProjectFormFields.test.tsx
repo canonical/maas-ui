@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { waitFor, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -19,7 +20,7 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -50,39 +51,27 @@ describe("SelectProjectFormFields", () => {
       "192.168.1.1": [project],
     };
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        <Formik
+          initialValues={{ existingProject: "", newProject: "" }}
+          onSubmit={jest.fn()}
         >
-          <CompatRouter>
-            <Formik
-              initialValues={{ existingProject: "", newProject: "" }}
-              onSubmit={jest.fn()}
-            >
-              <SelectProjectFormFields newPodValues={newPodValues} />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+          <SelectProjectFormFields newPodValues={newPodValues} />
+        </Formik>
+      </Provider>,
+      { route: "/kvm/add" }
     );
 
-    // Check radio button for selecting existing project
-    wrapper.find("input[id='existing-project']").simulate("change", {
-      target: { name: "project-select", value: "checked" },
-    });
-    await waitForComponentToPaint(wrapper);
+    const radio = screen.getByRole("radio", { name: "Existing project" });
+    userEvent.click(radio);
 
-    expect(
-      wrapper
-        .find("Notification[data-testid='existing-project-warning']")
-        .exists()
-    ).toBe(true);
-    expect(
-      wrapper
-        .find("Notification[data-testid='existing-project-warning']")
-        .text()
-    ).toBe("MAAS will recommission all VMs in the selected project.");
+    await waitFor(() =>
+      expect(screen.getByTestId("existing-project-warning")).toBeInTheDocument()
+    );
+    expect(screen.getByTestId("existing-project-warning")).toHaveTextContent(
+      "MAAS will recommission all VMs in the selected project."
+    );
   });
 
   it("selects the first available project when switching to existing projects", async () => {
@@ -105,44 +94,26 @@ describe("SelectProjectFormFields", () => {
       },
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        <Formik
+          initialValues={{ existingProject: "", newProject: "" }}
+          onSubmit={jest.fn()}
         >
-          <CompatRouter>
-            <Formik
-              initialValues={{ existingProject: "", newProject: "" }}
-              onSubmit={jest.fn()}
-            >
-              <SelectProjectFormFields newPodValues={newPodValues} />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+          <SelectProjectFormFields newPodValues={newPodValues} />
+        </Formik>
+      </Provider>,
+      { route: "/kvm/add" }
     );
 
-    // Check radio button for selecting existing project
-    wrapper.find("input[id='existing-project']").simulate("change", {
-      target: { name: "project-select", value: "checked" },
-    });
-    await waitForComponentToPaint(wrapper);
+    const radio = screen.getByRole("radio", { name: "Existing project" });
+    userEvent.click(radio);
 
-    expect(
-      wrapper
-        .find("Input[name='existingProject'][value='default']")
-        .prop("disabled")
-    ).toBe(true);
-    expect(
-      wrapper
-        .find("Input[name='existingProject'][value='other']")
-        .prop("disabled")
-    ).toBe(false);
-    expect(
-      wrapper
-        .find("Input[name='existingProject'][value='other']")
-        .prop("checked")
-    ).toBe(true);
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: "other" })).toBeChecked()
+    );
+    expect(screen.getByRole("radio", { name: "default" })).toBeDisabled();
+    expect(screen.getByRole("radio", { name: "other" })).toBeEnabled();
   });
 
   it("disables the existing project radio button if no existing projects are free", async () => {
@@ -172,26 +143,21 @@ describe("SelectProjectFormFields", () => {
       },
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        <Formik
+          initialValues={{ existingProject: "", newProject: "" }}
+          onSubmit={jest.fn()}
         >
-          <CompatRouter>
-            <Formik
-              initialValues={{ existingProject: "", newProject: "" }}
-              onSubmit={jest.fn()}
-            >
-              <SelectProjectFormFields newPodValues={newPodValues} />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+          <SelectProjectFormFields newPodValues={newPodValues} />
+        </Formik>
+      </Provider>,
+      { route: "/kvm/add" }
     );
 
-    expect(wrapper.find("input[id='existing-project']").prop("disabled")).toBe(
-      true
-    );
+    expect(
+      screen.getByRole("radio", { name: "Existing project" })
+    ).toBeDisabled();
   });
 
   it("disables radio and shows a link to an existing LXD project", async () => {
@@ -213,31 +179,25 @@ describe("SelectProjectFormFields", () => {
       },
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
+        <Formik
+          initialValues={{ existingProject: "", newProject: "" }}
+          onSubmit={jest.fn()}
         >
-          <CompatRouter>
-            <Formik
-              initialValues={{ existingProject: "", newProject: "" }}
-              onSubmit={jest.fn()}
-            >
-              <SelectProjectFormFields newPodValues={newPodValues} />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+          <SelectProjectFormFields newPodValues={newPodValues} />
+        </Formik>
+      </Provider>,
+      { route: "/kvm/add" }
     );
 
-    // Check radio button for selecting existing project
-    wrapper.find("input[id='existing-project']").simulate("change", {
-      target: { name: "project-select", value: "checked" },
-    });
-    await waitForComponentToPaint(wrapper);
+    const radio = screen.getByRole("radio", { name: "Existing project" });
+    userEvent.click(radio);
 
-    expect(wrapper.find("[data-testid='existing-pod']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='existing-pod'] Link").prop("to")).toBe(
+    await waitFor(() =>
+      expect(screen.getByTestId("existing-pod")).toBeInTheDocument()
+    );
+    expect(screen.getByTestId("existing-pod")).toHaveTextContent(
       urls.kvm.lxd.single.index({ id: pod.id })
     );
   });

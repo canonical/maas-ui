@@ -1,12 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { render } from '@testing-library/react';
+import { renderWithBrowserRouter, screen, userEvent } from 'testing/utils';
 
-import EditDisk from "./EditDisk";
+import EditDisk from './EditDisk';
 
-import { DiskTypes } from "app/store/types/enum";
+import { DiskTypes } from 'app/store/types/enum';
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -14,20 +11,18 @@ import {
   machineStatuses as machineStatusesFactory,
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+} from 'testing/factories';
+import { submitFormikForm } from 'testing/utils';
 
-const mockStore = configureStore();
-
-describe("EditDisk", () => {
-  it("shows filesystem fields if the disk is not the boot disk", () => {
+describe('EditDisk', () => {
+  it('shows filesystem fields if the disk is not the boot disk', () => {
     const disk = diskFactory({ is_boot: false, type: DiskTypes.PHYSICAL });
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
             disks: [disk],
-            system_id: "abc123",
+            system_id: 'abc123',
           }),
         ],
         statuses: machineStatusesFactory({
@@ -35,28 +30,20 @@ describe("EditDisk", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    const store = configureStore()(state);
+    renderWithBrowserRouter(<EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />, { store });
 
-    expect(wrapper.find("FilesystemFields").exists()).toBe(true);
+    expect(screen.getByTestId('filesystem-fields')).toBeInTheDocument();
   });
 
-  it("correctly dispatches an action to edit a disk", () => {
+  it('correctly dispatches an action to edit a disk', async () => {
     const disk = diskFactory({ type: DiskTypes.PHYSICAL });
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
             disks: [disk],
-            system_id: "abc123",
+            system_id: 'abc123',
           }),
         ],
         statuses: machineStatusesFactory({
@@ -64,36 +51,28 @@ describe("EditDisk", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    const store = configureStore()(state);
+    renderWithBrowserRouter(<EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />, { store });
 
-    submitFormikForm(wrapper, {
-      tags: ["tag1", "tag2"],
-    });
+    userEvent.type(screen.getByPlaceholderText(/tag/i), 'tag1,tag2');
+    userEvent.click(screen.getByText(/submit/i));
 
     expect(
-      store.getActions().find((action) => action.type === "machine/updateDisk")
-    ).toStrictEqual({
+      store.getActions().find((action) => action.type === 'machine/updateDisk')
+    ).toEqual({
       meta: {
-        method: "update_disk",
-        model: "machine",
+        method: 'update_disk',
+        model: 'machine',
       },
       payload: {
         params: {
           block_id: disk.id,
-          system_id: "abc123",
-          tags: ["tag1", "tag2"],
+          system_id: 'abc123',
+          tags: ['tag1', 'tag2'],
         },
       },
-      type: "machine/updateDisk",
+      type: 'machine/updateDisk',
     });
   });
 });
+```

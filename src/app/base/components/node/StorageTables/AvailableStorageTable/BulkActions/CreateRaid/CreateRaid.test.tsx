@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateRaid from "./CreateRaid";
@@ -16,7 +12,7 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -50,25 +46,19 @@ describe("CreateRaid", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateRaid
-              closeForm={jest.fn()}
-              selected={[physicalDisk]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CreateRaid
+        closeForm={jest.fn()}
+        selected={[physicalDisk]}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    // Two RAIDs already exist so the next one should be md2
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("md2");
+    expect(screen.getByRole("textbox", { name: /name/i })).toHaveValue("md2");
   });
 
-  it("correctly dispatches an action to create a RAID device", () => {
+  it("correctly dispatches an action to create a RAID device", async () => {
     const [selectedDisk, selectedPartition] = [
       diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
       partitionFactory({ filesystem: null }),
@@ -79,63 +69,57 @@ describe("CreateRaid", () => {
     ];
     const state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
+        items: [machineDetailsFactory({ disks, system_id: "abc123" })],
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
         }),
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateRaid
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CreateRaid
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    submitFormikForm(wrapper, {
-      blockDeviceIds: [1, 2],
-      fstype: "ext4",
-      level: "raid-6",
-      mountOptions: "option1,option2",
-      mountPoint: "/mount-point",
-      name: "md1",
-      partitionIds: [3, 4],
-      spareBlockDeviceIds: [5, 6],
-      sparePartitionIds: [7, 8],
-      tags: ["tag1", "tag2"],
-    });
+    userEvent.type(screen.getByLabelText(/name/i), "md1");
+    userEvent.type(screen.getByLabelText(/mount point/i), "/mount-point");
+    userEvent.type(screen.getByLabelText(/block devices/i), "1,2");
+    userEvent.type(screen.getByLabelText(/partition ids/i), "3,4");
+    userEvent.type(screen.getByLabelText(/spare block devices/i), "5,6");
+    userEvent.type(screen.getByLabelText(/spare partition ids/i), "7,8");
+    userEvent.type(screen.getByLabelText(/tags/i), "tag1,tag2");
+    userEvent.click(screen.getByRole("checkbox", { name: /ext4/i }));
+    userEvent.selectOptions(screen.getByTestId("raid-level"), ["raid-6"]);
+    userEvent.type(screen.getByLabelText(/mount options/i), "option1,option2");
+    userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     expect(
-      store.getActions().find((action) => action.type === "machine/createRaid")
-    ).toStrictEqual({
-      meta: {
-        method: "create_raid",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          block_devices: [1, 2],
-          fstype: "ext4",
-          level: "raid-6",
-          mount_options: "option1,option2",
-          mount_point: "/mount-point",
-          name: "md1",
-          partitions: [3, 4],
-          spare_devices: [5, 6],
-          spare_partitions: [7, 8],
-          system_id: "abc123",
-          tags: ["tag1", "tag2"],
+      await screen.findByText(/creating raid device/i)
+    ).toBeInTheDocument();
+
+    expect(store.getActions()).toContainEqual(
+      expect.objectContaining({
+        type: "machine/createRaid",
+        payload: {
+          params: {
+            name: "md1",
+            fstype: "ext4",
+            level: "raid-6",
+            mount_point: "/mount-point",
+            mount_options: "option1,option2",
+            block_devices: [1, 2],
+            partitions: [3, 4],
+            spare_devices: [5, 6],
+            spare_partitions: [7, 8],
+            system_id: "abc123",
+            tags: ["tag1", "tag2"],
+          },
         },
-      },
-      type: "machine/createRaid",
-    });
+      })
+    );
   });
 });

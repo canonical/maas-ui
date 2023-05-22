@@ -1,18 +1,10 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
+import { NotificationCategory, NotificationIdent } from "./types";
 
-import { ConfigNames } from "app/store/config/types";
-import type { Notification } from "app/store/notification/types";
-import {
-  NotificationCategory,
-  NotificationIdent,
-} from "app/store/notification/types";
-import type { RootState } from "app/store/root/types";
+import type { RootAction, RootState } from "app/store/root/types";
+import { ConfigNames } from "app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -24,8 +16,9 @@ import {
   rootState as rootStateFactory,
   routerState as routerStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, RootAction>();
 
 describe("NotificationList", () => {
   let state: RootState;
@@ -59,33 +52,22 @@ describe("NotificationList", () => {
 
   it("renders a list of messages", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <CompatRouter>
-            <NotificationList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NotificationList")).toMatchSnapshot();
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      store,
+    });
+
+    expect(screen.getByTestId("NotificationList")).toMatchSnapshot();
   });
 
   it("can hide a message", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <CompatRouter>
-            <NotificationList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper
-      .find("Notification [data-testid='notification-close-button']")
-      .at(1)
-      .simulate("click");
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      store,
+    });
+
+    userEvent.click(screen.getAllByTestId("notification-close-button")[1]);
 
     expect(
       store.getActions().find((action) => action.type === "message/remove")
@@ -97,15 +79,10 @@ describe("NotificationList", () => {
 
   it("fetches notifications", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <CompatRouter>
-            <NotificationList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      store,
+    });
 
     expect(
       store.getActions().some((action) => action.type === "notification/fetch")
@@ -118,25 +95,17 @@ describe("NotificationList", () => {
     });
     state.notification.items = [notification];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <CompatRouter>
-            <NotificationList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      store,
+    });
+
+    const notificationComponent = screen.getByTestId(
+      `Notification-${notification.id}`
     );
 
-    const notificationGroup = wrapper.find("NotificationGroup");
-    const notificationComponent = wrapper.find("NotificationGroupNotification");
-
-    expect(notificationGroup.exists()).toBe(false);
-    expect(notificationComponent.exists()).toBe(true);
-    expect(notificationComponent.props()).toEqual({
-      id: notification.id,
-      severity: "negative",
-    });
+    expect(notificationComponent).toBeInTheDocument();
+    expect(notificationComponent).toHaveAttribute("severity", "negative");
   });
 
   it("displays a NotificationGroup for more than one notification of a category", () => {
@@ -150,23 +119,16 @@ describe("NotificationList", () => {
     ];
     state.notification.items = notifications;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <CompatRouter>
-            <NotificationList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const notificationGroup = wrapper.find("NotificationGroup");
-
-    expect(notificationGroup.exists()).toBe(true);
-    expect(notificationGroup.props()).toEqual({
-      severity: "negative",
-      notifications,
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      store,
     });
+
+    const notificationGroup = screen.getByTestId("NotificationGroup-negative");
+
+    expect(notificationGroup).toBeInTheDocument();
+    expect(notificationGroup).toHaveAttribute("severity", "negative");
+    expect(screen.queryByTestId(/Notification-[0-9]/)).toBeNull();
   });
 
   it("can display a release notification", () => {
@@ -194,16 +156,15 @@ describe("NotificationList", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/settings/general" }]}>
-          <CompatRouter>
-            <NotificationList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NotificationGroupNotification").exists()).toBe(true);
+    renderWithBrowserRouter(<NotificationList />, {
+      route: "/settings/general",
+      store,
+    });
+
+    expect(screen.queryByTestId(/Notification-[0-9]/)).toBeNull();
+    expect(
+      screen.getByTestId("NotificationGroupNotification")
+    ).toBeInTheDocument();
   });
 
   it("does not display a release notification for some urls", () => {
@@ -230,15 +191,9 @@ describe("NotificationList", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm" }]}>
-          <CompatRouter>
-            <NotificationList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NotificationGroupNotification").exists()).toBe(false);
+    renderWithBrowserRouter(<NotificationList />, { route: "/kvm", store });
+
+    expect(screen.queryByTestId("NotificationGroupNotification")).toBeNull();
+    expect(screen.queryByTestId(/Notification-[0-9]/)).toBeNull();
   });
 });
