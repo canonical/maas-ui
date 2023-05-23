@@ -1,168 +1,232 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RamResources renders 1`] = `
-<div
-  className="ram-resources"
->
+<div>
   <div
-    className="ram-resources__chart-container"
+    class="ram-resources"
   >
-    <h4
-      className="p-heading--small"
+    <div
+      class="ram-resources__chart-container"
     >
-      RAM
-    </h4>
-    <DoughnutChart
-      className="ram-resources__chart"
-      label="21B"
-      segmentHoverWidth={18}
-      segmentWidth={15}
-      segments={
-        Array [
-          Object {
-            "color": "#0066CC",
-            "tooltip": "Allocated: 1B general + 4B hugepages",
-            "value": 5,
-          },
-          Object {
-            "color": "#0E8420",
-            "tooltip": "Others: 3B general + 6B hugepages",
-            "value": 9,
-          },
-          Object {
-            "color": "#D3E4ED",
-            "tooltip": "Free: 2B general + 5B hugepages",
-            "value": 7,
-          },
-        ]
-      }
-      size={96}
-    />
-  </div>
-  <div
-    className="ram-resources__table-container"
-  >
-    <table
-      className="ram-resources__table"
-    >
-      <thead>
-        <tr>
-          <th />
-          <th
-            className="u-align--right u-text--light u-truncate"
-          >
-            Allocated
-            <span
-              className="u-nudge-right--small"
-            >
-              <i
-                className="p-circle--link"
-              />
-            </span>
-          </th>
-          <th
-            className="u-align--right u-text--light u-truncate"
-            data-testid="others-col"
-          >
-            Others
-            <span
-              className="u-nudge-right--small"
-            >
-              <i
-                className="p-circle--positive"
-              />
-            </span>
-          </th>
-          <th
-            className="u-align--right u-text--light u-truncate"
-          >
-            Free
-            <span
-              className="u-nudge-right--small"
-            >
-              <i
-                className="p-circle--link-faded"
-              />
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            General
-          </td>
-          <td
-            className="u-align--right"
-          >
-            <span
-              className="u-nudge-left"
-            >
-              1B
-            </span>
-          </td>
-          <td
-            className="u-align--right"
-          >
-            <span
-              className="u-nudge-left"
-            >
-              3B
-            </span>
-          </td>
-          <td
-            className="u-align--right"
-          >
-            <span
-              className="u-nudge-left"
-            >
-              2B
-            </span>
-          </td>
-        </tr>
-        <tr
-          data-testid="hugepages-data"
+      <h4
+        class="p-heading--small"
+      >
+        RAM
+      </h4>
+      <div
+        class="doughnut-chart ram-resources__chart"
+        style="max-width: 102px;"
+      >
+        <span
+          class="doughnut-chart__tooltip"
         >
-          <td>
-            Hugepage
-            <br />
-            <strong
-              className="p-text--x-small u-text--light"
-              data-testid="page-size"
-            >
-              (Size: 7B)
-            </strong>
-          </td>
-          <td
-            className="u-align--right"
+          <style>
+            #doughnut-chart-mock-redux-js-nanoid-1 .doughnut-chart__segment:hover {
+          stroke-width: 21 !important;
+        }
+          </style>
+          <svg
+            class="doughnut-chart__chart"
+            id="doughnut-chart-mock-redux-js-nanoid-1"
+            viewBox="0 0 102 102"
           >
-            <span
-              className="u-nudge-left"
+            <mask
+              id="myMask"
             >
-              4B
-            </span>
-          </td>
-          <td
-            className="u-align--right"
+              <rect
+                fill="white"
+                height="102"
+                width="102"
+                x="0"
+                y="0"
+              />
+              <circle
+                cx="51"
+                cy="51"
+                fill="black"
+                r="33"
+              />
+            </mask>
+            <g
+              mask="url(#myMask)"
+            >
+              <rect
+                fill="transparent"
+                height="102"
+                width="102"
+                x="0"
+                y="0"
+              />
+              <g>
+                <circle
+                  class="doughnut-chart__segment"
+                  cx="30"
+                  cy="51"
+                  data-testid="segment"
+                  r="40.5"
+                  style="stroke: #0066CC; stroke-width: 15; stroke-dasharray: 0 0.00 60.48 193.52;"
+                  transform="rotate(-90 40.5,40.5)"
+                />
+                <circle
+                  class="doughnut-chart__segment"
+                  cx="30"
+                  cy="51"
+                  data-testid="segment"
+                  r="40.5"
+                  style="stroke: #0E8420; stroke-width: 15; stroke-dasharray: 0 60.48 108.86 84.67;"
+                  transform="rotate(-90 40.5,40.5)"
+                />
+                <circle
+                  class="doughnut-chart__segment"
+                  cx="30"
+                  cy="51"
+                  data-testid="segment"
+                  r="40.5"
+                  style="stroke: #D3E4ED; stroke-width: 15; stroke-dasharray: 0 169.33 84.67 0.00;"
+                  transform="rotate(-90 40.5,40.5)"
+                />
+              </g>
+            </g>
+            <text
+              x="51"
+              y="51"
+            >
+              <tspan
+                class="doughnut-chart__label"
+                data-testid="label"
+              >
+                21B
+              </tspan>
+            </text>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div
+      class="ram-resources__table-container"
+    >
+      <table
+        class="ram-resources__table"
+      >
+        <thead>
+          <tr>
+            <th />
+            <th
+              class="u-align--right u-text--light u-truncate"
+            >
+              Allocated
+              <span
+                class="u-nudge-right--small"
+              >
+                <i
+                  class="p-circle--link"
+                />
+              </span>
+            </th>
+            <th
+              class="u-align--right u-text--light u-truncate"
+              data-testid="others-col"
+            >
+              Others
+              <span
+                class="u-nudge-right--small"
+              >
+                <i
+                  class="p-circle--positive"
+                />
+              </span>
+            </th>
+            <th
+              class="u-align--right u-text--light u-truncate"
+            >
+              Free
+              <span
+                class="u-nudge-right--small"
+              >
+                <i
+                  class="p-circle--link-faded"
+                />
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              General
+            </td>
+            <td
+              class="u-align--right"
+            >
+              <span
+                class="u-nudge-left"
+              >
+                1B
+              </span>
+            </td>
+            <td
+              class="u-align--right"
+            >
+              <span
+                class="u-nudge-left"
+              >
+                3B
+              </span>
+            </td>
+            <td
+              class="u-align--right"
+            >
+              <span
+                class="u-nudge-left"
+              >
+                2B
+              </span>
+            </td>
+          </tr>
+          <tr
+            data-testid="hugepages-data"
           >
-            <span
-              className="u-nudge-left"
+            <td>
+              Hugepage
+              <br />
+              <strong
+                class="p-text--x-small u-text--light"
+                data-testid="page-size"
+              >
+                (Size: 7B)
+              </strong>
+            </td>
+            <td
+              class="u-align--right"
             >
-              6B
-            </span>
-          </td>
-          <td
-            className="u-align--right"
-          >
-            <span
-              className="u-nudge-left"
+              <span
+                class="u-nudge-left"
+              >
+                4B
+              </span>
+            </td>
+            <td
+              class="u-align--right"
             >
-              5B
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              <span
+                class="u-nudge-left"
+              >
+                6B
+              </span>
+            </td>
+            <td
+              class="u-align--right"
+            >
+              <span
+                class="u-nudge-left"
+              >
+                5B
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 `;

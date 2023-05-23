@@ -1,38 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableConfirm renders 1`] = `
-<Row>
-  <Col
-    size={5}
+<div>
+  <div
+    class="row"
   >
-    <p
-      className="u-no-margin--bottom u-no-max-width"
+    <div
+      class="col-5"
     >
-      Are you sure
-    </p>
-  </Col>
-  <Col
-    className="u-align--right"
-    size={4}
-  >
-    <Button
-      className="u-no-margin--bottom"
-      data-testid="action-cancel"
-      onClick={[MockFunction]}
+      <p
+        class="u-no-margin--bottom u-no-max-width"
+      >
+        Are you sure
+      </p>
+    </div>
+    <div
+      class="u-align--right col-4"
     >
-      Cancel
-    </Button>
-    <ActionButton
-      appearance="positive"
-      className="u-no-margin--bottom"
-      data-testid="action-confirm"
-      loading={false}
-      onClick={[MockFunction]}
-      success={false}
-      type="button"
-    >
-      save
-    </ActionButton>
-  </Col>
-</Row>
+      <button
+        class="p-button u-no-margin--bottom"
+        data-testid="action-cancel"
+      >
+        Cancel
+      </button>
+      <button
+        class="u-no-margin--bottom p-action-button p-button--positive"
+        data-testid="action-confirm"
+        type="button"
+      >
+        save
+      </button>
+    </div>
+  </div>
+</div>
 `;
