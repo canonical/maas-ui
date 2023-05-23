@@ -75,7 +75,7 @@ describe("AuthenticationForm", () => {
     // Trusting via certificate is selected by default, so spinner should show
     // after submitting the form.
     expect(
-      screen.queryByTestId("trust-confirmatino-spinner")
+      screen.queryByTestId("trust-confirmation-spinner")
     ).not.toBeInTheDocument();
 
     await userEvent.click(
