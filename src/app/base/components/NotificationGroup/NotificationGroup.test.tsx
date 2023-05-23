@@ -1,18 +1,16 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NotificationGroup from "./NotificationGroup";
 
+import type { RootState } from "app/store/root/types";
 import {
   notification as notificationFactory,
   notificationState as notificationStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("NotificationGroup", () => {
   it("renders", () => {
@@ -23,21 +21,19 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NotificationGroup
-              notifications={notifications}
-              severity="negative"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NotificationGroup notifications={notifications} severity="negative" />,
+      { state }
     );
 
-    expect(wrapper.find("NotificationGroup")).toMatchSnapshot();
+    expect(
+      screen.getByRole("button", {
+        name: "2 negative, click to open messages.",
+      })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("notification-count")).toHaveTextContent(
+      "2 Warnings"
+    );
   });
 
   it("hides multiple notifications by default", () => {
@@ -48,23 +44,14 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NotificationGroup
-              notifications={notifications}
-              severity="negative"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NotificationGroup notifications={notifications} severity="negative" />,
+      { state }
     );
 
     expect(
-      wrapper.find("span[data-testid='notification-message']").exists()
-    ).toBe(false);
+      screen.queryByTestId("notification-message")
+    ).not.toBeInTheDocument();
   });
 
   it("displays a count for multiple notifications", () => {
@@ -75,23 +62,14 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NotificationGroup
-              notifications={notifications}
-              severity="negative"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NotificationGroup notifications={notifications} severity="negative" />,
+      { state }
     );
 
-    expect(
-      wrapper.find("span[data-testid='notification-count']").text()
-    ).toEqual("2 Warnings");
+    expect(screen.getByTestId("notification-count")).toHaveTextContent(
+      "2 Warnings"
+    );
   });
 
   it("does not display a dismiss all link if none can be dismissed", () => {
@@ -104,28 +82,17 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NotificationGroup
-              notifications={notifications}
-              severity="negative"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NotificationGroup notifications={notifications} severity="negative" />,
+      { state }
     );
 
     expect(
-      wrapper
-        .findWhere((n) => n.name() === "Button" && n.text() === "Dismiss all")
-        .exists()
-    ).toBe(false);
+      screen.queryByRole("button", { name: "Dismiss all" })
+    ).not.toBeInTheDocument();
   });
 
-  it("can dismiss multiple notifications", () => {
+  it("can dismiss multiple notifications", async () => {
     const notifications = [
       notificationFactory({ dismissable: true }),
       notificationFactory({ dismissable: true }),
@@ -137,27 +104,19 @@ describe("NotificationGroup", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NotificationGroup
-              notifications={notifications}
-              severity="negative"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NotificationGroup notifications={notifications} severity="negative" />,
+      { store }
     );
 
-    wrapper.find("Button").at(1).simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Dismiss all" }));
 
     expect(store.getActions().length).toEqual(2);
     expect(store.getActions()[0].type).toEqual("notification/dismiss");
     expect(store.getActions()[1].type).toEqual("notification/dismiss");
   });
 
-  it("does not dismiss undismissable notifications when dismissing a group", () => {
+  it("does not dismiss undismissable notifications when dismissing a group", async () => {
     const notifications = [
       notificationFactory({ dismissable: true }),
       notificationFactory({ dismissable: false }),
@@ -169,26 +128,18 @@ describe("NotificationGroup", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NotificationGroup
-              notifications={notifications}
-              severity="caution"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NotificationGroup notifications={notifications} severity="caution" />,
+      { store }
     );
 
-    wrapper.find("Button").at(1).simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Dismiss all" }));
 
     expect(store.getActions().length).toEqual(1);
     expect(store.getActions()[0].type).toEqual("notification/dismiss");
   });
 
-  it("can toggle multiple notifications", () => {
+  it("can toggle multiple notifications", async () => {
     const notifications = [
       notificationFactory(),
       notificationFactory(),
@@ -200,24 +151,19 @@ describe("NotificationGroup", () => {
         items: notifications,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NotificationGroup
-              notifications={notifications}
-              severity="negative"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NotificationGroup notifications={notifications} severity="negative" />,
+      { state }
     );
 
-    expect(wrapper.find("Notification").length).toEqual(1);
-
-    wrapper.find("Button").at(0).simulate("click");
-
-    expect(wrapper.find("Notification").length).toEqual(4);
+    expect(
+      screen.queryByTestId("notification-message")
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: "3 negative, click to open messages.",
+      })
+    );
+    expect(screen.getAllByTestId("notification-message")).toHaveLength(3);
   });
 });
