@@ -59,6 +59,7 @@ export const AuthenticationFormFields = ({
           type="radio"
         />
         <FormikField
+          aria-label="Password"
           disabled={disabled || useCertificate}
           name="password"
           type="password"

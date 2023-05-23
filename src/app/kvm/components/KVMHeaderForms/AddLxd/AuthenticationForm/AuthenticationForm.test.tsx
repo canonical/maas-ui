@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddLxdSteps } from "../AddLxd";
@@ -9,7 +5,6 @@ import type { NewPodValues } from "../types";
 
 import AuthenticationForm from "./AuthenticationForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -26,9 +21,9 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("AuthenticationForm", () => {
   let state: RootState;
@@ -64,65 +59,52 @@ describe("AuthenticationForm", () => {
   });
 
   it(`shows a spinner if authenticating with a certificate and no projects exist
-    for that LXD address`, () => {
+    for that LXD address`, async () => {
     state.pod.projects = {
       "192.168.1.1": [],
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={jest.fn()}
-              setStep={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={jest.fn()}
+        setStep={jest.fn()}
+      />,
+      { route: "/kvm/add", state }
     );
     // Trusting via certificate is selected by default, so spinner should show
     // after submitting the form.
     expect(
-      wrapper.find("[data-testid='trust-confirmation-spinner']").exists()
-    ).toBe(false);
+      screen.queryByTestId("trust-confirmation-spinner")
+    ).not.toBeInTheDocument();
 
-    submitFormikForm(wrapper, { password: "" });
-    wrapper.update();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Check authentication" })
+    );
     expect(
-      wrapper.find("[data-testid='trust-confirmation-spinner']").exists()
-    ).toBe(true);
+      screen.getByTestId("trust-confirmation-spinner")
+    ).toBeInTheDocument();
   });
 
-  it("dispatches an action to poll LXD server if authenticating via certificate", () => {
+  it("dispatches an action to poll LXD server if authenticating via certificate", async () => {
     const setNewPodValues = jest.fn();
     const generatedCert = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
     state.general.generatedCertificate.data = generatedCert;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={setNewPodValues}
-              setStep={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={setNewPodValues}
+        setStep={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
-    submitFormikForm(wrapper, { password: "" });
-    wrapper.update();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Check authentication" })
+    );
 
     const expectedAction = podActions.pollLxdServer({
       certificate: generatedCert.certificate,
@@ -140,35 +122,30 @@ describe("AuthenticationForm", () => {
     expect(actualAction).toStrictEqual(expectedAction);
   });
 
-  it("dispatches an action to fetch projects if using a password", () => {
+  it("dispatches an action to fetch projects if using a password", async () => {
     const setNewPodValues = jest.fn();
     const generatedCert = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
     state.general.generatedCertificate.data = generatedCert;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={setNewPodValues}
-              setStep={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={setNewPodValues}
+        setStep={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
     // Change to trusting via password and submit the form.
-    wrapper.find("input[id='use-password']").simulate("change");
-    submitFormikForm(wrapper, {
-      password: "password",
-    });
-    wrapper.update();
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Use trust password (not secure!)" })
+    );
+    await userEvent.type(screen.getByLabelText("Password"), "password");
+    await userEvent.click(
+      screen.getByRole("button", { name: "Check authentication" })
+    );
 
     const expectedAction = podActions.getProjects({
       certificate: generatedCert.certificate,
@@ -188,86 +165,68 @@ describe("AuthenticationForm", () => {
   });
 
   it(`reverts back to credentials step if attempt to fetch projects using a
-    password results in error`, () => {
+    password results in error`, async () => {
     const setStep = jest.fn();
     state.pod.errors = "it didn't work";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+      />,
+      { route: "/kvm/add", state }
     );
     // Change to trusting via password and submit the form.
-    wrapper.find("input[id='use-password']").simulate("change");
-    submitFormikForm(wrapper, {
-      password: "password",
-    });
-    wrapper.update();
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Use trust password (not secure!)" })
+    );
+    await userEvent.type(screen.getByLabelText("Password"), "password");
+    await userEvent.click(
+      screen.getByRole("button", { name: "Check authentication" })
+    );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
   });
 
-  it("displays errors when it failed to trust the cert", () => {
+  it("displays errors when it failed to trust the cert", async () => {
     const setStep = jest.fn();
     state.pod.errors = "it didn't work";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+      />,
+      { route: "/kvm/add", state }
     );
-    submitFormikForm(wrapper);
-    wrapper.update();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe("it didn't work");
+    await userEvent.click(
+      screen.getByRole("button", { name: "Check authentication" })
+    );
+    expect(screen.getByText("it didn't work")).toBeInTheDocument();
     // It should not have reverted to the previous screen.
     expect(setStep).not.toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
   });
 
-  it("does not display errors when attempting to trust the cert", () => {
+  it("does not display errors when attempting to trust the cert", async () => {
     const setStep = jest.fn();
     state.pod.errors = "Certificate is not trusted and no password was given";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+      />,
+      { route: "/kvm/add", state }
     );
-    submitFormikForm(wrapper);
-    wrapper.update();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe(null);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Check authentication" })
+    );
+    expect(
+      screen.queryByText("Certificate is not trusted and no password was given")
+    ).not.toBeInTheDocument();
     // It should not have reverted to the previous screen.
     expect(setStep).not.toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
   });
@@ -277,22 +236,14 @@ describe("AuthenticationForm", () => {
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+      />,
+      { route: "/kvm/add", state }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
@@ -300,23 +251,17 @@ describe("AuthenticationForm", () => {
 
   it("clears certificate and stops polling LXD server on unmount", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AuthenticationForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={jest.fn()}
-              setStep={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { unmount } = renderWithBrowserRouter(
+      <AuthenticationForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={jest.fn()}
+        setStep={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
-    wrapper.unmount();
+
+    unmount();
 
     const expectedActions = [
       generalActions.clearGeneratedCertificate(),
