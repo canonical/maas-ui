@@ -2,12 +2,12 @@
 import AppSidePanel from "./AppSidePanel";
 
 import { MAAS_UI_ID } from "app/constants";
-import { render, within, screen } from "testing/utils";
+import { within, screen, renderWithBrowserRouter } from "testing/utils";
 
 it("displays side panel as a child of #maas-ui DOM node", async () => {
   const mainContainer = document.createElement("div");
   mainContainer.setAttribute("id", MAAS_UI_ID);
-  render(<AppSidePanel title="side panel title" />, {
+  renderWithBrowserRouter(<AppSidePanel title="side panel title" />, {
     container: document.body.appendChild(mainContainer),
   });
   await expect(
@@ -18,7 +18,9 @@ it("displays side panel as a child of #maas-ui DOM node", async () => {
 });
 
 it("adds a correct className for a wide panel", async () => {
-  render(<AppSidePanel size="wide" title="side panel title" />);
+  renderWithBrowserRouter(
+    <AppSidePanel size="wide" title="side panel title" />
+  );
   expect(
     screen
       .getByRole("complementary", { name: "side panel title" })

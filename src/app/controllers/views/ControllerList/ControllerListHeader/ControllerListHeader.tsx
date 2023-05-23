@@ -5,20 +5,15 @@ import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import { ControllerHeaderViews } from "app/controllers/constants";
-import type {
-  ControllerSidePanelContent,
-  ControllerSetSidePanelContent,
-} from "app/controllers/types";
 import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import { getNodeActionTitle } from "app/store/utils";
 
-type Props = {
-  sidePanelContent: ControllerSidePanelContent | null;
-  setSidePanelContent: ControllerSetSidePanelContent;
+type Props = SidePanelContextType & {
   setSearchFilter: SetSearchFilter;
 };
 

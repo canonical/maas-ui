@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import VLANDetailsHeader from "./VLANDetailsHeader";
 
 import type { RootState } from "app/store/root/types";
@@ -18,9 +14,7 @@ import {
   vlanDetails as vlanDetailsFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("VLANDetailsHeader", () => {
   let state: RootState;
@@ -41,14 +35,10 @@ describe("VLANDetailsHeader", () => {
   it("shows the title when the vlan has a name", () => {
     vlan = vlanDetailsFactory({ name: "vlan-1", fabric: 2 });
     state.vlan.items = [vlan];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
+      route: "/vlan/1234",
+      state,
+    });
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "vlan-1 in fabric1"
     );
@@ -64,14 +54,10 @@ describe("VLANDetailsHeader", () => {
     state.fabric.items = [
       fabricFactory({ id: 2, name: "fabric1", default_vlan_id: vlan.id }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
+      route: "/vlan/1234",
+      state,
+    });
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "Default VLAN in fabric1"
     );
@@ -83,14 +69,10 @@ describe("VLANDetailsHeader", () => {
     state.fabric.items = [
       fabricFactory({ id: 2, name: "fabric1", default_vlan_id: 99 }),
     ];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
+      route: "/vlan/1234",
+      state,
+    });
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "VLAN 3 in fabric1"
     );
@@ -99,28 +81,20 @@ describe("VLANDetailsHeader", () => {
   it("shows a spinner subtitle if the vlan is loading details", () => {
     vlan = vlanFactory({ name: "vlan-1" });
     state.vlan.items = [vlan];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
+      route: "/vlan/1234",
+      state,
+    });
     expect(
       screen.getByTestId("section-header-subtitle-spinner")
     ).toBeInTheDocument();
   });
 
   it("does not show a spinner subtitle if the vlan is detailed", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
+      route: "/vlan/1234",
+      state,
+    });
     expect(
       screen.queryByTestId("section-header-subtitle-spinner")
     ).not.toBeInTheDocument();
@@ -132,14 +106,10 @@ describe("VLANDetailsHeader", () => {
         user: userFactory({ is_superuser: true }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
+      route: "/vlan/1234",
+      state,
+    });
     expect(
       screen.getByRole("button", { name: "Delete VLAN" })
     ).toBeInTheDocument();
@@ -151,14 +121,10 @@ describe("VLANDetailsHeader", () => {
         user: userFactory({ is_superuser: false }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
+      route: "/vlan/1234",
+      state,
+    });
     expect(
       screen.queryByRole("button", { name: "Delete VLAN" })
     ).not.toBeInTheDocument();

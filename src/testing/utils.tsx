@@ -13,6 +13,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
 import FormikForm from "app/base/components/FormikForm";
+import SidePanelContextProvider from "app/base/side-panel-context";
 import type { AnyObject } from "app/base/types";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -133,13 +134,13 @@ type WrapperProps = {
   store?: MockStoreEnhanced<RootState, {}>;
 };
 
-const BrowserRouterWithProvider = ({
+export const BrowserRouterWithProvider = ({
   children,
   parentRoute,
   routePattern,
   state,
   store,
-}: WrapperProps & { children: React.ReactElement }) => {
+}: WrapperProps & { children: React.ReactNode }): React.ReactElement => {
   const getMockStore = (state: RootState) => {
     const mockStore = configureStore();
     return mockStore(state);
@@ -148,17 +149,23 @@ const BrowserRouterWithProvider = ({
   const route = <Route element={children} path={routePattern} />;
   return (
     <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      <BrowserRouter>
-        <CompatRouter>
-          {routePattern ? (
-            <Routes>
-              {parentRoute ? <Route path={parentRoute}>{route}</Route> : route}
-            </Routes>
-          ) : (
-            children
-          )}
-        </CompatRouter>
-      </BrowserRouter>
+      <SidePanelContextProvider>
+        <BrowserRouter>
+          <CompatRouter>
+            {routePattern ? (
+              <Routes>
+                {parentRoute ? (
+                  <Route path={parentRoute}>{route}</Route>
+                ) : (
+                  route
+                )}
+              </Routes>
+            ) : (
+              children
+            )}
+          </CompatRouter>
+        </BrowserRouter>
+      </SidePanelContextProvider>
     </Provider>
   );
 };
@@ -174,7 +181,7 @@ const WithMockStoreProvider = ({
   };
   return (
     <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      {children}
+      <SidePanelContextProvider>{children}</SidePanelContextProvider>
     </Provider>
   );
 };

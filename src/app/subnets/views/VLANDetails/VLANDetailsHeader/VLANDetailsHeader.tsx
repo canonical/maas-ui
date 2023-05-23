@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { VLANDetailsViews } from "../constants";
+
 import VLANDeleteForm from "./VLANDeleteForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useSidePanel } from "app/base/side-panel-context";
 import authSelectors from "app/store/auth/selectors";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -19,10 +22,6 @@ import { isVLANDetails } from "app/store/vlan/utils";
 type Props = {
   id?: VLAN[VLANMeta.PK] | null;
 };
-
-enum HeaderForms {
-  Delete,
-}
 
 const generateTitle = (
   vlan?: VLAN | null,
@@ -43,6 +42,7 @@ const generateTitle = (
 };
 
 const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
@@ -52,7 +52,6 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
     fabricSelectors.getById(state, fabricId)
   );
   const isAdmin = useSelector(authSelectors.isAdmin);
-  const [formOpen, setFormOpen] = useState<HeaderForms | null>(null);
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
@@ -64,28 +63,25 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
       <Button
         data-testid="delete-vlan"
         key="delete-vlan"
-        onClick={() => setFormOpen(HeaderForms.Delete)}
+        onClick={() =>
+          setSidePanelContent({ view: VLANDetailsViews.DELETE_VLAN })
+        }
       >
         Delete VLAN
       </Button>
     );
   }
-  const closeForm = () => {
-    setFormOpen(null);
-  };
 
   return (
     <SectionHeader
       buttons={buttons}
       sidePanelContent={
-        formOpen === null ? null : (
-          <>
-            {formOpen === HeaderForms.Delete && (
-              <VLANDeleteForm closeForm={closeForm} id={id} />
-            )}
-          </>
-        )
+        sidePanelContent &&
+        sidePanelContent.view === VLANDetailsViews.DELETE_VLAN ? (
+          <VLANDeleteForm closeForm={() => setSidePanelContent(null)} id={id} />
+        ) : null
       }
+      sidePanelTitle="Delete VLAN"
       subtitleLoading={!isVLANDetails(vlan)}
       title={generateTitle(vlan, fabric)}
     />

@@ -1,11 +1,11 @@
-import { useState } from "react";
-
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import FabricDeleteForm from "./FabricDeleteForm";
+import { FabricDetailsViews } from "./constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useSidePanel } from "app/base/side-panel-context";
 import authSelectors from "app/store/auth/selectors";
 import type { Fabric } from "app/store/fabric/types";
 
@@ -14,8 +14,8 @@ type Props = {
 };
 
 const FabricDetailsHeader = ({ fabric }: Props): JSX.Element => {
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const isAdmin = useSelector(authSelectors.isAdmin);
-  const [showDeleteForm, setShowDeleteForm] = useState(false);
 
   return (
     <SectionHeader
@@ -24,7 +24,11 @@ const FabricDetailsHeader = ({ fabric }: Props): JSX.Element => {
           ? [
               <Button
                 appearance="neutral"
-                onClick={() => setShowDeleteForm(true)}
+                onClick={() =>
+                  setSidePanelContent({
+                    view: FabricDetailsViews.DELETE_FABRIC,
+                  })
+                }
               >
                 Delete fabric
               </Button>,
@@ -32,9 +36,10 @@ const FabricDetailsHeader = ({ fabric }: Props): JSX.Element => {
           : null
       }
       sidePanelContent={
-        showDeleteForm ? (
+        sidePanelContent &&
+        sidePanelContent.view === FabricDetailsViews.DELETE_FABRIC ? (
           <FabricDeleteForm
-            closeForm={() => setShowDeleteForm(false)}
+            closeForm={() => setSidePanelContent(null)}
             id={fabric.id}
           />
         ) : null

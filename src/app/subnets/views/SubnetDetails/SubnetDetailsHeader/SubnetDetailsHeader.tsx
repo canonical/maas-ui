@@ -1,24 +1,27 @@
-import { useState } from "react";
-
 import { ContextualMenu } from "@canonical/react-components";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useSidePanel } from "app/base/side-panel-context";
 import type { Subnet } from "app/store/subnet/types";
 import { isSubnetDetails } from "app/store/subnet/utils";
 import SubnetActionForms from "app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/SubnetActionForms";
 import {
   subnetActionLabels,
   SubnetActionTypes,
+  SubnetDetailsSidePanelViews,
 } from "app/subnets/views/SubnetDetails/constants";
-import type { SubnetAction } from "app/subnets/views/SubnetDetails/types";
 
 type Props = {
   subnet: Subnet;
 };
 
 const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
-  const [activeForm, setActiveForm] = useState<SubnetAction | null>(null);
-
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const [, name] = sidePanelContent?.view || [];
+  const activeForm =
+    name && Object.keys(SubnetActionTypes).includes(name)
+      ? (name as keyof typeof SubnetActionTypes)
+      : null;
   return (
     <SectionHeader
       buttons={[
@@ -28,9 +31,10 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
             SubnetActionTypes.MapSubnet,
             SubnetActionTypes.EditBootArchitectures,
             SubnetActionTypes.DeleteSubnet,
-          ].map((subnetActionForm) => ({
-            children: subnetActionLabels[subnetActionForm],
-            onClick: () => setActiveForm(subnetActionForm),
+          ].map((view) => ({
+            children: subnetActionLabels[view],
+            onClick: () =>
+              setSidePanelContent({ view: SubnetDetailsSidePanelViews[view] }),
           }))}
           position="right"
           toggleAppearance="positive"
@@ -42,7 +46,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
           <SubnetActionForms
             activeForm={activeForm}
             id={subnet.id}
-            setActiveForm={setActiveForm}
+            setActiveForm={setSidePanelContent}
           />
         ) : null
       }

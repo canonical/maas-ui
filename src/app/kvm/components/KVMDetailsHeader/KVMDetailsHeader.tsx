@@ -8,12 +8,10 @@ import { useLocation } from "react-router-dom";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SidePanelContent } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
-import type {
-  KVMSidePanelContent,
-  KVMSetSidePanelContent,
-} from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import { getFormTitle } from "app/kvm/utils";
 
 type TitleBlock = {
@@ -24,7 +22,7 @@ type TitleBlock = {
 type Props = {
   buttons?: SectionHeaderProps["buttons"];
   className?: ClassName;
-  sidePanelContent: KVMSidePanelContent | null;
+  sidePanelContent: SidePanelContent | null;
   loading?: SectionHeaderProps["loading"];
   setSidePanelContent: KVMSetSidePanelContent;
   searchFilter?: string;

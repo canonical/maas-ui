@@ -8,7 +8,7 @@ import MachineListHeader from "./MachineList/MachineListHeader";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
 
 import MainContentSection from "app/base/components/MainContentSection";
-import type { MachineSidePanelContent } from "app/machines/types";
+import { useSidePanel } from "app/base/side-panel-context";
 import MachineList from "app/machines/views/MachineList";
 import { actions as machineActions } from "app/store/machine";
 import { FetchGroupKey } from "app/store/machine/types";
@@ -23,8 +23,7 @@ const Machines = (): JSX.Element => {
   const [searchFilter, setFilter] = useState(
     FilterMachines.filtersToString(currentFilters)
   );
-  const [sidePanelContent, setSidePanelContent] =
-    useState<MachineSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   const setSearchFilter = useCallback(
     (searchText) => {

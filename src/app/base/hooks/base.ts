@@ -235,6 +235,10 @@ export const useGlobalKeyShortcut = (
   onAfterPressed: KeyboardEventHandler
 ): void => {
   useOnKeyPressed(key, (event: KeyboardEvent) => {
+    // ignore keyboard events with modifiers
+    if (event.ctrlKey || event.altKey || event.metaKey) {
+      return;
+    }
     // ignore keyboard events from input elements
     if ((event.target as Element).nodeName !== "INPUT") {
       onAfterPressed(event);

@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import DomainListHeaderForm from "../DomainListHeaderForm";
+import { DomainListSidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useSidePanel } from "app/base/side-panel-context";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 
@@ -18,8 +20,7 @@ const DomainListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);
-
-  const [isFormOpen, setFormOpen] = useState(false);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     dispatch(domainActions.fetch());
@@ -29,20 +30,21 @@ const DomainListHeader = (): JSX.Element => {
     <Button
       data-testid="add-domain"
       key="add-domain"
-      onClick={() => setFormOpen(true)}
+      onClick={() =>
+        setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN })
+      }
     >
       {Labels.AddDomains}
     </Button>,
   ];
 
-  let sidePanelContent: JSX.Element | null = null;
+  let content: JSX.Element | null = null;
 
-  if (isFormOpen) {
-    buttons = null;
-    sidePanelContent = (
+  if (sidePanelContent?.view === DomainListSidePanelViews.ADD_DOMAIN) {
+    content = (
       <DomainListHeaderForm
         closeForm={() => {
-          setFormOpen(false);
+          setSidePanelContent(null);
         }}
       />
     );
@@ -50,7 +52,7 @@ const DomainListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      sidePanelContent={sidePanelContent}
+      sidePanelContent={content}
       sidePanelTitle="Add domains"
       subtitle={`${pluralize("domain", domainCount, true)} available`}
       subtitleLoading={!domainsLoaded}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -20,8 +20,8 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import type { ControllerSidePanelContent } from "app/controllers/types";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
@@ -35,8 +35,7 @@ const ControllerDetails = (): JSX.Element => {
     controllerSelectors.getById(state, id)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<ControllerSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   useScrollToTop();
 
   useEffect(() => {

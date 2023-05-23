@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
@@ -23,8 +23,8 @@ import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import type { MachineSidePanelContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import { MachineMeta } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
@@ -36,8 +36,7 @@ const MachineDetails = (): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
   const { machine, loaded: detailsLoaded } = useFetchMachine(id);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<MachineSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     window.scrollTo(0, 0);
