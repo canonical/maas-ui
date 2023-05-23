@@ -177,7 +177,7 @@ describe("StorageTable", () => {
     await userEvent.type(diskSizeInput, "21");
 
     expect(
-      screen.getByText("Only 20GB available in", { exact: false })
+      screen.getByText(`Only 20GB available in ${pool.name}.`)
     ).toBeInTheDocument();
   });
 
