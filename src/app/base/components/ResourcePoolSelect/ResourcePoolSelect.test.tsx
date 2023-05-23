@@ -1,17 +1,17 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ResourcePoolSelect from "./ResourcePoolSelect";
 
+import type { RootState } from "app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ResourcePoolSelect", () => {
   it("renders a list of all resource pools in state", () => {
@@ -24,27 +24,27 @@ describe("ResourcePoolSelect", () => {
         loaded: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
-          <ResourcePoolSelect name="pool" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+        <ResourcePoolSelect name="pool" />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("select[name='pool']")).toMatchSnapshot();
+    const pools = screen.getAllByRole("option", { name: /Pool [1-2]/i });
+    expect(pools).toHaveLength(2);
+    expect(pools[0]).toHaveTextContent("Pool 1");
+    expect(pools[1]).toHaveTextContent("Pool 2");
   });
 
   it("dispatches action to fetch resource pools on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
-          <ResourcePoolSelect name="pool" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+        <ResourcePoolSelect name="pool" />
+      </Formik>,
+      { store }
     );
 
     expect(
@@ -58,15 +58,13 @@ describe("ResourcePoolSelect", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
-          <ResourcePoolSelect name="pool" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+        <ResourcePoolSelect name="pool" />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("select[name='pool']").prop("disabled")).toBe(true);
+    expect(screen.getByRole("combobox")).toBeDisabled();
   });
 });

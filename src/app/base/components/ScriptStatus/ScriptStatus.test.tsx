@@ -1,68 +1,75 @@
-import { mount, shallow } from "enzyme";
+/* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-container */
+import { render, screen } from "@testing-library/react";
 
 import ScriptStatus from "./ScriptStatus";
 
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 
+const getIcon = (name: string, container: HTMLElement): Element | null => {
+  return container.querySelector(`.p-icon--${name}`);
+};
+
 describe("ScriptStatus", () => {
   it("can show a passed icon", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.PASSED} />
     );
-    expect(wrapper.find("Icon").prop("name")).toBe("success");
+
+    expect(getIcon("success", container)).toBeInTheDocument();
   });
 
   it("can show a pending icon", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.PENDING} />
     );
-    expect(wrapper.find("Icon").prop("name")).toBe("pending");
+    expect(getIcon("pending", container)).toBeInTheDocument();
   });
 
   it("can show a running icon", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.RUNNING} />
     );
-    expect(wrapper.find("Icon").prop("name")).toBe("running");
+    expect(getIcon("running", container)).toBeInTheDocument();
   });
 
   it("can show a failed icon", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.FAILED} />
     );
-    expect(wrapper.find("Icon").prop("name")).toBe("error");
+    expect(getIcon("error", container)).toBeInTheDocument();
   });
 
   it("can show a timed out icon", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.TIMEDOUT} />
     );
-    expect(wrapper.find("Icon").prop("name")).toBe("timed-out");
+    expect(getIcon("timed-out", container)).toBeInTheDocument();
   });
 
   it("can show a skipped icon", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.SKIPPED} />
     );
-    expect(wrapper.find("Icon").prop("name")).toBe("warning");
+    expect(getIcon("warning", container)).toBeInTheDocument();
   });
 
   it("makes the icon inline if children are provided", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.PASSED}>{0}</ScriptStatus>
     );
-    expect(wrapper.find("Icon").prop("className")).toBe("is-inline");
+    expect(getIcon("success", container)).toHaveClass("is-inline");
   });
 
   it("does not make the icon inline if children are not provided", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <ScriptStatus status={ScriptResultStatus.PASSED} />
     );
-    expect(wrapper.find("Icon").prop("className")).toBe("");
+    expect(getIcon("success", container)).not.toHaveClass("is-inline");
   });
 
   it("can have its icon wrapped in a tooltip", () => {
-    const wrapper = mount(
+    render(
       <ScriptStatus
         status={ScriptResultStatus.PASSED}
         tooltipMessage="Tooltip!"
@@ -70,9 +77,6 @@ describe("ScriptStatus", () => {
       />
     );
 
-    expect(wrapper.find("[role='tooltip']").text()).toBe("Tooltip!");
-    expect(wrapper.find("[className*='p-tooltip--top-right']").exists()).toBe(
-      true
-    );
+    expect(screen.getByRole("tooltip")).toHaveTextContent("Tooltip!");
   });
 });

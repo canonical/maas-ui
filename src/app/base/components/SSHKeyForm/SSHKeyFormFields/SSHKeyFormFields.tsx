@@ -46,6 +46,7 @@ export const SSHKeyFormFields = ({
           )}
           {uploadSelected && (
             <FormikField
+              aria-label="Public key"
               component={Textarea}
               help="Usually at ~/.ssh/id_rsa.pub, ~/.ssh/id_dsa.pub, or ~/.ssh/id_ecdsa.pub"
               label={
