@@ -151,6 +151,7 @@ export const CreateRaidFields = ({
             }))}
           />
           <Input
+            aria-label="Size"
             data-testid="raid-size"
             disabled
             label="Size"

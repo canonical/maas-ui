@@ -132,13 +132,20 @@ export const CreateDatastore = ({
             <Col medium={6} size={6} small={4}>
               <FormikField label="Name" name="name" required type="text" />
               <Input
+                aria-label="Size"
                 data-testid="datastore-size"
                 disabled
                 label="Size"
                 type="text"
                 value={`${formatSize(totalSize)}`}
               />
-              <Input disabled label="Filesystem" type="text" value="VMFS6" />
+              <Input
+                aria-label="Filesystem"
+                disabled
+                label="Filesystem"
+                type="text"
+                value="VMFS6"
+              />
             </Col>
           </Row>
         </FormikForm>
