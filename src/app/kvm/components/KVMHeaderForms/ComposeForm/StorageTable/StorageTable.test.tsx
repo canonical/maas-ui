@@ -1,11 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import type { MockStore } from "redux-mock-store";
-import configureStore from "redux-mock-store";
-
 import ComposeForm from "../ComposeForm";
 
 import { PodType } from "app/store/pod/constants";
@@ -29,21 +21,17 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "testing/utils";
 
-const mockStore = configureStore();
-
-const generateWrapper = (store: MockStore, pod: Pod) =>
-  mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: `/kvm/${pod.id}`, key: "testKey" }]}
-      >
-        <CompatRouter>
-          <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+const generateWrapper = (state: RootState, pod: Pod) =>
+  renderWithBrowserRouter(
+    <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+    { state, route: `/kvm/${pod.id}` }
   );
 
 describe("StorageTable", () => {
@@ -93,12 +81,9 @@ describe("StorageTable", () => {
     const state = { ...initialState };
     state.pod.items = [pod];
     state.pod.statuses = { [pod.id]: podStatusFactory({ composing: true }) };
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    generateWrapper(state, pod);
 
-    expect(
-      wrapper.find("[data-testid='add-disk'] button").prop("disabled")
-    ).toBe(true);
+    expect(screen.getByRole("button", { name: /add disk/i })).toBeDisabled();
   });
 
   it("can add disks and remove all but last disk", async () => {
@@ -110,31 +95,27 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    generateWrapper(state, pod);
 
     // One disk should display by default and cannot be deleted
-    expect(wrapper.find("StorageTable Card").length).toBe(1);
-    expect(wrapper.find("[data-testid='remove-disk'] button").length).toBe(0);
+    expect(screen.getAllByLabelText(/disk/i)).toHaveLength(1);
+    expect(
+      screen.queryByRole("button", { name: /remove/i })
+    ).not.toBeInTheDocument();
 
     // Click "Add disk" - another disk should be added, and remove button should enable
-    await act(async () => {
-      wrapper.find("[data-testid='add-disk'] button").simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("StorageTable Card").length).toBe(2);
-    expect(wrapper.find("[data-testid='remove-disk'] button").length).toBe(2);
+    await userEvent.click(screen.getByRole("button", { name: /add disk/i }));
+    expect(screen.getAllByLabelText(/disk/i)).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: /remove/i })).toHaveLength(2);
 
     // Click delete button - a disk should be removed
-    await act(async () => {
-      wrapper
-        .find("[data-testid='remove-disk'] button")
-        .at(0)
-        .simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("StorageTable Card").length).toBe(1);
-    expect(wrapper.find("[data-testid='remove-disk'] button").length).toBe(0);
+    await userEvent.click(
+      screen.getAllByRole("button", { name: /remove/i })[0]
+    );
+    expect(screen.getAllByLabelText(/disk/i)).toHaveLength(1);
+    expect(
+      screen.queryByRole("button", { name: /remove/i })
+    ).not.toBeInTheDocument();
   });
 
   it("displays a caution message if the boot disk size is less than 8GB", async () => {
@@ -145,22 +126,16 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    generateWrapper(state, pod);
 
-    // Change the disk size to below 8
-    await act(async () => {
-      wrapper.find("input[name='disks[0].size']").simulate("change", {
-        target: { name: "disks[0].size", value: "4" },
-      });
-    });
-    wrapper.update();
+    const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
+
+    await userEvent.clear(diskSizeInput);
+    await userEvent.type(diskSizeInput, "4");
 
     expect(
-      wrapper
-        .find("FormikField[name='disks[0].size'] .p-form-validation__message")
-        .text()
-    ).toBe("Caution: Ubuntu typically requires 8GB minimum.");
+      screen.getByText("Ubuntu typically requires 8GB minimum.")
+    ).toBeInTheDocument();
   });
 
   it("doesn't display a caution message if it isn't a boot disk and size is less than 8GB", async () => {
@@ -171,25 +146,18 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    generateWrapper(state, pod);
     // Add a disk
-    await act(async () => {
-      wrapper.find("[data-testid='add-disk'] button").simulate("click");
-    });
-    wrapper.update();
+    await userEvent.click(screen.getByRole("button", { name: /add disk/i }));
     // Change the second disk size to below 8GB
-    await act(async () => {
-      wrapper.find("input[name='disks[1].size']").simulate("change", {
-        target: { name: "disks[1].size", value: "7" },
-      });
-    });
-    wrapper.update();
+    const secondDiskSizeInput = screen.getAllByRole("spinbutton", {
+      name: "Size (GB)",
+    })[1];
+    await userEvent.clear(secondDiskSizeInput);
+    await userEvent.type(secondDiskSizeInput, "7");
     expect(
-      wrapper
-        .find("FormikField[name='disks[1].size'] .p-form-validation__message")
-        .exists()
-    ).toBe(false);
+      screen.queryByText("Ubuntu typically requires 8GB minimum.")
+    ).not.toBeInTheDocument();
   });
 
   it("displays an error message if disk size is higher than available storage in pool", async () => {
@@ -201,19 +169,16 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    generateWrapper(state, pod);
 
     // Change the disk size to above 20GB
-    await act(async () => {
-      wrapper.find("input[name='disks[0].size']").simulate("change", {
-        target: { name: "disks[0].size", value: "21" },
-      });
-    });
-    wrapper.update();
+    const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
+    await userEvent.clear(diskSizeInput);
+    await userEvent.type(diskSizeInput, "21");
+
     expect(
-      wrapper.find("StorageTable .p-form-validation__message").text()
-    ).toBe(`Error: Only 20GB available in ${pool.name}.`);
+      screen.getByText("Only 20GB available in", { exact: false })
+    ).toBeInTheDocument();
   });
 
   it(`displays an error message if the sum of disk sizes from a pool is higher
@@ -227,35 +192,27 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    generateWrapper(state, pod);
 
     // Add a disk
-    await act(async () => {
-      wrapper.find("button[data-testid='add-disk']").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: /add disk/i }));
+
+    const diskSizeInputs = screen.getAllByRole("spinbutton", {
+      name: "Size (GB)",
     });
-    wrapper.update();
 
     // Change the first disk size to 15GB
-    await act(async () => {
-      wrapper.find("input[name='disks[0].size']").simulate("change", {
-        target: { name: "disks[0].size", value: "15" },
-      });
-    });
-    wrapper.update();
+    await userEvent.clear(diskSizeInputs[0]);
+    await userEvent.type(diskSizeInputs[0], "15");
 
     // Change the second disk size to 11GB
-    await act(async () => {
-      wrapper.find("input[name='disks[1].size']").simulate("change", {
-        target: { name: "disks[1].size", value: "11" },
-      });
-    });
-    wrapper.update();
+    await userEvent.clear(diskSizeInputs[1]);
+    await userEvent.type(diskSizeInputs[1], "11");
 
     // Each is lower than 25GB, but the sum is higher, so an error should show
     expect(
-      wrapper.find("StorageTable .p-form-validation__message").text()
-    ).toBe(`Error: Only 25GB available in ${pool.name}.`);
+      screen.getByText(`Only 25GB available in ${pool.name}.`)
+    ).toBeInTheDocument();
   });
 
   it("displays an error message on render if not enough space", async () => {
@@ -267,13 +224,11 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
-    await waitForComponentToPaint(wrapper);
-    expect(
-      wrapper
-        .find("FormikField[name='disks[0].size'] .p-form-validation__message")
-        .text()
-    ).toBe("Error: Only 0GB available in pool.");
+    generateWrapper(state, pod);
+    await waitFor(() =>
+      expect(
+        screen.getByText("Only 0GB available in pool.")
+      ).toBeInTheDocument()
+    );
   });
 });
