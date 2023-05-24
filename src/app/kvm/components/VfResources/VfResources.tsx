@@ -128,6 +128,7 @@ const VfResources = ({
   }
   return (
     <div
+      aria-label="VF resources"
       className={classNames("vf-resources", {
         "vf-resources--dynamic-layout": dynamicLayout,
       })}
