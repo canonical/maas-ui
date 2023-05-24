@@ -67,6 +67,9 @@ describe("TestForm", () => {
   });
 
   it("calls the action to test given machines", async () => {
+    // load only the internet connectivity script
+    const script = state.script.items[1];
+    state.script.items = [state.script.items[1]];
     const store = mockStore(state);
     const onTest = jest.fn();
     renderWithBrowserRouter(
