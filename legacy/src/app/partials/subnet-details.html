@@ -71,54 +71,15 @@
         <hr />
         <div class="row">
           <div class="col-12">
-            <ul class="p-inline-list">
-              <li class="p-inline-list__item p-heading--four">
-                Boot architectures
-              </li>
-              <li class="p-inline-list__item">
-                <a
-                  class="p-link--external"
-                  href="https://discourse.maas.io/t/boot-architectures/4610"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  More info
-                </a>
-              </li>
-            </ul>
+            <h4>Boot architectures</h4>
             <table>
               <thead>
                 <tr>
-                  <th
-                    aria-sort="{$ getBootArchSort('name') $}"
-                    ng-click="setBootArchSort('name')"
-                  >
-                    Name
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('bios_boot_method') $}"
-                    ng-click="setBootArchSort('bios_boot_method')"
-                  >
-                    BIOS boot method
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('bootloader_arches') $}"
-                    ng-click="setBootArchSort('bootloader_arches')"
-                  >
-                    Bootloader architecture
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('protocol') $}"
-                    ng-click="setBootArchSort('protocol')"
-                  >
-                    Protocol
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('arch_octet') $}"
-                    ng-click="setBootArchSort('arch_octet')"
-                  >
-                    Architecture octet
-                  </th>
+                  <th>Name</th>
+                  <th>BIOS boot method</th>
+                  <th>Bootloader architecture</th>
+                  <th>Protocol</th>
+                  <th>Architecture octet</th>
                 </tr>
               </thead>
               <tbody>
@@ -127,8 +88,7 @@
                   ng-class="{
                     'is-active': bootArchitectureEnabled(architecture.name)
                   }"
-                  ng-click="toggleBootArchitecture(architecture.name)"
-                  ng-repeat="architecture in knownBootArchitectures | orderBy:bootArchSort"
+                  ng-repeat="architecture in knownBootArchitectures | orderBy:'name'"
                 >
                   <td>
                     <label
@@ -137,6 +97,7 @@
                       <input
                         class="p-checkbox__input"
                         ng-checked="bootArchitectureEnabled(architecture.name)"
+                        ng-click="toggleBootArchitecture(architecture.name)"
                         type="checkbox"
                       />
                       <span class="p-checkbox__label">
