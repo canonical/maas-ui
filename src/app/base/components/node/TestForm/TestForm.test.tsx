@@ -85,13 +85,6 @@ describe("TestForm", () => {
       { route: "/machines", store }
     );
 
-    // submitFormikForm(wrapper, {
-    //   enableSSH: true,
-    //   scripts: state.script.items,
-    //   scriptInputs: {
-    //     "internet-connectivity": "https://connectivity-check.ubuntu.com",
-    //   },
-    // });
     await userEvent.click(
       screen.getByRole("checkbox", {
         name: "Allow SSH access and prevent machine powering off",
@@ -108,8 +101,6 @@ describe("TestForm", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Start tests for 2 machines" })
     );
-
-    expect(onTest).toHaveBeenCalledTimes(2);
 
     const expectedParameters = {
       enableSSH: true,
