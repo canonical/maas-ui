@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -21,6 +20,7 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -53,19 +53,17 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />,
+      { state }
     );
-    const links = wrapper.find("Link");
-    expect(links.at(0).text()).toBe("subnet-cidr");
-    expect(links.at(1).text()).toBe("subnet-name");
+
+    expect(
+      screen.getByRole("link", { name: "subnet-cidr" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "subnet-name" })
+    ).toBeInTheDocument();
   });
 
   it("can display subnet links if the node is a device", () => {
@@ -87,19 +85,17 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />,
+      { state }
     );
-    const links = wrapper.find("Link");
-    expect(links.at(0).text()).toBe("subnet-cidr");
-    expect(links.at(1).text()).toBe("subnet-name");
+
+    expect(
+      screen.getByRole("link", { name: "subnet-cidr" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "subnet-name" })
+    ).toBeInTheDocument();
   });
 
   it("can display an unconfigured subnet", () => {
@@ -119,17 +115,12 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />,
+      { state }
     );
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe("Unconfigured");
+
+    expect(screen.getByTestId("primary")).toHaveTextContent("Unconfigured");
   });
 
   it("can display the subnet name only", () => {
@@ -152,18 +143,13 @@ describe("SubnetColumn", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SubnetColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SubnetColumn nic={nic} node={state.machine.items[0]} />,
+      { state }
     );
-    expect(wrapper.find("Link").exists()).toBe(false);
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe(
+
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    expect(screen.getByTestId("primary")).toHaveTextContent(
       "subnet-cidr (subnet-name)"
     );
   });

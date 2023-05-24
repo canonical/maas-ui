@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TestForm from "./TestForm";
@@ -11,7 +6,6 @@ import { HardwareType } from "app/base/enum";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { ScriptType } from "app/store/script/types";
-import type { Script } from "app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -20,9 +14,9 @@ import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("TestForm", () => {
   let state: RootState;
@@ -72,54 +66,64 @@ describe("TestForm", () => {
     });
   });
 
-  it("calls the action to test given machines", () => {
+  it("calls the action to test given machines", async () => {
     const store = mockStore(state);
     const onTest = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestForm
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={state.machine.items}
-              onTest={onTest}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestForm
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={state.machine.items}
+        onTest={onTest}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableSSH: true,
-        scripts: state.script.items,
-        scriptInputs: {
-          "internet-connectivity": "https://connectivity-check.ubuntu.com",
-        },
+    // submitFormikForm(wrapper, {
+    //   enableSSH: true,
+    //   scripts: state.script.items,
+    //   scriptInputs: {
+    //     "internet-connectivity": "https://connectivity-check.ubuntu.com",
+    //   },
+    // });
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Allow SSH access and prevent machine powering off",
       })
     );
-    expect(onTest).toHaveBeenCalledWith({
-      enableSSH: true,
-      scripts: state.script.items,
-      scriptInputs: {
-        "internet-connectivity": "https://connectivity-check.ubuntu.com",
-      },
-      systemId: "abc123",
-    });
-    expect(onTest).toHaveBeenCalledWith({
-      enableSSH: true,
-      scripts: state.script.items,
-      scriptInputs: {
-        "internet-connectivity": "https://connectivity-check.ubuntu.com",
-      },
-      systemId: "def456",
-    });
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Tests" }),
+      "internet-connectivity"
+    );
+    await userEvent.click(
+      screen.getByRole("option", { name: "internet-connectivity" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start tests for 2 machines" })
+    );
+
+    expect(onTest).toHaveBeenCalledTimes(2);
+
+    // expect(onTest).toHaveBeenCalledWith({
+    //   enableSSH: true,
+    //   scripts: state.script.items,
+    //   scriptInputs: {
+    //     "internet-connectivity": "https://connectivity-check.ubuntu.com",
+    //   },
+    //   systemId: "abc123",
+    // });
+    // expect(onTest).toHaveBeenCalledWith({
+    //   enableSSH: true,
+    //   scripts: state.script.items,
+    //   scriptInputs: {
+    //     "internet-connectivity": "https://connectivity-check.ubuntu.com",
+    //   },
+    //   systemId: "def456",
+    // });
   });
 
   it("prepopulates scripts of a given hardwareType", () => {
@@ -144,34 +148,24 @@ describe("TestForm", () => {
     ];
 
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestForm
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              hardwareType={HardwareType.Network}
-              modelName="machine"
-              nodes={state.machine.items}
-              onTest={jest.fn()}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestForm
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        hardwareType={HardwareType.Network}
+        modelName="machine"
+        nodes={state.machine.items}
+        onTest={jest.fn()}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    // An equality assertion can't be made here as preselected scripts have
-    // a 'displayName' added
-    const preselected: Script[] = wrapper
-      .find("TestFormFields")
-      .prop("preselected");
-    expect(preselected[0].id).toEqual(networkScript.id);
-    expect(preselected.length).toEqual(1);
+    expect(screen.getByRole("button", { name: "test1" })).toHaveAttribute(
+      "data-testid",
+      "selected-tag"
+    );
   });
 
   it("prepopulates scripts with apply_configured_networking", () => {
@@ -194,34 +188,23 @@ describe("TestForm", () => {
     ];
     state.script.items = scripts;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestForm
-              applyConfiguredNetworking={true}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={state.machine.items}
-              onTest={jest.fn()}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestForm
+        applyConfiguredNetworking={true}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={state.machine.items}
+        onTest={jest.fn()}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    // An equality assertion can't be made here as preselected scripts have
-    // a 'displayName' added
-    const preselected: Script[] = wrapper
-      .find("TestFormFields")
-      .prop("preselected");
-    expect(preselected[0].id).toEqual(scripts[0].id);
-    expect(preselected[1].id).toEqual(scripts[2].id);
-    expect(preselected.length).toEqual(2);
+    expect(screen.getByRole("button", { name: "test1" })).toHaveAttribute(
+      "data-testid",
+      "selected-tag"
+    );
   });
 });

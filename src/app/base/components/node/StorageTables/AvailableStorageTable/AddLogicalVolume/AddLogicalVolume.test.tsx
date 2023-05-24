@@ -1,13 +1,9 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddLogicalVolume from "./AddLogicalVolume";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import type { RootState } from "app/store/root/types";
 import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
@@ -17,9 +13,9 @@ import {
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, userEvent, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("AddLogicalVolume", () => {
   it("sets the initial name correctly", () => {
@@ -62,22 +58,17 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={volumeGroup}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={volumeGroup}
+        systemId="abc123"
+      />,
+      { store }
     );
 
     // Two logical volumes already exist so the next one should be lv2
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("lv2");
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("lv2");
   });
 
   it("sets the initial size to the available space", () => {
@@ -120,20 +111,17 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={volumeGroup}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={volumeGroup}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("Input[name='size']").prop("value")).toBe(8);
+
+    expect(screen.getByRole("spinbutton", { name: "Size" })).toHaveValue(8);
+    expect(screen.getByLabelText("Unit")).toHaveValue("GB");
   });
 
   it("can validate if the size meets the minimum requirement", async () => {
@@ -151,40 +139,25 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={disk}
+        systemId="abc123"
+      />,
+      { store }
     );
 
     // Set logical volume size to 0.1MB
-    await act(async () => {
-      wrapper.find("input[name='size']").simulate("change", {
-        target: { name: "size", value: "0.1" },
-      } as React.ChangeEvent<HTMLInputElement>);
-    });
-    wrapper.update();
-    await act(async () => {
-      wrapper.find("select[name='unit']").simulate("change", {
-        target: { name: "unit", value: "MB" },
-      });
-    });
-    wrapper.update();
-
+    await userEvent.clear(screen.getByRole("spinbutton", { name: "Size" }));
+    await userEvent.type(
+      screen.getByRole("spinbutton", { name: "Size" }),
+      "0.1"
+    );
+    await userEvent.selectOptions(screen.getByLabelText("Unit"), "MB");
     expect(
-      wrapper
-        .find(".p-form-validation__message")
-        .text()
-        .includes("is required to add a logical volume")
-    ).toBe(true);
+      screen.getByText(/At least 4.19MB is required to add a logical volume/i)
+    ).toBeInTheDocument();
   });
 
   it("can validate if the size is less than available disk space", async () => {
@@ -202,75 +175,75 @@ describe("AddLogicalVolume", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={disk}
+        systemId="abc123"
+      />,
+      { store }
     );
 
     // Set logical volume size to 2GB
-    await act(async () => {
-      wrapper.find("input[name='size']").simulate("change", {
-        target: { name: "size", value: "2" },
-      } as React.ChangeEvent<HTMLInputElement>);
-    });
-    wrapper.update();
-
+    await userEvent.clear(screen.getByRole("spinbutton", { name: "Size" }));
+    await userEvent.type(screen.getByRole("spinbutton", { name: "Size" }), "2");
     expect(
-      wrapper
-        .find(".p-form-validation__message")
-        .text()
-        .includes("available in this volume group")
-    ).toBe(true);
+      screen.getByText(/Only 1GB available in this volume group/i)
+    ).toBeInTheDocument();
   });
 
-  it("correctly dispatches an action to create a logical volume", () => {
+  it("correctly dispatches an action to create a logical volume", async () => {
     const disk = diskFactory({
-      available_size: MIN_PARTITION_SIZE + 1,
+      available_size: 20000000000,
       id: 1,
       type: DiskTypes.VOLUME_GROUP,
     });
     const state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
+        items: [
+          machineDetailsFactory({
+            disks: [disk],
+            system_id: "abc123",
+            supported_filesystems: [{ key: "fat32", ui: "FAT32" }],
+          }),
+        ],
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
         }),
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddLogicalVolume
-              closeExpanded={jest.fn()}
-              disk={disk}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddLogicalVolume
+        closeExpanded={jest.fn()}
+        disk={disk}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    submitFormikForm(wrapper, {
-      fstype: "fat32",
-      mountOptions: "noexec",
-      mountPoint: "/path",
-      name: "lv0",
-      size: 10,
-      tags: ["tag1", "tag2"],
-      unit: "GB",
-      volumeGroupId: 1,
-    });
+    await userEvent.clear(screen.getByRole("spinbutton", { name: "Size" }));
+    await userEvent.type(
+      screen.getByRole("spinbutton", { name: "Size" }),
+      "10"
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Filesystem" }),
+      "fat32"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Mount point" }),
+      "/path"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Mount options" }),
+      "noexec"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add logical volume" })
+    );
 
     expect(
       store
@@ -289,7 +262,6 @@ describe("AddLogicalVolume", () => {
           name: "lv0",
           size: 10000000000,
           system_id: "abc123",
-          tags: ["tag1", "tag2"],
           volume_group_id: 1,
         },
       },
