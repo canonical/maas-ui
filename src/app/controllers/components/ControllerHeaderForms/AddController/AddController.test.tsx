@@ -11,7 +11,6 @@ import {
 import {
   userEvent,
   screen,
-  waitFor,
   within,
   renderWithBrowserRouter,
 } from "testing/utils";
@@ -57,8 +56,8 @@ describe("AddController", () => {
         state,
       }
     );
-    userEvent.click(screen.getByRole("button", { name: "Close" }));
-    await waitFor(() => expect(clearSidePanelContent).toHaveBeenCalled());
+    await userEvent.click(screen.getByRole("button", { name: "Close" }));
+    expect(clearSidePanelContent).toHaveBeenCalled();
   });
 
   it("uses a fixed version in both snap and packages instructions", async () => {
@@ -72,14 +71,12 @@ describe("AddController", () => {
       screen.getByText(/sudo snap install maas --channel=3.2/)
     ).toBeInTheDocument();
 
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getAllByRole("combobox", { name: "version" })[0],
       "v3.2 Packages"
     );
-    await waitFor(() =>
-      expect(
-        screen.getByText(new RegExp("sudo apt-add-repository ppa:maas/3.2"))
-      ).toBeInTheDocument()
-    );
+    expect(
+      screen.getByText(new RegExp("sudo apt-add-repository ppa:maas/3.2"))
+    ).toBeInTheDocument();
   });
 });

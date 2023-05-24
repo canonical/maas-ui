@@ -12,13 +12,14 @@ import SectionHeader from "app/base/components/SectionHeader";
 import SegmentedControl from "app/base/components/SegmentedControl";
 import { useWindowTitle } from "app/base/hooks";
 import { useQuery } from "app/base/hooks/urls";
-import { SubnetForms, SubnetsUrlParams } from "app/subnets/enum";
-import type { SubnetForm } from "app/subnets/types";
+import { useSidePanel } from "app/base/side-panel-context";
+import { SubnetForms, SubnetsUrlParams } from "app/subnets/constants";
+import { SubnetHeaderViews } from "app/subnets/types";
 import FormActions from "app/subnets/views/FormActions";
 
 const SubnetsList = (): JSX.Element => {
   useWindowTitle("Subnets");
-  const [activeForm, setActiveForm] = React.useState<SubnetForm | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const query = useQuery();
   const navigate = useNavigate();
   const groupBy = query.get(SubnetsUrlParams.By);
@@ -54,6 +55,12 @@ const SubnetsList = (): JSX.Element => {
     }
   }, [groupBy, setGroupBy, hasValidGroupBy]);
 
+  const [, name] = sidePanelContent?.view || [];
+  const activeForm =
+    name && Object.keys(SubnetForms).includes(name)
+      ? SubnetForms[name as keyof typeof SubnetForms]
+      : null;
+
   return (
     <MainContentSection
       header={
@@ -62,24 +69,27 @@ const SubnetsList = (): JSX.Element => {
             <ContextualMenu
               hasToggleIcon
               links={[
-                SubnetForms.Fabric,
-                SubnetForms.VLAN,
-                SubnetForms.Space,
-                SubnetForms.Subnet,
-              ].map((children) => ({
-                children,
-                onClick: () => setActiveForm(children),
-              }))}
+                SubnetHeaderViews.Fabric,
+                SubnetHeaderViews.VLAN,
+                SubnetHeaderViews.Space,
+                SubnetHeaderViews.Subnet,
+              ].map((view) => {
+                const [, name] = view;
+                return {
+                  children: name,
+                  onClick: () => setSidePanelContent({ view }),
+                };
+              })}
               position="right"
               toggleAppearance="positive"
               toggleLabel="Add"
             />,
           ]}
           sidePanelContent={
-            activeForm ? (
+            sidePanelContent ? (
               <FormActions
                 activeForm={activeForm}
-                setActiveForm={setActiveForm}
+                setActiveForm={setSidePanelContent}
               />
             ) : null
           }

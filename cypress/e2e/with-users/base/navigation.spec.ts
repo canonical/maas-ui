@@ -51,6 +51,15 @@ context("Navigation - admin - collapse", () => {
     expectCollapsedNavigation();
   });
 
+  it("ignores the keyboard shortcut when modifier key is pressed", () => {
+    cy.viewport("ipad-mini");
+    cy.waitForPageToLoad();
+    expectCollapsedNavigation();
+    // ctrl + [ is often used as a shortcut for going back in browsers
+    cy.get("body").type("{ctrl}[");
+    expectCollapsedNavigation();
+  });
+
   it("expands and collapses the side navigation on click of a button", () => {
     cy.viewport("ipad-mini");
     cy.waitForPageToLoad();

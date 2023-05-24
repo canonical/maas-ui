@@ -10,7 +10,7 @@ import DeviceListTable from "./DeviceListTable";
 
 import MainContentSection from "app/base/components/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
-import type { DeviceSidePanelContent } from "app/devices/types";
+import { useSidePanel } from "app/base/side-panel-context";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { FilterDevices } from "app/store/device/utils";
@@ -22,8 +22,7 @@ const DeviceList = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentFilters = FilterDevices.queryStringToFilters(location.search);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<DeviceSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
     FilterDevices.filtersToString(currentFilters)

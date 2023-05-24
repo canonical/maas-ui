@@ -9,16 +9,13 @@ import ControllerName from "./ControllerName";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import {
   ControllerDetailsTabLabels,
   ControllerHeaderViews,
 } from "app/controllers/constants";
-import type {
-  ControllerSidePanelContent,
-  ControllerSetSidePanelContent,
-} from "app/controllers/types";
 import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
@@ -26,10 +23,8 @@ import { isControllerDetails } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
 import { getNodeActionTitle } from "app/store/utils";
 
-type Props = {
+type Props = SidePanelContextType & {
   systemId: Controller["system_id"];
-  sidePanelContent: ControllerSidePanelContent | null;
-  setSidePanelContent: ControllerSetSidePanelContent;
 };
 
 const ControllerDetailsHeader = ({

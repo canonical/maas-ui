@@ -1,7 +1,4 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
 
 import DeviceListHeader from "./DeviceListHeader";
 
@@ -12,8 +9,7 @@ import {
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("DeviceListHeader", () => {
   let state: RootState;
@@ -32,34 +28,26 @@ describe("DeviceListHeader", () => {
 
   it("displays a spinner in the header subtitle if devices have not loaded", () => {
     state.device.loaded = false;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceListHeader
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={jest.fn()}
-            sidePanelContent={null}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceListHeader
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state }
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("displays a devices count if devices have loaded", () => {
     state.device.loaded = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceListHeader
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={jest.fn()}
-            sidePanelContent={null}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceListHeader
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state }
     );
     expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
       "2 devices available"
@@ -68,34 +56,28 @@ describe("DeviceListHeader", () => {
 
   it("disables the add device button if any devices are selected", () => {
     state.device.selected = ["abc123"];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceListHeader
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={jest.fn()}
-            sidePanelContent={null}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceListHeader
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state }
     );
     expect(screen.getByTestId("add-device-button")).toBeDisabled();
   });
 
   it("can open the add device form", () => {
     const setSidePanelContent = jest.fn();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceListHeader
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={null}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MemoryRouter>
+        <DeviceListHeader
+          setSearchFilter={jest.fn()}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={null}
+        />
+      </MemoryRouter>,
+      { state }
     );
     screen.getByTestId("add-device-button").click();
     expect(setSidePanelContent).toHaveBeenCalledWith({

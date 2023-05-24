@@ -5,18 +5,13 @@ import type { ValueOf } from "@canonical/react-components";
 import AddController from "./AddController";
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { ControllerActionHeaderViews } from "app/controllers/constants";
 import { ControllerHeaderViews } from "app/controllers/constants";
-import type {
-  ControllerSidePanelContent,
-  ControllerSetSidePanelContent,
-} from "app/controllers/types";
 import type { Controller } from "app/store/controller/types";
 
-type Props = {
+type Props = SidePanelContextType & {
   controllers: Controller[];
-  sidePanelContent: ControllerSidePanelContent;
-  setSidePanelContent: ControllerSetSidePanelContent;
   viewingDetails?: boolean;
 };
 
@@ -30,6 +25,10 @@ const ControllerHeaderForms = ({
     () => setSidePanelContent(null),
     [setSidePanelContent]
   );
+
+  if (!sidePanelContent) {
+    return null;
+  }
 
   switch (sidePanelContent.view) {
     case ControllerHeaderViews.ADD_CONTROLLER:

@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ImageListHeader, {
@@ -16,12 +14,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import {
-  userEvent,
-  screen,
-  render,
-  renderWithBrowserRouter,
-} from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -77,15 +70,7 @@ describe("ImageListHeader", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/images", key: "testKey" }]}
-        >
-          <ImageListHeader />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ImageListHeader />, { route: "/images", store });
 
     await userEvent.click(
       screen.getByRole("checkbox", {

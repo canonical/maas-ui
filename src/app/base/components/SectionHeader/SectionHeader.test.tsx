@@ -1,10 +1,12 @@
 import SectionHeader from "./SectionHeader";
 
-import { render, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("SectionHeader", () => {
   it("can render title and subtitle", () => {
-    render(<SectionHeader subtitle="Subtitle" title="Title" />);
+    renderWithBrowserRouter(
+      <SectionHeader subtitle="Subtitle" title="Title" />
+    );
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "Title"
     );
@@ -14,21 +16,23 @@ describe("SectionHeader", () => {
   });
 
   it("displays the title as a h1 by default", () => {
-    render(<SectionHeader title="Title" />);
+    renderWithBrowserRouter(<SectionHeader title="Title" />);
     const title = screen.getByRole("heading", { level: 1, name: "Title" });
     expect(title).toBeInTheDocument();
     expect(title.classList.contains("p-heading--4")).toBe(true);
   });
 
   it("can change the title element", () => {
-    render(<SectionHeader title="Title" titleElement="div" />);
+    renderWithBrowserRouter(<SectionHeader title="Title" titleElement="div" />);
     const title = screen.getByTestId("section-header-title");
     expect(title).toBeInTheDocument();
     expect(title.classList.contains("p-heading--4")).toBe(false);
   });
 
   it("shows a spinner instead of title if loading", () => {
-    render(<SectionHeader loading subtitle="Subtitle" title="Title" />);
+    renderWithBrowserRouter(
+      <SectionHeader loading subtitle="Subtitle" title="Title" />
+    );
     expect(
       screen.getByTestId("section-header-title-spinner")
     ).toBeInTheDocument();
@@ -38,7 +42,9 @@ describe("SectionHeader", () => {
   });
 
   it("shows a spinner instead of subtitle if subtitle loading", () => {
-    render(<SectionHeader subtitle="Subtitle" subtitleLoading title="Title" />);
+    renderWithBrowserRouter(
+      <SectionHeader subtitle="Subtitle" subtitleLoading title="Title" />
+    );
     expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
       "Loading"
     );
@@ -49,7 +55,7 @@ describe("SectionHeader", () => {
       <button key="button-1">Button 1</button>,
       <button key="button-2">Button 2</button>,
     ];
-    render(<SectionHeader buttons={buttons} title="Title" />);
+    renderWithBrowserRouter(<SectionHeader buttons={buttons} title="Title" />);
     expect(screen.getByTestId("section-header-buttons")).toBeInTheDocument();
   });
 
@@ -66,12 +72,14 @@ describe("SectionHeader", () => {
         path: "/path2",
       },
     ];
-    render(<SectionHeader tabLinks={tabLinks} title="Title" />);
+    renderWithBrowserRouter(
+      <SectionHeader tabLinks={tabLinks} title="Title" />
+    );
     expect(screen.getByTestId("section-header-tabs")).toBeInTheDocument();
   });
 
   it("can render extra header content as a side panel", () => {
-    render(
+    renderWithBrowserRouter(
       <SectionHeader
         sidePanelContent={<div>Header content</div>}
         sidePanelTitle="Header content title"
@@ -85,7 +93,7 @@ describe("SectionHeader", () => {
   });
 
   it("does not render buttons if header content is present", () => {
-    const { rerender } = render(
+    const { rerender } = renderWithBrowserRouter(
       <SectionHeader
         buttons={[<button key="button">Click me</button>]}
         subtitle="subtitle"
