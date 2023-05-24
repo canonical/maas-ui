@@ -1,41 +1,19 @@
-import { shallow } from "enzyme";
-
 import RamResources from "./RamResources";
 
 import { COLOURS } from "app/base/constants";
+import { render, screen } from "testing/utils";
 
 describe("RamResources", () => {
-  it("renders", () => {
-    const wrapper = shallow(
-      <RamResources
-        generalAllocated={1}
-        generalFree={2}
-        generalOther={3}
-        hugepagesAllocated={4}
-        hugepagesFree={5}
-        hugepagesOther={6}
-        pageSize={7}
-      />
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("can be made to have a dynamic layout", () => {
-    const wrapper = shallow(
-      <RamResources dynamicLayout generalAllocated={1} generalFree={2} />
-    );
+    render(<RamResources dynamicLayout generalAllocated={1} generalFree={2} />);
 
-    expect(
-      wrapper
-        .find(".ram-resources")
-        .prop("className")
-        ?.includes("ram-resources--dynamic-layout")
-    ).toBe(true);
+    expect(screen.getByLabelText("ram resources")).toHaveClass(
+      "ram-resources--dynamic-layout"
+    );
   });
 
   it("shows hugepages data if provided", () => {
-    const wrapper = shallow(
+    render(
       <RamResources
         generalAllocated={1}
         generalFree={2}
@@ -44,19 +22,17 @@ describe("RamResources", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='hugepages-data']").exists()).toBe(true);
+    expect(screen.getByTestId("hugepages-data")).toBeInTheDocument();
   });
 
   it("does not show hugepages data if not provided", () => {
-    const wrapper = shallow(
-      <RamResources generalAllocated={1} generalFree={2} />
-    );
+    render(<RamResources generalAllocated={1} generalFree={2} />);
 
-    expect(wrapper.find("[data-testid='hugepages-data']").exists()).toBe(false);
+    expect(screen.queryByTestId("hugepages-data")).not.toBeInTheDocument();
   });
 
   it("show hugepages page size if provided", () => {
-    const wrapper = shallow(
+    render(
       <RamResources
         generalAllocated={1}
         generalFree={2}
@@ -66,12 +42,12 @@ describe("RamResources", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='page-size']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='page-size']").text()).toBe("(Size: 5B)");
+    expect(screen.getByTestId("page-size")).toBeInTheDocument();
+    expect(screen.getByTestId("page-size")).toHaveTextContent("(Size: 5B)");
   });
 
   it("does not show hugepages page size if not provided", () => {
-    const wrapper = shallow(
+    render(
       <RamResources
         generalAllocated={1}
         generalFree={2}
@@ -80,11 +56,11 @@ describe("RamResources", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='page-size']").exists()).toBe(false);
+    expect(screen.queryByTestId("page-size")).not.toBeInTheDocument();
   });
 
   it("can show whether RAM has been over-committed", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <RamResources
         generalAllocated={1}
         generalFree={-1}
@@ -93,16 +69,17 @@ describe("RamResources", () => {
       />
     );
 
-    expect(wrapper.find("DoughnutChart").prop("segments")).toStrictEqual([
-      { color: COLOURS.CAUTION, value: 1 },
-    ]);
+    // eslint-disable-next-line testing-library/no-container
+    expect(container.querySelector(".doughnut-chart__segment")).toHaveStyle(
+      `stroke: ${COLOURS.CAUTION}`
+    );
   });
 
   it("shows RAM used by other projects if data provided", () => {
-    const wrapper = shallow(
+    render(
       <RamResources generalAllocated={1} generalFree={2} generalOther={3} />
     );
 
-    expect(wrapper.find("[data-testid='others-col']").exists()).toBe(true);
+    expect(screen.getByTestId("others-col")).toBeInTheDocument();
   });
 });
