@@ -1,13 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import LXDClusterSummaryCard from "./LXDClusterSummaryCard";
 
-import VfResources from "app/kvm/components/VfResources";
 import { PodType } from "app/store/pod/constants";
 import {
   pod as podFactory,
+  podResource as podResourceFactory,
   podNetworkInterface as interfaceFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
@@ -16,8 +12,7 @@ import {
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, within } from "testing/utils";
 
 describe("LXDClusterSummaryCard", () => {
   it("can show the section for storage", () => {
@@ -29,16 +24,12 @@ describe("LXDClusterSummaryCard", () => {
         items: [vmClusterFactory({ id: 1 })],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <LXDClusterSummaryCard clusterId={1} showStorage />
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDClusterSummaryCard clusterId={1} showStorage />,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='lxd-cluster-storage']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("lxd-cluster-storage")).toBeInTheDocument();
   });
 
   it("displays a spinner when loading pods", () => {
@@ -47,14 +38,12 @@ describe("LXDClusterSummaryCard", () => {
         loading: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <LXDClusterSummaryCard clusterId={1} showStorage />
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDClusterSummaryCard clusterId={1} showStorage />,
+      { state }
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("can hide the section for storage", () => {
@@ -66,20 +55,31 @@ describe("LXDClusterSummaryCard", () => {
         items: [vmClusterFactory({ id: 1 })],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <LXDClusterSummaryCard clusterId={1} showStorage={false} />
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDClusterSummaryCard clusterId={1} showStorage={false} />,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='lxd-cluster-storage']").exists()).toBe(
-      false
-    );
+    expect(screen.queryByTestId("lxd-cluster-storage")).not.toBeInTheDocument();
   });
 
   it("aggregates the interfaces in the cluster hosts", () => {
-    const interfaces = [interfaceFactory(), interfaceFactory()];
+    const interfaces = [
+      interfaceFactory({
+        virtual_functions: podResourceFactory({
+          allocated_other: 2,
+          allocated_tracked: 1,
+          free: 3,
+        }),
+      }),
+      interfaceFactory({
+        virtual_functions: podResourceFactory({
+          allocated_other: 2,
+          allocated_tracked: 1,
+          free: 3,
+        }),
+      }),
+    ];
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [
@@ -111,15 +111,21 @@ describe("LXDClusterSummaryCard", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <LXDClusterSummaryCard clusterId={1} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<LXDClusterSummaryCard clusterId={1} />, { state });
 
-    expect(wrapper.find(VfResources).prop("interfaces")).toStrictEqual(
-      interfaces
+    const ifaceMeter = screen.getByTestId("iface-meter");
+    expect(ifaceMeter).toBeInTheDocument();
+    expect(
+      within(ifaceMeter).getByTestId("kvm-resource-allocated")
+    ).toHaveTextContent("2");
+    expect(
+      within(ifaceMeter).getByTestId("kvm-resource-other")
+    ).toHaveTextContent("4");
+    expect(
+      within(ifaceMeter).getByTestId("kvm-resource-free")
+    ).toHaveTextContent("6");
+    expect(within(ifaceMeter).getByTestId("meter-label")).toHaveTextContent(
+      "2"
     );
   });
 });
