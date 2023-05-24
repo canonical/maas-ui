@@ -76,7 +76,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
         {disks.map((disk, i) => {
           const isBootDisk = disk.id === bootDisk;
           return (
-            <Card key={disk.id}>
+            <Card aria-label="disk" key={disk.id}>
               <FormikField
                 caution={
                   isBootDisk && disk.size < 8

@@ -1,8 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import StorageTables, { Labels } from "./StorageTables";
 
 import { DiskTypes, StorageLayout } from "app/store/types/enum";
@@ -13,9 +8,7 @@ import {
   nodeFilesystem as fsFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 it("renders a list of cache sets if any exist", () => {
   const node = machineDetailsFactory({
@@ -27,16 +20,10 @@ it("renders a list of cache sets if any exist", () => {
       items: [node],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <StorageTables canEditStorage node={node} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithBrowserRouter(<StorageTables canEditStorage node={node} />, {
+    state,
+  });
 
   expect(
     screen.getByRole("heading", { name: Labels.CacheSets })
@@ -63,16 +50,10 @@ it("renders a list of datastores if the detected layout is VMFS6", () => {
       items: [node],
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <StorageTables canEditStorage node={node} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+
+  renderWithBrowserRouter(<StorageTables canEditStorage node={node} />, {
+    state,
+  });
 
   expect(
     screen.getByRole("heading", { name: Labels.Datastores })
