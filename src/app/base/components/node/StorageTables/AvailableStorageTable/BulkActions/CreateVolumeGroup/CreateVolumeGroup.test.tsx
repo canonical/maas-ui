@@ -16,7 +16,6 @@ import {
 import {
   renderWithBrowserRouter,
   screen,
-  submitFormikForm,
   userEvent,
   within,
 } from "testing/utils";

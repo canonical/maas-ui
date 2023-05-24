@@ -1,8 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import SubnetColumn from "./SubnetColumn";
 
 import type { RootState } from "app/store/root/types";
@@ -21,8 +16,6 @@ import {
   vlan as vlanFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter, screen } from "testing/utils";
-
-const mockStore = configureStore();
 
 describe("SubnetColumn", () => {
   let state: RootState;
