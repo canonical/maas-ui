@@ -61,8 +61,8 @@ describe("CreateRaid", () => {
 
   it("correctly dispatches an action to create a RAID device", async () => {
     const [selectedDisk, selectedPartition] = [
-      diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
-      partitionFactory({ filesystem: null }),
+      diskFactory({ id: 9, partitions: null, type: DiskTypes.PHYSICAL }),
+      partitionFactory({ id: 10, filesystem: null }),
     ];
     const disks = [
       selectedDisk,
@@ -121,13 +121,13 @@ describe("CreateRaid", () => {
       },
       payload: {
         params: {
-          block_devices: [9],
+          block_devices: [selectedDisk.id],
           fstype: "ext4",
           level: "raid-1",
           mount_options: "option1,option2",
           mount_point: "/mount-point",
           name: "md1",
-          partitions: [10],
+          partitions: [selectedPartition.id],
           system_id: "abc123",
           tags: [],
         },

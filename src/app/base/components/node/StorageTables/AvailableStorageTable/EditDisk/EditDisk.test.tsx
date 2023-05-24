@@ -82,7 +82,7 @@ describe("EditDisk", () => {
 
     expect(
       store.getActions().find((action) => action.type === "machine/updateDisk")
-    ).toEqual({
+    ).toStrictEqual({
       meta: {
         method: "update_disk",
         model: "machine",
