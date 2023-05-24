@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import FilesystemFields from "./FilesystemFields";
 
@@ -10,9 +7,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
-
-const mockStore = configureStore();
+import { renderWithMockStore, screen, userEvent } from "testing/utils";
 
 describe("FilesystemFields", () => {
   it("only shows filesystem types that require a storage device", () => {
@@ -21,7 +16,7 @@ describe("FilesystemFields", () => {
         items: [
           machineDetailsFactory({
             supported_filesystems: [
-              { key: "fat32", ui: "fat32" }, // reuuires storage
+              { key: "fat32", ui: "fat32" }, // requires storage
               { key: "ramfs", ui: "ramfs" }, // does not require storage
             ],
             system_id: "abc123",
@@ -29,24 +24,20 @@ describe("FilesystemFields", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-          onSubmit={jest.fn()}
-        >
-          <FilesystemFields systemId="abc123" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
+        onSubmit={jest.fn()}
+      >
+        <FilesystemFields systemId="abc123" />
+      </Formik>,
+      { state }
     );
 
+    expect(screen.getByRole("option", { name: /fat32/i })).toBeInTheDocument();
     expect(
-      wrapper.find("FormikField[name='fstype'] option[value='fat32']").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find("FormikField[name='fstype'] option[value='ramfs']").exists()
-    ).toBe(false);
+      screen.queryByRole("option", { name: /ramfs/i })
+    ).not.toBeInTheDocument();
   });
 
   it("disables mount point and options if no fstype selected", () => {
@@ -60,24 +51,18 @@ describe("FilesystemFields", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-          onSubmit={jest.fn()}
-        >
-          <FilesystemFields systemId="abc123" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
+        onSubmit={jest.fn()}
+      >
+        <FilesystemFields systemId="abc123" />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("Input[name='mountOptions']").prop("disabled")).toBe(
-      true
-    );
-    expect(wrapper.find("Input[name='mountPoint']").prop("disabled")).toBe(
-      true
-    );
+    expect(screen.getByLabelText(/Mount Options/i)).toBeDisabled();
+    expect(screen.getByLabelText(/Mount Point/i)).toBeDisabled();
   });
 
   it("sets mount point to 'none' and disables field if swap fstype selected", async () => {
@@ -91,29 +76,19 @@ describe("FilesystemFields", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-          onSubmit={jest.fn()}
-        >
-          <FilesystemFields systemId="abc123" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
+        onSubmit={jest.fn()}
+      >
+        <FilesystemFields systemId="abc123" />
+      </Formik>,
+      { state }
     );
 
-    wrapper
-      .find("select[name='fstype']")
-      .simulate("change", { target: { name: "fstype", value: "swap" } });
-    await waitForComponentToPaint(wrapper);
-
-    expect(wrapper.find("Input[name='mountOptions']").prop("disabled")).toBe(
-      false
-    );
-    expect(wrapper.find("Input[name='mountPoint']").prop("disabled")).toBe(
-      true
-    );
-    expect(wrapper.find("Input[name='mountPoint']").prop("value")).toBe("none");
+    await userEvent.selectOptions(screen.getByLabelText(/Filesystem/i), "swap");
+    expect(screen.getByLabelText(/Mount Options/i)).not.toBeDisabled();
+    expect(screen.getByLabelText(/Mount Point/i)).toBeDisabled();
+    expect(screen.getByLabelText(/Mount Point/i)).toHaveValue("none");
   });
 });

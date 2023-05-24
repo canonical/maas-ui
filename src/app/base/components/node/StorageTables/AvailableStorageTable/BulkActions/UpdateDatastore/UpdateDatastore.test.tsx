@@ -1,12 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UpdateDatastore from "./UpdateDatastore";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import type { RootState } from "app/store/root/types";
 import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
@@ -18,9 +15,9 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("UpdateDatastore", () => {
   it("calculates the total size of the selected storage devices", () => {
@@ -54,27 +51,19 @@ describe("UpdateDatastore", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UpdateDatastore
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <UpdateDatastore
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { route: "/", state }
     );
 
-    expect(wrapper.find("Input[data-testid='size-to-add']").prop("value")).toBe(
-      "1.5 GB"
-    );
+    expect(screen.getByTestId("size-to-add")).toHaveValue("1.5 GB");
   });
 
-  it("correctly dispatches an action to update a datastore", () => {
+  it("correctly dispatches an action to update a datastore", async () => {
     const [datastore, selectedDisk, selectedPartition] = [
       diskFactory({ filesystem: fsFactory({ fstype: "vmfs6" }) }),
       diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
@@ -94,23 +83,18 @@ describe("UpdateDatastore", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UpdateDatastore
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <UpdateDatastore
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { route: "/", store }
     );
 
-    submitFormikForm(wrapper, {
-      datastore: datastore.id,
-    });
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add to datastore" })
+    );
 
     expect(
       store

@@ -16,9 +16,22 @@ export const EditDiskFields = ({ disk, systemId }: Props): JSX.Element => {
   return (
     <Row>
       <Col size={5}>
-        <Input disabled label="Name" type="text" value={disk.name} />
-        <Input disabled label="Type" type="text" value={formatType(disk)} />
         <Input
+          aria-label="Name"
+          disabled
+          label="Name"
+          type="text"
+          value={disk.name}
+        />
+        <Input
+          aria-label="Type"
+          disabled
+          label="Type"
+          type="text"
+          value={formatType(disk)}
+        />
+        <Input
+          aria-label="Size"
           disabled
           label="Size"
           type="text"
