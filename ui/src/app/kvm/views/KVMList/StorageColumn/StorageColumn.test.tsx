@@ -6,8 +6,7 @@ import StorageColumn from "./StorageColumn";
 
 import {
   pod as podFactory,
-  podResource as podResourceFactory,
-  podResources as podResourcesFactory,
+  podHint as podHintFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -22,12 +21,11 @@ describe("StorageColumn", () => {
           podFactory({
             id: 1,
             name: "pod-1",
-            resources: podResourcesFactory({
-              storage: podResourceFactory({
-                allocated_other: 30000000000,
-                allocated_tracked: 70000000000,
-                free: 900000000000,
-              }),
+            total: podHintFactory({
+              local_storage: 1000000000000,
+            }),
+            used: podHintFactory({
+              local_storage: 100000000000,
             }),
           }),
         ],

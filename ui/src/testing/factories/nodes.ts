@@ -29,6 +29,8 @@ import {
 import type {
   Pod,
   PodDetails,
+  PodHint,
+  PodHintExtras,
   PodMemoryResource,
   PodNetworkInterface,
   PodNuma,
@@ -40,7 +42,6 @@ import type {
   PodResources,
   PodStoragePool,
   PodVM,
-  PodVmCount,
 } from "app/store/pod/types";
 import { PodType } from "app/store/pod/types";
 import type { Model } from "app/store/types/model";
@@ -74,6 +75,7 @@ const storage_pools = () => [podStoragePool(), podStoragePool()];
 const storage_tags = () => [];
 const subnets = () => [];
 const tags = () => [];
+const hints = () => ({ ...podHint(), ...podHintExtras() });
 
 const simpleNode = extend<Model, SimpleNode>(model, {
   domain: modelRef,
@@ -328,6 +330,21 @@ export const controller = extend<BaseNode, Controller>(node, {
   versions: null,
 });
 
+export const podHint = define<PodHint>({
+  cores: 8,
+  local_storage: 10000000000,
+  local_storage_gb: "1000",
+  memory: 8000,
+  memory_gb: "8",
+});
+
+const podHintExtras = define<PodHintExtras>({
+  cpu_speed: 1000,
+  iscsi_storage: -1,
+  iscsi_storage_gb: "-0.0",
+  local_disks: -1,
+});
+
 export const podStoragePool = define<PodStoragePool>({
   available: 700000000000,
   id: () => `pool-id-${random()}`,
@@ -392,18 +409,11 @@ export const podNuma = define<PodNuma>({
   vms: () => [0, 1],
 });
 
-export const podVmCount = define<PodVmCount>({
-  tracked: 2,
-  other: 1,
-});
-
 export const podResources = define<PodResources>({
   cores: podResource,
   interfaces: () => [podNetworkInterface()],
   memory: podMemoryResource,
   numa: () => [podNuma()],
-  storage: podResource,
-  vm_count: podVmCount,
   vms: () => [podVM()],
 });
 
@@ -414,12 +424,15 @@ export const podProject = define<PodProject>({
 
 export const pod = extend<Model, Pod>(model, {
   architectures,
+  available: podHint,
   capabilities,
+  composed_machines_count: 1,
   cpu_over_commit_ratio: 10,
   cpu_speed: 1000,
   created: "Wed, 19 Feb. 2020 11:59:19",
   default_macvlan_mode: "",
   default_storage_pool: "b85e27c9-9d53-4821-ad64-153c53767ce9",
+  hints,
   host: "",
   ip_address: (i: number) => `192.168.1.${i}`,
   memory_over_commit_ratio: 8,
@@ -429,10 +442,13 @@ export const pod = extend<Model, Pod>(model, {
   power_address: "qemu+ssh://ubuntu@127.0.0.1/system",
   power_pass: "",
   resources: podResources,
+  owners_count: 1,
   storage_pools,
   tags,
+  total: podHint,
   type: PodType.VIRSH,
   updated: "Fri, 03 Jul. 2020 02:44:12",
+  used: podHint,
   version: "4.0.2",
   zone: 1,
 });

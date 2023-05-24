@@ -27,11 +27,11 @@ type LxdTableRow = {
   key: Pod["id"];
 };
 
-type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
+type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage";
 
 const getSortValue = (sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => {
   const { resources } = pod;
-  const { cores, memory, storage, vm_count } = resources;
+  const { cores, memory } = resources;
   const pool = pools.find((pool) => pod.pool === pool.id);
 
   switch (sortKey) {
@@ -44,9 +44,7 @@ const getSortValue = (sortKey: SortKey, pod: Pod, pools: ResourcePool[]) => {
         memory.general.allocated_tracked + memory.hugepages.allocated_tracked
       );
     case "storage":
-      return storage.allocated_tracked;
-    case "vms":
-      return vm_count.tracked;
+      return pod.used.local_storage;
     default:
       return pod[sortKey];
   }
@@ -168,8 +166,8 @@ const LxdTable = (): JSX.Element => {
                   <TableHeader
                     currentSort={currentSort}
                     data-test="vms-header"
-                    onClick={() => updateSort("vms")}
-                    sortKey="vms"
+                    onClick={() => updateSort("composed_machines_count")}
+                    sortKey="composed_machines_count"
                   >
                     VM<span className="u-no-text-transform">s</span>
                   </TableHeader>
