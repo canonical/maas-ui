@@ -167,16 +167,4 @@
         map-get($line-heights, small) - map-get($nudges, nudge--small);
     }
   }
-
-  .p-table__row--interactive {
-    background-color: $color-x-light;
-
-    &:hover {
-      background-color: $color-light;
-    }
-
-    &.is-active:hover {
-      background-color: transparentize($color-link, 0.85);
-    }
-  }
 }
