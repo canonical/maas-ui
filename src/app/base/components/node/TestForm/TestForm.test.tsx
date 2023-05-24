@@ -111,22 +111,30 @@ describe("TestForm", () => {
 
     expect(onTest).toHaveBeenCalledTimes(2);
 
-    // expect(onTest).toHaveBeenCalledWith({
-    //   enableSSH: true,
-    //   scripts: state.script.items,
-    //   scriptInputs: {
-    //     "internet-connectivity": "https://connectivity-check.ubuntu.com",
-    //   },
-    //   systemId: "abc123",
-    // });
-    // expect(onTest).toHaveBeenCalledWith({
-    //   enableSSH: true,
-    //   scripts: state.script.items,
-    //   scriptInputs: {
-    //     "internet-connectivity": "https://connectivity-check.ubuntu.com",
-    //   },
-    //   systemId: "def456",
-    // });
+    const expectedParameters = {
+      enableSSH: true,
+      scripts: [
+        {
+          ...script,
+          displayName:
+            "internet-connectivity (internet, network-validation, network)",
+        },
+      ],
+      scriptInputs: {
+        "internet-connectivity": {
+          url: "https://connectivity-check.ubuntu.com",
+        },
+      },
+    };
+
+    expect(onTest).toHaveBeenNthCalledWith(1, {
+      ...expectedParameters,
+      systemId: "abc123",
+    });
+    expect(onTest).toHaveBeenNthCalledWith(2, {
+      ...expectedParameters,
+      systemId: "def456",
+    });
   });
 
   it("prepopulates scripts of a given hardwareType", () => {
