@@ -188,6 +188,13 @@ function DomainDetailsController(
       DomainsManager.setActiveItem(requestedDomain).then(
         function (domain) {
           domainLoaded(domain);
+
+          // Set flag for RSD navigation item.
+          if (!$rootScope.showRSDLink) {
+            GeneralManager.getNavigationOptions().then(
+              (res) => ($rootScope.showRSDLink = res.rsd)
+            );
+          }
         },
         function (error) {
           ErrorService.raiseError(error);

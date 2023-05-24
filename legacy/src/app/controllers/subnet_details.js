@@ -542,6 +542,13 @@ export function SubnetDetailsController(
       SubnetsManager.setActiveItem(requestedSubnet).then(
         function (subnet) {
           subnetLoaded(subnet);
+
+          // Set flag for RSD navigation item.
+          if (!$rootScope.showRSDLink) {
+            GeneralManager.getNavigationOptions().then(
+              (res) => ($rootScope.showRSDLink = res.rsd)
+            );
+          }
         },
         function (error) {
           ErrorService.raiseError(error);

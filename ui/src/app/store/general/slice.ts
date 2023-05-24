@@ -32,6 +32,7 @@ type Reducers = SliceCaseReducers<GeneralState> & {
   fetchHweKernels: WithPrepare;
   fetchKnownArchitectures: WithPrepare;
   fetchMachineActions: WithPrepare;
+  fetchNavigationOptions: WithPrepare;
   fetchOsInfo: WithPrepare;
   fetchPocketsToDisable: WithPrepare;
   fetchPowerTypes: WithPrepare;
@@ -85,6 +86,7 @@ const generalSlice = createSlice({
     hweKernels: generateInitialState([]),
     knownArchitectures: generateInitialState([]),
     machineActions: generateInitialState([]),
+    navigationOptions: generateInitialState(null),
     osInfo: generateInitialState(null),
     pocketsToDisable: generateInitialState([]),
     powerTypes: generateInitialState([]),
@@ -98,6 +100,7 @@ const generalSlice = createSlice({
     ...generateGeneralReducers("hweKernels", "hwe_kernels"),
     ...generateGeneralReducers("knownArchitectures", "known_architectures"),
     ...generateGeneralReducers("machineActions", "machine_actions"),
+    ...generateGeneralReducers("navigationOptions", "navigation_options"),
     ...generateGeneralReducers("osInfo", "osinfo"),
     ...generateGeneralReducers("pocketsToDisable", "pockets_to_disable"),
     ...generateGeneralReducers("powerTypes", "power_types"),

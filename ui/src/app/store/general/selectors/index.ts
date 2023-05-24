@@ -5,6 +5,7 @@ export { default as defaultMinHweKernel } from "./defaultMinHweKernel";
 export { default as hweKernels } from "./hweKernels";
 export { default as knownArchitectures } from "./knownArchitectures";
 export { default as machineActions } from "./machineActions";
+export { default as navigationOptions } from "./navigationOptions";
 export { default as osInfo } from "./osInfo";
 export { default as pocketsToDisable } from "./pocketsToDisable";
 export { default as powerTypes } from "./powerTypes";

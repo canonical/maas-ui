@@ -85,6 +85,18 @@ describe("general actions", () => {
     });
   });
 
+  it("should handle fetching navigation options", () => {
+    expect(general.fetchNavigationOptions()).toEqual({
+      type: "general/fetchNavigationOptions",
+      meta: {
+        cache: true,
+        model: "general",
+        method: "navigation_options",
+      },
+      payload: null,
+    });
+  });
+
   it("should handle fetching osinfo", () => {
     expect(general.fetchOsInfo()).toEqual({
       type: "general/fetchOsInfo",

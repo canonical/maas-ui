@@ -9,6 +9,7 @@ import type {
   HWEKernel,
   KnownArchitecture,
   MachineAction,
+  NavigationOptions,
   OSInfo,
   OSInfoKernels,
   OSInfoOS,
@@ -45,6 +46,10 @@ export const machineAction = define<MachineAction>({
   sentence: "commissioned",
   title: "Commission...",
   type: "lifecycle",
+});
+
+export const navigationOptions = define<NavigationOptions>({
+  rsd: false,
 });
 
 export const osInfoOS = define<OSInfoOS>({

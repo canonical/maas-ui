@@ -40,6 +40,11 @@ describe("MachineListHeader", () => {
           loaded: true,
           loading: false,
         },
+        navigationOptions: {
+          data: {
+            rsd: false,
+          },
+        },
       }),
       machine: machineStateFactory({
         loaded: true,

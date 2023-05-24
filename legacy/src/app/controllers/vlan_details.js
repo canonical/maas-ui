@@ -799,6 +799,13 @@ export function VLANDetailsController(
       VLANsManager.setActiveItem(requestedVLAN).then(
         function (vlan) {
           vlanLoaded(vlan);
+
+          // Set flag for RSD navigation item.
+          if (!$rootScope.showRSDLink) {
+            GeneralManager.getNavigationOptions().then(
+              (res) => ($rootScope.showRSDLink = res.rsd)
+            );
+          }
         },
         function (error) {
           ErrorService.raiseError(error);
