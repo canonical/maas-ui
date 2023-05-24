@@ -1,13 +1,10 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateBcache from "./CreateBcache";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { BcacheModes } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
@@ -17,9 +14,9 @@ import {
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("CreateBcache", () => {
   it("sets the initial name correctly", () => {
@@ -57,26 +54,23 @@ describe("CreateBcache", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateBcache
-              closeExpanded={jest.fn()}
-              storageDevice={diskFactory()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <CreateBcache
+        closeExpanded={jest.fn()}
+        storageDevice={diskFactory()}
+        systemId="abc123"
+      />,
+      { state }
     );
 
     // Two bcaches already exist so the next one should be bcache2
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("bcache2");
+    expect(screen.getByRole("textbox", { name: /name/i })).toHaveValue(
+      "bcache2"
+    );
   });
 
-  it("correctly dispatches an action to create a bcache", () => {
+  it("correctly dispatches an action to create a bcache", async () => {
     const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
     const backingDevice = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
@@ -88,6 +82,7 @@ describe("CreateBcache", () => {
           machineDetailsFactory({
             disks: [backingDevice, cacheSet],
             system_id: "abc123",
+            supported_filesystems: [{ key: "fat32", ui: "FAT32" }],
           }),
         ],
         statuses: machineStatusesFactory({
@@ -96,29 +91,39 @@ describe("CreateBcache", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateBcache
-              closeExpanded={jest.fn()}
-              storageDevice={backingDevice}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <CreateBcache
+        closeExpanded={jest.fn()}
+        storageDevice={backingDevice}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    submitFormikForm(wrapper, {
-      cacheMode: BcacheModes.WRITE_BACK,
-      cacheSetId: cacheSet.id,
-      fstype: "fat32",
-      mountOptions: "noexec",
-      mountPoint: "/path",
-      name: "bcache0",
-      tags: ["tag1", "tag2"],
-    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /cache set/i }),
+      cacheSet.id.toString()
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /cache mode/i }),
+      BcacheModes.WRITE_BACK
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /filesystem/i }),
+      "fat32"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /mount options/i }),
+      "noexec"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /mount point/i }),
+      "/path"
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: /create bcache/i })
+    );
 
     expect(
       store
@@ -139,7 +144,6 @@ describe("CreateBcache", () => {
           mount_point: "/path",
           name: "bcache0",
           system_id: "abc123",
-          tags: ["tag1", "tag2"],
         },
       },
       type: "machine/createBcache",

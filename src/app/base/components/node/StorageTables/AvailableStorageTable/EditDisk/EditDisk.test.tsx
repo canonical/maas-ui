@@ -1,12 +1,10 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditDisk from "./EditDisk";
 
+import type { RootState } from "app/store/root/types";
 import { DiskTypes } from "app/store/types/enum";
+import type { Disk } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -15,14 +13,20 @@ import {
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("EditDisk", () => {
-  it("shows filesystem fields if the disk is not the boot disk", () => {
-    const disk = diskFactory({ is_boot: false, type: DiskTypes.PHYSICAL });
-    const state = rootStateFactory({
+  let state: RootState;
+  let disk: Disk;
+
+  beforeEach(() => {
+    disk = diskFactory({
+      is_boot: false,
+      type: DiskTypes.PHYSICAL,
+    });
+    state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
@@ -35,53 +39,50 @@ describe("EditDisk", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("FilesystemFields").exists()).toBe(true);
   });
 
-  it("correctly dispatches an action to edit a disk", () => {
-    const disk = diskFactory({ type: DiskTypes.PHYSICAL });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [disk],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("shows filesystem fields if the disk is not the boot disk", () => {
+    renderWithBrowserRouter(
+      <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      { state }
     );
 
-    submitFormikForm(wrapper, {
-      tags: ["tag1", "tag2"],
-    });
+    expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Type" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Size" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Filesystem" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Mount point" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Mount options" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
+  });
+
+  it("correctly dispatches an action to edit a disk", async () => {
+    disk.is_boot = true;
+    state.machine.items = [
+      machineDetailsFactory({
+        disks: [disk],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      { store }
+    );
+
+    await userEvent.type(screen.getByRole("textbox", { name: "Tags" }), "tag1");
+    await userEvent.click(screen.getByTestId("new-tag"));
+    await userEvent.click(screen.getByRole("button", { name: /Save/i }));
 
     expect(
       store.getActions().find((action) => action.type === "machine/updateDisk")
-    ).toStrictEqual({
+    ).toEqual({
       meta: {
         method: "update_disk",
         model: "machine",
@@ -90,7 +91,7 @@ describe("EditDisk", () => {
         params: {
           block_id: disk.id,
           system_id: "abc123",
-          tags: ["tag1", "tag2"],
+          tags: ["tag1"],
         },
       },
       type: "machine/updateDisk",
