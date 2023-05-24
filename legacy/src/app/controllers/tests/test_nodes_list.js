@@ -1459,8 +1459,7 @@ describe("NodesListController", function () {
         cohortTooltip: `Cohort key: \nMSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM \nUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT \nI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV \nhM2ViNzQwZGZmYzk5OWFiYWU=`,
         current: "1.2.3",
         isDeb: false,
-        issue: null,
-        upgrade: "1.2.4",
+        update: "1.2.4",
       });
     });
 
@@ -1472,8 +1471,7 @@ describe("NodesListController", function () {
         cohortTooltip: null,
         current: null,
         isDeb: false,
-        issue: null,
-        upgrade: null,
+        update: null,
       });
     });
 
@@ -1487,8 +1485,7 @@ describe("NodesListController", function () {
         cohortTooltip: null,
         current: null,
         isDeb: false,
-        issue: null,
-        upgrade: null,
+        update: null,
       });
     });
 
@@ -1505,8 +1502,7 @@ describe("NodesListController", function () {
         cohortTooltip: null,
         current: null,
         isDeb: false,
-        issue: null,
-        upgrade: null,
+        update: null,
       });
     });
 
@@ -1528,62 +1524,6 @@ describe("NodesListController", function () {
         },
       };
       expect($scope.getVersions(controller).isDeb).toBe(false);
-    });
-
-    it("handles up to date controllers", () => {
-      makeController();
-      const controller = {
-        versions: {
-          up_to_date: true,
-        },
-      };
-      expect($scope.getVersions(controller).upgrade).toBe("Up-to-date");
-    });
-
-    it("handles no issues", () => {
-      makeController();
-      const controller = {
-        versions: {
-          issues: [],
-        },
-      };
-      expect($scope.getVersions(controller).issue).toBe(null);
-    });
-
-    it("handles the different cohort issue", () => {
-      makeController();
-      const controller = {
-        versions: {
-          issues: ["different-cohort"],
-        },
-      };
-      expect($scope.getVersions(controller).issue).toBe(
-        "Different cohort detected."
-      );
-    });
-
-    it("handles the different channel issue", () => {
-      makeController();
-      const controller = {
-        versions: {
-          issues: ["different-channel"],
-        },
-      };
-      expect($scope.getVersions(controller).issue).toBe(
-        "Different channel detected."
-      );
-    });
-
-    it("handles both the different channel and cohort issues", () => {
-      makeController();
-      const controller = {
-        versions: {
-          issues: ["different-channel", "different-cohort"],
-        },
-      };
-      expect($scope.getVersions(controller).issue).toBe(
-        "Different channel and cohort detected."
-      );
     });
   });
 

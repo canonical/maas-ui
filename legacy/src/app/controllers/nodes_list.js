@@ -895,21 +895,12 @@ function NodesListController(
       const chunks = versions.snap_cohort.match(/.{1,41}/g) || [];
       cohortKey = chunks.map((chunk) => chunk.trim()).join(" \n");
     }
-    // Map the issue id to the type of issue.
-    const issues = (versions.issues || []).map((issue) =>
-      issue.replace("different-", "")
-    );
     return {
       origin: versions.origin || null,
       cohortTooltip: cohortKey ? `Cohort key: \n${cohortKey}` : null,
       current: (versions.current && versions.current.version) || null,
       isDeb: versions.install_type === "deb",
-      issue: issues.length
-        ? `Different ${issues.join(" and ")} detected.`
-        : null,
-      upgrade: versions.up_to_date
-        ? "Up-to-date"
-        : (versions.update && versions.update.version) || null,
+      update: (versions.update && versions.update.version) || null,
     };
   };
 
