@@ -97,7 +97,6 @@ export enum StorageLayout {
   LVM = "lvm",
   UNKNOWN = "unknown",
   VMFS6 = "vmfs6",
-  VMFS7 = "vmfs7",
 }
 
 export type Filesystem = Model & {
@@ -138,7 +137,6 @@ export enum DiskTypes {
   RAID_10 = "raid-10",
   VIRTUAL = "virtual",
   VMFS6 = "vmfs6",
-  VMFS7 = "vmfs7",
   VOLUME_GROUP = "lvm-vg",
 }
 

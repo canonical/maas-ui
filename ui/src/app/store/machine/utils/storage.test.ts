@@ -28,7 +28,6 @@ import {
   isPhysical,
   isRaid,
   isVirtual,
-  isVMWareLayout,
   isVolumeGroup,
   partitionAvailable,
   splitDiskPartitionIds,
@@ -813,14 +812,6 @@ describe("machine storage utils", () => {
       expect(isVirtual(null)).toBe(false);
       expect(isVirtual(notVirtual)).toBe(false);
       expect(isVirtual(virtual)).toBe(true);
-    });
-  });
-
-  describe("isVMWareLayout", () => {
-    it("returns whether a storage layout is used for VMWare ESXi", () => {
-      expect(isVMWareLayout(StorageLayout.VMFS6)).toBe(true);
-      expect(isVMWareLayout(StorageLayout.VMFS7)).toBe(true);
-      expect(isVMWareLayout(StorageLayout.BLANK)).toBe(false);
     });
   });
 

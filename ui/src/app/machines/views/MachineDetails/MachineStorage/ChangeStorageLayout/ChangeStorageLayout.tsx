@@ -9,40 +9,27 @@ import FormikForm from "app/base/components/FormikForm";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
-import { StorageLayout } from "app/store/machine/types";
-import { isVMWareLayout } from "app/store/machine/utils";
 
 type StorageLayoutOption = {
   label: string;
   sentenceLabel: string;
-  value: StorageLayout;
+  value: string;
 };
 
 type Props = { systemId: Machine["system_id"] };
 
 const storageLayoutOptions: StorageLayoutOption[][] = [
   [
-    { label: "Flat", sentenceLabel: "flat", value: StorageLayout.FLAT },
-    { label: "LVM", sentenceLabel: "LVM", value: StorageLayout.LVM },
-    { label: "bcache", sentenceLabel: "bcache", value: StorageLayout.BCACHE },
+    { label: "Flat", sentenceLabel: "flat", value: "flat" },
+    { label: "LVM", sentenceLabel: "LVM", value: "lvm" },
+    { label: "bcache", sentenceLabel: "bcache", value: "bcache" },
   ],
-  [
-    {
-      label: "VMFS6",
-      sentenceLabel: "VMFS6",
-      value: StorageLayout.VMFS6,
-    },
-    {
-      label: "VMFS7",
-      sentenceLabel: "VMFS7",
-      value: StorageLayout.VMFS7,
-    },
-  ],
+  [{ label: "VMFS6 (VMware ESXI)", sentenceLabel: "VMFS6", value: "vmfs6" }],
   [
     {
       label: "No storage (blank) layout",
       sentenceLabel: "blank",
-      value: StorageLayout.BLANK,
+      value: "blank",
     },
   ],
 ];
@@ -114,14 +101,14 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
               <br />
               Any changes done already will be lost.
               <br />
-              {selectedLayout.value === StorageLayout.BLANK && (
+              {selectedLayout.value === "blank" && (
                 <>
                   Used disks will be returned to available, and any volume
                   groups, raid sets, caches, and filesystems removed.
                   <br />
                 </>
               )}
-              {isVMWareLayout(selectedLayout.value) && (
+              {selectedLayout.value === "vmfs6" && (
                 <>
                   This layout allows only for the deployment of{" "}
                   <strong>VMware ESXi</strong> images.

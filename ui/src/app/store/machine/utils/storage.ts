@@ -296,8 +296,6 @@ export const formatType = (
       return sentenceForm ? "virtual disk" : "Virtual";
     case DiskTypes.VMFS6:
       return "VMFS6";
-    case DiskTypes.VMFS7:
-      return "VMFS7";
     default:
       return typeToFormat;
   }
@@ -357,12 +355,12 @@ export const isCacheSet = (disk: Disk | null): boolean =>
   disk?.type === DiskTypes.CACHE_SET;
 
 /**
- * Returns whether a filesystem is a VMFS datastore.
+ * Returns whether a filesystem is a VMFS6 datastore.
  * @param fs - the filesystem to check.
- * @returns whether the filesystem is a VMFS datastore
+ * @returns whether the filesystem is a VMFS6 datastore
  */
 export const isDatastore = (fs: Filesystem | null): boolean =>
-  fs?.fstype === "vmfs6" || fs?.fstype === "vmfs7";
+  fs?.fstype === "vmfs6";
 
 /**
  * Returns whether a storage device is a disk.
@@ -450,14 +448,6 @@ export const isRaid = (disk: Disk | null): boolean =>
  */
 export const isVirtual = (disk: Disk | null): boolean =>
   disk?.type === DiskTypes.VIRTUAL && "parent" in disk;
-
-/**
- * Returns whether a storage layout is used for VMWare ESXi.
- * @param layout - the storage layout to check.
- * @returns whether the storage layout is used for VMWare ESXi.
- */
-export const isVMWareLayout = (layout: string): boolean =>
-  layout === StorageLayout.VMFS6 || layout === StorageLayout.VMFS7;
 
 /**
  * Returns whether a disk is a volume group.

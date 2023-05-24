@@ -41,7 +41,7 @@ const DatastoresTable = ({
 
   if (machine && "disks" in machine) {
     const rows = machine.disks.reduce<TSFixMe[]>((rows, disk) => {
-      if (disk.filesystem && isDatastore(disk.filesystem)) {
+      if (isDatastore(disk.filesystem)) {
         const fs = disk.filesystem;
         const rowId = `${fs.fstype}-${fs.id}`;
         const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
@@ -49,7 +49,7 @@ const DatastoresTable = ({
           className: isExpanded ? "p-table__row is-active" : null,
           columns: [
             { content: disk.name },
-            { content: fs.fstype },
+            { content: "VMFS6" },
             { content: formatSize(disk.size) },
             { content: fs.mount_point },
             {

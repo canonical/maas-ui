@@ -13,11 +13,8 @@ import UsedStorageTable from "./UsedStorageTable";
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import type { RouteParams } from "app/base/types";
 import machineSelectors from "app/store/machine/selectors";
-import {
-  isCacheSet,
-  isVMWareLayout,
-  useCanEditStorage,
-} from "app/store/machine/utils";
+import { StorageLayout } from "app/store/machine/types";
+import { isCacheSet, useCanEditStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 
 const MachineStorage = (): JSX.Element => {
@@ -32,7 +29,8 @@ const MachineStorage = (): JSX.Element => {
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} storage`);
 
   if (machine && "disks" in machine && "special_filesystems" in machine) {
-    const showDatastores = isVMWareLayout(machine.detected_storage_layout);
+    const showDatastores =
+      machine.detected_storage_layout === StorageLayout.VMFS6;
     const showCacheSets = machine.disks.some((disk) => isCacheSet(disk));
 
     return (
