@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import EditBridgeForm from "./EditBridgeForm";
@@ -15,6 +11,8 @@ import {
 } from "app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
@@ -22,10 +20,14 @@ import {
   machineStatuses as machineStatusesFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
+  subnetState as subnetStateFactory,
+  subnet as subnetFactory,
+  vlan as vlanFactory,
+  vlanState as vlanStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("EditBridgeForm", () => {
   let nic: NetworkInterface;
@@ -35,9 +37,27 @@ describe("EditBridgeForm", () => {
     link = networkLinkFactory({});
     nic = machineInterfaceFactory({
       links: [link],
+      params: {
+        bridge_type: BridgeType.OVS,
+      },
       type: NetworkInterfaceTypes.PHYSICAL,
     });
     state = rootStateFactory({
+      vlan: vlanStateFactory({
+        loaded: true,
+        loading: false,
+        items: [vlanFactory({ id: 1, fabric: 1 })],
+      }),
+      subnet: subnetStateFactory({
+        loaded: true,
+        loading: false,
+        items: [subnetFactory({ id: 1, vlan: 1 })],
+      }),
+      fabric: fabricStateFactory({
+        loaded: true,
+        loading: false,
+        items: [fabricFactory({ id: 1 })],
+      }),
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
@@ -52,84 +72,84 @@ describe("EditBridgeForm", () => {
     });
   });
 
-  it("fetches the necessary data on load", () => {
+  it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditBridgeForm
-              close={jest.fn()}
-              link={link}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditBridgeForm
+        close={jest.fn()}
+        link={link}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route: "/machines", store }
     );
-    expect(store.getActions().some((action) => action.type === "vlan/fetch"));
+    expect(
+      store.getActions().some((action) => action.type === "vlan/fetch")
+    ).toBe(true);
   });
 
-  it("displays a spinner when data is loading", () => {
+  it("displays a spinner when data is loading", async () => {
     state.vlan.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditBridgeForm
-              close={jest.fn()}
-              link={link}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    state.vlan.loading = true;
+    renderWithBrowserRouter(
+      <EditBridgeForm
+        close={jest.fn()}
+        link={link}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
-  it("can dispatch an action to update a bridge", () => {
+  it("can dispatch an action to update a bridge", async () => {
     state.machine.selectedMachines = { items: ["abc123", "def456"] };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditBridgeForm
-              close={jest.fn()}
-              link={link}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditBridgeForm
+        close={jest.fn()}
+        link={link}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        bridge_fd: 15,
-        bridge_stp: false,
-        bridge_type: BridgeType.OVS,
-        fabric: 1,
-        ip_address: "1.2.3.4",
-        mac_address: "28:21:c6:b9:1b:22",
-        mode: NetworkLinkMode.LINK_UP,
-        name: "br1",
-        subnet: 1,
-        tags: ["a", "tag"],
-        vlan: 1,
-      })
+    await userEvent.clear(screen.getByRole("textbox", { name: "Bridge name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Bridge name" }),
+      "br1"
     );
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "MAC address" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "MAC address" }),
+      "28:21:c6:b9:1b:22"
+    );
+
+    await userEvent.type(screen.getByRole("textbox", { name: "Tags" }), "a");
+    await userEvent.click(screen.getByTestId("new-tag"));
+    await userEvent.type(screen.getByRole("textbox", { name: "Tags" }), "tag");
+    await userEvent.click(screen.getByTestId("new-tag"));
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Fabric" }),
+      "1"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "VLAN" }),
+      "1"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Subnet" }),
+      "1"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save Physical" })
+    );
+
     expect(
       store
         .getActions()
@@ -142,20 +162,18 @@ describe("EditBridgeForm", () => {
       },
       payload: {
         params: {
-          bridge_fd: 15,
           bridge_stp: false,
           bridge_type: BridgeType.OVS,
-          fabric: 1,
+          fabric: "1",
           interface_id: nic.id,
-          ip_address: "1.2.3.4",
           link_id: link.id,
           mac_address: "28:21:c6:b9:1b:22",
           mode: NetworkLinkMode.LINK_UP,
           name: "br1",
-          subnet: 1,
+          subnet: "1",
           system_id: "abc123",
           tags: ["a", "tag"],
-          vlan: 1,
+          vlan: "1",
         },
       },
     });
