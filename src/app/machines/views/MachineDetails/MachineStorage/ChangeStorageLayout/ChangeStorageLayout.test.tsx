@@ -1,12 +1,8 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ChangeStorageLayout from "./ChangeStorageLayout";
 
+import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
@@ -15,12 +11,17 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  getByTextContent,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ChangeStorageLayout", () => {
-  it("shows a confirmation form if a storage layout is selected", () => {
+  it("shows a confirmation form if a storage layout is selected", async () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -29,34 +30,29 @@ describe("ChangeStorageLayout", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ChangeStorageLayout systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ChangeStorageLayout systemId="abc123" />, {
+      state,
+    });
 
     // Open storage layout dropdown
-    act(() => {
-      wrapper.find("ContextualMenu Button").simulate("click");
-    });
-    wrapper.update();
-    // Select flat storage layout
-    act(() => {
-      wrapper.find("ContextualMenuDropdown Button").at(0).simulate("click");
-    });
-    wrapper.update();
-
-    expect(wrapper.find("[data-testid='confirmation-form']").exists()).toBe(
-      true
+    await userEvent.click(
+      screen.getByRole("button", { name: "Change storage layout" })
     );
+    // Select flat storage layout
+    await userEvent.click(screen.getByRole("button", { name: "Flat" }));
+
+    expect(
+      getByTextContent(
+        "Are you sure you want to change the storage layout to flat?"
+      )
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: "Change storage layout" })
+    ).toHaveAttribute("type", "submit");
   });
 
-  it("can show errors", () => {
+  it("can show errors", async () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         eventErrors: [
@@ -72,34 +68,21 @@ describe("ChangeStorageLayout", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ChangeStorageLayout systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ChangeStorageLayout systemId="abc123" />, {
+      state,
+    });
 
     // Open storage layout dropdown
-    act(() => {
-      wrapper.find("ContextualMenu Button").simulate("click");
-    });
-    wrapper.update();
-    // Select flat storage layout
-    act(() => {
-      wrapper.find("ContextualMenuDropdown Button").at(0).simulate("click");
-    });
-    wrapper.update();
-
-    expect(wrapper.find("Notification").text().includes("not possible")).toBe(
-      true
+    await userEvent.click(
+      screen.getByRole("button", { name: "Change storage layout" })
     );
+    // Select flat storage layout
+    await userEvent.click(screen.getByRole("button", { name: "Flat" }));
+
+    expect(screen.getByText(/not possible/i)).toBeInTheDocument();
   });
 
-  it("correctly dispatches an action to update a machine's storage layout", () => {
+  it("correctly dispatches an action to update a machine's storage layout", async () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -109,28 +92,22 @@ describe("ChangeStorageLayout", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ChangeStorageLayout systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ChangeStorageLayout systemId="abc123" />, {
+      store,
+    });
 
     // Open storage layout dropdown
-    act(() => {
-      wrapper.find("ContextualMenu Button").simulate("click");
-    });
-    wrapper.update();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Change storage layout" })
+    );
+
     // Select flat storage layout
-    act(() => {
-      wrapper.find("ContextualMenuDropdown Button").at(0).simulate("click");
-    });
-    wrapper.update();
+    await userEvent.click(screen.getByRole("button", { name: "Flat" }));
+
     // Submit the form
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Change storage layout" })
+    );
 
     expect(
       store

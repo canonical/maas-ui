@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditPhysicalForm from "./EditPhysicalForm";
@@ -16,22 +12,23 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("EditPhysicalForm", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
       fabric: fabricStateFactory({
-        items: [fabricFactory({}), fabricFactory()],
+        items: [fabricFactory({ id: 1 }), fabricFactory()],
         loaded: true,
       }),
       machine: machineStateFactory({
@@ -40,6 +37,8 @@ describe("EditPhysicalForm", () => {
             interfaces: [
               machineInterfaceFactory({
                 id: 1,
+                vlan_id: 1,
+                links: [networkLinkFactory({ id: 1, subnet_id: 1 })],
               }),
             ],
             system_id: "abc123",
@@ -50,11 +49,11 @@ describe("EditPhysicalForm", () => {
         }),
       }),
       subnet: subnetStateFactory({
-        items: [subnetFactory(), subnetFactory()],
+        items: [subnetFactory({ id: 1, vlan: 1 }), subnetFactory()],
         loaded: true,
       }),
       vlan: vlanStateFactory({
-        items: [vlanFactory(), vlanFactory()],
+        items: [vlanFactory({ id: 1, fabric: 1 }), vlanFactory()],
         loaded: true,
       }),
     });
@@ -62,16 +61,9 @@ describe("EditPhysicalForm", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />,
+      { route: "/machines", store }
     );
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
@@ -84,48 +76,62 @@ describe("EditPhysicalForm", () => {
   it("displays a spinner when data is loading", () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("correctly dispatches actions to edit a physical interface", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditPhysicalForm
+        close={jest.fn()}
+        linkId={1}
+        nicId={1}
+        systemId="abc123"
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper, {
-      fabric: 1,
-      interface_speed: 1,
-      ip_address: "1.2.3.4",
-      link_speed: 1.5,
-      mac_address: "28:21:c6:b9:1b:22",
-      mode: NetworkLinkMode.STATIC,
-      name: "eth1",
-      subnet: 1,
-      tags: ["a", "tag"],
-      vlan: 1,
-    });
-    await waitForComponentToPaint(wrapper);
+    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
+    await userEvent.type(screen.getByRole("textbox", { name: "Name" }), "eth1");
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "MAC address" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "MAC address" }),
+      "28:21:c6:b9:1b:22"
+    );
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: "Interface speed (Gbps)" })
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Interface speed (Gbps)" }),
+      "1.5"
+    );
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: "Link speed (Gbps)" })
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Link speed (Gbps)" }),
+      "1"
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Fabric" }),
+      "1"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "VLAN" }),
+      "1"
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
+
     expect(
       store
         .getActions()
@@ -138,18 +144,17 @@ describe("EditPhysicalForm", () => {
       },
       payload: {
         params: {
-          fabric: 1,
+          fabric: "1",
           interface_id: 1,
-          interface_speed: 1000,
-          ip_address: "1.2.3.4",
-          link_speed: 1500,
+          interface_speed: 1500,
+          link_id: 1,
+          link_speed: 1000,
           mac_address: "28:21:c6:b9:1b:22",
-          mode: NetworkLinkMode.STATIC,
+          mode: NetworkLinkMode.LINK_UP,
           name: "eth1",
-          subnet: 1,
           system_id: "abc123",
-          tags: ["a", "tag"],
-          vlan: 1,
+          tags: [],
+          vlan: "1",
         },
       },
     });
