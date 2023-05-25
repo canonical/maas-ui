@@ -24,10 +24,9 @@ describe("LXDClusterSummaryCard", () => {
         items: [vmClusterFactory({ id: 1 })],
       }),
     });
-    renderWithMockStore(
-      <LXDClusterSummaryCard clusterId={1} showStorage />,
-      { state }
-    );
+    renderWithMockStore(<LXDClusterSummaryCard clusterId={1} showStorage />, {
+      state,
+    });
 
     expect(screen.getByTestId("lxd-cluster-storage")).toBeInTheDocument();
   });
@@ -38,10 +37,9 @@ describe("LXDClusterSummaryCard", () => {
         loading: true,
       }),
     });
-    renderWithMockStore(
-      <LXDClusterSummaryCard clusterId={1} showStorage />,
-      { state }
-    );
+    renderWithMockStore(<LXDClusterSummaryCard clusterId={1} showStorage />, {
+      state,
+    });
 
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
