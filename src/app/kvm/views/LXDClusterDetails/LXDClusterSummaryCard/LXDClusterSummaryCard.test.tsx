@@ -12,7 +12,7 @@ import {
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+import { renderWithMockStore, screen, within } from "testing/utils";
 
 describe("LXDClusterSummaryCard", () => {
   it("can show the section for storage", () => {
