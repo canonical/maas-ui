@@ -29,6 +29,7 @@ const StorageResources = ({
   return (
     <div
       className={classNames("storage-resources", { "single-pool": singlePool })}
+      data-testid="lxd-cluster-storage"
     >
       <div className="storage-resources__header">
         <h4 className="p-text--x-small-capitalised">Storage</h4>
