@@ -1,9 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-
-import TableDeleteConfirm from "../TableDeleteConfirm";
 
 import SSHKeyList from "./SSHKeyList";
 
@@ -13,8 +8,14 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  within,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("SSHKeyList", () => {
   let state: RootState;
@@ -53,153 +54,94 @@ describe("SSHKeyList", () => {
 
   it("displays a loading component if SSH keys are loading", () => {
     state.sshkey.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      state,
+    });
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("can display errors", () => {
     state.sshkey.errors = "Unable to list SSH keys.";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Notification").text()).toEqual(
-      "Error:Unable to list SSH keys."
-    );
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      state,
+    });
+    expect(screen.getByText("Unable to list SSH keys.")).toBeInTheDocument();
   });
 
   it("can group keys", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      state,
+    });
+
+    const rows = screen.getAllByTestId("sshkey-row");
+
     // Two of the keys should be grouped together.
-    expect(wrapper.find("TableRow[data-testid='sshkey-row']").length).toBe(
-      state.sshkey.items.length - 1
-    );
+    expect(rows).toHaveLength(state.sshkey.items.length - 1);
     // The grouped keys should be displayed in sub cols.
-    expect(
-      wrapper.find("MainTable tbody tr").at(1).find(".p-table-sub-cols__item")
-        .length
-    ).toBe(2);
+    expect(within(rows[0]).getByText("ssh-rsa aabb...")).toBeInTheDocument();
+
+    expect(within(rows[1]).getByText("ssh-rsa ccdd...")).toBeInTheDocument();
+    expect(within(rows[1]).getByText("ssh-rsa gghh...")).toBeInTheDocument();
+
+    expect(within(rows[2]).getByText("ssh-rsa eeff...")).toBeInTheDocument();
   });
 
   it("can display uploaded keys", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-    const cols = wrapper.find("MainTable tbody tr").at(3).find("td");
-    expect(cols.at(0).text()).toEqual("Upload");
-    expect(cols.at(1).text()).toEqual("");
-    expect(cols.at(2).text().includes("ssh-rsa gghh...")).toBe(true);
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      state,
+    });
+    const uploadedKeyRow = screen.getAllByTestId("sshkey-row")[3];
+
+    expect(within(uploadedKeyRow).getByText("Upload")).toBeInTheDocument();
+    expect(
+      within(uploadedKeyRow).getByText("ssh-rsa gghh...")
+    ).toBeInTheDocument();
   });
 
   it("can display imported keys", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-    const cols = wrapper.find("MainTable tbody tr").at(0).find("td");
-    expect(cols.at(0).text()).toEqual("Launchpad");
-    expect(cols.at(1).text()).toEqual("koalaparty");
-    expect(cols.at(2).text().includes("ssh-rsa aabb...")).toBe(true);
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      state,
+    });
+    const importedKeyRow = screen.getAllByTestId("sshkey-row")[0];
+
+    expect(within(importedKeyRow).getByText("Launchpad")).toBeInTheDocument();
+    expect(within(importedKeyRow).getByText("koalaparty")).toBeInTheDocument();
+    expect(
+      within(importedKeyRow).getByText("ssh-rsa aabb...")
+    ).toBeInTheDocument();
   });
 
-  it("can show a delete confirmation", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
-    let row = wrapper.find("[data-testid='sshkey-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(false);
+  it("can show a delete confirmation", async () => {
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      state,
+    });
+    let row = screen.getAllByTestId("sshkey-row")[0];
+    expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
-    wrapper
-      .find("tbody TableRow")
-      .at(0)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .simulate("click");
-    row = wrapper.find("[data-testid='sshkey-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(true);
+    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
+    row = screen.getAllByTestId("sshkey-row")[0];
+    expect(row).toHaveClass("is-active");
+    expect(
+      screen.getByText("Are you sure you want to delete this SSH key?")
+    ).toBeInTheDocument();
   });
 
-  it("can delete a SSH key", () => {
+  it("can delete a SSH key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      store,
+    });
     // Click on the delete button:
-    wrapper
-      .find("tbody TableRow")
-      .at(0)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .simulate("click");
+    await userEvent.click(screen.getAllByText("Delete")[0]);
     // Click on the delete confirm button
-    wrapper
-      .find("tbody TableRow")
-      .at(0)
-      .find("ActionButton[data-testid='action-confirm']")
-      .last()
-      .simulate("click");
+    await userEvent.click(screen.getByTestId("action-confirm"));
     expect(
       store.getActions().find((action) => action.type === "sshkey/delete")
     ).toEqual({
@@ -216,59 +158,33 @@ describe("SSHKeyList", () => {
     });
   });
 
-  it("can delete a group of SSH keys", () => {
+  it("can delete a group of SSH keys", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      store,
+    });
     // Click on the delete button:
-    wrapper
-      .find("tbody TableRow")
-      .at(1)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .simulate("click");
+    await userEvent.click(screen.getAllByText("Delete")[1]);
     // Click on the delete confirm button
-    wrapper
-      .find("tbody TableRow")
-      .at(1)
-      .find("ActionButton[data-testid='action-confirm']")
-      .simulate("click");
+    await userEvent.click(screen.getByTestId("action-confirm"));
     expect(
       store.getActions().filter((action) => action.type === "sshkey/delete")
         .length
     ).toEqual(2);
   });
 
-  it("can add a message when a SSH key is deleted", () => {
+  it("can add a message when a SSH key is deleted", async () => {
     state.sshkey.saved = true;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <SSHKeyList />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      store,
+    });
     // Click on the delete button:
-    wrapper
-      .find("tbody TableRow")
-      .at(0)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .simulate("click");
+    await userEvent.click(screen.getAllByText("Delete")[0]);
     // Simulate clicking on the delete confirm button.
-    wrapper.find(TableDeleteConfirm).invoke("onConfirm")();
+    await userEvent.click(screen.getByTestId("action-confirm"));
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true

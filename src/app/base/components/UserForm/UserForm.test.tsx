@@ -1,9 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import { UserForm } from "./UserForm";
 
 import type { RootState } from "app/store/root/types";
@@ -11,11 +5,10 @@ import userSelectors from "app/store/user/selectors";
 import type { User } from "app/store/user/types";
 import {
   rootState as rootStateFactory,
+  statusState as statusStateFactory,
   user as userFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("UserForm", () => {
   let state: RootState;
@@ -29,49 +22,61 @@ describe("UserForm", () => {
       last_name: "Miss Wallaby",
       username: "admin",
     });
-    state = rootStateFactory();
+    state = rootStateFactory({
+      status: statusStateFactory({
+        externalAuthURL: null,
+      }),
+    });
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("UserForm").exists()).toBe(true);
+    renderWithBrowserRouter(<UserForm onSave={jest.fn()} />, {
+      route: "/",
+      state,
+    });
+    expect(
+      screen.getByRole("textbox", { name: "Username" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Full name (optional)" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Email address" })
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
   });
 
-  it("can handle saving", () => {
-    const store = mockStore(state);
+  it("can handle saving", async () => {
     const onSave = jest.fn();
-    const resetForm = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm onSave={onSave} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<UserForm onSave={onSave} user={user} />, {
+      state,
+      route: "/",
+    });
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: "Email address" })
     );
-    submitFormikForm(
-      wrapper,
-      {
-        isSuperuser: true,
-        email: "test@example.com",
-        fullName: "Miss Wallaby",
-        password: "test1234",
-        passwordConfirm: "test1234",
-        username: "admin",
-      },
-      { resetForm }
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Email address" }),
+      "test@example.com"
     );
-    expect(onSave.mock.calls[0][0]).toEqual({
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Change password/i })
+    );
+
+    await userEvent.type(screen.getByLabelText("Password"), "test1234");
+    await userEvent.type(screen.getByLabelText("Password (again)"), "test1234");
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(onSave).toHaveBeenCalledWith({
       email: "test@example.com",
       isSuperuser: true,
       fullName: "Miss Wallaby",
@@ -79,185 +84,131 @@ describe("UserForm", () => {
       passwordConfirm: "test1234",
       username: "admin",
     });
-    expect(resetForm).toHaveBeenCalled();
   });
 
-  it("hides the password fields when editing", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Button").first().children().text()).toEqual(
-      "Change password…"
-    );
+  it("hides the password fields when editing", async () => {
+    renderWithBrowserRouter(<UserForm onSave={jest.fn()} user={user} />, {
+      state,
+      route: "/settings/users",
+    });
     expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(0);
+      screen.getByRole("button", { name: /Change password/i })
+    ).toBeInTheDocument();
+    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Password (again)")).not.toBeInTheDocument();
   });
 
-  it("can toggle the password fields", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can toggle the password fields", async () => {
+    renderWithBrowserRouter(<UserForm onSave={jest.fn()} user={user} />, {
+      state,
+      route: "/settings/users",
+    });
+    // Fields should be hidden by default
+    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Password (again)")).not.toBeInTheDocument();
+
+    // Click button to change password
+    await userEvent.click(
+      screen.getByRole("button", { name: /Change password/i })
     );
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(0);
-    wrapper.find("Button").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
+
+    // Fields should be shown
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();
   });
 
-  it("can show the current password field", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can show the current password field", async () => {
+    renderWithBrowserRouter(
+      <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />,
+      {
+        state,
+        route: "/settings/users",
+      }
     );
-    wrapper.find("Button").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("name") === "old_password"
-      ).length
-    ).toEqual(1);
+    // Click button to change password
+    await userEvent.click(
+      screen.getByRole("button", { name: /Change password/i })
+    );
+
+    expect(screen.getByLabelText("Current password")).toBeInTheDocument();
   });
 
-  it("can include auth errors in the error status", () => {
+  it("disables the submit button if there are errors", () => {
     state.user.errors = {
       username: ["Username already exists"],
     };
     state.user.auth.errors = {
       password: ["Password too short"],
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />,
+      {
+        state,
+        route: "/settings/users",
+      }
     );
-    expect(wrapper.find("FormikForm").prop("errors")).toEqual({
-      username: ["Username already exists"],
-      password: ["Password too short"],
-    });
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
   });
 
   it("disables fields when using external auth", () => {
     state.status.externalAuthURL = "http://login.example.com";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikField[disabled=true]").length).toEqual(
-      wrapper.find("FormikField").length
-    );
+    renderWithBrowserRouter(<UserForm onSave={jest.fn()} />, {
+      state,
+      route: "/settings/users",
+    });
+    screen.getAllByRole("textbox").forEach((field) => {
+      expect(field).toBeDisabled();
+    });
   });
 
-  it("hides the password fields on save", () => {
-    const store = mockStore(state);
-    // Use a proxy component so that setProps can force a rerender of the inner component.
-    const Proxy = ({ onSave = jest.fn() }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={onSave} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("hides the password fields on save", async () => {
+    const { rerender } = renderWithBrowserRouter(
+      <UserForm onSave={jest.fn()} user={user} />,
+      {
+        state,
+        route: "/settings/users",
+      }
     );
-    const wrapper = mount(<Proxy />);
-    wrapper.find("button[data-testid='toggle-passwords']").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
+    // Click button to change password
+    await userEvent.click(
+      screen.getByRole("button", { name: /Change password/i })
+    );
+
+    // Fields should be shown
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();
+
     jest.spyOn(userSelectors, "saved").mockReturnValue(true);
-    // Force the component to rerender so the saved selector value gets picked up.
-    wrapper.setProps({ onSave: jest.fn() });
-    wrapper.update();
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(0);
+
+    rerender(<UserForm onSave={jest.fn()} user={user} />);
+
+    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Password (again)")).not.toBeInTheDocument();
   });
 
-  it("does not hides the password fields when there are save errors", () => {
-    state.user.errors = "Uh oh!";
-    const store = mockStore(state);
-    // Use a proxy component so that setProps can force a rerender of the inner component.
-    const Proxy = ({ onSave = jest.fn() }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserForm onSave={onSave} user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("does not hides the password fields when there are save errors", async () => {
+    state.user.errors = "oh no";
+    const { rerender } = renderWithBrowserRouter(
+      <UserForm onSave={jest.fn()} user={user} />,
+      {
+        state,
+        route: "/settings/users",
+      }
     );
-    const wrapper = mount(<Proxy />);
-    wrapper.find("button[data-testid='toggle-passwords']").simulate("click");
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
+    // Click button to change password
+    await userEvent.click(
+      screen.getByRole("button", { name: /Change password/i })
+    );
+
+    // Fields should be shown
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();
+
     jest.spyOn(userSelectors, "saved").mockReturnValue(true);
-    // Force the component to rerender so the saved selector value gets picked up.
-    wrapper.setProps({ onSave: jest.fn() });
-    wrapper.update();
-    expect(
-      wrapper.findWhere(
-        (n) => n.name() === "FormikField" && n.prop("type") === "password"
-      ).length
-    ).toEqual(2);
+
+    rerender(<UserForm onSave={jest.fn()} user={user} />);
+
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();
   });
 });

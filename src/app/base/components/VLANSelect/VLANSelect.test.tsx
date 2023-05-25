@@ -1,9 +1,4 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
-import DynamicSelect from "../DynamicSelect";
 
 import VLANSelect from "./VLANSelect";
 
@@ -14,8 +9,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore, screen, within } from "testing/utils";
 
 describe("VLANSelect", () => {
   let state: RootState;
@@ -33,86 +27,81 @@ describe("VLANSelect", () => {
 
   it("shows a spinner if the vlans haven't loaded", () => {
     state.vlan.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" showSpinnerOnLoad />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect name="vlan" showSpinnerOnLoad />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays the vlan options", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { disabled: true, label: "Select VLAN", value: "" },
-      {
-        label: "1 (vlan1)",
-        value: "1",
-      },
-      {
-        label: "2 (vlan2)",
-        value: "2",
-      },
-    ]);
+    const options = within(
+      screen.getByRole("combobox", { name: "VLAN" })
+    ).getAllByRole("option");
+
+    expect(options[1]).toHaveValue("1");
+    expect(options[1]).toHaveTextContent("1 (vlan1)");
+
+    expect(options[2]).toHaveValue("2");
+    expect(options[2]).toHaveTextContent("2 (vlan2)");
   });
 
   it("can display a default option", () => {
-    const store = mockStore(state);
     const defaultOption = {
       label: "Default",
       value: "99",
     };
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect defaultOption={defaultOption} name="vlan" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect defaultOption={defaultOption} name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
-      defaultOption
-    );
+
+    const options = within(
+      screen.getByRole("combobox", { name: "VLAN" })
+    ).getAllByRole("option");
+    expect(options[0]).toHaveValue("99");
+    expect(options[0]).toHaveTextContent("Default");
   });
 
   it("can hide the default option", () => {
     state.vlan.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect defaultOption={null} name="vlan" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect defaultOption={null} name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
+    expect(screen.queryByRole("option")).not.toBeInTheDocument();
   });
 
   it("filter the vlans by fabric", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect fabric={3} name="vlan" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect fabric={3} name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options")).toStrictEqual([
-      { disabled: true, label: "Select VLAN", value: "" },
-      {
-        label: "1 (vlan1)",
-        value: "1",
-      },
-    ]);
+    const options = within(
+      screen.getByRole("combobox", { name: "VLAN" })
+    ).getAllByRole("option");
+
+    expect(options[1]).toHaveValue("1");
+    expect(options[1]).toHaveTextContent("1 (vlan1)");
+
+    expect(
+      screen.queryByRole("option", { name: "2 (vlan2)" })
+    ).not.toBeInTheDocument();
   });
 
   it("can not show the default VLAN", () => {
@@ -120,46 +109,41 @@ describe("VLANSelect", () => {
       vlanFactory({ id: 1, name: "vlan1", vid: 0, fabric: 3 }),
       vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect includeDefaultVlan={false} name="vlan" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect includeDefaultVlan={false} name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options")).toStrictEqual([
-      { disabled: true, label: "Select VLAN", value: "" },
-      {
-        label: "2 (vlan2)",
-        value: "2",
-      },
-    ]);
+
+    const options = within(
+      screen.getByRole("combobox", { name: "VLAN" })
+    ).getAllByRole("option");
+
+    expect(options[1]).toHaveValue("2");
+    expect(options[1]).toHaveTextContent("2 (vlan2)");
+
+    expect(
+      screen.queryByRole("option", { name: "1 (vlan1)" })
+    ).not.toBeInTheDocument();
   });
 
   it("can generate the vlan names", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect
-            generateName={(vlan) => `name: ${vlan.name}`}
-            name="vlan"
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect generateName={(vlan) => `name: ${vlan.name}`} name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { disabled: true, label: "Select VLAN", value: "" },
-      {
-        label: "name: vlan2",
-        value: "2",
-      },
-      {
-        label: "name: vlan1",
-        value: "1",
-      },
-    ]);
+    const options = within(
+      screen.getByRole("combobox", { name: "VLAN" })
+    ).getAllByRole("option");
+
+    expect(options[1]).toHaveValue("2");
+    expect(options[1]).toHaveTextContent("name: vlan2");
+
+    expect(options[2]).toHaveValue("1");
+    expect(options[2]).toHaveTextContent("name: vlan1");
   });
 
   it("orders the vlans by name", () => {
@@ -167,25 +151,21 @@ describe("VLANSelect", () => {
       vlanFactory({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
       vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { disabled: true, label: "Select VLAN", value: "" },
-      {
-        label: "2 (vlan2)",
-        value: "2",
-      },
-      {
-        label: "21 (vlan1)",
-        value: "1",
-      },
-    ]);
+    const options = within(
+      screen.getByRole("combobox", { name: "VLAN" })
+    ).getAllByRole("option");
+
+    expect(options[1]).toHaveValue("2");
+    expect(options[1]).toHaveTextContent("2 (vlan2)");
+
+    expect(options[2]).toHaveValue("1");
+    expect(options[2]).toHaveTextContent("21 (vlan1)");
   });
 
   it("orders untagged vlans to the start", () => {
@@ -193,24 +173,20 @@ describe("VLANSelect", () => {
       vlanFactory({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
       vlanFactory({ id: 2, vid: VlanVid.UNTAGGED, fabric: 4 }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+        <VLANSelect name="vlan" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { disabled: true, label: "Select VLAN", value: "" },
-      {
-        label: "untagged",
-        value: "2",
-      },
-      {
-        label: "21 (vlan1)",
-        value: "1",
-      },
-    ]);
+    const options = within(
+      screen.getByRole("combobox", { name: "VLAN" })
+    ).getAllByRole("option");
+
+    expect(options[1]).toHaveValue("2");
+    expect(options[1]).toHaveTextContent("untagged");
+
+    expect(options[2]).toHaveValue("1");
+    expect(options[2]).toHaveTextContent("21 (vlan1)");
   });
 });
