@@ -4,6 +4,26 @@ import { COLOURS } from "app/base/constants";
 import { render, screen } from "testing/utils";
 
 describe("RamResources", () => {
+  it("renders", () => {
+    render(
+      <RamResources
+        generalAllocated={1}
+        generalFree={2}
+        generalOther={3}
+        hugepagesAllocated={4}
+        hugepagesFree={5}
+        hugepagesOther={6}
+        pageSize={7}
+      />
+    );
+
+    expect(screen.getByRole("heading", { name: /ram/i })).toBeInTheDocument();
+    expect(screen.getByLabelText("ram resources")).toBeInTheDocument();
+    expect(
+      screen.getByRole("table", { name: /ram resources table/i })
+    ).toBeInTheDocument();
+  });
+
   it("can be made to have a dynamic layout", () => {
     render(<RamResources dynamicLayout generalAllocated={1} generalFree={2} />);
 
@@ -42,7 +62,6 @@ describe("RamResources", () => {
       />
     );
 
-    expect(screen.getByTestId("page-size")).toBeInTheDocument();
     expect(screen.getByTestId("page-size")).toHaveTextContent("(Size: 5B)");
   });
 
