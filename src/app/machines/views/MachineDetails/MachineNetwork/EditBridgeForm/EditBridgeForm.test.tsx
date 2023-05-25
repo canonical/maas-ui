@@ -88,7 +88,7 @@ describe("EditBridgeForm", () => {
     ).toBe(true);
   });
 
-  it("displays a spinner when data is loading", async () => {
+  it("displays a spinner when data is loading", () => {
     state.vlan.loaded = false;
     state.vlan.loading = true;
     renderWithBrowserRouter(
