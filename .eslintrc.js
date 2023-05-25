@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  plugins: ["prettier"],
+  plugins: ["unused-imports", "prettier"],
   extends: [
     "react-app", // Use the recommended rules from CRA.
     "plugin:prettier/recommended", // Ensure this is last in the list.
@@ -42,11 +42,16 @@ module.exports = {
       },
       rules: {
         "prettier/prettier": "error",
-        "@typescript-eslint/no-unused-vars": [
-          "error",
+        "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
           {
-            args: "none",
+            vars: "all",
+            varsIgnorePattern: "^_",
+            args: "after-used",
             ignoreRestSiblings: true,
+            argsIgnorePattern: "^_",
           },
         ],
         "@typescript-eslint/consistent-type-imports": 2,
