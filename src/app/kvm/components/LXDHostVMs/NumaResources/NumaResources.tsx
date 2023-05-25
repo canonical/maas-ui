@@ -39,6 +39,7 @@ const NumaResources = ({ id }: Props): JSX.Element => {
           className={classNames("numa-resources", {
             "is-wide": showWideCards,
           })}
+          data-testid="numa-resources"
         >
           {shownNumaNodes.map((numa) => (
             <NumaResourcesCard
