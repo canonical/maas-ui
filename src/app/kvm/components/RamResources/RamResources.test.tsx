@@ -60,7 +60,7 @@ describe("RamResources", () => {
   });
 
   it("can show whether RAM has been over-committed", () => {
-    const { container } = render(
+    render(
       <RamResources
         generalAllocated={1}
         generalFree={-1}
@@ -69,8 +69,7 @@ describe("RamResources", () => {
       />
     );
 
-    // eslint-disable-next-line testing-library/no-container
-    expect(container.querySelector(".doughnut-chart__segment")).toHaveStyle(
+    expect(screen.getByTestId("segment")).toHaveStyle(
       `stroke: ${COLOURS.CAUTION}`
     );
   });
