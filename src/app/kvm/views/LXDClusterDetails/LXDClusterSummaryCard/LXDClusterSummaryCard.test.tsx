@@ -24,7 +24,7 @@ describe("LXDClusterSummaryCard", () => {
         items: [vmClusterFactory({ id: 1 })],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithMockStore(
       <LXDClusterSummaryCard clusterId={1} showStorage />,
       { state }
     );
@@ -38,7 +38,7 @@ describe("LXDClusterSummaryCard", () => {
         loading: true,
       }),
     });
-    renderWithBrowserRouter(
+    renderWithMockStore(
       <LXDClusterSummaryCard clusterId={1} showStorage />,
       { state }
     );
@@ -55,7 +55,7 @@ describe("LXDClusterSummaryCard", () => {
         items: [vmClusterFactory({ id: 1 })],
       }),
     });
-    renderWithBrowserRouter(
+    renderWithMockStore(
       <LXDClusterSummaryCard clusterId={1} showStorage={false} />,
       { state }
     );
@@ -111,7 +111,7 @@ describe("LXDClusterSummaryCard", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<LXDClusterSummaryCard clusterId={1} />, { state });
+    renderWithMockStore(<LXDClusterSummaryCard clusterId={1} />, { state });
 
     const ifaceMeter = screen.getByTestId("iface-meter");
     expect(ifaceMeter).toBeInTheDocument();

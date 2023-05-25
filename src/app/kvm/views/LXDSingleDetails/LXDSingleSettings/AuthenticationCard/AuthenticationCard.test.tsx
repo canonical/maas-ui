@@ -35,7 +35,7 @@ describe("AuthenticationCard", () => {
   it("shows a spinner if pod is not PodDetails type", () => {
     state.pod.items[0] = podFactory({ id: 1 });
     renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
-      route: "/machines",
+      route: "/kvm/1/edit",
       state,
     });
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe("AuthenticationCard", () => {
 
   it("can open the update certificate form", async () => {
     renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
-      route: "/machines",
+      route: "/kvm/1/edit",
       state,
     });
     expect(screen.queryByText("Update Certificate")).not.toBeInTheDocument();
@@ -63,7 +63,7 @@ describe("AuthenticationCard", () => {
     power_parameters.certificate = undefined;
     power_parameters.key = undefined;
     renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
-      route: "/machines",
+      route: "/kvm/1/edit",
       state,
     });
 
