@@ -1,12 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateDatastore from "./CreateDatastore";
 
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
+import type { RootState } from "app/store/root/types";
 import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
@@ -18,9 +15,14 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  within,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("CreateDatastore", () => {
   it("sets the initial name correctly", () => {
@@ -51,23 +53,18 @@ describe("CreateDatastore", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateDatastore
-              closeForm={jest.fn()}
-              selected={[newDatastore]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CreateDatastore
+        closeForm={jest.fn()}
+        selected={[newDatastore]}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    // Two datastores already exist, indexed at 1, so the next one should be datastore3
-    expect(wrapper.find("Input[name='name']").prop("value")).toBe("datastore3");
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(
+      "datastore3"
+    );
   });
 
   it("calculates the sum of the selected storage devices", () => {
@@ -97,24 +94,17 @@ describe("CreateDatastore", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateDatastore
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <CreateDatastore
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    expect(
-      wrapper.find("Input[data-testid='datastore-size']").prop("value")
-    ).toBe("1.5 GB");
+    expect(screen.getByRole("textbox", { name: "Size" })).toHaveValue("1.5 GB");
   });
 
   it("shows the details of the selected storage devices", () => {
@@ -139,31 +129,27 @@ describe("CreateDatastore", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateDatastore
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <CreateDatastore
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { state }
     );
 
-    expect(wrapper.find("tbody TableRow").length).toBe(2);
-    expect(
-      wrapper.find("tbody TableRow").at(0).find("TableCell").at(0).text()
-    ).toBe(selectedDisk.name);
-    expect(
-      wrapper.find("tbody TableRow").at(1).find("TableCell").at(0).text()
-    ).toBe(selectedPartition.name);
+    const rows = screen.getAllByRole("row");
+    expect(rows).toHaveLength(3);
+    expect(within(rows[1]).getAllByRole("gridcell")[0]).toHaveTextContent(
+      selectedDisk.name
+    );
+    expect(within(rows[2]).getAllByRole("gridcell")[0]).toHaveTextContent(
+      selectedPartition.name
+    );
   });
 
-  it("correctly dispatches an action to create a datastore", () => {
+  it("correctly dispatches an action to create a datastore", async () => {
     const [selectedDisk, selectedPartition] = [
       diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
       partitionFactory({ filesystem: null }),
@@ -181,23 +167,19 @@ describe("CreateDatastore", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CreateDatastore
-              closeForm={jest.fn()}
-              selected={[selectedDisk, selectedPartition]}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <CreateDatastore
+        closeForm={jest.fn()}
+        selected={[selectedDisk, selectedPartition]}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    submitFormikForm(wrapper, {
-      name: "datastore1",
-    });
+    await userEvent.click(
+      screen.getByRole("button", { name: /Create datastore/i })
+    );
 
     expect(
       store
