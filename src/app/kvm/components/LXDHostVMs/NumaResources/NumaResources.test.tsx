@@ -11,12 +11,7 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import {
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-  waitFor,
-} from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("NumaResources", () => {
   it("can expand truncated NUMA nodes if above truncation point", async () => {
@@ -41,10 +36,9 @@ describe("NumaResources", () => {
     );
 
     await userEvent.click(screen.getByTestId("show-more-numas"));
-    await waitFor(() =>
-      expect(screen.getByTestId("show-more-numas")).toHaveTextContent(
-        "Show less NUMA nodes"
-      )
+
+    expect(screen.getByTestId("show-more-numas")).toHaveTextContent(
+      "Show less NUMA nodes"
     );
     expect(screen.getAllByLabelText("numa resources card")).toHaveLength(
       TRUNCATION_POINT + 1
@@ -59,18 +53,12 @@ describe("NumaResources", () => {
       }),
     });
     const state = rootStateFactory({ pod: podStateFactory({ items: [pod] }) });
-    const { container } = renderWithBrowserRouter(
-      <NumaResources id={pod.id} />,
-      {
-        state,
-        route: "/kvm/1",
-      }
-    );
+    renderWithBrowserRouter(<NumaResources id={pod.id} />, {
+      state,
+      route: "/kvm/1",
+    });
 
-    expect(
-      // eslint-disable-next-line testing-library/no-container
-      container.querySelector(".numa-resources.is-wide")
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("numa-resources")).toHaveClass("is-wide");
   });
 
   it("can send an analytics event when expanding NUMA nodes if analytics enabled", async () => {
@@ -100,7 +88,7 @@ describe("NumaResources", () => {
     });
 
     await userEvent.click(screen.getByTestId("show-more-numas"));
-    await waitFor(() => expect(useSendMock).toHaveBeenCalled());
+    expect(useSendMock).toHaveBeenCalled();
     useSendMock.mockRestore();
   });
 });
