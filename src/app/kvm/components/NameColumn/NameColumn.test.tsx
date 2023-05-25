@@ -1,9 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import NameColumn from "./NameColumn";
 
 import urls from "app/base/urls";
@@ -14,8 +8,7 @@ import {
   podPowerParameters as powerParametersFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
@@ -27,24 +20,19 @@ describe("NameColumn", () => {
   it("can display a link to Virsh pod's details page", () => {
     const pod = podFactory({ id: 1, name: "pod-1", type: PodType.VIRSH });
     state.pod.items = [pod];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <NameColumn
-              name={pod.name}
-              secondary={pod.power_parameters?.project}
-              url={urls.kvm.virsh.details.index({ id: 1 })}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn
+        name={pod.name}
+        secondary={pod.power_parameters?.project}
+        url={urls.kvm.virsh.details.index({ id: 1 })}
+      />,
+      { state, route: "/kvm" }
     );
 
-    expect(wrapper.find("Link").text()).toBe("pod-1");
-    expect(wrapper.find("Link").props().to).toBe(
+    expect(screen.getByRole("link", { name: "pod-1" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "pod-1" })).toHaveAttribute(
+      "href",
       urls.kvm.virsh.details.index({ id: 1 })
     );
   });
@@ -52,24 +40,19 @@ describe("NameColumn", () => {
   it("can display a link to a LXD pod's details page", () => {
     const pod = podFactory({ id: 1, name: "pod-1", type: PodType.LXD });
     state.pod.items = [pod];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <NameColumn
-              name={pod.name}
-              secondary={pod.power_parameters?.project}
-              url={urls.kvm.lxd.single.index({ id: 1 })}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn
+        name={pod.name}
+        secondary={pod.power_parameters?.project}
+        url={urls.kvm.lxd.single.index({ id: 1 })}
+      />,
+      { state, route: "/kvm" }
     );
 
-    expect(wrapper.find("Link").text()).toBe("pod-1");
-    expect(wrapper.find("Link").props().to).toBe(
+    expect(screen.getByRole("link", { name: "pod-1" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "pod-1" })).toHaveAttribute(
+      "href",
       urls.kvm.lxd.single.index({ id: 1 })
     );
   });
@@ -84,25 +67,17 @@ describe("NameColumn", () => {
       type: PodType.LXD,
     });
     state.pod.items = [pod];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <NameColumn
-              name={pod.name}
-              secondary={pod.power_parameters?.project}
-              url={urls.kvm.virsh.details.index({ id: 1 })}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NameColumn
+        name={pod.name}
+        secondary={pod.power_parameters?.project}
+        url={urls.kvm.virsh.details.index({ id: 1 })}
+      />,
+      { state, route: "/kvm" }
     );
 
-    expect(wrapper.find("[data-testid='power-address']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='secondary']").text()).toBe(
-      "group-project"
-    );
+    expect(screen.queryByTestId("power-address")).not.toBeInTheDocument();
+    expect(screen.getByTestId("secondary")).toHaveTextContent("group-project");
   });
 });

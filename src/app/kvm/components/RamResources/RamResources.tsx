@@ -39,6 +39,7 @@ const RamResources = ({
 
   return (
     <div
+      aria-label="ram resources"
       className={classNames("ram-resources", {
         "ram-resources--dynamic-layout": dynamicLayout,
       })}
@@ -93,7 +94,10 @@ const RamResources = ({
         />
       </div>
       <div className="ram-resources__table-container">
-        <table className="ram-resources__table">
+        <table
+          aria-label="ram resources table"
+          className="ram-resources__table"
+        >
           <thead>
             <tr>
               <th></th>
