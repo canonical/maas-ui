@@ -94,7 +94,10 @@ const RamResources = ({
         />
       </div>
       <div className="ram-resources__table-container">
-        <table className="ram-resources__table">
+        <table
+          aria-label="ram resources table"
+          className="ram-resources__table"
+        >
           <thead>
             <tr>
               <th></th>
