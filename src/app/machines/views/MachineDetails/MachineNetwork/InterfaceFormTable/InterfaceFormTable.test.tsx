@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import InterfaceFormTable from "./InterfaceFormTable";
 
 import type { RootState } from "app/store/root/types";
@@ -12,8 +8,7 @@ import {
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore, screen } from "testing/utils";
 
 describe("InterfaceFormTable", () => {
   let state: RootState;
@@ -31,13 +26,12 @@ describe("InterfaceFormTable", () => {
 
   it("displays a spinner when loading", () => {
     state.machine.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable interfaces={[]} systemId="abc123" />
-      </Provider>
+    renderWithMockStore(
+      <InterfaceFormTable interfaces={[]} systemId="abc123" />,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays a table when loaded", () => {
@@ -48,16 +42,12 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <InterfaceFormTable interfaces={[{ nicId: nic.id }]} systemId="abc123" />,
+      { state }
     );
-    expect(wrapper.find("MainTable").exists()).toBe(true);
+
+    expect(screen.getByRole("grid")).toBeInTheDocument();
   });
 
   it("displays a PXE column by default", () => {
@@ -68,16 +58,14 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <InterfaceFormTable interfaces={[{ nicId: nic.id }]} systemId="abc123" />,
+      { state }
     );
-    expect(wrapper.find("PXEColumn").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("columnheader", { name: "PXE" })
+    ).toBeInTheDocument();
   });
 
   it("can show checkboxes to update the selection", () => {
@@ -88,17 +76,17 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          selectedEditable
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <InterfaceFormTable
+        interfaces={[{ nicId: nic.id }]}
+        selectedEditable
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
-    expect(wrapper.find("NameColumn").prop("showCheckbox")).toBe(true);
+
+    expect(screen.getByRole("checkbox")).toBeInTheDocument();
   });
 
   it("mutes a row if its not selected", () => {
@@ -109,23 +97,17 @@ describe("InterfaceFormTable", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <InterfaceFormTable
-          interfaces={[{ nicId: nic.id }]}
-          selected={[]}
-          selectedEditable
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <InterfaceFormTable
+        interfaces={[{ nicId: nic.id }]}
+        selected={[]}
+        selectedEditable
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { state }
     );
-    expect(
-      wrapper
-        .find("TableRow")
-        .last()
-        ?.prop("className")
-        ?.includes("p-table__row--muted")
-    ).toBe(true);
+
+    expect(screen.getAllByRole("row")[1]).toHaveClass("p-table__row--muted");
   });
 });
