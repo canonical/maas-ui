@@ -1,12 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VirshTable from "./VirshTable";
 
-import { SortDirection } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -17,18 +12,19 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("VirshTable", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
     const pods = [
       podFactory({ pool: 1, zone: 1 }),
       podFactory({ pool: 2, zone: 2 }),
     ];
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       pod: podStateFactory({ items: pods, loaded: true }),
       resourcepool: resourcePoolStateFactory({
         loaded: true,
@@ -47,83 +43,47 @@ describe("VirshTable", () => {
   });
 
   it("shows pods sorted by descending name by default", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <VirshTable />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="name-header"] i').exists()).toBe(true);
+    renderWithBrowserRouter(<VirshTable />, { route: "/kvm", state });
     expect(
-      wrapper
-        .find('[data-testid="name-header"] i')
-        .prop("className")
-        ?.includes("p-icon--chevron-up")
-    ).toBe(false);
+      screen.getByRole("button", { name: "Name (descending)" })
+    ).toBeInTheDocument();
   });
 
-  it("can sort by parameters of the pods themselves", () => {
-    const state = { ...initialState };
+  it("can sort by parameters of the pods themselves", async () => {
     state.pod.items[0].resources.vm_count.tracked = 1;
     state.pod.items[1].resources.vm_count.tracked = 2;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <VirshTable />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VirshTable />, { route: "/kvm", state });
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     const getName = (rowNumber: number) =>
-      wrapper.find("[data-testid='name']").at(rowNumber).text();
+      screen.getAllByTestId("name")[rowNumber].textContent;
 
     // Pods are initially sorted by descending FQDN
-    expect(
-      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
-    ).toStrictEqual({
-      key: "name",
-      direction: SortDirection.DESCENDING,
-    });
+    expect(screen.getByRole("button", { name: /Name/i })).toHaveAccessibleName(
+      "Name (descending)"
+    );
 
     // Click the VMs table header to order by descending VMs count
-    wrapper.find('[data-testid="vms-header"]').find("button").simulate("click");
-    expect(
-      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
-    ).toStrictEqual({
-      key: "vms",
-      direction: SortDirection.DESCENDING,
-    });
+    await userEvent.click(screen.getByRole("button", { name: /VM s/i }));
+    expect(screen.getByRole("button", { name: /VM s/i })).toHaveAccessibleName(
+      "VM s (descending)"
+    );
     expect(getName(0)).toBe(firstPod.name);
 
     // Click the VMs table header again to order by ascending VMs count
-    wrapper.find('[data-testid="vms-header"]').find("button").simulate("click");
-    expect(
-      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
-    ).toStrictEqual({
-      key: "vms",
-      direction: SortDirection.ASCENDING,
-    });
+    await userEvent.click(screen.getByRole("button", { name: /VM s/i }));
+    expect(screen.getByRole("button", { name: /VM s/i })).toHaveAccessibleName(
+      "VM s (ascending)"
+    );
     expect(getName(0)).toBe(secondPod.name);
 
     // Click the VMs table header again to remove sort
-    wrapper.find('[data-testid="vms-header"]').find("button").simulate("click");
-    expect(
-      wrapper.find('[data-testid="vms-header"]').prop("currentSort")
-    ).toStrictEqual({
-      key: null,
-      direction: SortDirection.NONE,
-    });
+    await userEvent.click(screen.getByRole("button", { name: /VM s/i }));
+    expect(screen.getByRole("button", { name: /VM s/i })).toHaveAccessibleName(
+      "VM s"
+    );
   });
 
-  it("can sort by pod resource pool", () => {
+  it("can sort by pod resource pool", async () => {
     const pools = [
       resourcePoolFactory({
         id: 1,
@@ -134,48 +94,31 @@ describe("VirshTable", () => {
         name: "second-pool",
       }),
     ];
-    const state = { ...initialState };
     state.resourcepool.items = pools;
     const [firstPod, secondPod] = [state.pod.items[0], state.pod.items[1]];
     firstPod.pool = pools[0].id;
     secondPod.pool = pools[1].id;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <VirshTable />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<VirshTable />, { route: "/kvm", state });
+
     const getName = (rowNumber: number) =>
-      wrapper.find("[data-testid='name']").at(rowNumber).text();
+      screen.getAllByTestId("name")[rowNumber].textContent;
 
     // Sort pods by descending pool.
-    wrapper
-      .find('[data-testid="pool-header"]')
-      .find("button")
-      .simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", { name: /Resource pool/i })
+    );
     expect(
-      wrapper.find('[data-testid="pool-header"]').prop("currentSort")
-    ).toStrictEqual({
-      key: "pool",
-      direction: SortDirection.DESCENDING,
-    });
+      screen.getByRole("button", { name: /Resource pool/i })
+    ).toHaveAccessibleName("Resource pool (descending)");
     expect(getName(0)).toBe(firstPod.name);
 
     // Reverse sort order
-    wrapper
-      .find('[data-testid="pool-header"]')
-      .find("button")
-      .simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", { name: /Resource pool/i })
+    );
     expect(
-      wrapper.find('[data-testid="pool-header"]').prop("currentSort")
-    ).toStrictEqual({
-      key: "pool",
-      direction: SortDirection.ASCENDING,
-    });
+      screen.getByRole("button", { name: /Resource pool/i })
+    ).toHaveAccessibleName("Resource pool (ascending)");
     expect(getName(0)).toBe(secondPod.name);
   });
 });
