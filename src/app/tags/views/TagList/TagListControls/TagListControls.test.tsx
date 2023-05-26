@@ -11,7 +11,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { render, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -31,7 +31,7 @@ beforeEach(() => {
   });
 });
 
-it("can update the filter", () => {
+it("can update the filter", async () => {
   const setFilter = jest.fn();
   const store = mockStore(state);
   render(
@@ -49,6 +49,6 @@ it("can update the filter", () => {
       </MemoryRouter>
     </Provider>
   );
-  screen.getByRole("tab", { name: Label.Manual }).click();
+  await userEvent.click(screen.getByRole("tab", { name: Label.Manual }));
   expect(setFilter).toHaveBeenCalledWith(TagSearchFilter.Manual);
 });

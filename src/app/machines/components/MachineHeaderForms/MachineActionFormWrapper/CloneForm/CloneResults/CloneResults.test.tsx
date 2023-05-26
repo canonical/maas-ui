@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -213,7 +214,7 @@ describe("CloneResults", () => {
     expect(screen.getAllByTestId("error-row").length).toBe(2);
   });
 
-  it("can filter machines by error type", () => {
+  it("can filter machines by error type", async () => {
     const setSearchFilter = jest.fn();
     state.machine.eventErrors = [
       eventErrorFactory({
@@ -251,7 +252,7 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    screen.getByTestId("error-filter-link").click();
+    await userEvent.click(screen.getByTestId("error-filter-link"));
     expect(setSearchFilter).toHaveBeenCalledWith("system_id:(def456,ghi789)");
   });
 

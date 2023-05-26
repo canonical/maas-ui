@@ -378,7 +378,7 @@ describe("GlobalSideNav", () => {
     expect(screen.getByRole("navigation")).toHaveClass("is-collapsed");
   });
 
-  it("persists collapsed state", () => {
+  it("persists collapsed state", async () => {
     state.user.auth.user = null;
     const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/",
@@ -386,7 +386,9 @@ describe("GlobalSideNav", () => {
     });
 
     const primaryNavigation = screen.getByRole("navigation");
-    screen.getByRole("button", { name: "expand main navigation" }).click();
+    await userEvent.click(
+      screen.getByRole("button", { name: "expand main navigation" })
+    );
     expect(primaryNavigation).toHaveClass("is-pinned");
     rerender(<AppSideNavigation />);
     expect(primaryNavigation).toHaveClass("is-pinned");

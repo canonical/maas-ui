@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import VirshTable from "./VirshTable";
 
 import type { RootState } from "app/store/root/types";
@@ -13,8 +11,6 @@ import {
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
-
-const mockStore = configureStore();
 
 describe("VirshTable", () => {
   let state: RootState;

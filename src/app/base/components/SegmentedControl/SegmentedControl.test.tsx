@@ -1,6 +1,6 @@
 import SegmentedControl from "./SegmentedControl";
 
-import { render, screen } from "testing/utils";
+import { render, screen, userEvent } from "testing/utils";
 
 const options = [
   {
@@ -44,7 +44,7 @@ it("selects the active option", () => {
   );
 });
 
-it("calls the callback when clicking a button", () => {
+it("calls the callback when clicking a button", async () => {
   const onSelect = jest.fn();
   render(
     <SegmentedControl
@@ -53,6 +53,6 @@ it("calls the callback when clicking a button", () => {
       selected="#00FF00"
     />
   );
-  screen.getByRole("tab", { name: "Blue" }).click();
+  await userEvent.click(screen.getByRole("tab", { name: "Blue" }));
   expect(onSelect).toHaveBeenCalledWith("#0000FF");
 });

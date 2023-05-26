@@ -214,7 +214,9 @@ describe("DhcpFormFields", () => {
     await waitFor(() =>
       expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "false")
     );
-    within(screen.getByRole("grid")).getByText(machine.hostname).click();
+    await userEvent.click(
+      within(screen.getByRole("grid")).getByText(machine.hostname)
+    );
     expect(
       screen.getByRole("button", { name: new RegExp(machine.hostname, "i") })
     ).toHaveAccessibleDescription(Labels.AppliesTo);

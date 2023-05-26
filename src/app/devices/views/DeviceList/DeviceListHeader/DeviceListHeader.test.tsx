@@ -9,7 +9,7 @@ import {
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("DeviceListHeader", () => {
   let state: RootState;
@@ -67,7 +67,7 @@ describe("DeviceListHeader", () => {
     expect(screen.getByTestId("add-device-button")).toBeDisabled();
   });
 
-  it("can open the add device form", () => {
+  it("can open the add device form", async () => {
     const setSidePanelContent = jest.fn();
     renderWithBrowserRouter(
       <MemoryRouter>
@@ -79,7 +79,7 @@ describe("DeviceListHeader", () => {
       </MemoryRouter>,
       { state }
     );
-    screen.getByTestId("add-device-button").click();
+    await userEvent.click(screen.getByTestId("add-device-button"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: DeviceHeaderViews.ADD_DEVICE,
     });

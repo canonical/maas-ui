@@ -1,6 +1,6 @@
 import TableActionsDropdown from "./TableActionsDropdown";
 
-import { render, screen } from "testing/utils";
+import { render, screen, userEvent } from "testing/utils";
 
 describe("TableActionsDropdown", () => {
   it("can be explicitly disabled", () => {
@@ -23,7 +23,7 @@ describe("TableActionsDropdown", () => {
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
-  it("can conditionally show actions", () => {
+  it("can conditionally show actions", async () => {
     render(
       <TableActionsDropdown
         actions={[
@@ -35,8 +35,7 @@ describe("TableActionsDropdown", () => {
       />
     );
     // Open menu
-    const button = screen.getByRole("button");
-    button.click();
+    await userEvent.click(screen.getByRole("button"));
 
     expect(
       screen.getByRole("button", { name: "Action 1" })
@@ -49,7 +48,7 @@ describe("TableActionsDropdown", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("runs click function with action type as argument", () => {
+  it("runs click function with action type as argument", async () => {
     const onActionClick = jest.fn();
     render(
       <TableActionsDropdown
@@ -58,11 +57,8 @@ describe("TableActionsDropdown", () => {
       />
     );
     // Open menu and click the actions
-    const button = screen.getByRole("button");
-    button.click();
-    const actionButton = screen.getByRole("button", { name: "Action 1" });
-    actionButton.click();
-
+    await userEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button", { name: "Action 1" }));
     expect(onActionClick).toHaveBeenCalledWith("action-1");
   });
 });
