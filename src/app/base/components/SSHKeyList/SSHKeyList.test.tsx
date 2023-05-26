@@ -165,7 +165,7 @@ describe("SSHKeyList", () => {
       store,
     });
     // Click on the delete button:
-    await userEvent.click(screen.getAllByText("Delete")[1]);
+    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[1])
     // Click on the delete confirm button
     await userEvent.click(screen.getByTestId("action-confirm"));
     expect(
