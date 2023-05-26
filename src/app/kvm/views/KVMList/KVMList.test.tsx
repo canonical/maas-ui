@@ -96,6 +96,7 @@ describe("KVMList", () => {
     });
 
     expect(document.title).toEqual(expect.stringContaining("LXD"));
+    expect(window.location.pathname).toEqual(urls.kvm.lxd.index);
   });
 
   it("displays a message if there are no LXD KVMs", () => {
