@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UpdateCertificate from "./UpdateCertificate";
@@ -18,9 +14,9 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("UpdateCertificate", () => {
   let state: RootState;
@@ -41,26 +37,15 @@ describe("UpdateCertificate", () => {
     });
   });
 
-  it("can dispatch an action to generate certificate if not providing certificate and key", () => {
+  it("can dispatch an action to generate certificate if not providing certificate and key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UpdateCertificate
-              closeForm={jest.fn()}
-              hasCertificateData
-              pod={pod}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <UpdateCertificate closeForm={jest.fn()} hasCertificateData pod={pod} />,
+      { route: "/kvm/edit", store }
     );
+
     // Radio should be set to generate certificate by default.
-    submitFormikForm(wrapper);
-    wrapper.update();
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     const expectedAction = generalActions.generateCertificate({
       object_name: "my-pod",
@@ -71,27 +56,22 @@ describe("UpdateCertificate", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("can generate a certificate with a custom object name", () => {
+  it("can generate a certificate with a custom object name", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UpdateCertificate
-              closeForm={jest.fn()}
-              hasCertificateData
-              objectName="custom-name"
-              pod={pod}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <UpdateCertificate
+        closeForm={jest.fn()}
+        hasCertificateData
+        objectName="custom-name"
+        pod={pod}
+      />,
+      {
+        route: "/kvm/edit",
+        store,
+      }
     );
     // Radio should be set to generate certificate by default.
-    submitFormikForm(wrapper);
-    wrapper.update();
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     const expectedAction = generalActions.generateCertificate({
       object_name: "custom-name",
@@ -102,38 +82,29 @@ describe("UpdateCertificate", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("can dispatch an action to update pod with generated certificate and key", () => {
+  it("can dispatch an action to update pod with generated certificate and key", async () => {
     const generatedCertificate = generatedCertificateFactory({
       certificate: "generated-certificate",
       private_key: "private-key",
     });
     state.general.generatedCertificate.data = generatedCertificate;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UpdateCertificate
-              closeForm={jest.fn()}
-              hasCertificateData
-              pod={pod}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <UpdateCertificate closeForm={jest.fn()} hasCertificateData pod={pod} />,
+      {
+        route: "/kvm/edit",
+        store,
+      }
     );
-    submitFormikForm(wrapper, {
-      password: "password",
-    });
-    wrapper.update();
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     const expectedAction = podActions.update({
       certificate: "generated-certificate",
       id: pod.id,
       key: "private-key",
-      password: "password",
+      password: "",
       tags: pod.tags.join(","),
     });
     const actualActions = store.getActions();
@@ -142,30 +113,30 @@ describe("UpdateCertificate", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("can dispatch an action to update pod with provided certificate and key", () => {
+  it("can dispatch an action to update pod with provided certificate and key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UpdateCertificate
-              closeForm={jest.fn()}
-              hasCertificateData
-              pod={pod}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <UpdateCertificate closeForm={jest.fn()} hasCertificateData pod={pod} />,
+      {
+        route: "/kvm/edit",
+        store,
+      }
     );
+
     // Change radio to provide certificate instead of generating one.
-    wrapper.find("input[id='provide-certificate']").simulate("change");
-    submitFormikForm(wrapper, {
-      certificate: "certificate",
-      key: "key",
+    const radio = screen.getByRole("radio", {
+      name: "Provide certificate and private key",
     });
-    wrapper.update();
+    await userEvent.click(radio);
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Upload certificate" }),
+      "certificate"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Upload private key" }),
+      "key"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     const expectedAction = podActions.update({
       certificate: "certificate",
@@ -179,51 +150,40 @@ describe("UpdateCertificate", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("closes the form on cancel if pod has a certificate", () => {
+  it("closes the form on cancel if pod has a certificate", async () => {
     const closeForm = jest.fn();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UpdateCertificate
-              closeForm={closeForm}
-              hasCertificateData
-              pod={pod}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <UpdateCertificate closeForm={closeForm} hasCertificateData pod={pod} />,
+      {
+        route: "/kvm/edit",
+        store: mockStore(state),
+      }
     );
-    expect(wrapper.find("[data-testid='cancel-action']").exists()).toBe(true);
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
     expect(closeForm).toHaveBeenCalled();
   });
 
   it(`clears generated certificate on cancel if pod has no certificate and a
-      certificate has been generated`, () => {
-    state.general.generatedCertificate.data = generatedCertificateFactory();
+      certificate has been generated`, async () => {
     const closeForm = jest.fn();
+    state.general.generatedCertificate.data = generatedCertificateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UpdateCertificate
-              closeForm={closeForm}
-              hasCertificateData={false}
-              pod={pod}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <UpdateCertificate
+        closeForm={closeForm}
+        hasCertificateData={false}
+        pod={pod}
+      />,
+      {
+        route: "/kvm/edit",
+        store,
+      }
     );
-    expect(wrapper.find("[data-testid='cancel-action']").exists()).toBe(true);
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
     const expectedAction = generalActions.clearGeneratedCertificate();
     const actualAction = store
@@ -236,21 +196,19 @@ describe("UpdateCertificate", () => {
       has been generated`, () => {
     state.general.generatedCertificate.data = null;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UpdateCertificate
-              closeForm={jest.fn()}
-              hasCertificateData={false}
-              pod={pod}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <UpdateCertificate
+        closeForm={jest.fn()}
+        hasCertificateData={false}
+        pod={pod}
+      />,
+      {
+        route: "/kvm/edit",
+        store,
+      }
     );
-    expect(wrapper.find("[data-testid='cancel-action']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("button", { name: "Cancel" })
+    ).not.toBeInTheDocument();
   });
 });
