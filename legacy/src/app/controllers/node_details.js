@@ -1341,6 +1341,13 @@ function NodeDetailsController(
         activeNode.system_id === node.system_id
       ) {
         nodeLoaded(activeNode);
+
+        // Set flag for RSD navigation item.
+        if (!$rootScope.showRSDLink) {
+          GeneralManager.getNavigationOptions().then(
+            (res) => ($rootScope.showRSDLink = res.rsd)
+          );
+        }
       } else {
         $scope.nodesManager.setActiveItem($stateParams.system_id).then(
           function (node) {

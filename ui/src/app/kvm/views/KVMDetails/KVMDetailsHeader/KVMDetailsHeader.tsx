@@ -34,7 +34,6 @@ const KVMDetailsHeader = ({
   );
   const pathname = location.pathname;
   const previousPathname = usePrevious(pathname);
-  const vmCount = pod?.resources?.vm_count?.tracked || 0;
 
   useEffect(() => {
     dispatch(podActions.fetch());
@@ -68,7 +67,9 @@ const KVMDetailsHeader = ({
         )) ||
         undefined
       }
-      subtitle={`${vmCount} VM${vmCount === 1 ? "" : "s"} available`}
+      subtitle={`${pod?.composed_machines_count || 0} VM${
+        pod?.composed_machines_count === 1 ? "" : "s"
+      } available`}
       tabLinks={[
         ...(pod?.type === PodType.LXD
           ? [

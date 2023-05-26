@@ -66,19 +66,10 @@ export function SubnetDetailsController(
   $scope.editStaticRoute = null;
   $scope.deleteStaticRoute = null;
   $scope.snippets = DHCPSnippetsManager.getItems();
-  $scope.knownBootArchitectures = GeneralManager.getData(
-    "known_boot_architectures"
-  );
-  $scope.newDisabledArches = [];
-  $scope.bootArchSort = "name";
 
   $scope.MAP_SUBNET_ACTION = {
     name: "map_subnet",
     title: "Map subnet",
-  };
-  $scope.EDIT_BOOT_ARCHITECTURES_ACTION = {
-    name: "edit_boot_architectures",
-    title: "Edit boot architectures",
   };
   $scope.DELETE_ACTION = {
     name: "delete",
@@ -251,32 +242,12 @@ export function SubnetDetailsController(
           $scope.actionError = ManagerHelperService.parseValidationError(error);
         }
       );
-    } else if ($scope.actionOption.name === "edit_boot_architectures") {
-      const newSubnet = {
-        id: $scope.subnet.id,
-        disabled_boot_architectures: $scope.newDisabledArches.join(","),
-      };
-      SubnetsManager.update(newSubnet).then(
-        () => {
-          $scope.actionOption = null;
-          $scope.actionError = null;
-        },
-        (error) => {
-          $scope.actionError = ManagerHelperService.parseValidationError(error);
-        }
-      );
     }
   };
 
   // Called when a action is selected.
   $scope.actionChanged = function () {
     $scope.actionError = null;
-    if (
-      $scope.actionOption &&
-      $scope.actionOption.name === "edit_boot_architectures"
-    ) {
-      $scope.newDisabledArches = $scope.subnet.disabled_boot_architectures;
-    }
   };
 
   // Called when the "Cancel" button is pressed.
@@ -289,11 +260,7 @@ export function SubnetDetailsController(
   // is allowed to perform.
   $scope.updateActions = function () {
     if (UsersManager.isSuperUser()) {
-      $scope.actionOptions = [
-        $scope.MAP_SUBNET_ACTION,
-        $scope.EDIT_BOOT_ARCHITECTURES_ACTION,
-        $scope.DELETE_ACTION,
-      ];
+      $scope.actionOptions = [$scope.MAP_SUBNET_ACTION, $scope.DELETE_ACTION];
     } else {
       $scope.actionOptions = [];
     }
@@ -406,46 +373,6 @@ export function SubnetDetailsController(
     return IPAddresses.length ? true : false;
   };
 
-  $scope.bootArchitectureEnabled = (archName) => {
-    return !$scope.newDisabledArches.includes(archName);
-  };
-
-  $scope.toggleBootArchitecture = (archName) => {
-    if ($scope.bootArchitectureEnabled(archName)) {
-      $scope.newDisabledArches = [...$scope.newDisabledArches, archName];
-    } else {
-      $scope.newDisabledArches = $scope.newDisabledArches.filter(
-        (arch) => arch !== archName
-      );
-    }
-  };
-
-  const isCurrentSort = (key) => {
-    const sortKey = $scope.bootArchSort.replace("-", "");
-    return key === sortKey;
-  }
-
-  $scope.getBootArchSort = (key) => {
-    if (isCurrentSort(key)) {
-      return $scope.bootArchSort.startsWith("-")
-        ? "descending"
-        : "ascending";
-    }
-    return "none";
-  };
-
-  $scope.setBootArchSort = (key) => {
-    if (isCurrentSort(key)) {
-      if ($scope.bootArchSort.startsWith("-")) {
-        $scope.bootArchSort = key;
-      } else {
-        $scope.bootArchSort = `-${key}`;
-      }
-    } else {
-      $scope.bootArchSort = key;
-    }
-  }
-
   // Called when the subnet has been loaded.
   function subnetLoaded(subnet) {
     $scope.subnet = subnet;
@@ -512,9 +439,6 @@ export function SubnetDetailsController(
     StaticRoutesManager,
     DHCPSnippetsManager,
   ]).then(function () {
-    if (!GeneralManager.isDataLoaded("known_boot_architectures")) {
-      GeneralManager.loadItems(["known_boot_architectures"]);
-    }
     $scope.updateActions();
     $scope.active_discovery_data = ConfigsManager.getItemFromList(
       "active_discovery_interval"
@@ -542,6 +466,13 @@ export function SubnetDetailsController(
       SubnetsManager.setActiveItem(requestedSubnet).then(
         function (subnet) {
           subnetLoaded(subnet);
+
+          // Set flag for RSD navigation item.
+          if (!$rootScope.showRSDLink) {
+            GeneralManager.getNavigationOptions().then(
+              (res) => ($rootScope.showRSDLink = res.rsd)
+            );
+          }
         },
         function (error) {
           ErrorService.raiseError(error);

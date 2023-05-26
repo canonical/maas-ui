@@ -188,6 +188,13 @@ function FabricDetailsController(
       activeFabric.id === requestedFabric
     ) {
       fabricLoaded(activeFabric);
+
+      // Set flag for RSD navigation item.
+      if (!$rootScope.showRSDLink) {
+        GeneralManager.getNavigationOptions().then(
+          (res) => ($rootScope.showRSDLink = res.rsd)
+        );
+      }
     } else {
       FabricsManager.setActiveItem(requestedFabric).then(
         function (fabric) {

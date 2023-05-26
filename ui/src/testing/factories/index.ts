@@ -22,6 +22,7 @@ export {
   machineStatus,
   machineStatuses,
   messageState,
+  navigationOptionsState,
   nodeDeviceState,
   nodeScriptResultState,
   notificationState,
@@ -71,6 +72,7 @@ export {
   networkLink,
   pod,
   podDetails,
+  podHint,
   podMemoryResource,
   podNetworkInterface,
   podNuma,
@@ -83,7 +85,6 @@ export {
   podResources,
   podStoragePool,
   podVM,
-  podVmCount,
   testStatus,
 } from "./nodes";
 export { dhcpSnippet } from "./dhcpsnippet";
@@ -97,6 +98,7 @@ export {
   hweKernel,
   knownArchitecture,
   machineAction,
+  navigationOptions,
   osInfo,
   osInfoOS,
   osInfoKernels,

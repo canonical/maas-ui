@@ -46,7 +46,6 @@ describe("SubnetDetailsController", function () {
       name: "Link Local",
       vlan: 0,
       dns_servers: [],
-      disabled_boot_architectures: [],
     };
     SubnetsManager._items.push(subnet);
     return subnet;
@@ -708,45 +707,6 @@ describe("SubnetDetailsController", function () {
       $scope.$digest();
       expect($scope.actionError).toBe(error);
     });
-
-    it("edit_boot_architectures action calls subnet update handler with new disabled arches", () => {
-      $location.path = jasmine.createSpy("path");
-      makeControllerResolveSetActiveItem();
-      const updateSubnet = spyOn(SubnetsManager, "update");
-      const defer = $q.defer();
-      updateSubnet.and.returnValue(defer.promise);
-      $scope.subnet = makeSubnet();
-      $scope.actionOption = {
-        name: "edit_boot_architectures",
-        title: "Edit boot architectures",
-      };
-      $scope.newDisabledArches = ["ipxe", "pxe"];
-      $scope.actionGo();
-      defer.resolve();
-      $scope.$digest();
-      expect(updateSubnet).toHaveBeenCalledWith({
-        id: $scope.subnet.id,
-        disabled_boot_architectures: "ipxe,pxe",
-      });
-      expect($scope.actionOption).toBeNull();
-      expect($scope.actionError).toBeNull();
-    });
-
-    it("actionError populated on edit boot architectures action failure", function () {
-      makeControllerResolveSetActiveItem();
-      $scope.actionOption = {
-        name: "edit_boot_architectures",
-        title: "Edit boot architectures",
-      };
-      var defer = $q.defer();
-      spyOn(SubnetsManager, "update").and.returnValue(defer.promise);
-      $scope.actionGo();
-      const error = "errorString";
-      $scope.actionOption = null;
-      defer.reject(error);
-      $scope.$digest();
-      expect($scope.actionError).toBe(error);
-    });
   });
 
   describe("actionChanged", function () {
@@ -846,68 +806,6 @@ describe("SubnetDetailsController", function () {
     it("returns false if argument has no IP addresses", function () {
       makeController();
       expect($scope.hasIPAddresses([])).toBe(false);
-    });
-  });
-
-  describe("bootArchitectureEnabled", () => {
-    it("correctly returns whether a boot architecture is enabled for a subnet", () => {
-      makeController();
-      $scope.subnet = makeSubnet();
-      $scope.newDisabledArches = ["ipxe", "pxe"];
-      expect($scope.bootArchitectureEnabled("ipxe")).toBe(false);
-      expect($scope.bootArchitectureEnabled("s390x")).toBe(true);
-    });
-  });
-
-  describe("toggleBootArchitecture", () => {
-    it("can add a disabled boot architecture to scope", () => {
-      makeController();
-      $scope.newDisabledArches = ["ipxe", "pxe"];
-      $scope.toggleBootArchitecture("s390x");
-      $scope.$digest();
-      expect($scope.newDisabledArches.includes("s390x")).toBe(true);
-    });
-
-    it("can remove a disabled boot architecture from scope", () => {
-      makeController();
-      $scope.newDisabledArches = ["ipxe", "pxe"];
-      $scope.toggleBootArchitecture("pxe");
-      $scope.$digest();
-      expect($scope.newDisabledArches.includes("pxe")).toBe(false);
-    });
-  });
-
-  describe("getBootArchSort", () => {
-    it("returns whether the given key is sorted in a particular direction", () => {
-      makeController();
-      // Sort by name:ascending
-      $scope.bootArchSort = "name";
-      expect($scope.getBootArchSort("name")).toBe("ascending");
-      expect($scope.getBootArchSort("protocol")).toBe("none");
-      // Update to sort by name:descending
-      $scope.bootArchSort = "-name";
-      $scope.$digest();
-      expect($scope.getBootArchSort("name")).toBe("descending");
-    });
-  });
-
-  describe("setBootArchSort", () => {
-    it("sets the current boot arch sort", () => {
-      makeController();
-      // Sort by name:ascending
-      $scope.bootArchSort = "name";
-      // Update sorting to name:descending
-      $scope.setBootArchSort("name");
-      $scope.$digest();
-      expect($scope.bootArchSort).toBe("-name");
-      // Revert to sorting by name:ascending
-      $scope.setBootArchSort("name");
-      $scope.$digest();
-      expect($scope.bootArchSort).toBe("name");
-      // Change sort to protocol:descending
-      $scope.setBootArchSort("protocol");
-      $scope.$digest();
-      expect($scope.bootArchSort).toBe("protocol");
     });
   });
 });

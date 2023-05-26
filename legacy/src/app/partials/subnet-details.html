@@ -21,7 +21,7 @@
         <!-- "Take action" dropdown -->
         <div
           class="page-header__controls u-float--right ng-hide"
-          data-ng-show="isSuperUser() && !isDefaultSubnet() && !loading && actionOptions.length && !actionOption.name"
+          data-ng-show="isSuperUser() && !isDefaultSubnet() && !loading && actionOptions.length"
         >
           <div
             data-maas-cta="actionOptions"
@@ -60,116 +60,6 @@
               </button>
               <button class="p-button--positive" data-ng-click="actionGo()">
                 Map subnet
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section
-        ng-if="!actionError && actionOption.name === 'edit_boot_architectures'"
-      >
-        <hr />
-        <div class="row">
-          <div class="col-12">
-            <ul class="p-inline-list">
-              <li class="p-inline-list__item p-heading--four">
-                Boot architectures
-              </li>
-              <li class="p-inline-list__item">
-                <a
-                  class="p-link--external"
-                  href="https://discourse.maas.io/t/boot-architectures/4610"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  More info
-                </a>
-              </li>
-            </ul>
-            <table>
-              <thead>
-                <tr>
-                  <th
-                    aria-sort="{$ getBootArchSort('name') $}"
-                    ng-click="setBootArchSort('name')"
-                  >
-                    Name
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('bios_boot_method') $}"
-                    ng-click="setBootArchSort('bios_boot_method')"
-                  >
-                    BIOS boot method
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('bootloader_arches') $}"
-                    ng-click="setBootArchSort('bootloader_arches')"
-                  >
-                    Bootloader architecture
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('protocol') $}"
-                    ng-click="setBootArchSort('protocol')"
-                  >
-                    Protocol
-                  </th>
-                  <th
-                    aria-sort="{$ getBootArchSort('arch_octet') $}"
-                    ng-click="setBootArchSort('arch_octet')"
-                  >
-                    Architecture octet
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  class="p-table__row--interactive"
-                  ng-class="{
-                    'is-active': bootArchitectureEnabled(architecture.name)
-                  }"
-                  ng-click="toggleBootArchitecture(architecture.name)"
-                  ng-repeat="architecture in knownBootArchitectures | orderBy:bootArchSort"
-                >
-                  <td>
-                    <label
-                      class="p-checkbox u-no-margin--bottom u-no-padding--top"
-                    >
-                      <input
-                        class="p-checkbox__input"
-                        ng-checked="bootArchitectureEnabled(architecture.name)"
-                        type="checkbox"
-                      />
-                      <span class="p-checkbox__label">
-                        {$ architecture.name $}
-                      </span>
-                    </label>
-                  </td>
-                  <td>{$ architecture.bios_boot_method || "—" $}</td>
-                  <td>{$ architecture.bootloader_arches || "—" $}</td>
-                  <td>{$ architecture.protocol || "—" $}</td>
-                  <td>{$ architecture.arch_octet || "—" $}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 u-align--right">
-            <hr />
-            <div>
-              <button
-                class="p-button--base"
-                ng-click="cancelAction()"
-                type="button"
-              >
-                Cancel
-              </button>
-              <button
-                class="p-button--positive"
-                ng-click="actionGo()"
-                ng-disabled="subnet.disabled_boot_architectures === newDisabledArches"
-              >
-                Save
               </button>
             </div>
           </div>

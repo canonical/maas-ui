@@ -74,14 +74,6 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
         polling: [],
         nextPromise: null,
       },
-      known_boot_architectures: {
-        method: "general.known_boot_architectures",
-        data: [],
-        requested: false,
-        loaded: false,
-        polling: [],
-        nextPromise: null,
-      },
       pockets_to_disable: {
         method: "general.pockets_to_disable",
         data: [],
@@ -449,6 +441,11 @@ function GeneralManager($q, $timeout, RegionConnection, ErrorService) {
       this._reloadFunc = null;
       this._autoReload = false;
     }
+  };
+
+  // Get navigation options so navigation can be updated.
+  GeneralManager.prototype.getNavigationOptions = () => {
+    return RegionConnection.callMethod("general.navigation_options");
   };
 
   return new GeneralManager();

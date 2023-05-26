@@ -56,7 +56,7 @@ describe("StorageFormFields", () => {
     );
   });
 
-  it("displays a warning if VMWare storage layout chosen", async () => {
+  it("displays a warning if vmfs6 storage layout chosen", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
@@ -73,7 +73,7 @@ describe("StorageFormFields", () => {
     });
     wrapper.update();
     expect(wrapper.find(".p-form-validation__message").text()).toBe(
-      "Caution: This storage layout only allows for the deployment of VMware (ESXi) images."
+      "Caution: The VMFS6 storage layout only allows for the deployment of VMware (ESXi)."
     );
   });
 });
