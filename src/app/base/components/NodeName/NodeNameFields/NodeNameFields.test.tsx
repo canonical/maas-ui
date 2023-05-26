@@ -1,9 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import NodeNameFields from "./NodeNameFields";
 
 import FormikForm from "app/base/components/FormikForm";
@@ -14,8 +8,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("NodeNameFields", () => {
   let state: RootState;
@@ -39,109 +32,81 @@ describe("NodeNameFields", () => {
 
   it("displays a spinner when loading domains", () => {
     state.domain.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FormikForm
-              initialValues={{
-                domain: "",
-                hostname: "",
-              }}
-              onSubmit={jest.fn()}
-            >
-              <NodeNameFields setHostnameError={jest.fn()} />
-            </FormikForm>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FormikForm
+        initialValues={{
+          domain: "",
+          hostname: "",
+        }}
+        onSubmit={jest.fn()}
+      >
+        <NodeNameFields setHostnameError={jest.fn()} />
+      </FormikForm>,
+      {
+        route: "/machine/abc123",
+        state,
+      }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays the fields", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FormikForm
-              initialValues={{
-                domain: "",
-                hostname: "",
-              }}
-              onSubmit={jest.fn()}
-            >
-              <NodeNameFields canEditHostname setHostnameError={jest.fn()} />
-            </FormikForm>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FormikForm
+        initialValues={{
+          domain: "",
+          hostname: "",
+        }}
+        onSubmit={jest.fn()}
+      >
+        <NodeNameFields canEditHostname setHostnameError={jest.fn()} />
+      </FormikForm>,
+      { route: "/machine/abc123", state }
     );
-    expect(wrapper.find("NodeNameFields")).toMatchSnapshot();
+
+    expect(
+      screen.getByRole("textbox", { name: "Hostname" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Domain" })
+    ).toBeInTheDocument();
   });
 
   it("disables fields when saving", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FormikForm
-              initialValues={{
-                domain: "",
-                hostname: "",
-              }}
-              onSubmit={jest.fn()}
-            >
-              <NodeNameFields
-                canEditHostname
-                saving
-                setHostnameError={jest.fn()}
-              />
-            </FormikForm>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FormikForm
+        initialValues={{
+          domain: "",
+          hostname: "",
+        }}
+        onSubmit={jest.fn()}
+      >
+        <NodeNameFields canEditHostname saving setHostnameError={jest.fn()} />
+      </FormikForm>,
+      { route: "/machine/abc123", state }
     );
-    expect(
-      wrapper.find("FormikField").everyWhere((n) => Boolean(n.prop("disabled")))
-    ).toBe(true);
+    expect(screen.getByRole("textbox", { name: "Hostname" })).toBeDisabled();
+    expect(screen.getByRole("combobox", { name: "Domain" })).toBeDisabled();
   });
 
   it("updates the hostname errors if they exist", () => {
     const setHostnameError = jest.fn();
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FormikForm
-              initialErrors={{ hostname: "Uh oh!" }}
-              initialValues={{
-                domain: "",
-                hostname: "",
-              }}
-              onSubmit={jest.fn()}
-            >
-              <NodeNameFields
-                canEditHostname
-                saving
-                setHostnameError={setHostnameError}
-              />
-            </FormikForm>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FormikForm
+        initialErrors={{ hostname: "Uh oh!" }}
+        initialValues={{
+          domain: "",
+          hostname: "",
+        }}
+        onSubmit={jest.fn()}
+      >
+        <NodeNameFields
+          canEditHostname
+          saving
+          setHostnameError={setHostnameError}
+        />
+      </FormikForm>,
+      { route: "/machine/abc123", state }
     );
     expect(setHostnameError).toHaveBeenCalledWith("Uh oh!");
   });

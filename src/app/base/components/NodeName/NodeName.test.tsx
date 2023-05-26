@@ -1,13 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import NodeName from "./NodeName";
 import type { Props as NodeNameProps } from "./NodeName";
-import NodeNameFields from "./NodeNameFields";
 
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -21,8 +13,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("NodeName", () => {
   let state: RootState;
@@ -54,129 +45,89 @@ describe("NodeName", () => {
 
   it("displays a spinner when loading", () => {
     state.machine.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeName
-              editingName={false}
-              node={null}
-              onSubmit={jest.fn()}
-              setEditingName={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeName
+        editingName={false}
+        node={null}
+        onSubmit={jest.fn()}
+        setEditingName={jest.fn()}
+      />,
+      { route: "/machine/abc123", state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays just the name when not editable", () => {
     state.machine.items[0].locked = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeName
-              editingName={false}
-              node={machine}
-              onSubmit={jest.fn()}
-              setEditingName={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeName
+        editingName={false}
+        node={machine}
+        onSubmit={jest.fn()}
+        setEditingName={jest.fn()}
+      />,
+      { route: "/machine/abc123", state }
     );
-    expect(wrapper.find(".node-name").exists()).toBe(true);
+    expect(screen.getByText(state.machine.items[0].fqdn)).toBeInTheDocument();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
   it("displays name in a button", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeName
-              editingName={false}
-              node={machine}
-              onSubmit={jest.fn()}
-              setEditingName={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeName
+        editingName={false}
+        node={machine}
+        onSubmit={jest.fn()}
+        setEditingName={jest.fn()}
+      />,
+      { route: "/machine/abc123", state }
     );
-    expect(wrapper.find("Button.node-name--editable").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("button", { name: state.machine.items[0].fqdn })
+    ).toBeInTheDocument();
   });
 
-  it("changes the form state when clicking the name", () => {
+  it("changes the form state when clicking the name", async () => {
     const setEditingName = jest.fn();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeName
-              editingName={false}
-              node={machine}
-              onSubmit={jest.fn()}
-              setEditingName={setEditingName}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeName
+        editingName={false}
+        node={machine}
+        onSubmit={jest.fn()}
+        setEditingName={setEditingName}
+      />,
+      { route: "/machine/abc123", state }
     );
-    wrapper.find("Button.node-name--editable").simulate("click");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: state.machine.items[0].fqdn })
+    );
     expect(setEditingName).toHaveBeenCalled();
   });
 
   it("can display the form", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeName
-              editingName={true}
-              node={machine}
-              onSubmit={jest.fn()}
-              setEditingName={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeName
+        editingName={true}
+        node={machine}
+        onSubmit={jest.fn()}
+        setEditingName={jest.fn()}
+      />,
+      { route: "/machine/abc123", state }
     );
-    expect(wrapper.find("FormikForm")).toMatchSnapshot();
+    expect(screen.getByRole("textbox", { name: "Hostname" })).toHaveValue(
+      state.machine.items[0].hostname
+    );
+    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
   });
 
   it("closes the form when it saves", () => {
     state.machine.saving = true;
     const setEditingName = jest.fn();
-    const store = mockStore(state);
-    const ProxyNodeName = (props: NodeNameProps) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeName {...props} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    const wrapper = mount(
+    const ProxyNodeName = (props: NodeNameProps) => <NodeName {...props} />;
+    const { rerender } = renderWithBrowserRouter(
       <ProxyNodeName
         editingName={true}
         node={machine}
@@ -184,39 +135,36 @@ describe("NodeName", () => {
         saved={false}
         saving={true}
         setEditingName={setEditingName}
+      />,
+      { route: "/machine/abc123", state }
+    );
+    rerender(
+      <ProxyNodeName
+        editingName={true}
+        node={machine}
+        onSubmit={jest.fn()}
+        saved={true}
+        saving={false}
+        setEditingName={setEditingName}
       />
     );
-    wrapper.setProps({
-      saved: true,
-      saving: false,
-    });
     expect(setEditingName).toHaveBeenCalledWith(false);
   });
 
-  it("can display a hostname error", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NodeName
-              editingName={true}
-              node={machine}
-              onSubmit={jest.fn()}
-              setEditingName={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can display a hostname error", async () => {
+    renderWithBrowserRouter(
+      <NodeName
+        editingName={true}
+        node={machine}
+        onSubmit={jest.fn()}
+        setEditingName={jest.fn()}
+      />,
+      { route: "/machine/abc123", state }
     );
-    act(() => {
-      wrapper.find(NodeNameFields).props().setHostnameError("Uh oh!");
-    });
-    wrapper.update();
-    const error = wrapper.find(".node-name__error");
-    expect(error.exists()).toBe(true);
-    expect(error.text()).toBe("Error: Uh oh!");
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));
+    expect(
+      screen.getByText("hostname is a required field")
+    ).toBeInTheDocument();
   });
 });
