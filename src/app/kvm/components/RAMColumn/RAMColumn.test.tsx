@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import RAMColumn from "./RAMColumn";
 
 import type { Pod } from "app/store/pod/types";
@@ -16,8 +12,7 @@ import {
   vmClusterResource as vmClusterResourceFactory,
   vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore, screen } from "testing/utils";
 
 describe("RAMColumn", () => {
   let state: RootState;
@@ -51,21 +46,17 @@ describe("RAMColumn", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn
-          memory={pod.resources.memory}
-          overCommit={pod.memory_over_commit_ratio}
-        />
-      </Provider>
+
+    renderWithMockStore(
+      <RAMColumn
+        memory={pod.resources.memory}
+        overCommit={pod.memory_over_commit_ratio}
+      />,
+      { state }
     );
     // Allocated tracked = 2 + 5 = 7
     // Total = (1 + 2 + 3) + (4 + 5 + 6) = 6 + 15 = 21
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 21B allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(21);
+    expect(screen.getByText(/7 of 21B allocated/i)).toBeInTheDocument();
   });
 
   it("can display correct memory information with overcommit", () => {
@@ -84,22 +75,18 @@ describe("RAMColumn", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn
-          memory={pod.resources.memory}
-          overCommit={pod.memory_over_commit_ratio}
-        />
-      </Provider>
+
+    renderWithMockStore(
+      <RAMColumn
+        memory={pod.resources.memory}
+        overCommit={pod.memory_over_commit_ratio}
+      />,
+      { state }
     );
     // Allocated tracked = 2 + 5 = 7
     // Hugepages do not take overcommit into account, so
     // Total = ((1 + 2 + 3) * 2) + (4 + 5 + 6) = 12 + 15 = 27
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 27B allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(27);
+    expect(screen.getByText(/7 of 27B allocated/i)).toBeInTheDocument();
   });
 
   it("can display when memory has been overcommitted", () => {
@@ -118,20 +105,16 @@ describe("RAMColumn", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn
-          memory={pod.resources.memory}
-          overCommit={pod.memory_over_commit_ratio}
-        />
-      </Provider>
+
+    renderWithMockStore(
+      <RAMColumn
+        memory={pod.resources.memory}
+        overCommit={pod.memory_over_commit_ratio}
+      />,
+      { state }
     );
-    expect(wrapper.find("[data-testid='meter-overflow']").exists()).toBe(true);
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 5B allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(5);
+    expect(screen.getByTestId("meter-overflow")).toBeInTheDocument();
+    expect(screen.getByText(/7 of 5B allocated/i)).toBeInTheDocument();
   });
 
   it("can display correct memory for a vmcluster", () => {
@@ -147,15 +130,10 @@ describe("RAMColumn", () => {
         free: 6,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RAMColumn memory={memory} />
-      </Provider>
-    );
-    expect(wrapper.find("Meter").find(".p-meter__label").text()).toBe(
-      "7 of 21B allocated"
-    );
-    expect(wrapper.find("Meter").prop("max")).toBe(21);
+
+    renderWithMockStore(<RAMColumn memory={memory} />, {
+      state,
+    });
+    expect(screen.getByText(/7 of 21B allocated/i)).toBeInTheDocument();
   });
 });
