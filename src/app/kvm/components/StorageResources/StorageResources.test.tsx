@@ -1,8 +1,7 @@
-import { mount } from "enzyme";
-
 import StorageResources from "./StorageResources";
 
 import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 describe("StorageResources", () => {
   it("displays as a meter if there is only one pool", () => {
@@ -14,14 +13,12 @@ describe("StorageResources", () => {
         total: 7,
       }),
     };
-    const wrapper = mount(
-      <StorageResources allocated={3} free={4} pools={storagePools} />
-    );
-    expect(wrapper.find("StorageMeter").exists()).toBe(true);
-    expect(wrapper.find("StorageCards").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='storage-summary']").exists()).toBe(
-      false
-    );
+
+    render(<StorageResources allocated={3} free={4} pools={storagePools} />);
+
+    expect(screen.getByLabelText("storage meter")).toBeInTheDocument();
+    expect(screen.queryByLabelText("storage cards")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("storage-summary")).not.toBeInTheDocument();
   });
 
   it("displays storage summary and pools as cards if there is more than one pool", () => {
@@ -39,11 +36,11 @@ describe("StorageResources", () => {
         total: 4,
       }),
     };
-    const wrapper = mount(
-      <StorageResources allocated={5} free={6} pools={storagePools} />
-    );
-    expect(wrapper.find("StorageCards").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='storage-summary']").exists()).toBe(true);
-    expect(wrapper.find("StorageMeter").exists()).toBe(false);
+
+    render(<StorageResources allocated={5} free={6} pools={storagePools} />);
+
+    expect(screen.getByLabelText("storage cards")).toBeInTheDocument();
+    expect(screen.getByTestId("storage-summary")).toBeInTheDocument();
+    expect(screen.queryByLabelText("storage meter")).not.toBeInTheDocument();
   });
 });
