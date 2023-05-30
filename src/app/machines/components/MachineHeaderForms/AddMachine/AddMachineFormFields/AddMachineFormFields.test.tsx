@@ -1,10 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import AddMachineForm from "../AddMachineForm";
 
 import type { RootState } from "app/store/root/types";
@@ -24,8 +17,12 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  within,
+} from "testing/utils";
 
 describe("AddMachineFormFields", () => {
   let state: RootState;
@@ -59,6 +56,10 @@ describe("AddMachineFormFields", () => {
               description: "Manual",
               fields: [],
             }),
+            powerTypeFactory({
+              name: "ipmi",
+              description: "IPMI",
+            }),
           ],
           loaded: true,
         }),
@@ -76,100 +77,104 @@ describe("AddMachineFormFields", () => {
 
   it("correctly sets minimum kernel to default", () => {
     state.general.defaultMinHweKernel.data = "ga-18.04";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddMachineForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/add", state }
     );
-    expect(wrapper.find("Select[name='min_hwe_kernel']").props().value).toBe(
-      "ga-18.04"
-    );
+
+    expect(
+      (
+        screen.getByRole("option", {
+          name: "bionic (ga-18.04)",
+        }) as HTMLOptionElement
+      ).selected
+    ).toBe(true);
+    expect(
+      (
+        screen.getByRole("option", {
+          name: "xenial (ga-16.04)",
+        }) as HTMLOptionElement
+      ).selected
+    ).toBe(false);
+    expect(
+      (
+        screen.getByRole("option", {
+          name: "No minimum kernel",
+        }) as HTMLOptionElement
+      ).selected
+    ).toBe(false);
   });
 
   it("can add extra mac address fields", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddMachineForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/add", state }
     );
-    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='extra-macs-1']").exists()).toBe(false);
-    await act(async () => {
-      wrapper.find("[data-testid='add-extra-mac'] button").simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='extra-macs-1']").exists()).toBe(false);
-    await act(async () => {
-      wrapper.find("[data-testid='add-extra-mac'] button").simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='extra-macs-1']").exists()).toBe(true);
+
+    expect(
+      screen.queryByRole("textbox", { name: "Extra MAC address 1" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: "Extra MAC address 2" })
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add MAC address" })
+    );
+
+    expect(
+      screen.getByRole("textbox", { name: "Extra MAC address 1" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: "Extra MAC address 2" })
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add MAC address" })
+    );
+
+    expect(
+      screen.getByRole("textbox", { name: "Extra MAC address 1" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Extra MAC address 2" })
+    ).toBeInTheDocument();
   });
 
   it("can remove extra mac address fields", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddMachineForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/add", state }
     );
-    await act(async () => {
-      wrapper.find("[data-testid='add-extra-mac'] button").simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(true);
-    await act(async () => {
-      wrapper.find("[data-testid='extra-macs-0'] button").simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='extra-macs-0']").exists()).toBe(false);
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add MAC address" })
+    );
+
+    expect(screen.getByTestId("extra-macs-0")).toBeInTheDocument();
+
+    await userEvent.click(
+      within(screen.getByTestId("extra-macs-0")).getByRole("button")
+    );
+
+    expect(screen.queryByTestId("extra-macs-0")).not.toBeInTheDocument();
   });
 
   it("does not require MAC address field if power_type is 'ipmi'", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddMachineForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/add", state }
     );
-    // Power type is "manual" by default, therefore MAC address is required.
-    expect(wrapper.find("Input[name='pxe_mac']").props().required).toBe(true);
-    // Select the ipmi power type from the dropdown.
-    await act(async () => {
-      wrapper
-        .find("select[name='power_type']")
-        .simulate("change", { target: { name: "power_type", value: "ipmi" } });
-    });
-    wrapper.update();
-    // "ipmi" power type should not require MAC address.
-    expect(wrapper.find("Input[name='pxe_mac']").props().required).toBe(false);
+
+    expect(screen.getByRole("textbox", { name: "MAC address" })).toBeRequired();
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Power type" }),
+      "ipmi"
+    );
+
+    expect(
+      screen.getByRole("textbox", { name: "MAC address" })
+    ).not.toBeRequired();
   });
 });

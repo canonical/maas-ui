@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import CloneNetworkTable from "./CloneNetworkTable";
 
 import type { RootState } from "app/store/root/types";
@@ -20,8 +16,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore, screen, within } from "testing/utils";
 
 describe("CloneNetworkTable", () => {
   let state: RootState;
@@ -47,28 +42,37 @@ describe("CloneNetworkTable", () => {
   });
 
   it("renders empty table if neither loading machine nor machine provided", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={null} selected={false} />
-      </Provider>
-    );
-    expect(wrapper.find("MainTable").prop("rows")).toStrictEqual([]);
-    expect(wrapper.find("Placeholder").exists()).toBe(false);
+    renderWithMockStore(<CloneNetworkTable machine={null} selected={false} />, {
+      state,
+    });
+    expect(screen.getAllByRole("row")).toHaveLength(1);
+    // expect(wrapper.find("MainTable").prop("rows")).toStrictEqual([]);
+    // expect(wrapper.find("Placeholder").exists()).toBe(false);
   });
 
   it("renders placeholder content while details are loading", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable
-          loadingMachineDetails
-          machine={null}
-          selected={false}
-        />
-      </Provider>
+    renderWithMockStore(
+      <CloneNetworkTable
+        loadingMachineDetails
+        machine={null}
+        selected={false}
+      />,
+      {
+        state,
+      }
     );
-    expect(wrapper.find("Placeholder").exists()).toBe(true);
+    const rows = screen.getAllByRole("row");
+    rows.shift(); // Remove the table header row
+    rows.forEach((row) => {
+      const placeholders = within(row).getAllByTestId("placeholder");
+      expect(placeholders[0]).toHaveTextContent("Name");
+      expect(placeholders[1]).toHaveTextContent("Subnet");
+      expect(placeholders[2]).toHaveTextContent("Fabric name");
+      expect(placeholders[3]).toHaveTextContent("VLAN");
+      expect(placeholders[4]).toHaveTextContent("Disk type");
+      expect(placeholders[5]).toHaveTextContent("X, X");
+      expect(placeholders[6]).toHaveTextContent("DHCP");
+    });
   });
 
   it("renders machine network details if machine is provided", () => {
@@ -76,14 +80,15 @@ describe("CloneNetworkTable", () => {
       interfaces: [machineInterfaceFactory()],
     });
 
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected={false} />
-      </Provider>
+    renderWithMockStore(
+      <CloneNetworkTable machine={machine} selected={false} />,
+      {
+        state,
+      }
     );
-    expect(wrapper.find("Placeholder").exists()).toBe(false);
-    expect(wrapper.find("MainTable").prop("rows")).not.toStrictEqual([]);
+
+    expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("row")).toHaveLength(2);
   });
 
   it("can display an interface that has no links", () => {
@@ -108,15 +113,12 @@ describe("CloneNetworkTable", () => {
     state.machine.items = [machine];
     state.subnet.items = subnets;
     state.vlan.items = [vlan];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
-    );
+    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+      state,
+    });
     expect(
-      wrapper.find("[data-testid='name-subnet'] DoubleRow").prop("secondary")
-    ).toBe("Unconfigured");
+      within(screen.getByTestId("name-subnet")).getByTestId("secondary")
+    ).toHaveTextContent("Unconfigured");
   });
 
   it("can display an interface that has a link", () => {
@@ -143,15 +145,12 @@ describe("CloneNetworkTable", () => {
     state.machine.items = [machine];
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
-    );
+    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+      state,
+    });
     expect(
-      wrapper.find("[data-testid='name-subnet'] DoubleRow").prop("secondary")
-    ).toBe("subnet-cidr");
+      within(screen.getByTestId("name-subnet")).getByTestId("secondary")
+    ).toHaveTextContent("subnet-cidr");
   });
 
   it("can display an interface that is an alias", () => {
@@ -186,24 +185,14 @@ describe("CloneNetworkTable", () => {
     state.machine.items = [machine];
     state.subnet.items = subnets;
     state.vlan.items = [vlan];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
+    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+      state,
+    });
+    const row = screen.getAllByTestId("name-subnet")[1];
+    expect(within(row).getByTestId("primary")).toHaveTextContent("alias:1");
+    expect(within(row).getByTestId("secondary")).toHaveTextContent(
+      "subnet2-cidr"
     );
-    expect(
-      wrapper
-        .find("[data-testid='name-subnet'] DoubleRow")
-        .at(1)
-        .prop("primary")
-    ).toBe("alias:1");
-    expect(
-      wrapper
-        .find("[data-testid='name-subnet'] DoubleRow")
-        .at(1)
-        .prop("secondary")
-    ).toBe("subnet2-cidr");
   });
 
   it("groups bonds and bridges with their parent interfaces", () => {
@@ -250,15 +239,12 @@ describe("CloneNetworkTable", () => {
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CloneNetworkTable machine={machine} selected />
-      </Provider>
-    );
-    const names = wrapper
-      .find("[data-testid='name-subnet'] DoubleRow")
-      .map((doubleRow) => doubleRow.prop("primary"));
+    renderWithMockStore(<CloneNetworkTable machine={machine} selected />, {
+      state,
+    });
+    const names = screen
+      .getAllByTestId("name-subnet")
+      .map((doubleRow) => within(doubleRow).getByTestId("primary").textContent);
     expect(names).toStrictEqual([
       // Bond group:
       "bond0",

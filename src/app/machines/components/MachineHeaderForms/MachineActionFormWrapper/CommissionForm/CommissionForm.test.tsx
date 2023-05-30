@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CommissionForm from "./CommissionForm";
@@ -19,9 +14,9 @@ import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("CommissionForm", () => {
   let state: RootState;
@@ -58,6 +53,17 @@ describe("CommissionForm", () => {
             tags: ["node"],
             script_type: ScriptType.COMMISSIONING,
           }),
+          scriptFactory({
+            name: "custom-testing-script",
+            tags: ["node"],
+            parameters: {
+              url: {
+                argument_format: "{url}",
+                type: "url",
+              },
+            },
+            script_type: ScriptType.TESTING,
+          }),
         ],
       }),
     });
@@ -66,21 +72,14 @@ describe("CommissionForm", () => {
   it("fetches scripts if they haven't been loaded yet", () => {
     state.script.loaded = false;
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
     expect(
@@ -88,37 +87,63 @@ describe("CommissionForm", () => {
     ).toBe(true);
   });
 
-  it("correctly dispatches actions to commission given machines", () => {
+  it("correctly dispatches actions to commission given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableSSH: true,
-        skipBMCConfig: true,
-        skipNetworking: true,
-        skipStorage: true,
-        updateFirmware: true,
-        configureHBA: true,
-        testingScripts: [state.script.items[0]],
-        commissioningScripts: [state.script.items[1]],
-        scriptInputs: { testingScript0: { url: "www.url.com" } },
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Allow SSH access and prevent machine powering off",
       })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: `Skip configuring supported BMC controllers with a MAAS generated username and password`,
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Retain network configuration",
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Retain storage configuration",
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Update firmware",
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Configure HBA",
+      })
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Testing scripts" }),
+      "custom"
+    );
+    await userEvent.click(screen.getByTestId("existing-tag"));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: "URL(s) to use for custom-testing-script script",
+      }),
+      "www.url.com"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Start commissioning/i })
     );
 
     expect(
@@ -137,8 +162,11 @@ describe("CommissionForm", () => {
           ScriptName.UPDATE_FIRMWARE,
           ScriptName.CONFIGURE_HBA,
         ],
-        testing_scripts: [state.script.items[0].name],
-        script_input: { testingScript0: { url: "www.url.com" } },
+        testing_scripts: [
+          state.script.items[2].name,
+          state.script.items[0].name,
+        ],
+        script_input: { "custom-testing-script": { url: "www.url.com" } },
       }),
       machineActions.commission({
         system_id: "def456",
@@ -151,43 +179,64 @@ describe("CommissionForm", () => {
           ScriptName.UPDATE_FIRMWARE,
           ScriptName.CONFIGURE_HBA,
         ],
-        testing_scripts: [state.script.items[0].name],
-        script_input: { testingScript0: { url: "www.url.com" } },
+        testing_scripts: [
+          state.script.items[2].name,
+          state.script.items[0].name,
+        ],
+        script_input: { "custom-testing-script": { url: "www.url.com" } },
       }),
     ]);
   });
 
-  it("correctly dispatches an action to commission a machine without tests", () => {
+  it("correctly dispatches an action to commission a machine without tests", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableSSH: true,
-        skipBMCConfig: true,
-        skipNetworking: true,
-        skipStorage: true,
-        updateFirmware: true,
-        configureHBA: true,
-        testingScripts: [],
-        commissioningScripts: [state.script.items[1]],
-        scriptInputs: { testingScript0: { url: "www.url.com" } },
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Allow SSH access and prevent machine powering off",
       })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: `Skip configuring supported BMC controllers with a MAAS generated username and password`,
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Retain network configuration",
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Retain storage configuration",
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Update firmware",
+      })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Configure HBA",
+      })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "smartctl-validate" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Start commissioning/i })
     );
 
     expect(
