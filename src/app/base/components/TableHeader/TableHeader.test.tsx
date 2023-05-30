@@ -4,7 +4,7 @@
 import TableHeader from "./TableHeader";
 
 import { SortDirection } from "app/base/types";
-import { render, screen } from "testing/utils";
+import { render, screen, userEvent } from "testing/utils";
 
 describe("TableHeader ", () => {
   it("renders a div if no onClick prop is present", () => {
@@ -13,12 +13,12 @@ describe("TableHeader ", () => {
     expect(container.querySelector("div")).toBeInTheDocument();
   });
 
-  it("renders a Button if onClick prop is present", () => {
+  it("renders a Button if onClick prop is present", async () => {
     const mockFn = jest.fn();
     render(<TableHeader onClick={mockFn}>Text</TableHeader>);
     expect(screen.getByRole("button")).toBeInTheDocument();
 
-    screen.getByRole("button").click();
+    await userEvent.click(screen.getByRole("button"));
     expect(mockFn).toHaveBeenCalled();
   });
 

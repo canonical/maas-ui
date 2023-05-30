@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -73,7 +74,7 @@ describe("KVMListHeader", () => {
     );
   });
 
-  it("can open the add LXD form at the LXD URL", () => {
+  it("can open the add LXD form at the LXD URL", async () => {
     const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     render(
@@ -92,13 +93,13 @@ describe("KVMListHeader", () => {
       </Provider>
     );
     expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add LXD host");
-    screen.getByTestId("add-kvm").click();
+    await userEvent.click(screen.getByTestId("add-kvm"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_LXD_HOST,
     });
   });
 
-  it("can open the add Virsh form at the Virsh URL", () => {
+  it("can open the add Virsh form at the Virsh URL", async () => {
     const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     render(
@@ -117,7 +118,7 @@ describe("KVMListHeader", () => {
       </Provider>
     );
     expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add Virsh host");
-    screen.getByTestId("add-kvm").click();
+    await userEvent.click(screen.getByTestId("add-kvm"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_VIRSH_HOST,
     });

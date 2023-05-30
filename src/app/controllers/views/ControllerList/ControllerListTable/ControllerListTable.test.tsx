@@ -75,7 +75,9 @@ describe("ControllerListTable", () => {
       expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
 
       // Change sort to ascending FQDN
-      await userEvent.click(screen.getByRole("button", { name: "Name" }));
+      await userEvent.click(
+        screen.getByRole("button", { name: "Name (descending)" })
+      );
       rows = screen.getAllByRole("row");
       expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));
       expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
@@ -115,7 +117,9 @@ describe("ControllerListTable", () => {
       expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
 
       // Change sort to ascending version
-      await userEvent.click(screen.getByRole("button", { name: "Version" }));
+      await userEvent.click(
+        screen.getByRole("button", { name: "Version (descending)" })
+      );
 
       rows = screen.getAllByRole("row");
       expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));

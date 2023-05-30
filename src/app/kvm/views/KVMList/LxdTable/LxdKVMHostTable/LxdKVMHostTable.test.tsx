@@ -1,9 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import { generateClusterRows, generateSingleHostRows } from "../LxdTable";
 
 import LxdKVMHostTable from "./LxdKVMHostTable";
@@ -19,11 +13,10 @@ import {
   vmHost as vmHostFactory,
   vmClusterState as vmClusterStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("LxdKVMHostTable", () => {
-  it("can update the LXD hosts sort order", () => {
+  it("can update the LXD hosts sort order", async () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [
@@ -51,47 +44,38 @@ describe("LxdKVMHostTable", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
+      { route: "/kvm", state }
     );
     const getLxdVms = (rowNumber: number) =>
-      wrapper
-        .find("tbody TableRow")
-        .at(rowNumber)
-        .find("[data-testid='machines-count']");
+      screen.getAllByTestId("machines-count")[rowNumber];
 
     // Sorted ascending by name by default
-    expect(getLxdVms(0).text()).toBe("2");
-    expect(getLxdVms(1).text()).toBe("3");
-    expect(getLxdVms(2).text()).toBe("1");
+    expect(getLxdVms(0).textContent).toBe("2");
+    expect(getLxdVms(1).textContent).toBe("3");
+    expect(getLxdVms(2).textContent).toBe("1");
 
     // Change to sort ascending vms
-    wrapper.find("[data-testid='vms-header'] button").simulate("click");
-    expect(getLxdVms(0).text()).toBe("1");
-    expect(getLxdVms(1).text()).toBe("2");
-    expect(getLxdVms(2).text()).toBe("3");
+    await userEvent.click(screen.getByRole("button", { name: /VM s/i }));
+    expect(getLxdVms(0).textContent).toBe("1");
+    expect(getLxdVms(1).textContent).toBe("2");
+    expect(getLxdVms(2).textContent).toBe("3");
 
     // Change to descending vms
-    wrapper.find("[data-testid='vms-header'] button").simulate("click");
-    expect(getLxdVms(0).text()).toBe("3");
-    expect(getLxdVms(1).text()).toBe("2");
-    expect(getLxdVms(2).text()).toBe("1");
+    await userEvent.click(screen.getByRole("button", { name: /VM s/i }));
+    expect(getLxdVms(0).textContent).toBe("3");
+    expect(getLxdVms(1).textContent).toBe("2");
+    expect(getLxdVms(2).textContent).toBe("1");
 
     // Change to no sort
-    wrapper.find("[data-testid='vms-header'] button").simulate("click");
-    expect(getLxdVms(0).text()).toBe("3");
-    expect(getLxdVms(1).text()).toBe("1");
-    expect(getLxdVms(2).text()).toBe("2");
+    await userEvent.click(screen.getByRole("button", { name: /VM s/i }));
+    expect(getLxdVms(0).textContent).toBe("3");
+    expect(getLxdVms(1).textContent).toBe("1");
+    expect(getLxdVms(2).textContent).toBe("2");
   });
 
-  it("can update the LXD project sort order", () => {
+  it("can update the LXD project sort order", async () => {
     const state = rootStateFactory({
       pod: podStateFactory({
         items: [
@@ -114,39 +98,33 @@ describe("LxdKVMHostTable", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
+      { route: "/kvm", state }
     );
     const getLxdName = (rowNumber: number) =>
-      wrapper.find("tbody TableRow").at(rowNumber).find("[data-testid='name']");
+      screen.getAllByTestId("name")[rowNumber];
 
     // Sorted ascending by name by default
-    expect(getLxdName(0).text()).toBe("pod-1");
-    expect(getLxdName(1).text()).toBe("pod-2");
-    expect(getLxdName(2).text()).toBe("pod-3");
-    expect(getLxdName(3).text()).toBe("pod-4");
+    expect(getLxdName(0).textContent).toBe("pod-1");
+    expect(getLxdName(1).textContent).toBe("pod-2");
+    expect(getLxdName(2).textContent).toBe("pod-3");
+    expect(getLxdName(3).textContent).toBe("pod-4");
 
     // Change to sort descending by name. Groups themselves are not sorted so
     // only the LXD pods in each group should be sorted.
-    wrapper.find("[data-testid='name-header'] button").simulate("click");
-    expect(getLxdName(0).text()).toBe("pod-4");
-    expect(getLxdName(1).text()).toBe("pod-3");
-    expect(getLxdName(2).text()).toBe("pod-2");
-    expect(getLxdName(3).text()).toBe("pod-1");
+    await userEvent.click(screen.getByRole("button", { name: /Name/i }));
+    expect(getLxdName(0).textContent).toBe("pod-4");
+    expect(getLxdName(1).textContent).toBe("pod-3");
+    expect(getLxdName(2).textContent).toBe("pod-2");
+    expect(getLxdName(3).textContent).toBe("pod-1");
 
     // Change to no sort
-    wrapper.find("[data-testid='name-header'] button").simulate("click");
-    expect(getLxdName(0).text()).toBe("pod-2");
-    expect(getLxdName(1).text()).toBe("pod-1");
-    expect(getLxdName(2).text()).toBe("pod-3");
-    expect(getLxdName(3).text()).toBe("pod-4");
+    await userEvent.click(screen.getByRole("button", { name: /Name/i }));
+    expect(getLxdName(0).textContent).toBe("pod-2");
+    expect(getLxdName(1).textContent).toBe("pod-1");
+    expect(getLxdName(2).textContent).toBe("pod-3");
+    expect(getLxdName(3).textContent).toBe("pod-4");
   });
 
   it("can display a single host type", () => {
@@ -155,20 +133,12 @@ describe("LxdKVMHostTable", () => {
         items: [podFactory()],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />,
+      { route: "/kvm", state }
     );
-    expect(wrapper.find("[data-testid='host-type']").text()).toBe(
-      "Single host"
-    );
-    expect(wrapper.find("[data-testid='hosts-count']").exists()).toBe(false);
+    expect(screen.getByTestId("host-type")).toHaveTextContent("Single host");
+    expect(screen.queryByTestId("hosts-count")).toBeNull();
   });
 
   it("can display a cluster host type", () => {
@@ -181,22 +151,11 @@ describe("LxdKVMHostTable", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <LxdKVMHostTable
-              rows={generateClusterRows(state.vmcluster.items)}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LxdKVMHostTable rows={generateClusterRows(state.vmcluster.items)} />,
+      { route: "/kvm", state }
     );
-    expect(wrapper.find("[data-testid='host-type']").text()).toBe("Cluster");
-    expect(wrapper.find("[data-testid='hosts-count']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='hosts-count']").text()).toBe(
-      "2 KVM hosts"
-    );
+    expect(screen.getByTestId("host-type")).toHaveTextContent("Cluster");
+    expect(screen.getByTestId("hosts-count")).toHaveTextContent("2 KVM hosts");
   });
 });

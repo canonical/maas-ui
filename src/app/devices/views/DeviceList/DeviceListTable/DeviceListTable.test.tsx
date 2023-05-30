@@ -109,7 +109,9 @@ describe("DeviceListTable", () => {
       expect(getRowTestId(3)).toBe("device-c");
 
       // Change sort to ascending FQDN
-      await userEvent.click(screen.getByRole("button", { name: "FQDN" }));
+      await userEvent.click(
+        screen.getByRole("button", { name: "FQDN (descending)" })
+      );
       expect(getRowTestId(1)).toBe("device-c");
       expect(getRowTestId(2)).toBe("device-b");
       expect(getRowTestId(3)).toBe("device-a");
@@ -149,7 +151,7 @@ describe("DeviceListTable", () => {
 
       // Change sort to ascending IP assignment
       await userEvent.click(
-        screen.getByRole("button", { name: "IP assignment" })
+        screen.getByRole("button", { name: "IP assignment (descending)" })
       );
       expect(getRowTestId(1)).toBe("device-c");
       expect(getRowTestId(2)).toBe("device-b");
@@ -178,7 +180,9 @@ describe("DeviceListTable", () => {
       expect(getRowTestId(3)).toBe("device-c");
 
       // Change sort to ascending zone name
-      await userEvent.click(screen.getByRole("button", { name: "Zone" }));
+      await userEvent.click(
+        screen.getByRole("button", { name: "Zone (descending)" })
+      );
       expect(getRowTestId(1)).toBe("device-c");
       expect(getRowTestId(2)).toBe("device-b");
       expect(getRowTestId(3)).toBe("device-a");
@@ -206,7 +210,9 @@ describe("DeviceListTable", () => {
       expect(getRowTestId(3)).toBe("device-c");
 
       // Change sort to ascending owner
-      await userEvent.click(screen.getByRole("button", { name: "Owner" }));
+      await userEvent.click(
+        screen.getByRole("button", { name: "Owner (descending)" })
+      );
       expect(getRowTestId(1)).toBe("device-c");
       expect(getRowTestId(2)).toBe("device-b");
       expect(getRowTestId(3)).toBe("device-a");
