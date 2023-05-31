@@ -1,11 +1,6 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
-import CredentialsForm from "./CredentialsForm";
 
 import { ConfigNames } from "app/store/config/types";
 import { actions as podActions } from "app/store/pod";
@@ -27,9 +22,9 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("AddLxd", () => {
   let state: RootState;
@@ -60,115 +55,110 @@ describe("AddLxd", () => {
         loaded: true,
       }),
       resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory()],
+        items: [resourcePoolFactory({ id: 0 })],
         loaded: true,
       }),
       zone: zoneStateFactory({
-        items: [zoneFactory()],
+        items: [zoneFactory({ id: 0 })],
       }),
     });
   });
 
   it("shows the credentials form by default", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+      route: "/kvm/add",
+      state,
+    });
 
-    expect(wrapper.find("CredentialsForm").exists()).toBe(true);
-    expect(wrapper.find("AuthenticationForm").exists()).toBe(false);
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
+    expect(screen.getByText("Credentials")).toHaveClass("is-active");
+    expect(screen.getByText("Authentication")).not.toHaveClass("is-active");
+    expect(screen.getByText("Project selection")).not.toHaveClass("is-active");
   });
 
   it(`shows the authentication form if the user has generated a certificate for
-    the LXD KVM host`, () => {
+    the LXD KVM host`, async () => {
     const certificate = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
+
     state.general.generatedCertificate.data = certificate;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+      route: "/kvm/add",
+      state,
+    });
 
     // Submit credentials form
-    submitFormikForm(wrapper, {
-      name: "my-favourite-kvm",
-      pool: 0,
-      power_address: "192.168.1.1",
-      zone: 0,
-    });
-    wrapper.update();
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "my-favourite-kvm"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Resource pool" }),
+      "0"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Zone" }),
+      "0"
+    );
+    await userEvent.type(
+      screen.getByRole("combobox", { name: "LXD address" }),
+      "192.168.1.1"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(wrapper.find("CredentialsForm").exists()).toBe(false);
-    expect(wrapper.find("AuthenticationForm").exists()).toBe(true);
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(false);
+    expect(screen.getByText("Credentials")).not.toHaveClass("is-active");
+    expect(screen.getByText("Authentication")).toHaveClass("is-active");
+    expect(screen.getByText("Project selection")).not.toHaveClass("is-active");
   });
 
-  it("shows the project select form once authenticated", () => {
+  it("shows the project select form once authenticated", async () => {
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+      route: "/kvm/add",
+      state,
+    });
 
     // Submit credentials form
-    submitFormikForm(wrapper, {
-      name: "my-favourite-kvm",
-      pool: 0,
-      power_address: "192.168.1.1",
-      zone: 0,
-    });
-    wrapper.update();
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "my-favourite-kvm"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Resource pool" }),
+      "0"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Zone" }),
+      "0"
+    );
+    await userEvent.type(
+      screen.getByRole("combobox", { name: "LXD address" }),
+      "192.168.1.1"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(wrapper.find("CredentialsForm").exists()).toBe(false);
-    expect(wrapper.find("AuthenticationForm").exists()).toBe(false);
-    expect(wrapper.find("SelectProjectForm").exists()).toBe(true);
+    expect(screen.getByText("Credentials")).not.toHaveClass("is-active");
+    expect(screen.getByText("Authentication")).not.toHaveClass("is-active");
+    expect(screen.getByText("Project selection")).toHaveClass("is-active");
   });
 
   it("clears projects and runs cleanup on unmount", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { unmount } = renderWithBrowserRouter(
+      <AddLxd clearSidePanelContent={jest.fn()} />,
+      { route: "/kvm/add", store }
     );
-    wrapper.unmount();
+
+    unmount();
 
     const expectedActions = [podActions.cleanup(), podActions.clearProjects()];
     const actualActions = store.getActions();
+
     expect(
       actualActions.every((actualAction) =>
         expectedActions.some(
@@ -178,23 +168,35 @@ describe("AddLxd", () => {
     );
   });
 
-  it("can display submission errors", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddLxd clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can display submission errors", async () => {
+    state.pod.errors = ["Oh bother..."];
+    state.pod.projects = {
+      "192.168.1.1": [podProjectFactory()],
+    };
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+      route: "/kvm/add",
+      state,
+    });
+
+    // Submit credentials form
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "my-favourite-kvm"
     );
-    wrapper.find(CredentialsForm).invoke("setSubmissionErrors")("Uh oh!");
-    wrapper.update();
-    expect(
-      wrapper.find("Notification[data-testid='submission-error']").exists()
-    ).toBe(true);
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Resource pool" }),
+      "0"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Zone" }),
+      "0"
+    );
+    await userEvent.type(
+      screen.getByRole("combobox", { name: "LXD address" }),
+      "192.168.1.1"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+
+    expect(screen.getByText("Oh bother...")).toBeInTheDocument();
   });
 });
