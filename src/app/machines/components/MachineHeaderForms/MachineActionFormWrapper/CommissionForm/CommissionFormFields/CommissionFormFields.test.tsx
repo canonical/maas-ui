@@ -1,10 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import CommissionForm from "../CommissionForm";
 
 import type { RootState } from "app/store/root/types";
@@ -17,8 +10,7 @@ import {
   scriptState as scriptStateFactory,
   script as scriptFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("CommissionForm", () => {
   let state: RootState;
@@ -69,40 +61,20 @@ describe("CommissionForm", () => {
   });
 
   it("displays a field for URL if a selected script has url parameter", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CommissionForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines/add", state }
     );
-    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
-      false
+    expect(screen.queryByTestId("url-script-input")).not.toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole("textbox", { name: "Testing scripts" })
     );
-    await act(async () => {
-      wrapper
-        .find(
-          "[data-testid='testing-scripts-selector'] Input .tag-selector__input"
-        )
-        .simulate("focus");
-    });
-    wrapper.update();
-    await act(async () => {
-      wrapper.find('[data-testid="existing-tag"]').at(0).simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='url-script-input']").exists()).toBe(
-      true
-    );
+    await userEvent.click(screen.getAllByTestId("existing-tag")[0]);
+    expect(screen.getByTestId("url-script-input")).toBeInTheDocument();
   });
 });

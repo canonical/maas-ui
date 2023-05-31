@@ -1,10 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import SetPoolForm from "../SetPoolForm";
 
 import type { RootState } from "app/store/root/types";
@@ -16,11 +9,11 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
+  const route = "/machines";
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -46,57 +39,31 @@ describe("SetPoolFormFields", () => {
   });
 
   it("shows a select if select pool radio chosen", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SetPoolForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SetPoolForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route, state }
     );
-    await act(async () => {
-      wrapper.find("[data-testid='select-pool'] input").simulate("change", {
-        target: { name: "poolSelection", value: "select" },
-      });
-    });
-    wrapper.update();
-    expect(wrapper.find("Select").exists()).toBe(true);
+    await userEvent.click(screen.getByLabelText("Select pool"));
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
   });
 
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <SetPoolForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <SetPoolForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route, state }
     );
-    await act(async () => {
-      wrapper.find("[data-testid='create-pool'] input").simulate("change", {
-        target: { name: "poolSelection", value: "create" },
-      });
-    });
-    wrapper.update();
-    expect(wrapper.find("Input[name='name']").exists()).toBe(true);
-    expect(wrapper.find("Input[name='description']").exists()).toBe(true);
+    await userEvent.click(screen.getByLabelText("Create pool"));
+    expect(screen.getByLabelText("Name")).toBeInTheDocument();
+    expect(screen.getByLabelText("Description")).toBeInTheDocument();
   });
 });
