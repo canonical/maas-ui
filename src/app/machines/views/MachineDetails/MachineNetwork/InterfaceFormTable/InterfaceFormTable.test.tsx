@@ -86,7 +86,9 @@ describe("InterfaceFormTable", () => {
       { state }
     );
 
-    expect(screen.getByRole("checkbox")).toBeInTheDocument();
+    expect(
+      screen.getByRole("checkbox", { name: nic.name })
+    ).toBeInTheDocument();
   });
 
   it("mutes a row if its not selected", () => {
