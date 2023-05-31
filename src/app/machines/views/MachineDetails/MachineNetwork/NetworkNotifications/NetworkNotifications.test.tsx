@@ -52,7 +52,7 @@ describe("NetworkNotifications", () => {
       route: "/machine/abc123",
       state,
     });
-    expect(screen.queryByRole("notification")).toBeNull();
+    expect(screen.queryByRole("notification")).not.toBeInTheDocument();
   });
 
   it("can show a network connection message", () => {
