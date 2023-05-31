@@ -10,6 +10,7 @@
       flex-shrink: 0;
       overflow-y: auto;
       height: 30%;
+      scrollbar-gutter: stable;
 
       @media (min-width: $breakpoint-small) {
         height: calc(100vh - 2.5rem);

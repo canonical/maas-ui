@@ -165,9 +165,7 @@ export const App = (): JSX.Element => {
         <main className="l-main">
           {isSideNavVisible ? (
             <div
-              className={classNames("l-main__nav", {
-                "is-open": isSideNavVisible,
-              })}
+              className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
             >
               <SecondaryNavigation
                 isOpen={!!isSideNavVisible}
