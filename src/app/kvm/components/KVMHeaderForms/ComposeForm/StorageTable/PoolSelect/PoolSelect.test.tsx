@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+/* eslint-disable testing-library/prefer-presence-queries */
 import type { MockStore } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
@@ -30,21 +26,14 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
-const generateWrapper = (store: MockStore, pod: Pod) =>
-  mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: `/kvm/${pod.id}`, key: "testKey" }]}
-      >
-        <CompatRouter>
-          <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+const renderComposeForm = (store: MockStore, pod: Pod) =>
+  renderWithBrowserRouter(
+    <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+    { route: `/kvm/${pod.id}`, store }
   );
 
 describe("PoolSelect", () => {
@@ -108,25 +97,22 @@ describe("PoolSelect", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    renderComposeForm(store, pod);
 
     // Open PoolSelect dropdown and change disk size to 5GB
-    await act(async () => {
-      wrapper.find("input[name='disks[0].size']").simulate("change", {
-        target: { name: "disks[0].size", value: "5" },
-      });
-      wrapper.find("button.kvm-pool-select__toggle").simulate("click");
-    });
-    wrapper.update();
+    const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
+    await userEvent.clear(diskSizeInput);
+    await userEvent.type(diskSizeInput, "5");
+    await userEvent.click(screen.getByRole("button", { name: "pool" }));
 
     // Allocated = 10GB
-    expect(wrapper.find("[data-testid='allocated']").text()).toBe("10GB");
+    expect(screen.getByTestId("allocated")).toHaveTextContent("10GB");
     // Requested = 5GB
-    expect(wrapper.find("[data-testid='requested']").text()).toBe("5GB");
+    expect(screen.getByTestId("requested")).toHaveTextContent("5GB");
     // Free = available - requested = 9.999 - 5 = 4.999 rounded down = 4.99GB
-    expect(wrapper.find("[data-testid='free']").text()).toBe("4.99GB");
+    expect(screen.getByTestId("free")).toHaveTextContent("4.99GB");
     // Total = 19.999GB rounded automatically = 20GB
-    expect(wrapper.find("[data-testid='total']").text()).toBe("20GB");
+    expect(screen.getByTestId("total")).toHaveTextContent("20GB");
   });
 
   it("shows a tick next to the selected pool", async () => {
@@ -155,37 +141,32 @@ describe("PoolSelect", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
-    const defaultPoolButton = `.kvm-pool-select__button[data-testid='kvm-pool-select-${defaultPool.name}']`;
-    const otherPoolButton = `.kvm-pool-select__button[data-testid='kvm-pool-select-${otherPool.name}']`;
+    renderComposeForm(store, pod);
 
     // Open PoolSelect dropdown
-    act(() => {
-      wrapper.find("button.kvm-pool-select__toggle").simulate("click");
-    });
-    await waitForComponentToPaint(wrapper);
+    await userEvent.click(screen.getByRole("button", { name: "default" }));
 
     // defaultPool should be selected by default
-    expect(wrapper.find(defaultPoolButton).find(".p-icon--tick").exists()).toBe(
-      true
-    );
-    expect(wrapper.find(otherPoolButton).find(".p-icon--tick").exists()).toBe(
-      false
-    );
+    expect(
+      screen
+        .getByTestId("kvm-pool-select-default")
+        .querySelector(".p-icon--tick")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId("kvm-pool-select-other").querySelector(".p-icon--tick")
+    ).not.toBeInTheDocument();
 
     // Select other pool
-    act(() => {
-      wrapper.find(otherPoolButton).simulate("click");
-    });
-    await waitForComponentToPaint(wrapper);
+    await userEvent.click(screen.getByTestId("kvm-pool-select-other"));
 
-    // otherPool should now be selected
-    expect(wrapper.find(defaultPoolButton).find(".p-icon--tick").exists()).toBe(
-      false
-    );
-    expect(wrapper.find(otherPoolButton).find(".p-icon--tick").exists()).toBe(
-      true
-    );
+    expect(
+      screen
+        .getByTestId("kvm-pool-select-default")
+        .querySelector(".p-icon--tick")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByTestId("kvm-pool-select-other").querySelector(".p-icon--tick")
+    ).toBeInTheDocument();
   });
 
   it("disables a pool that does not have enough space for disk, with warning", async () => {
@@ -198,12 +179,12 @@ describe("PoolSelect", () => {
       default_storage_pool: poolWithSpace.id,
       resources: podResourcesFactory({
         storage_pools: {
-          [poolWithSpace.name]: podStoragePoolResourceFactory({
+          [poolWithoutSpace.name]: podStoragePoolResourceFactory({
             allocated_other: 0,
             allocated_tracked: 0,
             total: 100000000000, // 100GB free
           }),
-          [poolWithoutSpace.name]: podStoragePoolResourceFactory({
+          [poolWithSpace.name]: podStoragePoolResourceFactory({
             allocated_other: 0,
             allocated_tracked: 90000000000,
             total: 100000000000, // 10GB free
@@ -214,30 +195,25 @@ describe("PoolSelect", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    renderComposeForm(store, pod);
 
     // Open PoolSelect dropdown and change disk size to 50GB
-    act(() => {
-      wrapper.find("input[name='disks[0].size']").simulate("change", {
-        target: { name: "disks[0].size", value: "50" },
-      });
-      wrapper.find("button.kvm-pool-select__toggle").simulate("click");
-    });
-    await waitForComponentToPaint(wrapper);
+    const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
+    await userEvent.clear(diskSizeInput);
+    await userEvent.type(diskSizeInput, "50");
+    await userEvent.click(
+      screen.getByRole("button", { name: "pool-without-space" })
+    );
 
     // poolWithSpace should not be disabled, but poolWithoutSpace should be
     expect(
-      wrapper.find(".kvm-pool-select__button").at(0).prop("disabled")
-    ).toBe(false);
+      screen.getByTestId("kvm-pool-select-pool-with-space")
+    ).not.toBeDisabled();
     expect(
-      wrapper.find(".kvm-pool-select__button").at(1).prop("disabled")
-    ).toBe(true);
+      screen.getByTestId("kvm-pool-select-pool-without-space")
+    ).toBeDisabled();
     expect(
-      wrapper
-        .find(".kvm-pool-select__button")
-        .at(1)
-        .find(".p-icon--warning")
-        .exists()
-    ).toBe(true);
+      screen.getByText(/Only 10 GB available in pool-without-space/i)
+    ).toBeInTheDocument();
   });
 });
