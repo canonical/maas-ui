@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import { RamColumn } from "./RamColumn";
 
 import type { RootState } from "app/store/root/types";
@@ -13,8 +8,7 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("RamColumn", () => {
   let state: RootState;
@@ -37,35 +31,15 @@ describe("RamColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <RamColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("RamColumn")).toMatchSnapshot();
-  });
-
   it("displays ram amount", () => {
     state.machine.items[0].memory = 16;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <RamColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find('[data-testid="memory"]').text()).toEqual("16");
+    renderWithBrowserRouter(<RamColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
+
+    expect(screen.getByTestId("memory")).toHaveTextContent("16");
   });
 
   it("displays an error and tooltip if memory tests have failed", () => {
@@ -73,18 +47,19 @@ describe("RamColumn", () => {
     state.machine.items[0].memory_test_status = testStatusFactory({
       status: TestStatusStatus.FAILED,
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <RamColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+
+    const { container } = renderWithBrowserRouter(
+      <RamColumn systemId="abc123" />,
+      {
+        route: "/machines",
+        state,
+      }
     );
 
-    expect(wrapper.find("Tooltip").exists()).toBe(true);
-    expect(wrapper.find(".p-icon--error").exists()).toBe(true);
+    expect(screen.getByRole("tooltip")).toHaveTextContent(
+      "Machine has failed tests."
+    );
+    // eslint-disable-next-line testing-library/no-container
+    expect(container.querySelector(".p-icon--error")).toBeInTheDocument();
   });
 });
