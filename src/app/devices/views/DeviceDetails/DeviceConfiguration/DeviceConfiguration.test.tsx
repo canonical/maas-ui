@@ -129,7 +129,9 @@ describe("DeviceConfiguration", () => {
       "twilight"
     );
     // Open the tag selector dropdown.
-    screen.getByRole("textbox", { name: TagFieldLabel.Input }).focus();
+    await userEvent.click(
+      screen.getByRole("textbox", { name: TagFieldLabel.Input })
+    );
     await userEvent.click(screen.getByRole("option", { name: "tag1" }));
     await userEvent.click(screen.getByRole("option", { name: "tag2" }));
     await userEvent.click(screen.getByRole("button", { name: Label.Submit }));
