@@ -237,7 +237,7 @@ describe("NetworkTableActions", () => {
     // Open the menu:
     await openMenu();
     const addAlias = screen.getByRole("button", {
-      name: "Add alias",
+      name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
     expect(addAlias).not.toBeDisabled();
@@ -263,7 +263,7 @@ describe("NetworkTableActions", () => {
     // Open the menu:
     await openMenu();
     const addAlias = screen.getByRole("button", {
-      name: "Add alias",
+      name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
     expect(addAlias).toBeDisabled();
@@ -292,7 +292,7 @@ describe("NetworkTableActions", () => {
     );
     // Open the menu:
     await openMenu();
-    const addVLAN = screen.getByRole("button", { name: "Add VLAN" });
+    const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
     expect(addVLAN).not.toBeDisabled();
     expect(
@@ -316,7 +316,7 @@ describe("NetworkTableActions", () => {
     );
     // Open the menu:
     await openMenu();
-    const addVLAN = screen.getByRole("button", { name: "Add VLAN" });
+    const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
     expect(addVLAN).toBeDisabled();
     expect(
@@ -341,10 +341,10 @@ describe("NetworkTableActions", () => {
     // Open the menu:
     await openMenu();
     expect(
-      screen.queryByRole("button", { name: "Add alias" })
+      screen.queryByRole("button", { name: /Add alias/i })
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Add VLAN" })
+      screen.queryByRole("button", { name: /Add VLAN/i })
     ).not.toBeInTheDocument();
   });
 });

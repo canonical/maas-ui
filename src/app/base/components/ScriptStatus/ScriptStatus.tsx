@@ -74,6 +74,7 @@ const ScriptStatus = ({
     <span>
       {iconName && (
         <Icon
+          aria-label={iconName}
           className={classNames({
             "is-inline": children !== null && children !== undefined,
           })}

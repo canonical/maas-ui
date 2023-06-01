@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import { CoresColumn } from "./CoresColumn";
 
 import type { RootState } from "app/store/root/types";
@@ -12,11 +7,11 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("CoresColumn", () => {
   let state: RootState;
+
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -35,66 +30,34 @@ describe("CoresColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CoresColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("CoresColumn")).toMatchSnapshot();
-  });
-
   it("displays the number of cores", () => {
     state.machine.items[0].cpu_count = 8;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CoresColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find('[data-testid="cores"]').text()).toEqual("8");
+    renderWithBrowserRouter(<CoresColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
+    expect(screen.getByLabelText("Cores")).toHaveTextContent("8");
   });
 
   it("truncates architecture", () => {
     state.machine.items[0].architecture = "i386/generic";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CoresColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find('[data-testid="arch"]').text()).toEqual("i386");
+    renderWithBrowserRouter(<CoresColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
+    expect(screen.getByTestId("arch")).toHaveTextContent("i386");
   });
 
   it("displays a Tooltip with the full architecture", () => {
     state.machine.items[0].architecture = "amd64/generic";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CoresColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find("Tooltip").prop("message")).toEqual("amd64/generic");
+    renderWithBrowserRouter(<CoresColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
+
+    expect(screen.getByRole("tooltip")).toHaveTextContent("amd64/generic");
   });
 });

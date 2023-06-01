@@ -1,7 +1,7 @@
 import TooltipButton from "./TooltipButton";
 
 import { breakLines, unindentString } from "app/utils";
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen, within } from "testing/utils";
 
 it("renders with default options correctly", async () => {
   render(<TooltipButton data-testid="tooltip-portal" message="Tooltip" />);
@@ -9,8 +9,10 @@ it("renders with default options correctly", async () => {
 
   await userEvent.click(button);
 
-  expect(screen.getByTestId("tooltip-portal")).toMatchSnapshot();
-  expect(button).toMatchSnapshot();
+  expect(screen.getByRole("tooltip")).toHaveTextContent("Tooltip");
+  expect(within(button).getByLabelText("information")).toHaveClass(
+    "p-icon--information"
+  );
 });
 
 it("can override default props", async () => {
@@ -26,10 +28,16 @@ it("can override default props", async () => {
   );
   const button = screen.getByRole("button");
 
+  expect(button).toHaveClass("p-button--negative");
+  expect(button).toHaveClass("button-class");
+  expect(within(button).getByLabelText("warning")).toHaveClass(
+    "p-icon--warning"
+  );
+  expect(within(button).getByLabelText("warning")).toHaveClass("icon-class");
+
   await userEvent.click(button);
 
-  expect(screen.getByTestId("tooltip-portal")).toMatchSnapshot();
-  expect(button).toMatchSnapshot();
+  expect(screen.getByTestId("tooltip-portal")).toHaveClass("tooltip-class");
 });
 
 it("automatically unindents and breaks string messages into lines", async () => {
