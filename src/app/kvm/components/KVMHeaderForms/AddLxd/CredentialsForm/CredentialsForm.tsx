@@ -110,6 +110,7 @@ export const CredentialsForm = ({
   return (
     <FormikForm<CredentialsFormValues>
       allowUnchanged={!!newPodValues.power_address}
+      aria-label="Credentials"
       cleanup={cleanup}
       enableReinitialize
       errors={errors}

@@ -98,6 +98,7 @@ export const SelectProjectForm = ({
 
   return (
     <FormikForm<SelectProjectFormValues>
+      aria-label="Project selection"
       initialValues={{
         existingProject: "",
         newProject: "",

@@ -78,6 +78,7 @@ export const SelectProjectFormFields = ({
           type="radio"
         />
         <FormikField
+          aria-label="New project name"
           disabled={!newProject}
           help={`A project name must be less than 63 characters and must not
                  contain spaces or special characters (i.e. / . ' " *)`}
