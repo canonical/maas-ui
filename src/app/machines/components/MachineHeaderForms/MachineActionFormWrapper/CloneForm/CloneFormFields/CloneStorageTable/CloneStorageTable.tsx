@@ -75,6 +75,7 @@ export const CloneStorageTable = ({
         columns: normaliseColumns({
           available: (
             <Icon
+              aria-label={diskAvailable(disk) ? "available" : "not available"}
               data-testid="disk-available"
               name={diskAvailable(disk) ? "tick" : "close"}
             />
@@ -105,6 +106,11 @@ export const CloneStorageTable = ({
             columns: normaliseColumns({
               available: (
                 <Icon
+                  aria-label={
+                    partitionAvailable(partition)
+                      ? "available"
+                      : "not available"
+                  }
                   data-testid="partition-available"
                   name={partitionAvailable(partition) ? "tick" : "close"}
                 />

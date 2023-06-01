@@ -48,8 +48,15 @@ describe("SetPoolFormFields", () => {
       />,
       { route, state }
     );
+
+    await userEvent.click(screen.getByLabelText("Create pool"));
+    expect(
+      screen.queryByRole("combobox", { name: "Resource pool" })
+    ).not.toBeInTheDocument();
     await userEvent.click(screen.getByLabelText("Select pool"));
-    expect(screen.getByRole("combobox")).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Resource pool" })
+    ).toBeInTheDocument();
   });
 
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
