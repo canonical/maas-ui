@@ -52,7 +52,7 @@ describe("ImageListHeader", () => {
 
     expect(
       screen.queryByRole("checkbox", {
-        name: ImageListHeaderLabels.AutoSyncImages,
+        name: new RegExp(ImageListHeaderLabels.AutoSyncImages),
       })
     ).not.toBeInTheDocument();
   });
@@ -74,7 +74,7 @@ describe("ImageListHeader", () => {
 
     await userEvent.click(
       screen.getByRole("checkbox", {
-        name: ImageListHeaderLabels.AutoSyncImages,
+        name: new RegExp(ImageListHeaderLabels.AutoSyncImages),
       })
     );
 

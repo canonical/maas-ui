@@ -82,7 +82,7 @@ describe("NetworkCardInterface", () => {
       );
 
       expect(
-        screen.getByRole("gridcell", { name: "Relayed" })
+        screen.getByRole("gridcell", { name: /Relayed/i })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("tooltip", { name: "Relayed via fabrice.99" })
