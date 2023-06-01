@@ -86,7 +86,6 @@
     "@testing-library/user-event": "14.4.3",
     "@types/classnames": "2.3.0",
     "@types/clone-deep": "4.0.1",
-    "@types/enzyme": "3.10.12",
     "@types/jest": "27.5.2",
     "@types/node": "18.14.2",
     "@types/path-parse": "1.0.19",
@@ -100,7 +99,6 @@
     "@types/redux-mock-store": "1.0.3",
     "@types/redux-saga": "0.10.5",
     "@welldone-software/why-did-you-render": "7.0.1",
-    "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "address": "1.2.2",
     "colors": "1.4.0",
     "concurrently": "8.0.1",
@@ -110,8 +108,6 @@
     "cypress-wait-until": "1.7.2",
     "cz-conventional-changelog": "3.3.0",
     "dotenv-flow": "3.2.0",
-    "enzyme": "3.11.0",
-    "enzyme-to-json": "3.6.2",
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-no-only-tests": "3.1.0",
@@ -152,10 +148,7 @@
     }
   },
   "jest": {
-    "resetMocks": false,
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+    "resetMocks": false
   },
   "npmpackagejsonlint": {
     "rules": {
