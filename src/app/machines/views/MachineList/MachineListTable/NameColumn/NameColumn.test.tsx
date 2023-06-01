@@ -26,6 +26,7 @@ describe("NameColumn", () => {
               name: "example",
             }),
             extra_macs: [],
+            fqdn: "koala.example",
             hostname: "koala",
             ip_addresses: [],
             pool: modelRefFactory(),
@@ -110,7 +111,9 @@ describe("NameColumn", () => {
       <NameColumn groupValue={null} showMAC={true} systemId="abc123" />,
       { route: "/machines", state }
     );
-    expect(screen.getByText(/00:11:22:33:44:55/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "koala.example" })
+    ).toHaveTextContent("00:11:22:33:44:55");
   });
 
   it("can show multiple mac address", () => {
@@ -128,6 +131,7 @@ describe("NameColumn", () => {
       domain: modelRefFactory({
         name: "example",
       }),
+      fqdn: "koala.example",
       hostname: "koala",
       system_id: "abc123",
     });
@@ -135,7 +139,9 @@ describe("NameColumn", () => {
       <NameColumn groupValue={null} systemId="abc123" />,
       { route: "/machines", state }
     );
-    expect(getByTextContent("koala.example")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "koala.example" })
+    ).toBeInTheDocument();
   });
 
   it("can render a machine in the MAC state with minimal data", () => {
