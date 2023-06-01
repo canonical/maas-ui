@@ -72,6 +72,7 @@ describe("DebounceSearchBox", () => {
         searchText="old-value"
         setSearchText={jest.fn()}
       />,
+      // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
       { legacyRoot: true }
     );
     const searchBox = screen.getByRole("searchbox");

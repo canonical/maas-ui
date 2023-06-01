@@ -33,6 +33,7 @@ const Root = (): JSX.Element => {
 
 const rootNode = document.getElementById("root");
 
+// TODO: replace ReactDOM.render with createRoot https://warthogs.atlassian.net/browse/MAASENG-1802
 if (rootNode) {
   ReactDOM.render(<Root />, rootNode);
 }
