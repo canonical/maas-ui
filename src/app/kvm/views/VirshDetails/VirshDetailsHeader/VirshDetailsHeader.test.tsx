@@ -1,9 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import VirshDetailsHeader from "./VirshDetailsHeader";
 
 import { PodType } from "app/store/pod/constants";
@@ -19,8 +13,7 @@ import {
   rootState as rootStateFactory,
   zone as zoneFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("VirshDetailsHeader", () => {
   let state: RootState;
@@ -48,46 +41,32 @@ describe("VirshDetailsHeader", () => {
     });
   });
 
-  it("displays a spinner if pod hasn't loaded", () => {
+  it("displays a spinner if pod has not loaded", () => {
     state.pod.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <VirshDetailsHeader
+        id={1}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { route: "/kvm/1", state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays the virsh power address", () => {
     state.pod.items[0].power_parameters = powerParametersFactory({
       power_address: "qemu+ssh://ubuntu@192.168.1.1/system",
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <VirshDetailsHeader
+        id={1}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { route: "/kvm/1/resources", state }
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(0).text()).toBe(
+    expect(screen.getAllByTestId("block-subtitle")[0]).toHaveTextContent(
       "qemu+ssh://ubuntu@192.168.1.1/system"
     );
   });
@@ -96,47 +75,31 @@ describe("VirshDetailsHeader", () => {
     state.pod.items[0].resources = podResourcesFactory({
       vm_count: podVmCountFactory({ tracked: 5 }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <VirshDetailsHeader
+        id={1}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { route: "/kvm/1/resources", state }
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(1).text()).toBe(
+    expect(screen.getAllByTestId("block-subtitle")[1]).toHaveTextContent(
       "5 available"
     );
   });
 
-  it("displays the pod's zone's name", () => {
+  it("displays the pod zone name", () => {
     state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VirshDetailsHeader
-              id={1}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <VirshDetailsHeader
+        id={1}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { route: "/kvm/1/resources", state }
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(2).text()).toBe(
+    expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
       "danger"
     );
   });

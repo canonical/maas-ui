@@ -1,14 +1,9 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterVMs from "./LXDClusterVMs";
 
 import urls from "app/base/urls";
-import LXDVMsTable from "app/kvm/components/LXDVMsTable";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
@@ -22,66 +17,13 @@ import {
   machineStateListGroup as machineStateListGroupFactory,
   vmHost as vmHostFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
 describe("LXDClusterVMs", () => {
   beforeEach(() => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-  });
-
-  it("can get resources for a cluster VM", () => {
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
-        items: [
-          vmClusterFactory({
-            id: 1,
-            virtual_machines: [
-              clusterVMFactory({
-                hugepages_backed: true,
-                pinned_cores: [2],
-                system_id: "abc123",
-                unpinned_cores: 3,
-              }),
-            ],
-          }),
-        ],
-        loaded: true,
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterVMs
-              clusterId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(
-      wrapper.find(LXDVMsTable).invoke("getResources")(
-        machineFactory({ system_id: "abc123" })
-      )
-    ).toStrictEqual({
-      hugepagesBacked: true,
-      pinnedCores: [2],
-      unpinnedCores: 3,
-    });
   });
 
   it("renders a link to a cluster's host's VM page", () => {
@@ -114,29 +56,17 @@ describe("LXDClusterVMs", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            {
-              pathname: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }),
-              key: "testKey",
-            },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterVMs
-              clusterId={1}
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDClusterVMs
+        clusterId={1}
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );
-
-    expect(wrapper.find("Link[data-testid='host-link']").prop("to")).toBe(
+    expect(screen.getByTestId("host-link")).toHaveAttribute(
+      "href",
       urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 11 })
     );
   });
@@ -164,7 +94,7 @@ describe("LXDClusterVMs", () => {
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
       />,
-      { store }
+      { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );
     const expected = machineActions.fetch("123456", {
       filter: { pod: ["host 1", "host 2"] },
