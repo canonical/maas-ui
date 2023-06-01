@@ -26,7 +26,12 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  within,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -148,12 +153,14 @@ describe("PoolSelect", () => {
 
     // defaultPool should be selected by default
     expect(
-      screen
-        .getByTestId("kvm-pool-select-default")
-        .querySelector(".p-icon--tick")
-    ).toBeInTheDocument();
+      within(screen.getByTestId("kvm-pool-select-default")).getByLabelText(
+        "selected"
+      )
+    ).toHaveClass("p-icon--tick");
     expect(
-      screen.getByTestId("kvm-pool-select-other").querySelector(".p-icon--tick")
+      within(screen.getByTestId("kvm-pool-select-other")).queryByLabelText(
+        "selected"
+      )
     ).not.toBeInTheDocument();
 
     // Select other pool

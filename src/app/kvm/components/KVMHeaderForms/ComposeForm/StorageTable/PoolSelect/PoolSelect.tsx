@@ -46,15 +46,18 @@ const generateDropdownContent = (
         <div className="u-align--right">Type</div>
         <ul className="p-inline-list u-default-text u-no-margin--bottom">
           <li className="p-inline-list__item">
-            <i className="p-circle--link is-inline"></i>
+            <i aria-label="Allocated" className="p-circle--link is-inline"></i>
             Allocated
           </li>
           <li className="p-inline-list__item">
-            <i className="p-circle--positive is-inline"></i>
+            <i
+              aria-label="Requested"
+              className="p-circle--positive is-inline"
+            ></i>
             Requested
           </li>
           <li className="p-inline-list__item">
-            <i className="p-circle--link-faded is-inline"></i>
+            <i aria-label="Free" className="p-circle--link-faded is-inline"></i>
             Free
           </li>
         </ul>
@@ -89,7 +92,11 @@ const generateDropdownContent = (
             type="button"
           >
             <div className="kvm-pool-select__row">
-              <div>{isSelected && <i className="p-icon--tick"></i>}</div>
+              <div>
+                {isSelected && (
+                  <i aria-label="selected" className="p-icon--tick"></i>
+                )}
+              </div>
               <div>
                 <strong data-testid="pool-name">
                   {isDefault ? `${name} (default)` : name}

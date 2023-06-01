@@ -85,6 +85,7 @@ export const AuthenticationForm = ({
   return (
     <FormikForm<AuthenticationFormValues>
       allowAllEmpty
+      aria-label="Authentication"
       buttonsHelp={
         useCertificate && authenticating ? (
           <Spinner

@@ -107,9 +107,25 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(screen.getByText("Credentials")).not.toHaveClass("is-active");
-    expect(screen.getByText("Authentication")).toHaveClass("is-active");
-    expect(screen.getByText("Project selection")).not.toHaveClass("is-active");
+    expect(
+      screen.getByRole("listitem", { name: "Credentials" }).firstChild
+    ).not.toHaveClass("is-active");
+    expect(
+      screen.getByRole("listitem", { name: "Authentication" }).firstChild
+    ).toHaveClass("is-active");
+    expect(
+      screen.getByRole("listitem", { name: "Project selection" }).firstChild
+    ).not.toHaveClass("is-active");
+
+    expect(
+      screen.queryByRole("form", { name: "Credentials" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("form", { name: "Authentication" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("form", { name: "Project selection" })
+    ).not.toBeInTheDocument();
   });
 
   it("shows the project select form once authenticated", async () => {
@@ -141,9 +157,15 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(screen.getByText("Credentials")).not.toHaveClass("is-active");
-    expect(screen.getByText("Authentication")).not.toHaveClass("is-active");
-    expect(screen.getByText("Project selection")).toHaveClass("is-active");
+    expect(
+      screen.getByRole("listitem", { name: "Credentials" }).firstChild
+    ).not.toHaveClass("is-active");
+    expect(
+      screen.getByRole("listitem", { name: "Authentication" }).firstChild
+    ).not.toHaveClass("is-active");
+    expect(
+      screen.getByRole("listitem", { name: "Project selection" }).firstChild
+    ).toHaveClass("is-active");
   });
 
   it("clears projects and runs cleanup on unmount", () => {
