@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useMemo, memo, useCallback, useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
-import { Button, MainTable } from "@canonical/react-components";
+import { Notification, Button, MainTable } from "@canonical/react-components";
 import type {
   MainTableCell,
   MainTableRow,
@@ -39,6 +39,7 @@ import { actions as generalActions } from "app/store/general";
 import type { Machine, MachineStateListGroup } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
+import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
 import { actions as userActions } from "app/store/user";
@@ -519,6 +520,7 @@ export const MachineListTable = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
+  const { selectedCount } = useMachineSelectedCount();
 
   const currentSort = {
     direction: sortDirection,
@@ -829,6 +831,27 @@ export const MachineListTable = ({
     [hiddenColumns, showActions]
   );
 
+  const selectionState =
+    selectedCount > 0
+      ? [
+          {
+            className: "select-notification",
+            key: "select-info",
+            expanded: true,
+            expandedContent: (
+              <Notification
+                borderless
+                className="u-no-margin--bottom"
+                title="Selection"
+              >
+                Selected {selectedCount} {pluralize("machine", selectedCount)}{" "}
+                on this page.
+              </Notification>
+            ),
+          },
+        ]
+      : [];
+
   return (
     <>
       {machineCount ? (
@@ -865,8 +888,9 @@ export const MachineListTable = ({
           "machine-list--loading": machinesLoading,
         })}
         emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
+        expanding={true}
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        rows={machinesLoading ? skeletonRows : rows}
+        rows={machinesLoading ? skeletonRows : [...selectionState, ...rows]}
         {...props}
       />
     </>
