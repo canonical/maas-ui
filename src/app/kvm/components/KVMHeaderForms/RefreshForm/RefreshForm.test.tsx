@@ -1,11 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import RefreshForm from "./RefreshForm";
 
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -13,9 +10,9 @@ import {
   podStatuses as podStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("RefreshForm", () => {
   it("can show the processing status when refreshing the given KVM", async () => {
@@ -28,20 +25,13 @@ describe("RefreshForm", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1]} />,
+      { state, route: "/kvm" }
     );
-    wrapper.find("Formik").simulate("submit");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-testid="saving-label"]').text()).toBe(
+
+    expect(screen.getByTestId("saving-label")).toHaveTextContent(
       "Refreshing KVM host..."
     );
   });
@@ -57,18 +47,16 @@ describe("RefreshForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1, 2]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1, 2]} />,
+      { store, route: "/kvm" }
     );
 
-    wrapper.find("Formik").simulate("submit");
-    await waitForComponentToPaint(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: /Refresh 2 KVM hosts/i })
+    );
+
     expect(
       store.getActions().filter((action) => action.type === "pod/refresh")
     ).toStrictEqual([

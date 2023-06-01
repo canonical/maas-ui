@@ -1,9 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import AddVirsh from "../AddVirsh";
 
 import { ConfigNames } from "app/store/config/types";
@@ -24,8 +18,7 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("AddVirshFields", () => {
   let state: RootState;
@@ -64,33 +57,32 @@ describe("AddVirshFields", () => {
       powerTypeFactory({
         description: "Virsh (virtual systems)",
         fields: [
-          powerFieldFactory({ name: "field1", scope: PowerFieldScope.BMC }),
-          powerFieldFactory({ name: "field2", scope: PowerFieldScope.NODE }),
+          powerFieldFactory({
+            name: "field1",
+            scope: PowerFieldScope.BMC,
+            label: "test-powerfield-label-1",
+          }),
+          powerFieldFactory({
+            name: "field2",
+            scope: PowerFieldScope.NODE,
+            label: "test-powerfield-label-2",
+          }),
         ],
         name: PowerTypeNames.VIRSH,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddVirsh clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find("Input[name='power_parameters.field1']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("Input[name='power_parameters.field2']").exists()).toBe(
-      false
-    );
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+      state,
+      route: "/machines/chassis/add",
+    });
+
+    expect(
+      screen.getByRole("textbox", { name: /test-powerfield-label-1/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: /test-powerfield-label-2/i })
+    ).not.toBeInTheDocument();
   });
 });
