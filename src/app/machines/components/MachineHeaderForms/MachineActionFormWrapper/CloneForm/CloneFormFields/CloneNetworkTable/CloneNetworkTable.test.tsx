@@ -46,8 +46,7 @@ describe("CloneNetworkTable", () => {
       state,
     });
     expect(screen.getAllByRole("row")).toHaveLength(1);
-    // expect(wrapper.find("MainTable").prop("rows")).toStrictEqual([]);
-    // expect(wrapper.find("Placeholder").exists()).toBe(false);
+    expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
   });
 
   it("renders placeholder content while details are loading", () => {
@@ -61,8 +60,8 @@ describe("CloneNetworkTable", () => {
         state,
       }
     );
-    const rows = screen.getAllByRole("row");
-    rows.shift(); // Remove the table header row
+    const table = screen.getAllByRole("rowgroup")[1];
+    const rows = within(table).getAllByRole("row");
     rows.forEach((row) => {
       const placeholders = within(row).getAllByTestId("placeholder");
       expect(placeholders[0]).toHaveTextContent("Name");

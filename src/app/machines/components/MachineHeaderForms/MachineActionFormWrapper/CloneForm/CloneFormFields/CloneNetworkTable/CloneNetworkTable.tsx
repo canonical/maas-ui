@@ -203,6 +203,7 @@ export const CloneNetworkTable = ({
 
   return (
     <MainTable
+      aria-label="Clone network"
       className={classNames("clone-table--network", {
         "not-selected": !selected,
       })}
