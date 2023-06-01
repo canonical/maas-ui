@@ -44,16 +44,12 @@ describe("DisksColumn", () => {
       status: TestStatusStatus.FAILED,
     });
 
-    const { container } = renderWithBrowserRouter(
-      <DisksColumn systemId="abc123" />,
-      {
-        route: "/machines",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<DisksColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
 
-    // eslint-disable-next-line testing-library/no-container
-    expect(container.querySelector(".p-icon--error")).toBeInTheDocument();
+    expect(screen.getByLabelText("error")).toHaveClass("p-icon--error");
     expect(screen.getByRole("tooltip")).toHaveTextContent(
       "Machine has failed tests."
     );

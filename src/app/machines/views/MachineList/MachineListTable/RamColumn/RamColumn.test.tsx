@@ -48,18 +48,14 @@ describe("RamColumn", () => {
       status: TestStatusStatus.FAILED,
     });
 
-    const { container } = renderWithBrowserRouter(
-      <RamColumn systemId="abc123" />,
-      {
-        route: "/machines",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<RamColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
 
     expect(screen.getByRole("tooltip")).toHaveTextContent(
       "Machine has failed tests."
     );
-    // eslint-disable-next-line testing-library/no-container
-    expect(container.querySelector(".p-icon--error")).toBeInTheDocument();
+    expect(screen.getByLabelText("error")).toHaveClass("p-icon--error");
   });
 });
