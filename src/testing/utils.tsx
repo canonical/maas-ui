@@ -2,7 +2,6 @@
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -61,22 +60,6 @@ export const reduceInitialState = <I,>(
     }
     return acc;
   }, []);
-};
-
-/**
- * Fixes the error...
- * Warning: An update to Foo inside a test was not wrapped in act(...).\
- * https://github.com/enzymejs/enzyme/issues/2073
- * @param {ReactWrapper} wrapper The wrapper output from the enzyme `mount` command.
- * @returns {Promise} completion of wrapper update.
- */
-export const waitForComponentToPaint = async (
-  wrapper: ReactWrapper
-): Promise<void> => {
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve));
-    wrapper.update();
-  });
 };
 
 /**
