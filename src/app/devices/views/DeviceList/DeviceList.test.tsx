@@ -23,7 +23,9 @@ describe("DeviceList", () => {
       route: "/devices?q=test+search",
       state,
     });
-    expect(screen.getByRole("searchbox")).toHaveValue("test search");
+    expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
+      "test search"
+    );
   });
 
   it("changes the URL when the search text changes", async () => {
@@ -40,8 +42,11 @@ describe("DeviceList", () => {
       </>,
       { route: "/machines?q=test+search", state }
     );
-    await userEvent.clear(screen.getByRole("searchbox"));
-    await userEvent.type(screen.getByRole("searchbox"), "hostname:foo");
+    await userEvent.clear(screen.getByRole("searchbox", { name: "Search" }));
+    await userEvent.type(
+      screen.getByRole("searchbox", { name: "Search" }),
+      "hostname:foo"
+    );
 
     await waitFor(() => {
       expect(search).toBe("?hostname=foo");
