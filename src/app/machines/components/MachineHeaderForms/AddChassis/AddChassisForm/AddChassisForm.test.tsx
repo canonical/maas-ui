@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddChassisForm from "./AddChassisForm";
@@ -22,9 +18,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("AddChassisForm", () => {
   let state: RootState;
@@ -147,18 +143,9 @@ describe("AddChassisForm", () => {
   it("fetches the necessary data on load if not already loaded", () => {
     state.domain.loaded = false;
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddChassisForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/chassis/add", store }
     );
     const expectedActions = ["FETCH_DOMAIN", "general/fetchPowerTypes"];
     const actions = store.getActions();
@@ -170,56 +157,46 @@ describe("AddChassisForm", () => {
   it("displays a spinner if data has not loaded", () => {
     state.domain.loaded = false;
     state.general.powerTypes.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddChassisForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/chassis/add", state }
     );
-    expect(wrapper.find("Spinner").length).toBe(1);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("correctly dispatches action to add chassis", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddChassisForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/add", store }
     );
 
     // Select vmware from power types dropdown
-    wrapper.find("select[name='power_type']").simulate("change", {
-      target: { name: "power_type", value: "vmware" },
-    });
-    await waitForComponentToPaint(wrapper);
-    // Submit the form with unformatted power parameters
-    submitFormikForm(wrapper, {
-      domain: "maas",
-      power_parameters: {
-        power_address: "192.168.1.1",
-        power_pass: "secret",
-        power_port: "8000",
-        power_protocol: "abc123",
-        power_user: "user1",
-      },
-      power_type: "vmware",
-    });
+    await userEvent.selectOptions(
+      screen.getByLabelText("Power type"),
+      "vmware"
+    );
 
-    // Expect the power_id param to be removed when action is dispatched.
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "VMware IP" }),
+      "192.168.1.1"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "VMware username" }),
+      "user1"
+    );
+    await userEvent.type(screen.getByLabelText("VMware password"), "secret");
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "VMware API port (optional)" }),
+      "8000"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "VMware API protocol (optional)" }),
+      "abc123"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save chassis" }));
+
     expect(
       store.getActions().find((action) => action.type === "machine/addChassis")
     ).toStrictEqual({

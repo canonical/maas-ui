@@ -1,15 +1,10 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
 
-import ActionForm from "app/base/components/ActionForm";
 import { actions as machineActions } from "app/store/machine";
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -22,12 +17,20 @@ import {
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("CloneForm", () => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("should be submittable only when a machine and cloning config are selected", async () => {
     const machines = [
       machineFactory({ system_id: "abc123" }),
@@ -63,86 +66,134 @@ describe("CloneForm", () => {
     state.fabric.loaded = true;
     state.subnet.loaded = true;
     state.vlan.loaded = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CloneForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", state }
     );
-    const isCheckboxDisabled = () =>
-      wrapper.find("input[name='interfaces']").prop("disabled") === true;
-    const isSubmitDisabled = () =>
-      wrapper.find(".p-button--positive[type='submit']").prop("disabled") ===
-      true;
 
     // Checkboxes and submit should be disabled at first.
-    expect(isCheckboxDisabled()).toBe(true);
-    expect(isSubmitDisabled()).toBe(true);
+    expect(
+      screen.getByRole("button", { name: "Clone to machine" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("checkbox", { name: "Clone network configuration" })
+    ).toBeDisabled();
 
-    // Select a source machine - checkbox should be enabled.
-    wrapper.find("[data-testid='machine-select-row']").at(0).simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(isCheckboxDisabled()).toBe(false);
-    expect(isSubmitDisabled()).toBe(true);
+    // Select a source machine - form should update
+    await userEvent.click(
+      screen.getByRole("row", { name: machines[1].hostname })
+    );
 
-    // Select config to clone - submit should be enabled.
-    wrapper.find("input[name='interfaces']").simulate("change", {
-      target: { name: "interfaces", value: true },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(isCheckboxDisabled()).toBe(false);
-    expect(isSubmitDisabled()).toBe(false);
+    expect(
+      screen.getByRole("button", { name: "Clone to machine" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("checkbox", { name: "Clone network configuration" })
+    ).toBeEnabled();
+
+    // Select config to clone - submit should be re-disabled.
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Clone network configuration" })
+    );
+
+    expect(
+      screen.getByRole("checkbox", { name: "Clone network configuration" })
+    ).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Clone to machine" })
+    ).toBeEnabled();
   });
 
-  it("shows cloning results when the form is successfully submitted", () => {
+  it("shows cloning results when the form is successfully submitted", async () => {
+    const machines = [
+      machineFactory({ system_id: "abc123", hostname: "a-machine-name" }),
+      machineDetailsFactory({
+        disks: [diskFactory()],
+        interfaces: [nicFactory()],
+        system_id: "def456",
+        hostname: "another-machine",
+      }),
+    ];
     const state = rootStateFactory({
       machine: machineStateFactory({
+        active: null,
+        items: machines,
         loaded: true,
+        selected: ["abc123"],
+
+        lists: {
+          "123456": machineStateList({
+            groups: [
+              machineStateListGroup({
+                items: [machines[1].system_id],
+              }),
+            ],
+            loaded: true,
+          }),
+        },
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+          def456: machineStatusFactory(),
+        }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CloneForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("CloneResults").exists()).toBe(false);
+    state.fabric.loaded = true;
+    state.subnet.loaded = true;
+    state.vlan.loaded = true;
 
-    act(() => {
-      const onSuccess = wrapper.find(ActionForm).prop("onSuccess");
-      onSuccess && onSuccess({});
-    });
-    wrapper.update();
-    expect(wrapper.find("CloneResults").exists()).toBe(true);
+    const store = mockStore(state);
+
+    const { rerender } = renderWithBrowserRouter(
+      <CloneForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        selectedMachines={{ items: [machines[1].system_id] }}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
+    );
+
+    await userEvent.click(
+      screen.getByRole("row", { name: machines[1].hostname })
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Clone network configuration" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Clone to machine" })
+    );
+
+    mockFormikFormSaved();
+    rerender(
+      <CloneForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />
+    );
+
+    expect(screen.getByText("Cloning complete")).toBeInTheDocument();
   });
 
-  it("can dispatch an action to clone to the given machines", () => {
+  it("can dispatch an action to clone to the given machines", async () => {
     const machines = [
       machineFactory({ system_id: "abc123" }),
       machineFactory({ system_id: "def456" }),
-      machineFactory({ system_id: "ghi789" }),
+      machineDetailsFactory({
+        disks: [diskFactory()],
+        interfaces: [nicFactory()],
+        system_id: "ghi789",
+        hostname: "another-machine",
+      }),
     ];
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -150,6 +201,17 @@ describe("CloneForm", () => {
         items: machines,
         loaded: true,
         selected: ["abc123", "def456"],
+
+        lists: {
+          "123456": machineStateList({
+            groups: [
+              machineStateListGroup({
+                items: [machines[2].system_id],
+              }),
+            ],
+            loaded: true,
+          }),
+        },
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),
@@ -157,30 +219,34 @@ describe("CloneForm", () => {
         }),
       }),
     });
+    state.fabric.loaded = true;
+    state.subnet.loaded = true;
+    state.vlan.loaded = true;
+
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CloneForm
-              clearSidePanelContent={jest.fn()}
-              selectedMachines={{
-                items: [machines[0].system_id, machines[1].system_id],
-              }}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CloneForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        selectedMachines={{
+          items: [machines[0].system_id, machines[1].system_id],
+        }}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper, {
-      interfaces: true,
-      source: "ghi789",
-      storage: false,
-    });
+    await userEvent.click(
+      screen.getByRole("row", { name: machines[2].hostname })
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Clone network configuration" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Clone to machine" })
+    );
 
     const expectedAction = machineActions.clone(
       {

@@ -80,6 +80,7 @@ export const CommissionFormFields = ({
         />
         {urlScriptsSelected.map((script) => (
           <FormikField
+            aria-label={`URL(s) to use for ${script.name} script`}
             data-testid="url-script-input"
             help={getObjectString(script.parameters.url, "description")}
             key={script.name}

@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ReleaseForm from "./ReleaseForm";
@@ -18,9 +14,9 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ReleaseForm", () => {
   let state: RootState;
@@ -57,7 +53,6 @@ describe("ReleaseForm", () => {
   });
 
   it("sets the initial disk erase behaviour from global config", () => {
-    const store = mockStore(state);
     state.machine.selectedMachines = { items: ["abc123", "def456"] };
     state.config.items = [
       configFactory({
@@ -73,54 +68,51 @@ describe("ReleaseForm", () => {
         value: true,
       }),
     ];
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ReleaseForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ReleaseForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", state }
     );
 
-    expect(wrapper.find("input[name='enableErase']").prop("value")).toBe(true);
-    expect(wrapper.find("input[name='secureErase']").prop("value")).toBe(false);
-    expect(wrapper.find("input[name='quickErase']").prop("value")).toBe(true);
+    expect(
+      screen.getByRole("checkbox", { name: "Erase disks before releasing" })
+    ).toBeChecked();
+    expect(
+      screen.getByRole("checkbox", { name: "Use secure erase" })
+    ).not.toBeChecked();
+    expect(
+      screen.getByRole("checkbox", { name: "Use quick erase (not secure)" })
+    ).toBeChecked();
   });
 
-  it("correctly dispatches action to release given machines", () => {
+  it("correctly dispatches action to release given machines", async () => {
     const store = mockStore(state);
     state.machine.selectedMachines = { items: ["abc123", "def456"] };
-    const wrapper = mount(
+    renderWithBrowserRouter(
       <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ReleaseForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+        <ReleaseForm
+          clearSidePanelContent={jest.fn()}
+          machines={state.machine.items}
+          processingCount={0}
+          viewingDetails={false}
+        />
+      </Provider>,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        enableErase: true,
-        quickErase: false,
-        secureErase: true,
-      })
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Erase disks before releasing" })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Use secure erase" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Release 2 machines" })
     );
 
     expect(
