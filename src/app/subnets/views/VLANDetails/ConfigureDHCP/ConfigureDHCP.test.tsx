@@ -135,8 +135,6 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
     state,
-    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
-    legacyRoot: true,
   });
 
   // Wait for Formik validateOnMount to run.
@@ -356,8 +354,6 @@ it("can configure relayed DHCP", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
     store,
-    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
-    legacyRoot: true,
   });
 
   await userEvent.click(
