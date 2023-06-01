@@ -1,10 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import AddChassisForm from "../AddChassisForm";
 
 import { PowerTypeNames } from "app/store/general/constants";
@@ -19,8 +12,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("AddChassisFormFields", () => {
   let state: RootState;
@@ -40,21 +32,21 @@ describe("AddChassisFormFields", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddChassisForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/chassis/add", state }
     );
-    expect(wrapper.find("AddChassisFormFields").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("combobox", { name: "Domain" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "maas" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Power type" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Save chassis" })
+    ).toBeInTheDocument();
   });
 
   it("does not show power type fields that are scoped to nodes", async () => {
@@ -94,32 +86,18 @@ describe("AddChassisFormFields", () => {
         can_probe: true,
       })
     );
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines/chassis/add", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <AddChassisForm clearSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      { route: "/machines/chassis/add", state }
     );
 
-    await act(async () => {
-      wrapper.find("select[name='power_type']").simulate("change", {
-        target: { name: "power_type", value: PowerTypeNames.VIRSH },
-      });
+    const powerTypeSelect = screen.getByRole("combobox", {
+      name: "Power type",
     });
-    wrapper.update();
-    expect(
-      wrapper.find("Input[name='power_parameters.power_address']").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find("Input[name='power_parameters.power_id']").exists()
-    ).toBe(false);
+    await userEvent.selectOptions(powerTypeSelect, PowerTypeNames.VIRSH);
+
+    expect(screen.getByLabelText(/Address/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Virsh VM ID/i)).not.toBeInTheDocument();
   });
 });
