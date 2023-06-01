@@ -1,11 +1,10 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import NumaResourcesCard from "./NumaResourcesCard";
 
 import { actions as machineActions } from "app/store/machine";
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -19,8 +18,9 @@ import {
   podVM as podVmFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore, screen, within } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("NumaResourcesCard", () => {
   beforeEach(() => {
@@ -43,11 +43,11 @@ describe("NumaResourcesCard", () => {
       pod: podStateFactory({ items: [pod] }),
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={111} podId={1} />
-      </Provider>
-    );
+
+    renderWithMockStore(<NumaResourcesCard numaId={111} podId={1} />, {
+      store,
+    });
+
     const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
       store.getActions().some((action) => action.type === expectedAction.type)
@@ -82,22 +82,24 @@ describe("NumaResourcesCard", () => {
     const state = rootStateFactory({
       pod: podStateFactory({ items: [pod] }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={11} podId={1} />
-      </Provider>
-    );
-    expect(wrapper.find("RamResources").prop("hugepagesAllocated")).toBe(5);
-    expect(wrapper.find("RamResources").prop("hugepagesFree")).toBe(7);
-    expect(wrapper.find("RamResources").prop("pageSize")).toBe(1024);
+
+    renderWithMockStore(<NumaResourcesCard numaId={11} podId={1} />, { state });
+
+    const hugepagesData = screen.getByTestId("hugepages-data");
+    expect(within(hugepagesData).getByText("(Size: 1KiB)")).toBeInTheDocument();
+    expect(within(hugepagesData).getAllByRole("cell")[1]).toHaveTextContent(
+      "5B"
+    ); // Allocated
+    expect(within(hugepagesData).getAllByRole("cell")[2]).toHaveTextContent(
+      "7B"
+    ); // Free
   });
 
   it("filters interface resources to those that belong to the NUMA node", () => {
     const podInterfaces = [
-      podInterfaceFactory({ id: 11 }),
-      podInterfaceFactory({ id: 22 }),
-      podInterfaceFactory({ id: 33 }),
+      podInterfaceFactory({ id: 11, name: "eth0" }),
+      podInterfaceFactory({ id: 22, name: "eth1" }),
+      podInterfaceFactory({ id: 33, name: "eth2" }),
     ];
     const numaNode = podNumaFactory({ interfaces: [11, 33], node_id: 111 });
     const pod = podFactory({
@@ -110,16 +112,14 @@ describe("NumaResourcesCard", () => {
     const state = rootStateFactory({
       pod: podStateFactory({ items: [pod] }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={111} podId={1} />
-      </Provider>
-    );
-    expect(wrapper.find("VfResources").prop("interfaces")).toStrictEqual([
-      podInterfaces[0],
-      podInterfaces[2],
-    ]);
+
+    renderWithMockStore(<NumaResourcesCard numaId={111} podId={1} />, {
+      state,
+    });
+
+    expect(screen.getByText(/eth0/i)).toBeInTheDocument();
+    expect(screen.queryByText(/eth1/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/eth2/i)).toBeInTheDocument();
   });
 
   it("correctly filters VMs dropdown to those that belong to each NUMA node", () => {
@@ -156,11 +156,9 @@ describe("NumaResourcesCard", () => {
       pod: podStateFactory({ items: [pod] }),
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <NumaResourcesCard numaId={11} podId={1} />
-      </Provider>
-    );
+
+    renderWithMockStore(<NumaResourcesCard numaId={11} podId={1} />, { store });
+
     const expected = machineActions.fetch("mocked-nanoid");
     const result = store
       .getActions()
