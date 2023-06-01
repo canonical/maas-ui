@@ -39,19 +39,20 @@ describe("OwnerColumn", () => {
           machineFactory({
             actions: [],
             system_id: "abc123",
-            owner: "admin",
+            owner: "user1",
             tags: [],
           }),
         ],
       }),
       user: userStateFactory({
-        items: [userFactory()],
+        items: [
+          userFactory({ last_name: "User Full Name", username: "user1" }),
+        ],
       }),
     });
   });
 
-  it("displays owner", () => {
-    state.machine.items[0].owner = "user1";
+  it("displays owner's username", () => {
     renderWithBrowserRouter(
       <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
       { state, route: "/machines" }
@@ -60,11 +61,17 @@ describe("OwnerColumn", () => {
     expect(screen.getByTestId("owner")).toHaveTextContent("user1");
   });
 
-  it("displays owner's full name", () => {
-    state.machine.items[0].owner = "user1";
-    state.user.items = [
-      userFactory({ username: "user1", last_name: "User Full Name" }),
-    ];
+  it("displays owner's username if showFullName is true and user doesn't have a full name", () => {
+    state.user.items[0].last_name = "";
+    renderWithBrowserRouter(
+      <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
+      { state, route: "/machines" }
+    );
+
+    expect(screen.getByTestId("owner")).toHaveTextContent("user1");
+  });
+
+  it("can display owner's full name if present", () => {
     renderWithBrowserRouter(
       <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
       { state, route: "/machines" }

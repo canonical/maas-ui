@@ -8,11 +8,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import {
-  getByTextContent,
-  renderWithBrowserRouter,
-  screen,
-} from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
@@ -42,12 +38,11 @@ describe("NameColumn", () => {
 
   it("can be locked", () => {
     state.machine.items[0].locked = true;
-    const { container } = renderWithBrowserRouter(
+    renderWithBrowserRouter(
       <NameColumn groupValue={null} systemId="abc123" />,
       { route: "/machines", state }
     );
-    // eslint-disable-next-line testing-library/no-container
-    expect(container.querySelector(".p-icon--locked")).toBeInTheDocument();
+    expect(screen.getByLabelText("Locked")).toHaveClass("p-icon--locked");
   });
 
   it("can show the FQDN", () => {
@@ -55,7 +50,9 @@ describe("NameColumn", () => {
       <NameColumn groupValue={null} systemId="abc123" />,
       { route: "/machines", state }
     );
-    expect(getByTextContent("koala.example")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "koala.example" })
+    ).toBeInTheDocument();
   });
 
   it("can show a single ip address", () => {

@@ -34,7 +34,9 @@ const generateFQDN = (machine: Machine, machineURL: string) => {
       <strong data-testid="hostname">
         {machine.locked ? (
           <span title="This machine is locked. You have to unlock it to perform any actions.">
-            <i className="p-icon--locked">Locked: </i>{" "}
+            <i aria-label="Locked" className="p-icon--locked">
+              Locked:{" "}
+            </i>{" "}
           </span>
         ) : null}
         {machine.hostname}
