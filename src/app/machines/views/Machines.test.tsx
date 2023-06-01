@@ -1,6 +1,6 @@
 import reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, useLocation } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
@@ -43,6 +43,7 @@ import {
   within,
   screen,
   render,
+  waitFor,
 } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -273,33 +274,17 @@ describe("Machines", () => {
   });
 
   it("changes the URL when the search text changes", async () => {
-    let search: string | null = null;
     const store = mockStore(state);
-    const FetchRoute = () => {
-      const location = useLocation();
-      search = location.search;
-      return null;
-    };
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Machines />
-            <Route path="*" render={() => <FetchRoute />} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<Machines />, {
+      route: "/machines?q=test+search",
+      store,
+    });
     await userEvent.clear(screen.getByRole("searchbox", { name: "Search" }));
     await userEvent.type(
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    expect(search).toBe("?status=new");
+    expect(window.location.search).toBe("?status=new");
   });
 
   it("can hide groups", async () => {
@@ -309,22 +294,24 @@ describe("Machines", () => {
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
     renderWithBrowserRouter(<Machines />, { route: "/machines", store });
+    const expected = machineActions.fetch("123456", {
+      group_collapsed: ["failed_testing"],
+    });
+    const getFetchActions = () =>
+      store.getActions().filter((action) => action.type === expected.type);
+    const initialFetchActions = getFetchActions();
+    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
     // Click the button to toggle the group.
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
       ).getByRole("button", { name: Label.HideGroup })
     );
-    const expected = machineActions.fetch("123456", {
-      group_collapsed: ["failed_testing"],
-    });
-    const fetches = store
-      .getActions()
-      .filter((action) => action.type === expected.type);
-    expect(fetches).toHaveLength(2);
-    expect(
-      fetches[fetches.length - 1].payload.params.group_collapsed
-    ).toStrictEqual(["failed_testing"]);
+    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    const finalFetchAction = getFetchActions()[1];
+    expect(finalFetchAction.payload.params.group_collapsed).toStrictEqual([
+      "failed_testing",
+    ]);
   });
 
   it("can change groups", async () => {
@@ -348,22 +335,23 @@ describe("Machines", () => {
       }),
     };
     const store = mockStore(state);
+    const expected = machineActions.fetch("123456", {
+      group_key: FetchGroupKey.Owner,
+    });
+    const getFetchActions = () =>
+      store.getActions().filter((action) => action.type === expected.type);
     renderWithBrowserRouter(<Machines />, { route: "/machines", store });
+
+    const initialFetchActions = getFetchActions();
+    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Group by/i }),
       screen.getByRole("option", { name: "Group by owner" })
     );
-    const expected = machineActions.fetch("123456", {
-      group_key: FetchGroupKey.Owner,
-    });
-    const fetches = store
-      .getActions()
-      .filter((action) => action.type === expected.type);
-    expect(fetches).toHaveLength(2);
-    expect(fetches[fetches.length - 1].payload.params.group_key).toBe(
-      FetchGroupKey.Owner
-    );
+    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    const finalFetchAction = getFetchActions()[1];
+    expect(finalFetchAction.payload.params.group_key).toBe(FetchGroupKey.Owner);
   });
 
   it("can store the group in local storage", async () => {
