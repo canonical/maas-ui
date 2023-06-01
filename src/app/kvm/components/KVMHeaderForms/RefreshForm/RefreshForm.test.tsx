@@ -31,9 +31,6 @@ describe("RefreshForm", () => {
       { state, route: "/kvm" }
     );
 
-    await userEvent.click(
-      screen.getByRole("button", { name: /Waiting for action to complete/i })
-    );
     expect(screen.getByTestId("saving-label")).toHaveTextContent(
       "Refreshing KVM host..."
     );

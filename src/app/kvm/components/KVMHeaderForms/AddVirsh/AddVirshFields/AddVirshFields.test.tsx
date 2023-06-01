@@ -57,8 +57,16 @@ describe("AddVirshFields", () => {
       powerTypeFactory({
         description: "Virsh (virtual systems)",
         fields: [
-          powerFieldFactory({ name: "field1", scope: PowerFieldScope.BMC }),
-          powerFieldFactory({ name: "field2", scope: PowerFieldScope.NODE }),
+          powerFieldFactory({
+            name: "field1",
+            scope: PowerFieldScope.BMC,
+            label: "test-powerfield-label-1",
+          }),
+          powerFieldFactory({
+            name: "field2",
+            scope: PowerFieldScope.NODE,
+            label: "test-powerfield-label-2",
+          }),
         ],
         name: PowerTypeNames.VIRSH,
       }),
