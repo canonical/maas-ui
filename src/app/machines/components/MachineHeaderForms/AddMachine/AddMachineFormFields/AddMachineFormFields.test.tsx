@@ -83,26 +83,23 @@ describe("AddMachineFormFields", () => {
     );
 
     expect(
-      (
-        screen.getByRole("option", {
-          name: "bionic (ga-18.04)",
-        }) as HTMLOptionElement
-      ).selected
-    ).toBe(true);
+      screen.getByRole("option", {
+        name: "bionic (ga-18.04)",
+        selected: true,
+      })
+    ).toBeInTheDocument();
     expect(
-      (
-        screen.getByRole("option", {
-          name: "xenial (ga-16.04)",
-        }) as HTMLOptionElement
-      ).selected
-    ).toBe(false);
+      screen.getByRole("option", {
+        name: "xenial (ga-16.04)",
+        selected: false,
+      })
+    ).toBeInTheDocument();
     expect(
-      (
-        screen.getByRole("option", {
-          name: "No minimum kernel",
-        }) as HTMLOptionElement
-      ).selected
-    ).toBe(false);
+      screen.getByRole("option", {
+        name: "No minimum kernel",
+        selected: false,
+      })
+    ).toBeInTheDocument();
   });
 
   it("can add extra mac address fields", async () => {
