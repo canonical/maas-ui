@@ -71,7 +71,8 @@ describe("DebounceSearchBox", () => {
         onDebounced={jest.fn()}
         searchText="old-value"
         setSearchText={jest.fn()}
-      />
+      />,
+      { legacyRoot: true }
     );
     const searchBox = screen.getByRole("searchbox");
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
