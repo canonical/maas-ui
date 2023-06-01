@@ -1,15 +1,14 @@
-import { mount } from "enzyme";
-
 import CPUPopover from "./CPUPopover";
 
 import {
   podResource as podResourceFactory,
   vmClusterResource as vmClusterResourceFactory,
 } from "testing/factories";
+import { render, screen, userEvent } from "testing/utils";
 
 describe("CPUPopover", () => {
-  it("shows if cores are used by any other projects in the group", () => {
-    const wrapper = mount(
+  it("shows if cores are used by any other projects in the group", async () => {
+    render(
       <CPUPopover
         cores={podResourceFactory({
           allocated_other: 1,
@@ -19,12 +18,13 @@ describe("CPUPopover", () => {
         Child
       </CPUPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='other']").exists()).toBe(true);
+
+    await userEvent.click(screen.getByRole("button", { name: "Child" }));
+    expect(screen.getByTestId("other")).toHaveTextContent("1");
   });
 
-  it("does not show other cores if no other projects in the group use them", () => {
-    const wrapper = mount(
+  it("does not show other cores if no other projects in the group use them", async () => {
+    render(
       <CPUPopover
         cores={podResourceFactory({
           allocated_other: 0,
@@ -34,12 +34,13 @@ describe("CPUPopover", () => {
         Child
       </CPUPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='other']").exists()).toBe(false);
+
+    await userEvent.click(screen.getByRole("button", { name: "Child" }));
+    expect(screen.queryByTestId("other")).not.toBeInTheDocument();
   });
 
-  it("shows CPU over-commit ratio if it is not equal to 1", () => {
-    const wrapper = mount(
+  it("shows CPU over-commit ratio if it is not equal to 1", async () => {
+    render(
       <CPUPopover
         cores={podResourceFactory({
           allocated_other: 1,
@@ -49,12 +50,13 @@ describe("CPUPopover", () => {
         Child
       </CPUPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(true);
+
+    await userEvent.click(screen.getByRole("button", { name: "Child" }));
+    expect(screen.getByTestId("overcommit")).toHaveTextContent("2");
   });
 
-  it("does not show CPU over-commit ratio if it is equal to 1", () => {
-    const wrapper = mount(
+  it("does not show CPU over-commit ratio if it is equal to 1", async () => {
+    render(
       <CPUPopover
         cores={podResourceFactory({
           allocated_other: 1,
@@ -64,12 +66,13 @@ describe("CPUPopover", () => {
         Child
       </CPUPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='overcommit']").exists()).toBe(false);
+
+    await userEvent.click(screen.getByRole("button", { name: "Child" }));
+    expect(screen.queryByTestId("overcommit")).not.toBeInTheDocument();
   });
 
-  it("displays cores for a vmcluster", () => {
-    const wrapper = mount(
+  it("displays cores for a vmcluster", async () => {
+    render(
       <CPUPopover
         cores={vmClusterResourceFactory({
           allocated_other: 1,
@@ -81,10 +84,11 @@ describe("CPUPopover", () => {
         Child
       </CPUPopover>
     );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='other']").text()).toBe("1");
-    expect(wrapper.find("[data-testid='allocated']").text()).toBe("2");
-    expect(wrapper.find("[data-testid='free']").text()).toBe("3");
-    expect(wrapper.find("[data-testid='total']").text()).toBe("6");
+
+    await userEvent.click(screen.getByRole("button", { name: "Child" }));
+    expect(screen.getByTestId("other")).toHaveTextContent("1");
+    expect(screen.getByTestId("allocated")).toHaveTextContent("2");
+    expect(screen.getByTestId("free")).toHaveTextContent("3");
+    expect(screen.getByTestId("total")).toHaveTextContent("6");
   });
 });
