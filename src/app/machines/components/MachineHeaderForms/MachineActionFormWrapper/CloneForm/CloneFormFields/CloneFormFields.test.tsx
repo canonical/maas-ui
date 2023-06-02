@@ -16,7 +16,7 @@ import {
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { renderWithMockStore, screen, userEvent } from "testing/utils";
+import { renderWithMockStore, screen, userEvent, waitFor } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -54,7 +54,7 @@ describe("CloneFormFields", () => {
     jest.restoreAllMocks();
   });
 
-  it("dispatches action to fetch data on load", () => {
+  it("dispatches action to fetch data on load", async () => {
     const store = mockStore(state);
     renderWithMockStore(
       <Formik
@@ -75,12 +75,15 @@ describe("CloneFormFields", () => {
       "subnet/fetch",
       "vlan/fetch",
     ];
-    const actualActions = store.getActions();
-    expect(
-      expectedActions.every((expected) =>
-        actualActions.some((actual) => actual.type === expected)
-      )
-    ).toBe(true);
+
+    await waitFor(() => {
+      const actualActions = store.getActions();
+      return expect(
+        expectedActions.every((expected) =>
+          actualActions.some((actual) => actual.type === expected)
+        )
+      ).toBe(true);
+    });
   });
 
   it("dispatches action to get full machine details on machine click", async () => {
@@ -104,10 +107,13 @@ describe("CloneFormFields", () => {
       machine.system_id,
       "mocked-nanoid"
     );
-    const actualActions = store.getActions();
-    expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+
+    await waitFor(() => {
+      const actualActions = store.getActions();
+      return expect(
+        actualActions.find((action) => action.type === expectedAction.type)
+      ).toStrictEqual(expectedAction);
+    });
   });
 
   it("applies different styling depending on clone selection state", async () => {
@@ -134,7 +140,9 @@ describe("CloneFormFields", () => {
       screen.getByRole("checkbox", { name: "Clone network configuration" })
     );
 
-    table = screen.getByRole("grid", { name: "Clone network" });
-    expect(table).not.toHaveClass("not-selected");
+    await waitFor(() => {
+      table = screen.getByRole("grid", { name: "Clone network" });
+      expect(table).not.toHaveClass("not-selected");
+    });
   });
 });
