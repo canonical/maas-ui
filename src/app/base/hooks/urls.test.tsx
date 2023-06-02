@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";

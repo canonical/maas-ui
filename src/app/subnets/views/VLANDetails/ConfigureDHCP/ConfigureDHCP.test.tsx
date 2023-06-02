@@ -1,10 +1,8 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ConfigureDHCP from "./ConfigureDHCP";
 
+import type { RootState } from "app/store/root/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import {
@@ -19,25 +17,23 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 it("shows a spinner while data is loading", () => {
   const state = rootStateFactory({
     fabric: fabricStateFactory({ items: [], loading: true }),
     vlan: vlanStateFactory({ items: [] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    state,
+  });
 
   expect(screen.getByTestId("loading-data")).toBeInTheDocument();
 });
@@ -58,16 +54,9 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", asyn
     }),
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    state,
+  });
 
   // Wait for Formik validateOnMount to run.
   await waitFor(() => {
@@ -105,16 +94,9 @@ it("correctly initialises data if the VLAN has relayed DHCP", async () => {
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [relay, vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    state,
+  });
 
   // Wait for Formik validateOnMount to run.
   await waitFor(() => {
@@ -151,16 +133,11 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    state,
+    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
+    legacyRoot: true,
+  });
 
   // Wait for Formik validateOnMount to run.
   await waitFor(() => {
@@ -195,16 +172,9 @@ it(`shows an error if the subnet selected for reserving a dynamic range has no
     subnet: subnetStateFactory({ items: [subnet], loaded: true }),
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    state,
+  });
 
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Subnet" }),
@@ -231,16 +201,9 @@ it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    state,
+  });
 
   await userEvent.click(
     screen.getByRole("checkbox", { name: "MAAS provides DHCP" })
@@ -276,15 +239,9 @@ it("can configure DHCP with rack controllers", async () => {
     vlan: vlanStateFactory({ items: [vlan] }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    store,
+  });
 
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Primary rack" }),
@@ -371,16 +328,9 @@ it("displays an error when no subnet is selected", async () => {
     }),
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    state,
+  });
 
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Subnet" }),
@@ -404,15 +354,11 @@ it("can configure relayed DHCP", async () => {
     vlan: vlanStateFactory({ items: [relay, vlan] }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    store,
+    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
+    legacyRoot: true,
+  });
 
   await userEvent.click(
     screen.getByRole("radio", { name: "Relay to another VLAN" })
@@ -453,15 +399,9 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
     vlan: vlanStateFactory({ items: [relay, vlan] }),
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <ConfigureDHCP closeForm={jest.fn()} id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+    store,
+  });
 
   await userEvent.click(
     screen.getByRole("radio", { name: "Relay to another VLAN" })

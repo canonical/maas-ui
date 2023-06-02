@@ -58,6 +58,7 @@ describe("NameCard", () => {
     await userEvent.clear(
       screen.getByRole("textbox", { name: NameCardLabels.Name })
     );
+    await userEvent.tab();
 
     const icon = screen.getByLabelText("error");
     expect(icon).toBeInTheDocument();

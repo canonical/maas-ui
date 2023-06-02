@@ -22,7 +22,12 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -107,9 +112,11 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(
-      screen.getByRole("listitem", { name: "Credentials" }).firstChild
-    ).not.toHaveClass("is-active");
+    await waitFor(() =>
+      expect(
+        screen.getByRole("listitem", { name: "Credentials" }).firstChild
+      ).not.toHaveClass("is-active")
+    );
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
     ).toHaveClass("is-active");

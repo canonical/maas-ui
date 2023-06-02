@@ -21,7 +21,14 @@ import {
 } from "testing/factories";
 import { tagStateListFactory } from "testing/factories/state";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -59,28 +66,20 @@ afterEach(() => {
 });
 
 it("displays available tags in the dropdown", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={jest.fn()}
-          >
-            <TagFormFields
-              machines={[]}
-              newTags={[]}
-              selectedCount={state.machine.items.length}
-              selectedMachines={{
-                items: state.machine.items.map((item) => item.system_id),
-              }}
-              setNewTags={jest.fn()}
-            />
-          </Formik>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
+      <TagFormFields
+        machines={[]}
+        newTags={[]}
+        selectedCount={state.machine.items.length}
+        selectedMachines={{
+          items: state.machine.items.map((item) => item.system_id),
+        }}
+        setNewTags={jest.fn()}
+      />
+    </Formik>,
+    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
+    { state, legacyRoot: true }
   );
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
@@ -93,13 +92,14 @@ it("displays available tags in the dropdown", async () => {
     within(tagRow).getByRole("button", { name: TagFormChangesLabel.Remove })
   );
   // Open the tag selector dropdown.
-  screen.getByRole("textbox", { name: Label.TagInput }).focus();
+  await userEvent.click(screen.getByRole("textbox", { name: Label.TagInput }));
   // Set a tag to be added.
   await userEvent.click(
     screen.getByRole("option", {
       name: "tag1",
     })
   );
+  await userEvent.click(screen.getByRole("textbox", { name: Label.TagInput }));
   expect(screen.getAllByRole("option")).toHaveLength(1);
   await waitFor(() =>
     expect(screen.getByRole("option", { name: "tag2" })).toBeInTheDocument()
@@ -107,28 +107,22 @@ it("displays available tags in the dropdown", async () => {
 });
 
 it("displays the tags to be added", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <Formik
-            initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
-            onSubmit={jest.fn()}
-          >
-            <TagFormFields
-              machines={[]}
-              newTags={[]}
-              selectedCount={state.machine.items.length}
-              selectedMachines={{
-                items: state.machine.items.map((item) => item.system_id),
-              }}
-              setNewTags={jest.fn()}
-            />
-          </Formik>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Formik
+      initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
+      onSubmit={jest.fn()}
+    >
+      <TagFormFields
+        machines={[]}
+        newTags={[]}
+        selectedCount={state.machine.items.length}
+        selectedMachines={{
+          items: state.machine.items.map((item) => item.system_id),
+        }}
+        setNewTags={jest.fn()}
+      />
+    </Formik>,
+    { state }
   );
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
@@ -142,26 +136,18 @@ it("displays the tags to be added", () => {
 });
 
 it("can open a create tag form", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={jest.fn()}
-          >
-            <TagFormFields
-              machines={[]}
-              newTags={[]}
-              selectedCount={state.machine.items.length}
-              setNewTags={jest.fn()}
-            />
-          </Formik>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
+      <TagFormFields
+        machines={[]}
+        newTags={[]}
+        selectedCount={state.machine.items.length}
+        setNewTags={jest.fn()}
+      />
+    </Formik>,
+    { state }
   );
+
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.TagInput }),
     "name1{enter}"

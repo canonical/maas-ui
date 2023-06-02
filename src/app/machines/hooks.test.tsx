@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
