@@ -35,6 +35,7 @@
     "test-ui": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/r --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache  --testTimeout=100000000",
     "test": "yarn test-ui",
+    "test:ci": "yarn test-ui --runInBand",
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\"",
     "wait-on-ui": "wait-on http-get://0.0.0.0:8400/MAAS/r"
   },

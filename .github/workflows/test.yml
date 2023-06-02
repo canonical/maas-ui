@@ -51,7 +51,7 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - run: yarn test
+      - run: yarn test:ci
 
   run-dotrun:
     timeout-minutes: 15
