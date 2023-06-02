@@ -6922,10 +6922,10 @@ formik-devtools-extension@0.1.8:
   resolved "https://registry.yarnpkg.com/formik-devtools-extension/-/formik-devtools-extension-0.1.8.tgz#818f73697bbf33bdca406a1c49373bf89b4b306b"
   integrity sha512-y0CUGfoZzhjRQprb5BbwzmlGZnA7cV8oJbn8qMCzYWXtvm8s9S/oXUH6JHKd13EnHoEpy8dc2fIyCxguHP5f0w==
 
-formik@2.2.9:
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/formik/-/formik-2.2.9.tgz#8594ba9c5e2e5cf1f42c5704128e119fc46232d0"
-  integrity sha512-LQLcISMmf1r5at4/gyJigGn0gOwFbeEAlji+N9InZF6LIMXnFNkO42sCI8Jt84YZggpD4cPWObAZaxpEFtSzNA==
+formik@2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/formik/-/formik-2.4.1.tgz#f2630b51a866c86144a5faf68d31200c9d8ceea9"
+  integrity sha512-ajOB9EmFhXb4PACTlaooVEn7PLtLtBJEZ8fPs+wFZjL5KSGwgAoU+n9DHN8JcqNKcXkloEYYtn1lxrLav18ecQ==
   dependencies:
     deepmerge "^2.1.1"
     hoist-non-react-statics "^3.3.0"
