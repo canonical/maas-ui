@@ -13,7 +13,7 @@ import {
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor, within } from "testing/utils";
 
 const renderTestCase = (
   space = spaceFactory({
@@ -72,7 +72,11 @@ it("displays a delete confirmation before delete", async () => {
     screen.getByText("Are you sure you want to delete this space?")
   ).toBeInTheDocument();
 
-  await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
+  await userEvent.click(
+    within(screen.getByRole("complementary")).getByRole("button", {
+      name: "Delete space",
+    })
+  );
 
   const expectedActions = [spaceActions.cleanup(), spaceActions.delete(1)];
 

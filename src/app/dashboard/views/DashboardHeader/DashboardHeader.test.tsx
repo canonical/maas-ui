@@ -9,7 +9,7 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("DashboardHeader", () => {
   let state: RootState;
@@ -52,19 +52,5 @@ describe("DashboardHeader", () => {
     expect(
       screen.getByRole("button", { name: DashboardHeaderLabels.ClearAll })
     ).toBeInTheDocument();
-  });
-
-  it("hides the clear-all button when the form is visible", async () => {
-    renderWithBrowserRouter(<DashboardHeader />, {
-      route: "/dashboard",
-      state,
-    });
-
-    const clearAllButton = screen.getByRole("button", {
-      name: DashboardHeaderLabels.ClearAll,
-    });
-
-    await userEvent.click(clearAllButton);
-    expect(clearAllButton).not.toBeInTheDocument();
   });
 });

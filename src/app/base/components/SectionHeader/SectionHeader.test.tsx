@@ -92,7 +92,7 @@ describe("SectionHeader", () => {
     ).toBeInTheDocument();
   });
 
-  it("does not render buttons if header content is present", () => {
+  it("buttons remain visible if header content is present", () => {
     const { rerender } = renderWithBrowserRouter(
       <SectionHeader
         buttons={[<button key="button">Click me</button>]}
@@ -111,9 +111,7 @@ describe("SectionHeader", () => {
         title="Title"
       />
     );
-    expect(
-      screen.queryByTestId("section-header-buttons")
-    ).not.toBeInTheDocument();
+    expect(screen.getByTestId("section-header-buttons")).toBeInTheDocument();
     expect(screen.getByTestId("section-header-subtitle")).toBeInTheDocument();
   });
 });
