@@ -6,7 +6,7 @@ import type { TabLink } from "@canonical/react-components/dist/components/Tabs/T
 import classNames from "classnames";
 import type { LinkProps } from "react-router-dom";
 
-import AppSidePanel from "app/base/components/AppSidePanel";
+import { AppSidePanelLegacy } from "app/base/components/AppSidePanel";
 import type { DataTestElement } from "app/base/types";
 
 export type Props<P = LinkProps> = {
@@ -129,11 +129,13 @@ const SectionHeader = <P,>({
       {renderButtons && typeof renderButtons === "function"
         ? renderButtons()
         : null}
-      <AppSidePanel
-        content={sidePanelContent}
-        size={headerSize}
-        title={sidePanelTitle}
-      />
+      {sidePanelContent ? (
+        <AppSidePanelLegacy
+          content={sidePanelContent}
+          size={headerSize}
+          title={sidePanelTitle}
+        />
+      ) : null}
       {actionMenuGroup ? <>{actionMenuGroup}</> : null}
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">

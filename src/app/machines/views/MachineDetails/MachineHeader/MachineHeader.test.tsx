@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
 import {
@@ -75,7 +75,7 @@ describe("MachineHeader", () => {
     renderWithBrowserRouter(
       <MachineHeader
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+        sidePanelContent={{ view: MachineSidePanelViews.DEPLOY_MACHINE }}
         systemId="abc123"
       />,
       { state, route: "/machine/abc123" }

@@ -4,26 +4,20 @@ import { useEffect, useState } from "react";
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import { matchPath, useLocation } from "react-router-dom-v5-compat";
 
 import packageInfo from "../../package.json";
 
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
-import SecondaryNavigation from "./base/components/SecondaryNavigation/SecondaryNavigation";
+import PageContent from "./base/components/PageContent/PageContent";
+import SectionHeader from "./base/components/SectionHeader";
 import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
-import { preferencesNavItems } from "./preferences/constants";
-import { settingsNavItems } from "./settings/constants";
 import { formatErrors } from "./utils";
 
 import Routes from "app/Routes";
 import AppSideNavigation from "app/base/components/AppSideNavigation";
-import Footer from "app/base/components/Footer";
 import Login from "app/base/components/Login";
-import MainContentSection from "app/base/components/MainContentSection";
-import SectionHeader from "app/base/components/SectionHeader";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
 import { actions as authActions } from "app/store/auth";
@@ -55,10 +49,6 @@ export const App = (): JSX.Element => {
   const configErrors = useSelector(configSelectors.errors);
   const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
-  const { pathname } = useLocation();
-  const isSettingsPage = matchPath("settings/*", pathname);
-  const isPreferencesPage = matchPath("account/prefs/*", pathname);
-  const isSideNavVisible = isSettingsPage || isPreferencesPage;
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -100,10 +90,16 @@ export const App = (): JSX.Element => {
 
   let content: ReactNode = null;
   if (isLoading) {
-    content = <MainContentSection header={<SectionHeader loading />} />;
+    content = (
+      <PageContent
+        header={<SectionHeader loading />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
   } else if (hasAuthError) {
     content = (
-      <MainContentSection>
+      <PageContent sidePanelContent={null} sidePanelTitle={null}>
         {authenticationError ? (
           authenticationError === "Session expired" ? (
             <Notification role="alert" severity="information">
@@ -117,11 +113,15 @@ export const App = (): JSX.Element => {
           )
         ) : null}
         <Login />
-      </MainContentSection>
+      </PageContent>
     );
   } else if (hasWebsocketError || hasVaultError) {
     content = (
-      <MainContentSection header={<SectionHeader title="Failed to connect" />}>
+      <PageContent
+        header={<SectionHeader title="Failed to connect" />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      >
         <Notification severity="negative" title="Error:">
           The server connection failed
           {hasVaultError || connectionError
@@ -130,7 +130,7 @@ export const App = (): JSX.Element => {
               }"`
             : ""}
         </Notification>
-      </MainContentSection>
+      </PageContent>
     );
   } else if (isLoaded) {
     content = (
@@ -162,36 +162,7 @@ export const App = (): JSX.Element => {
           </header>
         )}
 
-        <main className="l-main">
-          {isSideNavVisible ? (
-            <div
-              className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
-            >
-              <SecondaryNavigation
-                isOpen={!!isSideNavVisible}
-                items={
-                  isSettingsPage
-                    ? settingsNavItems
-                    : isPreferencesPage
-                    ? preferencesNavItems
-                    : []
-                }
-                title={
-                  isSettingsPage
-                    ? "Settings"
-                    : isPreferencesPage
-                    ? "My preferences"
-                    : ""
-                }
-              />
-            </div>
-          ) : null}
-          <div className="l-main__content" id="main-content">
-            {content}
-            <hr />
-            <Footer />
-          </div>
-        </main>
+        {content}
         <aside className="l-status">
           <StatusBar />
         </aside>

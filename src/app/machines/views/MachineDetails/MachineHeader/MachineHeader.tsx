@@ -15,7 +15,7 @@ import TableMenu from "app/base/components/TableMenu";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useSendAnalytics } from "app/base/hooks";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type {
   MachineSidePanelContent,
   MachineSetSidePanelContent,
@@ -131,7 +131,7 @@ const MachineHeader = ({
                     getNodeActionTitle(action),
                     "Open"
                   );
-                  const view = Object.values(MachineHeaderViews).find(
+                  const view = Object.values(MachineSidePanelViews).find(
                     ([, actionName]) => actionName === action
                   );
                   if (view) {
@@ -157,7 +157,7 @@ const MachineHeader = ({
                     getNodeActionTitle(action),
                     "Open"
                   );
-                  const view = Object.values(MachineHeaderViews).find(
+                  const view = Object.values(MachineSidePanelViews).find(
                     ([, actionName]) => actionName === action
                   );
                   if (view) {

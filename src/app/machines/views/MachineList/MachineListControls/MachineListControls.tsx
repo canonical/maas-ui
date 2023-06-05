@@ -17,7 +17,7 @@ import NodeActionMenu from "app/base/components/NodeActionMenu";
 import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
 import { useSendAnalytics } from "app/base/hooks";
 import urls from "app/base/urls";
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { FetchGroupKey } from "app/store/machine/types";
@@ -134,7 +134,7 @@ const MachineListControls = ({
                     if (action === NodeActions.TAG && !tagsSeen) {
                       setTagsSeen(true);
                     }
-                    const view = Object.values(MachineHeaderViews).find(
+                    const view = Object.values(MachineSidePanelViews).find(
                       ([, actionName]) => actionName === action
                     );
                     if (view) {
@@ -160,7 +160,7 @@ const MachineListControls = ({
                     if (action === NodeActions.TAG && !tagsSeen) {
                       setTagsSeen(true);
                     }
-                    const view = Object.values(MachineHeaderViews).find(
+                    const view = Object.values(MachineSidePanelViews).find(
                       ([, actionName]) => actionName === action
                     );
                     if (view) {
