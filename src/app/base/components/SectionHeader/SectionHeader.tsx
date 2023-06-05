@@ -114,7 +114,7 @@ const SectionHeader = <P,>({
           subtitleLoading,
           loading
         )}
-        {buttons?.length && !sidePanelContent ? (
+        {buttons?.length ? (
           <List
             className="section-header__buttons u-flex--between"
             data-testid="section-header-buttons"
