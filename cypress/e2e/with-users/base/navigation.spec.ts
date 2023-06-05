@@ -135,7 +135,10 @@ context("Navigation - admin", () => {
       );
       cy.location("pathname").should("eq", generateMAASURL(destinationUrl));
       cy.get(".p-side-navigation__item.is-selected a").contains(linkLabel);
-      cy.findByRole("link", { current: "page" }).should("have.text", linkLabel);
+      cy.findAllByRole("link", {
+        current: "page",
+        name: linkLabel,
+      }).should("exist");
     });
   });
 });
