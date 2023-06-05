@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useMemo, memo, useCallback, useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
-import { Notification, Button, MainTable } from "@canonical/react-components";
+import { Button, MainTable } from "@canonical/react-components";
 import type {
   MainTableCell,
   MainTableRow,
@@ -18,6 +18,7 @@ import FabricColumn from "./FabricColumn";
 import GroupCheckbox from "./GroupCheckbox";
 import MachineListDisplayCount from "./MachineListDisplayCount";
 import MachineListPagination from "./MachineListPagination";
+import MachineListSelectedCount from "./MachineListSelectedCount/MachineListSelectedCount";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PageSizeSelect from "./PageSizeSelect";
@@ -839,14 +840,11 @@ export const MachineListTable = ({
             key: "select-info",
             expanded: true,
             expandedContent: (
-              <Notification
-                borderless
-                className="u-no-margin--bottom"
-                title="Selection"
-              >
-                Selected {selectedCount} {pluralize("machine", selectedCount)}{" "}
-                on this page.
-              </Notification>
+              <MachineListSelectedCount
+                filter={filter}
+                machineCount={machineCount}
+                selectedCount={selectedCount}
+              />
             ),
           },
         ]
