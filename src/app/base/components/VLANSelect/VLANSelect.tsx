@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import type { SelectProps } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { flushSync } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import DynamicSelect from "app/base/components/DynamicSelect";
@@ -74,12 +73,10 @@ export const VLANSelect = ({
 
   useEffect(() => {
     if (setDefaultValueFromFabric) {
-      flushSync(() => {
-        const vlan = selectedFabric?.default_vlan_id;
-        if (isId(vlan)) {
-          setFieldValue("vlan", vlan);
-        }
-      });
+      const vlan = selectedFabric?.default_vlan_id;
+      if (isId(vlan)) {
+        setFieldValue("vlan", vlan);
+      }
     }
   }, [setDefaultValueFromFabric, setFieldValue, selectedFabric]);
 
