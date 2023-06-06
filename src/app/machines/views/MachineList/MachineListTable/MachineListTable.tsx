@@ -838,14 +838,18 @@ export const MachineListTable = ({
           {
             className: "select-notification",
             key: "select-info",
-            expanded: true,
-            expandedContent: (
-              <MachineListSelectedCount
-                filter={filter}
-                machineCount={machineCount}
-                selectedCount={selectedCount}
-              />
-            ),
+            columns: [
+              {
+                colSpan: columns.length - hiddenColumns.length,
+                content: (
+                  <MachineListSelectedCount
+                    filter={filter}
+                    machineCount={machineCount}
+                    selectedCount={selectedCount}
+                  />
+                ),
+              },
+            ],
           },
         ]
       : [];
@@ -886,7 +890,6 @@ export const MachineListTable = ({
           "machine-list--loading": machinesLoading,
         })}
         emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
-        expanding={true}
         headers={filterColumns(headers, hiddenColumns, showActions)}
         rows={machinesLoading ? skeletonRows : [...selectionState, ...rows]}
         {...props}
