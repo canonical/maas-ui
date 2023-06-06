@@ -11,25 +11,22 @@ import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import {
   ControllerDetailsTabLabels,
   ControllerHeaderViews,
 } from "app/controllers/constants";
-import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
 import { getNodeActionTitle } from "app/store/utils";
 
-type Props = SidePanelContextType & {
+type Props = Omit<SidePanelContextType, "sidePanelContent"> & {
   systemId: Controller["system_id"];
 };
 
 const ControllerDetailsHeader = ({
   systemId,
-  sidePanelContent,
   setSidePanelContent,
 }: Props): JSX.Element => {
   const controller = useSelector((state: RootState) =>
@@ -67,17 +64,6 @@ const ControllerDetailsHeader = ({
           }}
         />,
       ]}
-      sidePanelContent={
-        sidePanelContent ? (
-          <ControllerHeaderForms
-            controllers={[controller]}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-            viewingDetails
-          />
-        ) : null
-      }
-      sidePanelTitle={getHeaderTitle("Controller", sidePanelContent)}
       subtitleLoading={!isControllerDetails(controller)}
       tabLinks={[
         {

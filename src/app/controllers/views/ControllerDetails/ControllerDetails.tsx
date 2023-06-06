@@ -22,6 +22,8 @@ import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
+import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms/ControllerHeaderForms";
+import { getHeaderTitle } from "app/controllers/utils";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
@@ -69,12 +71,20 @@ const ControllerDetails = (): JSX.Element => {
       header={
         <ControllerDetailsHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }
-      sidePanelContent={null}
-      sidePanelTitle={null}
+      sidePanelContent={
+        sidePanelContent && controller ? (
+          <ControllerHeaderForms
+            controllers={[controller]}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+            viewingDetails
+          />
+        ) : null
+      }
+      sidePanelTitle={getHeaderTitle("Controller", sidePanelContent)}
     >
       {controller && (
         <Routes>
