@@ -82,7 +82,7 @@ export const MachineActionFormWrapper = ({
     selectedCountLoading,
   };
   const clearSelectedMachines = () => {
-    dispatch(machineActions.setSelectedMachines(null));
+    dispatch(machineActions.setSelected(null));
     dispatch(machineActions.invalidateQueries());
   };
 

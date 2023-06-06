@@ -275,7 +275,7 @@ export const useMachineSelectedCount = (
   selectedCountLoading: boolean;
 } => {
   const { isEnabled } = queryOptions || { isEnabled: true };
-  let selectedState = useSelector(machineSelectors.selectedMachines);
+  let selectedState = useSelector(machineSelectors.selected);
   let selectedCount = 0;
   // Shallow clone the selected state so that object can be modified.
   let selectedMachines = selectedState ? { ...selectedState } : null;
@@ -324,7 +324,7 @@ export const useFetchSelectedMachines = (
   queryOptions: UseFetchQueryOptions
 ): UseFetchMachinesData => {
   const { isEnabled } = queryOptions || { isEnabled: true };
-  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedMachines = useSelector(machineSelectors.selected);
   const getIsSingleFilter = (
     selectedMachines: SelectedMachines | null
   ): selectedMachines is { filter: FetchFilters } => {
@@ -957,7 +957,7 @@ export const useCanAddVLAN = (
  * Whether any machines are selected.
  */
 export const useHasSelection = (): boolean => {
-  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedMachines = useSelector(machineSelectors.selected);
   if (!selectedMachines) {
     return false;
   }

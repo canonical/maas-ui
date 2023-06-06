@@ -164,9 +164,11 @@ describe("AddLxd", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(
-      screen.getByRole("listitem", { name: "Credentials" }).firstChild
-    ).not.toHaveClass("is-active");
+    await waitFor(() =>
+      expect(
+        screen.getByRole("listitem", { name: "Credentials" }).firstChild
+      ).not.toHaveClass("is-active")
+    );
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
     ).not.toHaveClass("is-active");

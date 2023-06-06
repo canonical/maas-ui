@@ -222,8 +222,7 @@ Object {
     "loading": false,
     "saved": false,
     "saving": false,
-    "selected": Array [],
-    "selectedMachines": null,
+    "selected": null,
     "statuses": Object {},
   },
   "message": Object {

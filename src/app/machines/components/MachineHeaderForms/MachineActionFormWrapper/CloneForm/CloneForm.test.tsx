@@ -18,7 +18,12 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -45,8 +50,7 @@ describe("CloneForm", () => {
         active: null,
         items: machines,
         loaded: true,
-        selected: ["abc123"],
-
+        selected: { items: ["abc123"] },
         lists: {
           "123456": machineStateList({
             groups: [
@@ -124,8 +128,7 @@ describe("CloneForm", () => {
         active: null,
         items: machines,
         loaded: true,
-        selected: ["abc123"],
-
+        selected: { items: ["abc123"] },
         lists: {
           "123456": machineStateList({
             groups: [
@@ -151,7 +154,6 @@ describe("CloneForm", () => {
     const { rerender } = renderWithBrowserRouter(
       <CloneForm
         clearSidePanelContent={jest.fn()}
-        machines={[]}
         processingCount={0}
         selectedMachines={{ items: [machines[1].system_id] }}
         viewingDetails={false}
@@ -175,13 +177,15 @@ describe("CloneForm", () => {
     rerender(
       <CloneForm
         clearSidePanelContent={jest.fn()}
-        machines={[]}
         processingCount={0}
+        selectedMachines={{ items: [machines[1].system_id] }}
         viewingDetails={false}
       />
     );
 
-    expect(screen.getByText("Cloning complete")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText("Cloning complete")).toBeInTheDocument()
+    );
   });
 
   it("can dispatch an action to clone to the given machines", async () => {
@@ -200,8 +204,7 @@ describe("CloneForm", () => {
         active: null,
         items: machines,
         loaded: true,
-        selected: ["abc123", "def456"],
-
+        selected: { items: ["abc123", "def456"] },
         lists: {
           "123456": machineStateList({
             groups: [

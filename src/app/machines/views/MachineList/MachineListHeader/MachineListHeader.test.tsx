@@ -68,7 +68,7 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a loader if machines have not loaded", () => {
-    state.machine.selectedMachines = {
+    state.machine.selected = {
       groups: ["admin"],
       grouping: FetchGroupKey.Owner,
     };
@@ -115,7 +115,7 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a spinner if the selected group count is loading", () => {
-    state.machine.selectedMachines = {
+    state.machine.selected = {
       groups: ["admin"],
       grouping: FetchGroupKey.Owner,
     };
@@ -139,7 +139,7 @@ describe("MachineListHeader", () => {
   });
 
   it("does not display a spinner if only machines are selected and the count is loading", () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
       count: 10,
       loaded: true,
@@ -164,7 +164,7 @@ describe("MachineListHeader", () => {
   });
 
   it("hides the add hardware menu when machines are selected", () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     renderWithBrowserRouter(
       <MachineListHeader
         grouping={null}
@@ -181,7 +181,7 @@ describe("MachineListHeader", () => {
     expect(
       screen.queryByTestId("add-hardware-dropdown")
     ).not.toBeInTheDocument();
-    state.machine.selectedMachines.items = [];
+    state.machine.selected.items = [];
     renderWithBrowserRouter(
       <MachineListHeader
         grouping={null}
@@ -199,7 +199,7 @@ describe("MachineListHeader", () => {
   });
 
   it("closes action form when all machines are deselected", async () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     const allMachinesCount = 10;
     state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
       count: allMachinesCount,
@@ -221,7 +221,7 @@ describe("MachineListHeader", () => {
     );
     expect(setSidePanelContent).not.toHaveBeenCalled();
     expect(screen.getByText("Deploy")).toBeInTheDocument();
-    state.machine.selectedMachines.items = [];
+    state.machine.selected = null;
     renderWithBrowserRouter(
       <MachineListHeader
         grouping={null}
@@ -233,7 +233,10 @@ describe("MachineListHeader", () => {
         setSidePanelContent={setSidePanelContent}
         sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
       />,
-      { state, route: urls.machines.index }
+      {
+        state: { ...state, machine: { ...state.machine, selected: null } },
+        route: urls.machines.index,
+      }
     );
     await waitFor(() => expect(setSidePanelContent).toHaveBeenCalledWith(null));
   });
@@ -266,7 +269,7 @@ describe("MachineListHeader", () => {
 
   it("displays a new label for the tag action", async () => {
     // Set a selected machine so the take action menu becomes enabled.
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
     state.machine.items = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
@@ -296,7 +299,7 @@ describe("MachineListHeader", () => {
   it("hides the tag action's new label after it has been clicked", async () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     // Set a selected machine so the take action menu becomes enabled.
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
     const machine = machineFactory({
       system_id: "abc123",

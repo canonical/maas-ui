@@ -37,7 +37,7 @@ beforeEach(() => {
 });
 
 it("is disabled if all machines are selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     filter: {
       owner: "admin",
     },
@@ -55,7 +55,7 @@ it("is disabled if all machines are selected", () => {
 });
 
 it("is checked and disabled if the machine's group is selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     groups: ["admin2"],
   };
   renderWithMockStore(
@@ -72,7 +72,7 @@ it("is checked and disabled if the machine's group is selected", () => {
 });
 
 it("is checked and disabled if the machine's group is selected and is nullish", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     groups: [""],
   };
   renderWithMockStore(
@@ -89,7 +89,7 @@ it("is checked and disabled if the machine's group is selected and is nullish", 
 });
 
 it("is unchecked and enabled if there are no filters or groups selected", () => {
-  state.machine.selectedMachines = null;
+  state.machine.selected = null;
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
@@ -104,7 +104,7 @@ it("is unchecked and enabled if there are no filters or groups selected", () => 
 });
 
 it("is checked if the machine is selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     items: ["abc123"],
   };
   renderWithMockStore(
@@ -133,14 +133,14 @@ it("can dispatch an action to select the machine", async () => {
     }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({ items: ["abc123"] });
+  const expected = machineActions.setSelected({ items: ["abc123"] });
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
 });
 
 it("can dispatch an action to unselect a machine", async () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     groups: ["admin1"],
     items: ["abc123", "def456"],
   };
@@ -157,7 +157,7 @@ it("can dispatch an action to unselect a machine", async () => {
     }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({
+  const expected = machineActions.setSelected({
     groups: ["admin1"],
     items: ["def456"],
   });
@@ -176,13 +176,13 @@ describe("getSelectedMachinesRange tests", () => {
   const machines = systemIds.map((id) => machineFactory({ system_id: id }));
 
   it("getSelectedMachinesRange selects a range of machines", () => {
-    const selectedMachines = { groups: [""], items: [systemIds[0]] };
+    const selected = { groups: [""], items: [systemIds[0]] };
     const systemId = systemIds.at(-1)!;
 
     const newSelected = getSelectedMachinesRange({
       systemId,
       machines,
-      selected: selectedMachines,
+      selected: selected,
     });
 
     expect(newSelected.items?.sort()).toStrictEqual(systemIds.sort());
@@ -190,12 +190,12 @@ describe("getSelectedMachinesRange tests", () => {
 
   it("Selects only one machine if there's no previously selected machine", () => {
     const systemId = systemIds[0];
-    const selectedMachines = { groups: [""], items: [] };
+    const selected = { groups: [""], items: [] };
 
     const newSelected = getSelectedMachinesRange({
       systemId,
       machines,
-      selected: selectedMachines,
+      selected: selected,
     });
     const { items } = newSelected;
     expect(items?.length).toBe(1);

@@ -59,7 +59,7 @@ const Machines = (): JSX.Element => {
       // clear selected machines on grouping change
       // we cannot reliably preserve the selected state for individual machines
       // as we are only fetching information about a group from the back-end
-      dispatch(machineActions.setSelectedMachines(null));
+      dispatch(machineActions.setSelected(null));
     },
     [setStoredGrouping, dispatch]
   );

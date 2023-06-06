@@ -116,10 +116,8 @@ describe("machine actions", () => {
   });
 
   it("can set selected machines", () => {
-    expect(
-      actions.setSelectedMachines({ items: ["abc123", "def456"] })
-    ).toEqual({
-      type: "machine/setSelectedMachines",
+    expect(actions.setSelected({ items: ["abc123", "def456"] })).toEqual({
+      type: "machine/setSelected",
       payload: { items: ["abc123", "def456"] },
     });
   });

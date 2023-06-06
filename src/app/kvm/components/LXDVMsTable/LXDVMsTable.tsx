@@ -71,14 +71,14 @@ const LXDVMsTable = ({
     // Clear machine selection and close the action form on filters change
     if (searchFilter !== previousSearchFilter) {
       setSidePanelContent(null);
-      dispatch(machineActions.setSelectedMachines(null));
+      dispatch(machineActions.setSelected(null));
     }
   }, [searchFilter, previousSearchFilter, setSidePanelContent, dispatch]);
 
   useEffect(
     () => () => {
       // Clear machine selected state when unmounting.
-      dispatch(machineActions.setSelectedMachines(null));
+      dispatch(machineActions.setSelected(null));
     },
     [dispatch]
   );

@@ -104,7 +104,7 @@ describe("EditBridgeForm", () => {
   });
 
   it("can dispatch an action to update a bridge", async () => {
-    state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    state.machine.selected = { items: ["abc123", "def456"] };
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBridgeForm

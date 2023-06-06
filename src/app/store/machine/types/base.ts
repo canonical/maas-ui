@@ -357,7 +357,6 @@ export type MachineState = {
   filtersLoaded: boolean;
   filtersLoading: boolean;
   lists: MachineStateLists;
-  selected: Machine[MachineMeta.PK][];
-  selectedMachines: SelectedMachines | null;
+  selected: SelectedMachines | null;
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;

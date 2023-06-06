@@ -127,7 +127,7 @@ const KVMHeaderForms = ({
   searchFilter,
   setSearchFilter,
 }: Props): JSX.Element | null => {
-  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedMachines = useSelector(machineSelectors.selected);
   const { selectedCount } = useMachineSelectedCount();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const clearSidePanelContent = useCallback(
