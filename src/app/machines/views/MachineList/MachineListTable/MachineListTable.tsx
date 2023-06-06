@@ -18,6 +18,7 @@ import FabricColumn from "./FabricColumn";
 import GroupCheckbox from "./GroupCheckbox";
 import MachineListDisplayCount from "./MachineListDisplayCount";
 import MachineListPagination from "./MachineListPagination";
+import MachineListSelectedCount from "./MachineListSelectedCount/MachineListSelectedCount";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PageSizeSelect from "./PageSizeSelect";
@@ -39,6 +40,7 @@ import { actions as generalActions } from "app/store/general";
 import type { Machine, MachineStateListGroup } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
+import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
 import { actions as userActions } from "app/store/user";
@@ -519,6 +521,7 @@ export const MachineListTable = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
+  const { selectedCount } = useMachineSelectedCount();
 
   const currentSort = {
     direction: sortDirection,
@@ -829,6 +832,36 @@ export const MachineListTable = ({
     [hiddenColumns, showActions]
   );
 
+  const selectionState = useMemo(() => {
+    if (selectedCount > 0) {
+      return [
+        {
+          className: "select-notification",
+          key: "select-info",
+          columns: [
+            {
+              colSpan: columns.length - hiddenColumns.length,
+              content: (
+                <MachineListSelectedCount
+                  filter={filter}
+                  machineCount={machineCount}
+                  selectedCount={selectedCount}
+                />
+              ),
+            },
+          ],
+        },
+      ];
+    } else {
+      return [];
+    }
+  }, [filter, hiddenColumns.length, machineCount, selectedCount]);
+
+  const machineRows = useMemo(
+    () => [...selectionState, ...rows],
+    [rows, selectionState]
+  );
+
   return (
     <>
       {machineCount ? (
@@ -866,7 +899,7 @@ export const MachineListTable = ({
         })}
         emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        rows={machinesLoading ? skeletonRows : rows}
+        rows={machinesLoading ? skeletonRows : machineRows}
         {...props}
       />
     </>

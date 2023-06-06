@@ -1,3 +1,21 @@
+export const getCurrentPageDisplayedMachineCount = (
+  machineCount: number | null,
+  pageSize: number,
+  currentPage: number
+): number => {
+  if (!machineCount) {
+    return 0;
+  }
+
+  const totalPages = Math.ceil(machineCount / pageSize);
+
+  if (currentPage === totalPages) {
+    return pageSize - (totalPages * pageSize - machineCount);
+  } else {
+    return pageSize;
+  }
+};
+
 export const MachineListDisplayCount = ({
   machineCount,
   pageSize,
@@ -7,24 +25,11 @@ export const MachineListDisplayCount = ({
   pageSize: number;
   currentPage: number;
 }): JSX.Element => {
-  const getCurrentPageDisplayedMachineCount = () => {
-    if (!machineCount) {
-      return null;
-    }
-
-    const totalPages = Math.ceil(machineCount / pageSize);
-
-    if (currentPage === totalPages) {
-      return pageSize - (totalPages * pageSize - machineCount);
-    } else {
-      return pageSize;
-    }
-  };
-
   return (
     <strong className="machine-list--display-count">
-      Showing {getCurrentPageDisplayedMachineCount()} out of {machineCount}{" "}
-      machines
+      Showing{" "}
+      {getCurrentPageDisplayedMachineCount(machineCount, pageSize, currentPage)}{" "}
+      out of {machineCount} machines
     </strong>
   );
 };
