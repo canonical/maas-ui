@@ -15,8 +15,8 @@ import ControllerSummary from "./ControllerSummary";
 import ControllerUSBDevices from "./ControllerUSBDevices";
 import ControllerVLANs from "./ControllerVLANs";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
@@ -65,7 +65,7 @@ const ControllerDetails = (): JSX.Element => {
   const base = urls.controllers.controller.index(null);
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <ControllerDetailsHeader
           setSidePanelContent={setSidePanelContent}
@@ -73,6 +73,8 @@ const ControllerDetails = (): JSX.Element => {
           systemId={id}
         />
       }
+      sidePanelContent={null}
+      sidePanelTitle={null}
     >
       {controller && (
         <Routes>
@@ -174,7 +176,7 @@ const ControllerDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 
