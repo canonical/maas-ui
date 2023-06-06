@@ -163,6 +163,7 @@ describe("NodeName", () => {
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));
+    await userEvent.tab();
     expect(
       screen.getByText("hostname is a required field")
     ).toBeInTheDocument();
