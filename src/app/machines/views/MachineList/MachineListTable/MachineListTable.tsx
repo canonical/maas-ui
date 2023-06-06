@@ -832,27 +832,35 @@ export const MachineListTable = ({
     [hiddenColumns, showActions]
   );
 
-  const selectionState =
-    selectedCount > 0
-      ? [
-          {
-            className: "select-notification",
-            key: "select-info",
-            columns: [
-              {
-                colSpan: columns.length - hiddenColumns.length,
-                content: (
-                  <MachineListSelectedCount
-                    filter={filter}
-                    machineCount={machineCount}
-                    selectedCount={selectedCount}
-                  />
-                ),
-              },
-            ],
-          },
-        ]
-      : [];
+  const selectionState = useMemo(() => {
+    if (selectedCount > 0) {
+      return [
+        {
+          className: "select-notification",
+          key: "select-info",
+          columns: [
+            {
+              colSpan: columns.length - hiddenColumns.length,
+              content: (
+                <MachineListSelectedCount
+                  filter={filter}
+                  machineCount={machineCount}
+                  selectedCount={selectedCount}
+                />
+              ),
+            },
+          ],
+        },
+      ];
+    } else {
+      return [];
+    }
+  }, [filter, hiddenColumns.length, machineCount, selectedCount]);
+
+  const renderRows = useMemo(
+    () => [...selectionState, ...rows],
+    [rows, selectionState]
+  );
 
   return (
     <>
@@ -891,7 +899,7 @@ export const MachineListTable = ({
         })}
         emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        rows={machinesLoading ? skeletonRows : [...selectionState, ...rows]}
+        rows={machinesLoading ? skeletonRows : renderRows}
         {...props}
       />
     </>
