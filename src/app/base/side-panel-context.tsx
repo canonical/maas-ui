@@ -59,14 +59,6 @@ export const useSidePanel = (): SidePanelContextType => {
     }
   }, [pathname, previousPathname, appContext]);
 
-  // close side panel on unmount
-  useEffect(() => {
-    return () => {
-      appContext.setSidePanelContent(null);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return appContext;
 };
 
