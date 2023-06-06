@@ -5,6 +5,6 @@ import { enableFetchMocks } from "jest-fetch-mock";
 enableFetchMocks();
 
 beforeAll(() => {
-  // @ts-ignore next-line
+  // disable act warnings
   global.IS_REACT_ACT_ENVIRONMENT = false;
 });
