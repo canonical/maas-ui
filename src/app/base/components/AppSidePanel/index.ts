@@ -1,1 +1,1 @@
-export { default } from "./AppSidePanel";
+export { default, AppSidePanelLegacy } from "./AppSidePanel";

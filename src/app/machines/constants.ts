@@ -31,7 +31,7 @@ export const MachineNonActionHeaderViews = {
   ADD_MACHINE: ["machineNonActionForm", "addMachine"],
 } as const;
 
-export const MachineHeaderViews = {
+export const MachineSidePanelViews = {
   ...MachineActionHeaderViews,
   ...MachineNonActionHeaderViews,
 } as const;

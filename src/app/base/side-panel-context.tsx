@@ -34,8 +34,8 @@ export type SidePanelContent =
 
 export type SetSidePanelContent = (sidePanelContent: SidePanelContent) => void;
 
-export type SidePanelContextType = {
-  sidePanelContent: SidePanelContent;
+export type SidePanelContextType<T = SidePanelContent> = {
+  sidePanelContent: T;
   setSidePanelContent: SetSidePanelContent;
 };
 
