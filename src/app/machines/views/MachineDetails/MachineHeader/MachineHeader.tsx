@@ -25,7 +25,10 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import { useFetchMachine } from "app/store/machine/utils/hooks";
+import {
+  useFetchMachine,
+  useSelectedMachinesActionsDispatch,
+} from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
@@ -52,6 +55,10 @@ const MachineHeader = ({
   const statuses = useSelector((state: RootState) =>
     machineSelectors.getStatuses(state, systemId)
   );
+  const { dispatch: dispatchForSelectedMachines } =
+    useSelectedMachinesActionsDispatch({
+      selectedMachines: { items: [systemId] },
+    });
   const powerMenuRef = useRef<HTMLSpanElement>(null);
   const isDetails = isMachineDetails(machine);
   useFetchMachine(systemId);
@@ -134,6 +141,18 @@ const MachineHeader = ({
                   const view = Object.values(MachineHeaderViews).find(
                     ([, actionName]) => actionName === action
                   );
+                  const [, actionFunction] =
+                    Object.entries(machineActions).find(
+                      ([key]) => key === action
+                    ) || [];
+                  if (
+                    (action === NodeActions.LOCK ||
+                      action === NodeActions.UNLOCK) &&
+                    actionFunction
+                  ) {
+                    dispatchForSelectedMachines(actionFunction);
+                    return;
+                  }
                   if (view) {
                     setSidePanelContent({ view });
                   }
