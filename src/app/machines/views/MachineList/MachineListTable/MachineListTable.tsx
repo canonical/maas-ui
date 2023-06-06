@@ -857,7 +857,7 @@ export const MachineListTable = ({
     }
   }, [filter, hiddenColumns.length, machineCount, selectedCount]);
 
-  const renderRows = useMemo(
+  const machineRows = useMemo(
     () => [...selectionState, ...rows],
     [rows, selectionState]
   );
@@ -899,7 +899,7 @@ export const MachineListTable = ({
         })}
         emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        rows={machinesLoading ? skeletonRows : renderRows}
+        rows={machinesLoading ? skeletonRows : machineRows}
         {...props}
       />
     </>
