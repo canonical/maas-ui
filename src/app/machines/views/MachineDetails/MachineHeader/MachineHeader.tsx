@@ -138,21 +138,18 @@ const MachineHeader = ({
                     getNodeActionTitle(action),
                     "Open"
                   );
+                  if (action === NodeActions.LOCK) {
+                    dispatchForSelectedMachines(machineActions.lock);
+                    return;
+                  }
+                  if (action === NodeActions.UNLOCK) {
+                    dispatchForSelectedMachines(machineActions.unlock);
+                    return;
+                  }
                   const view = Object.values(MachineHeaderViews).find(
                     ([, actionName]) => actionName === action
                   );
-                  const [, actionFunction] =
-                    Object.entries(machineActions).find(
-                      ([key]) => key === action
-                    ) || [];
-                  if (
-                    (action === NodeActions.LOCK ||
-                      action === NodeActions.UNLOCK) &&
-                    actionFunction
-                  ) {
-                    dispatchForSelectedMachines(actionFunction);
-                    return;
-                  }
+
                   if (view) {
                     setSidePanelContent({ view });
                   }
