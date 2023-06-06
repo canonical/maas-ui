@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -15,7 +15,7 @@ import { history, store } from "redux-store";
 
 import "./scss/index.scss";
 
-const Root = (): JSX.Element => {
+const AppRoot = (): JSX.Element => {
   return (
     <Provider store={store}>
       <Router history={history}>
@@ -31,11 +31,11 @@ const Root = (): JSX.Element => {
   );
 };
 
-const rootNode = document.getElementById("root");
+const container = document.getElementById("root");
 
-// TODO: replace ReactDOM.render with createRoot https://warthogs.atlassian.net/browse/MAASENG-1802
-if (rootNode) {
-  ReactDOM.render(<Root />, rootNode);
+if (container) {
+  const root = createRoot(container);
+  root.render(<AppRoot />);
 }
 
 // log the maas-ui version to the console
@@ -46,6 +46,6 @@ console.info(
   }`
 );
 
-export default Root;
+export default AppRoot;
 
 serviceWorker.unregister();

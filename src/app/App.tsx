@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
@@ -11,7 +11,7 @@ import packageInfo from "../../package.json";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
-import ThemePreviewContext from "./base/theme-preview-context";
+import ThemePreviewContextProvider from "./base/theme-context";
 import { MAAS_UI_ID } from "./constants";
 import { formatErrors } from "./utils";
 
@@ -44,10 +44,8 @@ export const App = (): JSX.Element => {
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
-  const maasTheme = useSelector(configSelectors.theme);
   const configLoading = useSelector(configSelectors.loading);
   const configErrors = useSelector(configSelectors.errors);
-  const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
 
   useEffect(() => {
@@ -149,7 +147,7 @@ export const App = (): JSX.Element => {
 
   return (
     <div className="l-application" id={MAAS_UI_ID}>
-      <ThemePreviewContext.Provider value={{ theme, setTheme }}>
+      <ThemePreviewContextProvider>
         {connected && authLoaded && authenticated ? (
           <AppSideNavigation />
         ) : (
@@ -166,7 +164,7 @@ export const App = (): JSX.Element => {
         <aside className="l-status">
           <StatusBar />
         </aside>
-      </ThemePreviewContext.Provider>
+      </ThemePreviewContextProvider>
     </div>
   );
 };

@@ -71,9 +71,7 @@ describe("DebounceSearchBox", () => {
         onDebounced={jest.fn()}
         searchText="old-value"
         setSearchText={jest.fn()}
-      />,
-      // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
-      { legacyRoot: true }
+      />
     );
     const searchBox = screen.getByRole("searchbox");
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
@@ -85,12 +83,11 @@ describe("DebounceSearchBox", () => {
     expect(
       screen.getByRole("alert", { name: Labels.Loading })
     ).toBeInTheDocument();
-
+    jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
     await waitFor(() => {
-      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+      expect(
+        screen.queryByRole("alert", { name: Labels.Loading })
+      ).not.toBeInTheDocument();
     });
-    expect(
-      screen.queryByRole("alert", { name: Labels.Loading })
-    ).not.toBeInTheDocument();
   });
 });

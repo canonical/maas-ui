@@ -1,13 +1,10 @@
 /* eslint-disable react/no-multi-comp */
-import { useContext, useEffect } from "react";
 
 import classNames from "classnames";
-import { useSelector } from "react-redux";
 import type { Location } from "react-router-dom-v5-compat";
 import { Link, matchPath, useLocation } from "react-router-dom-v5-compat";
 
-import ThemePreviewContext from "app/base/theme-preview-context";
-import configSelectors from "app/store/config/selectors";
+import { useThemeContext } from "app/base/theme-context";
 
 export type NavItem = {
   label: string;
@@ -103,15 +100,7 @@ export const SecondaryNavigation = ({
   items: NavItem[];
   title: string;
 }): JSX.Element => {
-  const maasTheme = useSelector(configSelectors.theme);
-  const { theme, setTheme } = useContext(ThemePreviewContext);
-  const location = useLocation();
-
-  const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
-
-  useEffect(() => {
-    setTheme(maasTheme ? maasTheme : "default");
-  }, [location, maasTheme, setTheme]);
+  const { theme } = useThemeContext();
 
   return (
     <div
@@ -120,7 +109,7 @@ export const SecondaryNavigation = ({
       })}
     >
       <nav
-        className={`p-side-navigation__drawer is-maas-${themeColor}--accent u-padding-top--medium`}
+        className={`p-side-navigation__drawer is-maas-${theme}--accent u-padding-top--medium`}
       >
         <h2
           className="p-side-navigation__title p-heading--4 p-panel__logo-name"

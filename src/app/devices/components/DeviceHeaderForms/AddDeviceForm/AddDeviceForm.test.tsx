@@ -23,6 +23,7 @@ import {
   screen,
   within,
   renderWithBrowserRouter,
+  waitFor,
 } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -201,8 +202,10 @@ describe("AddDeviceForm", () => {
       zone: { name: "default" },
     });
     const actualActions = store.getActions();
-    expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+    await waitFor(() =>
+      expect(
+        actualActions.find((action) => action.type === expectedAction.type)
+      ).toStrictEqual(expectedAction)
+    );
   });
 });

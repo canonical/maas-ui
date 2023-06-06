@@ -135,23 +135,24 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
     state,
-    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
-    legacyRoot: true,
   });
 
-  // Wait for Formik validateOnMount to run.
-  await waitFor(() => {
-    expect(
-      screen.getByRole("region", { name: "Configure DHCP" })
-    ).toBeInTheDocument();
-  });
+  expect(
+    screen.getByRole("region", { name: "Configure DHCP" })
+  ).toBeInTheDocument();
 
   expect(
     screen.getByText(
       "This VLAN is not currently being utilised on any rack controller."
     )
   ).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeDisabled();
+
+  // Wait for Formik validateOnMount to run.
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Configure DHCP" })
+    ).toBeDisabled()
+  );
 });
 
 it(`shows an error if the subnet selected for reserving a dynamic range has no
@@ -356,8 +357,6 @@ it("can configure relayed DHCP", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
     store,
-    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
-    legacyRoot: true,
   });
 
   await userEvent.click(
@@ -367,6 +366,9 @@ it("can configure relayed DHCP", async () => {
     screen.getByRole("combobox", { name: "VLAN" }),
     relay.name
   );
+  await userEvent.tab();
+
+  expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeEnabled();
   await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({
@@ -379,7 +381,7 @@ it("can configure relayed DHCP", async () => {
     const actualAction = store
       .getActions()
       .find((action) => action.type === expectedAction.type);
-    expect(actualAction).toStrictEqual(expectedAction);
+    return expect(actualAction).toStrictEqual(expectedAction);
   });
 });
 

@@ -1,5 +1,3 @@
-import { render, screen, act } from "@testing-library/react";
-
 import ScriptRunTime from "./ScriptRunTime";
 
 import {
@@ -7,12 +5,16 @@ import {
   ScriptResultEstimated,
 } from "app/store/scriptresult/types";
 import { scriptResult as scriptResultFactory } from "testing/factories";
+import { render, screen, waitFor } from "testing/utils";
 
 describe("ScriptRunTime", () => {
   beforeEach(() => {
     jest
       .useFakeTimers("modern")
       .setSystemTime(new Date("Thu Apr 01 2021 05:21:58 GMT+0000").getTime());
+  });
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("displays the elapsed time when running and runtime is not known", () => {
@@ -66,7 +68,7 @@ describe("ScriptRunTime", () => {
     expect(screen.getByText(/0:05:00 of ~0:10:00/i)).toBeInTheDocument();
   });
 
-  it("updates the elapsed time every second", () => {
+  it("updates the elapsed time every second", async () => {
     const scriptResult = scriptResultFactory({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
       status: ScriptResultStatus.RUNNING,
@@ -74,10 +76,10 @@ describe("ScriptRunTime", () => {
     });
     render(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
-    act(() => {
-      jest.advanceTimersByTime(1000);
-    });
-    expect(screen.getByText(/0:05:01/i)).toBeInTheDocument();
+    jest.advanceTimersByTime(1000);
+    await waitFor(() =>
+      expect(screen.getByText(/0:05:01/i)).toBeInTheDocument()
+    );
   });
 
   it("only shows the time if less than a day has elapsed", () => {
