@@ -3,8 +3,6 @@ import reduxToolkit from "@reduxjs/toolkit";
 import MachineListHeader from "./MachineListHeader";
 
 import urls from "app/base/urls";
-import { MachineHeaderViews } from "app/machines/constants";
-import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -19,13 +17,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import {
-  screen,
-  waitFor,
-  renderWithBrowserRouter,
-  userEvent,
-  within,
-} from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 describe("MachineListHeader", () => {
   let state: RootState;
@@ -67,30 +59,6 @@ describe("MachineListHeader", () => {
     jest.restoreAllMocks();
   });
 
-  it("displays a loader if machines have not loaded", () => {
-    state.machine.selectedMachines = {
-      groups: ["admin"],
-      grouping: FetchGroupKey.Owner,
-    };
-    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
-      loading: true,
-    });
-    renderWithBrowserRouter(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-      />,
-      { state, route: urls.machines.index }
-    );
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
-
   it("displays a machine count if machines have loaded", () => {
     state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
       count: 2,
@@ -105,62 +73,12 @@ describe("MachineListHeader", () => {
         setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state, route: urls.machines.index }
     );
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "2 machines in 1 pool"
     );
-  });
-
-  it("displays a spinner if the selected group count is loading", () => {
-    state.machine.selectedMachines = {
-      groups: ["admin"],
-      grouping: FetchGroupKey.Owner,
-    };
-    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
-      loading: true,
-    });
-    renderWithBrowserRouter(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-      />,
-      { state }
-    );
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
-
-  it("does not display a spinner if only machines are selected and the count is loading", () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
-    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
-      count: 10,
-      loaded: true,
-    });
-    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
-      loading: true,
-    });
-    renderWithBrowserRouter(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-      />,
-      { state }
-    );
-    expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 
   it("hides the add hardware menu when machines are selected", () => {
@@ -174,7 +92,6 @@ describe("MachineListHeader", () => {
         setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state, route: urls.machines.index }
     );
@@ -191,77 +108,10 @@ describe("MachineListHeader", () => {
         setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state, route: urls.machines.index }
     );
     expect(screen.getByTestId("add-hardware-dropdown")).toBeInTheDocument();
-  });
-
-  it("closes action form when all machines are deselected", async () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
-    const allMachinesCount = 10;
-    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
-      count: allMachinesCount,
-      loaded: true,
-    });
-    const setSidePanelContent = jest.fn();
-    renderWithBrowserRouter(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={setSidePanelContent}
-        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-      />,
-      { state, route: urls.machines.index }
-    );
-    expect(setSidePanelContent).not.toHaveBeenCalled();
-    expect(screen.getByText("Deploy")).toBeInTheDocument();
-    state.machine.selectedMachines.items = [];
-    renderWithBrowserRouter(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={setSidePanelContent}
-        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-      />,
-      { state, route: urls.machines.index }
-    );
-    await waitFor(() => expect(setSidePanelContent).toHaveBeenCalledWith(null));
-  });
-
-  it("displays the action title if an action is selected", () => {
-    renderWithBrowserRouter(
-      <MachineListHeader
-        grouping={null}
-        searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-      />,
-      { state, route: urls.machines.index }
-    );
-
-    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
-      "0 machines in 1 pool"
-    );
-    expect(
-      within(screen.getByTestId("section-header-content")).getByRole(
-        "heading",
-        { level: 3 }
-      )
-    ).toHaveTextContent("Deploy");
   });
 
   it("displays a new label for the tag action", async () => {
@@ -322,7 +172,6 @@ describe("MachineListHeader", () => {
         setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state, route: urls.machines.index }
     );
@@ -346,7 +195,6 @@ describe("MachineListHeader", () => {
         setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />
     );
     // Open the take action menu.

@@ -1,7 +1,7 @@
 import KVMHeaderForms from "./KVMHeaderForms";
 
 import { KVMHeaderViews } from "app/kvm/constants";
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import { PodType } from "app/store/pod/constants";
 import zoneSelectors from "app/store/zone/selectors";
 import {
@@ -256,7 +256,7 @@ describe("KVMHeaderForms", () => {
     renderWithBrowserRouter(
       <KVMHeaderForms
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: MachineHeaderViews.DELETE_MACHINE }}
+        sidePanelContent={{ view: MachineSidePanelViews.DELETE_MACHINE }}
       />,
       { state }
     );
@@ -273,7 +273,7 @@ describe("KVMHeaderForms", () => {
     renderWithBrowserRouter(
       <KVMHeaderForms
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: MachineHeaderViews.DELETE_MACHINE }}
+        sidePanelContent={{ view: MachineSidePanelViews.DELETE_MACHINE }}
       />,
       { state, route: "/kvm" }
     );

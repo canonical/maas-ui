@@ -13,12 +13,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import {
-  userEvent,
-  screen,
-  within,
-  renderWithBrowserRouter,
-} from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("Tags", () => {
   let scrollToSpy: jest.Mock;
@@ -89,82 +84,5 @@ describe("Tags", () => {
     expect(
       within(details).getByRole("link", { name: TagDetailsLabel.EditButton })
     ).toBeInTheDocument();
-  });
-
-  it("hides buttons when deleting tags", async () => {
-    renderWithBrowserRouter(<Tags />, {
-      routePattern: `${urls.tags.tag.index(null)}/*`,
-      state,
-      route: urls.tags.tag.index({ id: 1 }),
-    });
-    const header = screen.getByLabelText(TagsHeaderLabel.Header);
-    const details = screen.getByLabelText(TagDetailsLabel.Title);
-    await userEvent.click(
-      within(details).getByRole("button", {
-        name: TagDetailsLabel.DeleteButton,
-      })
-    );
-    expect(
-      within(header).queryByRole("button", {
-        name: TagsHeaderLabel.CreateButton,
-      })
-    ).not.toBeInTheDocument();
-    expect(
-      within(details).queryByRole("button", {
-        name: TagDetailsLabel.DeleteButton,
-      })
-    ).not.toBeInTheDocument();
-    expect(
-      within(details).queryByRole("link", { name: TagDetailsLabel.EditButton })
-    ).not.toBeInTheDocument();
-  });
-
-  it("hides buttons when updating tags", () => {
-    renderWithBrowserRouter(<Tags />, {
-      routePattern: `${urls.tags.tag.index(null)}/*`,
-      state,
-      route: urls.tags.tag.update({ id: 1 }),
-    });
-    const header = screen.getByLabelText(TagsHeaderLabel.Header);
-    const details = screen.getByLabelText(TagUpdateLabel.Form);
-    expect(
-      within(header).queryByRole("button", {
-        name: TagsHeaderLabel.CreateButton,
-      })
-    ).not.toBeInTheDocument();
-    expect(
-      within(details).queryByRole("button", {
-        name: TagDetailsLabel.DeleteButton,
-      })
-    ).not.toBeInTheDocument();
-    expect(
-      within(details).queryByRole("link", { name: TagDetailsLabel.EditButton })
-    ).not.toBeInTheDocument();
-  });
-
-  it("hides buttons when creating tags", async () => {
-    renderWithBrowserRouter(<Tags />, {
-      routePattern: `${urls.tags.tag.index(null)}/*`,
-      state,
-      route: urls.tags.tag.index({ id: 1 }),
-    });
-    const header = screen.getByLabelText(TagsHeaderLabel.Header);
-    const details = screen.getByLabelText(TagDetailsLabel.Title);
-    await userEvent.click(
-      within(header).getByRole("button", { name: TagsHeaderLabel.CreateButton })
-    );
-    expect(
-      within(header).queryByRole("button", {
-        name: TagsHeaderLabel.CreateButton,
-      })
-    ).not.toBeInTheDocument();
-    expect(
-      within(details).queryByRole("button", {
-        name: TagDetailsLabel.DeleteButton,
-      })
-    ).not.toBeInTheDocument();
-    expect(
-      within(details).queryByRole("link", { name: TagDetailsLabel.EditButton })
-    ).not.toBeInTheDocument();
   });
 });

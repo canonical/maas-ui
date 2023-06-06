@@ -10,7 +10,7 @@ import type {
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { Selected } from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "app/base/hooks";
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineDetails } from "app/store/machine/types";
@@ -146,7 +146,7 @@ const MachineNetworkActions = ({
           disabled={isAllNetworkingDisabled}
           onClick={() => {
             setSidePanelContent({
-              view: MachineHeaderViews.TEST_MACHINE,
+              view: MachineSidePanelViews.TEST_MACHINE,
               extras: { applyConfiguredNetworking: true },
             });
             sendAnalytics(

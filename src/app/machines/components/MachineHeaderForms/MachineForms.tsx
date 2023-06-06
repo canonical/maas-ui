@@ -6,8 +6,9 @@ import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
+import type { SidePanelContent } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineActionHeaderViews } from "app/machines/constants";
 import type {
   MachineActionVariableProps,
@@ -16,13 +17,13 @@ import type {
 } from "app/machines/types";
 
 type Props = {
-  sidePanelContent: MachineSidePanelContent;
+  sidePanelContent: SidePanelContent;
   setSidePanelContent: MachineSetSidePanelContent;
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
 } & MachineActionVariableProps;
 
-export const MachineHeaderForms = ({
+export const MachineForms = ({
   sidePanelContent,
   machines,
   setSidePanelContent,
@@ -38,10 +39,14 @@ export const MachineHeaderForms = ({
     [setSidePanelContent]
   );
 
+  if (!sidePanelContent) {
+    return null;
+  }
+
   switch (sidePanelContent.view) {
-    case MachineHeaderViews.ADD_CHASSIS:
+    case MachineSidePanelViews.ADD_CHASSIS:
       return <AddChassisForm clearSidePanelContent={clearSidePanelContent} />;
-    case MachineHeaderViews.ADD_MACHINE:
+    case MachineSidePanelViews.ADD_MACHINE:
       return <AddMachineForm clearSidePanelContent={clearSidePanelContent} />;
     default:
       // We need to explicitly cast sidePanelContent.view here - TypeScript doesn't
@@ -75,4 +80,4 @@ export const MachineHeaderForms = ({
   }
 };
 
-export default MachineHeaderForms;
+export default MachineForms;

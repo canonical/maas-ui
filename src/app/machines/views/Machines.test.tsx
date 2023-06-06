@@ -4,6 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
+import { MachineSidePanelViews } from "../constants";
+
 import {
   Label,
   Label as MachineListLabel,
@@ -438,5 +440,24 @@ describe("Machines", () => {
     expect(
       fetches2[fetches.length - 1].payload.params.group_collapsed
     ).toStrictEqual(["deployed"]);
+  });
+
+  it("displays the action title if an action is selected", () => {
+    state.machine.selectedMachines = { items: ["abc123"] };
+    renderWithBrowserRouter(<Machines />, {
+      state,
+      route: "/machines",
+      sidePanelContent: { view: MachineSidePanelViews.DEPLOY_MACHINE },
+    });
+
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
+      "0 machines in 0 pools"
+    );
+    expect(
+      within(screen.getByTestId("section-header-content")).getByRole(
+        "heading",
+        { level: 3 }
+      )
+    ).toHaveTextContent("Deploy");
   });
 });

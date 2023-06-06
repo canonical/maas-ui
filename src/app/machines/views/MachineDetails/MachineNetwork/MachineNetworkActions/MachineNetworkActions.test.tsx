@@ -1,7 +1,7 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeStatus } from "app/store/types/node";
@@ -66,7 +66,7 @@ describe("MachineNetworkActions", () => {
         screen.getByRole("button", { name: /Validate network configuration/i })
       );
       expect(setSidePanelContent).toHaveBeenCalledWith({
-        view: MachineHeaderViews.TEST_MACHINE,
+        view: MachineSidePanelViews.TEST_MACHINE,
         extras: { applyConfiguredNetworking: true },
       });
     });
