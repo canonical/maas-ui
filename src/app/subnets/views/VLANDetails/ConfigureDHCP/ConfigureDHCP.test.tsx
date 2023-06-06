@@ -357,8 +357,6 @@ it("can configure relayed DHCP", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
     store,
-    // TODO: fix this
-    legacyRoot: true,
   });
 
   await userEvent.click(
@@ -368,6 +366,7 @@ it("can configure relayed DHCP", async () => {
     screen.getByRole("combobox", { name: "VLAN" }),
     relay.name
   );
+  await userEvent.tab();
 
   expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeEnabled();
   await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
