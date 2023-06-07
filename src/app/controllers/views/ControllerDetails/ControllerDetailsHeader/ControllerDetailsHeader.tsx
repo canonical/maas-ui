@@ -9,7 +9,7 @@ import ControllerName from "./ControllerName";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
-import type { SidePanelContextType } from "app/base/side-panel-context";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import {
   ControllerDetailsTabLabels,
@@ -21,8 +21,9 @@ import { isControllerDetails } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
 import { getNodeActionTitle } from "app/store/utils";
 
-type Props = Omit<SidePanelContextType, "sidePanelContent"> & {
+type Props = {
   systemId: Controller["system_id"];
+  setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerDetailsHeader = ({
