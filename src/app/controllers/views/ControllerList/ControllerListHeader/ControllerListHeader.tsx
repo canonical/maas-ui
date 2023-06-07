@@ -7,8 +7,8 @@ import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
-import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
-import { ControllerHeaderViews } from "app/controllers/constants";
+import ControllerHeaderForms from "app/controllers/components/ControllerForms";
+import { ControllerSidePanelViews } from "app/controllers/constants";
 import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import { getNodeActionTitle } from "app/store/utils";
@@ -34,7 +34,9 @@ const ControllerListHeader = ({
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}
           onClick={() =>
-            setSidePanelContent({ view: ControllerHeaderViews.ADD_CONTROLLER })
+            setSidePanelContent({
+              view: ControllerSidePanelViews.ADD_CONTROLLER,
+            })
           }
         >
           Add rack controller
@@ -50,7 +52,7 @@ const ControllerListHeader = ({
               getNodeActionTitle(action),
               "Open"
             );
-            const view = Object.values(ControllerHeaderViews).find(
+            const view = Object.values(ControllerSidePanelViews).find(
               ([, actionName]) => actionName === action
             );
             if (view) {

@@ -13,7 +13,7 @@ import type { SetSidePanelContent } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import {
   ControllerDetailsTabLabels,
-  ControllerHeaderViews,
+  ControllerSidePanelViews,
 } from "app/controllers/constants";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
@@ -56,7 +56,7 @@ const ControllerDetailsHeader = ({
               getNodeActionTitle(action),
               "Open"
             );
-            const view = Object.values(ControllerHeaderViews).find(
+            const view = Object.values(ControllerSidePanelViews).find(
               ([, actionName]) => actionName === action
             );
             if (view) {
