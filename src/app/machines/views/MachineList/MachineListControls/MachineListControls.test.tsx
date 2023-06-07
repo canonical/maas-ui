@@ -112,7 +112,7 @@ describe("MachineListControls", () => {
   });
 
   it("hides search bar, filter accordion, and grouping select when machines are selected", () => {
-    initialState.machine.selectedMachines = { items: ["abc123"] };
+    initialState.machine.selected = { items: ["abc123"] };
     renderWithBrowserRouter(
       <MachineListControls
         filter=""
@@ -154,7 +154,7 @@ describe("MachineListControls", () => {
   });
 
   it("dispatches an action to clear selected machines when the 'Clear selection' button is clicked", async () => {
-    initialState.machine.selectedMachines = { items: ["abc123"] };
+    initialState.machine.selected = { items: ["abc123"] };
     const store = mockStore(initialState);
     renderWithBrowserRouter(
       <MachineListControls
@@ -180,7 +180,7 @@ describe("MachineListControls", () => {
 
     const actions = store.getActions();
     expect(actions).toEqual(
-      expect.arrayContaining([machineActions.setSelectedMachines(null)])
+      expect.arrayContaining([machineActions.setSelected(null)])
     );
   });
 });

@@ -27,7 +27,7 @@ export const MachineListSelectedCount = ({
             appearance="link"
             onClick={() => {
               dispatch(
-                machineActions.setSelectedMachines({
+                machineActions.setSelected({
                   filter: FilterMachines.parseFetchFilters(filter),
                 })
               );
@@ -45,7 +45,7 @@ export const MachineListSelectedCount = ({
           <Button
             appearance="link"
             onClick={() => {
-              dispatch(machineActions.setSelectedMachines(null));
+              dispatch(machineActions.setSelected(null));
             }}
           >
             Clear selection

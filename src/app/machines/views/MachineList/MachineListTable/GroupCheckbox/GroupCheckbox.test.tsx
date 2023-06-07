@@ -35,7 +35,7 @@ beforeEach(() => {
 });
 
 it("is disabled if all machines are selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     filter: {
       owner: "admin",
     },
@@ -98,7 +98,7 @@ it("is not disabled if there are machines in the group", () => {
 });
 
 it("is unchecked if there are no filters, groups or items selected", () => {
-  state.machine.selectedMachines = null;
+  state.machine.selected = null;
   renderWithMockStore(
     <GroupCheckbox
       callId={callId}
@@ -114,7 +114,7 @@ it("is unchecked if there are no filters, groups or items selected", () => {
 });
 
 it("is checked if all machines are selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     filter: {
       owner: "admin",
     },
@@ -134,7 +134,7 @@ it("is checked if all machines are selected", () => {
 });
 
 it("is checked if the group is selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     groups: ["admin-2"],
   };
   renderWithMockStore(
@@ -159,7 +159,7 @@ it("is partially checked if a machine in the group is selected", () => {
     value: "admin-2",
   });
   state.machine.lists[callId].groups = [group];
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     items: ["abc123"],
   };
   renderWithMockStore(
@@ -191,7 +191,7 @@ it("is not checked if a selected machine is in another group", () => {
     }),
     group,
   ];
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     items: ["def456"],
   };
   renderWithMockStore(
@@ -222,7 +222,7 @@ it("can dispatch an action to select the group", async () => {
     }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({
+  const expected = machineActions.setSelected({
     grouping: FetchGroupKey.AgentName,
     groups: ["admin-2"],
   });
@@ -239,7 +239,7 @@ it("removes selected machines that are in the group that was clicked", async () 
     value: "admin-2",
   });
   state.machine.lists[callId].groups = [group];
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     items: ["abc123", "def456"],
   };
   const store = mockStore(state);
@@ -255,7 +255,7 @@ it("removes selected machines that are in the group that was clicked", async () 
     }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({
+  const expected = machineActions.setSelected({
     items: ["def456"],
     groups: [],
   });
@@ -279,7 +279,7 @@ it("does not overwrite selected machines in different groups", async () => {
     }),
     group,
   ];
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     items: ["def456"],
   };
   const store = mockStore(state);
@@ -295,7 +295,7 @@ it("does not overwrite selected machines in different groups", async () => {
     }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({
+  const expected = machineActions.setSelected({
     grouping: FetchGroupKey.AgentName,
     groups: ["admin-2"],
     items: ["def456"],
@@ -321,7 +321,7 @@ it("can dispatch an action to unselect the group", async () => {
     }),
     group,
   ];
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     groups: ["admin-1", "admin-2"],
     items: ["def456"],
   };
@@ -338,7 +338,7 @@ it("can dispatch an action to unselect the group", async () => {
     }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({
+  const expected = machineActions.setSelected({
     groups: ["admin-1"],
     items: ["def456"],
   });

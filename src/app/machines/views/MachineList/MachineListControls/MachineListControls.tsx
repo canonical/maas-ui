@@ -181,9 +181,7 @@ const MachineListControls = ({
             <div className="machine-list-controls__item">
               <Button
                 appearance="link"
-                onClick={() =>
-                  dispatch(machineActions.setSelectedMachines(null))
-                }
+                onClick={() => dispatch(machineActions.setSelected(null))}
               >
                 Clear selection <Icon name="close-link" />
               </Button>

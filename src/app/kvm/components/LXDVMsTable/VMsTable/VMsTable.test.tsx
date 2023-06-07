@@ -119,7 +119,7 @@ describe("VMsTable", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selectedMachines: null,
+        selected: null,
       }),
       pod: podStateFactory({ items: [pod], loaded: true }),
     });
@@ -144,11 +144,9 @@ describe("VMsTable", () => {
     );
 
     expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/setSelectedMachines")
+      store.getActions().find((action) => action.type === "machine/setSelected")
     ).toStrictEqual({
-      type: "machine/setSelectedMachines",
+      type: "machine/setSelected",
       payload: { filter: { pod: [pod.name] } },
     });
   });
@@ -166,7 +164,7 @@ describe("VMsTable", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selectedMachines: { filter: {} },
+        selected: { filter: {} },
       }),
       pod: podStateFactory({ items: [pod], loaded: true }),
     });
@@ -195,11 +193,9 @@ describe("VMsTable", () => {
     );
 
     expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/setSelectedMachines")
+      store.getActions().find((action) => action.type === "machine/setSelected")
     ).toStrictEqual({
-      type: "machine/setSelectedMachines",
+      type: "machine/setSelected",
       payload: null,
     });
   });

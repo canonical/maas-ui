@@ -91,7 +91,7 @@ describe("MachineListSelectedCount", () => {
       screen.getByRole("button", { name: "Select all 20 machines" })
     );
 
-    const expectedAction = machineActions.setSelectedMachines({ filter: {} });
+    const expectedAction = machineActions.setSelected({ filter: {} });
 
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
@@ -113,7 +113,7 @@ describe("MachineListSelectedCount", () => {
       screen.getByRole("button", { name: "Select all 20 filtered machines" })
     );
 
-    const expectedAction = machineActions.setSelectedMachines({
+    const expectedAction = machineActions.setSelected({
       filter: { free_text: ["this-is-a-filter"] },
     });
 
@@ -137,7 +137,7 @@ describe("MachineListSelectedCount", () => {
       screen.getByRole("button", { name: "Clear selection" })
     );
 
-    const expectedAction = machineActions.setSelectedMachines(null);
+    const expectedAction = machineActions.setSelected(null);
 
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)

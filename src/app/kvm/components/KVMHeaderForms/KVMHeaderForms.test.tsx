@@ -252,7 +252,7 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders machine action forms if a machine action is selected", () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     renderWithBrowserRouter(
       <KVMHeaderForms
         setSidePanelContent={jest.fn()}
@@ -269,7 +269,7 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders machine action forms with selected machine count", () => {
-    state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    state.machine.selected = { items: ["abc123", "def456"] };
     renderWithBrowserRouter(
       <KVMHeaderForms
         setSidePanelContent={jest.fn()}

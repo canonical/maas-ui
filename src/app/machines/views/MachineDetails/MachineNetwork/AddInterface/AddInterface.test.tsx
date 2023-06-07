@@ -86,7 +86,7 @@ describe("AddInterface", () => {
   });
 
   it("correctly dispatches actions to add a physical interface", async () => {
-    state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    state.machine.selected = { items: ["abc123", "def456"] };
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddInterface close={jest.fn()} systemId="abc123" />,

@@ -56,7 +56,7 @@ export const MachineListHeader = ({
   // Get the count of selected machines that match the current filter
   const { selectedCount, selectedCountLoading } =
     useMachineSelectedCount(filter);
-  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedMachines = useSelector(machineSelectors.selected);
 
   // Clear the header when there are no selected machines
   useEffect(() => {
@@ -78,7 +78,7 @@ export const MachineListHeader = ({
       // we cannot reliably preserve the selected state for groups of machines
       // as we are only fetching information about a group from the back-end
       // and the contents of a group may change when different filters are applied
-      dispatch(machineActions.setSelectedMachines(null));
+      dispatch(machineActions.setSelected(null));
     },
     [dispatch, setSearchFilter]
   );

@@ -341,8 +341,7 @@ export const machineState = define<MachineState>({
   filtersLoaded: false,
   filtersLoading: false,
   lists: () => ({}),
-  selected: () => [],
-  selectedMachines: null,
+  selected: null,
   statuses: () => ({}),
 });
 

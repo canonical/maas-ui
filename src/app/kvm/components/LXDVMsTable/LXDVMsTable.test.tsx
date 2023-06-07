@@ -75,7 +75,7 @@ describe("LXDVMsTable", () => {
 
     unmount();
 
-    const expectedAction = machineActions.setSelectedMachines(null);
+    const expectedAction = machineActions.setSelected(null);
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
