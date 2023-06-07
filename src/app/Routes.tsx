@@ -57,6 +57,14 @@ const Routes = (): JSX.Element => (
       }
       path={`${urls.zones.index}/*`}
     />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Dashboard />
+        </ErrorBoundary>
+      }
+      path={`${urls.dashboard.index}/*`}
+    />
     {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
     {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
     <Route element={<LegacyPageContentWrapper />}>
@@ -219,14 +227,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.subnets.vlan.index(null)}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <Dashboard />
-          </ErrorBoundary>
-        }
-        path={`${urls.dashboard.index}/*`}
       />
       <Route element={<NotFound includeSection />} path="*" />
     </Route>
