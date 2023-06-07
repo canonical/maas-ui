@@ -22,7 +22,7 @@ import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms/ControllerHeaderForms";
+import ControllerForms from "app/controllers/components/ControllerForms/ControllerForms";
 import { getHeaderTitle } from "app/controllers/utils";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -76,7 +76,7 @@ const ControllerDetails = (): JSX.Element => {
       }
       sidePanelContent={
         sidePanelContent && controller ? (
-          <ControllerHeaderForms
+          <ControllerForms
             controllers={[controller]}
             setSidePanelContent={setSidePanelContent}
             sidePanelContent={sidePanelContent}
