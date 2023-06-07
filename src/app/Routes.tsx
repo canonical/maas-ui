@@ -223,22 +223,6 @@ const Routes = (): JSX.Element => (
       <Route
         element={
           <ErrorBoundary>
-            <ZoneDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.zones.details(null)}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <ZonesList />
-          </ErrorBoundary>
-        }
-        path={`${urls.zones.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
             <Dashboard />
           </ErrorBoundary>
         }
