@@ -63,6 +63,28 @@ const MachineHeader = ({
   const isDetails = isMachineDetails(machine);
   useFetchMachine(systemId);
 
+  const handleActionClick = (action: NodeActions) => {
+    sendAnalytics(
+      "Machine details action form",
+      getNodeActionTitle(action),
+      "Open"
+    );
+
+    const isImmediateAction =
+      action === NodeActions.LOCK || action === NodeActions.UNLOCK;
+
+    if (isImmediateAction) {
+      dispatchForSelectedMachines(machineActions[action]);
+    } else {
+      const view = Object.values(MachineHeaderViews).find(
+        ([, actionName]) => actionName === action
+      );
+      if (view) {
+        setSidePanelContent({ view });
+      }
+    }
+  };
+
   if (!machine || !isDetails) {
     return <SectionHeader loading />;
   }
@@ -132,28 +154,7 @@ const MachineHeader = ({
                 isNodeLocked={machine.locked}
                 nodeDisplay="machine"
                 nodes={[machine]}
-                onActionClick={(action) => {
-                  sendAnalytics(
-                    "Machine details action form",
-                    getNodeActionTitle(action),
-                    "Open"
-                  );
-                  if (action === NodeActions.LOCK) {
-                    dispatchForSelectedMachines(machineActions.lock);
-                    return;
-                  }
-                  if (action === NodeActions.UNLOCK) {
-                    dispatchForSelectedMachines(machineActions.unlock);
-                    return;
-                  }
-                  const view = Object.values(MachineHeaderViews).find(
-                    ([, actionName]) => actionName === action
-                  );
-
-                  if (view) {
-                    setSidePanelContent({ view });
-                  }
-                }}
+                onActionClick={handleActionClick}
                 singleNode
               />
             </div>
@@ -167,19 +168,7 @@ const MachineHeader = ({
                 key="action-dropdown"
                 nodeDisplay="machine"
                 nodes={[machine]}
-                onActionClick={(action) => {
-                  sendAnalytics(
-                    "Machine details action form",
-                    getNodeActionTitle(action),
-                    "Open"
-                  );
-                  const view = Object.values(MachineHeaderViews).find(
-                    ([, actionName]) => actionName === action
-                  );
-                  if (view) {
-                    setSidePanelContent({ view });
-                  }
-                }}
+                onActionClick={handleActionClick}
                 toggleAppearance=""
                 toggleClassName="p-action-menu u-no-margin--bottom"
                 toggleLabel="Menu"
