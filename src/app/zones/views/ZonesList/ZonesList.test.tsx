@@ -1,32 +1,22 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ZonesList, { TestIds } from "./ZonesListTable/ZonesListTable";
 
+import type { RootState } from "app/store/root/types";
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ZonesList", () => {
   it("correctly fetches the necessary data", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/zones", key: "testKey" }]}>
-          <CompatRouter>
-            <ZonesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ZonesList />, { route: "/zones", store });
     const expectedActions = ["zone/fetch"];
     const actualActions = store.getActions();
     expect(
@@ -42,16 +32,7 @@ describe("ZonesList", () => {
         items: [zoneFactory({ name: "test" })],
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/zones", key: "testKey" }]}>
-          <CompatRouter>
-            <ZonesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ZonesList />, { route: "/zones", state });
 
     expect(screen.getByTestId(TestIds.ZonesTable)).toBeInTheDocument();
   });
