@@ -3,13 +3,20 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import DomainDetailsHeader from "./DomainDetailsHeader";
+import AddRecordForm from "./DomainDetailsHeader/AddRecordForm";
+import DeleteDomainForm from "./DomainDetailsHeader/DeleteDomainForm";
+import { Labels } from "./DomainDetailsHeader/DomainDetailsHeader";
 import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
+import type { DomainDetailsSidePanelContent } from "./constants";
+import { DomainDetailsSidePanelViews } from "./constants";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
+import type { SidePanelContextType } from "app/base/side-panel-context";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import { actions as domainsActions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
@@ -23,6 +30,8 @@ const DomainDetails = (): JSX.Element => {
     domainsSelectors.getById(state, Number(id))
   );
   const domainsLoading = useSelector(domainsSelectors.loading);
+  const { sidePanelContent, setSidePanelContent } =
+    useSidePanel() as SidePanelContextType<DomainDetailsSidePanelContent>;
 
   const dispatch = useDispatch();
   useWindowTitle(domain?.name ?? "Loading...");
@@ -44,11 +53,40 @@ const DomainDetails = (): JSX.Element => {
       <ModelNotFound id={id} linkURL={urls.domains.index} modelName="domain" />
     );
   }
+
+  const closeForm = () => {
+    setSidePanelContent(null);
+  };
+
+  let content = null;
+  let title = null;
+
+  if (sidePanelContent) {
+    if (sidePanelContent.view === DomainDetailsSidePanelViews.ADD_RECORD) {
+      content = <AddRecordForm closeForm={closeForm} id={id} />;
+      title = Labels.AddRecord;
+    } else if (
+      sidePanelContent.view === DomainDetailsSidePanelViews.DELETE_DOMAIN
+    ) {
+      content = <DeleteDomainForm closeForm={closeForm} id={id} />;
+      title = Labels.DeleteDomain;
+    }
+  }
+
   return (
-    <MainContentSection header={<DomainDetailsHeader id={id} />}>
+    <PageContent
+      header={
+        <DomainDetailsHeader
+          id={id}
+          setSidePanelContent={setSidePanelContent}
+        />
+      }
+      sidePanelContent={content}
+      sidePanelTitle={title}
+    >
       <DomainSummary id={id} />
       <ResourceRecords id={id} />
-    </MainContentSection>
+    </PageContent>
   );
 };
 
