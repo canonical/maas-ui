@@ -1,4 +1,4 @@
-import { Labels as DomainListHeaderFormLabels } from "../DomainListHeaderForm/DomainListHeaderForm";
+import { DomainListSidePanelViews } from "../constants";
 
 import DomainListHeader, {
   Labels as DomainListHeaderLabels,
@@ -32,41 +32,47 @@ describe("DomainListHeader", () => {
     const state = { ...initialState };
     state.domain.loaded = false;
 
-    renderWithBrowserRouter(<DomainListHeader />, {
-      route: "/domains",
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainListHeader setSidePanelContent={jest.fn()} />,
+      {
+        route: "/domains",
+        state,
+      }
+    );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a domain count if domains have loaded", () => {
     const state = { ...initialState };
     state.domain.loaded = true;
-    renderWithBrowserRouter(<DomainListHeader />, {
-      route: "/domains",
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainListHeader setSidePanelContent={jest.fn()} />,
+      {
+        route: "/domains",
+        state,
+      }
+    );
 
     expect(screen.getByText("2 domains available")).toBeInTheDocument();
   });
 
   it("displays the form when Add domains is clicked", async () => {
     const state = { ...initialState };
-    renderWithBrowserRouter(<DomainListHeader />, {
-      route: "/domains",
-      state,
-    });
-
-    expect(
-      screen.queryByRole("form", { name: DomainListHeaderFormLabels.FormLabel })
-    ).not.toBeInTheDocument();
+    const setSidePanelContent = jest.fn();
+    renderWithBrowserRouter(
+      <DomainListHeader setSidePanelContent={setSidePanelContent} />,
+      {
+        route: "/domains",
+        state,
+      }
+    );
 
     await userEvent.click(
       screen.getByRole("button", { name: DomainListHeaderLabels.AddDomains })
     );
 
-    expect(
-      screen.getByRole("form", { name: DomainListHeaderFormLabels.FormLabel })
-    ).toBeInTheDocument();
+    expect(setSidePanelContent).toHaveBeenCalledWith({
+      view: DomainListSidePanelViews.ADD_DOMAIN,
+    });
   });
 });
