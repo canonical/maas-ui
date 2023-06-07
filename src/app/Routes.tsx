@@ -97,6 +97,14 @@ const Routes = (): JSX.Element => (
       }
       path={`${urls.subnets.fabric.index(null)}/*`}
     />
+    <Route
+      element={
+        <ErrorBoundary>
+          <ControllerDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.controllers.controller.index(null)}/*`}
+    />
     {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
     {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
     <Route element={<LegacyPageContentWrapper />}>
@@ -123,14 +131,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.controllers.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <ControllerDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.controllers.controller.index(null)}/*`}
       />
       <Route
         element={
