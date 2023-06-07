@@ -9,11 +9,15 @@ import DeviceDetailsHeader from "./DeviceDetailsHeader";
 import DeviceNetwork from "./DeviceNetwork";
 import DeviceSummary from "./DeviceSummary";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import { useGetURLId } from "app/base/hooks/urls";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
+import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
+import type { DeviceSidePanelContent } from "app/devices/types";
+import { getHeaderTitle } from "app/devices/utils";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
@@ -22,7 +26,8 @@ import { actions as tagActions } from "app/store/tag";
 import { isId, getRelativeRoute } from "app/utils";
 
 const DeviceDetails = (): JSX.Element => {
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const { sidePanelContent, setSidePanelContent } =
+    useSidePanel() as SidePanelContextType<DeviceSidePanelContent>;
   const dispatch = useDispatch();
   const id = useGetURLId(DeviceMeta.PK);
   const device = useSelector((state: RootState) =>
@@ -53,14 +58,25 @@ const DeviceDetails = (): JSX.Element => {
 
   const base = urls.devices.device.index(null);
   return (
-    <MainContentSection
+    <PageContent
       header={
         <DeviceDetailsHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }
+      sidePanelContent={
+        sidePanelContent &&
+        device && (
+          <DeviceHeaderForms
+            devices={[device]}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+            viewingDetails
+          />
+        )
+      }
+      sidePanelTitle={getHeaderTitle(device?.fqdn || "", sidePanelContent)}
     >
       {device && (
         <Routes>
@@ -85,7 +101,7 @@ const DeviceDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 
