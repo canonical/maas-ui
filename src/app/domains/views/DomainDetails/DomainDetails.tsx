@@ -1,13 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import DomainDetailsHeader from "./DomainDetailsHeader";
+import AddRecordForm from "./DomainDetailsHeader/AddRecordForm";
+import DeleteDomainForm from "./DomainDetailsHeader/DeleteDomainForm";
+import { Labels } from "./DomainDetailsHeader/DomainDetailsHeader";
 import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
@@ -23,6 +26,9 @@ const DomainDetails = (): JSX.Element => {
     domainsSelectors.getById(state, Number(id))
   );
   const domainsLoading = useSelector(domainsSelectors.loading);
+  const [formOpen, setFormOpen] = useState<"DeleteDomain" | "AddRecord" | null>(
+    null
+  );
 
   const dispatch = useDispatch();
   useWindowTitle(domain?.name ?? "Loading...");
@@ -44,11 +50,29 @@ const DomainDetails = (): JSX.Element => {
       <ModelNotFound id={id} linkURL={urls.domains.index} modelName="domain" />
     );
   }
+  const closeForm = () => {
+    setFormOpen(null);
+  };
   return (
-    <MainContentSection header={<DomainDetailsHeader id={id} />}>
+    <PageContent
+      header={<DomainDetailsHeader id={id} setFormOpen={setFormOpen} />}
+      sidePanelContent={
+        formOpen === null ? null : (
+          <>
+            {formOpen === "DeleteDomain" && (
+              <DeleteDomainForm closeForm={closeForm} id={id} />
+            )}
+            {formOpen === "AddRecord" && (
+              <AddRecordForm closeForm={closeForm} id={id} />
+            )}
+          </>
+        )
+      }
+      sidePanelTitle={formOpen ? Labels[formOpen] : null}
+    >
       <DomainSummary id={id} />
       <ResourceRecords id={id} />
-    </MainContentSection>
+    </PageContent>
   );
 };
 

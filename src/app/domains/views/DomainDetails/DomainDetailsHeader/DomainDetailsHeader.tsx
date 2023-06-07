@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-
-import AddRecordForm from "./AddRecordForm";
-import DeleteDomainForm from "./DeleteDomainForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import { actions as domainActions } from "app/store/domain";
@@ -27,6 +24,9 @@ const pluralizeString = (
 
 type Props = {
   id: Domain["id"];
+  setFormOpen: React.Dispatch<
+    React.SetStateAction<"DeleteDomain" | "AddRecord" | null>
+  >;
 };
 
 export enum Labels {
@@ -34,14 +34,14 @@ export enum Labels {
   DeleteDomain = "Delete domain",
 }
 
-const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
+const DomainDetailsHeader = ({
+  id,
+  setFormOpen,
+}: Props): JSX.Element | null => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
   );
   const dispatch = useDispatch();
-  const [formOpen, setFormOpen] = useState<"DeleteDomain" | "AddRecord" | null>(
-    null
-  );
 
   useEffect(() => {
     dispatch(domainActions.get(id));
@@ -50,10 +50,6 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   const isDefaultDomain = id === 0;
   const hostsCount = domain?.hosts ?? 0;
   const recordsCount = domain?.resource_count ?? 0;
-
-  const closeForm = () => {
-    setFormOpen(null);
-  };
 
   const buttons = [
     <Button
@@ -81,19 +77,6 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
     <SectionHeader
       buttons={buttons}
       loading={!domain}
-      sidePanelContent={
-        formOpen === null ? null : (
-          <>
-            {formOpen === "DeleteDomain" && (
-              <DeleteDomainForm closeForm={closeForm} id={id} />
-            )}
-            {formOpen === "AddRecord" && (
-              <AddRecordForm closeForm={closeForm} id={id} />
-            )}
-          </>
-        )
-      }
-      sidePanelTitle={formOpen ? Labels[formOpen] : null}
       subtitle={`${pluralizeString("host", hostsCount, "")}${
         hostsCount > 1 ? "; " : ""
       }${pluralizeString(

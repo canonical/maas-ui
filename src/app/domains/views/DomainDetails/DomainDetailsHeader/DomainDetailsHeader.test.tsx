@@ -8,7 +8,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {
@@ -16,9 +16,12 @@ describe("DomainDetailsHeader", () => {
       domain: domainStateFactory({ items: [domainFactory({ id: 1 })] }),
     });
 
-    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      {
+        state,
+      }
+    );
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -29,9 +32,12 @@ describe("DomainDetailsHeader", () => {
         items: [domainFactory({ id: 1, name: "domain-in-the-membrane" })],
       }),
     });
-    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      {
+        state,
+      }
+    );
 
     expect(
       screen.getByRole("heading", { name: "domain-in-the-membrane" })
@@ -52,9 +58,12 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      {
+        state,
+      }
+    );
 
     expect(screen.getByText("5 hosts; 9 resource records")).toBeInTheDocument();
   });
@@ -73,9 +82,12 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      {
+        state,
+      }
+    );
 
     expect(screen.getByText("9 resource records")).toBeInTheDocument();
   });
@@ -94,9 +106,12 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      {
+        state,
+      }
+    );
 
     expect(
       screen.getByText("5 hosts; No resource records")
@@ -117,9 +132,12 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      {
+        state,
+      }
+    );
 
     expect(screen.getByText("No resource records")).toBeInTheDocument();
   });
@@ -135,14 +153,73 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<DomainDetailsHeader id={0} />, {
-      state,
-    });
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={0} setFormOpen={jest.fn()} />,
+      {
+        state,
+      }
+    );
 
     expect(
       screen.queryByRole("button", {
         name: DomainDetailsHeaderLabels.DeleteDomain,
       })
     ).not.toBeInTheDocument();
+  });
+
+  it("calls a function to open the side panel when the 'Add record' button is clicked", async () => {
+    const state = rootStateFactory({
+      domain: domainStateFactory({
+        loaded: true,
+        items: [
+          domainDetailsFactory({
+            id: 1,
+            name: "domain-in-the-membrane",
+            hosts: 5,
+            resource_count: 9,
+          }),
+        ],
+      }),
+    });
+    const setFormOpen = jest.fn();
+
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={setFormOpen} />,
+      {
+        state,
+      }
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Add record" }));
+    expect(setFormOpen).toHaveBeenCalledWith("AddRecord");
+  });
+
+  it("calls a function to open the side panel when the 'Delete domain' button is clicked", async () => {
+    const state = rootStateFactory({
+      domain: domainStateFactory({
+        loaded: true,
+        items: [
+          domainDetailsFactory({
+            id: 1,
+            name: "domain-in-the-membrane",
+            hosts: 5,
+            resource_count: 9,
+          }),
+        ],
+      }),
+    });
+    const setFormOpen = jest.fn();
+
+    renderWithBrowserRouter(
+      <DomainDetailsHeader id={1} setFormOpen={setFormOpen} />,
+      {
+        state,
+      }
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete domain" })
+    );
+    expect(setFormOpen).toHaveBeenCalledWith("DeleteDomain");
   });
 });

@@ -73,6 +73,14 @@ const Routes = (): JSX.Element => (
       }
       path={`${urls.devices.device.index(null)}/*`}
     />
+    <Route
+      element={
+        <ErrorBoundary>
+          <DomainDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.domains.details(null)}/*`}
+    />
     {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
     {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
     <Route element={<LegacyPageContentWrapper />}>
@@ -123,14 +131,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.domains.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <DomainDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.domains.details(null)}/*`}
       />
       <Route
         element={
