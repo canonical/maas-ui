@@ -5,6 +5,7 @@ import MachineHeader from "./MachineHeader";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -221,5 +222,31 @@ describe("MachineHeader", () => {
     expect(
       screen.queryByTestId("section-header-subtitle")
     ).not.toBeInTheDocument();
+  });
+
+  it("shouldn't need confirmation before locking a machine", async () => {
+    state.machine.items[0].actions = [NodeActions.LOCK];
+    state.machine.items[0].permissions = ["edit", "delete"];
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { store, route: "/machine/abc123" }
+    );
+
+    await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
+
+    expect(
+      screen.queryByRole("complementary", {
+        name: /lock/i,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      store.getActions().some((action) => action.type === "machine/lock")
+    ).toBe(true);
   });
 });
