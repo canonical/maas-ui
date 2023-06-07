@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom-v5-compat";
 import type { ControllerSidePanelContent } from "app/controllers/types";
 import type { DashboardSidePanelContent } from "app/dashboard/views/constants";
 import type { DeviceSidePanelContent } from "app/devices/types";
+import type { DomainDetailsSidePanelContent } from "app/domains/views/DomainDetails/constants";
 import type { DomainListSidePanelContent } from "app/domains/views/DomainsList/constants";
 import type { KVMSidePanelContent } from "app/kvm/types";
 import type { MachineSidePanelContent } from "app/machines/types";
@@ -25,6 +26,7 @@ export type SidePanelContent =
   | TagSidePanelContent
   | ZoneSidePanelContent
   | SubnetSidePanelContent
+  | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
   | DashboardSidePanelContent
   | VLANDetailsSidePanelContent

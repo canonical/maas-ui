@@ -4,7 +4,10 @@ import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
+import { DomainDetailsSidePanelViews } from "../constants";
+
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
@@ -24,9 +27,7 @@ const pluralizeString = (
 
 type Props = {
   id: Domain["id"];
-  setFormOpen: React.Dispatch<
-    React.SetStateAction<"DeleteDomain" | "AddRecord" | null>
-  >;
+  setSidePanelContent: SetSidePanelContent;
 };
 
 export enum Labels {
@@ -36,7 +37,7 @@ export enum Labels {
 
 const DomainDetailsHeader = ({
   id,
-  setFormOpen,
+  setSidePanelContent,
 }: Props): JSX.Element | null => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
@@ -55,7 +56,9 @@ const DomainDetailsHeader = ({
     <Button
       data-testid="add-record"
       key="add-record"
-      onClick={() => setFormOpen("AddRecord")}
+      onClick={() =>
+        setSidePanelContent({ view: DomainDetailsSidePanelViews.ADD_RECORD })
+      }
     >
       {Labels.AddRecord}
     </Button>,
@@ -66,7 +69,11 @@ const DomainDetailsHeader = ({
         appearance="negative"
         data-testid="delete-domain"
         key="delete-domain"
-        onClick={() => setFormOpen("DeleteDomain")}
+        onClick={() =>
+          setSidePanelContent({
+            view: DomainDetailsSidePanelViews.DELETE_DOMAIN,
+          })
+        }
       >
         {Labels.DeleteDomain}
       </Button>

@@ -1,3 +1,5 @@
+import { DomainDetailsSidePanelViews } from "../constants";
+
 import DomainDetailsHeader, {
   Labels as DomainDetailsHeaderLabels,
 } from "./DomainDetailsHeader";
@@ -17,7 +19,7 @@ describe("DomainDetailsHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
       {
         state,
       }
@@ -33,7 +35,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
       {
         state,
       }
@@ -59,7 +61,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
       {
         state,
       }
@@ -83,7 +85,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
       {
         state,
       }
@@ -107,7 +109,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
       {
         state,
       }
@@ -133,7 +135,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
       {
         state,
       }
@@ -154,7 +156,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={0} setFormOpen={jest.fn()} />,
+      <DomainDetailsHeader id={0} setSidePanelContent={jest.fn()} />,
       {
         state,
       }
@@ -181,17 +183,19 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const setFormOpen = jest.fn();
+    const setSidePanelContent = jest.fn();
 
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={setFormOpen} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={setSidePanelContent} />,
       {
         state,
       }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Add record" }));
-    expect(setFormOpen).toHaveBeenCalledWith("AddRecord");
+    expect(setSidePanelContent).toHaveBeenCalledWith({
+      view: DomainDetailsSidePanelViews.ADD_RECORD,
+    });
   });
 
   it("calls a function to open the side panel when the 'Delete domain' button is clicked", async () => {
@@ -208,10 +212,10 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const setFormOpen = jest.fn();
+    const setSidePanelContent = jest.fn();
 
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setFormOpen={setFormOpen} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={setSidePanelContent} />,
       {
         state,
       }
@@ -220,6 +224,8 @@ describe("DomainDetailsHeader", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Delete domain" })
     );
-    expect(setFormOpen).toHaveBeenCalledWith("DeleteDomain");
+    expect(setSidePanelContent).toHaveBeenCalledWith({
+      view: DomainDetailsSidePanelViews.DELETE_DOMAIN,
+    });
   });
 });
