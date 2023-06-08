@@ -236,11 +236,11 @@
 @include DiscoveriesList;
 
 // machines
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneFormFields";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneResults";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/TagForm";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneFormFields";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/TagForm";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineList";
