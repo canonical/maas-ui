@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import LXDHostVMs from "./LXDHostVMs";
 
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
@@ -133,7 +133,7 @@ describe("LXDHostVMs", () => {
     await userEvent.click(screen.getByTestId("add-vm"));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.COMPOSE_VM,
+      view: KVMSidePanelViews.COMPOSE_VM,
       extras: {
         hostId: 1,
       },

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 
 import urls from "app/base/urls";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type { RootState } from "app/store/root/types";
 import {
   rootState as rootStateFactory,
@@ -223,7 +223,7 @@ describe("LXDClusterDetailsHeader", () => {
     );
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.REFRESH_KVM,
+      view: KVMSidePanelViews.REFRESH_KVM,
       extras: { hostIds: hosts.map((host) => host.id) },
     });
   });

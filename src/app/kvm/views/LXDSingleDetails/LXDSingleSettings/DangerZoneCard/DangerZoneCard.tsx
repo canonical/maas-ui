@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Button, Col, Row } from "@canonical/react-components";
 
 import FormCard from "app/base/components/FormCard";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
 import type { Pod, PodMeta } from "app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
@@ -31,7 +31,7 @@ const DangerZoneCard = ({
             data-testid="remove-kvm"
             onClick={() =>
               setSidePanelContent({
-                view: KVMHeaderViews.DELETE_KVM,
+                view: KVMSidePanelViews.DELETE_KVM,
                 extras: { clusterId, hostId },
               })
             }

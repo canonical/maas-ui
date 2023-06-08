@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -175,7 +175,7 @@ describe("LXDSingleDetailsHeader", () => {
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.REFRESH_KVM,
+      view: KVMSidePanelViews.REFRESH_KVM,
       extras: { hostIds: [1] },
     });
   });

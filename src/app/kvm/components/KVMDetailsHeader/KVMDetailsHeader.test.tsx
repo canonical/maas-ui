@@ -1,7 +1,7 @@
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
 import urls from "app/base/urls";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import { screen, getTestState, renderWithBrowserRouter } from "testing/utils";
 
 describe("KVMDetailsHeader", () => {
@@ -17,7 +17,7 @@ describe("KVMDetailsHeader", () => {
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
         sidePanelContent={{
-          view: KVMHeaderViews.COMPOSE_VM,
+          view: KVMSidePanelViews.COMPOSE_VM,
           extras: { hostId: 1 },
         }}
         tabLinks={[]}
