@@ -1,8 +1,10 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
 import { MachineHeaderViews } from "app/machines/constants";
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
@@ -25,6 +27,7 @@ const mockStore = configureStore<RootState>();
 describe("MachineHeader", () => {
   let state: RootState;
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
@@ -36,6 +39,10 @@ describe("MachineHeader", () => {
         }),
       }),
     });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("displays a spinner when loading", () => {
@@ -245,8 +252,15 @@ describe("MachineHeader", () => {
         name: /lock/i,
       })
     ).not.toBeInTheDocument();
+    const expectedAction = machineActions.lock(
+      {
+        filter: { id: [state.machine.items[0].system_id] },
+      },
+      "123456"
+    );
+
     expect(
-      store.getActions().some((action) => action.type === "machine/lock")
-    ).toBe(true);
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 });
