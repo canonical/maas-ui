@@ -7,7 +7,7 @@ import { Link, Route, Routes } from "react-router-dom-v5-compat";
 
 import PoolList from "./PoolList";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
@@ -30,7 +30,7 @@ const Pools = (): JSX.Element => {
   const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <MachinesHeader
           buttons={[
@@ -47,6 +47,8 @@ const Pools = (): JSX.Element => {
           }
         />
       }
+      sidePanelContent={null}
+      sidePanelTitle={null}
     >
       <Routes>
         <Route
@@ -63,7 +65,7 @@ const Pools = (): JSX.Element => {
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
-    </MainContentSection>
+    </PageContent>
   );
 };
 
