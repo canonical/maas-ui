@@ -8,7 +8,7 @@ import GeneratedImages from "./GeneratedImages";
 import ImageListHeader from "./ImageListHeader";
 import SyncedImages from "./SyncedImages";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
@@ -35,7 +35,11 @@ const ImageList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <MainContentSection header={<ImageListHeader />}>
+    <PageContent
+      header={<ImageListHeader />}
+      sidePanelContent={null}
+      sidePanelTitle={null}
+    >
       {configLoaded && (
         <>
           {!autoImport && (
@@ -51,7 +55,7 @@ const ImageList = (): JSX.Element => {
           <CustomImages />
         </>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 
