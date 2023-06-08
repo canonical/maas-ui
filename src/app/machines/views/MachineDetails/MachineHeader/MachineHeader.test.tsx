@@ -1,10 +1,13 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
 import { MachineHeaderViews } from "app/machines/constants";
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
+import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -24,6 +27,7 @@ const mockStore = configureStore<RootState>();
 describe("MachineHeader", () => {
   let state: RootState;
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
@@ -35,6 +39,10 @@ describe("MachineHeader", () => {
         }),
       }),
     });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("displays a spinner when loading", () => {
@@ -221,5 +229,38 @@ describe("MachineHeader", () => {
     expect(
       screen.queryByTestId("section-header-subtitle")
     ).not.toBeInTheDocument();
+  });
+
+  it("shouldn't need confirmation before locking a machine", async () => {
+    state.machine.items[0].actions = [NodeActions.LOCK];
+    state.machine.items[0].permissions = ["edit", "delete"];
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { store, route: "/machine/abc123" }
+    );
+
+    await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
+
+    expect(
+      screen.queryByRole("complementary", {
+        name: /lock/i,
+      })
+    ).not.toBeInTheDocument();
+    const expectedAction = machineActions.lock(
+      {
+        filter: { id: [state.machine.items[0].system_id] },
+      },
+      "123456"
+    );
+
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 });
