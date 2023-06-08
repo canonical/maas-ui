@@ -8,7 +8,7 @@ import GeneratedImages from "./GeneratedImages";
 import ImageListHeader from "./ImageListHeader";
 import SyncedImages from "./SyncedImages";
 
-import PageContent from "app/base/components/PageContent/PageContent";
+import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
