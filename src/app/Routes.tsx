@@ -76,6 +76,14 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <DomainsList />
+        </ErrorBoundary>
+      }
+      path={`${urls.domains.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <DomainDetails />
         </ErrorBoundary>
       }
@@ -123,14 +131,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.devices.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <DomainsList />
-          </ErrorBoundary>
-        }
-        path={`${urls.domains.index}/*`}
       />
       <Route
         element={
