@@ -14,7 +14,7 @@ import { useWindowTitle } from "app/base/hooks";
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import KVMForms from "app/kvm/components/KVMHeaderForms/KVMForms";
+import KVMForms from "app/kvm/components/KVMForms";
 import type { KVMSidePanelContent } from "app/kvm/types";
 import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";

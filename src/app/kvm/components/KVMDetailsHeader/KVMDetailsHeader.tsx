@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
-import KVMForms from "app/kvm/components/KVMHeaderForms";
+import KVMForms from "app/kvm/components/KVMForms";
 import type {
   KVMSetSidePanelContent,
   KVMSidePanelContent,
