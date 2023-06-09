@@ -44,9 +44,10 @@ const SpaceDetails = (): JSX.Element => {
     const unsetActiveSpaceAndCleanup = () => {
       dispatch(spaceActions.setActive(null));
       dispatch(spaceActions.cleanup());
+      setSidePanelContent(null);
     };
     return unsetActiveSpaceAndCleanup;
-  }, [dispatch, id, isValidID]);
+  }, [dispatch, id, isValidID, setSidePanelContent]);
 
   if (!space) {
     const spaceNotFound = !isValidID || !spacesLoading;
