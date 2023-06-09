@@ -1,34 +1,35 @@
-import { useState } from "react";
-
 import { Button } from "@canonical/react-components";
 
-import SpaceDelete from "./SpaceDelete";
+import type { SpaceDetailsSidePanelContent } from "../constants";
+import { SpaceDetailsViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
 import type { Space } from "app/store/space/types";
 
 type Props = {
   space: Space;
+  setSidePanelContent: SetSidePanelContent;
+  sidePanelContent: SpaceDetailsSidePanelContent | null;
 };
 
-const SpaceDetailsHeader = ({ space }: Props): JSX.Element => {
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+const SpaceDetailsHeader = ({
+  space,
+  setSidePanelContent,
+  sidePanelContent,
+}: Props): JSX.Element => {
   return (
     <SectionHeader
       buttons={[
-        <Button disabled={isDeleteOpen} onClick={() => setIsDeleteOpen(true)}>
+        <Button
+          disabled={!!sidePanelContent}
+          onClick={() =>
+            setSidePanelContent({ view: SpaceDetailsViews.DELETE_SPACE })
+          }
+        >
           Delete space
         </Button>,
       ]}
-      sidePanelContent={
-        isDeleteOpen ? (
-          <SpaceDelete
-            handleClose={() => setIsDeleteOpen(false)}
-            space={space}
-          />
-        ) : null
-      }
-      sidePanelTitle="Delete space"
       title={space.name}
     />
   );

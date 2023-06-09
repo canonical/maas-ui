@@ -3,13 +3,18 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
+import SpaceDelete from "./SpaceDetailsHeader/SpaceDelete";
 import SpaceSubnets from "./SpaceSubnets";
 import SpaceSummary from "./SpaceSummary";
+import type { SpaceDetailsSidePanelContent } from "./constants";
+import { SpaceDetailsViews } from "./constants";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
+import type { SidePanelContextType } from "app/base/side-panel-context";
+import { useSidePanel } from "app/base/side-panel-context";
 import type { RootState } from "app/store/root/types";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
@@ -25,6 +30,9 @@ const SpaceDetails = (): JSX.Element => {
   );
   const spacesLoading = useSelector(spaceSelectors.loading);
   const isValidID = isId(id);
+  const { sidePanelContent, setSidePanelContent } =
+    useSidePanel() as SidePanelContextType<SpaceDetailsSidePanelContent>;
+
   useWindowTitle(`${space?.name || "Space"} details`);
 
   useEffect(() => {
@@ -52,14 +60,46 @@ const SpaceDetails = (): JSX.Element => {
         />
       );
     }
-    return <MainContentSection header={<SectionHeader loading />} />;
+    return (
+      <PageContent
+        header={<SectionHeader loading />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
+  }
+
+  let content = null;
+  let title = null;
+
+  if (
+    sidePanelContent &&
+    sidePanelContent.view === SpaceDetailsViews.DELETE_SPACE
+  ) {
+    content = (
+      <SpaceDelete
+        handleClose={() => setSidePanelContent(null)}
+        space={space}
+      />
+    );
+    title = "Delete space";
   }
 
   return (
-    <MainContentSection header={<SpaceDetailsHeader space={space} />}>
+    <PageContent
+      header={
+        <SpaceDetailsHeader
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
+          space={space}
+        />
+      }
+      sidePanelContent={content}
+      sidePanelTitle={title}
+    >
       <SpaceSummary space={space} />
       <SpaceSubnets space={space} />
-    </MainContentSection>
+    </PageContent>
   );
 };
 
