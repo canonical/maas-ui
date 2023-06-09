@@ -1,7 +1,4 @@
-import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Label } from "../TagUpdate/TagUpdate";
@@ -17,9 +14,9 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 let state: RootState;
 
 beforeEach(() => {
@@ -41,21 +38,14 @@ beforeEach(() => {
 
 it("dispatches actions to fetch necessary data", () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<TagDetails onDelete={jest.fn()} />}
-              path={urls.tags.tag.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<TagDetails onDelete={jest.fn()} />}
+        path={urls.tags.tag.index(null)}
+      />
+    </Routes>,
+    { route: urls.tags.tag.index({ id: 1 }), store }
   );
 
   const expectedActions = [tagActions.fetch()];
@@ -76,22 +66,14 @@ it("displays a message if the tag does not exist", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<TagDetails onDelete={jest.fn()} />}
-              path={urls.tags.tag.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<TagDetails onDelete={jest.fn()} />}
+        path={urls.tags.tag.index(null)}
+      />
+    </Routes>,
+    { route: urls.tags.tag.index({ id: 1 }), state }
   );
 
   expect(screen.getByText("Tag not found")).toBeInTheDocument();
@@ -104,74 +86,47 @@ it("shows a spinner if the tag has not loaded yet", () => {
       loading: true,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<TagDetails onDelete={jest.fn()} />}
-              path={urls.tags.tag.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<TagDetails onDelete={jest.fn()} />}
+        path={urls.tags.tag.index(null)}
+      />
+    </Routes>,
+    { route: urls.tags.tag.index({ id: 1 }), state }
   );
 
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });
 
 it("can display the edit form", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.update({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={
-                <TagDetails
-                  onDelete={jest.fn()}
-                  tagViewState={TagViewState.Updating}
-                />
-              }
-              path={urls.tags.tag.update(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={
+          <TagDetails
+            onDelete={jest.fn()}
+            tagViewState={TagViewState.Updating}
+          />
+        }
+        path={urls.tags.tag.update(null)}
+      />
+    </Routes>,
+    { route: urls.tags.tag.update({ id: 1 }), state }
   );
   expect(screen.getByRole("form", { name: Label.Form })).toBeInTheDocument();
 });
 
 it("can go to the tag edit page", async () => {
-  const path = urls.tags.tag.index({ id: 1 });
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: path }],
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<TagDetails onDelete={jest.fn()} />}
-              path={urls.tags.tag.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </Router>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<TagDetails onDelete={jest.fn()} />}
+        path={urls.tags.tag.index(null)}
+      />
+    </Routes>,
+    { route: urls.tags.tag.index({ id: 1 }), state }
   );
   await userEvent.click(screen.getByRole("link", { name: "Edit" }));
-  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
-  expect(history.location.state).toStrictEqual({ canGoBack: true });
+  expect(window.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
 });

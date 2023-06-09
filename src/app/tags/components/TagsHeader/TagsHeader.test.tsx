@@ -1,19 +1,9 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import TagsHeader from "./TagsHeader";
 
-import { TagHeaderViews } from "app/tags/constants";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+import { TageSidePanelViews } from "app/tags/constants";
+import { rootState as rootStateFactory } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
 let scrollToSpy: jest.Mock;
 
 beforeEach(() => {
@@ -26,72 +16,27 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("can display the add tag form", () => {
-  const store = mockStore(rootStateFactory());
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <TagsHeader
-            setSidePanelContent={jest.fn()}
-            sidePanelContent={{ view: TagHeaderViews.AddTag }}
-          />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+it("can call a function to display the add tag form", async () => {
+  const setSidePanelContent = jest.fn();
+  renderWithBrowserRouter(
+    <TagsHeader setSidePanelContent={setSidePanelContent} />,
+    {
+      route: "/tags",
+      state: rootStateFactory(),
+    }
   );
-  expect(screen.getByRole("form", { name: "Create tag" })).toBeInTheDocument();
-  expect(
-    screen.getByRole("complementary", { name: "Create new tag" })
-  ).toBeInTheDocument();
-  expect(screen.getByTestId("section-header-title").textContent).toBe("Tags");
-});
 
-it("can display the delete tag form", () => {
-  const store = mockStore(
-    rootStateFactory({
-      tag: tagStateFactory({
-        items: [
-          tagFactory({
-            id: 1,
-          }),
-        ],
-      }),
-    })
-  );
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <TagsHeader
-            setSidePanelContent={jest.fn()}
-            sidePanelContent={{
-              view: TagHeaderViews.DeleteTag,
-              extras: { id: 1 },
-            }}
-          />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(screen.getByRole("form", { name: "Delete tag" })).toBeInTheDocument();
-  expect(
-    screen.getByRole("heading", { name: "Delete tag" })
-  ).toBeInTheDocument();
-  expect(screen.getByTestId("section-header-title").textContent).toBe("Tags");
+  await userEvent.click(screen.getByRole("button", { name: "Create new tag" }));
+  expect(setSidePanelContent).toHaveBeenCalledWith({
+    view: TageSidePanelViews.AddTag,
+  });
 });
 
 it("displays the default title", () => {
-  const store = mockStore(rootStateFactory());
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <TagsHeader setSidePanelContent={jest.fn()} sidePanelContent={null} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<TagsHeader setSidePanelContent={jest.fn()} />, {
+    route: "/tags",
+    state: rootStateFactory(),
+  });
   expect(
     screen.getByRole("heading", { level: 1, name: "Tags" })
   ).toBeInTheDocument();
