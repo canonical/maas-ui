@@ -180,9 +180,9 @@
 @import "~app/kvm/components/CPUColumn/CPUPopover";
 @import "~app/kvm/components/KVMDetailsHeader";
 @import "~app/base/components/DhcpFormFields/MachineSelect";
-@import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
-@import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
-@import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable/PoolSelect";
+@import "~app/kvm/components/KVMForms/ComposeForm/InterfacesTable";
+@import "~app/kvm/components/KVMForms/ComposeForm/InterfacesTable/SubnetSelect";
+@import "~app/kvm/components/KVMForms/ComposeForm/StorageTable/PoolSelect";
 @import "~app/kvm/components/KVMResourcesCard";
 @import "~app/kvm/components/KVMStorageCards";
 @import "~app/kvm/components/LXDHostToolbar";
