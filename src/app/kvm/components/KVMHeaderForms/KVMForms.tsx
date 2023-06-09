@@ -23,8 +23,6 @@ import type { SelectedMachines } from "app/store/machine/types";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
 type Props = SidePanelContextType<KVMSidePanelContent | null> & {
-  // sidePanelContent: KVMSidePanelContent | null;
-  // setSidePanelContent: KVMSetSidePanelContent;
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 };
