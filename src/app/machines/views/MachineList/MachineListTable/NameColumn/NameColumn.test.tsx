@@ -107,8 +107,8 @@ describe("NameColumn", () => {
       { route: "/machines", state }
     );
     expect(
-      screen.getByRole("link", { name: "00:11:22:33:44:55" })
-    ).toBeInTheDocument();
+      screen.getByRole("link", { name: "koala.example" })
+    ).toHaveTextContent("00:11:22:33:44:55");
   });
 
   it("can show multiple mac address", () => {
