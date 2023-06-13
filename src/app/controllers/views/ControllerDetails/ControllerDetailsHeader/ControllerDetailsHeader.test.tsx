@@ -31,7 +31,6 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
         <CompatRouter>
           <ControllerDetailsHeader
             setSidePanelContent={jest.fn()}
-            sidePanelContent={null}
             systemId="abc123"
           />
         </CompatRouter>
@@ -58,7 +57,6 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
         <CompatRouter>
           <ControllerDetailsHeader
             setSidePanelContent={jest.fn()}
-            sidePanelContent={null}
             systemId={controller.system_id}
           />
         </CompatRouter>
@@ -85,7 +83,6 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
         <CompatRouter>
           <ControllerDetailsHeader
             setSidePanelContent={jest.fn()}
-            sidePanelContent={null}
             systemId={controllerDetails.system_id}
           />
         </CompatRouter>
@@ -119,7 +116,6 @@ it("displays actions in take action menu", async () => {
         <CompatRouter>
           <ControllerDetailsHeader
             setSidePanelContent={jest.fn()}
-            sidePanelContent={null}
             systemId={controllerDetails.system_id}
           />
         </CompatRouter>

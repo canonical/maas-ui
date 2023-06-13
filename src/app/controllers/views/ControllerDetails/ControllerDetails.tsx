@@ -15,13 +15,15 @@ import ControllerSummary from "./ControllerSummary";
 import ControllerUSBDevices from "./ControllerUSBDevices";
 import ControllerVLANs from "./ControllerVLANs";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
+import ControllerForms from "app/controllers/components/ControllerForms/ControllerForms";
+import { getHeaderTitle } from "app/controllers/utils";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
@@ -65,14 +67,24 @@ const ControllerDetails = (): JSX.Element => {
   const base = urls.controllers.controller.index(null);
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <ControllerDetailsHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }
+      sidePanelContent={
+        sidePanelContent && controller ? (
+          <ControllerForms
+            controllers={[controller]}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+            viewingDetails
+          />
+        ) : null
+      }
+      sidePanelTitle={getHeaderTitle("Controller", sidePanelContent)}
     >
       {controller && (
         <Routes>
@@ -174,7 +186,7 @@ const ControllerDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 
