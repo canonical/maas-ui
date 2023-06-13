@@ -1,29 +1,30 @@
 # MAAS UI
 
 ## Content
-  - [Usability](#usability)
-  - [Code structure](#code-structure)
-  - [React](#react)
-    - [Hooks](#hooks)
-    - [Components](#components)
-      - [Forms](#forms)
-    - [Vanilla components](#vanilla-components)
-    - [Redux](#redux)
-      - [Redux Toolkit](#redux-toolkit)
-      - [Reselect](#reselect)
-      - [Redux-Saga](#redux-saga)
-    - [TypeScript](#typeScript)
-      - [TSFixMe](#tsfixme)
-    - [Testing](#testing)
-      - [Test attributes (OUTDATED)](#test-attributes)
-      - [Model factories](#model-factories)
-    - [Coding style](#coding-style)
-      - [ES6](#es6)
-      - [Prettier](#prettier)
-  - [Proxy](#proxy)
-  - [End-to-end](#end-to-end)
-    - [Cypress](#cypress)
-    - [Playwright](#playwright)
+
+- [Usability](#usability)
+- [Code structure](#code-structure)
+- [React](#react)
+  - [Hooks](#hooks)
+  - [Components](#components)
+    - [Forms](#forms)
+  - [Vanilla components](#vanilla-components)
+  - [Redux](#redux)
+    - [Redux Toolkit](#redux-toolkit)
+    - [Reselect](#reselect)
+    - [Redux-Saga](#redux-saga)
+  - [TypeScript](#typeScript)
+    - [TSFixMe](#tsfixme)
+  - [Testing](#testing)
+    - [Test attributes (OUTDATED)](#test-attributes)
+    - [Model factories](#model-factories)
+  - [Coding style](#coding-style)
+    - [ES6](#es6)
+    - [Prettier](#prettier)
+- [Proxy](#proxy)
+- [End-to-end](#end-to-end)
+  - [Cypress](#cypress)
+  - [Playwright](#playwright)
 
 ## Usability
 
@@ -35,7 +36,6 @@ Only a small percentage of users interact with the MAAS client on mobile devices
 The high-level interactions between the React side of the frontend and the API are illustrated below.
 
 ![code-structure](https://user-images.githubusercontent.com/47540149/214085014-a48a1645-afb0-434b-b5e9-07ae798c571a.png)
-
 
 ## React
 
@@ -93,11 +93,34 @@ When data needs to be retrieved from the store it is done through a selector. Th
 
 Redux-Saga acts as middleware between actions and reducers, allowing Redux actions to be understood by the MAAS server, and MAAS server responses to be understood by Redux. We use Redux-Saga for all of our asynchronous (HTTP and websocket) calls.
 
-A common flow is this: an action is dispatched from a component to fetch some data, a saga intercepts that action and transforms it into a websocket message to send to the MAAS server, the saga waits until the server responds and then dispatches an action based on the response (e.g. data or error message).
+A common flow in MAAS UI is this: an action is dispatched from a component to fetch some data, a saga intercepts that action and transforms it into a websocket message to send to the MAAS server, the saga waits until the server responds and then dispatches an action based on the response (e.g. data or error message).
 
 The saga files can be found in [ui/src/app/base/sagas](https://github.com/canonical-web-and-design/maas-ui/tree/master/ui/src/app/base/sagas).
 
 ![redux-saga](https://user-images.githubusercontent.com/47540149/214086167-45b4b87a-b71d-400f-93d1-997d99681fd9.png)
+
+- `yield*call(func, ...args)` is used to call a function with the provided arguments,
+- `yield* put(action)` is used to dispatch an action to the Redux store,
+- `yield*take(actionType)` is used to pause the generator function until an action with the provided type is dispatched,
+- `yield* takeLatest(actionType, func)`  starts the provided function when an action with the provided type is dispatched, but if there was a previously started func still running, it gets cancelled.
+
+#### Redux-Saga flow in maas-ui
+
+##### rootSaga
+
+`rootSaga` is the entry point of our saga workflows. It's a generator function, denoted by the function*syntax. yield* all([]) is used to initiate all the sagas simultaneously. Each saga inside the array is watching for specific action types to be dispatched, and when that happens, they run specific tasks.
+
+##### handleMessage
+
+The `handleMessage` saga is responsible for handling incoming WebSocket messages. It's an infinite loop that keeps running and waits for incoming WebSocket messages. When a message arrives, it checks the type of the event and based on that dispatches different actions using yield* put(action).
+
+##### sendMessage
+
+The `sendMessage` function handles sending WebSocket messages. It first dispatches an action that a particular request has started, sends the message, and handles any potential errors by dispatching an error action if needed. Here, `yield* call(func, ...args)` is used to call a function with the provided arguments and wait for it to finish before moving to the next instruction.
+
+##### setupWebSocket and watchWebSockets
+
+`setupWebSocket` and `watchWebSockets` are used for setting up and managing the WebSocket connection. When the WebSocket connection is requested (status/websocketConnect action is dispatched), watchWebSockets calls setupWebSocket. Inside setupWebSocket, it tries to create a WebSocket connection and then sets up several watchers inside a race block, which means it's waiting for either these watchers to finish or for the status/websocketDisconnect action to be dispatched.
 
 ### TypeScript
 
