@@ -7,7 +7,7 @@ import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
-import ControllerHeaderForms from "app/controllers/components/ControllerForms";
+import ControllerForms from "app/controllers/components/ControllerForms";
 import { ControllerSidePanelViews } from "app/controllers/constants";
 import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
@@ -64,7 +64,7 @@ const ControllerListHeader = ({
       ]}
       sidePanelContent={
         sidePanelContent && (
-          <ControllerHeaderForms
+          <ControllerForms
             controllers={selectedControllers}
             setSidePanelContent={setSidePanelContent}
             sidePanelContent={sidePanelContent}
