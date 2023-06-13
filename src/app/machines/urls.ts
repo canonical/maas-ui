@@ -1,5 +1,5 @@
-import type { Machine } from "app/store/machine/types";
-import type { ScriptResult } from "app/store/scriptresult/types";
+import { Machine } from "app/store/machine/types";
+import { ScriptResult } from "app/store/scriptresult/types";
 import { argPath } from "app/utils";
 
 const withId = argPath<{ id: Machine["system_id"] }>;
