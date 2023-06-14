@@ -92,6 +92,14 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <Pools />
+        </ErrorBoundary>
+      }
+      path={`${urls.pools.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <FabricDetails />
         </ErrorBoundary>
       }
@@ -163,14 +171,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.machines.machine.index(null)}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <Pools />
-          </ErrorBoundary>
-        }
-        path={`${urls.pools.index}/*`}
       />
       <Route
         element={
