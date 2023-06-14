@@ -1,39 +1,31 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricDetails from "./FabricDetails";
 
 import urls from "app/base/urls";
 import { actions as fabricActions } from "app/store/fabric";
+import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import {
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 it("dispatches actions to fetch necessary data and set fabric as active on mount", () => {
   const state = rootStateFactory();
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.fabric.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<FabricDetails />}
-              path={urls.subnets.fabric.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<FabricDetails />}
+        path={urls.subnets.fabric.index(null)}
+      />
+    </Routes>,
+    { route: urls.subnets.fabric.index({ id: 1 }), store }
   );
 
   const expectedActions = [
@@ -54,21 +46,14 @@ it("dispatches actions to fetch necessary data and set fabric as active on mount
 it("dispatches actions to unset active fabric and clean up on unmount", () => {
   const state = rootStateFactory();
   const store = mockStore(state);
-  const { unmount } = render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.fabric.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<FabricDetails />}
-              path={urls.subnets.fabric.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  const { unmount } = renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<FabricDetails />}
+        path={urls.subnets.fabric.index(null)}
+      />
+    </Routes>,
+    { route: urls.subnets.fabric.index({ id: 1 }), store }
   );
 
   unmount();
@@ -97,22 +82,14 @@ it("displays a message if the fabric does not exist", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.fabric.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<FabricDetails />}
-              path={urls.subnets.fabric.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<FabricDetails />}
+        path={urls.subnets.fabric.index(null)}
+      />
+    </Routes>,
+    { route: urls.subnets.fabric.index({ id: 1 }), state }
   );
 
   expect(screen.getByText("Fabric not found")).toBeInTheDocument();
@@ -125,22 +102,14 @@ it("shows a spinner if the fabric has not loaded yet", () => {
       loading: true,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.fabric.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<FabricDetails />}
-              path={urls.subnets.fabric.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Routes>
+      <Route
+        element={<FabricDetails />}
+        path={urls.subnets.fabric.index(null)}
+      />
+    </Routes>,
+    { route: urls.subnets.fabric.index({ id: 1 }), state }
   );
 
   expect(
