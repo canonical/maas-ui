@@ -6,12 +6,14 @@ import {
   isDeployedWithHardwareSync,
   mapSortDirection,
   selectedToFilters,
+  isUncomissionedPowerType,
 } from "./common";
 
 import { SortDirection } from "app/base/types";
 import { PowerFieldScope } from "app/store/general/types";
 import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
-import { NodeStatus } from "app/store/types/node";
+import { PowerState } from "app/store/types/enum";
+import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -171,6 +173,30 @@ describe("common machine utils", () => {
 
     it("handles no filters", () => {
       expect(selectedToFilters({ items: [], groups: [] })).toBeNull();
+    });
+  });
+
+  describe("isUncomissionedPowerType", () => {
+    it("returns true for unknown power state and new status code", () => {
+      const machine = machineFactory({
+        power_state: PowerState.UNKNOWN,
+        status_code: NodeStatusCode.NEW,
+      });
+
+      expect(isUncomissionedPowerType(machine)).toBe(true);
+    });
+
+    it("returns false if either power state or status criteria are not met", () => {
+      const machine1 = machineFactory({
+        power_state: PowerState.UNKNOWN,
+        status_code: NodeStatusCode.READY,
+      });
+      const machine2 = machineFactory({
+        power_state: PowerState.OFF,
+        status_code: NodeStatusCode.NEW,
+      });
+      expect(isUncomissionedPowerType(machine1)).toBe(false);
+      expect(isUncomissionedPowerType(machine2)).toBe(false);
     });
   });
 });
