@@ -1,7 +1,7 @@
 name: Playwright Tests
 on:
   push:
-    branches: [main]
+    branches: ["3.4"]
 jobs:
   test:
     timeout-minutes: 15
@@ -21,6 +21,7 @@ jobs:
         uses: canonical/setup-maas@main
         with:
           maas-url: ${{env.MAAS_URL}}/MAAS
+          channel: 3.4/edge
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS UI to be ready
