@@ -74,11 +74,14 @@ context("Machine listing", () => {
     );
 
     // verify that the searchbox and URL are updated
-    cy.findByRole("searchbox").should("have.value", "status:(=testing)");
-    cy.location().should((loc) => {
-      expect(loc.search).to.eq("?status=%3Dtesting");
-      expect(loc.pathname).to.eq(generateMAASURL("/machines"));
-    });
+    const expectMachineFilters = () => {
+      cy.findByRole("searchbox").should("have.value", "status:(=testing)");
+      cy.location().should((loc) => {
+        expect(loc.search).to.eq("?status=%3Dtesting");
+        expect(loc.pathname).to.eq(generateMAASURL("/machines"));
+      });
+    };
+    expectMachineFilters();
 
     cy.go("back");
     // verify the user is navigated back to the previous page
@@ -87,6 +90,10 @@ context("Machine listing", () => {
       expect(loc.search).to.eq("");
       expect(loc.pathname).to.eq(intialPage);
     });
+
+    cy.go("forward");
+    // verify that previously selected filters are restored
+    expectMachineFilters();
   });
 
   it("can load filters from the URL", () => {
