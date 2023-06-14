@@ -58,6 +58,42 @@ context("Machine listing", () => {
     cy.findByText(/No machines match the search criteria./).should("exist");
   });
 
+  it("replaces the URL when selecting filters", () => {
+    // visit the dashboard first to have a page to go back to
+    const intialPage = generateMAASURL("/dashboard");
+    cy.visit(intialPage);
+    cy.visit(generateMAASURL("/machines"));
+
+    cy.findByRole("searchbox").should("have.value", "");
+
+    cy.findByRole("button", { name: /Filters/i }).click();
+
+    cy.findByLabelText("submenu").within(() => cy.findByText("Status").click());
+    cy.findByLabelText("submenu").within(() =>
+      cy.findByRole("checkbox", { name: "Testing" }).click()
+    );
+
+    // verify that the searchbox and URL are updated
+    cy.findByRole("searchbox").should("have.value", "status:(=testing)");
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq("?status=%3Dtesting");
+      expect(loc.pathname).to.eq(generateMAASURL("/machines"));
+    });
+
+    cy.go("back");
+    // verify the user is navigated back to the previous page
+    // (and not one step in the machine filters history)
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq("");
+      expect(loc.pathname).to.eq(intialPage);
+    });
+  });
+
+  it("can load filters from the URL", () => {
+    cy.visit(generateMAASURL("/machines?status=%3Dnew"));
+    cy.findByRole("searchbox").should("have.value", "status:(=new)");
+  });
+
   it("can hide machine table columns", () => {
     const allHeadersCount = 11;
     cy.findAllByRole("columnheader").should("have.length", allHeadersCount);

@@ -29,7 +29,12 @@ const Machines = (): JSX.Element => {
     (searchText) => {
       setFilter(searchText);
       const filters = FilterMachines.getCurrentFilters(searchText);
-      navigate({ search: FilterMachines.filtersToQueryString(filters) });
+      navigate(
+        {
+          search: FilterMachines.filtersToQueryString(filters),
+        },
+        { replace: true }
+      );
     },
     [navigate, setFilter]
   );
