@@ -6,7 +6,7 @@ import {
   isDeployedWithHardwareSync,
   mapSortDirection,
   selectedToFilters,
-  isUncomissionedPowerType,
+  isUnconfiguredPowerType,
 } from "./common";
 
 import { SortDirection } from "app/base/types";
@@ -176,14 +176,14 @@ describe("common machine utils", () => {
     });
   });
 
-  describe("isUncomissionedPowerType", () => {
+  describe("isUnconfiguredPowerType", () => {
     it("returns true for unknown power state and new status code", () => {
       const machine = machineFactory({
         power_state: PowerState.UNKNOWN,
         status_code: NodeStatusCode.NEW,
       });
 
-      expect(isUncomissionedPowerType(machine)).toBe(true);
+      expect(isUnconfiguredPowerType(machine)).toBe(true);
     });
 
     it("returns false if either power state or status criteria are not met", () => {
@@ -195,8 +195,8 @@ describe("common machine utils", () => {
         power_state: PowerState.OFF,
         status_code: NodeStatusCode.NEW,
       });
-      expect(isUncomissionedPowerType(machine1)).toBe(false);
-      expect(isUncomissionedPowerType(machine2)).toBe(false);
+      expect(isUnconfiguredPowerType(machine1)).toBe(false);
+      expect(isUnconfiguredPowerType(machine2)).toBe(false);
     });
   });
 });

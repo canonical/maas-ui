@@ -215,7 +215,7 @@ export const mergeGroupUpdates = ({
   return groups;
 };
 
-export const isUncomissionedPowerType = (machine: Machine): boolean => {
+export const isUnconfiguredPowerType = (machine: Machine): boolean => {
   return (
     machine.power_state === PowerState.UNKNOWN &&
     machine.status_code === NodeStatusCode.NEW
