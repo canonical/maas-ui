@@ -1,7 +1,6 @@
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
 import urls from "app/base/urls";
-import { KVMSidePanelViews } from "app/kvm/constants";
 import { screen, getTestState, renderWithBrowserRouter } from "testing/utils";
 
 describe("KVMDetailsHeader", () => {
@@ -16,10 +15,6 @@ describe("KVMDetailsHeader", () => {
       <KVMDetailsHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{
-          view: KVMSidePanelViews.COMPOSE_VM,
-          extras: { hostId: 1 },
-        }}
         tabLinks={[]}
         title="Title"
         titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
@@ -30,9 +25,6 @@ describe("KVMDetailsHeader", () => {
         state,
       }
     );
-    expect(
-      screen.getByRole("form", { name: /Compose VM/i })
-    ).toBeInTheDocument();
     expect(screen.getByTestId("extra-title-block")).toBeInTheDocument();
   });
 
@@ -41,7 +33,6 @@ describe("KVMDetailsHeader", () => {
       <KVMDetailsHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
         tabLinks={[]}
         title="Title"
         titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
