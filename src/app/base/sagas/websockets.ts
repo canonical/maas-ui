@@ -361,93 +361,106 @@ export function* handleMessage(
 ): SagaGenerator<void> {
   while (true) {
     const websocketEvent = yield* take(socketChannel);
-    if (websocketEvent.type === "error") {
-      if ("message" in websocketEvent) {
-        yield* put({
-          error: true,
-          payload: websocketEvent.message,
-          type: "status/websocketError",
-        });
-      }
-    } else if (websocketEvent.type === "close") {
-      const { code, reason } = websocketEvent as CloseEvent;
-      // TODO: dispatch "status/websocketError" for abnormal close codes
-      // https://warthogs.atlassian.net/browse/MAASENG-1484
-      yield* put({
-        type: "status/websocketDisconnect",
-        payload: { code, reason },
-      });
-    } else if (websocketEvent.type === "open") {
-      yield* put({ type: "status/websocketConnected" });
-      resetLoaded();
-    } else if ("data" in websocketEvent) {
-      const response = JSON.parse(websocketEvent.data);
-      if (response.type === WebSocketMessageType.NOTIFY) {
-        yield* call(handleNotifyMessage, response);
-      } else {
-        // This is a response message, fetch the corresponding action for the
-        // message that was sent.
-        const action = yield* call(
-          [socketClient, socketClient.getRequest],
-          response.request_id
-        );
-        // Handle file context requests, if required.
-        const isFileContextRequest = yield* call(
-          handleFileContextRequest,
-          response
-        );
-        if (!action) {
-          return;
-        }
-        // Depending on the action the parameters might be contained in the
-        // `params` parameter.
-        const item = action.payload?.params || action.payload;
-        let error;
-        let result;
-        if (response.error) {
-          try {
-            error = JSON.parse(response.error);
-          } catch {
-            // the API doesn't consistently return JSON, so we fallback
-            // to directly assign the error.
-            //
-            // https://bugs.launchpad.net/maas/+bug/1840887
-            error = response.error;
-          }
-        } else {
-          if (isFileContextRequest) {
-            // If this uses the file context then don't dispatch the response
-            // payload.
-            result = null;
-          } else {
-            result = response.result;
-          }
-        }
-        // Sometimes the error response is the original payload sent back, which
-        // can be 0 when requesting a model with an id of 0.
-        if (error || error === 0) {
+
+    switch (websocketEvent.type) {
+      case "error": {
+        if ("message" in websocketEvent) {
           yield* put({
-            meta: {
-              item,
-              identifier: action.meta?.identifier,
-              callId: action.meta?.callId,
-            },
-            type: `${action.type}Error`,
             error: true,
-            payload: error,
+            payload: websocketEvent.message,
+            type: "status/websocketError",
           });
-        } else {
-          yield* put({
-            meta: {
-              item,
-              identifier: action.meta?.identifier,
-              callId: action.meta?.callId,
-            },
-            type: `${action.type}Success`,
-            payload: result,
-          });
-          // Handle dispatching next actions, if required.
-          yield* call(handleNextActions, response);
+        }
+        break;
+      }
+
+      case "close": {
+        const { code, reason } = websocketEvent as CloseEvent;
+        yield* put({
+          type: "status/websocketDisconnect",
+          payload: { code, reason },
+        });
+        break;
+      }
+
+      case "open": {
+        yield* put({ type: "status/websocketConnected" });
+        resetLoaded();
+        break;
+      }
+
+      case "message":
+      default: {
+        if ("data" in websocketEvent) {
+          const response = JSON.parse(websocketEvent.data);
+
+          switch (response.type) {
+            case WebSocketMessageType.NOTIFY: {
+              yield* call(handleNotifyMessage, response);
+              break;
+            }
+            case WebSocketMessageType.RESPONSE:
+            default: {
+              // This is a response message, fetch the corresponding action for the
+              // message that was sent.
+              const action = yield* call(
+                [socketClient, socketClient.getRequest],
+                response.request_id
+              );
+
+              // Handle file context requests, if required.
+              const isFileContextRequest = yield* call(
+                handleFileContextRequest,
+                response
+              );
+              if (!action) {
+                return;
+              }
+              // Depending on the action the parameters might be contained in the
+              // `params` parameter.
+              const item = action.payload?.params || action.payload;
+              let error;
+              let result;
+              if (response.error) {
+                try {
+                  error = JSON.parse(response.error);
+                } catch {
+                  error = response.error;
+                }
+              } else {
+                // If this uses the file context then don't dispatch the response
+                // payload.
+                result = isFileContextRequest ? null : response.result;
+              }
+              // Sometimes the error response is the original payload sent back, which
+              // can be 0 when requesting a model with an id of 0.
+              if (error || error === 0) {
+                yield* put({
+                  meta: {
+                    item,
+                    identifier: action.meta?.identifier,
+                    callId: action.meta?.callId,
+                  },
+                  type: `${action.type}Error`,
+                  error: true,
+                  payload: error,
+                });
+              } else {
+                yield* put({
+                  meta: {
+                    item,
+                    identifier: action.meta?.identifier,
+                    callId: action.meta?.callId,
+                  },
+                  type: `${action.type}Success`,
+                  payload: result,
+                });
+                // Handle dispatching next actions, if required.
+                yield* call(handleNextActions, response);
+              }
+              break;
+            }
+          }
         }
       }
     }
