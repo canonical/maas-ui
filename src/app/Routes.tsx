@@ -92,6 +92,14 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <Preferences />
+        </ErrorBoundary>
+      }
+      path={`${urls.preferences.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <MachineDetails />
         </ErrorBoundary>
       }
@@ -123,14 +131,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.intro.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <Preferences />
-          </ErrorBoundary>
-        }
-        path={`${urls.preferences.index}/*`}
       />
       <Route
         element={
