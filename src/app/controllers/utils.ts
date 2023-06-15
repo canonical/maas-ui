@@ -1,4 +1,4 @@
-import { ControllerHeaderViews } from "./constants";
+import { ControllerSidePanelViews } from "./constants";
 
 import type { SidePanelContent } from "app/base/side-panel-context";
 import { getNodeActionTitle } from "app/store/utils";
@@ -16,7 +16,7 @@ export const getHeaderTitle = (
   if (sidePanelContent) {
     const [, name] = sidePanelContent.view;
     switch (name) {
-      case ControllerHeaderViews.ADD_CONTROLLER[1]:
+      case ControllerSidePanelViews.ADD_CONTROLLER[1]:
         return "Add controller";
       default:
         return getNodeActionTitle(name);

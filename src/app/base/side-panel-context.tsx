@@ -13,6 +13,7 @@ import type { KVMSidePanelContent } from "app/kvm/types";
 import type { MachineSidePanelContent } from "app/machines/types";
 import type { SubnetSidePanelContent } from "app/subnets/types";
 import type { FabricDetailsSidePanelContent } from "app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
+import type { SpaceDetailsSidePanelContent } from "app/subnets/views/SpaceDetails/constants";
 import type { SubnetDetailsSidePanelContent } from "app/subnets/views/SubnetDetails/constants";
 import type { VLANDetailsSidePanelContent } from "app/subnets/views/VLANDetails/constants";
 import type { TagSidePanelContent } from "app/tags/types";
@@ -32,6 +33,7 @@ export type SidePanelContent =
   | VLANDetailsSidePanelContent
   | FabricDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
+  | SpaceDetailsSidePanelContent
   | null;
 
 export type SetSidePanelContent = (sidePanelContent: SidePanelContent) => void;
