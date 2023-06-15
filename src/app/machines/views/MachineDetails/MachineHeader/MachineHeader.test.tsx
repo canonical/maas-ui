@@ -358,4 +358,23 @@ describe("MachineHeader", () => {
       screen.getByRole("link", { name: /error configuration/i })
     ).toBeInTheDocument();
   });
+
+  it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
+    state.machine.items[0].power_state = PowerState.UNKNOWN;
+    state.machine.items[0].status_code = NodeStatusCode.NEW;
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { store, route: "/machine/abc123" }
+    );
+
+    expect(
+      screen.getByRole("link", { name: /error configuration/i })
+    ).toBeInTheDocument();
+  });
 });

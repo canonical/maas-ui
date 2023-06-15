@@ -302,6 +302,25 @@ describe("StatusColumn", () => {
         })
       ).toBeInTheDocument();
     });
+
+    it("shows an error icon button and a tooltip if power type is not set and status is unknown", () => {
+      machine.power_state = PowerState.UNKNOWN;
+      machine.status_code = NodeStatusCode.NEW;
+      const store = mockStore(state);
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
+      );
+
+      expect(
+        screen.getByRole("button", { name: "Unconfigured power type" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Unconfigured power type. Go to the configuration tab of this machine.",
+        })
+      ).toBeInTheDocument();
+    });
   });
 
   it("can show a menu with all possible options", () => {
