@@ -1,4 +1,4 @@
-import type { Device, DeviceMeta } from "app/store/device/types";
+import { Device, DeviceMeta } from "app/store/device/types";
 import { argPath } from "app/utils";
 
 const withId = argPath<{ id: Device[DeviceMeta.PK] }>;

@@ -1,4 +1,4 @@
-import type { Tag, TagMeta } from "app/store/tag/types";
+import { Tag, TagMeta } from "app/store/tag/types";
 import { argPath } from "app/utils";
 
 const withId = argPath<{ id: Tag[TagMeta.PK] }>;
