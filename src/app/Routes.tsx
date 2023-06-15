@@ -100,6 +100,22 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <Preferences />
+        </ErrorBoundary>
+      }
+      path={`${urls.preferences.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <MachineDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.machines.machine.index(null)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <FabricDetails />
         </ErrorBoundary>
       }
@@ -127,14 +143,6 @@ const Routes = (): JSX.Element => (
       <Route
         element={
           <ErrorBoundary>
-            <Preferences />
-          </ErrorBoundary>
-        }
-        path={`${urls.preferences.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
             <ControllerList />
           </ErrorBoundary>
         }
@@ -155,14 +163,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.kvm.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <MachineDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.machines.machine.index(null)}/*`}
       />
       <Route
         element={

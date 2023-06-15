@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useMatch } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
-import MachineHeaderForms from "../components/MachineHeaderForms";
+import MachineForms from "../components/MachineForms";
 import type { MachineSidePanelContent } from "../types";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
@@ -111,7 +111,7 @@ const Machines = (): JSX.Element => {
       }
       sidePanelContent={
         sidePanelContent && (
-          <MachineHeaderForms
+          <MachineForms
             searchFilter={searchFilter}
             selectedCount={selectedCount}
             selectedCountLoading={selectedCountLoading}
