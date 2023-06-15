@@ -1,20 +1,22 @@
-import ControllerHeaderForms from "./ControllerHeaderForms";
+import ControllerForms from "./ControllerForms";
 
-import { ControllerHeaderViews } from "app/controllers/constants";
+import { ControllerSidePanelViews } from "app/controllers/constants";
 import {
   controller as controllerFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import { screen, renderWithBrowserRouter } from "testing/utils";
 
-describe("ControllerHeaderForms", () => {
+describe("ControllerForms", () => {
   it("can render a warning if an action cannot be taken", () => {
     const state = rootStateFactory();
     renderWithBrowserRouter(
-      <ControllerHeaderForms
+      <ControllerForms
         controllers={[controllerFactory()]}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: ControllerHeaderViews.SET_ZONE_CONTROLLER }}
+        sidePanelContent={{
+          view: ControllerSidePanelViews.SET_ZONE_CONTROLLER,
+        }}
       />,
       { state }
     );
@@ -27,10 +29,10 @@ describe("ControllerHeaderForms", () => {
   it("can render add controller instructions", () => {
     const state = rootStateFactory();
     renderWithBrowserRouter(
-      <ControllerHeaderForms
+      <ControllerForms
         controllers={[controllerFactory()]}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: ControllerHeaderViews.ADD_CONTROLLER }}
+        sidePanelContent={{ view: ControllerSidePanelViews.ADD_CONTROLLER }}
       />,
       { state }
     );
