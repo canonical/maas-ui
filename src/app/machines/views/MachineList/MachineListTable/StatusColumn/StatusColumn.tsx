@@ -11,6 +11,7 @@ import { useToggleMenu } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isTransientStatus, useFormattedOS } from "app/store/machine/utils";
+import { isUnconfiguredPowerType } from "app/store/machine/utils/common";
 import type { RootState } from "app/store/root/types";
 import {
   NodeActions,
@@ -48,6 +49,14 @@ const getStatusIcon = (machine: Machine) => {
         iconProps={{ "data-testid": "status-icon" }}
         message="Machine has failed tests; use with caution."
         position="top-left"
+      />
+    );
+  } else if (isUnconfiguredPowerType(machine)) {
+    return (
+      <TooltipButton
+        aria-label="Unconfigured power type"
+        iconName="error"
+        message="Unconfigured power type. Go to the configuration tab of this machine."
       />
     );
   }

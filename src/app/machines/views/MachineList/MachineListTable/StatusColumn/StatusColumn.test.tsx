@@ -8,6 +8,7 @@ import { StatusColumn } from "./StatusColumn";
 
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { PowerState } from "app/store/types/enum";
 import {
   NodeActions,
   NodeStatus,
@@ -281,6 +282,25 @@ describe("StatusColumn", () => {
 
       expect(wrapper.find(".p-icon--warning").exists()).toBe(true);
       expect(wrapper.find("Tooltip").exists()).toBe(true);
+    });
+
+    it("shows an error icon button and a tooltip if power type is not set and status is unknown", () => {
+      machine.power_state = PowerState.UNKNOWN;
+      machine.status_code = NodeStatusCode.NEW;
+      const store = mockStore(state);
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
+      );
+
+      expect(
+        screen.getByRole("button", { name: "Unconfigured power type" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Unconfigured power type. Go to the configuration tab of this machine.",
+        })
+      ).toBeInTheDocument();
     });
   });
 

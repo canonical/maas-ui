@@ -24,7 +24,11 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import { useFetchMachine } from "app/store/machine/utils/hooks";
+import { isUnconfiguredPowerType } from "app/store/machine/utils/common";
+import {
+  useFetchMachine,
+  useSelectedMachinesActionsDispatch,
+} from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
@@ -65,6 +69,7 @@ const MachineHeader = ({
 
   const urlBase = `/machine/${systemId}`;
   const checkingPower = statuses?.checkingPower;
+  const needsPowerConfiguration = isUnconfiguredPowerType(machine);
 
   return (
     <SectionHeader
@@ -229,7 +234,17 @@ const MachineHeader = ({
         {
           active: pathname.startsWith(`${urlBase}/configuration`),
           component: Link,
-          label: "Configuration",
+          label: (
+            <ScriptStatus
+              status={
+                needsPowerConfiguration
+                  ? ScriptResultStatus.FAILED
+                  : ScriptResultStatus.NONE
+              }
+            >
+              Configuration
+            </ScriptStatus>
+          ),
           to: `${urlBase}/configuration`,
         },
       ]}
