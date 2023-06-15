@@ -169,17 +169,17 @@ const Routes = (): JSX.Element => (
       }
       path={`${urls.controllers.controller.index(null)}/*`}
     />
+    <Route
+      element={
+        <ErrorBoundary>
+          <ControllerList />
+        </ErrorBoundary>
+      }
+      path={`${urls.controllers.index}/*`}
+    />
     {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
     {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
     <Route element={<LegacyPageContentWrapper />}>
-      <Route
-        element={
-          <ErrorBoundary>
-            <ControllerList />
-          </ErrorBoundary>
-        }
-        path={`${urls.controllers.index}/*`}
-      />
       <Route
         element={
           <ErrorBoundary>
