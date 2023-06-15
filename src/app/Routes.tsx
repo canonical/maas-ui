@@ -92,10 +92,10 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <Pools />
+          <MachineDetails />
         </ErrorBoundary>
       }
-      path={`${urls.pools.index}/*`}
+      path={`${urls.machines.machine.index(null)}/*`}
     />
     <Route
       element={
@@ -167,10 +167,10 @@ const Routes = (): JSX.Element => (
       <Route
         element={
           <ErrorBoundary>
-            <MachineDetails />
+            <Pools />
           </ErrorBoundary>
         }
-        path={`${urls.machines.machine.index(null)}/*`}
+        path={`${urls.pools.index}/*`}
       />
       <Route
         element={
