@@ -1,6 +1,6 @@
 import TagForms from "./TagForms";
 
-import { TageSidePanelViews } from "app/tags/constants";
+import { TagSidePanelViews } from "app/tags/constants";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -24,7 +24,7 @@ it("can display the add tag form", () => {
   renderWithBrowserRouter(
     <TagForms
       setSidePanelContent={jest.fn()}
-      sidePanelContent={{ view: TageSidePanelViews.AddTag }}
+      sidePanelContent={{ view: TagSidePanelViews.AddTag }}
     />,
     { route: "/tags", state: rootStateFactory() }
   );
@@ -45,7 +45,7 @@ it("can display the delete tag form", () => {
     <TagForms
       setSidePanelContent={jest.fn()}
       sidePanelContent={{
-        view: TageSidePanelViews.DeleteTag,
+        view: TagSidePanelViews.DeleteTag,
         extras: { id: 1 },
       }}
     />,

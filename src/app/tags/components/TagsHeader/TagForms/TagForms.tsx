@@ -2,7 +2,7 @@ import AddTagForm from "../AddTagForm";
 import DeleteTagForm from "../DeleteTagForm";
 
 import type { SidePanelContent } from "app/base/side-panel-context";
-import { TageSidePanelViews } from "app/tags/constants";
+import { TagSidePanelViews } from "app/tags/constants";
 import type {
   TagSetSidePanelContent,
   TagSidePanelContent,
@@ -18,9 +18,9 @@ export const TagForms = ({
   setSidePanelContent,
 }: Props): JSX.Element | null => {
   switch (sidePanelContent?.view) {
-    case TageSidePanelViews.AddTag:
+    case TagSidePanelViews.AddTag:
       return <AddTagForm onClose={() => setSidePanelContent(null)} />;
-    case TageSidePanelViews.DeleteTag:
+    case TagSidePanelViews.DeleteTag:
       const id = (sidePanelContent as TagSidePanelContent)?.extras?.id;
       if (id) {
         return (

@@ -8,7 +8,7 @@ import {
 
 import TagsHeader from "../components/TagsHeader";
 import TagForms from "../components/TagsHeader/TagForms";
-import { TageSidePanelViews } from "../constants";
+import { TagSidePanelViews } from "../constants";
 import type { TagSidePanelContent } from "../types";
 import { TagViewState } from "../types";
 
@@ -31,10 +31,10 @@ const getViewState = (
   sidePanelContent: SidePanelContent | null,
   pathname: string
 ) => {
-  if (sidePanelContent?.view === TageSidePanelViews.DeleteTag) {
+  if (sidePanelContent?.view === TagSidePanelViews.DeleteTag) {
     return TagViewState.Deleting;
   }
-  if (sidePanelContent?.view === TageSidePanelViews.AddTag) {
+  if (sidePanelContent?.view === TagSidePanelViews.AddTag) {
     return TagViewState.Creating;
   }
   const isUpdating = matchPath(
@@ -59,7 +59,7 @@ const Tags = (): JSX.Element => {
   const tagViewState = getViewState(sidePanelContent, pathname);
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
     setSidePanelContent({
-      view: TageSidePanelViews.DeleteTag,
+      view: TagSidePanelViews.DeleteTag,
       extras: { fromDetails, id },
     });
   const base = urls.tags.tag.index(null);
@@ -68,9 +68,9 @@ const Tags = (): JSX.Element => {
     if (sidePanelContent) {
       const [, name] = sidePanelContent.view;
       switch (name) {
-        case TageSidePanelViews.AddTag[1]:
+        case TagSidePanelViews.AddTag[1]:
           return "Create new tag";
-        case TageSidePanelViews.DeleteTag[1]:
+        case TagSidePanelViews.DeleteTag[1]:
           return "Delete tag";
       }
     }

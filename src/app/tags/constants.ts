@@ -1,4 +1,4 @@
-export const TageSidePanelViews = {
+export const TagSidePanelViews = {
   AddTag: ["addTagForm", "addTag"],
   DeleteTag: ["deleteTagForm", "deleteTag"],
 } as const;

@@ -1,6 +1,6 @@
 import TagsHeader from "./TagsHeader";
 
-import { TageSidePanelViews } from "app/tags/constants";
+import { TagSidePanelViews } from "app/tags/constants";
 import { rootState as rootStateFactory } from "testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
@@ -28,7 +28,7 @@ it("can call a function to display the add tag form", async () => {
 
   await userEvent.click(screen.getByRole("button", { name: "Create new tag" }));
   expect(setSidePanelContent).toHaveBeenCalledWith({
-    view: TageSidePanelViews.AddTag,
+    view: TagSidePanelViews.AddTag,
   });
 });
 
