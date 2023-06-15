@@ -92,6 +92,14 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <ImageList />
+        </ErrorBoundary>
+      }
+      path={`${urls.images.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <Preferences />
         </ErrorBoundary>
       }
@@ -147,14 +155,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.devices.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <ImageList />
-          </ErrorBoundary>
-        }
-        path={`${urls.images.index}/*`}
       />
       <Route
         element={
