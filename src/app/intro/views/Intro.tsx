@@ -18,7 +18,7 @@ import MaasIntro from "./MaasIntro";
 import MaasIntroSuccess from "./MaasIntroSuccess";
 import UserIntro from "./UserIntro";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent";
 import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -73,7 +73,11 @@ const Intro = (): JSX.Element => {
     content = <IncompleteCard />;
   }
   if (content) {
-    return <MainContentSection>{content}</MainContentSection>;
+    return (
+      <PageContent sidePanelContent={null} sidePanelTitle={null}>
+        {content}
+      </PageContent>
+    );
   }
   const base = `${urls.intro.index}`;
   return (
