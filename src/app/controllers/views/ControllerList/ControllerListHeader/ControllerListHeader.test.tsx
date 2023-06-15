@@ -30,7 +30,6 @@ describe("ControllerListHeader", () => {
       <ControllerListHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state }
     );
@@ -46,7 +45,6 @@ describe("ControllerListHeader", () => {
       <ControllerListHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state }
     );
@@ -61,7 +59,6 @@ describe("ControllerListHeader", () => {
       <ControllerListHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state }
     );
@@ -76,7 +73,6 @@ describe("ControllerListHeader", () => {
       <ControllerListHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={setSidePanelContent}
-        sidePanelContent={null}
       />,
       { state }
     );

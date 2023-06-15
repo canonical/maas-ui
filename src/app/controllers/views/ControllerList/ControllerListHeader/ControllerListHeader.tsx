@@ -5,20 +5,18 @@ import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
-import type { SidePanelContextType } from "app/base/side-panel-context";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
-import ControllerForms from "app/controllers/components/ControllerForms";
 import { ControllerSidePanelViews } from "app/controllers/constants";
-import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import { getNodeActionTitle } from "app/store/utils";
 
-type Props = SidePanelContextType & {
+type Props = {
   setSearchFilter: SetSearchFilter;
+  setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerListHeader = ({
-  sidePanelContent,
   setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
@@ -62,16 +60,6 @@ const ControllerListHeader = ({
           showCount
         />,
       ]}
-      sidePanelContent={
-        sidePanelContent && (
-          <ControllerForms
-            controllers={selectedControllers}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getHeaderTitle("Controllers", sidePanelContent)}
       subtitle={
         <ModelListSubtitle
           available={controllers.length}
