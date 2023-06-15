@@ -100,10 +100,50 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <Intro />
+        </ErrorBoundary>
+      }
+      path={`${urls.intro.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <ImageList />
+        </ErrorBoundary>
+      }
+      path={`${urls.images.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Preferences />
+        </ErrorBoundary>
+      }
+      path={`${urls.preferences.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <MachineDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.machines.machine.index(null)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <FabricDetails />
         </ErrorBoundary>
       }
       path={`${urls.subnets.fabric.index(null)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <ControllerDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.controllers.controller.index(null)}/*`}
     />
     {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
     {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
@@ -111,34 +151,10 @@ const Routes = (): JSX.Element => (
       <Route
         element={
           <ErrorBoundary>
-            <Intro />
-          </ErrorBoundary>
-        }
-        path={`${urls.intro.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <Preferences />
-          </ErrorBoundary>
-        }
-        path={`${urls.preferences.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
             <ControllerList />
           </ErrorBoundary>
         }
         path={`${urls.controllers.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <ControllerDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.controllers.controller.index(null)}/*`}
       />
       <Route
         element={
@@ -151,26 +167,10 @@ const Routes = (): JSX.Element => (
       <Route
         element={
           <ErrorBoundary>
-            <ImageList />
-          </ErrorBoundary>
-        }
-        path={`${urls.images.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
             <KVM />
           </ErrorBoundary>
         }
         path={`${urls.kvm.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <MachineDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.machines.machine.index(null)}/*`}
       />
       <Route
         element={

@@ -15,7 +15,7 @@ import type {
   KVMSidePanelContent,
   KVMSetSidePanelContent,
 } from "app/kvm/types";
-import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
+import MachineForms from "app/machines/components/MachineForms";
 import type { MachineSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
@@ -109,7 +109,7 @@ const getFormComponent = ({
   // https://github.com/canonical/maas-ui/issues/3040
   const machineSidePanelContent = sidePanelContent as MachineSidePanelContent;
   return (
-    <MachineHeaderForms
+    <MachineForms
       searchFilter={searchFilter}
       selectedCount={selectedCount}
       selectedMachines={selectedMachines}

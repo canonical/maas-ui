@@ -9,7 +9,7 @@ import MachineActionFormWrapper from "./MachineActionFormWrapper";
 import type { SidePanelContent } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineActionHeaderViews } from "app/machines/constants";
+import type { MachineActionSidePanelViews } from "app/machines/constants";
 import type {
   MachineActionVariableProps,
   MachineSidePanelContent,
@@ -55,7 +55,7 @@ export const MachineForms = ({
       // https://github.com/canonical/maas-ui/issues/3040
       const { extras, view } = sidePanelContent as {
         extras: MachineSidePanelContent["extras"];
-        view: ValueOf<typeof MachineActionHeaderViews>;
+        view: ValueOf<typeof MachineActionSidePanelViews>;
       };
       const [, action] = view;
       const conditionalProps = machines
