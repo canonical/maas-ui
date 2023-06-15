@@ -1,6 +1,6 @@
 import { NodeActions } from "app/store/types/node";
 
-export const MachineActionHeaderViews = {
+export const MachineActionSidePanelViews = {
   ABORT_MACHINE: ["machineActionForm", NodeActions.ABORT],
   ACQUIRE_MACHINE: ["machineActionForm", NodeActions.ACQUIRE],
   CLONE_MACHINE: ["machineActionForm", NodeActions.CLONE],
@@ -26,14 +26,14 @@ export const MachineActionHeaderViews = {
   UNLOCK_MACHINE: ["machineActionForm", NodeActions.UNLOCK],
 } as const;
 
-export const MachineNonActionHeaderViews = {
+export const MachineNonActionSidePanelViews = {
   ADD_CHASSIS: ["machineNonActionForm", "addChassis"],
   ADD_MACHINE: ["machineNonActionForm", "addMachine"],
 } as const;
 
 export const MachineSidePanelViews = {
-  ...MachineActionHeaderViews,
-  ...MachineNonActionHeaderViews,
+  ...MachineActionSidePanelViews,
+  ...MachineNonActionSidePanelViews,
 } as const;
 
 export const columns = [

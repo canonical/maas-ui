@@ -1,6 +1,6 @@
 import ControllerListHeader from "./ControllerListHeader";
 
-import { ControllerHeaderViews } from "app/controllers/constants";
+import { ControllerSidePanelViews } from "app/controllers/constants";
 import type { RootState } from "app/store/root/types";
 import {
   controller as controllerFactory,
@@ -84,7 +84,7 @@ describe("ControllerListHeader", () => {
       screen.getByRole("button", { name: "Add rack controller" })
     );
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: ControllerHeaderViews.ADD_CONTROLLER,
+      view: ControllerSidePanelViews.ADD_CONTROLLER,
     });
   });
 });
