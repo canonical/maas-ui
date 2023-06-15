@@ -7,7 +7,7 @@ import { MachineHeaderViews } from "app/machines/constants";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -262,5 +262,24 @@ describe("MachineHeader", () => {
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
+  });
+
+  it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
+    state.machine.items[0].power_state = PowerState.UNKNOWN;
+    state.machine.items[0].status_code = NodeStatusCode.NEW;
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { store, route: "/machine/abc123" }
+    );
+
+    expect(
+      screen.getByRole("link", { name: /error configuration/i })
+    ).toBeInTheDocument();
   });
 });

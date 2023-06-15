@@ -12,7 +12,8 @@ import type {
 } from "app/store/machine/types";
 import { FetchSortDirection, FilterGroupKey } from "app/store/machine/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import { NodeStatus } from "app/store/types/node";
+import { PowerState } from "app/store/types/enum";
+import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 
 /**
  * Whether a machine has a Machine or MachineDetails type.
@@ -212,4 +213,11 @@ export const mergeGroupUpdates = ({
     return initialGroups;
   }
   return groups;
+};
+
+export const isUnconfiguredPowerType = (machine: Machine): boolean => {
+  return (
+    machine.power_state === PowerState.UNKNOWN &&
+    machine.status_code === NodeStatusCode.NEW
+  );
 };
