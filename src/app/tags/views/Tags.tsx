@@ -7,15 +7,20 @@ import {
 } from "react-router-dom-v5-compat";
 
 import TagsHeader from "../components/TagsHeader";
-import { TagHeaderViews } from "../constants";
+import TagForms from "../components/TagsHeader/TagForms";
+import { TagSidePanelViews } from "../constants";
+import type { TagSidePanelContent } from "../types";
 import { TagViewState } from "../types";
 
 import TagDetails from "./TagDetails";
 import TagList from "./TagList";
 import TagMachines from "./TagMachines";
 
-import MainContentSection from "app/base/components/MainContentSection";
-import type { SidePanelContent } from "app/base/side-panel-context";
+import PageContent from "app/base/components/PageContent";
+import type {
+  SidePanelContent,
+  SidePanelContextType,
+} from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
@@ -26,10 +31,10 @@ const getViewState = (
   sidePanelContent: SidePanelContent | null,
   pathname: string
 ) => {
-  if (sidePanelContent?.view === TagHeaderViews.DeleteTag) {
+  if (sidePanelContent?.view === TagSidePanelViews.DeleteTag) {
     return TagViewState.Deleting;
   }
-  if (sidePanelContent?.view === TagHeaderViews.AddTag) {
+  if (sidePanelContent?.view === TagSidePanelViews.AddTag) {
     return TagViewState.Creating;
   }
   const isUpdating = matchPath(
@@ -49,23 +54,46 @@ const Tags = (): JSX.Element => {
   const { pathname } = useLocation();
   const detailsMatch = useMatch(urls.tags.tag.index(null));
   const isDetails = !!detailsMatch;
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const { sidePanelContent, setSidePanelContent } =
+    useSidePanel() as SidePanelContextType<TagSidePanelContent>;
   const tagViewState = getViewState(sidePanelContent, pathname);
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
     setSidePanelContent({
-      view: TagHeaderViews.DeleteTag,
+      view: TagSidePanelViews.DeleteTag,
       extras: { fromDetails, id },
     });
   const base = urls.tags.tag.index(null);
+
+  const getHeaderTitle = (): string => {
+    if (sidePanelContent) {
+      const [, name] = sidePanelContent.view;
+      switch (name) {
+        case TagSidePanelViews.AddTag[1]:
+          return "Create new tag";
+        case TagSidePanelViews.DeleteTag[1]:
+          return "Delete tag";
+      }
+    }
+    return "Tags";
+  };
+
   return (
-    <MainContentSection
+    <PageContent
       header={
         <TagsHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           tagViewState={tagViewState}
         />
       }
+      sidePanelContent={
+        sidePanelContent && (
+          <TagForms
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        )
+      }
+      sidePanelTitle={getHeaderTitle()}
     >
       <Routes>
         <Route
@@ -90,7 +118,7 @@ const Tags = (): JSX.Element => {
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
-    </MainContentSection>
+    </PageContent>
   );
 };
 

@@ -92,6 +92,22 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <Tags />
+        </ErrorBoundary>
+      }
+      path={`${urls.tags.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Tags />
+        </ErrorBoundary>
+      }
+      path={`${urls.tags.tag.index(null)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <SpaceDetails />
         </ErrorBoundary>
       }
@@ -187,22 +203,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.pools.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <Tags />
-          </ErrorBoundary>
-        }
-        path={`${urls.tags.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <Tags />
-          </ErrorBoundary>
-        }
-        path={`${urls.tags.tag.index(null)}/*`}
       />
       <Route
         element={
