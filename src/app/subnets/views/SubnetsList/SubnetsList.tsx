@@ -95,7 +95,7 @@ const SubnetsList = (): JSX.Element => {
           }
           sidePanelTitle={activeForm ? `Add ${activeForm}` : ""}
           subtitle={
-            <div className="u-flex--wrap u-flex--align-center u-nudge-right">
+            <div className="u-flex--wrap u-flex--align-center">
               <SegmentedControl
                 aria-label="Group by"
                 buttonClassName="u-no-margin--bottom u-upper-case--first"
