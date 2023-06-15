@@ -92,6 +92,14 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <SpaceDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.subnets.space.index(null)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <Settings />
         </ErrorBoundary>
       }
@@ -203,14 +211,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.subnets.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <SpaceDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.subnets.space.index(null)}/*`}
       />
       <Route
         element={
