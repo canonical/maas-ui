@@ -1,8 +1,5 @@
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type {
-  ScriptResult,
-  ScriptResultMeta,
-} from "app/store/scriptresult/types";
+import { Controller, ControllerMeta } from "app/store/controller/types";
+import { ScriptResult, ScriptResultMeta } from "app/store/scriptresult/types";
 import { argPath } from "app/utils";
 
 const withId = argPath<{ id: Controller[ControllerMeta.PK] }>;
