@@ -32,6 +32,7 @@ export type GenericItemMeta<I> = {
 export type GenericMeta = {
   callId?: string;
   identifier?: number | string;
+  item?: unknown;
 };
 
 // Get the models that follow the generic shape. The following models are excluded:

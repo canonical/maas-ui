@@ -3,7 +3,7 @@ import type {
   ErrorEvent,
   CloseEvent,
 } from "reconnecting-websocket";
-import type { AnyAction } from "redux";
+import type { Action, AnyAction } from "redux";
 import type { EventChannel } from "redux-saga";
 import { eventChannel } from "redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
@@ -34,6 +34,7 @@ import type {
   WebSocketActionParams,
 } from "../../../websocket-client";
 
+import type { GenericMeta } from "./../../store/utils/slice";
 import type { MessageHandler, NextActionCreator } from "./actions";
 
 import { fileContextStore } from "app/base/file-context";
@@ -560,7 +561,7 @@ export function* sendMessage(
     }
     setLoaded(endpoint);
   }
-  yield* put({
+  yield* put<Action & { meta: GenericMeta }>({
     meta: {
       item: params || payload,
       identifier,

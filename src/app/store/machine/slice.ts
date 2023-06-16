@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type { AnyAction, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { ACTIONS, DEFAULT_STATUSES } from "./constants";
@@ -81,6 +81,7 @@ import {
 import { preparePayloadParams, kebabToCamelCase } from "app/utils";
 
 const DEFAULT_LIST_STATE = {
+  params: null,
   count: null,
   cur_page: null,
   errors: null,
@@ -93,11 +94,21 @@ const DEFAULT_LIST_STATE = {
 };
 
 const DEFAULT_COUNT_STATE = {
+  params: null,
   loading: false,
   loaded: false,
   stale: false,
   count: null,
   errors: null,
+};
+
+const stringifyParams = (action: AnyAction): string | null => {
+  try {
+    return action.meta?.item ? JSON.stringify(action.meta?.item) : null;
+  } catch (error) {
+    console.error("Failed to stringify params", error);
+    return null;
+  }
 };
 
 const isArrayOfOptionsType = <T extends FilterGroupOptionType>(
@@ -422,6 +433,7 @@ const machineSlice = createSlice({
           } else {
             state.counts[action.meta.callId] = {
               ...DEFAULT_COUNT_STATE,
+              params: stringifyParams(action),
               loading: true,
             };
           }
@@ -680,10 +692,24 @@ const machineSlice = createSlice({
           (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
         );
       }
+      // Remove deleted machine from all lists
+      Object.values(state.lists).forEach((list) => {
+        list.groups?.forEach((group) => {
+          let index = group.items.indexOf(action.payload);
+          if (index !== -1) {
+            group.items.splice(index, 1);
+            // update the count
+            group.count = group.count - 1;
+            // Exit the loop early if the item has been found and removed
+            return;
+          }
+        });
+      });
       // mark all machine count queries as stale and in need of re-fetch
       Object.keys(state.counts).forEach((callId) => {
         state.counts[callId].stale = true;
       });
+
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },
@@ -822,7 +848,10 @@ const machineSlice = createSlice({
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
     fetch: {
-      prepare: (callId: string, params?: FetchParams | null) => ({
+      prepare: (
+        callId: string,
+        params?: FetchParams | FetchParams[] | null
+      ) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "list",
@@ -854,7 +883,6 @@ const machineSlice = createSlice({
           if (action.meta.callId in state.lists) {
             state.lists[action.meta.callId].errors = action.payload;
             state.lists[action.meta.callId].loading = false;
-          } else {
           }
         }
         state = setErrors(state, action, "fetch");
@@ -874,6 +902,7 @@ const machineSlice = createSlice({
         if (action.meta.callId) {
           state.lists[action.meta.callId] = {
             ...DEFAULT_LIST_STATE,
+            params: stringifyParams(action),
             loading: true,
           };
         }
@@ -1690,7 +1719,13 @@ const machineSlice = createSlice({
       );
       // mark all machine list queries as in need of update
       Object.keys(state.lists).forEach((callId: string) => {
-        state.lists[callId].needsUpdate = true;
+        const currentList = state.lists[callId];
+        currentList.needsUpdate = true;
+        const originalParams = currentList.params
+          ? JSON.parse(currentList.params)
+          : null;
+        debugger;
+        // TODO: update the list directly instead of marking it as needing an update
       });
     },
     updateVmfsDatastore: {
