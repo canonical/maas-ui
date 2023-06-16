@@ -56,12 +56,7 @@ describe("LXDSingleDetailsHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -81,12 +76,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -108,12 +98,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -134,12 +119,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -163,9 +143,7 @@ describe("LXDSingleDetailsHeader", () => {
           <CompatRouter>
             <LXDSingleDetailsHeader
               id={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={setSidePanelContent}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
