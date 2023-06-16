@@ -1,1 +1,2 @@
-export { default, actions, DEFAULT_STATUSES } from "./slice";
+export { default, actions } from "./slice";
+export { DEFAULT_STATUSES } from "./constants";

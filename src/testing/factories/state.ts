@@ -50,7 +50,7 @@ import type {
 } from "app/store/general/types";
 import type { IPRangeState } from "app/store/iprange/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
-import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
+import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine/constants";
 import type {
   FilterGroup,
   Machine,
