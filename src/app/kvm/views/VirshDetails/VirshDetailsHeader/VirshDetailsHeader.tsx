@@ -10,10 +10,7 @@ import VirshDetailsActionMenu from "./VirshDetailsActionMenu";
 
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
-import type {
-  KVMSidePanelContent,
-  KVMSetSidePanelContent,
-} from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -23,13 +20,11 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
-  sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const VirshDetailsHeader = ({
   id,
-  sidePanelContent,
   setSidePanelContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -66,7 +61,6 @@ const VirshDetailsHeader = ({
       }
       loading={!pod}
       setSidePanelContent={setSidePanelContent}
-      sidePanelContent={sidePanelContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(
