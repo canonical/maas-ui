@@ -7,7 +7,7 @@ import { SubnetForms } from "app/subnets/constants";
 
 export type SubnetForm = keyof typeof SubnetForms;
 
-export const SubnetHeaderViews = {
+export const SubnetSidePanelViews = {
   [SubnetForms.Fabric]: ["addForm", SubnetForms.Fabric],
   [SubnetForms.VLAN]: ["addForm", SubnetForms.VLAN],
   [SubnetForms.Space]: ["addForm", SubnetForms.Space],
@@ -15,6 +15,6 @@ export const SubnetHeaderViews = {
 } as const;
 
 export type SubnetSidePanelContent = SidePanelContent<
-  ValueOf<typeof SubnetHeaderViews>
+  ValueOf<typeof SubnetSidePanelViews>
 >;
 export type SubnetsUrlParams = { by?: GroupByKey; q?: string };
