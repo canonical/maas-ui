@@ -177,6 +177,14 @@ const Routes = (): JSX.Element => (
       }
       path={`${urls.controllers.index}/*`}
     />
+    <Route
+      element={
+        <ErrorBoundary>
+          <KVM />
+        </ErrorBoundary>
+      }
+      path={`${urls.kvm.index}/*`}
+    />
     {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
     {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
     <Route element={<LegacyPageContentWrapper />}>
@@ -187,14 +195,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.devices.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <KVM />
-          </ErrorBoundary>
-        }
-        path={`${urls.kvm.index}/*`}
       />
       <Route
         element={

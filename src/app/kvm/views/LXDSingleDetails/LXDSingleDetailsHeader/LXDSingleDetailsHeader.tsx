@@ -9,7 +9,7 @@ import { Link } from "react-router-dom-v5-compat";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type {
   KVMSidePanelContent,
   KVMSetSidePanelContent,
@@ -62,7 +62,7 @@ const LXDSingleDetailsHeader = ({
           hasIcon
           onClick={() => {
             setSidePanelContent({
-              view: KVMHeaderViews.REFRESH_KVM,
+              view: KVMSidePanelViews.REFRESH_KVM,
               extras: { hostIds: [id] },
             });
           }}

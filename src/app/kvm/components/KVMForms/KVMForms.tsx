@@ -9,8 +9,9 @@ import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type {
   KVMSidePanelContent,
   KVMSetSidePanelContent,
@@ -21,9 +22,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
-type Props = {
-  sidePanelContent: KVMSidePanelContent | null;
-  setSidePanelContent: KVMSetSidePanelContent;
+type Props = SidePanelContextType<KVMSidePanelContent | null> & {
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 };
@@ -49,11 +48,11 @@ const getFormComponent = ({
     return null;
   }
 
-  if (sidePanelContent.view === KVMHeaderViews.ADD_LXD_HOST) {
+  if (sidePanelContent.view === KVMSidePanelViews.ADD_LXD_HOST) {
     return <AddLxd clearSidePanelContent={clearSidePanelContent} />;
   }
 
-  if (sidePanelContent.view === KVMHeaderViews.ADD_VIRSH_HOST) {
+  if (sidePanelContent.view === KVMSidePanelViews.ADD_VIRSH_HOST) {
     return <AddVirsh clearSidePanelContent={clearSidePanelContent} />;
   }
 
@@ -67,7 +66,7 @@ const getFormComponent = ({
       ? sidePanelContent.extras.clusterId
       : null;
   if (
-    sidePanelContent.view === KVMHeaderViews.COMPOSE_VM &&
+    sidePanelContent.view === KVMSidePanelViews.COMPOSE_VM &&
     (hostId || hostId === 0)
   ) {
     return (
@@ -78,7 +77,7 @@ const getFormComponent = ({
     );
   }
   if (
-    sidePanelContent.view === KVMHeaderViews.DELETE_KVM &&
+    sidePanelContent.view === KVMSidePanelViews.DELETE_KVM &&
     (hostId || hostId === 0 || clusterId || clusterId === 0)
   ) {
     return (
@@ -91,7 +90,7 @@ const getFormComponent = ({
   }
 
   if (
-    sidePanelContent.view === KVMHeaderViews.REFRESH_KVM &&
+    sidePanelContent.view === KVMSidePanelViews.REFRESH_KVM &&
     sidePanelContent.extras &&
     "hostIds" in sidePanelContent.extras &&
     sidePanelContent.extras.hostIds?.length
@@ -121,7 +120,7 @@ const getFormComponent = ({
   );
 };
 
-const KVMHeaderForms = ({
+const KVMForms = ({
   sidePanelContent,
   setSidePanelContent,
   searchFilter,
@@ -153,4 +152,4 @@ const KVMHeaderForms = ({
   );
 };
 
-export default KVMHeaderForms;
+export default KVMForms;

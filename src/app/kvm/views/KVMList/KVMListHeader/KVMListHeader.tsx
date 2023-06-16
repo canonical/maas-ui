@@ -8,26 +8,16 @@ import { useLocation } from "react-router-dom";
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
-import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
-import { KVMHeaderViews } from "app/kvm/constants";
-import type {
-  KVMSidePanelContent,
-  KVMSetSidePanelContent,
-} from "app/kvm/types";
-import { getFormTitle } from "app/kvm/utils";
+import { KVMSidePanelViews } from "app/kvm/constants";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
 type Props = Required<Pick<SectionHeaderProps, "title">> & {
-  sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
 };
 
-const KVMListHeader = ({
-  sidePanelContent,
-  setSidePanelContent,
-  title,
-}: Props): JSX.Element => {
+const KVMListHeader = ({ setSidePanelContent, title }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
@@ -48,23 +38,14 @@ const KVMListHeader = ({
           onClick={() =>
             setSidePanelContent({
               view: lxdTabActive
-                ? KVMHeaderViews.ADD_LXD_HOST
-                : KVMHeaderViews.ADD_VIRSH_HOST,
+                ? KVMSidePanelViews.ADD_LXD_HOST
+                : KVMSidePanelViews.ADD_VIRSH_HOST,
             })
           }
         >
           Add {lxdTabActive ? "LXD" : "Virsh"} host
         </Button>,
       ]}
-      sidePanelContent={
-        sidePanelContent ? (
-          <KVMHeaderForms
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        ) : null
-      }
-      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : "KVM"}
       subtitle={`${pluralize("KVM host", kvms.length, true)} available`}
       subtitleLoading={!podsLoaded}
       title={title}

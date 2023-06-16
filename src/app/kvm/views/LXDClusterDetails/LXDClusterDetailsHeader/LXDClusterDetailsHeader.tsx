@@ -11,7 +11,7 @@ import type { SidePanelContent } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
 import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
@@ -61,7 +61,7 @@ const LXDClusterDetailsHeader = ({
           onClick={() => {
             if (canRefresh) {
               setSidePanelContent({
-                view: KVMHeaderViews.REFRESH_KVM,
+                view: KVMSidePanelViews.REFRESH_KVM,
                 extras: { hostIds: cluster.hosts.map((host) => host.id) },
               });
             }
