@@ -4,14 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ConfigureDHCP from "./ConfigureDHCP";
 import DHCPStatus from "./DHCPStatus";
+import VLANDeleteForm from "./VLANDeleteForm";
 import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
+import { VLANDetailsViews } from "./constants";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
+import { useSidePanel } from "app/base/side-panel-context";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
@@ -23,6 +26,7 @@ import subnetURLs from "app/subnets/urls";
 import { isId } from "app/utils";
 
 const VLANDetails = (): JSX.Element => {
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const id = useGetURLId(VLANMeta.PK);
   const vlan = useSelector((state: RootState) =>
@@ -60,11 +64,26 @@ const VLANDetails = (): JSX.Element => {
         />
       );
     }
-    return <MainContentSection header={<SectionHeader loading />} />;
+    return (
+      <PageContent
+        header={<SectionHeader loading />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
   }
 
   return (
-    <MainContentSection header={<VLANDetailsHeader id={id} />}>
+    <PageContent
+      header={<VLANDetailsHeader id={id} />}
+      sidePanelContent={
+        sidePanelContent &&
+        sidePanelContent.view === VLANDetailsViews.DELETE_VLAN ? (
+          <VLANDeleteForm closeForm={() => setSidePanelContent(null)} id={id} />
+        ) : null
+      }
+      sidePanelTitle="Delete VLAN"
+    >
       {showDHCPForm ? (
         <ConfigureDHCP closeForm={() => setShowDHCPForm(false)} id={id} />
       ) : (
@@ -79,7 +98,7 @@ const VLANDetails = (): JSX.Element => {
         modelName={VLANMeta.MODEL}
         subnetIds={subnets.map(({ id }) => id)}
       />
-    </MainContentSection>
+    </PageContent>
   );
 };
 
