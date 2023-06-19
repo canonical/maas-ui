@@ -8,13 +8,8 @@ import type { EventChannel } from "redux-saga";
 import { eventChannel } from "redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 import {
-  select,
   all,
   call,
-  cancel,
-  cancelled,
-  delay,
-  fork,
   put,
   take,
   takeEvery,
@@ -22,27 +17,30 @@ import {
   race,
 } from "typed-redux-saga/macro";
 
-import { WebSocketMessageType } from "../../../websocket-client";
 import type {
   WebSocketAction,
   WebSocketClient,
-  WebSocketEndpoint,
-  WebSocketRequest,
   WebSocketRequestMessage,
-  WebSocketResponseNotify,
-  WebSocketResponseResult,
   WebSocketActionParams,
-} from "../../../websocket-client";
+  WebSocketResponseNotify,
+} from "../../../../websocket-client";
 
-import type { GenericMeta } from "./../../store/utils/slice";
-import type { MessageHandler, NextActionCreator } from "./actions";
+import {
+  handleFileContextRequest,
+  storeFileContextActions,
+} from "./handlers/file-context-requests";
+import { isLoaded, resetLoaded, setLoaded } from "./handlers/loaded-endpoints";
+import { handleNextActions, storeNextActions } from "./handlers/next-actions";
+import {
+  handlePolling,
+  isStartPollingAction,
+  isStopPollingAction,
+} from "./handlers/polling-requests";
+import { handleUnsubscribe, isUnsubscribeAction } from "./handlers/unsubscribe";
 
-import { fileContextStore } from "app/base/file-context";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import { MachineMeta } from "app/store/machine/types";
-
-const DEFAULT_POLL_INTERVAL = 10000;
+import type { MessageHandler, NextActionCreator } from "app/base/sagas/actions";
+import type { GenericMeta } from "app/store/utils/slice";
+import { WebSocketMessageType } from "websocket-client";
 
 export type WebSocketChannel = EventChannel<
   | ReconnectingWebSocketEvent
@@ -52,60 +50,38 @@ export type WebSocketChannel = EventChannel<
   | MessageEvent<string>
 >;
 
-type PollRequestId = string;
-
-let loadedEndpoints: WebSocketEndpoint[] = [];
-
-// A map of request ids to action creators. This is used to dispatch actions
-// when a response is received.
-export const nextActions = new Map<
-  WebSocketRequest["request_id"],
-  NextActionCreator[]
->();
-
-// A store of websocket requests that need to store their responses in the file
-// context. The map is between request id and redux action object.
-export const fileContextRequests = new Map<
-  WebSocketRequest["request_id"],
-  WebSocketAction
->();
-
-// A store of websocket endpoints that are being polled.
-const pollingRequests = new Set<PollRequestId>();
-
-const pollRequestId = (action: WebSocketAction | AnyAction): PollRequestId => {
-  const endpoint = `${action.meta?.model}.${action.meta?.method}`;
-  const id = action.meta?.pollId;
-  return id ? `${endpoint}:${id}` : endpoint;
-};
+/**
+ * An action containing an RPC method is a websocket request action.
+ * @param {Object} action.
+ * @returns {Bool} - action is a request action.
+ */
+export const isWebsocketRequestAction = (action: AnyAction): boolean =>
+  Boolean(action?.meta?.method && action?.meta?.model) &&
+  // Ignore actions that are for stopping the polling action.
+  !isStopPollingAction(action);
 
 /**
- * Whether the data is fetching or has been fetched into state.
+ * Handle incoming notify messages.
  *
- * @param endpoint - root redux model and method (e.g. 'users.list')
- * @returns - has data been fetched?
- */
-const isLoaded = (endpoint: WebSocketEndpoint) => {
-  return loadedEndpoints.includes(endpoint);
-};
-
-/**
- * Mark a model as having been fetched into state.
+ * Notify messages have an action and a payload:
+ * {"type": 2,
+ *  "name": "config",
+ *  "action": "update",
+ *  "data": {"name": "maas_name", "value": "maas-hysteria"}}
  *
- * @param endpoint - root redux state model and method (e.g. 'users.list')
+ * Although we receive a corresponding response for each websocket requests,
+ * in some cases the store is only updated once a notify message has been received.
  */
-const setLoaded = (endpoint: WebSocketEndpoint) => {
-  if (!isLoaded(endpoint)) {
-    loadedEndpoints.push(endpoint);
-  }
-};
-/**
- * Reset the list of loaded endpoints.
- *
- */
-const resetLoaded = () => {
-  loadedEndpoints = [];
-};
+export function* handleNotifyMessage({
+  action,
+  data,
+  name,
+}: WebSocketResponseNotify): SagaGenerator<void> {
+  yield* put({
+    type: `${name}/${action}Notify`,
+    payload: data,
+  });
+}
 
 /**
  * Create a WebSocket connection via the client.
@@ -165,192 +141,6 @@ export function watchMessages(socketClient: WebSocketClient): WebSocketChannel {
       socketClient.socket?.close();
     };
   });
-}
-
-/**
- * Handle incoming notify messages.
- *
- * Notify messages have an action and a payload:
- * {"type": 2,
- *  "name": "config",
- *  "action": "update",
- *  "data": {"name": "maas_name", "value": "maas-hysteria"}}
- *
- * Although we receive a corresponding response for each websocket requests,
- * in some cases the store is only updated once a notify message has been received.
- */
-export function* handleNotifyMessage({
-  action,
-  data,
-  name,
-}: WebSocketResponseNotify): SagaGenerator<void> {
-  yield* put({
-    type: `${name}/${action}Notify`,
-    payload: data,
-  });
-}
-
-/**
- * Store the actions to dispatch when the response is received.
- *
- * @param {Object} action - A Redux action.
- * @param {Array} requestIDs - A list of ids for the requests associated with
- * this action.
- */
-function* storeNextActions(
-  requestIDs: WebSocketRequest["request_id"][],
-  nextActionCreators?: NextActionCreator[]
-) {
-  if (nextActionCreators) {
-    for (const id of requestIDs) {
-      yield call([nextActions, nextActions.set], id, nextActionCreators);
-    }
-  }
-}
-
-/**
- * Handle dispatching the next actions, if required.
- *
- * @param {Object} response - A websocket response.
- */
-export function* handleNextActions({
-  request_id,
-  result,
-}: WebSocketResponseResult): SagaGenerator<void> {
-  const actionCreators = yield* call(
-    [nextActions, nextActions.get],
-    request_id
-  );
-  if (actionCreators && actionCreators.length) {
-    for (const actionCreator of actionCreators) {
-      // Generate the action object using the result from the response.
-      const action = yield* call(actionCreator, result);
-      // Dispatch the action.
-      yield* put(action);
-    }
-    // Clean up the stored action creators.
-    yield* call([nextActions, nextActions.delete], request_id);
-  }
-}
-
-/**
- * Store the actions that need to store files in the file context.
- *
- * @param {Object} action - A Redux action.
- * @param {Array} requestIDs - A list of ids for the requests associated with
- * this action.
- */
-export function storeFileContextActions(
-  action: WebSocketAction,
-  requestIDs: WebSocketRequest["request_id"][]
-): void {
-  if (action?.meta?.useFileContext) {
-    requestIDs.forEach((id) => {
-      fileContextRequests.set(id, action);
-    });
-  }
-}
-
-/**
- * Handle storing a file in the file context store, if required.
- *
- * @param {Object} response - A websocket response.
- */
-export function* handleFileContextRequest({
-  request_id,
-  result,
-}: WebSocketResponseResult<string>): SagaGenerator<boolean> {
-  const fileContextRequest = yield* call(
-    [fileContextRequests, fileContextRequests.get],
-    request_id
-  );
-  if (fileContextRequest?.meta.fileContextKey) {
-    // Store the file in the context.
-    fileContextStore.add(fileContextRequest.meta.fileContextKey, result);
-    // Clean up the previous request.
-    fileContextRequests.delete(request_id);
-  }
-  return !!fileContextRequest;
-}
-
-/**
- * Run a timer to keep dispatching an action.
- * @param action - A websocket action.
- */
-export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
-  const id = pollRequestId(action);
-  try {
-    while (true) {
-      // The delay is put first as the action will have already been handled
-      // when it is first dispatched, so this should start by waiting until the
-      // next interval.
-      yield* delay(action.meta?.pollInterval || DEFAULT_POLL_INTERVAL);
-      yield* put(action);
-    }
-  } finally {
-    if (yield* cancelled()) {
-      yield* put({
-        type: `${action.type}PollingStopped`,
-        meta: { pollId: action.meta?.pollId },
-      });
-      pollingRequests.delete(id);
-    }
-  }
-}
-
-/**
- * Handle starting and stopping a polling action.
- * @param action - A websocket action.
- */
-export function* handlePolling(action: WebSocketAction): SagaGenerator<void> {
-  const id = pollRequestId(action);
-  pollingRequests.add(id);
-  let poll = true;
-  while (poll) {
-    yield* put({
-      type: `${action.type}PollingStarted`,
-      meta: { pollId: action.meta?.pollId },
-    });
-    // Start polling the action.
-    const pollingTask = yield* fork(pollAction, action);
-    // Wait for the stop polling action for this endpoint.
-    yield* take(
-      (dispatchedAction: AnyAction) =>
-        isStopPollingAction(dispatchedAction) &&
-        pollRequestId(dispatchedAction) === id
-    );
-    // Cancel polling.
-    yield* cancel(pollingTask);
-    // Exit the while loop.
-    poll = false;
-  }
-}
-
-/**
- * Handle unsubscribing from unused entities and cleaning up the request.
- * @param action - A websocket action.
- */
-export function* handleUnsubscribe(
-  action: WebSocketAction
-): SagaGenerator<void> {
-  const callId = action.meta.callId;
-  if (callId) {
-    // Unsubscribing is only supported for machines.
-    if (action.meta.model === MachineMeta.MODEL) {
-      const unusedIds = yield* select(
-        machineSelectors.unusedIdsInCall,
-        action.meta.callId
-      );
-      if (unusedIds.length > 0) {
-        yield* put(machineActions.unsubscribe(unusedIds));
-      }
-      // Remove the machines after unsubscribing so that the request is still in
-      // Redux when the selector above runs.
-      // The request should always be removed, as the unsubscribe happens when
-      // the last request that references the machine is removed.
-      yield* put(machineActions.removeRequest(callId));
-    }
-  }
 }
 
 /**
@@ -467,50 +257,6 @@ export function* handleMessage(
     }
   }
 }
-
-/**
- * Whether this action is already being polled.
- * @param {Object} action.
- * @returns {Bool} - action is a request action.
- */
-const isPolling = (action: AnyAction): boolean =>
-  pollingRequests.has(pollRequestId(action));
-
-/**
- * Whether this is an action that starts polling a websocket request.
- * @param {Object} action.
- * @returns {Bool} - action is a request action.
- */
-const isStartPollingAction = (action: AnyAction): boolean =>
-  Boolean(action?.meta?.poll) &&
-  // Ignore actions that are already being polled.
-  !isPolling(action);
-
-/**
- * Whether this is an action that stops polling a websocket request.
- * @param {Object} action.
- * @returns {Bool} - action is a request action.
- */
-const isUnsubscribeAction = (action: AnyAction): boolean =>
-  Boolean(action?.meta?.unsubscribe);
-
-/**
- * Whether this is an action that stops polling a websocket request.
- * @param {Object} action.
- * @returns {Bool} - action is a request action.
- */
-const isStopPollingAction = (action: AnyAction): boolean =>
-  Boolean(action?.meta?.pollStop);
-
-/**
- * An action containing an RPC method is a websocket request action.
- * @param {Object} action.
- * @returns {Bool} - action is a request action.
- */
-const isWebsocketRequestAction = (action: AnyAction): boolean =>
-  Boolean(action?.meta?.method && action?.meta?.model) &&
-  // Ignore actions that are for stopping the polling action.
-  !isStopPollingAction(action);
 
 /**
  * Build a message for websocket requests.
