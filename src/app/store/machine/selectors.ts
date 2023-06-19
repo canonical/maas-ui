@@ -2,7 +2,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 import { createCachedSelector } from "re-reselect";
 
-import { ACTIONS } from "app/store/machine/slice";
+import { ACTIONS } from "app/store/machine/constants";
 import type {
   FilterGroupKey,
   Machine,
