@@ -58,9 +58,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -85,9 +83,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -119,9 +115,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -148,9 +142,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -177,9 +169,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -209,9 +199,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={setSidePanelContent}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>

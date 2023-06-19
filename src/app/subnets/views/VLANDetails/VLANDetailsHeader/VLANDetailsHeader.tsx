@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { VLANDetailsViews } from "../constants";
 
-import VLANDeleteForm from "./VLANDeleteForm";
-
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSidePanel } from "app/base/side-panel-context";
 import authSelectors from "app/store/auth/selectors";
@@ -75,13 +73,6 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      sidePanelContent={
-        sidePanelContent &&
-        sidePanelContent.view === VLANDetailsViews.DELETE_VLAN ? (
-          <VLANDeleteForm closeForm={() => setSidePanelContent(null)} id={id} />
-        ) : null
-      }
-      sidePanelTitle="Delete VLAN"
       subtitleLoading={!isVLANDetails(vlan)}
       title={generateTitle(vlan, fabric)}
     />
