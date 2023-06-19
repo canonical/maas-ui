@@ -41,7 +41,7 @@ jobs:
       - name: Run sitespeed.io tests
         run: yarn sitespeed --browsertime.domain=${{env.MAAS_DOMAIN}}
       - name: Upload results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: sitespeed.io-results
           path: sitespeed.io/results
