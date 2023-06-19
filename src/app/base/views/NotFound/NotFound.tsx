@@ -1,4 +1,5 @@
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent";
+import SectionHeader from "app/base/components/SectionHeader";
 import { useWindowTitle } from "app/base/hooks";
 
 type Props = {
@@ -6,7 +7,7 @@ type Props = {
 };
 
 export enum Label {
-  Title = "Error: Page not found.",
+  Title = "Error: Page not found",
 }
 
 const NotFound = ({ includeSection = false }: Props): JSX.Element => {
@@ -14,14 +15,19 @@ const NotFound = ({ includeSection = false }: Props): JSX.Element => {
   const message = `The requested URL ${window.location.pathname} was not found on this server.`;
   if (includeSection) {
     return (
-      <MainContentSection aria-label={Label.Title} header={Label.Title}>
-        <h2 className="p-heading--4">{message}</h2>
-      </MainContentSection>
+      <PageContent
+        aria-label={Label.Title}
+        header={<SectionHeader title={Label.Title} />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      >
+        <h2 className="p-heading--5">{message}</h2>
+      </PageContent>
     );
   }
   return (
     <div aria-label={Label.Title}>
-      <h2 className="p-heading--4">{Label.Title}</h2>
+      <h2 className="p-heading--5">{Label.Title}</h2>
       <p>{message}</p>
     </div>
   );
