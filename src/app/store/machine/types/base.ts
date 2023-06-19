@@ -227,8 +227,6 @@ export type MachineStateList = {
   needsUpdate: boolean;
   stale: boolean;
   num_pages: number | null;
-  // params that were used to fetch the list
-  params: string | null;
 };
 
 export type MachineStateLists = Record<string, MachineStateList>;
@@ -326,8 +324,6 @@ export type FilterGroup = {
 export type MachineEventErrors = CloneError;
 
 export type MachineStateCount = {
-  // params that were used to fetch the count
-  params: string | null;
   count: number | null;
   errors: APIError;
   loaded: boolean;

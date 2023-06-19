@@ -9,7 +9,7 @@ import {
   take,
 } from "typed-redux-saga/macro";
 
-import type { WebSocketAction } from "../../../../../websocket-client";
+import type { WebSocketAction } from "websocket-client";
 
 const DEFAULT_POLL_INTERVAL = 10000;
 
