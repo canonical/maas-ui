@@ -101,7 +101,7 @@ const routes: { title: string; path: string }[] = [
     path: urls.tags.tag.index({ id: 1 }),
   },
   {
-    title: "Error: Page not found.",
+    title: "Error: Page not found",
     path: "/not/a/path",
   },
   {
