@@ -360,11 +360,9 @@ describe("MachineList", () => {
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
     expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/setSelectedMachines")
+      store.getActions().find((action) => action.type === "machine/setSelected")
     ).toStrictEqual({
-      type: "machine/setSelectedMachines",
+      type: "machine/setSelected",
       payload: null,
     });
   });

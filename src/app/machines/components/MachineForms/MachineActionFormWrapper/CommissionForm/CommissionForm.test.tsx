@@ -5,6 +5,8 @@ import CommissionForm from "./CommissionForm";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { ScriptName, ScriptType } from "app/store/script/types";
+import { PowerState } from "app/store/types/enum";
+import { NodeStatusCode } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -243,5 +245,36 @@ describe("CommissionForm", () => {
       store.getActions().find((action) => action.type === "machine/commission")
         ?.payload.params.extra.testing_scripts
     ).toStrictEqual([ScriptName.NONE]);
+  });
+
+  it("Displays an error notification if power type is not set and status is unknown", () => {
+    state.machine.items[0].power_state = PowerState.UNKNOWN;
+    state.machine.items[0].status_code = NodeStatusCode.NEW;
+
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <CommissionForm
+        clearSidePanelContent={jest.fn()}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      {
+        route: "/machine/abc123",
+        store,
+        routePattern: "/machine/:id",
+      }
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: /error/i,
+      })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/unconfigured power type*/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", {
+        name: /configure the power type/i,
+      })
+    ).toBeInTheDocument();
   });
 });

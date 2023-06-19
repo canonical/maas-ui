@@ -143,7 +143,7 @@ it("can dispatch a generated selected state", async () => {
     { store }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines(selected);
+  const expected = machineActions.setSelected(selected);
   await waitFor(() => {
     expect(
       store.getActions().find((action) => action.type === expected.type)

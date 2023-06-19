@@ -33,8 +33,7 @@ describe("machine reducer", () => {
       loading: false,
       saved: false,
       saving: false,
-      selected: [],
-      selectedMachines: null,
+      selected: null,
       statuses: {},
     });
   });
@@ -139,11 +138,11 @@ describe("machine reducer", () => {
 
   it("updates selected machines on delete notify", () => {
     const initialState = machineStateFactory({
-      selectedMachines: { items: ["abc123"] },
+      selected: { items: ["abc123"] },
     });
     expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
       machineStateFactory({
-        selectedMachines: { items: [] },
+        selected: { items: [] },
       })
     );
   });
@@ -1066,7 +1065,7 @@ describe("machine reducer", () => {
         machineFactory({ system_id: "abc123" }),
         machineFactory({ system_id: "def456" }),
       ],
-      selected: ["abc123"],
+      selected: { items: ["abc123"] },
       statuses: {
         abc123: machineStatusFactory(),
         def456: machineStatusFactory(),
@@ -1076,7 +1075,7 @@ describe("machine reducer", () => {
     expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
       machineStateFactory({
         items: [initialState.items[1]],
-        selected: [],
+        selected: { items: [] },
         statuses: { def456: machineStatusFactory() },
       })
     );
@@ -1149,17 +1148,14 @@ describe("machine reducer", () => {
     );
   });
 
-  it("reduces setSelectedMachines", () => {
+  it("reduces setSelected", () => {
     const initialState = machineStateFactory({ selected: [] });
 
     expect(
-      reducers(
-        initialState,
-        actions.setSelectedMachines({ items: ["abcde", "fghij"] })
-      )
+      reducers(initialState, actions.setSelected({ items: ["abcde", "fghij"] }))
     ).toEqual(
       machineStateFactory({
-        selectedMachines: { items: ["abcde", "fghij"] },
+        selected: { items: ["abcde", "fghij"] },
       })
     );
   });
@@ -1507,7 +1503,7 @@ describe("machine reducer", () => {
         machineFactory({ system_id: "abc123" }),
         machineFactory({ system_id: "def456" }),
       ],
-      selected: ["abc123"],
+      selected: { items: ["abc123"] },
       statuses: {
         abc123: machineStatusFactory(),
         def456: machineStatusFactory(),
@@ -1518,7 +1514,7 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         items: [initialState.items[1]],
-        selected: [],
+        selected: initialState.selected,
         statuses: { def456: machineStatusFactory() },
       })
     );

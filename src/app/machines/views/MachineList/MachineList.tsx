@@ -73,7 +73,7 @@ const MachineList = ({
     () => () => {
       // Clear machine selected state and clean up any machine errors etc.
       // when closing the list.
-      dispatch(machineActions.setSelectedMachines(null));
+      dispatch(machineActions.setSelected(null));
       dispatch(machineActions.cleanup());
     },
     [dispatch]

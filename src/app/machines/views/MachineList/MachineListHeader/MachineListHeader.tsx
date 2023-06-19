@@ -51,7 +51,7 @@ export const MachineListHeader = ({
       // we cannot reliably preserve the selected state for groups of machines
       // as we are only fetching information about a group from the back-end
       // and the contents of a group may change when different filters are applied
-      dispatch(machineActions.setSelectedMachines(null));
+      dispatch(machineActions.setSelected(null));
     },
     [dispatch, setSearchFilter]
   );

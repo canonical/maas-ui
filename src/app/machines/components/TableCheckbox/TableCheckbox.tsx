@@ -61,7 +61,7 @@ const TableCheckbox = ({
         window.getSelection()?.removeAllRanges();
         const isRange = !!event.nativeEvent.shiftKey;
         dispatch(
-          machineActions.setSelectedMachines(
+          machineActions.setSelected(
             onGenerateSelected(event.target.checked, isRange)
           )
         );

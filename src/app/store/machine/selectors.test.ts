@@ -91,10 +91,10 @@ describe("machine selectors", () => {
   it("can get the selected machines", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
-        selectedMachines: { items: ["abc123", "def456"] },
+        selected: { items: ["abc123", "def456"] },
       }),
     });
-    expect(machine.selectedMachines(state)).toStrictEqual({
+    expect(machine.selected(state)).toStrictEqual({
       items: ["abc123", "def456"],
     });
   });

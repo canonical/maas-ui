@@ -598,7 +598,7 @@ export function* sendMessage(
 }
 
 /**
- * Connect to the WebSocket and watch for message.
+ * Set up a WebSocket connection and start listening for messages from the server.
  * @param {Array} messageHandlers - Sagas that should handle specific messages
  * via the websocket channel.
  */
@@ -663,7 +663,7 @@ export function* setupWebSocket({
 }
 
 /**
- * Set up websocket connections when requested.
+ * Set up websocket connection on request via status/websocketConnect action
  * @param {Array} messageHandlers - Additional sagas to be handled by the
  * websocket channel.
  */

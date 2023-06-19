@@ -443,7 +443,7 @@ describe("Machines", () => {
   });
 
   it("displays the action title if an action is selected", () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     renderWithBrowserRouter(<Machines />, {
       state,
       route: "/machines",

@@ -31,7 +31,7 @@ describe("FieldlessForm", () => {
             system_id: "abc123",
           }),
         ],
-        selected: [],
+        selected: null,
         statuses: {
           abc123: machineStatusFactory(),
         },

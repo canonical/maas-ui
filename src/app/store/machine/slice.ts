@@ -506,8 +506,7 @@ const machineSlice = createSlice({
     filtersLoaded: false,
     filtersLoading: false,
     lists: {},
-    selected: [],
-    selectedMachines: null,
+    selected: null,
     statuses: {},
   } as MachineState,
   reducers: {
@@ -933,16 +932,13 @@ const machineSlice = createSlice({
         (item: Machine) => item.system_id === action.payload
       );
       state.items.splice(index, 1);
-      state.selected = state.selected.filter(
-        (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
-      );
       if (
-        state.selectedMachines &&
-        "items" in state.selectedMachines &&
-        state.selectedMachines.items &&
-        state.selectedMachines.items.length > 0
+        state.selected &&
+        "items" in state.selected &&
+        state.selected.items &&
+        state.selected.items.length > 0
       ) {
-        state.selectedMachines.items = state.selectedMachines.items.filter(
+        state.selected.items = state.selected.items.filter(
           (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
         );
       }
@@ -1706,20 +1702,6 @@ const machineSlice = createSlice({
     setPoolStart: statusHandlers.setPool.start,
     setPoolSuccess: statusHandlers.setPool.success,
     setSelected: {
-      prepare: (machineIDs: Machine[MachineMeta.PK][]) => ({
-        payload: machineIDs,
-      }),
-      reducer: (
-        state: MachineState,
-        action: PayloadAction<Machine[MachineMeta.PK][]>
-      ) => {
-        state.selected = action.payload;
-      },
-    },
-    // TODO: rename this to setSelected once everything has been migrated to the
-    // new selected type.
-    // https://github.com/canonical/app-tribe/issues/1256
-    setSelectedMachines: {
       prepare: (selected: SelectedMachines | null) => ({
         payload: selected,
       }),
@@ -1727,7 +1709,7 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<SelectedMachines | null>
       ) => {
-        state.selectedMachines = action.payload;
+        state.selected = action.payload;
       },
     },
     setZone: generateActionParams<SetZoneParams>(NodeActions.SET_ZONE),
@@ -1881,9 +1863,6 @@ const machineSlice = createSlice({
           (item: Machine) => item.system_id === id
         );
         state.items.splice(index, 1);
-        state.selected = state.selected.filter(
-          (machineId: Machine[MachineMeta.PK]) => machineId !== id
-        );
         // Clean up the statuses for model.
         delete state.statuses[id];
       });

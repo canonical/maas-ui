@@ -126,9 +126,8 @@ it("clears selected machines and invalidates queries on delete success", async (
   );
 
   expect(
-    store
-      .getActions()
-      .find((action) => action.type === "machine/setSelectedMachines").payload
+    store.getActions().find((action) => action.type === "machine/setSelected")
+      .payload
   ).toEqual(null);
   expect(
     store

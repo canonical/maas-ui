@@ -152,10 +152,7 @@ const active = createSelector(
  * @param {RootState} state - The redux state.
  * @returns {Machine[]} Selected machines.
  */
-const selectedMachines = createSelector(
-  [machineState],
-  ({ selectedMachines }) => selectedMachines
-);
+const selected = createSelector([machineState], ({ selected }) => selected);
 
 /**
  * Select the event errors for all machines.
@@ -686,7 +683,7 @@ const selectors = {
   overridingFailedTesting: statusSelectors["overridingFailedTesting"],
   processing,
   releasing: statusSelectors["releasing"],
-  selectedMachines,
+  selected,
   settingPool: statusSelectors["settingPool"],
   settingZone: statusSelectors["settingZone"],
   statuses,

@@ -1,10 +1,12 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
-import { MachineSidePanelViews } from "app/machines/constants";
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
+import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -24,6 +26,7 @@ const mockStore = configureStore<RootState>();
 describe("MachineHeader", () => {
   let state: RootState;
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
@@ -37,15 +40,15 @@ describe("MachineHeader", () => {
     });
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("displays a spinner when loading", () => {
     state.machine.items = [];
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -58,11 +61,7 @@ describe("MachineHeader", () => {
     state.machine.items = [machineFactory({ system_id: "abc123" })];
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -71,30 +70,11 @@ describe("MachineHeader", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays machine name if an action is selected", () => {
-    renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: MachineSidePanelViews.DEPLOY_MACHINE }}
-        systemId="abc123"
-      />,
-      { state, route: "/machine/abc123" }
-    );
-
-    expect(
-      screen.getByRole("heading", { name: "test-machine" })
-    ).toBeInTheDocument();
-  });
-
   it("displays an icon when locked", () => {
     state.machine.items[0].locked = true;
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -108,11 +88,7 @@ describe("MachineHeader", () => {
     state.machine.items[0].power_state = PowerState.ON;
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -125,11 +101,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -142,11 +114,7 @@ describe("MachineHeader", () => {
       const store = mockStore(state);
 
       renderWithBrowserRouter(
-        <MachineHeader
-          setSidePanelContent={jest.fn()}
-          sidePanelContent={null}
-          systemId="abc123"
-        />,
+        <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
         { store, route: "/machine/abc123" }
       );
 
@@ -172,11 +140,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -205,11 +169,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -221,5 +181,49 @@ describe("MachineHeader", () => {
     expect(
       screen.queryByTestId("section-header-subtitle")
     ).not.toBeInTheDocument();
+  });
+
+  it("shouldn't need confirmation before locking a machine", async () => {
+    state.machine.items[0].actions = [NodeActions.LOCK];
+    state.machine.items[0].permissions = ["edit", "delete"];
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      { store, route: "/machine/abc123" }
+    );
+
+    await userEvent.click(screen.getByRole("switch", { name: /lock/i }));
+
+    expect(
+      screen.queryByRole("complementary", {
+        name: /lock/i,
+      })
+    ).not.toBeInTheDocument();
+    const expectedAction = machineActions.lock(
+      {
+        filter: { id: [state.machine.items[0].system_id] },
+      },
+      "123456"
+    );
+
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
+
+  it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
+    state.machine.items[0].power_state = PowerState.UNKNOWN;
+    state.machine.items[0].status_code = NodeStatusCode.NEW;
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      { store, route: "/machine/abc123" }
+    );
+
+    expect(
+      screen.getByRole("link", { name: /error configuration/i })
+    ).toBeInTheDocument();
   });
 });

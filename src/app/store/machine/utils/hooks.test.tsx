@@ -646,8 +646,8 @@ describe("machine hook utils", () => {
 
     it("can fetch selected machines", async () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-      const selectedMachines = { items: ["abc123", "def456"] };
-      state.machine.selectedMachines = selectedMachines;
+      const selected = { items: ["abc123", "def456"] };
+      state.machine.selected = selected;
       const store = mockStore(state);
       renderHook(useFetchSelectedMachines, {
         wrapper: generateWrapper(store),
@@ -657,7 +657,7 @@ describe("machine hook utils", () => {
         .getActions()
         .find((action) => action.type === expected.type);
       expect(actual.payload.params.filter).toStrictEqual(
-        selectedToFilters(selectedMachines)
+        selectedToFilters(selected)
       );
     });
   });
@@ -1308,7 +1308,7 @@ describe("machine hook utils", () => {
 
   describe("useHasSelection", () => {
     it("can have no selected machines", () => {
-      state.machine.selectedMachines = null;
+      state.machine.selected = null;
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),
@@ -1317,7 +1317,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are filters", () => {
-      state.machine.selectedMachines = {
+      state.machine.selected = {
         filter: { hostname: "wistful-wallaby" },
       };
       const store = mockStore(state);
@@ -1328,7 +1328,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are empty filters", () => {
-      state.machine.selectedMachines = { filter: {} };
+      state.machine.selected = { filter: {} };
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),
@@ -1337,7 +1337,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are groups", () => {
-      state.machine.selectedMachines = { groups: ["Admin 2"] };
+      state.machine.selected = { groups: ["Admin 2"] };
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),
@@ -1346,7 +1346,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are items", () => {
-      state.machine.selectedMachines = { items: ["abc123"] };
+      state.machine.selected = { items: ["abc123"] };
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),

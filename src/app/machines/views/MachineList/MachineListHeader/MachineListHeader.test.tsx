@@ -82,7 +82,7 @@ describe("MachineListHeader", () => {
   });
 
   it("hides the add hardware menu when machines are selected", () => {
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     renderWithBrowserRouter(
       <MachineListHeader
         grouping={null}
@@ -98,7 +98,7 @@ describe("MachineListHeader", () => {
     expect(
       screen.queryByTestId("add-hardware-dropdown")
     ).not.toBeInTheDocument();
-    state.machine.selectedMachines.items = [];
+    state.machine.selected.items = [];
     renderWithBrowserRouter(
       <MachineListHeader
         grouping={null}
@@ -116,7 +116,7 @@ describe("MachineListHeader", () => {
 
   it("displays a new label for the tag action", async () => {
     // Set a selected machine so the take action menu becomes enabled.
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
     state.machine.items = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
@@ -146,7 +146,7 @@ describe("MachineListHeader", () => {
   it("hides the tag action's new label after it has been clicked", async () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     // Set a selected machine so the take action menu becomes enabled.
-    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
     const machine = machineFactory({
       system_id: "abc123",

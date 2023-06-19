@@ -35,7 +35,7 @@ const Machines = (): JSX.Element => {
     useSidePanel() as SidePanelContextType<MachineSidePanelContent>;
 
   const machinesPathMatch = useMatch(urls.machines.index);
-  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedMachines = useSelector(machineSelectors.selected);
 
   // Close the side panel when there are no selected machines
   useEffect(() => {
@@ -49,7 +49,12 @@ const Machines = (): JSX.Element => {
     (searchText) => {
       setFilter(searchText);
       const filters = FilterMachines.getCurrentFilters(searchText);
-      navigate({ search: FilterMachines.filtersToQueryString(filters) });
+      navigate(
+        {
+          search: FilterMachines.filtersToQueryString(filters),
+        },
+        { replace: true }
+      );
     },
     [navigate, setFilter]
   );
@@ -79,7 +84,7 @@ const Machines = (): JSX.Element => {
       // clear selected machines on grouping change
       // we cannot reliably preserve the selected state for individual machines
       // as we are only fetching information about a group from the back-end
-      dispatch(machineActions.setSelectedMachines(null));
+      dispatch(machineActions.setSelected(null));
     },
     [setStoredGrouping, dispatch]
   );
@@ -106,7 +111,6 @@ const Machines = (): JSX.Element => {
           setHiddenGroups={setHiddenGroups}
           setSearchFilter={setSearchFilter}
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
         />
       }
       sidePanelContent={

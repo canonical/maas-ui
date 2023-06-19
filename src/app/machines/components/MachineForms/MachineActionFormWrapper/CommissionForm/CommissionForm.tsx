@@ -1,16 +1,24 @@
 import { useEffect } from "react";
 
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 import CommissionFormFields from "./CommissionFormFields";
 import type { CommissionFormValues, FormattedScript } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
+import { useGetURLId } from "app/base/hooks";
+import urls from "app/base/urls";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type { MachineEventErrors } from "app/store/machine/types";
-import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
+import { MachineMeta, type MachineEventErrors } from "app/store/machine/types";
+import { isUnconfiguredPowerType } from "app/store/machine/utils/common";
+import {
+  useFetchMachine,
+  useSelectedMachinesActionsDispatch,
+} from "app/store/machine/utils/hooks";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -59,6 +67,8 @@ export const CommissionForm = ({
   viewingDetails,
   selectedMachines,
 }: Props): JSX.Element => {
+  const id = useGetURLId(MachineMeta.PK);
+  const { machine } = useFetchMachine(id);
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
@@ -181,6 +191,15 @@ export const CommissionForm = ({
       validationSchema={CommissionFormSchema}
       {...actionProps}
     >
+      {machine && isUnconfiguredPowerType(machine) && (
+        <Notification severity="negative" title="Error">
+          Unconfigured power type. Please{" "}
+          <Link to={urls.machines.machine.configuration(id ? { id } : null)}>
+            configure the power type{" "}
+          </Link>
+          and try again.
+        </Notification>
+      )}
       <CommissionFormFields
         commissioningScripts={formatScripts(commissioningScripts)}
         preselectedCommissioning={formatScripts(preselectedCommissioningSorted)}

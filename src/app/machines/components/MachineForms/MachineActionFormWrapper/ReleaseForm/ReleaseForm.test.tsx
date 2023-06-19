@@ -53,7 +53,7 @@ describe("ReleaseForm", () => {
   });
 
   it("sets the initial disk erase behaviour from global config", () => {
-    state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    state.machine.selected = { items: ["abc123", "def456"] };
     state.config.items = [
       configFactory({
         name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
@@ -91,7 +91,7 @@ describe("ReleaseForm", () => {
 
   it("correctly dispatches action to release given machines", async () => {
     const store = mockStore(state);
-    state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    state.machine.selected = { items: ["abc123", "def456"] };
     renderWithBrowserRouter(
       <Provider store={store}>
         <ReleaseForm

@@ -27,7 +27,7 @@ beforeEach(() => {
 });
 
 it("is unchecked if there are no filters, groups or items selected", () => {
-  state.machine.selectedMachines = null;
+  state.machine.selected = null;
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
@@ -35,7 +35,7 @@ it("is unchecked if there are no filters, groups or items selected", () => {
 });
 
 it("is checked if there is a selected filter", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     filter: {
       owner: "admin",
     },
@@ -47,7 +47,7 @@ it("is checked if there is a selected filter", () => {
 });
 
 it("is partially checked if a group is selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     groups: ["admin1"],
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
@@ -57,7 +57,7 @@ it("is partially checked if a group is selected", () => {
 });
 
 it("is partially checked if a machine is selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     items: ["abc123"],
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
@@ -77,7 +77,7 @@ it("can dispatch an action to select all", async () => {
   await userEvent.click(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   );
-  const expected = machineActions.setSelectedMachines({
+  const expected = machineActions.setSelected({
     filter,
   });
   expect(
@@ -89,7 +89,7 @@ it("can dispatch an action to unselect all", async () => {
   const filter = {
     owner: ["admin1"],
   };
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     filter,
   };
   const store = mockStore(state);
@@ -99,7 +99,7 @@ it("can dispatch an action to unselect all", async () => {
   await userEvent.click(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   );
-  const expected = machineActions.setSelectedMachines(null);
+  const expected = machineActions.setSelected(null);
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);

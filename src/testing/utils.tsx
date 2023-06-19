@@ -160,12 +160,16 @@ export const renderWithBrowserRouter = (
   const { route, ...wrapperProps } = options || {};
   window.history.pushState({}, "", route);
 
-  return render(ui, {
+  const rendered = render(ui, {
     wrapper: (props) => (
       <BrowserRouterWithProvider {...props} {...wrapperProps} />
     ),
     ...options,
   });
+
+  return {
+    ...rendered,
+  };
 };
 
 export const renderWithMockStore = (
@@ -184,6 +188,8 @@ export const renderWithMockStore = (
   });
   return {
     ...rendered,
+    rerender: (ui: React.ReactElement) =>
+      renderWithMockStore(ui, { container: rendered.container, ...options }),
   };
 };
 
