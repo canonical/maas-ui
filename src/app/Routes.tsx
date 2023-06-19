@@ -188,6 +188,14 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <Pools />
+        </ErrorBoundary>
+      }
+      path={`${urls.pools.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <SubnetsList />
         </ErrorBoundary>
       }
@@ -201,6 +209,14 @@ const Routes = (): JSX.Element => (
       }
       path={`${urls.subnets.subnet.index(null)}/*`}
     />
+    <Route
+      element={
+        <ErrorBoundary>
+          <VLANDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.subnets.vlan.index(null)}/*`}
+    />
     {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
     {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
     <Route element={<LegacyPageContentWrapper />}>
@@ -211,22 +227,6 @@ const Routes = (): JSX.Element => (
           </ErrorBoundary>
         }
         path={`${urls.devices.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <Pools />
-          </ErrorBoundary>
-        }
-        path={`${urls.pools.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <VLANDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.subnets.vlan.index(null)}/*`}
       />
       <Route element={<NotFound includeSection />} path="*" />
     </Route>
