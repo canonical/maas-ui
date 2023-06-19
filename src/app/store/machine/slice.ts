@@ -680,6 +680,30 @@ const machineSlice = createSlice({
           (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
         );
       }
+      // Remove deleted machine from all lists
+      Object.values(state.lists).forEach((list) => {
+        list.groups?.forEach((group) => {
+          let index = group.items.indexOf(action.payload);
+          if (index !== -1) {
+            group.items.splice(index, 1);
+            // update the count
+            if (group.count > 0) {
+              group.count = group.count - 1;
+            }
+            if (list.count && list.count > 0) {
+              list.count = list.count! - 1;
+            }
+            // Exit the loop early if the item has been found and removed
+            return;
+          }
+        });
+        // remove any empty groups
+        if (list.groups) {
+          list.groups = list.groups?.filter((group) => group.items.length > 0);
+        }
+      });
+
+      // we do not know if the deleted machine is in the the requested count
       // mark all machine count queries as stale and in need of re-fetch
       Object.keys(state.counts).forEach((callId) => {
         state.counts[callId].stale = true;
