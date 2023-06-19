@@ -3,30 +3,21 @@ import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 import { call, put, take } from "redux-saga/effects";
 
-import type {
-  WebSocketResponseNotify,
-  WebSocketResponseResult,
-} from "../../../websocket-client";
-import WebSocketClient, {
-  WebSocketMessageType,
-  WebSocketResponseType,
-} from "../../../websocket-client";
-
+import {
+  handleFileContextRequest,
+  storeFileContextActions,
+} from "./handlers/file-context-requests";
+import { handleNextActions, nextActions } from "./handlers/next-actions";
+import { pollAction, handlePolling } from "./handlers/polling-requests";
+import { handleUnsubscribe } from "./handlers/unsubscribe";
 import type { WebSocketChannel } from "./websockets";
 import {
   createConnection,
-  handleFileContextRequest,
   handleMessage,
-  handleNextActions,
   handleNotifyMessage,
-  handlePolling,
-  nextActions,
-  pollAction,
   sendMessage,
-  storeFileContextActions,
   watchMessages,
   watchWebSockets,
-  handleUnsubscribe,
 } from "./websockets";
 
 import { actions as machineActions } from "app/store/machine";
@@ -37,6 +28,14 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
+import WebSocketClient, {
+  WebSocketMessageType,
+  WebSocketResponseType,
+} from "websocket-client";
+import type {
+  WebSocketResponseNotify,
+  WebSocketResponseResult,
+} from "websocket-client";
 
 jest.mock("app/utils", () => ({
   ...jest.requireActual("app/utils"),
