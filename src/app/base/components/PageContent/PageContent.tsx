@@ -1,7 +1,7 @@
 import type { HTMLProps, ReactNode } from "react";
 
 import classNames from "classnames";
-import { Outlet, matchPath, useLocation } from "react-router-dom-v5-compat";
+import { matchPath, useLocation } from "react-router-dom-v5-compat";
 
 import AppSidePanel from "../AppSidePanel";
 import Footer from "../Footer";
@@ -82,46 +82,6 @@ const PageContent = ({
         title={sidePanelTitle}
       />
     </>
-  );
-};
-
-// eslint-disable-next-line react/no-multi-comp
-export const LegacyPageContentWrapper = (): JSX.Element => {
-  const { pathname } = useLocation();
-  const isSettingsPage = matchPath("settings/*", pathname);
-  const isPreferencesPage = matchPath("account/prefs/*", pathname);
-  const isSideNavVisible = isSettingsPage || isPreferencesPage;
-  const { theme } = useThemeContext();
-
-  return (
-    <main className="l-main">
-      {isSideNavVisible ? (
-        <div className={classNames("l-main__nav", `is-maas-${theme}--accent`)}>
-          <SecondaryNavigation
-            isOpen={!!isSideNavVisible}
-            items={
-              isSettingsPage
-                ? settingsNavItems
-                : isPreferencesPage
-                ? preferencesNavItems
-                : []
-            }
-            title={
-              isSettingsPage
-                ? "Settings"
-                : isPreferencesPage
-                ? "My preferences"
-                : ""
-            }
-          />
-        </div>
-      ) : null}
-      <div className="l-main__content" id="main-content">
-        <Outlet />
-        <hr />
-        <Footer />
-      </div>
-    </main>
   );
 };
 
