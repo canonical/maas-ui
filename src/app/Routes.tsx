@@ -1,8 +1,6 @@
 import { Redirect } from "react-router-dom";
 import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
-import { LegacyPageContentWrapper } from "./base/components/PageContent/PageContent";
-
 import ErrorBoundary from "app/base/components/ErrorBoundary";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
@@ -196,6 +194,14 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
+          <Pools />
+        </ErrorBoundary>
+      }
+      path={`${urls.pools.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
           <SubnetsList />
         </ErrorBoundary>
       }
@@ -209,27 +215,15 @@ const Routes = (): JSX.Element => (
       }
       path={`${urls.subnets.subnet.index(null)}/*`}
     />
+    <Route
+      element={
+        <ErrorBoundary>
+          <VLANDetails />
+        </ErrorBoundary>
+      }
+      path={`${urls.subnets.vlan.index(null)}/*`}
+    />
     <Route element={<NotFound includeSection />} path="*" />
-    {/* TODO: Remove this wrapper route once all pages use the new page component wrapper */}
-    {/* https://warthogs.atlassian.net/browse/MAASENG-1832 */}
-    <Route element={<LegacyPageContentWrapper />}>
-      <Route
-        element={
-          <ErrorBoundary>
-            <Pools />
-          </ErrorBoundary>
-        }
-        path={`${urls.pools.index}/*`}
-      />
-      <Route
-        element={
-          <ErrorBoundary>
-            <VLANDetails />
-          </ErrorBoundary>
-        }
-        path={`${urls.subnets.vlan.index(null)}/*`}
-      />
-    </Route>
   </ReactRouterRoutes>
 );
 
