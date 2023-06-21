@@ -1,4 +1,4 @@
-import type { FetchFilters, FetchGroupKey } from "./actions";
+import type { FetchFilters, FetchGroupKey, FetchParams } from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { ActionState, APIError, Seconds } from "app/base/types";
@@ -46,6 +46,7 @@ export type BaseMachine = Omit<
   link_type: NodeLinkType.MACHINE;
   owner: string;
   physical_disk_count: number;
+  parent: string | null;
   pod?: ModelRef;
   pool: ModelRef;
   power_state: PowerState;
@@ -224,9 +225,9 @@ export type MachineStateList = {
   groups: MachineStateListGroup[] | null;
   loaded: boolean;
   loading: boolean;
-  needsUpdate: boolean;
   stale: boolean;
   num_pages: number | null;
+  params: FetchParams | null;
 };
 
 export type MachineStateLists = Record<string, MachineStateList>;

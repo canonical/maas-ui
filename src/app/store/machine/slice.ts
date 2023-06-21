@@ -61,8 +61,8 @@ import type {
   FilterGroupKey,
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
-import type { OverrideFailedTesting } from "./types/actions";
-import type { MachineActionStatus } from "./types/base";
+import type { FetchGroupKey, OverrideFailedTesting } from "./types/actions";
+import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
 
 import { ACTION_STATUS } from "app/base/constants";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -78,7 +78,7 @@ import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-import { preparePayloadParams, kebabToCamelCase } from "app/utils";
+import { preparePayloadParams, kebabToCamelCase, toKebabCase } from "app/utils";
 
 const DEFAULT_LIST_STATE = {
   count: null,
@@ -87,7 +87,6 @@ const DEFAULT_LIST_STATE = {
   groups: null,
   loaded: false,
   loading: true,
-  needsUpdate: false,
   stale: false,
   num_pages: null,
 };
@@ -899,6 +898,7 @@ const machineSlice = createSlice({
           state.lists[action.meta.callId] = {
             ...DEFAULT_LIST_STATE,
             loading: true,
+            params: action?.meta.item || null,
           };
         }
       },
@@ -1712,9 +1712,94 @@ const machineSlice = createSlice({
         state,
         action
       );
-      // mark all machine list queries as in need of update
       Object.keys(state.lists).forEach((callId: string) => {
-        state.lists[callId].needsUpdate = true;
+        const list: MachineStateList = state.lists[callId];
+        let groups: MachineStateListGroup[] = list.groups ?? [];
+        const groupKey = list.params?.group_key;
+
+        // if groupKey is empty string, then we don't need to do anything
+        if (groupKey === "") {
+          return;
+        }
+
+        const currentGroup = groups?.find((group) =>
+          group.items.some((systemId) => systemId === action.payload.system_id)
+        );
+
+        const currentMachineGroupingValue = currentGroup?.name;
+
+        // get the right value from action.payload based on the groupKey
+        const machine = action.payload;
+        const groupKeyToMachineValue: Partial<
+          Record<FetchGroupKey, string | null>
+        > = {
+          status: machine.status,
+          owner: machine.owner,
+          domain: machine.domain.name,
+          pool: machine.pool.name,
+          architecture: machine.architecture,
+          parent: machine.parent,
+          pod: null, // KVM
+          pod_type: machine.power_type, // KVM Type
+          power_state: machine.power_state,
+          zone: machine.zone.name,
+        };
+        const newMachineGroupingValue = groupKey
+          ? groupKeyToMachineValue[groupKey]
+          : null;
+
+        if (!newMachineGroupingValue) {
+          return;
+        }
+
+        // if grouping changed, then we need to update the groups
+        if (currentMachineGroupingValue !== newMachineGroupingValue) {
+          // remove machine from the current group
+          groups = groups.map((group) => {
+            if (group.name === currentMachineGroupingValue) {
+              return {
+                ...group,
+                items: group.items.filter(
+                  (item) => item !== action.payload.system_id
+                ),
+                count: group.count - 1,
+              };
+            }
+            return group;
+          });
+
+          // add machine to the new group
+          const newGroupExists = groups.find(
+            (group) => group.name === newMachineGroupingValue
+          );
+          if (newGroupExists) {
+            groups = groups.map((group) => {
+              if (group.name === newMachineGroupingValue) {
+                return {
+                  ...group,
+                  items: [...group.items, action.payload.system_id],
+                  count: group.count + 1,
+                };
+              }
+              return group;
+            });
+          } else {
+            // if the group does not exist create it
+            groups.push({
+              name: newMachineGroupingValue,
+              value: toKebabCase(newMachineGroupingValue),
+              items: [action.payload.system_id],
+              count: 1,
+              collapsed: false,
+            });
+          }
+
+          // remove any empty groups
+          groups = groups.filter((group) => group.items.length > 0);
+
+          // update the list
+          list.groups = groups;
+        }
       });
     },
     updateVmfsDatastore: {
@@ -1739,22 +1824,6 @@ const machineSlice = createSlice({
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
-    markAsUpdated: {
-      prepare: (callId: string) => ({
-        meta: {
-          callId,
-        },
-        payload: null,
-      }),
-      reducer: (
-        state: MachineState,
-        action: PayloadAction<null, string, GenericMeta>
-      ) => {
-        if (action.meta.callId && state.lists?.[action.meta.callId]) {
-          state.lists[action.meta.callId].needsUpdate = false;
-        }
-      },
-    },
   },
 });
 

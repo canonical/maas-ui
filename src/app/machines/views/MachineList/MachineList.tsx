@@ -17,7 +17,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
-import { useFetchMachinesWithGroupingUpdates } from "app/store/machine/utils/hooks";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 type Props = {
   grouping: FetchGroupKey | null;
@@ -60,7 +60,7 @@ const MachineList = ({
       : DEFAULT_PAGE_SIZE;
 
   const { callId, loading, machineCount, machines, machinesErrors, groups } =
-    useFetchMachinesWithGroupingUpdates({
+    useFetchMachines({
       collapsedGroups: hiddenGroups,
       filters: FilterMachines.parseFetchFilters(searchFilter),
       grouping,

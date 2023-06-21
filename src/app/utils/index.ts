@@ -34,3 +34,4 @@ export {
   timeSpanToSeconds,
   timeSpanToMinutes,
 } from "./timeSpan";
+export { toKebabCase } from "./toKebabCase";
