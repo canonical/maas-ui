@@ -2,10 +2,8 @@ import type { ReactNode } from "react";
 
 import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
-import { Portal } from "react-portal";
 
 import { useSidePanel } from "app/base/side-panel-context";
-import { MAAS_UI_ID } from "app/constants";
 
 type Props = {
   title?: string | null;
@@ -50,20 +48,4 @@ const AppSidePanel = ({
   );
 };
 
-// eslint-disable-next-line react/no-multi-comp
-const AppSidePanelLegacy = ({ title, size, content }: Props): JSX.Element => {
-  return (
-    // display the app side panel as a child of #maas-ui DOM node no matter where it's rendered
-    // TODO: https://warthogs.atlassian.net/browse/MAASENG-1245 - move setSidePanelContent to the App component and remove this Portal workaround
-    <Portal node={document && document.getElementById(MAAS_UI_ID)}>
-      <AppSidePanel
-        content={content}
-        size={size}
-        title={title ? title : null}
-      />
-    </Portal>
-  );
-};
-
 export default AppSidePanel;
-export { AppSidePanelLegacy };
