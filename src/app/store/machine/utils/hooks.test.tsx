@@ -22,7 +22,6 @@ import {
   useIsLimitedEditingAllowed,
   useFetchMachine,
   useFetchMachines,
-  useFetchMachinesWithGroupingUpdates,
   useFetchMachineCount,
   useFetchedCount,
 } from "./hooks";
@@ -61,11 +60,6 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
-
-const generateWrapper =
-  (store: MockStoreEnhanced<unknown>) =>
-  ({ children }: { children: ReactNode }) =>
-    <Provider store={store}>{children}</Provider>;
 
 describe("machine hook utils", () => {
   let state: RootState;
@@ -504,34 +498,10 @@ describe("machine hook utils", () => {
     });
   });
 
-  describe("useFetchMachinesWithGroupingUpdates", () => {
-    beforeEach(() => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
-        .mockReturnValueOnce("mocked-nanoid-2")
-        .mockReturnValueOnce("mocked-nanoid-3");
-    });
-
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
-    const generateWrapper =
-      (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
-
-    it("can return the initial set of machines", () => {
-      const store = mockStore(state);
-      renderHook(() => useFetchMachinesWithGroupingUpdates(), {
-        wrapper: generateWrapper(store),
-      });
-      const expected = machineActions.fetch("mocked-nanoid-1");
-      expect(
-        store.getActions().find((action) => action.type === expected.type)
-      ).toStrictEqual(expected);
-    });
+  const generateWrapper =
+    (store: MockStoreEnhanced<unknown>) =>
+    ({ children }: { children?: ReactNode }) =>
+      <Provider store={store}>{children}</Provider>;
 
   describe("useFetchSelectedMachines", () => {
     afterEach(() => {
@@ -1139,7 +1109,9 @@ describe("machine hook utils", () => {
     });
 
     it("does not allow limited editing when the nic is a VLAN", () => {
-      const nic = machineInterfaceFactory({ type: NetworkInterfaceTypes.VLAN });
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.VLAN,
+      });
       const store = mockStore(state);
       const { result } = renderHook(
         () => useIsLimitedEditingAllowed(nic, machine),

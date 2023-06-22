@@ -46,7 +46,7 @@ export type BaseMachine = Omit<
   link_type: NodeLinkType.MACHINE;
   owner: string;
   physical_disk_count: number;
-  parent: string | null;
+  parent: string | null; // `parent` is a `system_id`
   pod?: ModelRef;
   pool: ModelRef;
   power_state: PowerState;

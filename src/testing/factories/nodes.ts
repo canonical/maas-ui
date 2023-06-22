@@ -264,12 +264,12 @@ export const machine = extend<SimpleNode, Machine>(simpleNode, {
   network_test_status: testStatus,
   osystem: "ubuntu",
   other_test_status: testStatus,
+  parent: null,
   pool: modelRef,
   status: NodeStatus.ALLOCATED,
   status_message: "",
   status_code: 10,
   storage_test_status: testStatus,
-
   error_description: "",
   extra_macs,
   fabrics,

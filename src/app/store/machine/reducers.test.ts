@@ -2,7 +2,8 @@ import { produce } from "immer";
 
 import reducers, { actions } from "./slice";
 import type { SelectedMachines } from "./types";
-import { FetchGroupKey, FilterGroupKey, FilterGroupType } from "./types";
+import { FilterGroupKey, FilterGroupType } from "./types";
+import { FetchGroupByKey } from "./types/actions";
 
 import {
   NodeActions,
@@ -1247,79 +1248,79 @@ describe("machine reducer", () => {
     );
   });
 
-  it("reduces updateNotify for machine moved to a group that's not in the current list", () => {
-    const abc123 = machineFactory({
-      id: 1,
-      system_id: "abc123",
-      hostname: "node1",
-      status: NodeStatus.COMMISSIONING,
-    });
-    const initialState = machineStateFactory({
-      items: [
-        abc123,
-        machineFactory({
-          id: 2,
-          system_id: "def456",
-          hostname: "node2",
-          status: NodeStatus.COMMISSIONING,
-        }),
-      ],
-      lists: {
-        "123456": machineStateListFactory({
-          count: 2,
-          cur_page: 2,
-          groups: [
-            machineStateListGroupFactory({
-              collapsed: false,
-              count: 2,
-              items: ["abc123", "def456"],
-              name: NodeStatus.COMMISSIONING,
-              value: FetchNodeStatus.COMMISSIONING,
-            }),
-          ],
-          num_pages: 3,
-          loaded: true,
-          loading: false,
-          params: { group_key: FetchGroupKey.Status },
-        }),
-      },
-    });
-    const updatedMachine = machineFactory({
-      ...abc123,
-      status: NodeStatus.FAILED_COMMISSIONING,
-    });
-
-    expect(
-      reducers(initialState, actions.updateNotify(updatedMachine))
-    ).toEqual(
-      machineStateFactory({
-        items: [updatedMachine, initialState.items[1]],
+  describe("updateNotify", () => {
+    it("reduces updateNotify for machine moved to a group that's not in the current list", () => {
+      const abc123 = machineFactory({
+        id: 1,
+        system_id: "abc123",
+        hostname: "node1",
+        status: NodeStatus.COMMISSIONING,
+      });
+      const initialState = machineStateFactory({
+        items: [
+          abc123,
+          machineFactory({
+            id: 2,
+            system_id: "def456",
+            hostname: "node2",
+            status: NodeStatus.COMMISSIONING,
+          }),
+        ],
         lists: {
-          "123456": {
-            ...initialState.lists["123456"],
+          "123456": machineStateListFactory({
+            count: 2,
+            cur_page: 2,
             groups: [
               machineStateListGroupFactory({
                 collapsed: false,
-                count: 1,
-                items: ["def456"],
+                count: 2,
+                items: ["abc123", "def456"],
                 name: NodeStatus.COMMISSIONING,
                 value: FetchNodeStatus.COMMISSIONING,
               }),
-              machineStateListGroupFactory({
-                collapsed: false,
-                count: 1,
-                items: ["abc123"],
-                name: NodeStatus.FAILED_COMMISSIONING,
-                value: FetchNodeStatus.FAILED_COMMISSIONING,
-              }),
             ],
-          },
+            num_pages: 3,
+            loaded: true,
+            loading: false,
+            params: { group_key: FetchGroupByKey.Status },
+          }),
         },
-      })
-    );
-  });
+      });
+      const updatedMachine = machineFactory({
+        ...abc123,
+        status: NodeStatus.FAILED_COMMISSIONING,
+      });
 
-  it("reduces updateNotify correctly for machine moved to a collapsed group", () => {});
+      expect(
+        reducers(initialState, actions.updateNotify(updatedMachine))
+      ).toEqual(
+        machineStateFactory({
+          items: [updatedMachine, initialState.items[1]],
+          lists: {
+            "123456": {
+              ...initialState.lists["123456"],
+              groups: [
+                machineStateListGroupFactory({
+                  collapsed: false,
+                  count: 1,
+                  items: ["def456"],
+                  name: NodeStatus.COMMISSIONING,
+                  value: FetchNodeStatus.COMMISSIONING,
+                }),
+                machineStateListGroupFactory({
+                  collapsed: false,
+                  count: 1,
+                  items: ["abc123"],
+                  name: NodeStatus.FAILED_COMMISSIONING,
+                  value: FetchNodeStatus.FAILED_COMMISSIONING,
+                }),
+              ],
+            },
+          },
+        })
+      );
+    });
+  });
 
   it("reduces checkPowerError", () => {
     const machines = [

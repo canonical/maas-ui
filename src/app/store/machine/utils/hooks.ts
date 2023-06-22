@@ -9,7 +9,7 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FetchGroupKey } from "../types/actions";
-import type { FetchParams } from "../types/actions";
+import type { FetchParams, FetchGroupByKey } from "../types/actions";
 
 import {
   mapSortDirection,
@@ -511,7 +511,7 @@ export const useFetchDeployedMachineCount = ({
 
 export type UseFetchMachinesOptions = {
   filters?: FetchFilters | null;
-  grouping?: FetchGroupKey | null;
+  grouping?: FetchGroupByKey | null;
   sortKey?: FetchGroupKey | null;
   sortDirection?: ValueOf<typeof SortDirection> | null;
   collapsedGroups?: FetchParams["group_collapsed"];

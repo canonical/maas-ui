@@ -61,8 +61,9 @@ import type {
   FilterGroupKey,
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
-import type { FetchGroupKey, OverrideFailedTesting } from "./types/actions";
+import type { OverrideFailedTesting } from "./types/actions";
 import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
+import { createMachineListGroup } from "./utils";
 
 import { ACTION_STATUS } from "app/base/constants";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -78,7 +79,7 @@ import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-import { preparePayloadParams, kebabToCamelCase, toKebabCase } from "app/utils";
+import { preparePayloadParams, kebabToCamelCase } from "app/utils";
 
 const DEFAULT_LIST_STATE = {
   count: null,
@@ -1715,48 +1716,32 @@ const machineSlice = createSlice({
       Object.keys(state.lists).forEach((callId: string) => {
         const list: MachineStateList = state.lists[callId];
         let groups: MachineStateListGroup[] = list.groups ?? [];
-        const groupKey = list.params?.group_key;
+        const groupBy = list.params?.group_key ?? "";
+        const machine = action.payload;
 
-        // if groupKey is empty string, then we don't need to do anything
-        if (groupKey === "") {
+        // if groupBy is empty string, then we don't need to do anything
+        if (groupBy === "") {
           return;
         }
 
-        const currentGroup = groups?.find((group) =>
+        const currentMachineListGroup = groups?.find((group) =>
           group.items.some((systemId) => systemId === action.payload.system_id)
         );
-
-        const currentMachineGroupingValue = currentGroup?.name;
-
         // get the right value from action.payload based on the groupKey
-        const machine = action.payload;
-        const groupKeyToMachineValue: Partial<
-          Record<FetchGroupKey, string | null>
-        > = {
-          status: machine.status,
-          owner: machine.owner,
-          domain: machine.domain.name,
-          pool: machine.pool.name,
-          architecture: machine.architecture,
-          parent: machine.parent,
-          pod: null, // KVM
-          pod_type: machine.power_type, // KVM Type
-          power_state: machine.power_state,
-          zone: machine.zone.name,
-        };
-        const newMachineGroupingValue = groupKey
-          ? groupKeyToMachineValue[groupKey]
-          : null;
+        const newMachineListGroup = createMachineListGroup({
+          groupBy,
+          machine,
+        });
 
-        if (!newMachineGroupingValue) {
+        if (!currentMachineListGroup || !newMachineListGroup) {
           return;
         }
 
-        // if grouping changed, then we need to update the groups
-        if (currentMachineGroupingValue !== newMachineGroupingValue) {
+        // update the groups if machine grouping changed
+        if (currentMachineListGroup.value !== newMachineListGroup.value) {
           // remove machine from the current group
           groups = groups.map((group) => {
-            if (group.name === currentMachineGroupingValue) {
+            if (group.value === currentMachineListGroup.value) {
               return {
                 ...group,
                 items: group.items.filter(
@@ -1770,11 +1755,11 @@ const machineSlice = createSlice({
 
           // add machine to the new group
           const newGroupExists = groups.find(
-            (group) => group.name === newMachineGroupingValue
+            (group) => group.value === newMachineListGroup.value
           );
           if (newGroupExists) {
             groups = groups.map((group) => {
-              if (group.name === newMachineGroupingValue) {
+              if (group.value === newMachineListGroup.value) {
                 return {
                   ...group,
                   items: [...group.items, action.payload.system_id],
@@ -1786,8 +1771,8 @@ const machineSlice = createSlice({
           } else {
             // if the group does not exist create it
             groups.push({
-              name: newMachineGroupingValue,
-              value: toKebabCase(newMachineGroupingValue),
+              name: newMachineListGroup.name,
+              value: newMachineListGroup.value,
               items: [action.payload.system_id],
               count: 1,
               collapsed: false,

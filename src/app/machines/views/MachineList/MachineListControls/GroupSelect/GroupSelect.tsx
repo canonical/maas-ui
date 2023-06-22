@@ -1,6 +1,7 @@
 import { Select } from "@canonical/react-components";
 
 import { FetchGroupKey } from "app/store/machine/types";
+import type { GroupKey } from "app/store/machine/types/actions";
 
 type Props = {
   grouping: FetchGroupKey | null;
@@ -8,7 +9,7 @@ type Props = {
   setHiddenGroups: (groups: string[]) => void;
 };
 
-const groupOptions = [
+const groupOptions: Array<{ value: GroupKey | ""; label: string }> = [
   {
     value: "",
     label: "No grouping",
