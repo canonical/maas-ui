@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -355,46 +356,15 @@ describe("MachineHeader", () => {
       { store, route: "/machine/abc123" }
     );
 
+    const configurationLink = screen.getByRole("link", {
+      name: /configuration/i,
+    });
+
     expect(
-      screen.getByRole("link", { name: /error configuration/i })
+      within(configurationLink).getByLabelText("error")
     ).toBeInTheDocument();
-  });
-
-  it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
-    state.machine.items[0].power_state = PowerState.UNKNOWN;
-    state.machine.items[0].status_code = NodeStatusCode.NEW;
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(
-      <MachineHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
-        systemId="abc123"
-      />,
-      { store, route: "/machine/abc123" }
+    expect(within(configurationLink).getByLabelText("error")).toHaveClass(
+      "p-icon--error"
     );
-
-    expect(
-      screen.getByRole("link", { name: /error configuration/i })
-    ).toBeInTheDocument();
-  });
-
-  it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
-    state.machine.items[0].power_state = PowerState.UNKNOWN;
-    state.machine.items[0].status_code = NodeStatusCode.NEW;
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(
-      <MachineHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
-        systemId="abc123"
-      />,
-      { store, route: "/machine/abc123" }
-    );
-
-    expect(
-      screen.getByRole("link", { name: /error configuration/i })
-    ).toBeInTheDocument();
   });
 });
