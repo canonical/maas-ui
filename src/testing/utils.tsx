@@ -266,3 +266,5 @@ export const getTestState = (): RootState => {
     }),
   });
 };
+
+export { screen } from "@testing-library/react";

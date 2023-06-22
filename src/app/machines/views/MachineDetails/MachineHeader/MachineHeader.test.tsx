@@ -22,8 +22,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineHeader", () => {
   let state: RootState;
@@ -347,8 +348,8 @@ describe("MachineHeader", () => {
 
     renderWithBrowserRouter(
       <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
+        headerContent={null}
+        setHeaderContent={jest.fn()}
         systemId="abc123"
       />,
       { store, route: "/machine/abc123" }
@@ -366,8 +367,8 @@ describe("MachineHeader", () => {
 
     renderWithBrowserRouter(
       <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
+        headerContent={null}
+        setHeaderContent={jest.fn()}
         systemId="abc123"
       />,
       { store, route: "/machine/abc123" }
@@ -385,8 +386,8 @@ describe("MachineHeader", () => {
 
     renderWithBrowserRouter(
       <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
+        headerContent={null}
+        setHeaderContent={jest.fn()}
         systemId="abc123"
       />,
       { store, route: "/machine/abc123" }

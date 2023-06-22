@@ -21,9 +21,13 @@ import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import {
+  submitFormikForm,
+  screen,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("CommissionForm", () => {
   let state: RootState;
@@ -205,7 +209,8 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        // clearSidePanelContent={jest.fn()}
+        clearHeaderContent={jest.fn()}
         processingCount={0}
         viewingDetails={false}
       />,
