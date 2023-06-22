@@ -6,14 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
-import { KVMHeaderViews } from "app/kvm/constants";
-import type {
-  KVMSidePanelContent,
-  KVMSetSidePanelContent,
-} from "app/kvm/types";
+import { KVMSidePanelViews } from "app/kvm/constants";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -23,16 +19,12 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
-  sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
-  setSearchFilter?: SetSearchFilter;
 };
 
 const LXDSingleDetailsHeader = ({
   id,
-  sidePanelContent,
   setSidePanelContent,
-  setSearchFilter,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -62,7 +54,7 @@ const LXDSingleDetailsHeader = ({
           hasIcon
           onClick={() => {
             setSidePanelContent({
-              view: KVMHeaderViews.REFRESH_KVM,
+              view: KVMSidePanelViews.REFRESH_KVM,
               extras: { hostIds: [id] },
             });
           }}
@@ -73,9 +65,7 @@ const LXDSingleDetailsHeader = ({
       ]}
       className="has-icon"
       loading={!pod}
-      setSearchFilter={setSearchFilter}
       setSidePanelContent={setSidePanelContent}
-      sidePanelContent={sidePanelContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(urls.kvm.lxd.single.vms({ id })),

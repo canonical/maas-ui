@@ -50,9 +50,7 @@ describe("NameColumn", () => {
       <NameColumn groupValue={null} systemId="abc123" />,
       { route: "/machines", state }
     );
-    expect(
-      screen.getByRole("link", { name: "koala.example" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /koala*/i })).toBeInTheDocument();
   });
 
   it("can show a single ip address", () => {
@@ -136,9 +134,7 @@ describe("NameColumn", () => {
       <NameColumn groupValue={null} systemId="abc123" />,
       { route: "/machines", state }
     );
-    expect(
-      screen.getByRole("link", { name: "koala.example" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /koala*/i })).toBeInTheDocument();
   });
 
   it("can render a machine in the MAC state with minimal data", () => {

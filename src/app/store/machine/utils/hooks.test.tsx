@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
-import { renderHook, cleanup, act } from "@testing-library/react-hooks";
+import { renderHook, cleanup, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -675,15 +675,15 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       const testAction = { type: "test" };
-      act(() => {
-        result.current.dispatch(testAction);
-      });
+      result.current.dispatch(testAction);
       const actual = store
         .getActions()
         .find((action) => action.type === testAction.type);
-      expect(actual).toStrictEqual({
-        type: "test",
-        meta: { callId: "mocked-nanoid" },
+      await waitFor(() => {
+        expect(actual).toStrictEqual({
+          type: "test",
+          meta: { callId: "mocked-nanoid" },
+        });
       });
     });
 
@@ -717,15 +717,16 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       const testAction = { type: "test" };
-      act(() => {
-        result.current.dispatch(testAction);
-      });
-      const actual = store
-        .getActions()
-        .find((action) => action.type === testAction.type);
-      expect(actual).toStrictEqual({
-        type: "test",
-        meta: { callId: "mocked-nanoid" },
+      result.current.dispatch(testAction);
+
+      await waitFor(() => {
+        const actual = store
+          .getActions()
+          .find((action) => action.type === testAction.type);
+        expect(actual).toStrictEqual({
+          type: "test",
+          meta: { callId: "mocked-nanoid" },
+        });
       });
       expect(result.current.actionStatus).toEqual("success");
       expect(result.current.actionErrors).toEqual(null);
@@ -742,15 +743,16 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       const testAction = { type: "test" };
-      act(() => {
-        result.current.dispatch(testAction);
-      });
-      const actual = store
-        .getActions()
-        .find((action) => action.type === testAction.type);
-      expect(actual).toStrictEqual({
-        type: "test",
-        meta: { callId: "mocked-nanoid" },
+      result.current.dispatch(testAction);
+
+      await waitFor(() => {
+        const actual = store
+          .getActions()
+          .find((action) => action.type === testAction.type);
+        expect(actual).toStrictEqual({
+          type: "test",
+          meta: { callId: "mocked-nanoid" },
+        });
       });
       expect(result.current.actionStatus).toEqual("success");
       expect(result.current.actionErrors).toEqual(
@@ -790,9 +792,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      act(() => {
-        result.current.dispatch(machineActions.test);
-      });
+      result.current.dispatch(machineActions.test);
       const expectedGroupsDispatch = machineActions.test({
         filter: {
           status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
@@ -801,12 +801,15 @@ describe("machine hook utils", () => {
       const expectedItemsDispatch = machineActions.test({
         filter: { id: ["abcd123"] },
       });
+
       const actual = store
         .getActions()
         .filter(
           (action) => action.type === machineActions.test({} as TestParams).type
         );
-      expect(actual[0].payload).toStrictEqual(expectedGroupsDispatch.payload);
+      await waitFor(() => {
+        expect(actual[0].payload).toStrictEqual(expectedGroupsDispatch.payload);
+      });
       expect(actual[1].payload).toStrictEqual(expectedItemsDispatch.payload);
       expect(result.current.actionErrors).toEqual(null);
     });
@@ -834,9 +837,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      act(() => {
-        result.current.dispatch(machineActions.test);
-      });
+      result.current.dispatch(machineActions.test);
       const expectedItemsDispatch = machineActions.test({
         filter: { id: ["abcd123"] },
       });
@@ -845,7 +846,9 @@ describe("machine hook utils", () => {
         .filter(
           (action) => action.type === machineActions.test({} as TestParams).type
         );
-      expect(actual).toHaveLength(1);
+      await waitFor(() => {
+        expect(actual).toHaveLength(1);
+      });
       expect(actual[0].payload).toStrictEqual(expectedItemsDispatch.payload);
     });
 
@@ -873,9 +876,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      act(() => {
-        result.current.dispatch(machineActions.test);
-      });
+      result.current.dispatch(machineActions.test);
       const expectedItemsDispatch = machineActions.test({
         filter: {
           status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
@@ -886,7 +887,9 @@ describe("machine hook utils", () => {
         .filter(
           (action) => action.type === machineActions.test({} as TestParams).type
         );
-      expect(actual).toHaveLength(1);
+      await waitFor(() => {
+        expect(actual).toHaveLength(1);
+      });
       expect(actual[0].payload).toStrictEqual(expectedItemsDispatch.payload);
     });
   });

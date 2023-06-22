@@ -3,7 +3,6 @@ import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
-import { MachineHeaderViews } from "app/machines/constants";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
@@ -49,11 +48,7 @@ describe("MachineHeader", () => {
     state.machine.items = [];
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -66,11 +61,7 @@ describe("MachineHeader", () => {
     state.machine.items = [machineFactory({ system_id: "abc123" })];
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -79,30 +70,11 @@ describe("MachineHeader", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays machine name if an action is selected", () => {
-    renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-        systemId="abc123"
-      />,
-      { state, route: "/machine/abc123" }
-    );
-
-    expect(
-      screen.getByRole("heading", { name: "test-machine" })
-    ).toBeInTheDocument();
-  });
-
   it("displays an icon when locked", () => {
     state.machine.items[0].locked = true;
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -116,11 +88,7 @@ describe("MachineHeader", () => {
     state.machine.items[0].power_state = PowerState.ON;
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -133,11 +101,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -150,11 +114,7 @@ describe("MachineHeader", () => {
       const store = mockStore(state);
 
       renderWithBrowserRouter(
-        <MachineHeader
-          setSidePanelContent={jest.fn()}
-          sidePanelContent={null}
-          systemId="abc123"
-        />,
+        <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
         { store, route: "/machine/abc123" }
       );
 
@@ -180,11 +140,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -213,11 +169,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -237,11 +189,7 @@ describe("MachineHeader", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { store, route: "/machine/abc123" }
     );
 
@@ -270,11 +218,7 @@ describe("MachineHeader", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <MachineHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { store, route: "/machine/abc123" }
     );
 

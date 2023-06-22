@@ -7,11 +7,13 @@ import { useLocation } from "react-router-dom-v5-compat";
 import type { ControllerSidePanelContent } from "app/controllers/types";
 import type { DashboardSidePanelContent } from "app/dashboard/views/constants";
 import type { DeviceSidePanelContent } from "app/devices/types";
+import type { DomainDetailsSidePanelContent } from "app/domains/views/DomainDetails/constants";
 import type { DomainListSidePanelContent } from "app/domains/views/DomainsList/constants";
 import type { KVMSidePanelContent } from "app/kvm/types";
 import type { MachineSidePanelContent } from "app/machines/types";
 import type { SubnetSidePanelContent } from "app/subnets/types";
 import type { FabricDetailsSidePanelContent } from "app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
+import type { SpaceDetailsSidePanelContent } from "app/subnets/views/SpaceDetails/constants";
 import type { SubnetDetailsSidePanelContent } from "app/subnets/views/SubnetDetails/constants";
 import type { VLANDetailsSidePanelContent } from "app/subnets/views/VLANDetails/constants";
 import type { TagSidePanelContent } from "app/tags/types";
@@ -25,49 +27,58 @@ export type SidePanelContent =
   | TagSidePanelContent
   | ZoneSidePanelContent
   | SubnetSidePanelContent
+  | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
   | DashboardSidePanelContent
   | VLANDetailsSidePanelContent
   | FabricDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
+  | SpaceDetailsSidePanelContent
   | null;
 
 export type SetSidePanelContent = (sidePanelContent: SidePanelContent) => void;
 
-export type SidePanelContextType = {
-  sidePanelContent: SidePanelContent;
+export type SidePanelContextType<T = SidePanelContent> = {
+  sidePanelContent: T;
+};
+
+export type SetSidePanelContextType = {
   setSidePanelContent: SetSidePanelContent;
 };
 
 const SidePanelContext = createContext<SidePanelContextType>({
   sidePanelContent: null,
+});
+
+const SetSidePanelContext = createContext<SetSidePanelContextType>({
   setSidePanelContent: () => {},
 });
 
 const useSidePanelContext = (): SidePanelContextType =>
   useContext(SidePanelContext);
+const useSetSidePanelContext = (): SetSidePanelContextType =>
+  useContext(SetSidePanelContext);
 
-export const useSidePanel = (): SidePanelContextType => {
-  const appContext = useSidePanelContext();
+export const useSidePanel = (): SidePanelContextType &
+  SetSidePanelContextType => {
+  const { sidePanelContent } = useSidePanelContext();
+  const { setSidePanelContent } = useSetSidePanelContext();
   const { pathname } = useLocation();
   const previousPathname = usePrevious(pathname);
 
   // close side panel on route change
   useEffect(() => {
     if (pathname !== previousPathname) {
-      appContext.setSidePanelContent(null);
+      setSidePanelContent(null);
     }
-  }, [pathname, previousPathname, appContext]);
+  }, [pathname, previousPathname, setSidePanelContent]);
 
   // close side panel on unmount
   useEffect(() => {
-    return () => {
-      appContext.setSidePanelContent(null);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => setSidePanelContent(null);
+  }, [setSidePanelContent]);
 
-  return appContext;
+  return { sidePanelContent, setSidePanelContent };
 };
 
 const SidePanelContextProvider = ({
@@ -78,14 +89,19 @@ const SidePanelContextProvider = ({
     useState<SidePanelContent>(value);
 
   return (
-    <SidePanelContext.Provider
+    <SetSidePanelContext.Provider
       value={{
-        sidePanelContent,
         setSidePanelContent,
       }}
     >
-      {children}
-    </SidePanelContext.Provider>
+      <SidePanelContext.Provider
+        value={{
+          sidePanelContent,
+        }}
+      >
+        {children}
+      </SidePanelContext.Provider>
+    </SetSidePanelContext.Provider>
   );
 };
 

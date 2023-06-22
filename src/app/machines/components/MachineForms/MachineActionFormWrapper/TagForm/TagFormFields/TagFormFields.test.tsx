@@ -78,8 +78,7 @@ it("displays available tags in the dropdown", async () => {
         setNewTags={jest.fn()}
       />
     </Formik>,
-    // TODO: remove legacyRoot https://warthogs.atlassian.net/browse/MAASENG-1802
-    { state, legacyRoot: true }
+    { state }
   );
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,

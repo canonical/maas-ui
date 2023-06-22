@@ -7,14 +7,14 @@ import SubnetsTable from "./SubnetsTable";
 import { SubnetsColumns } from "./SubnetsTable/constants";
 import type { GroupByKey } from "./SubnetsTable/types";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import SegmentedControl from "app/base/components/SegmentedControl";
 import { useWindowTitle } from "app/base/hooks";
 import { useQuery } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
 import { SubnetForms, SubnetsUrlParams } from "app/subnets/constants";
-import { SubnetHeaderViews } from "app/subnets/types";
+import { SubnetSidePanelViews } from "app/subnets/types";
 import FormActions from "app/subnets/views/FormActions";
 
 const SubnetsList = (): JSX.Element => {
@@ -62,17 +62,17 @@ const SubnetsList = (): JSX.Element => {
       : null;
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <SectionHeader
           buttons={[
             <ContextualMenu
               hasToggleIcon
               links={[
-                SubnetHeaderViews.Fabric,
-                SubnetHeaderViews.VLAN,
-                SubnetHeaderViews.Space,
-                SubnetHeaderViews.Subnet,
+                SubnetSidePanelViews.Fabric,
+                SubnetSidePanelViews.VLAN,
+                SubnetSidePanelViews.Space,
+                SubnetSidePanelViews.Subnet,
               ].map((view) => {
                 const [, name] = view;
                 return {
@@ -85,17 +85,8 @@ const SubnetsList = (): JSX.Element => {
               toggleLabel="Add"
             />,
           ]}
-          sidePanelContent={
-            sidePanelContent ? (
-              <FormActions
-                activeForm={activeForm}
-                setActiveForm={setSidePanelContent}
-              />
-            ) : null
-          }
-          sidePanelTitle={activeForm ? `Add ${activeForm}` : ""}
           subtitle={
-            <div className="u-flex--wrap u-flex--align-center u-nudge-right">
+            <div className="u-flex--wrap u-flex--align-center">
               <SegmentedControl
                 aria-label="Group by"
                 buttonClassName="u-no-margin--bottom u-upper-case--first"
@@ -117,6 +108,15 @@ const SubnetsList = (): JSX.Element => {
           title="Subnets"
         />
       }
+      sidePanelContent={
+        activeForm ? (
+          <FormActions
+            activeForm={activeForm}
+            setActiveForm={setSidePanelContent}
+          />
+        ) : null
+      }
+      sidePanelTitle={activeForm ? `Add ${activeForm}` : ""}
     >
       {hasValidGroupBy ? (
         <SubnetsTable
@@ -125,7 +125,7 @@ const SubnetsList = (): JSX.Element => {
           setSearchText={setSearchText}
         />
       ) : null}
-    </MainContentSection>
+    </PageContent>
   );
 };
 

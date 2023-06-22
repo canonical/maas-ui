@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import Routes from "app/settings/components/Routes";
 import authSelectors from "app/store/auth/selectors";
@@ -18,18 +18,20 @@ const Settings = (): JSX.Element => {
 
   if (!isAdmin) {
     return (
-      <MainContentSection
+      <PageContent
         header={
           <SectionHeader title="You do not have permission to view this page." />
         }
+        sidePanelContent={null}
+        sidePanelTitle={null}
       />
     );
   }
 
   return (
-    <MainContentSection>
+    <PageContent sidePanelContent={null} sidePanelTitle={null}>
       <Routes />
-    </MainContentSection>
+    </PageContent>
   );
 };
 

@@ -8,7 +8,7 @@ import configureStore from "redux-mock-store";
 import KVMListHeader from "./KVMListHeader";
 
 import urls from "app/base/urls";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -95,7 +95,7 @@ describe("KVMListHeader", () => {
     expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add LXD host");
     await userEvent.click(screen.getByTestId("add-kvm"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.ADD_LXD_HOST,
+      view: KVMSidePanelViews.ADD_LXD_HOST,
     });
   });
 
@@ -120,7 +120,7 @@ describe("KVMListHeader", () => {
     expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add Virsh host");
     await userEvent.click(screen.getByTestId("add-kvm"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.ADD_VIRSH_HOST,
+      view: KVMSidePanelViews.ADD_VIRSH_HOST,
     });
   });
 });

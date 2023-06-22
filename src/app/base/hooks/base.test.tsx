@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react";
+import { renderHook, waitFor } from "@testing-library/react";
 
 import {
   useCycled,
@@ -132,7 +132,7 @@ describe("hooks", () => {
       expect(onCycled).toHaveBeenCalled();
     });
 
-    it("can reset the cycle", () => {
+    it("can reset the cycle", async () => {
       const onCycled = jest.fn();
       const { result, rerender } = renderHook(
         ({ state }) => useCycled(state, onCycled),
@@ -144,16 +144,16 @@ describe("hooks", () => {
       let [hasCycled, resetCycle] = result.current;
       expect(hasCycled).toBe(true);
       expect(onCycled).toHaveBeenCalledTimes(1);
-      act(() => {
-        resetCycle();
+      resetCycle();
+      await waitFor(() => {
+        [hasCycled, resetCycle] = result.current;
+        return expect(hasCycled).toBe(false);
       });
-      [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(false);
       // The onCycle function should not get called when it resets.
       expect(onCycled).toHaveBeenCalledTimes(1);
     });
 
-    it("can handle values that have cycled after a reset", () => {
+    it("can handle values that have cycled after a reset", async () => {
       const onCycled = jest.fn();
       const { result, rerender } = renderHook(
         ({ state }) => useCycled(state, onCycled),
@@ -166,12 +166,12 @@ describe("hooks", () => {
       let [hasCycled, resetCycle] = result.current;
       expect(hasCycled).toBe(true);
       // Reset to false:
-      act(() => {
-        resetCycle();
-      });
+      resetCycle();
       rerender({ state: false });
-      [hasCycled, resetCycle] = result.current;
-      expect(hasCycled).toBe(false);
+      await waitFor(() => {
+        [hasCycled, resetCycle] = result.current;
+        return expect(hasCycled).toBe(false);
+      });
       // Cycle the value back to true:
       rerender({ state: true });
       [hasCycled, resetCycle] = result.current;

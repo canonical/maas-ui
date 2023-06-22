@@ -1,6 +1,6 @@
 import DangerZoneCard from "./DangerZoneCard";
 
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import { render, screen, userEvent } from "testing/utils";
 
 describe("DangerZoneCard", () => {
@@ -16,7 +16,7 @@ describe("DangerZoneCard", () => {
     await userEvent.click(screen.getByTestId("remove-kvm"));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.DELETE_KVM,
+      view: KVMSidePanelViews.DELETE_KVM,
       extras: {
         hostId: 1,
       },

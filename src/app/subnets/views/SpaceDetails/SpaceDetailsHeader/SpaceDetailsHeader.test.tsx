@@ -4,16 +4,17 @@ import { Router, Route } from "react-router";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
+import { SpaceDetailsViews } from "../constants";
+
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
 import urls from "app/base/urls";
-import { actions as spaceActions } from "app/store/space";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+import { render, screen, userEvent } from "testing/utils";
 
 const renderTestCase = (
   space = spaceFactory({
@@ -31,16 +32,24 @@ const renderTestCase = (
       loading: false,
     }),
   });
+  const setSidePanelContent = jest.fn();
   const store = configureStore()(state);
   return {
     history,
     store,
+    setSidePanelContent,
     ...render(
       <Provider store={store}>
         <Router history={history}>
           <CompatRouter>
             <Route
-              component={() => <SpaceDetailsHeader space={space} />}
+              component={() => (
+                <SpaceDetailsHeader
+                  setSidePanelContent={setSidePanelContent}
+                  sidePanelContent={null}
+                  space={space}
+                />
+              )}
               exact
               path={urls.subnets.space.index({ id: space.id })}
             />
@@ -59,51 +68,13 @@ it("shows the space name as the section title", () => {
   );
 });
 
-it("displays a delete confirmation before delete", async () => {
-  const { store } = renderTestCase(
-    spaceFactory({
-      id: 1,
-      name: "space1",
-      description: "space 1 description",
-    })
+it("calls a function to open the side panel when the delete button is clicked", async () => {
+  const { setSidePanelContent } = renderTestCase(
+    spaceFactory({ id: 1, name: "space-1" })
   );
+
   await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
-  expect(
-    screen.getByText("Are you sure you want to delete this space?")
-  ).toBeInTheDocument();
-
-  await userEvent.click(
-    within(screen.getByRole("complementary")).getByRole("button", {
-      name: "Delete space",
-    })
-  );
-
-  const expectedActions = [spaceActions.cleanup(), spaceActions.delete(1)];
-
-  await waitFor(() => {
-    const actualActions = store.getActions();
-    expectedActions.forEach((expectedAction) => {
-      expect(
-        actualActions.find(
-          (actualAction) => actualAction.type === expectedAction.type
-        )
-      ).toStrictEqual(expectedAction);
-    });
+  expect(setSidePanelContent).toHaveBeenCalledWith({
+    view: SpaceDetailsViews.DELETE_SPACE,
   });
-});
-
-it("displays an error if there are any subnets on the space.", async () => {
-  renderTestCase(
-    spaceFactory({
-      id: 1,
-      name: "space1",
-      description: "space 1 description",
-      subnet_ids: [1],
-    })
-  );
-  await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
-  expect(screen.getByText(/Space cannot be deleted/)).toBeInTheDocument();
-  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-
-  expect(screen.queryByText(/Space cannot be deleted/)).not.toBeInTheDocument();
 });

@@ -51,8 +51,5 @@ describe("SourceMachineDetails", () => {
     expect(
       screen.getByLabelText(SourceMachineDetailsLabels.Domain)
     ).toHaveTextContent("domain");
-    // expect(
-    //   wrapper.find("[data-testid='source-machine-details']")
-    // ).toMatchSnapshot();
   });
 });

@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
@@ -36,7 +36,7 @@ describe("node is machine", () => {
     await userEvent.click(screen.getByTestId("commission-machine"));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: MachineHeaderViews.COMMISSION_MACHINE,
+      view: MachineSidePanelViews.COMMISSION_MACHINE,
     });
   });
 

@@ -1,35 +1,23 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainsList from "./DomainsList";
 import { Labels as DomainsTableLabels } from "./DomainsTable/DomainsTable";
 
+import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, render, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DomainsList", () => {
   it("correctly fetches the necessary data", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DomainsList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainsList />, { route: "/domains", store });
     const expectedActions = ["domain/fetch"];
     const actualActions = store.getActions();
     expect(

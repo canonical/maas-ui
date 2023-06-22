@@ -19,7 +19,7 @@ export const ControllerNonActionHeaderViews = {
   ADD_CONTROLLER: ["controllerNonActionForm", "addController"],
 } as const;
 
-export const ControllerHeaderViews = {
+export const ControllerSidePanelViews = {
   ...ControllerActionHeaderViews,
   ...ControllerNonActionHeaderViews,
 } as const;

@@ -1,7 +1,7 @@
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
 import urls from "app/base/urls";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import { PodType } from "app/store/pod/constants";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -110,7 +110,7 @@ describe("LXDClusterHostsTable", () => {
     );
     await userEvent.click(screen.getByTestId("vm-host-compose"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.COMPOSE_VM,
+      view: KVMSidePanelViews.COMPOSE_VM,
       extras: { hostId: 22 },
     });
   });

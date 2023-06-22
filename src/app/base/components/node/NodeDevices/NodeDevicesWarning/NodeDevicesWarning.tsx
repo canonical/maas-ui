@@ -1,6 +1,6 @@
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
@@ -65,7 +65,7 @@ const NodeDevicesWarning = ({
             data-testid="commission-machine"
             onClick={() =>
               setSidePanelContent({
-                view: MachineHeaderViews.COMMISSION_MACHINE,
+                view: MachineSidePanelViews.COMMISSION_MACHINE,
               })
             }
           >

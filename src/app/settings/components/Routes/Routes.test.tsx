@@ -192,7 +192,7 @@ const routes = [
     path: urls.settings.images.ubuntu,
   },
   {
-    title: "Error: Page not found.",
+    title: "Error: Page not found",
     path: `${urls.settings.index}/not/a/path`,
   },
 ];
