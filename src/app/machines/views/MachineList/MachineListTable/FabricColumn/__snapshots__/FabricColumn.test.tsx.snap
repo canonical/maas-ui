@@ -56,10 +56,12 @@ exports[`FabricColumn renders 1`] = `
               >
                 <span>
                   <Icon
+                    aria-label="running"
                     className="is-inline"
                     name="running"
                   >
                     <i
+                      aria-label="running"
                       className="is-inline p-icon--running"
                     />
                   </Icon>

@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,7 +10,7 @@ import MachineHeader from "./MachineHeader";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -22,8 +23,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineHeader", () => {
   let state: RootState;
@@ -338,5 +340,31 @@ describe("MachineHeader", () => {
     );
     wrapper.find("Button.node-name--editable").simulate("click");
     expect(wrapper.find("SectionHeader").prop("subtitle")).toBe(null);
+  });
+
+  it("displays an error icon with configuration tab link when power type is not set and status is unknown", () => {
+    state.machine.items[0].power_state = PowerState.UNKNOWN;
+    state.machine.items[0].status_code = NodeStatusCode.NEW;
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        headerContent={null}
+        setHeaderContent={jest.fn()}
+        systemId="abc123"
+      />,
+      { store, route: "/machine/abc123" }
+    );
+
+    const configurationLink = screen.getByRole("link", {
+      name: /configuration/i,
+    });
+
+    expect(
+      within(configurationLink).getByLabelText("error")
+    ).toBeInTheDocument();
+    expect(within(configurationLink).getByLabelText("error")).toHaveClass(
+      "p-icon--error"
+    );
   });
 });
