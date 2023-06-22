@@ -1,7 +1,10 @@
+import { produce } from "immer";
+
 import reducers, { actions } from "./slice";
+import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   filterGroup as filterGroupFactory,
   machine as machineFactory,
@@ -1060,33 +1063,166 @@ describe("machine reducer", () => {
   });
 
   it("reduces deleteNotify", () => {
-    const initialState = machineStateFactory({
-      items: [
-        machineFactory({ system_id: "abc123" }),
-        machineFactory({ system_id: "def456" }),
+    const machines = [
+      machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
+      machineFactory({ id: 2, system_id: "def456", hostname: "node2" }),
+    ];
+    const initialList = machineStateListFactory({
+      count: 20,
+      cur_page: 1,
+      groups: [
+        machineStateListGroupFactory({
+          // count can be higher than items.length due to pagination
+          count: 15,
+          items: ["abc123", "def456"],
+        }),
       ],
+    });
+    const initialState = machineStateFactory({
+      lists: {
+        callId: initialList,
+      },
+      items: machines,
       selected: { items: ["abc123"] },
       statuses: {
         abc123: machineStatusFactory(),
         def456: machineStatusFactory(),
       },
     });
-
+    const nextState = produce(initialState, (draft) => {
+      const list = draft.lists.callId;
+      list.count = 19;
+      list.groups![0].count = 14;
+      list.groups![0].items = ["def456"];
+      draft.items = [initialState.items[1]];
+      draft.selected = { items: [] };
+      delete draft.statuses.abc123;
+    });
     expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
-      machineStateFactory({
-        items: [initialState.items[1]],
-        selected: { items: [] },
-        statuses: { def456: machineStatusFactory() },
-      })
+      nextState
+    );
+  });
+
+  it("reduces deleteNotify when last machine in a group is removed", () => {
+    const machines = [
+      machineFactory({
+        id: 1,
+        system_id: "abc123",
+        hostname: "node1",
+        status: NodeStatus.NEW,
+        status_code: NodeStatusCode.NEW,
+      }),
+      machineFactory({
+        id: 2,
+        system_id: "def456",
+        hostname: "node2",
+        status: NodeStatus.FAILED_COMMISSIONING,
+        status_code: NodeStatusCode.FAILED_COMMISSIONING,
+      }),
+    ];
+    const newGroup = machineStateListGroupFactory({
+      name: "New",
+      value: "new",
+      items: ["abc123"],
+      count: 1,
+    });
+    const failedCommissioningGroup = machineStateListGroupFactory({
+      name: "Failed commissioning",
+      value: "failed_commissioning",
+      items: ["def456"],
+      count: 1,
+    });
+    const initialState = machineStateFactory({
+      lists: {
+        callId: machineStateListFactory({
+          groups: [newGroup, failedCommissioningGroup],
+        }),
+      },
+      items: machines,
+      selected: { items: ["def456"] },
+      statuses: {
+        abc123: machineStatusFactory(),
+        def456: machineStatusFactory(),
+        ghi789: machineStatusFactory(),
+      },
+    });
+    const nextState = produce(initialState, (draft) => {
+      draft.lists.callId.groups = [newGroup];
+      draft.items = [initialState.items[0]];
+      draft.selected = { items: [] };
+      delete draft.statuses.def456;
+    });
+    expect(reducers(initialState, actions.deleteNotify("def456"))).toEqual(
+      nextState
+    );
+  });
+
+  it("reduces deleteNotify with groups of machines", () => {
+    const machines = [
+      machineFactory({
+        id: 1,
+        system_id: "abc123",
+        hostname: "node1",
+        status: NodeStatus.NEW,
+        status_code: NodeStatusCode.NEW,
+      }),
+      machineFactory({
+        id: 3,
+        system_id: "def456",
+        hostname: "node3",
+        status: NodeStatus.NEW,
+        status_code: NodeStatusCode.NEW,
+      }),
+    ];
+    const group = machineStateListGroupFactory({
+      name: "New",
+      value: "new",
+      items: ["abc123", "def456"],
+      count: 2,
+    });
+    const initialState = machineStateFactory({
+      lists: {
+        callId: machineStateListFactory({
+          count: 2,
+          groups: [group],
+        }),
+      },
+      items: machines,
+      selected: { items: ["abc123"] },
+      statuses: {
+        abc123: machineStatusFactory(),
+        def456: machineStatusFactory(),
+      },
+    });
+    const nextState = produce(initialState, (draft) => {
+      const list = draft.lists.callId;
+      list.count = 1;
+      list.groups = [{ ...group, count: 1, items: ["def456"] }];
+      draft.items = [initialState.items[1]];
+      draft.selected = { items: [] };
+      delete draft.statuses.abc123;
+    });
+    expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
+      nextState
     );
   });
 
   it("reduces updateNotify", () => {
+    const machines = [
+      machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
+      machineFactory({ id: 2, system_id: "def456", hostname: "node2" }),
+    ];
     const initialState = machineStateFactory({
-      items: [
-        machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
-        machineFactory({ id: 2, system_id: "def456", hostname: "node2" }),
-      ],
+      lists: {
+        "123456": machineStateListFactory({
+          groups: [
+            machineStateListGroupFactory({
+              items: machines.map((machine) => machine.system_id),
+            }),
+          ],
+        }),
+      },
+      items: machines,
     });
     const updatedMachine = machineFactory({
       id: 1,
@@ -1098,6 +1234,9 @@ describe("machine reducer", () => {
       reducers(initialState, actions.updateNotify(updatedMachine))
     ).toEqual(
       machineStateFactory({
+        lists: {
+          "123456": { ...initialState.lists["123456"], needsUpdate: true },
+        },
         items: [updatedMachine, initialState.items[1]],
       })
     );
@@ -1137,19 +1276,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces setSelected", () => {
-    const initialState = machineStateFactory({ selected: [] });
-
-    expect(
-      reducers(initialState, actions.setSelected(["abcde", "fghij"]))
-    ).toEqual(
-      machineStateFactory({
-        selected: ["abcde", "fghij"],
-      })
-    );
-  });
-
-  it("reduces setSelected", () => {
-    const initialState = machineStateFactory({ selected: [] });
+    const initialState = machineStateFactory({
+      selected: [] as SelectedMachines,
+    });
 
     expect(
       reducers(initialState, actions.setSelected({ items: ["abcde", "fghij"] }))
