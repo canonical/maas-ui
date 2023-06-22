@@ -13,8 +13,6 @@ export type Props<P = LinkProps> = {
   buttons?: JSX.Element[] | null;
   className?: ClassName;
   renderButtons?: () => ReactNode;
-  sidePanelContent?: ReactNode | null;
-  sidePanelTitle?: string | null;
   headerSize?: "wide";
   loading?: boolean;
   subtitle?: ReactNode;
@@ -65,8 +63,6 @@ const SectionHeader = <P,>({
   buttons = [],
   renderButtons,
   className,
-  sidePanelContent,
-  sidePanelTitle,
   headerSize,
   loading,
   subtitle,

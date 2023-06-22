@@ -40,30 +40,45 @@ export type SetSidePanelContent = (sidePanelContent: SidePanelContent) => void;
 
 export type SidePanelContextType<T = SidePanelContent> = {
   sidePanelContent: T;
+};
+
+export type SetSidePanelContextType = {
   setSidePanelContent: SetSidePanelContent;
 };
 
 const SidePanelContext = createContext<SidePanelContextType>({
   sidePanelContent: null,
+});
+
+const SetSidePanelContext = createContext<SetSidePanelContextType>({
   setSidePanelContent: () => {},
 });
 
 const useSidePanelContext = (): SidePanelContextType =>
   useContext(SidePanelContext);
+const useSetSidePanelContext = (): SetSidePanelContextType =>
+  useContext(SetSidePanelContext);
 
-export const useSidePanel = (): SidePanelContextType => {
-  const appContext = useSidePanelContext();
+export const useSidePanel = (): SidePanelContextType &
+  SetSidePanelContextType => {
+  const { sidePanelContent } = useSidePanelContext();
+  const { setSidePanelContent } = useSetSidePanelContext();
   const { pathname } = useLocation();
   const previousPathname = usePrevious(pathname);
 
   // close side panel on route change
   useEffect(() => {
     if (pathname !== previousPathname) {
-      appContext.setSidePanelContent(null);
+      setSidePanelContent(null);
     }
-  }, [pathname, previousPathname, appContext]);
+  }, [pathname, previousPathname, setSidePanelContent]);
 
-  return appContext;
+  // close side panel on unmount
+  useEffect(() => {
+    return () => setSidePanelContent(null);
+  }, [setSidePanelContent]);
+
+  return { sidePanelContent, setSidePanelContent };
 };
 
 const SidePanelContextProvider = ({
@@ -74,14 +89,19 @@ const SidePanelContextProvider = ({
     useState<SidePanelContent>(value);
 
   return (
-    <SidePanelContext.Provider
+    <SetSidePanelContext.Provider
       value={{
-        sidePanelContent,
         setSidePanelContent,
       }}
     >
-      {children}
-    </SidePanelContext.Provider>
+      <SidePanelContext.Provider
+        value={{
+          sidePanelContent,
+        }}
+      >
+        {children}
+      </SidePanelContext.Provider>
+    </SetSidePanelContext.Provider>
   );
 };
 

@@ -77,41 +77,4 @@ describe("SectionHeader", () => {
     );
     expect(screen.getByTestId("section-header-tabs")).toBeInTheDocument();
   });
-
-  it("can render extra header content as a side panel", () => {
-    renderWithBrowserRouter(
-      <SectionHeader
-        sidePanelContent={<div>Header content</div>}
-        sidePanelTitle="Header content title"
-        title="Title"
-      />
-    );
-    expect(screen.getByTestId("section-header-content")).toBeInTheDocument();
-    expect(
-      screen.getByRole("complementary", { name: "Header content title" })
-    ).toBeInTheDocument();
-  });
-
-  it("buttons remain visible if header content is present", () => {
-    const { rerender } = renderWithBrowserRouter(
-      <SectionHeader
-        buttons={[<button key="button">Click me</button>]}
-        subtitle="subtitle"
-        title="Title"
-      />
-    );
-    expect(screen.getByTestId("section-header-buttons")).toBeInTheDocument();
-    expect(screen.getByTestId("section-header-subtitle")).toBeInTheDocument();
-
-    rerender(
-      <SectionHeader
-        buttons={[<button key="button">Click me</button>]}
-        sidePanelContent={<div>Header content</div>}
-        subtitle="subtitle"
-        title="Title"
-      />
-    );
-    expect(screen.getByTestId("section-header-buttons")).toBeInTheDocument();
-    expect(screen.getByTestId("section-header-subtitle")).toBeInTheDocument();
-  });
 });
