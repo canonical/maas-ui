@@ -7,8 +7,8 @@ import ZoneDetailsForm from "./ZoneDetailsForm";
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
 import EditableSection from "app/base/components/EditableSection";
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
@@ -40,7 +40,11 @@ const ZoneDetails = (): JSX.Element => {
   }
 
   return (
-    <MainContentSection header={<ZoneDetailsHeader id={zoneID} />}>
+    <PageContent
+      header={<ZoneDetailsHeader id={zoneID} />}
+      sidePanelContent={null}
+      sidePanelTitle={null}
+    >
       <EditableSection
         canEdit={isAdmin}
         className="u-no-padding--top"
@@ -54,7 +58,7 @@ const ZoneDetails = (): JSX.Element => {
         }
         title="Zone summary"
       />
-    </MainContentSection>
+    </PageContent>
   );
 };
 

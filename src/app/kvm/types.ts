@@ -1,4 +1,4 @@
-import type { KVMHeaderViews } from "./constants";
+import type { KVMSidePanelViews } from "./constants";
 
 import type { SidePanelContent, SetSidePanelContent } from "app/base/types";
 import type { MachineSidePanelContent } from "app/machines/types";
@@ -16,7 +16,7 @@ import type {
   VMClusterStoragePoolResources,
 } from "app/store/vmcluster/types";
 
-type HeaderViews = typeof KVMHeaderViews;
+type HeaderViews = typeof KVMSidePanelViews;
 
 export type KVMSidePanelContent =
   | SidePanelContent<HeaderViews["COMPOSE_VM"], { hostId?: Pod["id"] }>

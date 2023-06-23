@@ -24,7 +24,7 @@ import NameColumn from "app/kvm/components/NameColumn";
 import RAMColumn from "app/kvm/components/RAMColumn";
 import StorageColumn from "app/kvm/components/StorageColumn";
 import TagsColumn from "app/kvm/components/TagsColumn";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -143,7 +143,7 @@ const generateRows = (
                 hasIcon
                 onClick={() =>
                   setSidePanelContent({
-                    view: KVMHeaderViews.COMPOSE_VM,
+                    view: KVMSidePanelViews.COMPOSE_VM,
                     extras: { hostId: host.id },
                   })
                 }

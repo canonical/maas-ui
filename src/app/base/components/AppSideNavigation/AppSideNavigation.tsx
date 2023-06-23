@@ -1,4 +1,4 @@
-import { useEffect, useContext, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
@@ -17,7 +17,7 @@ import {
   useGoogleAnalytics,
 } from "app/base/hooks";
 import { useGlobalKeyShortcut } from "app/base/hooks/base";
-import ThemePreviewContext from "app/base/theme-preview-context";
+import { useThemeContext } from "app/base/theme-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
@@ -32,9 +32,7 @@ const AppSideNavigation = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const maasTheme = useSelector(configSelectors.theme);
   const configLoaded = useSelector(configSelectors.loaded);
-  const { theme, setTheme } = useContext(ThemePreviewContext);
   const authUser = useSelector(authSelectors.get);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const path = location.pathname;
@@ -75,10 +73,6 @@ const AppSideNavigation = (): JSX.Element => {
   ]);
 
   useEffect(() => {
-    setTheme(maasTheme ? maasTheme : "default");
-  }, [location, maasTheme, setTheme]);
-
-  useEffect(() => {
     dispatch(controllerActions.fetch());
   }, [dispatch]);
 
@@ -105,7 +99,8 @@ const AppSideNavigation = (): JSX.Element => {
   useGlobalKeyShortcut("[", () => {
     setIsCollapsed(!isCollapsed);
   });
-  const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
+
+  const { theme } = useThemeContext();
 
   const filteredGroups = useMemo(() => {
     if (hideVirsh) {
@@ -128,7 +123,7 @@ const AppSideNavigation = (): JSX.Element => {
   return (
     <>
       <header className="l-navigation-bar">
-        <div className={classNames("p-panel is-dark", `is-maas-${themeColor}`)}>
+        <div className={classNames("p-panel is-dark", `is-maas-${theme}`)}>
           <div className="p-panel__header">
             <NavigationBanner />
             <div className="p-panel__controls u-nudge-down--small u-no-margin--top">
@@ -147,14 +142,14 @@ const AppSideNavigation = (): JSX.Element => {
       </header>
       <nav
         aria-label="main navigation"
-        className={classNames(`l-navigation is-maas is-maas-${themeColor}`, {
+        className={classNames(`l-navigation is-maas is-maas-${theme}`, {
           "is-collapsed": isCollapsed,
           "is-pinned": !isCollapsed,
         })}
       >
         <div className="l-navigation__drawer">
           <div className="p-panel is-dark">
-            <div className={`p-panel__header is-sticky is-maas-${themeColor}`}>
+            <div className={`p-panel__header is-sticky is-maas-${theme}`}>
               <NavigationBanner>
                 <div className="l-navigation__controls">
                   <AppSideNavCollapseToggle

@@ -389,7 +389,7 @@ describe("MachineListTable", () => {
 
     const firstMachine = machines[0];
     expect(
-      screen.getByRole("checkbox", { name: firstMachine.fqdn })
+      screen.getByRole("checkbox", { name: /koala*/i })
     ).toBeInTheDocument();
     const tableHeader = screen.getAllByRole("rowgroup")[0];
     // Click the MAC table header

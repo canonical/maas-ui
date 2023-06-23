@@ -8,10 +8,8 @@ import { Link } from "react-router-dom-v5-compat";
 
 import { DashboardSidePanelViews } from "../constants";
 
-import ClearAllForm from "./ClearAllForm";
-
 import SectionHeader from "app/base/components/SectionHeader";
-import { useSidePanel } from "app/base/side-panel-context";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
@@ -20,11 +18,14 @@ export enum Labels {
   ClearAll = "Clear all discoveries",
 }
 
-const DashboardHeader = (): JSX.Element => {
+const DashboardHeader = ({
+  setSidePanelContent,
+}: {
+  setSidePanelContent: SetSidePanelContent;
+}): JSX.Element => {
   const location = useLocation();
   const dispatch = useDispatch();
   const discoveries = useSelector(discoverySelectors.all);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     dispatch(discoveryActions.fetch());
@@ -44,25 +45,10 @@ const DashboardHeader = (): JSX.Element => {
       {Labels.ClearAll}
     </Button>,
   ];
-  let content: JSX.Element | null = null;
-
-  if (
-    sidePanelContent?.view === DashboardSidePanelViews.CLEAR_ALL_DISCOVERIES
-  ) {
-    content = (
-      <ClearAllForm
-        closeForm={() => {
-          setSidePanelContent(null);
-        }}
-      />
-    );
-  }
 
   return (
     <SectionHeader
       buttons={buttons}
-      sidePanelContent={content}
-      sidePanelTitle={Labels.ClearAll}
       tabLinks={[
         {
           active: location.pathname === urls.dashboard.index,

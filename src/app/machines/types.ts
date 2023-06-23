@@ -1,6 +1,6 @@
 import type { ValueOf } from "@canonical/react-components";
 
-import type { MachineHeaderViews } from "./constants";
+import type { MachineSidePanelViews } from "./constants";
 
 import type { HardwareType } from "app/base/enum";
 import type {
@@ -16,7 +16,7 @@ import type {
 import type { Script } from "app/store/script/types";
 
 export type MachineSidePanelContent = SidePanelContent<
-  ValueOf<typeof MachineHeaderViews>,
+  ValueOf<typeof MachineSidePanelViews>,
   {
     applyConfiguredNetworking?: Script["apply_configured_networking"];
     hardwareType?: HardwareType;

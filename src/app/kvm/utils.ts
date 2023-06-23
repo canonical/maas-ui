@@ -1,4 +1,4 @@
-import { KVMHeaderViews } from "./constants";
+import { KVMSidePanelViews } from "./constants";
 import type {
   KVMSidePanelContent,
   KVMStoragePoolResource,
@@ -28,15 +28,15 @@ export const memoryWithUnit = (memory: number): string => {
  */
 export const getFormTitle = (sidePanelContent: KVMSidePanelContent): string => {
   switch (sidePanelContent.view) {
-    case KVMHeaderViews.ADD_LXD_HOST:
+    case KVMSidePanelViews.ADD_LXD_HOST:
       return "Add LXD host";
-    case KVMHeaderViews.ADD_VIRSH_HOST:
+    case KVMSidePanelViews.ADD_VIRSH_HOST:
       return "Add Virsh host";
-    case KVMHeaderViews.COMPOSE_VM:
+    case KVMSidePanelViews.COMPOSE_VM:
       return "Compose";
-    case KVMHeaderViews.DELETE_KVM:
+    case KVMSidePanelViews.DELETE_KVM:
       return "Delete";
-    case KVMHeaderViews.REFRESH_KVM:
+    case KVMSidePanelViews.REFRESH_KVM:
       return "Refresh";
     default:
       // We need to explicitly cast sidePanelContent here - TypeScript doesn't

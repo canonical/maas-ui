@@ -9,26 +9,19 @@ import DeviceName from "./DeviceName";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
-import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
-import type {
-  DeviceSidePanelContent,
-  DeviceSetSidePanelContent,
-} from "app/devices/types";
-import { getHeaderTitle } from "app/devices/utils";
+import type { DeviceSetSidePanelContent } from "app/devices/types";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import { isDeviceDetails } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  sidePanelContent: DeviceSidePanelContent | null;
   setSidePanelContent: DeviceSetSidePanelContent;
   systemId: Device["system_id"];
 };
 
 const DeviceDetailsHeader = ({
-  sidePanelContent,
   setSidePanelContent,
   systemId,
 }: Props): JSX.Element => {
@@ -60,17 +53,6 @@ const DeviceDetailsHeader = ({
           }}
         />,
       ]}
-      sidePanelContent={
-        sidePanelContent && (
-          <DeviceHeaderForms
-            devices={[device]}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-            viewingDetails
-          />
-        )
-      }
-      sidePanelTitle={getHeaderTitle(device.fqdn || "", sidePanelContent)}
       subtitleLoading={!isDeviceDetails(device)}
       tabLinks={[
         {

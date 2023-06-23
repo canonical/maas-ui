@@ -5,20 +5,18 @@ import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
-import type { SidePanelContextType } from "app/base/side-panel-context";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
-import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
-import { ControllerHeaderViews } from "app/controllers/constants";
-import { getHeaderTitle } from "app/controllers/utils";
+import { ControllerSidePanelViews } from "app/controllers/constants";
 import controllerSelectors from "app/store/controller/selectors";
 import { getNodeActionTitle } from "app/store/utils";
 
-type Props = SidePanelContextType & {
+type Props = {
   setSearchFilter: SetSearchFilter;
+  setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerListHeader = ({
-  sidePanelContent,
   setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
@@ -34,7 +32,9 @@ const ControllerListHeader = ({
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}
           onClick={() =>
-            setSidePanelContent({ view: ControllerHeaderViews.ADD_CONTROLLER })
+            setSidePanelContent({
+              view: ControllerSidePanelViews.ADD_CONTROLLER,
+            })
           }
         >
           Add rack controller
@@ -50,7 +50,7 @@ const ControllerListHeader = ({
               getNodeActionTitle(action),
               "Open"
             );
-            const view = Object.values(ControllerHeaderViews).find(
+            const view = Object.values(ControllerSidePanelViews).find(
               ([, actionName]) => actionName === action
             );
             if (view) {
@@ -60,16 +60,6 @@ const ControllerListHeader = ({
           showCount
         />,
       ]}
-      sidePanelContent={
-        sidePanelContent && (
-          <ControllerHeaderForms
-            controllers={selectedControllers}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        )
-      }
-      sidePanelTitle={getHeaderTitle("Controllers", sidePanelContent)}
       subtitle={
         <ModelListSubtitle
           available={controllers.length}

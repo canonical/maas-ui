@@ -1,4 +1,4 @@
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent/PageContent";
 import Routes from "app/preferences/components/Routes";
 
 export enum Labels {
@@ -6,9 +6,13 @@ export enum Labels {
 }
 
 const Preferences = (): JSX.Element => (
-  <MainContentSection aria-label={Labels.Title}>
+  <PageContent
+    aria-label={Labels.Title}
+    sidePanelContent={null}
+    sidePanelTitle={null}
+  >
     <Routes />
-  </MainContentSection>
+  </PageContent>
 );
 
 export default Preferences;

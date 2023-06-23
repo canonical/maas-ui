@@ -28,7 +28,6 @@ import {
   render,
   waitFor,
   within,
-  act,
   renderWithBrowserRouter,
 } from "testing/utils";
 
@@ -346,7 +345,7 @@ describe("GlobalSideNav", () => {
         </Router>
       </Provider>
     );
-    act(() => history.push(urls.intro.images));
+    history.push(urls.intro.images);
     await waitFor(() =>
       expect(history.location.pathname).toBe(urls.intro.images)
     );

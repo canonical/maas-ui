@@ -7,7 +7,7 @@ import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { ControllerActionHeaderViews } from "app/controllers/constants";
-import { ControllerHeaderViews } from "app/controllers/constants";
+import { ControllerSidePanelViews } from "app/controllers/constants";
 import type { Controller } from "app/store/controller/types";
 
 type Props = SidePanelContextType & {
@@ -15,7 +15,7 @@ type Props = SidePanelContextType & {
   viewingDetails?: boolean;
 };
 
-const ControllerHeaderForms = ({
+const ControllerForms = ({
   controllers,
   sidePanelContent,
   setSidePanelContent,
@@ -31,7 +31,7 @@ const ControllerHeaderForms = ({
   }
 
   switch (sidePanelContent.view) {
-    case ControllerHeaderViews.ADD_CONTROLLER:
+    case ControllerSidePanelViews.ADD_CONTROLLER:
       return <AddController clearSidePanelContent={clearSidePanelContent} />;
     default:
       // We need to explicitly cast sidePanelContent.view here - TypeScript doesn't
@@ -53,4 +53,4 @@ const ControllerHeaderForms = ({
   }
 };
 
-export default ControllerHeaderForms;
+export default ControllerForms;

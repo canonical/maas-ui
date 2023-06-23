@@ -1713,6 +1713,8 @@ const machineSlice = createSlice({
         state,
         action
       );
+      // infer the new grouping value for each machine list
+      // based on machine details sent as notification payload
       Object.keys(state.lists).forEach((callId: string) => {
         const list: MachineStateList = state.lists[callId];
         let groups: MachineStateListGroup[] = list.groups ?? [];

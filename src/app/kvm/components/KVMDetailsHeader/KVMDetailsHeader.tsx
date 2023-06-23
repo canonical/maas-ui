@@ -8,11 +8,7 @@ import { useLocation } from "react-router-dom";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
-import type { SidePanelContent } from "app/base/side-panel-context";
-import type { SetSearchFilter } from "app/base/types";
-import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
-import { getFormTitle } from "app/kvm/utils";
 
 type TitleBlock = {
   title: ReactNode;
@@ -22,11 +18,8 @@ type TitleBlock = {
 type Props = {
   buttons?: SectionHeaderProps["buttons"];
   className?: ClassName;
-  sidePanelContent: SidePanelContent | null;
   loading?: SectionHeaderProps["loading"];
   setSidePanelContent: KVMSetSidePanelContent;
-  searchFilter?: string;
-  setSearchFilter?: SetSearchFilter;
   tabLinks: SectionHeaderProps["tabLinks"];
   title: ReactNode;
   titleBlocks: TitleBlock[];
@@ -35,11 +28,8 @@ type Props = {
 const KVMDetailsHeader = ({
   buttons,
   className,
-  sidePanelContent,
   loading,
   setSidePanelContent,
-  searchFilter,
-  setSearchFilter,
   tabLinks,
   title,
   titleBlocks,
@@ -61,17 +51,6 @@ const KVMDetailsHeader = ({
       className={classNames("kvm-details-header", className)}
       headerSize="wide"
       loading={loading}
-      sidePanelContent={
-        sidePanelContent ? (
-          <KVMHeaderForms
-            searchFilter={searchFilter}
-            setSearchFilter={setSearchFilter}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-          />
-        ) : null
-      }
-      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
       subtitle={
         <>
           {titleBlocks.map((block, i) => (

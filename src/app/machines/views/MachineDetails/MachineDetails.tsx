@@ -19,12 +19,16 @@ import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
 import MachineUSBDevices from "./MachineUSBDevices";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
+import MachineForms from "app/machines/components/MachineForms";
+import type { MachineSidePanelContent } from "app/machines/types";
+import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import { MachineMeta } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
@@ -36,7 +40,8 @@ const MachineDetails = (): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
   const { machine, loaded: detailsLoaded } = useFetchMachine(id);
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const { sidePanelContent, setSidePanelContent } =
+    useSidePanel() as SidePanelContextType<MachineSidePanelContent>;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,13 +74,27 @@ const MachineDetails = (): JSX.Element => {
   const base = urls.machines.machine.index(null);
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <MachineHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           systemId={id}
         />
+      }
+      sidePanelContent={
+        sidePanelContent && machine ? (
+          <MachineForms
+            searchFilter=""
+            selectedCount={1}
+            selectedMachines={{ items: [machine.system_id] }}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+            viewingDetails
+          />
+        ) : null
+      }
+      sidePanelTitle={
+        machine && getHeaderTitle(machine.hostname, sidePanelContent)
       }
     >
       {machine && (
@@ -202,7 +221,7 @@ const MachineDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 

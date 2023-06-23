@@ -180,9 +180,9 @@
 @import "~app/kvm/components/CPUColumn/CPUPopover";
 @import "~app/kvm/components/KVMDetailsHeader";
 @import "~app/base/components/DhcpFormFields/MachineSelect";
-@import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
-@import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
-@import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable/PoolSelect";
+@import "~app/kvm/components/KVMForms/ComposeForm/InterfacesTable";
+@import "~app/kvm/components/KVMForms/ComposeForm/InterfacesTable/SubnetSelect";
+@import "~app/kvm/components/KVMForms/ComposeForm/StorageTable/PoolSelect";
 @import "~app/kvm/components/KVMResourcesCard";
 @import "~app/kvm/components/KVMStorageCards";
 @import "~app/kvm/components/LXDHostToolbar";
@@ -236,11 +236,11 @@
 @include DiscoveriesList;
 
 // machines
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneFormFields";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneResults";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
-@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/TagForm";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneFormFields";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
+@import "~app/machines/components/MachineForms/MachineActionFormWrapper/TagForm";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineList";
