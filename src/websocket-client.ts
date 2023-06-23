@@ -152,6 +152,8 @@ export class WebSocketClient {
   connect(): ReconnectingWebSocket {
     this.socket = new ReconnectingWebSocket(this.buildURL(), undefined, {
       debug: process.env.REACT_APP_WEBSOCKET_DEBUG === "true",
+      connectionTimeout:
+        Number(process.env.REACT_APP_WEBSOCKET_CONNECTION_TIMEOUT) || undefined,
     });
     return this.socket;
   }

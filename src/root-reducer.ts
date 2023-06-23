@@ -101,8 +101,9 @@ const createRootReducer =
       };
     } else if (
       [
-        "status/websocketError",
-        "status/websocketDisconnected",
+        // TODO: Move to status reducer
+        // "status/websocketError",
+        // "status/websocketDisconnected",
         "status/checkAuthenticatedError",
       ].includes(action.type)
     ) {
