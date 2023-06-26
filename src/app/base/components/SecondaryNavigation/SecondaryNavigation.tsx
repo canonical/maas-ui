@@ -1,5 +1,3 @@
-/* eslint-disable react/no-multi-comp */
-
 import classNames from "classnames";
 import type { Location } from "react-router-dom-v5-compat";
 import { Link, matchPath, useLocation } from "react-router-dom-v5-compat";

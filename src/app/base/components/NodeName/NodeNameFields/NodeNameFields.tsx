@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
