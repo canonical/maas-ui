@@ -1,56 +1,56 @@
 import { Select } from "@canonical/react-components";
 
-import { FetchGroupKey } from "app/store/machine/types";
+import { FetchGroupByKey } from "app/store/machine/types/actions";
 
 type Props = {
-  grouping: FetchGroupKey | null;
-  setGrouping: (group: FetchGroupKey | null) => void;
+  grouping: FetchGroupByKey | null;
+  setGrouping: (group: FetchGroupByKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
 };
 
-const groupOptions = [
+const groupOptions: Array<{ value: FetchGroupByKey | ""; label: string }> = [
   {
     value: "",
     label: "No grouping",
   },
   {
-    value: FetchGroupKey.Status,
+    value: FetchGroupByKey.Status,
     label: "Group by status",
   },
   {
-    value: FetchGroupKey.Owner,
+    value: FetchGroupByKey.Owner,
     label: "Group by owner",
   },
   {
-    value: FetchGroupKey.Pool,
+    value: FetchGroupByKey.Pool,
     label: "Group by resource pool",
   },
   {
-    value: FetchGroupKey.Architecture,
+    value: FetchGroupByKey.Architecture,
     label: "Group by architecture",
   },
   {
-    value: FetchGroupKey.Domain,
+    value: FetchGroupByKey.Domain,
     label: "Group by domain",
   },
   {
-    value: FetchGroupKey.Parent,
+    value: FetchGroupByKey.Parent,
     label: "Group by parent",
   },
   {
-    value: FetchGroupKey.Pod,
+    value: FetchGroupByKey.Pod,
     label: "Group by KVM",
   },
   {
-    value: FetchGroupKey.PodType,
+    value: FetchGroupByKey.PodType,
     label: "Group by KVM type",
   },
   {
-    value: FetchGroupKey.PowerState,
+    value: FetchGroupByKey.PowerState,
     label: "Group by power state",
   },
   {
-    value: FetchGroupKey.Zone,
+    value: FetchGroupByKey.Zone,
     label: "Group by zone",
   },
 ];
@@ -67,7 +67,7 @@ const GroupSelect = ({
       defaultValue={grouping ?? ""}
       name="machine-groupings"
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-        setGrouping((e.target.value as FetchGroupKey) ?? null);
+        setGrouping((e.target.value as FetchGroupByKey) ?? null);
         setHiddenGroups([]);
       }}
       options={groupOptions}

@@ -62,7 +62,8 @@ import type {
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
 import type { OverrideFailedTesting } from "./types/actions";
-import type { MachineActionStatus } from "./types/base";
+import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
+import { createMachineListGroup } from "./utils";
 
 import { ACTION_STATUS } from "app/base/constants";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -87,7 +88,6 @@ const DEFAULT_LIST_STATE = {
   groups: null,
   loaded: false,
   loading: true,
-  needsUpdate: false,
   stale: false,
   num_pages: null,
 };
@@ -899,6 +899,7 @@ const machineSlice = createSlice({
           state.lists[action.meta.callId] = {
             ...DEFAULT_LIST_STATE,
             loading: true,
+            params: action?.meta.item || null,
           };
         }
       },
@@ -1712,9 +1713,80 @@ const machineSlice = createSlice({
         state,
         action
       );
-      // mark all machine list queries as in need of update
+      // infer the new grouping value for each machine list
+      // based on machine details sent as notification payload
       Object.keys(state.lists).forEach((callId: string) => {
-        state.lists[callId].needsUpdate = true;
+        const list: MachineStateList = state.lists[callId];
+        let groups: MachineStateListGroup[] = list.groups ?? [];
+        const groupBy = list.params?.group_key ?? "";
+        const machine = action.payload;
+
+        // if groupBy is empty string, then we don't need to do anything
+        if (groupBy === "") {
+          return;
+        }
+
+        const currentMachineListGroup = groups?.find((group) =>
+          group.items.some((systemId) => systemId === action.payload.system_id)
+        );
+        // get the right value from action.payload based on the groupKey
+        const newMachineListGroup = createMachineListGroup({
+          groupBy,
+          machine,
+        });
+
+        if (!currentMachineListGroup || !newMachineListGroup) {
+          return;
+        }
+
+        // update the groups if machine grouping changed
+        if (currentMachineListGroup.value !== newMachineListGroup.value) {
+          // remove machine from the current group
+          groups = groups.map((group) => {
+            if (group.value === currentMachineListGroup.value) {
+              return {
+                ...group,
+                items: group.items.filter(
+                  (item) => item !== action.payload.system_id
+                ),
+                count: group.count - 1,
+              };
+            }
+            return group;
+          });
+
+          // add machine to the new group
+          const newGroupExists = groups.find(
+            (group) => group.value === newMachineListGroup.value
+          );
+          if (newGroupExists) {
+            groups = groups.map((group) => {
+              if (group.value === newMachineListGroup.value) {
+                return {
+                  ...group,
+                  items: [...group.items, action.payload.system_id],
+                  count: group.count + 1,
+                };
+              }
+              return group;
+            });
+          } else {
+            // if the group does not exist create it
+            groups.push({
+              name: newMachineListGroup.name,
+              value: newMachineListGroup.value,
+              items: [action.payload.system_id],
+              count: 1,
+              collapsed: false,
+            });
+          }
+
+          // remove any empty groups
+          groups = groups.filter((group) => group.items.length > 0);
+
+          // update the list
+          list.groups = groups;
+        }
       });
     },
     updateVmfsDatastore: {
@@ -1739,22 +1811,6 @@ const machineSlice = createSlice({
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
-    markAsUpdated: {
-      prepare: (callId: string) => ({
-        meta: {
-          callId,
-        },
-        payload: null,
-      }),
-      reducer: (
-        state: MachineState,
-        action: PayloadAction<null, string, GenericMeta>
-      ) => {
-        if (action.meta.callId && state.lists?.[action.meta.callId]) {
-          state.lists[action.meta.callId].needsUpdate = false;
-        }
-      },
-    },
   },
 });
 

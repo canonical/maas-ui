@@ -445,17 +445,6 @@ const countStale = createSelector(
 /**
  * Get the stale value for a machine list request with a given callId
  */
-const listNeedsUpdate = createSelector(
-  [
-    machineState,
-    (_state: RootState, callId: string | null | undefined) => callId,
-  ],
-  (machineState, callId) => getList(machineState, callId)?.needsUpdate ?? null
-);
-
-/**
- * Get the stale value for a machine list request with a given callId
- */
 const listStale = createSelector(
   [
     machineState,
@@ -675,7 +664,6 @@ const selectors = {
   listGroups,
   listLoaded,
   listLoading,
-  listNeedsUpdate,
   listStale,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],

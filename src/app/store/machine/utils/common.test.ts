@@ -7,6 +7,7 @@ import {
   mapSortDirection,
   selectedToFilters,
   isUnconfiguredPowerType,
+  getNodeStatusKey,
 } from "./common";
 
 import { SortDirection } from "app/base/types";
@@ -197,6 +198,18 @@ describe("common machine utils", () => {
       });
       expect(isUnconfiguredPowerType(machine1)).toBe(false);
       expect(isUnconfiguredPowerType(machine2)).toBe(false);
+    });
+  });
+
+  describe("getNodeStatusKey", () => {
+    it("should return a key if value matches", () => {
+      expect(getNodeStatusKey("Failed to enter rescue mode")).toBe(
+        "FAILED_ENTERING_RESCUE_MODE"
+      );
+    });
+
+    it("should return undefined if no key matches", () => {
+      expect(getNodeStatusKey("NonExistentStatus")).toBeUndefined();
     });
   });
 });

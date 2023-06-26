@@ -267,8 +267,8 @@ export const machineStateList = define<MachineStateList>({
   loaded: false,
   loading: false,
   stale: false,
-  needsUpdate: false,
   num_pages: null,
+  params: null,
 });
 
 export const machineActionState = define<ActionState>({
