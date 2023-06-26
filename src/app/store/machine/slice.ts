@@ -1749,7 +1749,9 @@ const machineSlice = createSlice({
                 items: group.items.filter(
                   (item) => item !== action.payload.system_id
                 ),
-                count: group.count - 1,
+                // decrement count by 1 if count is known,
+                // otherwise set to null indicating it needs to be fetched
+                count: group.count ? group.count - 1 : null,
               };
             }
             return group;
@@ -1765,7 +1767,9 @@ const machineSlice = createSlice({
                 return {
                   ...group,
                   items: [...group.items, action.payload.system_id],
-                  count: group.count + 1,
+                  // increment count by 1 if count is known,
+                  // otherwise set to null indicating it needs to be fetched
+                  count: group.count ? group.count + 1 : null,
                 };
               }
               return group;
@@ -1776,7 +1780,9 @@ const machineSlice = createSlice({
               name: newMachineListGroup.name,
               value: newMachineListGroup.value,
               items: [action.payload.system_id],
-              count: 1,
+              // set count as null to indicate that the count is unknown
+              // and needs to be fetched
+              count: null,
               collapsed: false,
             });
           }

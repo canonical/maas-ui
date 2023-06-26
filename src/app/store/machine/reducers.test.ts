@@ -1309,7 +1309,7 @@ describe("machine reducer", () => {
                 }),
                 machineStateListGroupFactory({
                   collapsed: false,
-                  count: 1,
+                  count: null,
                   items: ["abc123"],
                   name: NodeStatus.FAILED_COMMISSIONING,
                   value: FetchNodeStatus.FAILED_COMMISSIONING,

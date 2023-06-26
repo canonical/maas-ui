@@ -212,7 +212,7 @@ export type FilterGroupOption<K = FilterGroupOptionType> = {
 
 export type MachineStateListGroup = {
   collapsed: boolean;
-  count: number;
+  count: number | null;
   items: Machine[MachineMeta.PK][];
   name: FilterGroupOption["label"] | null;
   value: FilterGroupOption["key"] | null;

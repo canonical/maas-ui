@@ -8,7 +8,6 @@ import type {
   MainTableRow,
 } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
-import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 
 import AllCheckbox from "./AllCheckbox";
@@ -17,6 +16,7 @@ import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
 import GroupCheckbox from "./GroupCheckbox";
 import MachineListDisplayCount from "./MachineListDisplayCount";
+import MachineListGroupCount from "./MachineListGroupCount";
 import MachineListPagination from "./MachineListPagination";
 import MachineListSelectedCount from "./MachineListSelectedCount/MachineListSelectedCount";
 import NameColumn from "./NameColumn";
@@ -37,7 +37,11 @@ import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import type { GetMachineMenuToggleHandler } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
-import type { Machine, MachineStateListGroup } from "app/store/machine/types";
+import type {
+  FetchFilters,
+  Machine,
+  MachineStateListGroup,
+} from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
@@ -396,6 +400,7 @@ const generateGroupRows = ({
   setHiddenGroups,
   showActions,
   hiddenColumns,
+  filter,
   ...rowProps
 }: {
   callId?: string | null;
@@ -403,6 +408,7 @@ const generateGroupRows = ({
   groups: MachineStateListGroup[] | null;
   hiddenGroups: NonNullable<Props["hiddenGroups"]>;
   setHiddenGroups: Props["setHiddenGroups"];
+  filter: FetchFilters | null;
 } & Omit<GenerateRowParams, "groupValue">) => {
   let rows: MainTableRow[] = [];
 
@@ -411,6 +417,7 @@ const generateGroupRows = ({
     // When the table is set to ungrouped then there are no group headers.
     if (grouping) {
       rows.push({
+        key: `${name}-group`,
         "aria-label": `${name} machines group`,
         className: "machine-list__group",
         columns: [
@@ -432,7 +439,14 @@ const generateGroupRows = ({
                       <strong>{name}</strong>
                     )
                   }
-                  secondary={pluralize("machine", count, true)}
+                  secondary={
+                    <MachineListGroupCount
+                      count={count}
+                      filter={filter}
+                      group={value}
+                      grouping={grouping}
+                    />
+                  }
                   secondaryClassName={
                     showActions ? "u-nudge--secondary-row u-align--left" : null
                   }
@@ -585,6 +599,11 @@ export const MachineListTable = ({
     showFullName,
   };
 
+  const parsedFilter = useMemo(
+    () => FilterMachines.parseFetchFilters(filter),
+    [filter]
+  );
+
   const headers = [
     {
       "aria-label": columnLabels[MachineColumns.FQDN],
@@ -596,7 +615,7 @@ export const MachineListTable = ({
             <AllCheckbox
               callId={callId}
               data-testid="all-machines-checkbox"
-              filter={FilterMachines.parseFetchFilters(filter)}
+              filter={parsedFilter}
             />
           )}
           <div>
@@ -824,6 +843,7 @@ export const MachineListTable = ({
     machines,
     setHiddenGroups,
     hiddenColumns,
+    filter: parsedFilter,
     ...rowProps,
   });
 
