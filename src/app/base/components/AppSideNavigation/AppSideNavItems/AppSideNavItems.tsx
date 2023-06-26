@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import { useMemo } from "react";
 
 import { Button, Icon } from "@canonical/react-components";

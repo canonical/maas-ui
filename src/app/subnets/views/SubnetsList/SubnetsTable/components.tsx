@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import type { PropsWithChildren } from "react";
 import { useState } from "react";
 

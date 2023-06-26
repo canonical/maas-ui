@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import { Col, Row, Textarea } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";

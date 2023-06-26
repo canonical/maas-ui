@@ -40,7 +40,7 @@ const generateTitle = (
 };
 
 const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
-  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const { setSidePanelContent } = useSidePanel();
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)

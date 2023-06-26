@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import type { ReactNode } from "react";
 import { useState, useMemo } from "react";
 

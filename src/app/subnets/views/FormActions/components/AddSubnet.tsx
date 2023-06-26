@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import { Row, Col, Input } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";

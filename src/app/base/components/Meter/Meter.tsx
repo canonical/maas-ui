@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 
