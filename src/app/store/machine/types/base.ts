@@ -330,6 +330,7 @@ export type MachineStateCount = {
   loaded: boolean;
   loading: boolean;
   stale: boolean;
+  params: FetchParams | null;
 };
 
 export type MachineStateCounts = Record<string, MachineStateCount>;

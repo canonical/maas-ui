@@ -193,7 +193,7 @@ describe("MachineList", () => {
             loaded: true,
             groups: [
               machineStateListGroupFactory({
-                items: [machines[0].system_id, machines[2].system_id],
+                items: [machines[0].system_id],
                 name: "Deployed",
                 value: FetchNodeStatus.DEPLOYED,
               }),
