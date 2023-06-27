@@ -293,6 +293,7 @@ export const machineStateCount = define<MachineStateCount>({
   loaded: false,
   loading: false,
   stale: false,
+  params: null,
 });
 
 export const machineFilterGroup = define<FilterGroup>({
