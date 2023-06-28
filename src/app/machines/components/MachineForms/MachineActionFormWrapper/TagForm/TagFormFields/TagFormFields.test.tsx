@@ -1,4 +1,5 @@
 import reduxToolkit from "@reduxjs/toolkit";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,6 +10,7 @@ import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
 
 import TagFormFields, { Label } from "./TagFormFields";
 
+import { queryClient } from "app/base/sagas/websockets/handlers/queryCache";
 import type { RootState } from "app/store/root/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import { Label as AddTagFormLabel } from "app/tags/components/AddTagForm/AddTagForm";
@@ -163,21 +165,23 @@ it("updates the new tags after creating a tag", async () => {
   const setNewTags = jest.fn();
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <Formik
-            initialValues={{ added: tags, removed: [] }}
-            onSubmit={jest.fn()}
-          >
-            <TagFormFields
-              machines={state.machine.items}
-              newTags={[]}
-              selectedCount={state.machine.items.length}
-              setNewTags={setNewTags}
-            />
-          </Formik>
-        </CompatRouter>
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <CompatRouter>
+            <Formik
+              initialValues={{ added: tags, removed: [] }}
+              onSubmit={jest.fn()}
+            >
+              <TagFormFields
+                machines={state.machine.items}
+                newTags={[]}
+                selectedCount={state.machine.items.length}
+                setNewTags={setNewTags}
+              />
+            </Formik>
+          </CompatRouter>
+        </MemoryRouter>
+      </QueryClientProvider>
     </Provider>
   );
   const { rerender } = render(<Form tags={[]} />);
