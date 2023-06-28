@@ -17,6 +17,7 @@ import {
 } from "./app/base/sagas";
 
 import type { MessageHandler } from "app/base/sagas/actions";
+import { watchQueryCache } from "app/base/sagas/websockets/handlers/queryCache";
 import type WebSocketClient from "websocket-client";
 
 export default function* rootSaga(
@@ -28,6 +29,7 @@ export default function* rootSaga(
     watchLogout(),
     watchExternalLogin(),
     watchWebSockets(websocketClient, actionHandlers as MessageHandler[]),
+    watchQueryCache(),
     watchCreateLicenseKey(),
     watchUpdateLicenseKey(),
     watchDeleteLicenseKey(),

@@ -1,4 +1,5 @@
 import type { ValueOf } from "@canonical/react-components";
+import { QueryClientProvider } from "@tanstack/react-query";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
@@ -7,6 +8,7 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
+import { queryClient } from "app/base/sagas/websockets/handlers/queryCache";
 import type { SidePanelContent } from "app/base/side-panel-context";
 import SidePanelContextProvider from "app/base/side-panel-context";
 import { ConfigNames } from "app/store/config/types";
@@ -112,23 +114,25 @@ export const BrowserRouterWithProvider = ({
   const route = <Route element={children} path={routePattern} />;
   return (
     <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      <SidePanelContextProvider value={sidePanelContent}>
-        <BrowserRouter>
-          <CompatRouter>
-            {routePattern ? (
-              <Routes>
-                {parentRoute ? (
-                  <Route path={parentRoute}>{route}</Route>
-                ) : (
-                  route
-                )}
-              </Routes>
-            ) : (
-              children
-            )}
-          </CompatRouter>
-        </BrowserRouter>
-      </SidePanelContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <SidePanelContextProvider value={sidePanelContent}>
+          <BrowserRouter>
+            <CompatRouter>
+              {routePattern ? (
+                <Routes>
+                  {parentRoute ? (
+                    <Route path={parentRoute}>{route}</Route>
+                  ) : (
+                    route
+                  )}
+                </Routes>
+              ) : (
+                children
+              )}
+            </CompatRouter>
+          </BrowserRouter>
+        </SidePanelContextProvider>
+      </QueryClientProvider>
     </Provider>
   );
 };
@@ -144,7 +148,9 @@ const WithMockStoreProvider = ({
   };
   return (
     <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      <SidePanelContextProvider>{children}</SidePanelContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <SidePanelContextProvider>{children}</SidePanelContextProvider>
+      </QueryClientProvider>
     </Provider>
   );
 };

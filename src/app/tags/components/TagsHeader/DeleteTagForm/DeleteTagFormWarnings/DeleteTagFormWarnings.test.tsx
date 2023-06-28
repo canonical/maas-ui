@@ -1,7 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
@@ -17,7 +14,7 @@ import {
   machineStateCount as machineStateCountFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -66,15 +63,10 @@ it("does not display a kernel options warning for non-deployed machines", async 
     }),
   };
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.queryByText(/You are deleting a tag with kernel options/i)
   ).not.toBeInTheDocument();
@@ -96,15 +88,10 @@ it("displays warning when deleting a tag with kernel options", async () => {
     }),
   };
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.getByText(/You are deleting a tag with kernel options/i)
   ).toBeInTheDocument();
@@ -132,15 +119,10 @@ it("displays a kernel options warning with multiple machines", async () => {
     }),
   };
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.getByText(/There are 2 deployed machines with this tag/i)
   ).toBeInTheDocument();
@@ -162,15 +144,10 @@ it("displays a kernel options warning with one machine", async () => {
     }),
   };
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.getByText(/There is 1 deployed machine with this tag/i)
   ).toBeInTheDocument();
@@ -192,15 +169,10 @@ it("links to a page to display deployed machines", async () => {
     }),
   };
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.getByRole("link", { name: "Show the deployed machine" })
   ).toHaveAttribute("href", urls.tags.tag.machines({ id: 1 }));
@@ -215,15 +187,10 @@ it("displays warning when deleting a tag applied to devices", async () => {
     }),
   ];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.getByText(/There is 1 device with this tag/i)
   ).toBeInTheDocument();
@@ -238,15 +205,10 @@ it("displays warning when deleting a tag applied to controllers", async () => {
     }),
   ];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.getByText(/There is 1 controller with this tag/i)
   ).toBeInTheDocument();
@@ -261,15 +223,10 @@ it("generates the correct sentence for multiple nodes", async () => {
     }),
   ];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<DeleteTagFormWarnings id={1} />, {
+    store,
+    route: "/tags",
+  });
   expect(
     screen.getByText(/There are 2 controllers with this tag/i)
   ).toBeInTheDocument();

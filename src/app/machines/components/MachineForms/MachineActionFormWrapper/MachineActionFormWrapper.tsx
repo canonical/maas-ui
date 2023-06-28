@@ -1,4 +1,5 @@
 import { Spinner } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 
 import CloneForm from "./CloneForm";
@@ -51,6 +52,7 @@ export const MachineActionFormWrapper = ({
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element | null => {
+  const queryClient = useQueryClient();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const dispatch = useDispatch();
   const {
@@ -82,8 +84,7 @@ export const MachineActionFormWrapper = ({
     selectedCountLoading,
   };
   const clearSelectedMachines = () => {
-    dispatch(machineActions.setSelected(null));
-    dispatch(machineActions.invalidateQueries());
+    queryClient.invalidateQueries(["machine", "list"]);
   };
 
   const filter = selectedToFilters(selectedMachines || null);

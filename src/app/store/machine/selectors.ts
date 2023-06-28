@@ -403,7 +403,7 @@ const filterOptionsLoading = createSelector(
   (machineState, groupKey) => getFilterGroup(machineState, groupKey)?.loading
 );
 
-const getList = (
+export const getList = (
   machineState: MachineState,
   callId: string | null | undefined
 ): MachineStateList | null =>

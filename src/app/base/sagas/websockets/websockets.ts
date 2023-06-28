@@ -36,9 +36,13 @@ import {
   isStartPollingAction,
   isStopPollingAction,
 } from "./handlers/polling-requests";
+import { watchFetchMachinesAndResolve } from "./handlers/queryCache";
 import { handleUnsubscribe, isUnsubscribeAction } from "./handlers/unsubscribe";
 
-import type { MessageHandler, NextActionCreator } from "app/base/sagas/actions";
+import {
+  type MessageHandler,
+  type NextActionCreator,
+} from "app/base/sagas/actions";
 import type { GenericMeta } from "app/store/utils/slice";
 import { WebSocketMessageType } from "websocket-client";
 
@@ -204,6 +208,7 @@ export function* handleMessage(
                 handleFileContextRequest,
                 response
               );
+
               if (!action) {
                 return;
               }
@@ -289,7 +294,7 @@ export function* sendMessage(
 ): SagaGenerator<void> {
   const { meta, payload, type } = action;
   const params = payload ? payload.params : null;
-  const { cache, identifier, method, model, nocache } = meta;
+  const { cache, identifier, method, model, nocache, callId } = meta;
   const endpoint = `${model}.${method}`;
   const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   // If method is 'list' and data has loaded/is loading, do not fetch again
@@ -305,6 +310,7 @@ export function* sendMessage(
     if (isLoaded(endpoint)) {
       return;
     }
+
     setLoaded(endpoint);
   }
   yield* put<Action & { meta: GenericMeta }>({
@@ -391,6 +397,7 @@ export function* setupWebSocket({
               isStartPollingAction,
               handlePolling
             ),
+            watchFetchMachinesAndResolve(),
             // Take actions that should unsubscribe from entities.
             takeEvery<WebSocketAction, (action: WebSocketAction) => void>(
               isUnsubscribeAction,

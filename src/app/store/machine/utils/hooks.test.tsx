@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, cleanup, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -26,6 +27,7 @@ import {
   useFetchedCount,
 } from "./hooks";
 
+import { queryClient } from "app/base/sagas/websockets/handlers/queryCache";
 import { actions as machineActions } from "app/store/machine";
 import type {
   FetchFilters,
@@ -108,7 +110,13 @@ describe("machine hook utils", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode; filters?: FetchFilters }) =>
-        <Provider store={store}>{children}</Provider>;
+        (
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </Provider>
+        );
 
     it("can dispatch machine count action", () => {
       const store = mockStore(state);
@@ -272,7 +280,13 @@ describe("machine hook utils", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+        (
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </Provider>
+        );
 
     it("can fetch machines", () => {
       const store = mockStore(state);
@@ -511,7 +525,13 @@ describe("machine hook utils", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+        (
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </Provider>
+        );
 
     it("can fetch selected machines", async () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
@@ -535,7 +555,13 @@ describe("machine hook utils", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+        (
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </Provider>
+        );
 
     it("adds a callId to redux dispatch function", async () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
@@ -574,7 +600,13 @@ describe("machine hook utils", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+        (
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </Provider>
+        );
 
     it("adds a callId to redux dispatch function and returns action state", async () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
@@ -634,7 +666,13 @@ describe("machine hook utils", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+        (
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </Provider>
+        );
 
     it("dispatches separate calls when there are selected both groups and items", async () => {
       jest
@@ -788,7 +826,13 @@ describe("machine hook utils", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode; id: string }) =>
-        <Provider store={store}>{children}</Provider>;
+        (
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </Provider>
+        );
 
     it("can get a machine", () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");

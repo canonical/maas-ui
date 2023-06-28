@@ -20,6 +20,7 @@ export type Props = PropsWithSpread<
   {
     currentPage: PaginationProps["currentPage"];
     itemsPerPage: PaginationProps["itemsPerPage"];
+    totalPages: number | null;
     machineCount: number | null;
     machinesLoading?: boolean | null;
     paginate: PaginationProps["paginate"];
@@ -29,6 +30,7 @@ export type Props = PropsWithSpread<
 
 const MachineListPagination = ({
   machineCount,
+  totalPages,
   machinesLoading,
   ...props
 }: Props): JSX.Element | null => {
@@ -47,10 +49,11 @@ const MachineListPagination = ({
     };
   }, []);
 
+  useEffect(() => {
+    setPageNumber(props.currentPage);
+  }, [props.currentPage]);
+
   const count = useFetchedCount(machineCount, machinesLoading);
-  const totalPages = machineCount
-    ? Math.ceil(machineCount / props.itemsPerPage)
-    : 1;
 
   return count > 0 ? (
     <nav aria-label={Label.Pagination} className="p-pagination">
@@ -80,7 +83,7 @@ const MachineListPagination = ({
               }
               intervalRef.current = setTimeout(() => {
                 if (
-                  e.target.valueAsNumber > totalPages ||
+                  (totalPages && e.target.valueAsNumber > totalPages) ||
                   e.target.valueAsNumber < 1
                 ) {
                   setError(
