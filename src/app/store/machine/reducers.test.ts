@@ -123,42 +123,6 @@ describe("machine reducer", () => {
     );
   });
 
-  describe("updateNotify", () => {
-    it("marks filtered machine counts as stale", () => {
-      const initialState = machineStateFactory({
-        loading: false,
-        counts: {
-          "1234": machineStateCountFactory({
-            loaded: true,
-            stale: false,
-            params: { filter: { status: FetchNodeStatus.NEW } },
-          }),
-        },
-      });
-      expect(
-        reducers(initialState, actions.updateNotify(machineFactory()))
-      ).toEqual({
-        ...initialState,
-        counts: { "1234": { ...initialState.counts["1234"], stale: true } },
-      });
-    });
-
-    it("doesn't mark unfiltered machine counts as stale", () => {
-      const initialState = machineStateFactory({
-        loading: false,
-        counts: {
-          "1234": machineStateCountFactory({
-            loaded: true,
-            stale: false,
-          }),
-        },
-      });
-      expect(
-        reducers(initialState, actions.updateNotify(machineFactory()))
-      ).toEqual(initialState);
-    });
-  });
-
   it("marks count requests as stale on delete notify", () => {
     const initialState = machineStateFactory({
       loading: false,
@@ -1345,7 +1309,7 @@ describe("machine reducer", () => {
                 }),
                 machineStateListGroupFactory({
                   collapsed: false,
-                  count: null,
+                  count: 1,
                   items: ["abc123"],
                   name: NodeStatus.FAILED_COMMISSIONING,
                   value: FetchNodeStatus.FAILED_COMMISSIONING,

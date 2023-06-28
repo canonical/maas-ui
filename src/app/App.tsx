@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 import packageInfo from "../../package.json";
@@ -11,6 +12,7 @@ import packageInfo from "../../package.json";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
+import { queryClient } from "./base/sagas/websockets/handlers/queryCache";
 import ThemePreviewContextProvider from "./base/theme-context";
 import { MAAS_UI_ID } from "./constants";
 import { formatErrors } from "./utils";
@@ -147,24 +149,26 @@ export const App = (): JSX.Element => {
 
   return (
     <div className="l-application" id={MAAS_UI_ID}>
-      <ThemePreviewContextProvider>
-        {connected && authLoaded && authenticated ? (
-          <AppSideNavigation />
-        ) : (
-          <header className="l-navigation-bar is-pinned">
-            <div className="p-panel is-dark is-maas-default">
-              <div className="p-panel__header">
-                <NavigationBanner />
+      <QueryClientProvider client={queryClient}>
+        <ThemePreviewContextProvider>
+          {connected && authLoaded && authenticated ? (
+            <AppSideNavigation />
+          ) : (
+            <header className="l-navigation-bar is-pinned">
+              <div className="p-panel is-dark is-maas-default">
+                <div className="p-panel__header">
+                  <NavigationBanner />
+                </div>
               </div>
-            </div>
-          </header>
-        )}
+            </header>
+          )}
 
-        {content}
-        <aside className="l-status">
-          <StatusBar />
-        </aside>
-      </ThemePreviewContextProvider>
+          {content}
+          <aside className="l-status">
+            <StatusBar />
+          </aside>
+        </ThemePreviewContextProvider>
+      </QueryClientProvider>
     </div>
   );
 };

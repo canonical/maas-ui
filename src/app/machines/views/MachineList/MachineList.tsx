@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +40,7 @@ const MachineList = ({
 }: Props): JSX.Element => {
   useWindowTitle("Machines");
   const dispatch = useDispatch();
+
   const errors = useSelector(machineSelectors.errors);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
@@ -59,15 +60,27 @@ const MachineList = ({
       ? storedPageSize
       : DEFAULT_PAGE_SIZE;
 
-  const { callId, loading, machineCount, machines, machinesErrors, groups } =
-    useFetchMachines({
-      collapsedGroups: hiddenGroups,
-      filters: FilterMachines.parseFetchFilters(searchFilter),
-      grouping,
-      sortDirection,
-      sortKey,
-      pagination: { currentPage, setCurrentPage, pageSize },
-    });
+  const pagination = useMemo(
+    () => ({ currentPage, setCurrentPage, pageSize }),
+    [currentPage, setCurrentPage, pageSize]
+  );
+
+  const {
+    callId,
+    loading,
+    machineCount,
+    machines,
+    totalPages,
+    machinesErrors,
+    groups,
+  } = useFetchMachines({
+    collapsedGroups: hiddenGroups,
+    filters: FilterMachines.parseFetchFilters(searchFilter),
+    grouping,
+    sortDirection,
+    sortKey,
+    pagination,
+  });
 
   useEffect(
     () => () => {
@@ -114,6 +127,7 @@ const MachineList = ({
         setSortKey={setSortKey}
         sortDirection={sortDirection}
         sortKey={sortKey}
+        totalPages={totalPages}
       />
     </>
   );

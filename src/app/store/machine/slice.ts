@@ -98,7 +98,6 @@ const DEFAULT_COUNT_STATE = {
   stale: false,
   count: null,
   errors: null,
-  params: null,
 };
 
 const isArrayOfOptionsType = <T extends FilterGroupOptionType>(
@@ -367,11 +366,18 @@ const machineSlice = createSlice({
       },
     },
     count: {
-      prepare: (callId: string, filters?: FetchFilters | null) => ({
+      prepare: (
+        callId: string,
+        filters?: FetchFilters | null,
+        resolve: Function,
+        reject: Function
+      ) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "count",
           callId,
+          resolve,
+          reject,
         },
         payload: filters
           ? {
@@ -423,7 +429,6 @@ const machineSlice = createSlice({
           } else {
             state.counts[action.meta.callId] = {
               ...DEFAULT_COUNT_STATE,
-              params: action?.meta.item || null,
               loading: true,
             };
           }
@@ -849,12 +854,19 @@ const machineSlice = createSlice({
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
     fetch: {
-      prepare: (callId: string, params?: FetchParams | null) => ({
+      prepare: (
+        callId: string,
+        params: FetchParams | null,
+        resolve: Function,
+        reject: Function
+      ) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "list",
           nocache: true,
           callId,
+          resolve,
+          reject,
         },
         payload: params
           ? {
@@ -950,15 +962,6 @@ const machineSlice = createSlice({
           state.lists[callId].num_pages = payload.num_pages;
         }
       },
-    },
-    // marks all queries as stale which will trigger a re-fetch
-    invalidateQueries: (state) => {
-      Object.keys(state.lists).forEach((callId) => {
-        state.lists[callId].stale = true;
-      });
-      Object.keys(state.counts).forEach((callId) => {
-        state.counts[callId].stale = true;
-      });
     },
     filterGroups: {
       prepare: () => ({
@@ -1751,9 +1754,7 @@ const machineSlice = createSlice({
                 items: group.items.filter(
                   (item) => item !== action.payload.system_id
                 ),
-                // decrement count by 1 if count is known,
-                // otherwise set to null indicating it needs to be fetched
-                count: group.count ? group.count - 1 : null,
+                count: group.count - 1,
               };
             }
             return group;
@@ -1769,9 +1770,7 @@ const machineSlice = createSlice({
                 return {
                   ...group,
                   items: [...group.items, action.payload.system_id],
-                  // increment count by 1 if count is known,
-                  // otherwise set to null indicating it needs to be fetched
-                  count: group.count ? group.count + 1 : null,
+                  count: group.count + 1,
                 };
               }
               return group;
@@ -1782,8 +1781,7 @@ const machineSlice = createSlice({
               name: newMachineListGroup.name,
               value: newMachineListGroup.value,
               items: [action.payload.system_id],
-              // set count to null indicating it's unknown and needs to be fetched
-              count: null,
+              count: 1,
               collapsed: false,
             });
           }
@@ -1793,14 +1791,6 @@ const machineSlice = createSlice({
 
           // update the list
           list.groups = groups;
-        }
-      });
-
-      // machine update can affect counts of filtered machine lists
-      // - mark all filtered machine counts as stale indicating they need to be fetched
-      Object.keys(state.counts).forEach((callId) => {
-        if (state.counts[callId].params !== null) {
-          state.counts[callId].stale = true;
         }
       });
     },
