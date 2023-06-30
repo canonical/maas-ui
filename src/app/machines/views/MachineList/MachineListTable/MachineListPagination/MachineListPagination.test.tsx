@@ -9,6 +9,7 @@ describe("MachineListPagination", () => {
     props = {
       currentPage: 1,
       itemsPerPage: 20,
+      totalPages: 4,
       machineCount: 100,
       machinesLoading: false,
       paginate: jest.fn(),

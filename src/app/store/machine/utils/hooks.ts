@@ -534,6 +534,7 @@ type UseFetchMachinesData = {
   machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;
+  totalPages: number | null;
 };
 
 /**
@@ -568,6 +569,9 @@ export const useFetchMachines = (
   );
   const machineCount = useSelector((state: RootState) =>
     machineSelectors.listCount(state, callId)
+  );
+  const totalPages = useSelector((state: RootState) =>
+    machineSelectors.listTotalPages(state, callId)
   );
   const machinesErrors = useSelector((state: RootState) =>
     machineSelectors.listErrors(state, callId)
@@ -654,6 +658,7 @@ export const useFetchMachines = (
     loading,
     groups,
     machineCount,
+    totalPages,
     machines,
     machinesErrors,
   };
@@ -677,6 +682,7 @@ export const useFetchMachinesWithGroupingUpdates = (
     loaded,
     machinesErrors,
     machineCount,
+    totalPages,
   } = useFetchMachines(options, queryOptions);
   const needsUpdate = useSelector((state: RootState) =>
     machineSelectors.listNeedsUpdate(state, initialCallId)
@@ -765,6 +771,7 @@ export const useFetchMachinesWithGroupingUpdates = (
     groups,
     machines,
     machineCount,
+    totalPages,
     machinesErrors,
   };
 };
