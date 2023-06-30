@@ -10,6 +10,7 @@ it("displays pagination if there are machines", () => {
       machineCount={100}
       machinesLoading={false}
       paginate={jest.fn()}
+      totalPages={4}
     />
   );
   expect(
@@ -25,6 +26,7 @@ it("does not display pagination if there are no machines", () => {
       machineCount={0}
       machinesLoading={false}
       paginate={jest.fn()}
+      totalPages={4}
     />
   );
   expect(
@@ -37,6 +39,7 @@ it("displays pagination while refetching machines", () => {
   const props = {
     currentPage: 1,
     itemsPerPage: 20,
+    totalPages: 4,
     machineCount: 100,
     machinesLoading: false,
     paginate: jest.fn(),
@@ -56,6 +59,7 @@ it("hides pagination if there are no refetched machines", () => {
   const props = {
     currentPage: 1,
     itemsPerPage: 20,
+    totalPages: 4,
     machineCount: 100,
     machinesLoading: false,
     paginate: jest.fn(),

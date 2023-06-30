@@ -257,6 +257,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={4}
       />,
       { state }
     );
@@ -303,6 +304,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={4}
       />,
       { state }
     );
@@ -333,6 +335,7 @@ describe("MachineListTable", () => {
               setSortKey={jest.fn()}
               sortDirection="none"
               sortKey={null}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -371,6 +374,7 @@ describe("MachineListTable", () => {
               setSortKey={jest.fn()}
               sortDirection="none"
               sortKey={null}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -403,6 +407,7 @@ describe("MachineListTable", () => {
               setSortKey={jest.fn()}
               sortDirection="none"
               sortKey={null}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -454,6 +459,7 @@ describe("MachineListTable", () => {
               setSortKey={setSortKey}
               sortDirection="none"
               sortKey={null}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -493,6 +499,7 @@ describe("MachineListTable", () => {
               setSortKey={setSortKey}
               sortDirection={SortDirection.ASCENDING}
               sortKey={FetchGroupKey.CpuCount}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -532,6 +539,7 @@ describe("MachineListTable", () => {
               setSortKey={setSortKey}
               sortDirection={SortDirection.DESCENDING}
               sortKey={FetchGroupKey.CpuCount}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -571,6 +579,7 @@ describe("MachineListTable", () => {
               setSortKey={setSortKey}
               sortDirection={SortDirection.NONE}
               sortKey={FetchGroupKey.CpuCount}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -610,6 +619,7 @@ describe("MachineListTable", () => {
               setSortKey={setSortKey}
               sortDirection={SortDirection.NONE}
               sortKey={FetchGroupKey.CpuCount}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -649,6 +659,7 @@ describe("MachineListTable", () => {
               setSortKey={jest.fn()}
               sortDirection="none"
               sortKey={null}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -683,6 +694,7 @@ describe("MachineListTable", () => {
               showActions={false}
               sortDirection="none"
               sortKey={null}
+              totalPages={4}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -721,6 +733,7 @@ describe("MachineListTable", () => {
                 setSortKey={jest.fn()}
                 sortDirection="none"
                 sortKey={null}
+                totalPages={4}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -757,6 +770,7 @@ describe("MachineListTable", () => {
                 showActions
                 sortDirection="none"
                 sortKey={null}
+                totalPages={4}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -789,6 +803,7 @@ describe("MachineListTable", () => {
                 showActions={false}
                 sortDirection="none"
                 sortKey={null}
+                totalPages={4}
               />
             </CompatRouter>
           </MemoryRouter>

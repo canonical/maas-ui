@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Pagination /> renders and matches the snapshot 1`] = `
+<nav
+  aria-label="Pagination"
+  class="p-pagination"
+>
+  <ol
+    class="p-pagination__items"
+  >
+    <li
+      class="p-pagination__item"
+    >
+      <button
+        class="p-pagination__link--previous"
+        disabled=""
+        type="button"
+      >
+        <i
+          class="p-icon--chevron-down"
+        >
+          Previous page
+        </i>
+      </button>
+    </li>
+    <li
+      class="p-pagination__item"
+    >
+      <button
+        aria-current="page"
+        class="p-pagination__link is-active"
+        type="button"
+      >
+        1
+      </button>
+    </li>
+    <li
+      class="p-pagination__item"
+    >
+      <button
+        class="p-pagination__link"
+        type="button"
+      >
+        2
+      </button>
+    </li>
+    <li
+      class="p-pagination__item"
+    >
+      <button
+        class="p-pagination__link"
+        type="button"
+      >
+        3
+      </button>
+    </li>
+    <li
+      class="p-pagination__item"
+    >
+      <button
+        class="p-pagination__link"
+        type="button"
+      >
+        4
+      </button>
+    </li>
+    <li
+      class="p-pagination__item"
+    >
+      <button
+        class="p-pagination__link"
+        type="button"
+      >
+        5
+      </button>
+    </li>
+    <li
+      class="p-pagination__item"
+    >
+      <button
+        class="p-pagination__link--next"
+        type="button"
+      >
+        <i
+          class="p-icon--chevron-down"
+        >
+          Next page
+        </i>
+      </button>
+    </li>
+  </ol>
+</nav>
+`;
