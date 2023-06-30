@@ -434,6 +434,17 @@ const listCount = createSelector(
 );
 
 /**
+ * Get the total page count for a machine list request with a given callId.
+ */
+const listTotalPages = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.num_pages ?? null
+);
+
+/**
  * Get the stale value for a machine count request with a given callId
  */
 const countStale = createSelector(
@@ -675,6 +686,7 @@ const selectors = {
   linkingSubnet: statusSelectors["linkingSubnet"],
   list,
   listCount,
+  listTotalPages,
   listErrors,
   listGroup,
   listGroups,

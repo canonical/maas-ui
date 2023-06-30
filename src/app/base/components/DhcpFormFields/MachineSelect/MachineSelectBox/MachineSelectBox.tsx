@@ -19,7 +19,7 @@ const MachineSelectBox = ({
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const { machines, machineCount, loading } = useFetchMachines({
+  const { machines, machineCount, loading, totalPages } = useFetchMachines({
     filters: {
       [FilterGroupKey.FreeText]: debouncedText,
       ...(filters ? filters : {}),
@@ -58,6 +58,7 @@ const MachineSelectBox = ({
           machineCount={machineCount}
           machinesLoading={loading}
           paginate={setCurrentPage}
+          totalPages={totalPages}
         />
       </div>
     </div>
