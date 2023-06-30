@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import DiscoveryAddForm, {
@@ -16,6 +15,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "app/store/types/node";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   discovery as discoveryFactory,
   domain as domainFactory,
@@ -41,15 +41,15 @@ import {
   within,
   renderWithBrowserRouter,
 } from "testing/utils";
-
 const mockStore = configureStore<RootState, {}>();
+
+enableCallIdMocks();
 
 describe("DiscoveryAddForm", () => {
   let state: RootState;
   let discovery: Discovery;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -117,7 +117,7 @@ describe("DiscoveryAddForm", () => {
         loaded: true,
         items: machines,
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loaded: true,
             groups: [
               machineStateListGroupFactory({

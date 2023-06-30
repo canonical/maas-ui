@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import AddTagForm from "./AddTagForm";
@@ -7,6 +6,7 @@ import type { Props } from "./AddTagForm";
 import { actions as machineActions } from "app/store/machine";
 import type { FetchFilters } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import { FetchNodeStatus } from "app/store/types/node";
 import {
@@ -30,7 +30,7 @@ const mockStore = configureStore<RootState, {}>();
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  jest.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       counts: machineStateCountsFactory({
@@ -172,8 +172,9 @@ it("fetches deployed machine count for selected machines", async () => {
 });
 
 it("fetches deployed machine count separately for deployed group when selected", async () => {
+  jest.spyOn(query, "generateCallId").mockRestore();
   jest
-    .spyOn(reduxToolkit, "nanoid")
+    .spyOn(query, "generateCallId")
     .mockReturnValueOnce("mocked-nanoid-1")
     .mockReturnValueOnce("mocked-nanoid-2");
   const store = mockStore(state);
@@ -209,10 +210,6 @@ it("fetches deployed machine count separately for deployed group when selected",
 });
 
 it("fetches deployed machine count when all machines are selected", async () => {
-  jest
-    .spyOn(reduxToolkit, "nanoid")
-    .mockReturnValueOnce("mocked-nanoid-1")
-    .mockReturnValueOnce("mocked-nanoid-2");
   const store = mockStore(state);
   const selectedMachines = {
     filter: {},
@@ -225,7 +222,7 @@ it("fetches deployed machine count when all machines are selected", async () => 
     />,
     { route: "/tags", store }
   );
-  const expected = machineActions.count("mocked-nanoid-1", {
+  const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
   });
   const countActions = store
@@ -237,7 +234,6 @@ it("fetches deployed machine count when all machines are selected", async () => 
 
 it(`fetches deployed machine count only for selected items
     when grouping by status and group other than deployed is selected`, async () => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
   const store = mockStore(state);
   const selectedMachines = {
     items: ["abc", "def"],
@@ -252,7 +248,7 @@ it(`fetches deployed machine count only for selected items
     />,
     { route: "/tags", store }
   );
-  const expected = machineActions.count("mocked-nanoid-1", {
+  const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
     id: selectedMachines.items,
   });

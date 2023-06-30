@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import VmResources, { Label } from "./VmResources";
@@ -7,6 +6,7 @@ import { Label as MachineListLabel } from "app/machines/views/MachineList/Machin
 import { actions as machineActions } from "app/store/machine";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   rootState as rootStateFactory,
   machineState as machineStateFactory,
@@ -23,19 +23,19 @@ import {
   renderWithMockStore,
 } from "testing/utils";
 
+enableCallIdMocks();
 const mockStore = configureStore<RootState, {}>();
 
 describe("VmResources", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     const machines = [machineFactory(), machineFactory()];
     state = rootStateFactory({
       machine: machineStateFactory({
         items: machines,
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             count: machines.length,
             loaded: true,
             groups: [
@@ -54,8 +54,8 @@ describe("VmResources", () => {
   });
 
   it("disables the dropdown if no VMs are provided", () => {
-    state.machine.lists["123456"].count = 0;
-    state.machine.lists["123456"].groups = [
+    state.machine.lists[callId].count = 0;
+    state.machine.lists[callId].groups = [
       machineStateListGroupFactory({
         items: [],
         name: "Deployed",
@@ -73,7 +73,7 @@ describe("VmResources", () => {
       <VmResources filters={{ id: ["abc123"] }} podId={1} />,
       { store }
     );
-    const expected = machineActions.fetch("123456");
+    const expected = machineActions.fetch(callId);
     const result = store
       .getActions()
       .find((action) => action.type === expected.type);

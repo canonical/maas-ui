@@ -1,9 +1,8 @@
-import reduxToolkit from "@reduxjs/toolkit";
-
 import { Labels as SourceMachineDetailsLabel } from "./SourceMachineDetails/SourceMachineDetails";
 import SourceMachineSelect, { Label } from "./SourceMachineSelect";
 
 import type { Machine } from "app/store/machine/types";
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
@@ -22,7 +21,7 @@ describe("SourceMachineSelect", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     machines = [
       machineFactory({
         system_id: "abc123",

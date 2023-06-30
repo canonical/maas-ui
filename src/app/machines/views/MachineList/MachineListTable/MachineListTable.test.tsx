@@ -1,5 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
-
 import { MachineListTable, Label } from "./MachineListTable";
 
 import { SortDirection } from "app/base/types";
@@ -12,6 +10,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "app/store/types/node";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -39,13 +38,14 @@ import {
   renderWithMockStore,
 } from "testing/utils";
 
+enableCallIdMocks();
+
 describe("MachineListTable", () => {
   let state: RootState;
   let machines: Machine[] = [];
   let groups: MachineStateListGroup[] = [];
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     machines = [
       machineFactory({
         actions: [],
@@ -197,7 +197,7 @@ describe("MachineListTable", () => {
       machine: machineStateFactory({
         items: machines,
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loading: true,
             groups,
           }),
@@ -238,7 +238,7 @@ describe("MachineListTable", () => {
   it("displays skeleton rows when loading", () => {
     renderWithMockStore(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={FetchGroupKey.Status}
@@ -276,7 +276,7 @@ describe("MachineListTable", () => {
     state.machine = machineStateFactory({
       items: [],
       lists: {
-        "123456": machineStateListFactory({
+        [callId]: machineStateListFactory({
           loading: false,
           groups,
         }),
@@ -285,7 +285,7 @@ describe("MachineListTable", () => {
 
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter="this does not match anything"
         grouping={FetchGroupKey.Status}
@@ -309,7 +309,7 @@ describe("MachineListTable", () => {
   it("includes groups", () => {
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={FetchGroupKey.Status}
@@ -342,7 +342,7 @@ describe("MachineListTable", () => {
   it("does not display a group header if the table is ungrouped", () => {
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -368,7 +368,7 @@ describe("MachineListTable", () => {
   it("can change machines to display PXE MAC instead of FQDN", async () => {
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -414,7 +414,7 @@ describe("MachineListTable", () => {
     });
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -453,7 +453,7 @@ describe("MachineListTable", () => {
     const setSortKey = jest.fn();
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -484,7 +484,7 @@ describe("MachineListTable", () => {
     const setSortKey = jest.fn();
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -515,7 +515,7 @@ describe("MachineListTable", () => {
     const setSortKey = jest.fn();
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -546,7 +546,7 @@ describe("MachineListTable", () => {
     const setSortKey = jest.fn();
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -577,7 +577,7 @@ describe("MachineListTable", () => {
     const setSortKey = jest.fn();
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={null}
@@ -607,7 +607,7 @@ describe("MachineListTable", () => {
     machines[1].status_code = NodeStatusCode.DEPLOYED;
     renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         filter=""
         grouping={FetchGroupKey.Status}
@@ -635,7 +635,7 @@ describe("MachineListTable", () => {
   it("does not show checkboxes if showActions is false", () => {
     const { rerender } = renderWithBrowserRouter(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         groups={groups}
         machineCount={10}
@@ -654,7 +654,7 @@ describe("MachineListTable", () => {
 
     rerender(
       <MachineListTable
-        callId="123456"
+        callId={callId}
         currentPage={1}
         groups={groups}
         machineCount={10}
@@ -675,7 +675,7 @@ describe("MachineListTable", () => {
     it("can hide columns", () => {
       const { rerender } = renderWithBrowserRouter(
         <MachineListTable
-          callId="123456"
+          callId={callId}
           currentPage={1}
           groups={groups}
           hiddenColumns={[]}
@@ -699,7 +699,7 @@ describe("MachineListTable", () => {
 
       rerender(
         <MachineListTable
-          callId="123456"
+          callId={callId}
           currentPage={1}
           groups={groups}
           hiddenColumns={["power", "zone"]}
@@ -725,7 +725,7 @@ describe("MachineListTable", () => {
     it("still displays fqdn if showActions is true", () => {
       renderWithBrowserRouter(
         <MachineListTable
-          callId="123456"
+          callId={callId}
           currentPage={1}
           groups={groups}
           hiddenColumns={["fqdn"]}
@@ -750,7 +750,7 @@ describe("MachineListTable", () => {
     it("hides fqdn if if showActions is false", () => {
       renderWithBrowserRouter(
         <MachineListTable
-          callId="123456"
+          callId={callId}
           currentPage={1}
           groups={groups}
           hiddenColumns={["fqdn"]}

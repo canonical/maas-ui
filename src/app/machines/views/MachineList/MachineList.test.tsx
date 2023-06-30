@@ -5,6 +5,7 @@ import MachineList from "./MachineList";
 import { DEFAULTS } from "./MachineListTable/constants";
 
 import { actions as machineActions } from "app/store/machine";
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import {
   FetchNodeStatus,
@@ -37,7 +38,7 @@ describe("MachineList", () => {
 
   beforeEach(() => {
     jest.useFakeTimers();
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    jest.spyOn(query, "generateCallId").mockReturnValue("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -396,7 +397,7 @@ describe("MachineList", () => {
 
   it("can change pages", async () => {
     jest
-      .spyOn(reduxToolkit, "nanoid")
+      .spyOn(query, "generateCallId")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.

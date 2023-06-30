@@ -5,6 +5,7 @@ import MachineListHeader from "./MachineListHeader";
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,
   machineStateCount as machineStateCountFactory,
@@ -19,15 +20,12 @@ import {
 } from "testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
+enableCallIdMocks();
+
 describe("MachineListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest
-      .spyOn(reduxToolkit, "nanoid")
-      .mockReturnValueOnce("mocked-nanoid-1")
-      .mockReturnValueOnce("mocked-nanoid-2")
-      .mockReturnValueOnce("mocked-nanoid-3");
     const machines = [
       machineFactory({ system_id: "abc123" }),
       machineFactory({ system_id: "def456" }),
@@ -35,7 +33,7 @@ describe("MachineListHeader", () => {
     state = rootStateFactory({
       machine: machineStateFactory({
         counts: machineStateCountsFactory({
-          "mocked-nanoid-1": machineStateCountFactory({
+          [callId]: machineStateCountFactory({
             count: 10,
             loaded: true,
             loading: false,
@@ -60,7 +58,7 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a machine count if machines have loaded", () => {
-    state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
+    state.machine.counts[callId] = machineStateCountFactory({
       count: 2,
       loaded: true,
     });

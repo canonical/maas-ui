@@ -63,7 +63,7 @@ import type {
 import { MachineMeta, FilterGroupType } from "./types";
 import type { OverrideFailedTesting } from "./types/actions";
 import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
-import { createMachineListGroup } from "./utils";
+import { createMachineListGroup, isMachineDetails } from "./utils";
 
 import { ACTION_STATUS } from "app/base/constants";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -81,7 +81,14 @@ import {
 } from "app/store/utils/slice";
 import { preparePayloadParams, kebabToCamelCase } from "app/utils";
 
-const DEFAULT_LIST_STATE = {
+export const DEFAULT_MACHINE_QUERY_STATE = {
+  params: null,
+  fetchedAt: null,
+  refetchedAt: null,
+  refetching: false,
+} as const;
+
+export const DEFAULT_LIST_STATE = {
   count: null,
   cur_page: null,
   errors: null,
@@ -90,16 +97,17 @@ const DEFAULT_LIST_STATE = {
   loading: true,
   stale: false,
   num_pages: null,
-};
+  ...DEFAULT_MACHINE_QUERY_STATE,
+} as const;
 
-const DEFAULT_COUNT_STATE = {
+export const DEFAULT_COUNT_STATE = {
   loading: false,
   loaded: false,
   stale: false,
   count: null,
   errors: null,
-  params: null,
-};
+  ...DEFAULT_MACHINE_QUERY_STATE,
+} as const;
 
 const isArrayOfOptionsType = <T extends FilterGroupOptionType>(
   options: FilterGroupOption[],
@@ -419,12 +427,16 @@ const machineSlice = createSlice({
       ) => {
         if (action.meta.callId) {
           if (action.meta.callId in state.counts) {
-            state.counts[action.meta.callId].loading = true;
+            // refetching
+            state.counts[action.meta.callId].refetching = true;
+            state.counts[action.meta.callId].refetchedAt = Date.now();
           } else {
+            // initial fetch
             state.counts[action.meta.callId] = {
               ...DEFAULT_COUNT_STATE,
-              params: action?.meta.item || null,
               loading: true,
+              params: action?.meta.item || null,
+              fetchedAt: Date.now(),
             };
           }
         }
@@ -689,8 +701,8 @@ const machineSlice = createSlice({
           if (index !== -1) {
             group.items.splice(index, 1);
             // update the count
-            if (group.count > 0) {
-              group.count = group.count - 1;
+            if (group.count && group.count > 0) {
+              group.count = group.count! - 1;
             }
             if (list.count && list.count > 0) {
               list.count = list.count! - 1;
@@ -898,11 +910,20 @@ const machineSlice = createSlice({
         action: PayloadAction<null, string, GenericMeta>
       ) => {
         if (action.meta.callId) {
-          state.lists[action.meta.callId] = {
-            ...DEFAULT_LIST_STATE,
-            loading: true,
-            params: action?.meta.item || null,
-          };
+          if (!state.lists[action.meta.callId]) {
+            // initial fetch
+            state.lists[action.meta.callId] = {
+              ...DEFAULT_LIST_STATE,
+              loading: true,
+              params: action?.meta.item || null,
+              fetchedAt: Date.now(),
+            };
+          } else {
+            // refetching
+            state.lists[action.meta.callId].refetching = true;
+            state.lists[action.meta.callId].params = action?.meta.item || null;
+            state.lists[action.meta.callId].refetchedAt = Date.now();
+          }
         }
       },
     },
@@ -928,13 +949,19 @@ const machineSlice = createSlice({
               // are probably MachineDetails so this would overwrite them with the
               // simple machine. Existing items will be kept up to date via the
               // notify (sync) messages.
-              const existing = state.items.find(
+              const existingIndex = state.items.findIndex(
                 (draftItem: Machine) => draftItem.id === newItem.id
               );
-              if (!existing) {
+              if (!state.items[existingIndex]) {
                 state.items.push(newItem);
                 // Set up the statuses for this machine.
                 state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+                // update existing item if not of machine details type
+              } else if (
+                state.items[existingIndex] &&
+                !isMachineDetails(state.items[existingIndex])
+              ) {
+                state.items[existingIndex] = newItem;
               }
             });
           });
@@ -1397,10 +1424,6 @@ const machineSlice = createSlice({
         if (callId) {
           if (callId in state.details) {
             delete state.details[callId];
-          } else if (callId in state.lists) {
-            delete state.lists[callId];
-          } else if (callId in state.counts) {
-            delete state.counts[callId];
           } else if (callId in state.actions) {
             delete state.actions[callId];
           }
@@ -1624,10 +1647,6 @@ const machineSlice = createSlice({
       action: PayloadAction<Machine[MachineMeta.PK][]>
     ) => {
       action.payload.forEach((id) => {
-        const index = state.items.findIndex(
-          (item: Machine) => item.system_id === id
-        );
-        state.items.splice(index, 1);
         // Clean up the statuses for model.
         delete state.statuses[id];
       });

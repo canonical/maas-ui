@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -8,6 +7,7 @@ import configureStore from "redux-mock-store";
 import MachinesHeader from "./MachinesHeader";
 
 import type { RootState } from "app/store/root/types";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -17,18 +17,18 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 
+enableCallIdMocks();
 const mockStore = configureStore();
 
 describe("MachinesHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
         counts: machineStateCountsFactory({
-          "mocked-nanoid": machineStateCountFactory({
+          [callId]: machineStateCountFactory({
             count: 2,
             loaded: true,
             loading: false,
@@ -44,10 +44,6 @@ describe("MachinesHeader", () => {
         },
       }),
     });
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
   });
 
   it("renders", () => {

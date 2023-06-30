@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import KVMResourcesCard from "./KVMResourcesCard";
@@ -16,10 +15,6 @@ import { renderWithBrowserRouter, screen } from "testing/utils";
 const mockStore = configureStore<RootState>();
 
 describe("KVMResourcesCard", () => {
-  beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-  });
-
   afterEach(() => {
     jest.restoreAllMocks();
   });
