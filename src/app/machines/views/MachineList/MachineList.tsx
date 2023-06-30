@@ -59,15 +59,22 @@ const MachineList = ({
       ? storedPageSize
       : DEFAULT_PAGE_SIZE;
 
-  const { callId, loading, machineCount, machines, machinesErrors, groups } =
-    useFetchMachinesWithGroupingUpdates({
-      collapsedGroups: hiddenGroups,
-      filters: FilterMachines.parseFetchFilters(searchFilter),
-      grouping,
-      sortDirection,
-      sortKey,
-      pagination: { currentPage, setCurrentPage, pageSize },
-    });
+  const {
+    callId,
+    groups,
+    loading,
+    machineCount,
+    machines,
+    machinesErrors,
+    totalPages,
+  } = useFetchMachinesWithGroupingUpdates({
+    collapsedGroups: hiddenGroups,
+    filters: FilterMachines.parseFetchFilters(searchFilter),
+    grouping,
+    sortDirection,
+    sortKey,
+    pagination: { currentPage, setCurrentPage, pageSize },
+  });
 
   useEffect(
     () => () => {
@@ -114,6 +121,7 @@ const MachineList = ({
         setSortKey={setSortKey}
         sortDirection={sortDirection}
         sortKey={sortKey}
+        totalPages={totalPages}
       />
     </>
   );

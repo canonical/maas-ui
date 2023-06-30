@@ -21,6 +21,7 @@ export type Props = PropsWithSpread<
     currentPage: PaginationProps["currentPage"];
     itemsPerPage: PaginationProps["itemsPerPage"];
     machineCount: number | null;
+    totalPages: number | null;
     machinesLoading?: boolean | null;
     paginate: PaginationProps["paginate"];
   },
@@ -30,6 +31,7 @@ export type Props = PropsWithSpread<
 const MachineListPagination = ({
   machineCount,
   machinesLoading,
+  totalPages,
   ...props
 }: Props): JSX.Element | null => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -48,9 +50,7 @@ const MachineListPagination = ({
   }, []);
 
   const count = useFetchedCount(machineCount, machinesLoading);
-  const totalPages = machineCount
-    ? Math.ceil(machineCount / props.itemsPerPage)
-    : 1;
+  const pages = useFetchedCount(totalPages, machinesLoading);
 
   return count > 0 ? (
     <nav aria-label={Label.Pagination} className="p-pagination">
@@ -80,7 +80,7 @@ const MachineListPagination = ({
               }
               intervalRef.current = setTimeout(() => {
                 if (
-                  e.target.valueAsNumber > totalPages ||
+                  e.target.valueAsNumber > pages ||
                   e.target.valueAsNumber < 1
                 ) {
                   setError(
@@ -100,11 +100,11 @@ const MachineListPagination = ({
           type="number"
           value={pageNumber}
         />{" "}
-        <strong className="u-no-wrap"> of {totalPages}</strong>
+        <strong className="u-no-wrap"> of {pages}</strong>
         <Button
           aria-label={Label.NextPage}
           className="p-pagination__link--next"
-          disabled={props.currentPage === totalPages}
+          disabled={props.currentPage === pages}
           onClick={() => props.paginate(props.currentPage + 1)}
         >
           <Icon name="chevron-down" />
