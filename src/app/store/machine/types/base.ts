@@ -218,6 +218,14 @@ export type MachineStateListGroup = {
   value: FilterGroupOption["key"] | null;
 };
 
+type MachineQuery = {
+  // parameters used to fetch the list
+  params: FetchParams | null;
+  refetching: boolean;
+  fetchedAt: number | null;
+  refetchedAt: number | null;
+};
+
 export type MachineStateList = {
   count: number | null;
   cur_page: number | null;
@@ -227,8 +235,7 @@ export type MachineStateList = {
   loading: boolean;
   stale: boolean;
   num_pages: number | null;
-  params: FetchParams | null;
-};
+} & MachineQuery;
 
 export type MachineStateLists = Record<string, MachineStateList>;
 
@@ -330,8 +337,7 @@ export type MachineStateCount = {
   loaded: boolean;
   loading: boolean;
   stale: boolean;
-  params: FetchParams | null;
-};
+} & MachineQuery;
 
 export type MachineStateCounts = Record<string, MachineStateCount>;
 

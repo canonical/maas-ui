@@ -15,6 +15,7 @@ import Machines from "./Machines";
 
 import { actions as machineActions } from "app/store/machine";
 import { FetchGroupKey } from "app/store/machine/types";
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -291,7 +292,7 @@ describe("Machines", () => {
 
   it("can hide groups", async () => {
     jest
-      .spyOn(reduxToolkit, "nanoid")
+      .spyOn(query, "generateCallId")
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
@@ -396,7 +397,7 @@ describe("Machines", () => {
 
   it("can store hidden groups in local storage", async () => {
     jest
-      .spyOn(reduxToolkit, "nanoid")
+      .spyOn(query, "generateCallId")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     state.machine.lists = {

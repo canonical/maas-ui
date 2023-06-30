@@ -59,7 +59,10 @@ const MachineListPagination = ({
           aria-label={Label.PreviousPage}
           className="p-pagination__link--previous"
           disabled={props.currentPage === 1}
-          onClick={() => props.paginate(props.currentPage - 1)}
+          onClick={() => {
+            setPageNumber((page) => Number(page) - 1);
+            props.paginate(props.currentPage - 1);
+          }}
         >
           <Icon name="chevron-down" />
         </Button>
@@ -105,7 +108,10 @@ const MachineListPagination = ({
           aria-label={Label.NextPage}
           className="p-pagination__link--next"
           disabled={props.currentPage === pages}
-          onClick={() => props.paginate(props.currentPage + 1)}
+          onClick={() => {
+            setPageNumber((page) => Number(page) + 1);
+            props.paginate(props.currentPage + 1);
+          }}
         >
           <Icon name="chevron-down" />
         </Button>

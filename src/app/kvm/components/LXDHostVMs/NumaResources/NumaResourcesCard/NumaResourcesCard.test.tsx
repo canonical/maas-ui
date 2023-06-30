@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import NumaResourcesCard from "./NumaResourcesCard";
@@ -23,10 +22,6 @@ import { renderWithMockStore, screen, within } from "testing/utils";
 const mockStore = configureStore<RootState>();
 
 describe("NumaResourcesCard", () => {
-  beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-  });
-
   afterEach(() => {
     jest.restoreAllMocks();
   });

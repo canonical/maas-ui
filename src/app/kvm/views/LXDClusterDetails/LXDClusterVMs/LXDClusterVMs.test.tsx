@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import LXDClusterVMs from "./LXDClusterVMs";
@@ -6,6 +5,7 @@ import LXDClusterVMs from "./LXDClusterVMs";
 import urls from "app/base/urls";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -19,13 +19,10 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter, screen } from "testing/utils";
 
+enableCallIdMocks();
 const mockStore = configureStore<RootState, {}>();
 
 describe("LXDClusterVMs", () => {
-  beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-  });
-
   it("renders a link to a cluster's host's VM page", () => {
     const machine = machineFactory({
       pod: { id: 11, name: "podrick" },
@@ -35,7 +32,7 @@ describe("LXDClusterVMs", () => {
       machine: machineStateFactory({
         items: [machine],
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loaded: true,
             groups: [
               machineStateListGroupFactory({
@@ -96,7 +93,7 @@ describe("LXDClusterVMs", () => {
       />,
       { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );
-    const expected = machineActions.fetch("123456", {
+    const expected = machineActions.fetch([callId], {
       filter: { pod: ["host 1", "host 2"] },
     });
     const fetches = store

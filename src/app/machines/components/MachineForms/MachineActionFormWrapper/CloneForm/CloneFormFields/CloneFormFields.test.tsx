@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
@@ -6,6 +5,7 @@ import CloneFormFields from "./CloneFormFields";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
@@ -20,6 +20,8 @@ import { renderWithMockStore, screen, userEvent, waitFor } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
+enableCallIdMocks();
+
 describe("CloneFormFields", () => {
   let state: RootState;
   const machine = machineDetailsFactory({
@@ -27,15 +29,13 @@ describe("CloneFormFields", () => {
     system_id: "abc123",
   });
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-
     state = rootStateFactory({
       fabric: fabricStateFactory({ loaded: true }),
 
       machine: machineStateFactory({
         loaded: true,
         lists: {
-          "mocked-nanoid": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loaded: true,
             groups: [
               machineStateListGroupFactory({
@@ -103,10 +103,7 @@ describe("CloneFormFields", () => {
       { store }
     );
     await userEvent.click(screen.getAllByTestId("machine-select-row")[0]);
-    const expectedAction = machineActions.get(
-      machine.system_id,
-      "mocked-nanoid"
-    );
+    const expectedAction = machineActions.get(machine.system_id, callId);
 
     await waitFor(() => {
       const actualActions = store.getActions();

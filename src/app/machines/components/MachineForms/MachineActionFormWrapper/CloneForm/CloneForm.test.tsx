@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 import CloneForm from "./CloneForm";
 
 import { actions as machineActions } from "app/store/machine";
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
@@ -24,12 +25,12 @@ import {
   userEvent,
   waitFor,
 } from "testing/utils";
-
 const mockStore = configureStore<RootState>();
 
 describe("CloneForm", () => {
   beforeEach(() => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
   });
 
   afterEach(() => {

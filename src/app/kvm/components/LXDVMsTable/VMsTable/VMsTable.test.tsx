@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import VMsTable, { Label } from "./VMsTable";
@@ -6,6 +5,7 @@ import VMsTable, { Label } from "./VMsTable";
 import { SortDirection } from "app/base/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -25,13 +25,13 @@ import {
   renderWithBrowserRouter,
 } from "testing/utils";
 
+enableCallIdMocks();
 const mockStore = configureStore<RootState>();
 
 describe("VMsTable", () => {
   let getResources: jest.Mock;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     getResources = jest.fn().mockReturnValue({
       hugepagesBacked: false,
       pinnedCores: [],
@@ -75,7 +75,7 @@ describe("VMsTable", () => {
       machine: machineStateFactory({
         items: vms,
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loaded: true,
             groups: [
               machineStateListGroupFactory({

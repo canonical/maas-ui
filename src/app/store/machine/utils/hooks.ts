@@ -11,11 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { FetchGroupKey } from "../types/actions";
 import type { FetchParams, FetchGroupByKey } from "../types/actions";
 
-import {
-  mapSortDirection,
-  selectedToFilters,
-  selectedToSeparateFilters,
-} from "./common";
+import { selectedToFilters, selectedToSeparateFilters } from "./common";
+import { generateCallId, transformToFetchParams } from "./query";
 import { FilterMachines } from "./search";
 
 import { ACTION_STATUS } from "app/base/constants";
@@ -388,6 +385,8 @@ export const useFetchMachineCount = (
   const { isEnabled } = queryOptions || { isEnabled: true };
   const previousIsEnabled = usePrevious(isEnabled);
   const [callId, setCallId] = useState<string | null>(null);
+  const [staleCount, setStaleCount] = useState<number>(0);
+  const previousStaleCount = usePrevious(staleCount);
   const previousCallId = usePrevious(callId);
   const previousFilters = usePrevious(filters);
   const isStale = useSelector((state: RootState) =>
@@ -395,7 +394,7 @@ export const useFetchMachineCount = (
   );
   useEffect(() => {
     if (isStale) {
-      setCallId(nanoid());
+      setStaleCount((count) => count + 1);
     }
   }, [isStale]);
   const dispatch = useDispatch();
@@ -418,7 +417,7 @@ export const useFetchMachineCount = (
         !callId ||
         isEnabled !== previousIsEnabled
       ) {
-        setCallId(nanoid());
+        setCallId(generateCallId(filters));
       }
     }
   }, [
@@ -431,18 +430,23 @@ export const useFetchMachineCount = (
   ]);
 
   useEffect(() => {
-    return () => {
-      if (callId) {
-        dispatch(machineActions.removeRequest(callId));
-      }
-    };
-  }, [callId, dispatch]);
-
-  useEffect(() => {
-    if (isEnabled && callId && callId !== previousCallId) {
+    if (
+      (isEnabled && callId && isEnabled !== previousIsEnabled) ||
+      (isEnabled && callId && callId !== previousCallId) ||
+      (isEnabled && callId && staleCount !== previousStaleCount)
+    ) {
       dispatch(machineActions.count(callId, filters));
     }
-  }, [dispatch, filters, callId, previousCallId, isEnabled, previousIsEnabled]);
+  }, [
+    dispatch,
+    filters,
+    callId,
+    previousCallId,
+    isEnabled,
+    previousIsEnabled,
+    staleCount,
+    previousStaleCount,
+  ]);
 
   return {
     machineCount: machineCount || 0,
@@ -551,14 +555,18 @@ export const useFetchMachines = (
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousOptions = usePrevious(options, false);
+  const [staleCount, setStaleCount] = useState<number>(0);
+  const previousStaleCount = usePrevious(staleCount);
   const isStale = useSelector((state: RootState) =>
     machineSelectors.listStale(state, callId)
   );
+
   useEffect(() => {
     if (isStale) {
-      setCallId(nanoid());
+      setStaleCount((count) => count + 1);
     }
   }, [isStale]);
+
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId)
@@ -617,7 +625,7 @@ export const useFetchMachines = (
         !callId ||
         isEnabled !== previousIsEnabled
       ) {
-        setCallId(nanoid());
+        setCallId(generateCallId(transformToFetchParams(options)));
       }
     }
   }, [
@@ -630,25 +638,23 @@ export const useFetchMachines = (
   ]);
 
   useEffect(() => {
-    if (isEnabled && callId && callId !== previousCallId) {
-      dispatch(
-        machineActions.fetch(
-          callId,
-          options
-            ? {
-                filter: options.filters ?? null,
-                group_collapsed: options.collapsedGroups,
-                group_key: options.grouping ?? null,
-                page_number: options?.pagination?.currentPage,
-                page_size: options?.pagination?.pageSize,
-                sort_direction: mapSortDirection(options.sortDirection),
-                sort_key: options.sortKey ?? null,
-              }
-            : null
-        )
-      );
+    if (
+      (isEnabled && callId && isEnabled !== previousIsEnabled) ||
+      (isEnabled && callId && callId !== previousCallId) ||
+      (isEnabled && callId && staleCount !== previousStaleCount)
+    ) {
+      dispatch(machineActions.fetch(callId, transformToFetchParams(options)));
     }
-  }, [callId, dispatch, options, previousCallId, isEnabled, previousIsEnabled]);
+  }, [
+    callId,
+    dispatch,
+    options,
+    previousCallId,
+    isEnabled,
+    previousIsEnabled,
+    staleCount,
+    previousStaleCount,
+  ]);
 
   return {
     callId,
