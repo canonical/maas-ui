@@ -67,6 +67,7 @@ type Props = {
   hiddenColumns?: string[];
   hiddenGroups?: (string | null)[];
   machineCount: number | null;
+  totalPages: number | null;
   machines: Machine[];
   machinesLoading?: boolean | null;
   pageSize: number;
@@ -514,6 +515,7 @@ const generateGroupRows = ({
 export const MachineListTable = ({
   callId,
   currentPage,
+  totalPages,
   filter = "",
   groups,
   grouping,
@@ -899,6 +901,7 @@ export const MachineListTable = ({
               machineCount={machineCount}
               machinesLoading={machinesLoading}
               paginate={setCurrentPage}
+              totalPages={totalPages}
             />
             {setPageSize ? (
               <PageSizeSelect

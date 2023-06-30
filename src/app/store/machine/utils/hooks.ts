@@ -533,6 +533,7 @@ type UseFetchMachinesData = {
   machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;
+  totalPages: number | null;
 };
 
 /**
@@ -567,6 +568,9 @@ export const useFetchMachines = (
   );
   const machineCount = useSelector((state: RootState) =>
     machineSelectors.listCount(state, callId)
+  );
+  const totalPages = useSelector((state: RootState) =>
+    machineSelectors.listTotalPages(state, callId)
   );
   const machinesErrors = useSelector((state: RootState) =>
     machineSelectors.listErrors(state, callId)
@@ -653,6 +657,7 @@ export const useFetchMachines = (
     loading,
     groups,
     machineCount,
+    totalPages,
     machines,
     machinesErrors,
   };
