@@ -42,20 +42,20 @@ export type BaseMachine = Omit<
   error_description: string;
   extra_macs: string[];
   fabrics: string[];
-  ip_addresses?: NodeIpAddress[];
+  ip_addresses: NodeIpAddress[] | null;
   link_type: NodeLinkType.MACHINE;
   owner: string;
   physical_disk_count: number;
   parent: string | null; // `parent` is a `system_id`
-  pod?: ModelRef;
+  pod: ModelRef | null;
   pool: ModelRef;
   power_state: PowerState;
-  power_type: PowerType["name"] | "";
+  power_type: PowerType["name"] | "" | null;
   pxe_mac?: string;
   spaces: string[];
   storage: number;
   testing_status: Pick<TestStatus, "status">;
-  vlan?: NodeVlan | null;
+  vlan: NodeVlan | null;
   zone: ModelRef;
 };
 
