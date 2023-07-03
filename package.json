@@ -115,7 +115,7 @@
     "eslint-plugin-unused-imports": "2.0.0",
     "formik-devtools-extension": "0.1.8",
     "http-proxy-middleware": "2.0.6",
-    "immer": "9.0.16",
+    "immer": "10.0.2",
     "jest-fetch-mock": "3.0.3",
     "mock-socket": "9.2.1",
     "mockdate": "3.0.5",
