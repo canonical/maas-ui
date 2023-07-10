@@ -9,7 +9,7 @@ export const DeviceNonActionHeaderViews = {
   ADD_DEVICE: ["deviceNonActionForm", "addDevice"],
 } as const;
 
-export const DeviceHeaderViews = {
+export const DeviceSidePanelViews = {
   ...DeviceActionHeaderViews,
   ...DeviceNonActionHeaderViews,
 } as const;

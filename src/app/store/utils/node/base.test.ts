@@ -1,11 +1,13 @@
 import {
   canOpenActionForm,
+  getSidePanelTitle,
   isNodeDetails,
   nodeIsController,
   nodeIsDevice,
   nodeIsMachine,
 } from "./base";
 
+import { SidePanelViews } from "app/base/side-panel-context";
 import { NodeActions, NodeStatus } from "app/store/types/node";
 import {
   controller as controllerFactory,
@@ -95,6 +97,20 @@ describe("node utils", () => {
       expect(canOpenActionForm(machine2, NodeActions.CLONE)).toBe(true);
       expect(canOpenActionForm(machine3, NodeActions.CLONE)).toBe(false);
       expect(canOpenActionForm(machine4, NodeActions.CLONE)).toBe(false);
+    });
+  });
+
+  describe("getHeaderTitle", () => {
+    it("returns the default title if no side panel content is open", () => {
+      expect(getSidePanelTitle("Default title", null)).toBe("Default title");
+    });
+
+    it("returns the correct title for a side panel", () => {
+      expect(
+        getSidePanelTitle("Controller", {
+          view: SidePanelViews.ADD_CONTROLLER,
+        })
+      ).toBe("Add controller");
     });
   });
 });

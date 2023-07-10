@@ -9,7 +9,6 @@ import {
 import TagsHeader from "../components/TagsHeader";
 import TagForms from "../components/TagsHeader/TagForms";
 import { TagSidePanelViews } from "../constants";
-import type { TagSidePanelContent } from "../types";
 import { TagViewState } from "../types";
 
 import TagDetails from "./TagDetails";
@@ -17,14 +16,12 @@ import TagList from "./TagList";
 import TagMachines from "./TagMachines";
 
 import PageContent from "app/base/components/PageContent";
-import type {
-  SidePanelContent,
-  SidePanelContextType,
-} from "app/base/side-panel-context";
+import type { SidePanelContent } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import type { Tag, TagMeta } from "app/store/tag/types";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import { getRelativeRoute } from "app/utils";
 
 const getViewState = (
@@ -54,8 +51,7 @@ const Tags = (): JSX.Element => {
   const { pathname } = useLocation();
   const detailsMatch = useMatch(urls.tags.tag.index(null));
   const isDetails = !!detailsMatch;
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<TagSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const tagViewState = getViewState(sidePanelContent, pathname);
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
     setSidePanelContent({
@@ -63,19 +59,6 @@ const Tags = (): JSX.Element => {
       extras: { fromDetails, id },
     });
   const base = urls.tags.tag.index(null);
-
-  const getHeaderTitle = (): string => {
-    if (sidePanelContent) {
-      const [, name] = sidePanelContent.view;
-      switch (name) {
-        case TagSidePanelViews.AddTag[1]:
-          return "Create new tag";
-        case TagSidePanelViews.DeleteTag[1]:
-          return "Delete tag";
-      }
-    }
-    return "Tags";
-  };
 
   return (
     <PageContent
@@ -93,7 +76,7 @@ const Tags = (): JSX.Element => {
           />
         )
       }
-      sidePanelTitle={getHeaderTitle()}
+      sidePanelTitle={getSidePanelTitle("Tags", sidePanelContent)}
     >
       <Routes>
         <Route

@@ -8,18 +8,15 @@ import ZonesListTable from "./ZonesListTable";
 
 import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
-import type { ZoneSidePanelContent } from "app/zones/constants";
 import { ZoneActionSidePanelViews } from "app/zones/constants";
 
 const ZonesList = (): JSX.Element => {
   const dispatch = useDispatch();
   const zonesCount = useSelector(zoneSelectors.count);
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<ZoneSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle("Zones");
 

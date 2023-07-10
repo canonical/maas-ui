@@ -21,12 +21,10 @@ import LXDClusterVMs from "./LXDClusterVMs";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import PageContent from "app/base/components/PageContent/PageContent";
 import { useGetURLId } from "app/base/hooks/urls";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import KVMForms from "app/kvm/components/KVMForms/KVMForms";
-import type { KVMSidePanelContent } from "app/kvm/types";
 import { getFormTitle } from "app/kvm/utils";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
@@ -58,8 +56,7 @@ const LXDClusterDetails = (): JSX.Element => {
   const fetchedVmCluster = !gettingVmCluster && vmCluster;
 
   const loaded = clustersLoaded || fetchedVmCluster;
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<KVMSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   // Search filter is determined by the URL and used to initialise state.
   const currentFilters = FilterMachines.queryStringToFilters(location.search);

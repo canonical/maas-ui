@@ -1,10 +1,10 @@
 import type { ValueOf } from "@canonical/react-components";
 
 import type { SidePanelContent, SetSidePanelContent } from "app/base/types";
-import type { DeviceHeaderViews } from "app/devices/constants";
+import type { DeviceSidePanelViews } from "app/devices/constants";
 
 export type DeviceSidePanelContent = SidePanelContent<
-  ValueOf<typeof DeviceHeaderViews>
+  ValueOf<typeof DeviceSidePanelViews>
 >;
 
 export type DeviceSetSidePanelContent =

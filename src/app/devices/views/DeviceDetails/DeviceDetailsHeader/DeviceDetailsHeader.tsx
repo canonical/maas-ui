@@ -9,7 +9,7 @@ import DeviceName from "./DeviceName";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
-import { DeviceHeaderViews } from "app/devices/constants";
+import { DeviceSidePanelViews } from "app/devices/constants";
 import type { DeviceSetSidePanelContent } from "app/devices/types";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
@@ -44,7 +44,7 @@ const DeviceDetailsHeader = ({
           nodeDisplay="device"
           nodes={[device]}
           onActionClick={(action) => {
-            const view = Object.values(DeviceHeaderViews).find(
+            const view = Object.values(DeviceSidePanelViews).find(
               ([, actionName]) => actionName === action
             );
             if (view) {

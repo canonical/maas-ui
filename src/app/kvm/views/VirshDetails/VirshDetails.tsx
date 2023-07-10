@@ -11,12 +11,10 @@ import VirshSettings from "./VirshSettings";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import PageContent from "app/base/components/PageContent/PageContent";
 import { useGetURLId } from "app/base/hooks/urls";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import KVMForms from "app/kvm/components/KVMForms";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import type { KVMSidePanelContent } from "app/kvm/types";
 import { getFormTitle } from "app/kvm/utils";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
@@ -35,8 +33,7 @@ const VirshDetails = (): JSX.Element => {
     podSelectors.getById(state, id)
   );
   const loading = useSelector(podSelectors.loading);
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<KVMSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 

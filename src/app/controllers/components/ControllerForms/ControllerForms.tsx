@@ -1,16 +1,19 @@
 import { useCallback } from "react";
 
-import type { ValueOf } from "@canonical/react-components";
-
 import AddController from "./AddController";
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
-import type { SidePanelContextType } from "app/base/side-panel-context";
-import type { ControllerActionHeaderViews } from "app/controllers/constants";
+import type { SidePanelContextTypes } from "app/base/side-panel-context";
 import { ControllerSidePanelViews } from "app/controllers/constants";
+import type {
+  ControllerActionSidePanelContent,
+  ControllerNonActionSidePanelContent,
+} from "app/controllers/types";
 import type { Controller } from "app/store/controller/types";
 
-type Props = SidePanelContextType & {
+type Props = SidePanelContextTypes<
+  ControllerActionSidePanelContent | ControllerNonActionSidePanelContent
+> & {
   controllers: Controller[];
   viewingDetails?: boolean;
 };
@@ -38,9 +41,7 @@ const ControllerForms = ({
       // seem to be able to infer remaining object tuple values as with string
       // values.
       // https://github.com/canonical/maas-ui/issues/3040
-      const { view } = sidePanelContent as {
-        view: ValueOf<typeof ControllerActionHeaderViews>;
-      };
+      const { view } = sidePanelContent as ControllerActionSidePanelContent;
       const [, action] = view;
       return (
         <ControllerActionFormWrapper

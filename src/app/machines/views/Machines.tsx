@@ -5,22 +5,20 @@ import { useLocation, useNavigate, useMatch } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
 import MachineForms from "../components/MachineForms";
-import type { MachineSidePanelContent } from "../types";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
 
 import PageContent from "app/base/components/PageContent/PageContent";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import { getHeaderTitle } from "app/machines/utils";
 import MachineList from "app/machines/views/MachineList";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
 import { selectedToFilters, FilterMachines } from "app/store/machine/utils";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 
 const Machines = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -31,8 +29,7 @@ const Machines = (): JSX.Element => {
   const [searchFilter, setFilter] = useState(
     FilterMachines.filtersToString(currentFilters)
   );
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<MachineSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   const machinesPathMatch = useMatch(urls.machines.index);
   const selectedMachines = useSelector(machineSelectors.selected);
@@ -46,7 +43,7 @@ const Machines = (): JSX.Element => {
 
   const filter = FilterMachines.parseFetchFilters(searchFilter);
   const setSearchFilter = useCallback(
-    (searchText) => {
+    (searchText: string) => {
       setFilter(searchText);
       const filters = FilterMachines.getCurrentFilters(searchText);
       navigate(
@@ -127,7 +124,9 @@ const Machines = (): JSX.Element => {
         )
       }
       sidePanelTitle={
-        sidePanelContent ? getHeaderTitle("Machines", sidePanelContent) : null
+        sidePanelContent
+          ? getSidePanelTitle("Machines", sidePanelContent)
+          : null
       }
     >
       <MachineList

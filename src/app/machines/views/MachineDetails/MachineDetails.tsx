@@ -23,16 +23,14 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import PageContent from "app/base/components/PageContent";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import MachineForms from "app/machines/components/MachineForms";
-import type { MachineSidePanelContent } from "app/machines/types";
-import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import { MachineMeta } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import { getRelativeRoute, isId } from "app/utils";
 
 const MachineDetails = (): JSX.Element => {
@@ -40,8 +38,7 @@ const MachineDetails = (): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
   const { machine, loaded: detailsLoaded } = useFetchMachine(id);
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<MachineSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -94,7 +91,7 @@ const MachineDetails = (): JSX.Element => {
         ) : null
       }
       sidePanelTitle={
-        machine && getHeaderTitle(machine.hostname, sidePanelContent)
+        machine && getSidePanelTitle(machine.hostname, sidePanelContent)
       }
     >
       {machine && (

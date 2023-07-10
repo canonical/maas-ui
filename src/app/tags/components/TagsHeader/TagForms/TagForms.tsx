@@ -1,17 +1,11 @@
 import AddTagForm from "../AddTagForm";
 import DeleteTagForm from "../DeleteTagForm";
 
-import type { SidePanelContent } from "app/base/side-panel-context";
+import type { SidePanelContextTypes } from "app/base/side-panel-context";
 import { TagSidePanelViews } from "app/tags/constants";
-import type {
-  TagSetSidePanelContent,
-  TagSidePanelContent,
-} from "app/tags/types";
+import type { TagSidePanelContent } from "app/tags/types";
 
-type Props = {
-  sidePanelContent: SidePanelContent;
-  setSidePanelContent: TagSetSidePanelContent;
-};
+type Props = SidePanelContextTypes;
 
 export const TagForms = ({
   sidePanelContent,

@@ -4,20 +4,52 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { usePrevious } from "@canonical/react-components";
 import { useLocation } from "react-router-dom-v5-compat";
 
+import { ControllerSidePanelViews } from "app/controllers/constants";
 import type { ControllerSidePanelContent } from "app/controllers/types";
-import type { DashboardSidePanelContent } from "app/dashboard/views/constants";
+import {
+  DashboardSidePanelViews,
+  type DashboardSidePanelContent,
+} from "app/dashboard/views/constants";
+import { DeviceSidePanelViews } from "app/devices/constants";
 import type { DeviceSidePanelContent } from "app/devices/types";
-import type { DomainDetailsSidePanelContent } from "app/domains/views/DomainDetails/constants";
-import type { DomainListSidePanelContent } from "app/domains/views/DomainsList/constants";
+import {
+  DomainDetailsSidePanelViews,
+  type DomainDetailsSidePanelContent,
+} from "app/domains/views/DomainDetails/constants";
+import {
+  DomainListSidePanelViews,
+  type DomainListSidePanelContent,
+} from "app/domains/views/DomainsList/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type { KVMSidePanelContent } from "app/kvm/types";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSidePanelContent } from "app/machines/types";
-import type { SubnetSidePanelContent } from "app/subnets/types";
-import type { FabricDetailsSidePanelContent } from "app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
-import type { SpaceDetailsSidePanelContent } from "app/subnets/views/SpaceDetails/constants";
-import type { SubnetDetailsSidePanelContent } from "app/subnets/views/SubnetDetails/constants";
-import type { VLANDetailsSidePanelContent } from "app/subnets/views/VLANDetails/constants";
+import {
+  SubnetSidePanelViews,
+  type SubnetSidePanelContent,
+} from "app/subnets/types";
+import {
+  FabricDetailsSidePanelViews,
+  type FabricDetailsSidePanelContent,
+} from "app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
+import {
+  SpaceDetailsSidePanelViews,
+  type SpaceDetailsSidePanelContent,
+} from "app/subnets/views/SpaceDetails/constants";
+import {
+  SubnetDetailsSidePanelViews,
+  type SubnetDetailsSidePanelContent,
+} from "app/subnets/views/SubnetDetails/constants";
+import {
+  VLANDetailsSidePanelViews,
+  type VLANDetailsSidePanelContent,
+} from "app/subnets/views/VLANDetails/constants";
+import { TagSidePanelViews } from "app/tags/constants";
 import type { TagSidePanelContent } from "app/tags/types";
-import type { ZoneSidePanelContent } from "app/zones/constants";
+import {
+  ZoneActionSidePanelViews,
+  type ZoneSidePanelContent,
+} from "app/zones/constants";
 
 export type SidePanelContent =
   | MachineSidePanelContent
@@ -36,15 +68,38 @@ export type SidePanelContent =
   | SpaceDetailsSidePanelContent
   | null;
 
-export type SetSidePanelContent = (sidePanelContent: SidePanelContent) => void;
+export type SetSidePanelContent<T = SidePanelContent> = (
+  sidePanelContent: T | null
+) => void;
 
 export type SidePanelContextType<T = SidePanelContent> = {
-  sidePanelContent: T;
+  sidePanelContent: T | null;
 };
 
-export type SetSidePanelContextType = {
-  setSidePanelContent: SetSidePanelContent;
+export const SidePanelViews = {
+  ...ControllerSidePanelViews,
+  ...MachineSidePanelViews,
+  ...ControllerSidePanelViews,
+  ...DeviceSidePanelViews,
+  ...KVMSidePanelViews,
+  ...TagSidePanelViews,
+  ...ZoneActionSidePanelViews,
+  ...SubnetSidePanelViews,
+  ...DomainDetailsSidePanelViews,
+  ...DomainListSidePanelViews,
+  ...DashboardSidePanelViews,
+  ...VLANDetailsSidePanelViews,
+  ...FabricDetailsSidePanelViews,
+  ...SubnetDetailsSidePanelViews,
+  ...SpaceDetailsSidePanelViews,
+} as const;
+
+export type SetSidePanelContextType<T = SidePanelContent> = {
+  setSidePanelContent: SetSidePanelContent<T>;
 };
+
+export type SidePanelContextTypes<T = SidePanelContent> =
+  SidePanelContextType<T> & SetSidePanelContextType<T>;
 
 const SidePanelContext = createContext<SidePanelContextType>({
   sidePanelContent: null,

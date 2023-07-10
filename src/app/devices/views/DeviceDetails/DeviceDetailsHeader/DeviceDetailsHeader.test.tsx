@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
-import { DeviceHeaderViews } from "app/devices/constants";
+import { DeviceSidePanelViews } from "app/devices/constants";
 import type { RootState } from "app/store/root/types";
 import {
   device as deviceFactory,
@@ -70,7 +70,7 @@ describe("DeviceDetailsHeader", () => {
     renderWithBrowserRouter(
       <DeviceDetailsHeader
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: DeviceHeaderViews.DELETE_DEVICE }}
+        sidePanelContent={{ view: DeviceSidePanelViews.DELETE_DEVICE }}
         systemId="abc123"
       />,
       { store }
