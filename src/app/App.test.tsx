@@ -41,15 +41,11 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays connection errors", () => {
+  it("displays correct status on connection errors", () => {
     state.status.error = "Uh oh spaghettio";
     state.status.authenticated = true;
     renderWithBrowserRouter(<App />, { route: "/settings", state });
-    expect(
-      screen.getByText(
-        /The server connection failed with the error "Uh oh spaghettio"/i
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Trying to reconnect/i)).toBeInTheDocument();
   });
 
   it("displays an error if vault is sealed", () => {
@@ -80,10 +76,18 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays a loading message if connecting", () => {
+  it("displays a loading message if connecting for the first time", () => {
+    state.status.connected = false;
     state.status.connecting = true;
     renderWithBrowserRouter(<App />, { route: "/settings", state });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
+  it("does not display a loading message if reconnecting", () => {
+    state.status.connected = true;
+    state.status.connecting = true;
+    renderWithBrowserRouter(<App />, { route: "/settings", state });
+    expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 
   it("displays a loading message when authenticating", () => {

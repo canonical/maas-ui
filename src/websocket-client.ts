@@ -107,12 +107,12 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
 export class WebSocketClient {
   _nextId: WebSocketRequest["request_id"];
   _requests: Map<WebSocketRequest["request_id"], WebSocketAction>;
-  socket: ReconnectingWebSocket | null;
+  rws: ReconnectingWebSocket | null;
 
   constructor() {
     this._nextId = 0;
     this._requests = new Map();
-    this.socket = null;
+    this.rws = null;
   }
 
   /**
@@ -158,10 +158,10 @@ export class WebSocketClient {
    * @returns {Object} The websocket that was created.
    */
   connect(): ReconnectingWebSocket {
-    this.socket = new ReconnectingWebSocket(this.buildURL(), undefined, {
+    this.rws = new ReconnectingWebSocket(this.buildURL(), undefined, {
       debug: process.env.REACT_APP_WEBSOCKET_DEBUG === "true",
     });
-    return this.socket;
+    return this.rws;
   }
 
   /**
@@ -187,8 +187,8 @@ export class WebSocketClient {
       ...message,
       request_id: id,
     };
-    if (this.socket) {
-      this.socket.send(JSON.stringify(payload));
+    if (this.rws) {
+      this.rws.send(JSON.stringify(payload));
     }
     return id;
   }
