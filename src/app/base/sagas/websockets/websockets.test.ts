@@ -12,9 +12,11 @@ import { pollAction, handlePolling } from "./handlers/polling-requests";
 import { handleUnsubscribe } from "./handlers/unsubscribe";
 import type { WebSocketChannel } from "./websockets";
 import {
+  WEBSOCKET_PING_INTERVAL,
   createConnection,
   handleMessage,
   handleNotifyMessage,
+  handlePingMessage,
   sendMessage,
   watchMessages,
   watchWebSockets,
@@ -34,6 +36,7 @@ import WebSocketClient, {
 } from "websocket-client";
 import type {
   WebSocketResponseNotify,
+  WebSocketResponsePing,
   WebSocketResponseResult,
 } from "websocket-client";
 
@@ -95,6 +98,23 @@ describe("websocket sagas", () => {
       .run();
   });
 
+  it("sends a websocket ping message to keep the connection alive", () => {
+    return expectSaga(watchWebSockets, socketClient)
+      .dispatch({
+        type: "status/websocketConnected",
+      })
+      .put({
+        type: "status/websocketPing",
+        meta: {
+          poll: true,
+          pollInterval: WEBSOCKET_PING_INTERVAL,
+          model: "status",
+          method: "ping",
+        },
+      })
+      .run();
+  });
+
   it("can create a WebSocket connection", () => {
     expect.assertions(1);
     const socket = createConnection(socketClient);
@@ -139,6 +159,31 @@ describe("websocket sagas", () => {
         method: "test.method",
         type: WebSocketMessageType.REQUEST,
         params: { foo: "bar" },
+      })
+    );
+  });
+
+  it("can send a WebSocket ping message", () => {
+    const action = {
+      type: "status/websocketPing",
+      meta: {
+        model: "status",
+        method: "ping",
+        type: WebSocketMessageType.PING,
+      },
+      payload: null,
+    };
+    const saga = sendMessage(socketClient, action);
+    expect(saga.next().value).toEqual(
+      put({
+        meta: { item: null },
+        type: "status/websocketPingStart",
+      })
+    );
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], action, {
+        method: "status.ping",
+        type: WebSocketMessageType.PING,
       })
     );
   });
@@ -430,6 +475,21 @@ describe("websocket sagas", () => {
         type: "test/actionError",
       })
     );
+  });
+
+  it("can handle a WebSocket ping message", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    const response: WebSocketResponsePing = {
+      request_id: 1,
+      result: 1,
+      rtype: 0,
+      type: WebSocketMessageType.PING_REPLY,
+    };
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(saga.next({ data: JSON.stringify(response) }).value).toEqual(
+      call(handlePingMessage, response)
+    );
+    expect(saga.next().value).toEqual(take(socketChannel));
   });
 
   it("can handle a WebSocket notify message", () => {
