@@ -23,6 +23,7 @@ import type {
   WebSocketRequestMessage,
   WebSocketActionParams,
   WebSocketResponseNotify,
+  WebSocketResponsePing,
 } from "../../../../websocket-client";
 
 import {
@@ -80,6 +81,19 @@ export function* handleNotifyMessage({
   yield* put({
     type: `${name}/${action}Notify`,
     payload: data,
+  });
+}
+
+/**
+ * Handle incoming ping response messages.
+ *
+ */
+export function* handlePingMessage({
+  result,
+}: WebSocketResponsePing): SagaGenerator<void> {
+  yield* put({
+    type: "status/websocketPingReply",
+    payload: result,
   });
 }
 
@@ -186,6 +200,10 @@ export function* handleMessage(
           const response = JSON.parse(websocketEvent.data);
 
           switch (response.type) {
+            case WebSocketMessageType.PING_REPLY: {
+              yield* call(handlePingMessage, response);
+              break;
+            }
             case WebSocketMessageType.NOTIFY: {
               yield* call(handleNotifyMessage, response);
               break;
@@ -270,7 +288,11 @@ const buildMessage = (
 ) => {
   const message: WebSocketRequestMessage = {
     method: `${meta.model}.${meta.method}`,
-    type: WebSocketMessageType.REQUEST,
+    // type is always request, except for ping messages
+    type:
+      meta.model === "status" && meta.method === "ping"
+        ? WebSocketMessageType.PING
+        : WebSocketMessageType.REQUEST,
   };
   const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   if (params && !hasMultipleDispatches) {
@@ -423,6 +445,23 @@ export function* setupWebSocket({
 }
 
 /**
+ * Send a ping message to the server every 50 seconds to keep the connection alive.
+ *
+ **/
+export const WEBSOCKET_PING_INTERVAL = 50 * 1000; // 50 seconds
+function* handleWebsocketPing() {
+  yield* put({
+    type: "status/websocketPing",
+    meta: {
+      poll: true,
+      pollInterval: WEBSOCKET_PING_INTERVAL,
+      model: "status",
+      method: "ping",
+    },
+  });
+}
+
+/**
  * Set up websocket connection on request via status/websocketConnect action
  * @param {Array} messageHandlers - Additional sagas to be handled by the
  * websocket channel.
@@ -435,4 +474,5 @@ export function* watchWebSockets(
     websocketClient,
     messageHandlers,
   });
+  yield* takeLatest("status/websocketConnected", handleWebsocketPing);
 }
