@@ -31,6 +31,10 @@ export type WebSocketRequestMessage = {
   params?: Record<string, unknown> | Record<string, unknown>[];
 };
 
+export type WebSocketPingMessage = {
+  type: WebSocketMessageType.PING;
+};
+
 export type WebSocketRequest = WebSocketMessage & WebSocketRequestMessage;
 
 export type WebSocketResponseResult<R = unknown> = WebSocketMessage & {
@@ -52,6 +56,10 @@ export type WebSocketResponseNotify = {
   data: unknown;
   name: string;
   type: WebSocketMessageType.NOTIFY;
+};
+
+export type WebSocketResponsePing = WebSocketResponseResult<number> & {
+  type: WebSocketMessageType.PING_REPLY;
 };
 
 export type WebSocketActionParams = AnyObject | AnyObject[];
