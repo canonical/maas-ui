@@ -1,56 +1,56 @@
 import { Select } from "@canonical/react-components";
 
-import { FetchGroupByKey } from "app/store/machine/types/actions";
+import { FetchGroupKey } from "app/store/machine/types/actions";
 
 type Props = {
-  grouping: FetchGroupByKey | null;
-  setGrouping: (group: FetchGroupByKey | null) => void;
+  grouping: FetchGroupKey | null;
+  setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
 };
 
-const groupOptions: Array<{ value: FetchGroupByKey | ""; label: string }> = [
+const groupOptions: Array<{ value: FetchGroupKey | ""; label: string }> = [
   {
     value: "",
     label: "No grouping",
   },
   {
-    value: FetchGroupByKey.Status,
+    value: FetchGroupKey.Status,
     label: "Group by status",
   },
   {
-    value: FetchGroupByKey.Owner,
+    value: FetchGroupKey.Owner,
     label: "Group by owner",
   },
   {
-    value: FetchGroupByKey.Pool,
+    value: FetchGroupKey.Pool,
     label: "Group by resource pool",
   },
   {
-    value: FetchGroupByKey.Architecture,
+    value: FetchGroupKey.Architecture,
     label: "Group by architecture",
   },
   {
-    value: FetchGroupByKey.Domain,
+    value: FetchGroupKey.Domain,
     label: "Group by domain",
   },
   {
-    value: FetchGroupByKey.Parent,
+    value: FetchGroupKey.Parent,
     label: "Group by parent",
   },
   {
-    value: FetchGroupByKey.Pod,
+    value: FetchGroupKey.Pod,
     label: "Group by KVM",
   },
   {
-    value: FetchGroupByKey.PodType,
+    value: FetchGroupKey.PodType,
     label: "Group by KVM type",
   },
   {
-    value: FetchGroupByKey.PowerState,
+    value: FetchGroupKey.PowerState,
     label: "Group by power state",
   },
   {
-    value: FetchGroupByKey.Zone,
+    value: FetchGroupKey.Zone,
     label: "Group by zone",
   },
 ];
@@ -67,7 +67,7 @@ const GroupSelect = ({
       defaultValue={grouping ?? ""}
       name="machine-groupings"
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-        setGrouping((e.target.value as FetchGroupByKey) ?? null);
+        setGrouping((e.target.value as FetchGroupKey) ?? null);
         setHiddenGroups([]);
       }}
       options={groupOptions}

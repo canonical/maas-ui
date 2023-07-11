@@ -14,6 +14,7 @@ import {
   generateSkeletonRows,
   generateGroupRows,
 } from "./tableModels";
+import type { MachineListTableProps } from "./types";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";

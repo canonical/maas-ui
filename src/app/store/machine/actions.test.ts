@@ -1,5 +1,6 @@
 import { actions } from "./slice";
-import { FetchGroupKey, FetchSortDirection, FilterGroupKey } from "./types";
+import { FetchSortDirection, FilterGroupKey } from "./types";
+import { FetchGroupKey } from "./types/actions";
 
 import { PowerTypeNames } from "app/store/general/constants";
 import {
@@ -105,13 +106,6 @@ describe("machine actions", () => {
       payload: {
         params: { system_id: "abc123" },
       },
-    });
-  });
-
-  it("can set selected machines", () => {
-    expect(actions.setSelected(["abc123", "def456"])).toEqual({
-      type: "machine/setSelected",
-      payload: ["abc123", "def456"],
     });
   });
 

@@ -119,7 +119,7 @@ export const PowerColumn = ({
         <div
           className="u-upper-case--first"
           data-testid="power_type"
-          title={machine.power_type}
+          title={machine.power_type ?? undefined}
         >
           {machine.power_type}
         </div>

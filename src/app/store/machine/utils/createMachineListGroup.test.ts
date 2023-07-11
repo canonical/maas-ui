@@ -1,4 +1,4 @@
-import { FetchGroupByKey } from "../types/actions";
+import { FetchGroupKey } from "../types/actions";
 
 import { createMachineListGroup } from "./createMachineListGroup";
 
@@ -16,7 +16,7 @@ import {
 describe("createMachineListGroup", () => {
   it("creates a group from architecture", () => {
     const architecture = "arm64/generic";
-    const groupBy = FetchGroupByKey.Architecture;
+    const groupBy = FetchGroupKey.Architecture;
     const machine = machineFactory({
       architecture,
     });
@@ -33,7 +33,7 @@ describe("createMachineListGroup", () => {
   });
 
   it("creates a group from power state", () => {
-    const groupBy = FetchGroupByKey.PowerState;
+    const groupBy = FetchGroupKey.PowerState;
     const machine = machineFactory({
       power_state: PowerState.ON,
     });
@@ -50,7 +50,7 @@ describe("createMachineListGroup", () => {
   });
 
   it("creates a group from domain", () => {
-    const groupBy = FetchGroupByKey.Domain;
+    const groupBy = FetchGroupKey.Domain;
     const machine = machineFactory({
       domain: modelRefFactory({ name: "maas", id: 1 }),
     });
@@ -67,7 +67,7 @@ describe("createMachineListGroup", () => {
   });
 
   it("creates a group from KVM", () => {
-    const groupBy = FetchGroupByKey.Pod;
+    const groupBy = FetchGroupKey.Pod;
     const machine = machineFactory({
       pod: modelRefFactory({ name: "active-orca", id: 1 }),
     });
@@ -84,7 +84,7 @@ describe("createMachineListGroup", () => {
   });
 
   it("creates a group from KVM type", () => {
-    const groupBy = FetchGroupByKey.PodType;
+    const groupBy = FetchGroupKey.PodType;
     const machine = machineFactory({
       power_type: "lxd",
     });
@@ -101,7 +101,7 @@ describe("createMachineListGroup", () => {
   });
 
   it("creates a group from parent", () => {
-    const groupBy = FetchGroupByKey.Parent;
+    const groupBy = FetchGroupKey.Parent;
     const machine = machineFactory({
       parent: "abc123",
     });
@@ -118,7 +118,7 @@ describe("createMachineListGroup", () => {
   });
 
   it("creates a group from zone", () => {
-    const groupBy = FetchGroupByKey.Zone;
+    const groupBy = FetchGroupKey.Zone;
     const machine = machineFactory({
       zone: modelRefFactory({ name: "maas-zone", id: 1 }),
     });
@@ -140,7 +140,7 @@ describe("createMachineListGroup", () => {
 
       expect(
         createMachineListGroup({
-          groupBy: FetchGroupByKey.Status,
+          groupBy: FetchGroupKey.Status,
           machine: machineFactory({
             status: NodeStatus[nodeStatusKey],
             status_code: NodeStatusCode[nodeStatusKey],

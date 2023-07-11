@@ -41,7 +41,7 @@ describe("AddAliasOrVlan", () => {
     nic = machineInterfaceFactory();
     state = rootStateFactory({
       fabric: fabricStateFactory({
-        items: [fabricFactory()],
+        items: [fabricFactory({ id: 54 })],
       }),
       machine: machineStateFactory({
         loaded: true,
@@ -83,9 +83,7 @@ describe("AddAliasOrVlan", () => {
             storage_test_status: testStatusFactory({
               status: TestStatusStatus.PASSED,
             }),
-            testing_status: testStatusFactory({
-              status: TestStatusStatus.PASSED,
-            }),
+            testing_status: TestStatusStatus.PASSED,
             system_id: "abc123",
             zone: modelRefFactory(),
           }),
@@ -287,10 +285,7 @@ describe("AddAliasOrVlan", () => {
         loading: false,
       }),
       subnet: subnetStateFactory({
-        items: [
-          subnetFactory({ vlan: vlan.id }),
-          subnetFactory({ vlan: vlan.id }),
-        ],
+        items: [subnetFactory({ id: 76, vlan: vlan.id })],
         loaded: true,
       }),
     });

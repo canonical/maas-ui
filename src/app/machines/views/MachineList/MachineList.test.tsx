@@ -75,9 +75,7 @@ describe("MachineList", () => {
         storage_test_status: testStatusFactory({
           status: TestStatusStatus.PASSED,
         }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.PASSED,
-        }),
+        testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
         zone: modelRefFactory(),
       }),
@@ -116,9 +114,7 @@ describe("MachineList", () => {
         storage_test_status: testStatusFactory({
           status: TestStatusStatus.FAILED,
         }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
+        testing_status: TestStatusStatus.FAILED,
         system_id: "def456",
         zone: modelRefFactory(),
       }),
@@ -157,9 +153,7 @@ describe("MachineList", () => {
         storage_test_status: testStatusFactory({
           status: TestStatusStatus.FAILED,
         }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
+        testing_status: TestStatusStatus.FAILED,
         system_id: "ghi789",
         zone: modelRefFactory(),
       }),

@@ -1,4 +1,4 @@
-import { FetchGroupByKey } from "../types/actions";
+import { FetchGroupKey } from "../types/actions";
 
 import type { Machine, MachineStateListGroup } from "app/store/machine/types";
 import { FetchNodeStatus, NodeStatus } from "app/store/types/node";
@@ -20,7 +20,7 @@ export function getNodeStatusKey(
  * additional logic to determine the correct grouping name and value
  * when creating a new group for a machine
  *
- * @param {FetchGroupByKey} groupBy
+ * @param {FetchGroupKey} groupBy
  * @param {Machine} machine
  * @returns { name: string, value: string }
  */
@@ -28,12 +28,11 @@ export const createMachineListGroup = ({
   groupBy,
   machine,
 }: {
-  groupBy: FetchGroupByKey;
+  groupBy: FetchGroupKey;
   machine: Machine;
 }): Pick<MachineStateListGroup, "name" | "value"> | null => {
-  const groupKeyToMachineListGroupValue: Record<
-    FetchGroupByKey,
-    string | null
+  const groupKeyToMachineListGroupValue: Partial<
+    Record<FetchGroupKey, string | null>
   > = {
     status: machine.status,
     owner: machine.owner,
@@ -48,7 +47,7 @@ export const createMachineListGroup = ({
   };
 
   const machineValue =
-    groupBy && groupBy in FetchGroupByKey
+    groupBy && Object.values(FetchGroupKey).includes(groupBy)
       ? groupKeyToMachineListGroupValue[groupBy]
       : null;
 
@@ -57,7 +56,7 @@ export const createMachineListGroup = ({
   }
 
   switch (groupBy) {
-    case FetchGroupByKey.Status: {
+    case FetchGroupKey.Status: {
       const nodeStatusKey = getNodeStatusKey(machineValue) as
         | keyof typeof FetchNodeStatus
         | undefined;
@@ -68,7 +67,7 @@ export const createMachineListGroup = ({
           }
         : null;
     }
-    case FetchGroupByKey.PowerState: {
+    case FetchGroupKey.PowerState: {
       return {
         name: capitaliseFirst(machineValue),
         value: machineValue,

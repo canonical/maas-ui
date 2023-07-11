@@ -37,10 +37,7 @@ const MachineTests = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  const previousTestingStatus = usePrevious(
-    machine?.testing_status.status,
-    true
-  );
+  const previousTestingStatus = usePrevious(machine?.testing_status, true);
   const scriptResults = useSelector((state: RootState) =>
     scriptResultSelectors.getByNodeId(state, id)
   );
@@ -71,8 +68,8 @@ const MachineTests = (): JSX.Element => {
       // Refetch the script results when the testing status changes to
       // pending, otherwise the new script results won't be associated with
       // the machine.
-      machine?.testing_status.status === TestStatusStatus.PENDING &&
-      previousTestingStatus !== machine?.testing_status.status
+      machine?.testing_status === TestStatusStatus.PENDING &&
+      previousTestingStatus !== machine?.testing_status
     ) {
       dispatch(scriptResultActions.getByNodeId(id));
     }

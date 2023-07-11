@@ -215,9 +215,7 @@ const MachineHeader = ({
           active: pathname.startsWith(`${urlBase}/testing`),
           component: Link,
           label: (
-            <ScriptStatus status={machine.testing_status.status}>
-              Tests
-            </ScriptStatus>
+            <ScriptStatus status={machine.testing_status}>Tests</ScriptStatus>
           ),
           to: `${urlBase}/testing`,
         },

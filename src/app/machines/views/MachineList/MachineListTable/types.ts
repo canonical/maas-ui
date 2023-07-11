@@ -11,6 +11,7 @@ import type {
   MachineStateListGroup,
   FetchGroupKey,
 } from "app/store/machine/types";
+import type { useFetchMachines } from "app/store/machine/utils/hooks";
 
 export type MachineListTableProps = {
   callId?: string | null;
@@ -24,7 +25,7 @@ export type MachineListTableProps = {
   machines: Machine[];
   machinesLoading?: boolean | null;
   pageSize: number;
-  totalPages: number;
+  totalPages: ReturnType<typeof useFetchMachines>["totalPages"];
   setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
   setPageSize?: (pageSize: number) => void;
@@ -40,10 +41,10 @@ export type TableColumn = MainTableCell & { key: string };
 export type GenerateRowParams = {
   callId?: string | null;
   groupValue: MachineStateListGroup["value"];
-  hiddenColumns: NonNullable<Props["hiddenColumns"]>;
+  hiddenColumns: NonNullable<MachineListTableProps["hiddenColumns"]>;
   machines: Machine[];
   getToggleHandler: GetMachineMenuToggleHandler;
-  showActions: Props["showActions"];
+  showActions: MachineListTableProps["showActions"];
   showMAC: boolean;
   showFullName: boolean;
 };

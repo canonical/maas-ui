@@ -12,13 +12,12 @@ import { useScrollOnRender } from "app/base/hooks";
 import type { SidePanelContextTypes } from "app/base/side-panel-context";
 import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
 import { KVMSidePanelViews } from "app/kvm/constants";
-import type { KVMSidePanelContent } from "app/kvm/types";
 import MachineForms from "app/machines/components/MachineForms";
 import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
-type Props = SidePanelContextTypes<KVMSidePanelContent> & {
+type Props = SidePanelContextTypes & {
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 };

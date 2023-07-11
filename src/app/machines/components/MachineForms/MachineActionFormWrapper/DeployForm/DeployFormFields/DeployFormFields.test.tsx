@@ -103,7 +103,7 @@ describe("DeployFormFields", () => {
             system_id: "def456",
           }),
         ],
-        selected: [],
+        selected: null,
         statuses: {
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),

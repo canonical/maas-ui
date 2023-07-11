@@ -193,7 +193,7 @@ describe("StatusColumn", () => {
       state where the warning should be hidden`, () => {
       machine.status = NodeStatus.ALLOCATED;
       machine.status_code = NodeStatusCode.ALLOCATED;
-      machine.testing_status.status = TestStatusStatus.FAILED;
+      machine.testing_status = TestStatusStatus.FAILED;
       const store = mockStore(state);
       renderWithBrowserRouter(
         <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,

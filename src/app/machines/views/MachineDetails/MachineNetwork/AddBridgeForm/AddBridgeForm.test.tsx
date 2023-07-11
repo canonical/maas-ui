@@ -55,6 +55,7 @@ describe("AddBridgeForm", () => {
       vlan: vlanStateFactory({
         items: [
           vlanFactory({
+            id: 39,
             fabric: fabric.id,
             vid: 2,
             name: "vlan-name",

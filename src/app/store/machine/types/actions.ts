@@ -449,7 +449,7 @@ export enum FetchGroupByKey {
 
 export type FetchParams = {
   filter?: FetchFilters | null;
-  group_key?: FetchGroupByKey | null;
+  group_key?: FetchGroupKey | null;
   group_collapsed?: MachineStateListGroup["value"][] | null;
   page_size?: number;
   page_number?: number;

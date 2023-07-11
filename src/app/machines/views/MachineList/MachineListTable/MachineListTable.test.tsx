@@ -82,9 +82,7 @@ describe("MachineListTable", () => {
         storage_test_status: testStatusFactory({
           status: TestStatusStatus.PASSED,
         }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.PASSED,
-        }),
+        testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
         zone: modelRefFactory(),
       }),
@@ -123,9 +121,7 @@ describe("MachineListTable", () => {
         storage_test_status: testStatusFactory({
           status: TestStatusStatus.FAILED,
         }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
+        testing_status: TestStatusStatus.FAILED,
         system_id: "def456",
         zone: modelRefFactory(),
       }),
@@ -164,9 +160,7 @@ describe("MachineListTable", () => {
         storage_test_status: testStatusFactory({
           status: TestStatusStatus.FAILED,
         }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
+        testing_status: TestStatusStatus.FAILED,
         system_id: "ghi789",
         zone: modelRefFactory(),
       }),
@@ -254,6 +248,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -300,6 +295,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -324,6 +320,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -357,6 +354,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -383,6 +381,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -429,6 +428,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -468,6 +468,7 @@ describe("MachineListTable", () => {
         setSortKey={setSortKey}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -499,6 +500,7 @@ describe("MachineListTable", () => {
         setSortKey={setSortKey}
         sortDirection={SortDirection.ASCENDING}
         sortKey={FetchGroupKey.CpuCount}
+        totalPages={1}
       />,
       { state }
     );
@@ -530,6 +532,7 @@ describe("MachineListTable", () => {
         setSortKey={setSortKey}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.CpuCount}
+        totalPages={1}
       />,
       { state }
     );
@@ -561,6 +564,7 @@ describe("MachineListTable", () => {
         setSortKey={setSortKey}
         sortDirection={SortDirection.NONE}
         sortKey={FetchGroupKey.CpuCount}
+        totalPages={1}
       />,
       { state }
     );
@@ -592,6 +596,7 @@ describe("MachineListTable", () => {
         setSortKey={setSortKey}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.CpuCount}
+        totalPages={1}
       />,
       { state }
     );
@@ -622,6 +627,7 @@ describe("MachineListTable", () => {
         setSortKey={jest.fn()}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -647,6 +653,7 @@ describe("MachineListTable", () => {
         showActions={true}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />,
       { state }
     );
@@ -666,6 +673,7 @@ describe("MachineListTable", () => {
         showActions={false}
         sortDirection="none"
         sortKey={null}
+        totalPages={1}
       />
     );
     expect(screen.queryAllByRole("checkbox").length).toBe(0);
@@ -687,6 +695,7 @@ describe("MachineListTable", () => {
           setSortKey={jest.fn()}
           sortDirection="none"
           sortKey={null}
+          totalPages={1}
         />,
         { state }
       );
@@ -711,6 +720,7 @@ describe("MachineListTable", () => {
           setSortKey={jest.fn()}
           sortDirection="none"
           sortKey={null}
+          totalPages={1}
         />
       );
 
@@ -738,6 +748,7 @@ describe("MachineListTable", () => {
           showActions
           sortDirection="none"
           sortKey={null}
+          totalPages={1}
         />,
         { state }
       );
@@ -763,6 +774,7 @@ describe("MachineListTable", () => {
           showActions={false}
           sortDirection="none"
           sortKey={null}
+          totalPages={1}
         />,
         { state }
       );
