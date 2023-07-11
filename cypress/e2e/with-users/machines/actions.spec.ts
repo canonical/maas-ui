@@ -40,7 +40,7 @@ const MACHINE_ACTIONS_GROUPS = [
 const selectFirstMachine = () =>
   cy.findByRole("grid", { name: /Machines/i }).within(() => {
     cy.findAllByRole("gridcell", { name: /FQDN/i })
-      .first() // eslint-disable-next-line cypress/no-force
+      .first()
       .within(() => cy.findByRole("checkbox").click({ force: true }));
   });
 
@@ -117,13 +117,11 @@ context("Machine listing - actions", () => {
     const machineName = generateName("machine");
     cy.addMachine(machineName);
     cy.findByRole("searchbox", { name: "Search" }).type(machineName);
-    // eslint-disable-next-line cypress/no-force
     cy.findByRole("checkbox", { name: `${machineName}.maas` }).click({
       force: true,
     });
     openMachineActionForm("Categorise", "Set pool");
     cy.findByRole("complementary", { name: /Set pool/i }).should("exist");
-    // eslint-disable-next-line cypress/no-force
     cy.findByLabelText(/Create pool/i).click({ force: true });
     cy.findByLabelText(/Name/i).type(poolName);
     cy.findByRole("button", { name: /Set pool for machine/i }).click();
@@ -133,5 +131,33 @@ context("Machine listing - actions", () => {
       .should("exist");
     cy.deleteMachine(machineName);
     cy.deletePool(poolName);
+  });
+
+  it("can create and add a tag to a machine", () => {
+    const tagName = generateName("tag");
+    const machineName = generateName("machine");
+    cy.addMachine(machineName);
+    cy.findByRole("searchbox", { name: "Search" }).type(machineName);
+    cy.waitForTableToLoad({ name: /Machines/i });
+    cy.findByRole("checkbox", { name: `${machineName}.maas` }).click({
+      force: true,
+    });
+    openMachineActionForm("Categorise", "Tag");
+    cy.findByRole("complementary", { name: /Tag/i }).should("exist");
+    cy.findByRole("textbox", {
+      name: "Search existing or add new tags",
+    }).type(tagName);
+    cy.findByRole("button", { name: `Create tag "${tagName}"` }).click();
+    cy.findByRole("form", { name: /Create tag/i }).should("be.visible");
+    cy.findByRole("button", { name: /Create and add to tag changes/i }).click();
+    cy.findByRole("table", { name: /Tag changes/i }).within(() => {
+      cy.findByRole("cell", { name: /To be added/ }).should("exist");
+      cy.findByRole("cell", { name: new RegExp(tagName, "i") }).should("exist");
+    });
+    cy.findByRole("button", { name: /Save/i }).click();
+    cy.findByRole("grid", { name: /Machines/i })
+      .within(() => cy.findByText(tagName))
+      .should("exist");
+    cy.deleteMachine(machineName);
   });
 });

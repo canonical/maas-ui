@@ -38,33 +38,19 @@ export type MachineListControlsProps = {
   setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const MachineListControls = ({
-  machineCount,
-  resourcePoolsCount,
-  filter,
-  grouping,
-  setFilter,
-  setGrouping,
-  setHiddenGroups,
-  hiddenColumns,
-  setHiddenColumns,
+const ResponsiveNodeActionMenu = ({
+  hasSelection,
   setSidePanelContent,
-}: MachineListControlsProps): JSX.Element => {
-  const [searchText, setSearchText] = useState(filter);
-  const hasSelection = useHasSelection();
+}: {
+  hasSelection: ReturnType<typeof useHasSelection>;
+  setSidePanelContent: MachineSetSidePanelContent;
+}) => {
   const sendAnalytics = useSendAnalytics();
-  const dispatch = useDispatch();
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,
     "machineViewTagsSeen",
     false
   );
-
-  useEffect(() => {
-    // If the filters change then update the search input text.
-    setSearchText(filter);
-  }, [filter]);
-
   const getTitle = useCallback(
     (action: NodeActions) => {
       if (action === NodeActions.TAG) {
@@ -82,6 +68,88 @@ const MachineListControls = ({
     },
     [tagsSeen]
   );
+
+  return (
+    <>
+      <div className="u-hide--medium u-hide--small">
+        <NodeActionMenuGroup
+          alwaysShowLifecycle
+          excludeActions={[NodeActions.IMPORT_IMAGES]}
+          getTitle={getTitle}
+          hasSelection={hasSelection}
+          nodeDisplay="machine"
+          onActionClick={(action) => {
+            if (action === NodeActions.TAG && !tagsSeen) {
+              setTagsSeen(true);
+            }
+            const view = Object.values(MachineSidePanelViews).find(
+              ([, actionName]) => actionName === action
+            );
+            if (view) {
+              setSidePanelContent({ view });
+            }
+            sendAnalytics(
+              "Machine list action form",
+              getNodeActionTitle(action),
+              "Open"
+            );
+          }}
+        />
+      </div>
+      <div className="u-hide--large">
+        <NodeActionMenu
+          alwaysShowLifecycle
+          className="is-maas-select"
+          constrainPanelWidth
+          excludeActions={[NodeActions.IMPORT_IMAGES]}
+          getTitle={getTitle}
+          hasSelection={hasSelection}
+          menuPosition="left"
+          nodeDisplay="machine"
+          onActionClick={(action) => {
+            if (action === NodeActions.TAG && !tagsSeen) {
+              setTagsSeen(true);
+            }
+            const view = Object.values(MachineSidePanelViews).find(
+              ([, actionName]) => actionName === action
+            );
+            if (view) {
+              setSidePanelContent({ view });
+            }
+            sendAnalytics(
+              "Machine list action form",
+              getNodeActionTitle(action),
+              "Open"
+            );
+          }}
+          toggleAppearance=""
+          toggleClassName="p-action-menu"
+          toggleLabel="Menu"
+        />
+      </div>
+    </>
+  );
+};
+const MachineListControls = ({
+  machineCount,
+  resourcePoolsCount,
+  filter,
+  grouping,
+  setFilter,
+  setGrouping,
+  setHiddenGroups,
+  hiddenColumns,
+  setHiddenColumns,
+  setSidePanelContent,
+}: MachineListControlsProps): JSX.Element => {
+  const [searchText, setSearchText] = useState(filter);
+  const hasSelection = useHasSelection();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // If the filters change then update the search input text.
+    setSearchText(filter);
+  }, [filter]);
 
   return (
     <div className="machine-list-controls">
@@ -123,60 +191,10 @@ const MachineListControls = ({
         ) : (
           <>
             <div className="machine-list-controls__item">
-              <div className="u-hide--medium u-hide--small">
-                <NodeActionMenuGroup
-                  alwaysShowLifecycle
-                  excludeActions={[NodeActions.IMPORT_IMAGES]}
-                  getTitle={getTitle}
-                  hasSelection={hasSelection}
-                  nodeDisplay="machine"
-                  onActionClick={(action) => {
-                    if (action === NodeActions.TAG && !tagsSeen) {
-                      setTagsSeen(true);
-                    }
-                    const view = Object.values(MachineSidePanelViews).find(
-                      ([, actionName]) => actionName === action
-                    );
-                    if (view) {
-                      setSidePanelContent({ view });
-                    }
-                    sendAnalytics(
-                      "Machine list action form",
-                      getNodeActionTitle(action),
-                      "Open"
-                    );
-                  }}
-                />
-              </div>
-              <div className="u-hide--large">
-                <NodeActionMenu
-                  alwaysShowLifecycle
-                  className="is-maas-select"
-                  excludeActions={[NodeActions.IMPORT_IMAGES]}
-                  getTitle={getTitle}
-                  hasSelection={hasSelection}
-                  nodeDisplay="machine"
-                  onActionClick={(action) => {
-                    if (action === NodeActions.TAG && !tagsSeen) {
-                      setTagsSeen(true);
-                    }
-                    const view = Object.values(MachineSidePanelViews).find(
-                      ([, actionName]) => actionName === action
-                    );
-                    if (view) {
-                      setSidePanelContent({ view });
-                    }
-                    sendAnalytics(
-                      "Machine list action form",
-                      getNodeActionTitle(action),
-                      "Open"
-                    );
-                  }}
-                  toggleAppearance=""
-                  toggleClassName="p-action-menu"
-                  toggleLabel="Menu"
-                />
-              </div>
+              <ResponsiveNodeActionMenu
+                hasSelection={hasSelection}
+                setSidePanelContent={setSidePanelContent}
+              />
             </div>
             <div className="machine-list-controls__item">
               <Button

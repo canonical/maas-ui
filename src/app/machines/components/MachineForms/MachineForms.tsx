@@ -6,7 +6,7 @@ import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
-import type { SidePanelContextTypes } from "app/base/side-panel-context";
+import type { SidePanelContentTypes } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineActionSidePanelViews } from "app/machines/constants";
@@ -15,7 +15,7 @@ import type {
   MachineSidePanelContent,
 } from "app/machines/types";
 
-type Props = SidePanelContextTypes & {
+type Props = SidePanelContentTypes & {
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
 } & MachineActionVariableProps;

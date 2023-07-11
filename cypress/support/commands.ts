@@ -55,8 +55,7 @@ Cypress.Commands.add("deleteMachine", (hostname: string) => {
   cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
   cy.findByRole("searchbox").type(hostname);
   cy.findByText(/Showing 1 out of 1 machines/).should("exist");
-  cy.findByRole("grid", { name: "Machines" }).within(() =>
-    // eslint-disable-next-line cypress/no-force
+  cy.findByRole("grid", { name: /Machines/ }).within(() =>
     cy
       .findByRole("checkbox", { name: new RegExp(hostname) })
       .click({ force: true })

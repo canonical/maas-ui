@@ -179,7 +179,7 @@ const generateActionMenus = (
           dropdownProps={{ "aria-label": `${group.title} submenu` }}
           hasToggleIcon
           links={groupLinks}
-          position="center"
+          position="left"
           toggleLabel={
             !group.icon ? (
               group.title

@@ -10,6 +10,7 @@ import { Label as TagFormFieldsLabel } from "./TagFormFields";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
+import { Label as AddTagFormLabel } from "app/tags/components/AddTagForm/AddTagForm";
 import {
   machine as machineFactory,
   machineActionState,
@@ -19,7 +20,14 @@ import {
 } from "testing/factories";
 import { tagStateListFactory } from "testing/factories/state";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+  within,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -107,7 +115,9 @@ it("correctly dispatches actions to tag machines", async () => {
   );
   await userEvent.click(screen.getByRole("option", { name: "tag1" }));
   await userEvent.click(screen.getByRole("option", { name: "tag2" }));
-  await userEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: /Save tag changes/i })
+  );
 
   await waitFor(() => {
     const expectedActions = [
@@ -163,7 +173,9 @@ it("correctly dispatches actions to untag machines", async () => {
   });
   await userEvent.click(deleteButtons[0]);
   await userEvent.click(deleteButtons[1]);
-  await userEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: /Save tag changes/i })
+  );
 
   await waitFor(() => {
     const expectedActions = [
@@ -210,7 +222,9 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: TagFormChangesLabel.Remove })
   );
-  await userEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: /Save tag changes/i })
+  );
 
   await waitFor(() => {
     const expectedActions = [
@@ -323,7 +337,9 @@ it("shows a notification on success", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: TagFormChangesLabel.Remove })
   );
-  await userEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: /Save tag changes/i })
+  );
 
   await waitFor(() => {
     const action = store
@@ -331,4 +347,74 @@ it("shows a notification on success", async () => {
       .find((action) => action.type === "message/add");
     expect(action.payload.message).toBe(Label.Saved);
   });
+});
+
+it("can open a create tag form", async () => {
+  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  renderWithBrowserRouter(
+    <TagForm
+      clearSidePanelContent={jest.fn()}
+      machines={state.machine.items}
+      processingCount={0}
+      selectedCount={state.machine.items.length}
+      selectedMachines={{ items: machines.map((item) => item.system_id) }}
+      viewingDetails={false}
+    />,
+    { state }
+  );
+
+  await userEvent.type(
+    screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput }),
+    "name1{enter}"
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole("form", { name: AddTagFormLabel.Form })
+    ).toBeInTheDocument()
+  );
+});
+
+it("updates the new tags after creating a tag", async () => {
+  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <TagForm
+            clearSidePanelContent={jest.fn()}
+            machines={state.machine.items}
+            processingCount={0}
+            selectedCount={state.machine.items.length}
+            selectedMachines={{ items: machines.map((item) => item.system_id) }}
+            viewingDetails={false}
+          />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.queryByRole("button", { name: /new-tag/i })
+  ).not.toBeInTheDocument();
+  await userEvent.type(
+    screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput }),
+    "new-tag{enter}"
+  );
+  mockFormikFormSaved();
+  const newTag = tagFactory({ id: 8, name: "new-tag" });
+  state.tag.saved = true;
+  state.tag.items.push(newTag);
+  await userEvent.click(
+    screen.getByRole("button", { name: AddTagFormLabel.Submit })
+  );
+  const changes = screen.getByRole("table", {
+    name: TagFormChangesLabel.Table,
+  });
+  await waitFor(() =>
+    expect(
+      within(changes).getByRole("button", { name: /new-tag/i })
+    ).toBeInTheDocument()
+  );
 });

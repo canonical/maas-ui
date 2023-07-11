@@ -8,6 +8,7 @@ export type Props = {
   onTagCreated: (tag: Tag) => void;
   viewingDetails?: boolean;
   viewingMachineConfig?: boolean;
+  onCancel?: () => void;
 } & Partial<MachineActionFormProps>;
 
 export const AddTagForm = ({
@@ -17,6 +18,7 @@ export const AddTagForm = ({
   searchFilter,
   viewingDetails,
   viewingMachineConfig,
+  onCancel,
 }: Props): JSX.Element => {
   let location = "list";
   if (viewingMachineConfig) {
@@ -37,6 +39,7 @@ export const AddTagForm = ({
           : `${count} selected machines are deployed. The new kernel options will not be applied to these machines until they are redeployed.`
       }
       name={name}
+      onCancel={onCancel}
       onSaveAnalytics={{
         action: "Manual tag created",
         category: `Machine ${location} create tag form`,

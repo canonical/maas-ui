@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import type {
   ButtonAppearance,
   ButtonProps,
+  ContextualMenuDropdownProps,
   ValueOf,
 } from "@canonical/react-components";
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
@@ -39,7 +40,7 @@ type Props = {
   toggleAppearance?: ValueOf<typeof ButtonAppearance>;
   toggleClassName?: string | null;
   toggleLabel?: string;
-};
+} & Pick<ContextualMenuDropdownProps, "constrainPanelWidth">;
 
 const actionGroups: ActionGroup[] = [
   {
@@ -166,6 +167,7 @@ export const NodeActionMenu = ({
   toggleAppearance = "positive",
   toggleClassName,
   toggleLabel = Label.TakeAction,
+  constrainPanelWidth,
 }: Props): JSX.Element => {
   return (
     <Tooltip
@@ -178,6 +180,7 @@ export const NodeActionMenu = ({
     >
       <ContextualMenu
         className={className}
+        constrainPanelWidth={constrainPanelWidth}
         data-testid="take-action-dropdown"
         hasToggleIcon
         links={getTakeActionLinks(

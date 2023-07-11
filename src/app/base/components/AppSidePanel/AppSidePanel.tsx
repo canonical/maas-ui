@@ -1,30 +1,65 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
-import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
+import {
+  Col,
+  Row,
+  useOnEscapePressed,
+  usePrevious,
+} from "@canonical/react-components";
 import classNames from "classnames";
+import { useLocation } from "react-router-dom-v5-compat";
 
+import type { SidePanelSize } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 
-type Props = {
-  title?: string | null;
-  size?: "wide" | "default" | "narrow";
+export type AppSidePanelProps = {
+  title: string | null;
   content?: ReactNode;
+  size: SidePanelSize;
 };
 
-const AppSidePanel = ({
+const useCloseSidePanelOnRouteChange = (): void => {
+  const { setSidePanelContent } = useSidePanel();
+  const { pathname } = useLocation();
+  const previousPathname = usePrevious(pathname);
+
+  // close side panel on route change
+  useEffect(() => {
+    if (pathname !== previousPathname) {
+      setSidePanelContent(null);
+    }
+  }, [pathname, previousPathname, setSidePanelContent]);
+};
+
+const useResetSidePanelOnUnmount = (): void => {
+  const { setSidePanelSize } = useSidePanel();
+
+  // reset side panel size to default on unmount
+  useEffect(() => {
+    return () => {
+      setSidePanelSize("regular");
+    };
+  }, [setSidePanelSize]);
+};
+
+const useCloseSidePanelOnEscPressed = (): void => {
+  const { setSidePanelContent } = useSidePanel();
+  useOnEscapePressed(() => setSidePanelContent(null));
+};
+
+const AppSidePanelContent = ({
   title,
   size,
   content,
-}: Props & { title: string | null }): JSX.Element => {
-  const { setSidePanelContent } = useSidePanel();
-  useOnEscapePressed(() => setSidePanelContent(null));
+}: AppSidePanelProps): JSX.Element => {
   return (
     <aside
       aria-label={title ?? undefined}
       className={classNames("l-aside", {
         "is-collapsed": !content,
-        "is-wide": size === "wide",
         "is-narrow": size === "narrow",
+        "is-large": size === "large",
+        "is-wide": size === "wide",
       })}
       data-testid="section-header-content"
       id="aside-panel"
@@ -46,6 +81,15 @@ const AppSidePanel = ({
       </Row>
     </aside>
   );
+};
+
+const AppSidePanel = (props: Omit<AppSidePanelProps, "size">): JSX.Element => {
+  useCloseSidePanelOnEscPressed();
+  useCloseSidePanelOnRouteChange();
+  useResetSidePanelOnUnmount();
+  const { sidePanelSize } = useSidePanel();
+
+  return <AppSidePanelContent {...props} size={sidePanelSize} />;
 };
 
 export default AppSidePanel;

@@ -52,7 +52,6 @@ context("Machine listing", () => {
     cy.findByRole("searchbox").type(searchFilter);
     cy.findByText(/Showing 2 out of 2 machines/).should("exist");
     cy.findByRole("grid", { name: /Machines/ }).within(() =>
-      // eslint-disable-next-line cypress/no-force
       cy
         .findByRole("checkbox", { name: /Commissioning/i })
         .click({ force: true })
@@ -113,7 +112,6 @@ context("Machine listing", () => {
 
     cy.findAllByRole("button", { name: "Columns" }).click();
     cy.findByLabelText("columns menu").within(() =>
-      // eslint-disable-next-line cypress/no-force
       cy.findByRole("checkbox", { name: "Status" }).click({ force: true })
     );
 
@@ -134,11 +132,9 @@ context("Machine listing", () => {
     cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
     cy.findByRole("searchbox", { name: "Search" }).type(name);
     cy.findByText(/Showing 3 out of 3 machines/).should("exist");
-    // eslint-disable-next-line cypress/no-force
     cy.findByRole("checkbox", { name: `${newMachines[0]}.maas` }).click({
       force: true,
     });
-    // eslint-disable-next-line cypress/no-force
     cy.findByRole("checkbox", { name: `${newMachines[2]}.maas` }).click({
       shiftKey: true,
       force: true,

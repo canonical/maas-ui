@@ -3,12 +3,12 @@ import { useCallback } from "react";
 import AddController from "./AddController";
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
-import type { SidePanelContextTypes } from "app/base/side-panel-context";
+import type { SidePanelContentTypes } from "app/base/side-panel-context";
 import { ControllerSidePanelViews } from "app/controllers/constants";
 import type { ControllerActionSidePanelContent } from "app/controllers/types";
 import type { Controller } from "app/store/controller/types";
 
-type Props = SidePanelContextTypes & {
+type Props = SidePanelContentTypes & {
   controllers: Controller[];
   viewingDetails?: boolean;
 };
