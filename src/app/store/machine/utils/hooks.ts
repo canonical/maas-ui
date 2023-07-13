@@ -264,7 +264,7 @@ export const useSelectedMachinesActionsDispatch = ({
 };
 
 export const useMachineSelectedCount = (
-  filters?: FetchFilters | null,
+  filters: FetchFilters | null,
   queryOptions?: UseFetchQueryOptions
 ): {
   selectedCount: number;

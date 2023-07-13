@@ -14,6 +14,7 @@ import {
   generateSkeletonRows,
   generateGroupRows,
 } from "./tableModels";
+import type { MachineListTableProps } from "./types";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
@@ -57,9 +58,13 @@ export const MachineListTable = ({
   setSortKey,
   ...props
 }: MachineListTableProps): JSX.Element => {
+  const parsedFilter = useMemo(
+    () => FilterMachines.parseFetchFilters(filter),
+    [filter]
+  );
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
-  const { selectedCount } = useMachineSelectedCount();
+  const { selectedCount } = useMachineSelectedCount(parsedFilter);
 
   const currentSort = {
     direction: sortDirection,
@@ -122,11 +127,6 @@ export const MachineListTable = ({
     showMAC,
     showFullName,
   };
-
-  const parsedFilter = useMemo(
-    () => FilterMachines.parseFetchFilters(filter),
-    [filter]
-  );
 
   const headers = [
     {
