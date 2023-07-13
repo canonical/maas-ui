@@ -1,5 +1,5 @@
 import FabricDetailsHeader from "./FabricDetailsHeader";
-import { FabricDetailsViews } from "./constants";
+import { FabricDetailsSidePanelViews } from "./constants";
 
 import type { Fabric } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
@@ -85,7 +85,7 @@ describe("FabricDetailsHeader", () => {
     );
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: FabricDetailsViews.DELETE_FABRIC,
+      view: FabricDetailsSidePanelViews.DELETE_FABRIC,
     });
   });
 });

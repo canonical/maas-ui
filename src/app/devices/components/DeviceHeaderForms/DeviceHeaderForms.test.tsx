@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import DeviceHeaderForms from "./DeviceHeaderForms";
 
-import { DeviceHeaderViews } from "app/devices/constants";
+import { DeviceSidePanelViews } from "app/devices/constants";
 import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
@@ -39,7 +39,7 @@ describe("DeviceHeaderForms", () => {
       <DeviceHeaderForms
         devices={[]}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: DeviceHeaderViews.ADD_DEVICE }}
+        sidePanelContent={{ view: DeviceSidePanelViews.ADD_DEVICE }}
       />,
       { store }
     );

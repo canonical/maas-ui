@@ -8,7 +8,7 @@ import VLANDeleteForm from "./VLANDeleteForm";
 import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
-import { VLANDetailsViews } from "./constants";
+import { VLANDetailsSidePanelViews } from "./constants";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import PageContent from "app/base/components/PageContent";
@@ -78,7 +78,7 @@ const VLANDetails = (): JSX.Element => {
       header={<VLANDetailsHeader id={id} />}
       sidePanelContent={
         sidePanelContent &&
-        sidePanelContent.view === VLANDetailsViews.DELETE_VLAN ? (
+        sidePanelContent.view === VLANDetailsSidePanelViews.DELETE_VLAN ? (
           <VLANDeleteForm closeForm={() => setSidePanelContent(null)} id={id} />
         ) : null
       }

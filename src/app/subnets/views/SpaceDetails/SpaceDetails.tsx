@@ -6,19 +6,18 @@ import SpaceDetailsHeader from "./SpaceDetailsHeader";
 import SpaceDelete from "./SpaceDetailsHeader/SpaceDelete";
 import SpaceSubnets from "./SpaceSubnets";
 import SpaceSummary from "./SpaceSummary";
-import type { SpaceDetailsSidePanelContent } from "./constants";
-import { SpaceDetailsViews } from "./constants";
+import { SpaceDetailsSidePanelViews } from "./constants";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import PageContent from "app/base/components/PageContent/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import type { RootState } from "app/store/root/types";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
 import { SpaceMeta } from "app/store/space/types";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import subnetURLs from "app/subnets/urls";
 import { isId } from "app/utils";
 
@@ -30,8 +29,7 @@ const SpaceDetails = (): JSX.Element => {
   );
   const spacesLoading = useSelector(spaceSelectors.loading);
   const isValidID = isId(id);
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<SpaceDetailsSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle(`${space?.name || "Space"} details`);
 
@@ -71,11 +69,10 @@ const SpaceDetails = (): JSX.Element => {
   }
 
   let content = null;
-  let title = null;
 
   if (
     sidePanelContent &&
-    sidePanelContent.view === SpaceDetailsViews.DELETE_SPACE
+    sidePanelContent.view === SpaceDetailsSidePanelViews.DELETE_SPACE
   ) {
     content = (
       <SpaceDelete
@@ -83,7 +80,6 @@ const SpaceDetails = (): JSX.Element => {
         space={space}
       />
     );
-    title = "Delete space";
   }
 
   return (
@@ -96,7 +92,7 @@ const SpaceDetails = (): JSX.Element => {
         />
       }
       sidePanelContent={content}
-      sidePanelTitle={title}
+      sidePanelTitle={getSidePanelTitle("Space", sidePanelContent)}
     >
       <SpaceSummary space={space} />
       <SpaceSubnets space={space} />

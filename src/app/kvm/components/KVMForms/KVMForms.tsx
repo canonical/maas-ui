@@ -9,20 +9,16 @@ import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
-import type { SidePanelContextType } from "app/base/side-panel-context";
+import type { SidePanelContextTypes } from "app/base/side-panel-context";
 import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
 import { KVMSidePanelViews } from "app/kvm/constants";
-import type {
-  KVMSidePanelContent,
-  KVMSetSidePanelContent,
-} from "app/kvm/types";
+import type { KVMSidePanelContent } from "app/kvm/types";
 import MachineForms from "app/machines/components/MachineForms";
-import type { MachineSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
-type Props = SidePanelContextType<KVMSidePanelContent | null> & {
+type Props = SidePanelContextTypes<KVMSidePanelContent> & {
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 };
@@ -36,14 +32,10 @@ const getFormComponent = ({
   searchFilter,
   setSearchFilter,
 }: {
-  sidePanelContent: KVMSidePanelContent;
-  setSidePanelContent: KVMSetSidePanelContent;
   clearSidePanelContent: ClearSidePanelContent;
   selectedMachines: SelectedMachines | null;
   selectedCount: number;
-  searchFilter?: string;
-  setSearchFilter?: SetSearchFilter;
-}) => {
+} & Props) => {
   if (!sidePanelContent) {
     return null;
   }
@@ -102,11 +94,6 @@ const getFormComponent = ({
       />
     );
   }
-  // We need to explicitly cast sidePanelContent here - TypeScript doesn't
-  // seem to be able to infer remaining object tuple values as with string
-  // values.
-  // https://github.com/canonical/maas-ui/issues/3040
-  const machineSidePanelContent = sidePanelContent as MachineSidePanelContent;
   return (
     <MachineForms
       searchFilter={searchFilter}
@@ -114,7 +101,7 @@ const getFormComponent = ({
       selectedMachines={selectedMachines}
       setSearchFilter={setSearchFilter}
       setSidePanelContent={setSidePanelContent}
-      sidePanelContent={machineSidePanelContent}
+      sidePanelContent={sidePanelContent}
       viewingDetails={false}
     />
   );

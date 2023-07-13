@@ -5,12 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import DomainListHeader from "./DomainListHeader";
 import DomainListHeaderForm from "./DomainListHeaderForm";
 import DomainsTable from "./DomainsTable";
-import type { DomainListSidePanelContent } from "./constants";
 import { DomainListSidePanelViews } from "./constants";
 
 import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import { actions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
@@ -18,8 +16,7 @@ import domainsSelectors from "app/store/domain/selectors";
 const DomainsList = (): JSX.Element => {
   const dispatch = useDispatch();
   const domains = useSelector(domainsSelectors.all);
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<DomainListSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   let content: JSX.Element | null = null;
 

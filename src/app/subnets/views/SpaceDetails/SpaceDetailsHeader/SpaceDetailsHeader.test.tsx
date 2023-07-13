@@ -4,7 +4,7 @@ import { Router, Route } from "react-router";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { SpaceDetailsViews } from "../constants";
+import { SpaceDetailsSidePanelViews } from "../constants";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
@@ -75,6 +75,6 @@ it("calls a function to open the side panel when the delete button is clicked", 
 
   await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
   expect(setSidePanelContent).toHaveBeenCalledWith({
-    view: SpaceDetailsViews.DELETE_SPACE,
+    view: SpaceDetailsSidePanelViews.DELETE_SPACE,
   });
 });

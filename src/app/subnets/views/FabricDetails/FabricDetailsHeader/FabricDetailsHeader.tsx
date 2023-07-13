@@ -1,7 +1,7 @@
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { FabricDetailsViews } from "./constants";
+import { FabricDetailsSidePanelViews } from "./constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSidePanelContent } from "app/base/side-panel-context";
@@ -28,7 +28,7 @@ const FabricDetailsHeader = ({
                 appearance="neutral"
                 onClick={() =>
                   setSidePanelContent({
-                    view: FabricDetailsViews.DELETE_FABRIC,
+                    view: FabricDetailsSidePanelViews.DELETE_FABRIC,
                   })
                 }
               >

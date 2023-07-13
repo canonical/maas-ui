@@ -8,14 +8,12 @@ import DeleteDomainForm from "./DomainDetailsHeader/DeleteDomainForm";
 import { Labels } from "./DomainDetailsHeader/DomainDetailsHeader";
 import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
-import type { DomainDetailsSidePanelContent } from "./constants";
 import { DomainDetailsSidePanelViews } from "./constants";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
-import type { SidePanelContextType } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import { actions as domainsActions } from "app/store/domain";
@@ -30,8 +28,7 @@ const DomainDetails = (): JSX.Element => {
     domainsSelectors.getById(state, Number(id))
   );
   const domainsLoading = useSelector(domainsSelectors.loading);
-  const { sidePanelContent, setSidePanelContent } =
-    useSidePanel() as SidePanelContextType<DomainDetailsSidePanelContent>;
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   const dispatch = useDispatch();
   useWindowTitle(domain?.name ?? "Loading...");

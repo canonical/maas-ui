@@ -23,11 +23,11 @@ import { useGetURLId } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import ControllerForms from "app/controllers/components/ControllerForms/ControllerForms";
-import { getHeaderTitle } from "app/controllers/utils";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import { getRelativeRoute, isId } from "app/utils";
 
 const ControllerDetails = (): JSX.Element => {
@@ -84,7 +84,7 @@ const ControllerDetails = (): JSX.Element => {
           />
         ) : null
       }
-      sidePanelTitle={getHeaderTitle("Controller", sidePanelContent)}
+      sidePanelTitle={getSidePanelTitle("Controller", sidePanelContent)}
     >
       {controller && (
         <Routes>

@@ -2,7 +2,7 @@ import { MemoryRouter } from "react-router-dom";
 
 import DeviceListHeader from "./DeviceListHeader";
 
-import { DeviceHeaderViews } from "app/devices/constants";
+import { DeviceSidePanelViews } from "app/devices/constants";
 import type { RootState } from "app/store/root/types";
 import {
   device as deviceFactory,
@@ -81,7 +81,7 @@ describe("DeviceListHeader", () => {
     );
     await userEvent.click(screen.getByTestId("add-device-button"));
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: DeviceHeaderViews.ADD_DEVICE,
+      view: DeviceSidePanelViews.ADD_DEVICE,
     });
   });
 });

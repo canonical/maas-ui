@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Button } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { VLANDetailsViews } from "../constants";
+import { VLANDetailsSidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSidePanel } from "app/base/side-panel-context";
@@ -62,7 +62,7 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
         data-testid="delete-vlan"
         key="delete-vlan"
         onClick={() =>
-          setSidePanelContent({ view: VLANDetailsViews.DELETE_VLAN })
+          setSidePanelContent({ view: VLANDetailsSidePanelViews.DELETE_VLAN })
         }
       >
         Delete VLAN
