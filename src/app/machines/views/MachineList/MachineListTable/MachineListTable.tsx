@@ -14,7 +14,6 @@ import {
   generateSkeletonRows,
   generateGroupRows,
 } from "./tableModels";
-import type { Props } from "./types";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
@@ -57,7 +56,7 @@ export const MachineListTable = ({
   setSortDirection,
   setSortKey,
   ...props
-}: Props): JSX.Element => {
+}: MachineListTableProps): JSX.Element => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
   const { selectedCount } = useMachineSelectedCount();
@@ -66,7 +65,7 @@ export const MachineListTable = ({
     direction: sortDirection,
     key: sortKey,
   };
-  const updateSort = (newSortKey: Props["sortKey"]) => {
+  const updateSort = (newSortKey: MachineListTableProps["sortKey"]) => {
     if (newSortKey === sortKey) {
       if (sortDirection === SortDirection.ASCENDING) {
         setSortKey(null);

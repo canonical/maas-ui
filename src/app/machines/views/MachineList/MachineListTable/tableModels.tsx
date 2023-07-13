@@ -16,7 +16,7 @@ import StatusColumn from "./StatusColumn";
 import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
 import type {
-  Props,
+  MachineListTableProps,
   TableColumn,
   GenerateRowParams,
   RowContent,
@@ -44,8 +44,8 @@ import type {
  */
 export const filterColumns = (
   columns: TableColumn[],
-  hiddenColumns: NonNullable<Props["hiddenColumns"]>,
-  showActions: Props["showActions"]
+  hiddenColumns: NonNullable<MachineListTableProps["hiddenColumns"]>,
+  showActions: MachineListTableProps["showActions"]
 ): TableColumn[] => {
   if (hiddenColumns.length === 0) {
     return columns;
@@ -66,7 +66,7 @@ export const generateRow = ({
 }: {
   key: string | number;
   content: RowContent;
-  hiddenColumns: NonNullable<Props["hiddenColumns"]>;
+  hiddenColumns: NonNullable<MachineListTableProps["hiddenColumns"]>;
   showActions: GenerateRowParams["showActions"];
   classes?: string;
 }) => {
@@ -153,7 +153,7 @@ export const generateRow = ({
 };
 
 export const generateSkeletonRows = (
-  hiddenColumns: NonNullable<Props["hiddenColumns"]>,
+  hiddenColumns: NonNullable<MachineListTableProps["hiddenColumns"]>,
   showActions: GenerateRowParams["showActions"]
 ) => {
   return Array.from(Array(5)).map((_, i) => {
@@ -338,8 +338,8 @@ export const generateGroupRows = ({
   callId?: string | null;
   grouping?: FetchGroupKey | null;
   groups: MachineStateListGroup[] | null;
-  hiddenGroups: NonNullable<Props["hiddenGroups"]>;
-  setHiddenGroups: Props["setHiddenGroups"];
+  hiddenGroups: NonNullable<MachineListTableProps["hiddenGroups"]>;
+  setHiddenGroups: MachineListTableProps["setHiddenGroups"];
   filter: FetchFilters | null;
 } & Omit<GenerateRowParams, "groupValue">) => {
   let rows: MainTableRow[] = [];
