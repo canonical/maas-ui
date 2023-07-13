@@ -12,7 +12,7 @@ import type {
   FetchGroupKey,
 } from "app/store/machine/types";
 
-export type Props = {
+export type MachineListTableProps = {
   callId?: string | null;
   currentPage: number;
   filter?: string;
