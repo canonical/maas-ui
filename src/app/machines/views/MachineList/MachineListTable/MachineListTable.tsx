@@ -19,7 +19,12 @@ import type { MachineListTableProps } from "./types";
 import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
-import { columnLabels, columns, MachineColumns } from "app/machines/constants";
+import {
+  columnLabels,
+  columns,
+  MachineColumns,
+  groupOptions,
+} from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
@@ -407,6 +412,11 @@ export const MachineListTable = ({
     [rows, selectionState]
   );
 
+  const groupByStatus = useMemo(
+    () => groupOptions.find(({ value }) => value === grouping)?.label ?? "",
+    [grouping]
+  );
+
   return (
     <>
       {machineCount ? (
@@ -438,7 +448,12 @@ export const MachineListTable = ({
         </div>
       ) : null}
       <MainTable
-        aria-label={machinesLoading ? Label.Loading : Label.Machines}
+        aria-describedby="machine-list-description"
+        aria-label={
+          machinesLoading
+            ? Label.Loading
+            : `${Label.Machines} - ${groupByStatus}`
+        }
         className={classNames("p-table-expanding--light", "machine-list", {
           "machine-list--grouped": grouping,
           "machine-list--loading": machinesLoading,

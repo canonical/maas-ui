@@ -6,6 +6,12 @@ context("Machine listing", () => {
     cy.visit(generateMAASURL("/machines"));
   });
 
+  afterEach(() => {
+    cy.window()
+      // reset grouping to default
+      .then((win) => win.localStorage.removeItem("grouping"));
+  });
+
   it("renders the correct heading", () => {
     cy.findByRole("heading", {
       name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
@@ -33,7 +39,7 @@ context("Machine listing", () => {
     });
     GROUP_BY_OPTIONS.forEach((option) => {
       getGroupBySelect().select(option);
-      cy.waitForTableToLoad({ name: "Machines" });
+      cy.findByRole("grid", { name: `Machines - ${option}` }).should("exist");
     });
   });
 
@@ -45,7 +51,7 @@ context("Machine listing", () => {
     cy.findByRole("combobox", { name: "Group by" }).select("Group by status");
     cy.findByRole("searchbox").type(searchFilter);
     cy.findByText(/Showing 2 out of 2 machines/).should("exist");
-    cy.findByRole("grid", { name: "Machines" }).within(() =>
+    cy.findByRole("grid", { name: /Machines/ }).within(() =>
       // eslint-disable-next-line cypress/no-force
       cy
         .findByRole("checkbox", { name: /Commissioning/i })
