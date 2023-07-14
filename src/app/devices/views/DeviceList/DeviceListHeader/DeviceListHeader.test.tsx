@@ -32,7 +32,6 @@ describe("DeviceListHeader", () => {
       <DeviceListHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state }
     );
@@ -45,7 +44,6 @@ describe("DeviceListHeader", () => {
       <DeviceListHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state }
     );
@@ -60,7 +58,6 @@ describe("DeviceListHeader", () => {
       <DeviceListHeader
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state }
     );
@@ -74,7 +71,6 @@ describe("DeviceListHeader", () => {
         <DeviceListHeader
           setSearchFilter={jest.fn()}
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={null}
         />
       </MemoryRouter>,
       { state }

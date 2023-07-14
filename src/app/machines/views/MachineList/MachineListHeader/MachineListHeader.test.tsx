@@ -128,7 +128,6 @@ describe("MachineListHeader", () => {
         setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
       />,
       { state, route: urls.machines.index }
     );

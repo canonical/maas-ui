@@ -42,7 +42,7 @@ export const SourceMachineSelect = ({
   // We filter by a subset of machine parameters rather than using the search
   // selector, because the search selector will match parameters that aren't
   // included in the clone source table.
-  const { machines, machineCount, loading } = useFetchMachines({
+  const { machines, machineCount, loading, totalPages } = useFetchMachines({
     filters: FilterMachines.parseFetchFilters(debouncedText),
     pagination: {
       currentPage,
@@ -86,6 +86,7 @@ export const SourceMachineSelect = ({
           machineCount={machineCount}
           machinesLoading={loading}
           paginate={setCurrentPage}
+          totalPages={totalPages}
           truncateThreshold={6}
         />
       </>

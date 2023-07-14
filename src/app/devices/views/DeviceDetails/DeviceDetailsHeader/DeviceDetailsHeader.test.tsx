@@ -29,11 +29,7 @@ describe("DeviceDetailsHeader", () => {
     state.device.items = [];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -46,11 +42,7 @@ describe("DeviceDetailsHeader", () => {
     state.device.items = [deviceFactory({ system_id: "abc123" })];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -68,12 +60,8 @@ describe("DeviceDetailsHeader", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={{ view: DeviceSidePanelViews.DELETE_DEVICE }}
-        systemId="abc123"
-      />,
-      { store }
+      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      { store, sidePanelContent: { view: DeviceSidePanelViews.DELETE_DEVICE } }
     );
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "plot-device"
@@ -86,11 +74,7 @@ describe("DeviceDetailsHeader", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader
-        setSidePanelContent={jest.fn()}
-        sidePanelContent={null}
-        systemId="abc123"
-      />,
+      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
       { store }
     );
 

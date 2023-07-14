@@ -9,7 +9,7 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FetchGroupKey } from "../types/actions";
-import type { FetchParams, FetchGroupByKey } from "../types/actions";
+import type { FetchParams } from "../types/actions";
 
 import { selectedToFilters, selectedToSeparateFilters } from "./common";
 import { generateCallId, transformToFetchParams } from "./query";
@@ -318,7 +318,7 @@ export const useMachineSelectedCount = (
  */
 export const useFetchSelectedMachines = (
   queryOptions: UseFetchQueryOptions
-): UseFetchMachinesData => {
+): Omit<UseFetchMachinesData, "totalPages"> => {
   const { isEnabled } = queryOptions || { isEnabled: true };
   const selectedMachines = useSelector(machineSelectors.selected);
   const getIsSingleFilter = (
@@ -515,7 +515,7 @@ export const useFetchDeployedMachineCount = ({
 
 export type UseFetchMachinesOptions = {
   filters?: FetchFilters | null;
-  grouping?: FetchGroupByKey | null;
+  grouping?: FetchGroupKey | null;
   sortKey?: FetchGroupKey | null;
   sortDirection?: ValueOf<typeof SortDirection> | null;
   collapsedGroups?: FetchParams["group_collapsed"];

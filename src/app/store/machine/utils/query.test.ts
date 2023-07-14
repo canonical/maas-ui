@@ -1,4 +1,4 @@
-import { FetchGroupByKey, FetchGroupKey } from "../types/actions";
+import { FetchGroupKey } from "../types/actions";
 
 import { mapSortDirection } from "./common";
 import {
@@ -32,7 +32,7 @@ describe("machine utilities", () => {
     const options = {
       filters: {},
       collapsedGroups: [],
-      grouping: FetchGroupByKey.Status,
+      grouping: FetchGroupKey.Status,
       pagination: {
         currentPage: 1,
         pageSize: 10,

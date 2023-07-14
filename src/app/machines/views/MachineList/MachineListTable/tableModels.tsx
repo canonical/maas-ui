@@ -29,8 +29,8 @@ import type { GetMachineMenuToggleHandler } from "app/machines/types";
 import type {
   Machine,
   MachineStateListGroup,
-  FetchGroupKey,
   FetchFilters,
+  FetchGroupKey,
 } from "app/store/machine/types";
 
 /**
@@ -370,7 +370,7 @@ export const generateGroupRows = ({
                       <strong>{name}</strong>
                     )
                   }
-                  secondary={pluralize("machine", count, true)}
+                  secondary={pluralize("machine", count ?? undefined, true)}
                   secondaryClassName={
                     showActions ? "u-nudge--secondary-row u-align--left" : null
                   }

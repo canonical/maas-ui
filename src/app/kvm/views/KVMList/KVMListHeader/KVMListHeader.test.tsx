@@ -41,11 +41,7 @@ describe("KVMListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <KVMListHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              title="some text"
-            />
+            <KVMListHeader setSidePanelContent={jest.fn()} title="some text" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -60,11 +56,7 @@ describe("KVMListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <KVMListHeader
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-              title="some text"
-            />
+            <KVMListHeader setSidePanelContent={jest.fn()} title="some text" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -85,7 +77,6 @@ describe("KVMListHeader", () => {
           <CompatRouter>
             <KVMListHeader
               setSidePanelContent={setSidePanelContent}
-              sidePanelContent={null}
               title="LXD"
             />
           </CompatRouter>
@@ -110,7 +101,6 @@ describe("KVMListHeader", () => {
           <CompatRouter>
             <KVMListHeader
               setSidePanelContent={setSidePanelContent}
-              sidePanelContent={null}
               title="Virsh"
             />
           </CompatRouter>

@@ -18,7 +18,6 @@ import {
   machineDetails as machineDetailsFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
-  testStatus as testStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import { renderWithMockStore, screen } from "testing/utils";
@@ -44,9 +43,7 @@ describe("MachineTests", () => {
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",
-            testing_status: testStatusFactory({
-              status: TestStatusStatus.RUNNING,
-            }),
+            testing_status: TestStatusStatus.RUNNING,
           }),
         ],
       }),
@@ -289,10 +286,8 @@ describe("MachineTests", () => {
         locked: false,
         permissions: ["edit"],
         system_id: "abc123",
-        testing_status: testStatusFactory({
-          // This value is different to the value stored by usePrevious.
-          status: TestStatusStatus.PENDING,
-        }),
+        // This value is different to the value stored by usePrevious.
+        testing_status: TestStatusStatus.PENDING,
       }),
     ];
     state.nodescriptresult.items = { abc123: [1] };

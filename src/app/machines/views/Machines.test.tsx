@@ -6,11 +6,8 @@ import configureStore from "redux-mock-store";
 
 import { MachineSidePanelViews } from "../constants";
 
-import {
-  Label,
-  Label as MachineListLabel,
-} from "./MachineList/MachineListTable/MachineListTable";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
+import { Label } from "./MachineList/MachineListTable/tableModels";
 import Machines from "./Machines";
 
 import { actions as machineActions } from "app/store/machine";
@@ -48,7 +45,6 @@ import {
   render,
   waitFor,
 } from "testing/utils";
-
 const mockStore = configureStore<RootState>();
 const userEvent = userEventCore.setup({
   advanceTimers: jest.runAllTimers,
@@ -92,9 +88,7 @@ describe("Machines", () => {
       storage_test_status: testStatusFactory({
         status: TestStatusStatus.PASSED,
       }),
-      testing_status: testStatusFactory({
-        status: TestStatusStatus.PASSED,
-      }),
+      testing_status: TestStatusStatus.PASSED,
       system_id: "abc123",
       zone: modelRefFactory(),
     }),
@@ -133,9 +127,7 @@ describe("Machines", () => {
       storage_test_status: testStatusFactory({
         status: TestStatusStatus.FAILED,
       }),
-      testing_status: testStatusFactory({
-        status: TestStatusStatus.FAILED,
-      }),
+      testing_status: TestStatusStatus.FAILED,
       system_id: "def456",
       zone: modelRefFactory(),
     }),
@@ -174,9 +166,7 @@ describe("Machines", () => {
       storage_test_status: testStatusFactory({
         status: TestStatusStatus.FAILED,
       }),
-      testing_status: testStatusFactory({
-        status: TestStatusStatus.FAILED,
-      }),
+      testing_status: TestStatusStatus.FAILED,
       system_id: "ghi789",
       zone: modelRefFactory(),
     }),
@@ -422,7 +412,7 @@ describe("Machines", () => {
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Deployed machines group" })
-      ).getByRole("button", { name: MachineListLabel.HideGroup })
+      ).getByRole("button", { name: Label.HideGroup })
     );
     // Render another machine list, this time it should restore the
     // hidden group state.

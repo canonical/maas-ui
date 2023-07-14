@@ -166,7 +166,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
             <span className="u-text--muted">{Labels.PowerType}</span>
           )}
         </div>
-        <span data-testid="power-type" title={node.power_type}>
+        <span data-testid="power-type" title={node.power_type ?? undefined}>
           {powerTypeDisplay || node.power_type || <em>None</em>}
         </span>
       </div>

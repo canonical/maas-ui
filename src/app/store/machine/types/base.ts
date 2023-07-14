@@ -54,7 +54,7 @@ export type BaseMachine = Omit<
   pxe_mac?: string;
   spaces: string[];
   storage: number;
-  testing_status: Pick<TestStatus, "status">;
+  testing_status: TestStatus["status"];
   vlan: NodeVlan | null;
   zone: ModelRef;
 };

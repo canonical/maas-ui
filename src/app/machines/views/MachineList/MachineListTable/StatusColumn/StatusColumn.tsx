@@ -45,7 +45,7 @@ const getStatusIcon = (machine: Machine | null) => {
   if (isTransientStatus(machine.status_code)) {
     return <Spinner data-testid="status-icon" />;
   } else if (
-    machine.testing_status.status === TestStatusStatus.FAILED &&
+    machine.testing_status === TestStatusStatus.FAILED &&
     !hideFailedTestWarningStatuses.includes(machine.status_code)
   ) {
     return (

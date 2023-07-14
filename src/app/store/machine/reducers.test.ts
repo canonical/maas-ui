@@ -7,7 +7,7 @@ import reducers, {
 } from "./slice";
 import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
-import { FetchGroupByKey } from "./types/actions";
+import { FetchGroupKey } from "./types/actions";
 
 import {
   NodeActions,
@@ -338,7 +338,7 @@ describe("machine reducer", () => {
         reducers(initialState, actions.updateNotify(machineFactory()))
       ).toEqual({
         ...initialState,
-        counts: { [callId]: { ...initialState.counts[[callId]], stale: true } },
+        counts: { [callId]: { ...initialState.counts[callId], stale: true } },
       });
     });
 
@@ -1458,7 +1458,7 @@ describe("machine reducer", () => {
             num_pages: 3,
             loaded: true,
             loading: false,
-            params: { group_key: FetchGroupByKey.Status },
+            params: { group_key: FetchGroupKey.Status },
           }),
         },
       });

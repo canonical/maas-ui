@@ -43,6 +43,7 @@ const VmResources = ({ filters, podId }: Props): JSX.Element => {
     machineCount,
     machines: vms,
     groups,
+    totalPages,
   } = useFetchMachines({
     filters: {
       ...filters,
@@ -91,6 +92,7 @@ const VmResources = ({ filters, podId }: Props): JSX.Element => {
             showActions={false}
             sortDirection={sortDirection}
             sortKey={sortKey}
+            totalPages={totalPages}
           />
         </ContextualMenu>
       </div>

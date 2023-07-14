@@ -20,7 +20,9 @@ export const useThemeContext = (): ThemeContextType => {
   return { theme, setTheme };
 };
 
-const ThemeContextProvider = ({ children }: PropsWithChildren): JSX.Element => {
+const ThemeContextProvider = ({
+  children,
+}: PropsWithChildren<{}>): JSX.Element => {
   const maasTheme = useSelector(configSelectors.theme);
   const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
 

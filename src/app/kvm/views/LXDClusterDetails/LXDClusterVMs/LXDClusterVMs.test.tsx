@@ -93,7 +93,7 @@ describe("LXDClusterVMs", () => {
       />,
       { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );
-    const expected = machineActions.fetch([callId], {
+    const expected = machineActions.fetch(callId, {
       filter: { pod: ["host 1", "host 2"] },
     });
     const fetches = store
