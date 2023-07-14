@@ -3,7 +3,11 @@ import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 import { call, put, take } from "redux-saga/effects";
 
-import type { WebSocketResponsePing } from "../../../websocket-client";
+import type {
+  WebSocketResponseNotify,
+  WebSocketResponsePing,
+  WebSocketResponseResult,
+} from "../../../websocket-client";
 import WebSocketClient, {
   WebSocketMessageType,
   WebSocketResponseType,

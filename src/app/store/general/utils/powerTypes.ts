@@ -95,5 +95,5 @@ export const getFieldsInScope = (
  */
 export const getPowerTypeFromName = (
   powerTypes: PowerType[],
-  name: string
+  name: string | null
 ): PowerType | null => powerTypes.find((type) => type.name === name) || null;

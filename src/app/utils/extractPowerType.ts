@@ -6,7 +6,7 @@
  */
 export const extractPowerType = (
   description: string | null,
-  powerType: string
+  powerType: string | null
 ): string | null => {
   if (!powerType) {
     return null;

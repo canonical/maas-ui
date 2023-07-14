@@ -4,19 +4,15 @@ import { useSelector } from "react-redux";
 import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
-import type {
-  DeviceSidePanelContent,
-  DeviceSetSidePanelContent,
-} from "app/devices/types";
+import type { DeviceSidePanelContent } from "app/devices/types";
 import { getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
 
-type Props = {
-  sidePanelContent: DeviceSidePanelContent | null;
-  setSidePanelContent: DeviceSetSidePanelContent;
+type Props = SidePanelContextType & {
   setSearchFilter: SetSearchFilter;
 };
 
@@ -66,7 +62,10 @@ const DeviceListHeader = ({
           />
         )
       }
-      sidePanelTitle={getHeaderTitle("Devices", sidePanelContent)}
+      sidePanelTitle={getHeaderTitle(
+        "Devices",
+        sidePanelContent as DeviceSidePanelContent
+      )}
       subtitle={
         <ModelListSubtitle
           available={devices.length}

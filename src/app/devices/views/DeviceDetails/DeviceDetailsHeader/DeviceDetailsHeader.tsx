@@ -8,22 +8,18 @@ import DeviceName from "./DeviceName";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
-import type {
-  DeviceSidePanelContent,
-  DeviceSetSidePanelContent,
-} from "app/devices/types";
+import type { DeviceSidePanelContent } from "app/devices/types";
 import { getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import { isDeviceDetails } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
 
-type Props = {
-  sidePanelContent: DeviceSidePanelContent | null;
-  setSidePanelContent: DeviceSetSidePanelContent;
+type Props = SidePanelContextType & {
   systemId: Device["system_id"];
 };
 
@@ -70,7 +66,10 @@ const DeviceDetailsHeader = ({
           />
         )
       }
-      sidePanelTitle={getHeaderTitle(device.fqdn || "", sidePanelContent)}
+      sidePanelTitle={getHeaderTitle(
+        device.fqdn || "",
+        sidePanelContent as DeviceSidePanelContent
+      )}
       subtitleLoading={!isDeviceDetails(device)}
       tabLinks={[
         {

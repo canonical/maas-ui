@@ -18,13 +18,13 @@ it("displays correct IP addresses", () => {
     ip_addresses: [
       {
         ip: "11.1.1.1",
-        alloc_type: 3,
+        alloc_type: 4,
         created: "yesterday",
         updated: "today",
       },
       {
         ip: "11.1.1.2",
-        alloc_type: 2,
+        alloc_type: 5,
         created: "yesterday",
         updated: "today",
       },

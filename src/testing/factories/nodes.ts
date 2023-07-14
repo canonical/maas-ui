@@ -451,7 +451,7 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
       chassis_version: "pc-q35-5.1",
     }),
     min_hwe_kernel: "",
-    node_type: 0,
+    node_type: NodeType.RACK_CONTROLLER,
     numa_nodes: () => [],
     on_network: false,
     owner: "admin",

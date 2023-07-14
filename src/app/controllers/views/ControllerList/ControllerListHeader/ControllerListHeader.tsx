@@ -9,6 +9,7 @@ import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import { ControllerHeaderViews } from "app/controllers/constants";
+import type { ControllerSidePanelContent } from "app/controllers/types";
 import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import { getNodeActionTitle } from "app/store/utils";
@@ -69,7 +70,10 @@ const ControllerListHeader = ({
           />
         )
       }
-      sidePanelTitle={getHeaderTitle("Controllers", sidePanelContent)}
+      sidePanelTitle={getHeaderTitle(
+        "Controllers",
+        sidePanelContent as ControllerSidePanelContent
+      )}
       subtitle={
         <ModelListSubtitle
           available={controllers.length}

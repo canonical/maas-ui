@@ -26,6 +26,14 @@ const route = urls.machines.index;
 describe("AddInterface", () => {
   let state: RootState;
   const fabric = fabricFactory();
+  const vlan = vlanFactory({
+    id: 28,
+    fabric: fabric.id,
+    vid: 2,
+    name: "vlan-name",
+    external_dhcp: null,
+    dhcp_on: true,
+  });
   beforeEach(() => {
     state = rootStateFactory({
       fabric: fabricStateFactory({
@@ -47,15 +55,7 @@ describe("AddInterface", () => {
         loaded: true,
       }),
       vlan: vlanStateFactory({
-        items: [
-          vlanFactory({
-            fabric: fabric.id,
-            vid: 2,
-            name: "vlan-name",
-            external_dhcp: null,
-            dhcp_on: true,
-          }),
-        ],
+        items: [vlan],
         loaded: true,
       }),
     });
@@ -129,7 +129,7 @@ describe("AddInterface", () => {
           name: "eth0",
           system_id: "abc123",
           tags: [],
-          vlan: "28",
+          vlan: `${vlan.id}`,
         },
       },
     });

@@ -6,13 +6,10 @@ import { useMatch } from "react-router-dom-v5-compat";
 import MachineListControls from "../MachineListControls";
 
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
-import type {
-  MachineSidePanelContent,
-  MachineSetSidePanelContent,
-} from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -25,16 +22,14 @@ import {
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 
-type Props = {
+type Props = SidePanelContextType & {
   grouping: FetchGroupKey | null;
   hiddenColumns?: string[];
   setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
   setHiddenColumns: React.Dispatch<React.SetStateAction<string[]>>;
-  sidePanelContent: MachineSidePanelContent | null;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 export const MachineListHeader = ({
