@@ -15,6 +15,7 @@ import { KVMSidePanelViews } from "app/kvm/constants";
 import MachineForms from "app/machines/components/MachineForms";
 import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
+import { FilterMachines } from "app/store/machine/utils";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
 type Props = SidePanelContextTypes & {
@@ -113,7 +114,9 @@ const KVMForms = ({
   setSearchFilter,
 }: Props): JSX.Element | null => {
   const selectedMachines = useSelector(machineSelectors.selected);
-  const { selectedCount } = useMachineSelectedCount();
+  const { selectedCount } = useMachineSelectedCount(
+    searchFilter ? FilterMachines.parseFetchFilters(searchFilter) : null
+  );
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),

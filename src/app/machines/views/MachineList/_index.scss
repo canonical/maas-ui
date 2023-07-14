@@ -70,6 +70,14 @@
   .machine-list__machine .p-table-menu {
     display: none;
   }
+  
+  .machine-list .select-all-dropdown {
+      display: inline-flex;
+      margin-left: -0.8rem;
+      margin-top: -0.5rem;
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+  }
 
   .machine-list__machine:last-child td {
     // Force the cells in the last row to calculate their height.
