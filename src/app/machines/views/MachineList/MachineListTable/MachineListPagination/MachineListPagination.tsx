@@ -63,6 +63,7 @@ const MachineListPagination = ({
             setPageNumber((page) => Number(page) - 1);
             props.paginate(props.currentPage - 1);
           }}
+          type="button"
         >
           <Icon name="chevron-down" />
         </Button>
@@ -112,6 +113,7 @@ const MachineListPagination = ({
             setPageNumber((page) => Number(page) + 1);
             props.paginate(props.currentPage + 1);
           }}
+          type="button"
         >
           <Icon name="chevron-down" />
         </Button>
