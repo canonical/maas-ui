@@ -92,7 +92,7 @@ describe("VmResources", () => {
     );
     expect(
       screen.getByRole("grid", {
-        name: MachineListLabel.Machines,
+        name: new RegExp(MachineListLabel.Machines, "i"),
       })
     ).toBeInTheDocument();
   });

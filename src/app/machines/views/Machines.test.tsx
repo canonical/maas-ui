@@ -175,7 +175,7 @@ describe("Machines", () => {
     loaded: true,
     groups: [
       machineStateListGroupFactory({
-        items: [machines[0].system_id, machines[2].system_id],
+        items: [machines[0].system_id],
         name: "Deployed",
         value: FetchNodeStatus.DEPLOYED,
       }),
@@ -374,7 +374,9 @@ describe("Machines", () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(<Machines />, { store });
-    expect(screen.getByLabelText(/Group by/)).toHaveValue(DEFAULTS.grouping);
+    expect(screen.getByRole("combobox", { name: /Group by/ })).toHaveValue(
+      DEFAULTS.grouping
+    );
     const expected = machineActions.fetch("123456", {
       group_key: DEFAULTS.grouping,
     });
