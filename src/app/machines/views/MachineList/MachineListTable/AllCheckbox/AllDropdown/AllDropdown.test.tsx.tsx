@@ -1,8 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import { SelectAllDropdownLabel } from "./AllDropdown";
-
-import AllDropdown from ".";
+import AllDropdown, { AllDropdownLabel } from "./AllDropdown";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
@@ -43,12 +41,12 @@ it("can dispatch an action to select all machines using a dropdown", async () =>
   });
   await userEvent.click(
     screen.getByRole("button", {
-      name: SelectAllDropdownLabel.AllMachinesOptions,
+      name: AllDropdownLabel.AllMachinesOptions,
     })
   );
   await userEvent.click(
     screen.getByRole("button", {
-      name: SelectAllDropdownLabel.SelectAllMachines,
+      name: AllDropdownLabel.SelectAllMachines,
     })
   );
   const expected = machineActions.setSelected({ filter });
@@ -82,12 +80,12 @@ it("can dispatch an action to select all machines on current page using a dropdo
   });
   await userEvent.click(
     screen.getByRole("button", {
-      name: SelectAllDropdownLabel.AllMachinesOptions,
+      name: AllDropdownLabel.AllMachinesOptions,
     })
   );
   await userEvent.click(
     screen.getByRole("button", {
-      name: SelectAllDropdownLabel.SelectAllMachinesOnThisPage,
+      name: AllDropdownLabel.SelectAllMachinesOnThisPage,
     })
   );
   const expected = machineActions.setSelected(expectedSelectedMachines);
