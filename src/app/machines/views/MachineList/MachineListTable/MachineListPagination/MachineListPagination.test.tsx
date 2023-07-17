@@ -135,4 +135,20 @@ describe("MachineListPagination", () => {
 
     expect(pageInput).toHaveValue(1);
   });
+
+  // this is important if pagination is nested in a form that has a submit handler and does not use preventDefault
+  it("does not trigger native form event when the pagination buttons are pressed", async () => {
+    const handleSubmit = jest.fn();
+    render(
+      <form onSubmit={handleSubmit}>
+        <MachineListPagination {...props} />
+      </form>
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Next page" }));
+    expect(handleSubmit).not.toHaveBeenCalled();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Previous page" })
+    );
+    expect(handleSubmit).not.toHaveBeenCalled();
+  });
 });
