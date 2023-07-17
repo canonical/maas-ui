@@ -14,12 +14,9 @@ import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useSendAnalytics } from "app/base/hooks";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
-import type {
-  MachineSidePanelContent,
-  MachineSetSidePanelContent,
-} from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -34,9 +31,7 @@ import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
-type Props = {
-  sidePanelContent: MachineSidePanelContent | null;
-  setSidePanelContent: MachineSetSidePanelContent;
+type Props = SidePanelContextType & {
   systemId: Machine["system_id"];
 };
 

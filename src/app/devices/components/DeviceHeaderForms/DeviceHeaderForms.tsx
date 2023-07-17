@@ -5,18 +5,13 @@ import type { ValueOf } from "@canonical/react-components";
 import AddDeviceForm from "./AddDeviceForm";
 import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { DeviceActionHeaderViews } from "app/devices/constants";
 import { DeviceHeaderViews } from "app/devices/constants";
-import type {
-  DeviceSidePanelContent,
-  DeviceSetSidePanelContent,
-} from "app/devices/types";
 import type { Device } from "app/store/device/types";
 
-type Props = {
+type Props = SidePanelContextType & {
   devices: Device[];
-  sidePanelContent: DeviceSidePanelContent;
-  setSidePanelContent: DeviceSetSidePanelContent;
   viewingDetails?: boolean;
 };
 
@@ -30,6 +25,10 @@ const DeviceHeaderForms = ({
     () => setSidePanelContent(null),
     [setSidePanelContent]
   );
+
+  if (!sidePanelContent) {
+    return null;
+  }
 
   switch (sidePanelContent.view) {
     case DeviceHeaderViews.ADD_DEVICE:

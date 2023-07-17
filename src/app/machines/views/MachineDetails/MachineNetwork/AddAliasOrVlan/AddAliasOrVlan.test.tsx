@@ -41,7 +41,7 @@ describe("AddAliasOrVlan", () => {
     nic = machineInterfaceFactory();
     state = rootStateFactory({
       fabric: fabricStateFactory({
-        items: [fabricFactory()],
+        items: [fabricFactory({ id: 54 })],
       }),
       machine: machineStateFactory({
         loaded: true,
@@ -287,10 +287,7 @@ describe("AddAliasOrVlan", () => {
         loading: false,
       }),
       subnet: subnetStateFactory({
-        items: [
-          subnetFactory({ vlan: vlan.id }),
-          subnetFactory({ vlan: vlan.id }),
-        ],
+        items: [subnetFactory({ id: 76, vlan: vlan.id })],
         loaded: true,
       }),
     });

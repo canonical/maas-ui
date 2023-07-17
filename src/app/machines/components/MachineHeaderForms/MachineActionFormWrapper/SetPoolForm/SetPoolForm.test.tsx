@@ -32,7 +32,7 @@ describe("SetPoolForm", () => {
             system_id: "def456",
           }),
         ],
-        selected: [],
+        selected: null,
         statuses: {
           abc123: machineStatusFactory({ settingPool: false }),
           def456: machineStatusFactory({ settingPool: false }),

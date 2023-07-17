@@ -1,6 +1,7 @@
 import { MachineHeaderViews } from "./constants";
 import type { MachineSidePanelContent } from "./types";
 
+import type { SidePanelContent } from "app/base/side-panel-context";
 import { getNodeActionTitle } from "app/store/utils";
 
 /**
@@ -11,10 +12,10 @@ import { getNodeActionTitle } from "app/store/utils";
  */
 export const getHeaderTitle = (
   defaultTitle: string,
-  sidePanelContent: MachineSidePanelContent | null
+  sidePanelContent: SidePanelContent | null
 ): string => {
   if (sidePanelContent) {
-    const [, name] = sidePanelContent.view;
+    const [, name] = sidePanelContent.view as MachineSidePanelContent["view"];
     switch (name) {
       case MachineHeaderViews.ADD_CHASSIS[1]:
         return "Add chassis";

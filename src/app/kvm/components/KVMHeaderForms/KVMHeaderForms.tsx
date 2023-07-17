@@ -9,21 +9,16 @@ import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type {
-  KVMSidePanelContent,
-  KVMSetSidePanelContent,
-} from "app/kvm/types";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import type { MachineSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
-type Props = {
-  sidePanelContent: KVMSidePanelContent | null;
-  setSidePanelContent: KVMSetSidePanelContent;
+type Props = SidePanelContextType & {
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 };
@@ -36,9 +31,7 @@ const getFormComponent = ({
   selectedCount,
   searchFilter,
   setSearchFilter,
-}: {
-  sidePanelContent: KVMSidePanelContent;
-  setSidePanelContent: KVMSetSidePanelContent;
+}: SidePanelContextType & {
   clearSidePanelContent: ClearSidePanelContent;
   selectedMachines: SelectedMachines | null;
   selectedCount: number;

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
 import { useNavigate } from "react-router-dom-v5-compat";
@@ -86,7 +86,7 @@ const SubnetsList = (): JSX.Element => {
             />,
           ]}
           sidePanelContent={
-            sidePanelContent ? (
+            sidePanelContent && activeForm ? (
               <FormActions
                 activeForm={activeForm}
                 setActiveForm={setSidePanelContent}

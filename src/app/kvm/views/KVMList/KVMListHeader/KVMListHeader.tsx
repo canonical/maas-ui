@@ -7,21 +7,15 @@ import { useLocation } from "react-router-dom";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type {
-  KVMSidePanelContent,
-  KVMSetSidePanelContent,
-} from "app/kvm/types";
 import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
-type Props = Required<Pick<SectionHeaderProps, "title">> & {
-  sidePanelContent: KVMSidePanelContent | null;
-  setSidePanelContent: KVMSetSidePanelContent;
-};
+type Props = Required<Pick<SectionHeaderProps, "title">> & SidePanelContextType;
 
 const KVMListHeader = ({
   sidePanelContent,

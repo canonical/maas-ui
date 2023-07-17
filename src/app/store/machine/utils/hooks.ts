@@ -322,7 +322,7 @@ export const useMachineSelectedCount = (
  */
 export const useFetchSelectedMachines = (
   queryOptions: UseFetchQueryOptions
-): UseFetchMachinesData => {
+): Omit<UseFetchMachinesData, "totalPages"> => {
   const { isEnabled } = queryOptions || { isEnabled: true };
   const selectedMachines = useSelector(machineSelectors.selected);
   const getIsSingleFilter = (

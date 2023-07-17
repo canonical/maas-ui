@@ -22,7 +22,7 @@ describe("SetPoolFormFields", () => {
           machineFactory({ system_id: "abc123" }),
           machineFactory({ system_id: "def456" }),
         ],
-        selected: ["abc123", "def456"],
+        selected: { items: ["abc123", "def456"] },
         statuses: {
           abc123: machineStatusFactory({ settingPool: false }),
           def456: machineStatusFactory({ settingPool: false }),

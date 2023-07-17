@@ -6,18 +6,16 @@ import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
+import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineActionHeaderViews } from "app/machines/constants";
 import type {
   MachineActionVariableProps,
   MachineSidePanelContent,
-  MachineSetSidePanelContent,
 } from "app/machines/types";
 
-type Props = {
-  sidePanelContent: MachineSidePanelContent;
-  setSidePanelContent: MachineSetSidePanelContent;
+type Props = SidePanelContextType & {
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
 } & MachineActionVariableProps;
@@ -37,6 +35,10 @@ export const MachineHeaderForms = ({
     () => setSidePanelContent(null),
     [setSidePanelContent]
   );
+
+  if (!sidePanelContent) {
+    return null;
+  }
 
   switch (sidePanelContent.view) {
     case MachineHeaderViews.ADD_CHASSIS:

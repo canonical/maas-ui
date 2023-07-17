@@ -14,6 +14,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
+import type { DeviceSidePanelContent } from "app/devices/types";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
@@ -57,7 +58,7 @@ const DeviceDetails = (): JSX.Element => {
       header={
         <DeviceDetailsHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
+          sidePanelContent={sidePanelContent as DeviceSidePanelContent}
           systemId={id}
         />
       }

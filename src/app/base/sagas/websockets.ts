@@ -117,12 +117,17 @@ export function createConnection(
   // promise, but rather wait for it to eventually connect.
   return new Promise((resolve, reject) => {
     const readyState = websocketClient.socket?.readyState;
+    const closedOrClosing: Readonly<Array<number>> = [
+      WebSocket.CLOSED,
+      WebSocket.CLOSING,
+    ] as const;
+
     if (readyState === WebSocket.OPEN) {
       resolve(websocketClient);
       return;
     } else if (
       !websocketClient.socket ||
-      (readyState && [WebSocket.CLOSED, WebSocket.CLOSING].includes(readyState))
+      (readyState && closedOrClosing.includes(readyState))
     ) {
       try {
         // Check that the csrftoken etc. exist to create the connection. The

@@ -1,10 +1,7 @@
 import { KVMHeaderViews } from "./constants";
-import type {
-  KVMSidePanelContent,
-  KVMStoragePoolResource,
-  KVMStoragePoolResources,
-} from "./types";
+import type { KVMStoragePoolResource, KVMStoragePoolResources } from "./types";
 
+import type { SidePanelContent } from "app/base/side-panel-context";
 import type { MachineSidePanelContent } from "app/machines/types";
 import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
 import type { Pod } from "app/store/pod/types";
@@ -26,7 +23,9 @@ export const memoryWithUnit = (memory: number): string => {
  * @param sidePanelContent - The currently selected header content.
  * @returns Header title.
  */
-export const getFormTitle = (sidePanelContent: KVMSidePanelContent): string => {
+export const getFormTitle = (
+  sidePanelContent: NonNullable<SidePanelContent>
+): string => {
   switch (sidePanelContent.view) {
     case KVMHeaderViews.ADD_LXD_HOST:
       return "Add LXD host";

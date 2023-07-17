@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
-import { renderHook, cleanup, act } from "@testing-library/react-hooks";
+import { renderHook, cleanup, act } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -915,21 +915,15 @@ describe("machine hook utils", () => {
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode; id: string }) =>
+      ({ children }: { children?: ReactNode }) =>
         <Provider store={store}>{children}</Provider>;
 
     it("can get a machine", () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
       const store = mockStore(state);
-      renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
-        {
-          initialProps: {
-            id: "def456",
-          },
-          wrapper: generateWrapper(store),
-        }
-      );
+      renderHook(() => useFetchMachine("def456"), {
+        wrapper: generateWrapper(store),
+      });
       const expected = machineActions.get("def456", "mocked-nanoid");
       expect(
         store.getActions().find((action) => action.type === expected.type)
@@ -1353,49 +1347,38 @@ describe("machine hook utils", () => {
   });
 
   describe("useFetchedCount", () => {
-    type Props = {
-      count: number | null;
-      loading?: boolean | null;
-    };
     it("handles when no counts have loaded", () => {
-      const { result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: null, loading: false } }
-      );
+      const { result } = renderHook(() => useFetchedCount(null, false));
       expect(result.current).toBe(0);
     });
 
     it("handles when the initial count is loading", () => {
-      const { result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: null, loading: true } }
-      );
+      const { result } = renderHook(() => useFetchedCount(null, true));
       expect(result.current).toBe(0);
     });
 
     it("can display a count", () => {
-      const { result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: 1, loading: false } }
-      );
+      const { result } = renderHook(() => useFetchedCount(1, false));
       expect(result.current).toBe(1);
     });
 
     it("displays the previous count while loading a new one", () => {
-      const { rerender, result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: 1, loading: false } }
-      );
+      const { rerender, result } = renderHook(() => useFetchedCount(1, false));
       expect(result.current).toBe(1);
       rerender({ count: null, loading: true });
       expect(result.current).toBe(1);
     });
 
     it("displays the new count when it has loaded", () => {
-      const { rerender, result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: 1, loading: false } }
-      );
+      const { rerender, result } = renderHook<
+        ReturnType<typeof useFetchedCount>,
+        {
+          count: number | null;
+          loading?: boolean | null;
+        }
+      >(({ count, loading }) => useFetchedCount(count, loading), {
+        initialProps: { count: 1, loading: false },
+      });
       expect(result.current).toBe(1);
       rerender({ count: null, loading: true });
       expect(result.current).toBe(1);
