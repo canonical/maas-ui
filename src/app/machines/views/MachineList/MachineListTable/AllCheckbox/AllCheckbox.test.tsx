@@ -28,7 +28,7 @@ beforeEach(() => {
 
 it("is unchecked if there are no filters, groups or items selected", () => {
   state.machine.selected = null;
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).not.toBeChecked();
@@ -40,7 +40,7 @@ it("is checked if there is a selected filter", () => {
       owner: "admin",
     },
   };
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBeChecked();
@@ -50,7 +50,7 @@ it("is partially checked if a group is selected", () => {
   state.machine.selected = {
     groups: ["admin1"],
   };
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBePartiallyChecked();
@@ -60,7 +60,7 @@ it("is partially checked if a machine is selected", () => {
   state.machine.selected = {
     items: ["abc123"],
   };
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBePartiallyChecked();
