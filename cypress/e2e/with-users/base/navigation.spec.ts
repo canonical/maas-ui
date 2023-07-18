@@ -77,7 +77,7 @@ context("Navigation - admin - collapse", () => {
         name: /main navigation/i,
       });
     getMainNavigation().should("not.be.visible");
-    cy.findByRole("banner").within(() =>
+    cy.findByRole("banner", { name: /navigation/i }).within(() =>
       cy.findByRole("button", { name: "Menu" }).click()
     );
     getMainNavigation()

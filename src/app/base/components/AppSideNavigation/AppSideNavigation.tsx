@@ -122,7 +122,7 @@ const AppSideNavigation = (): JSX.Element => {
 
   return (
     <>
-      <header className="l-navigation-bar">
+      <header aria-label="navigation" className="l-navigation-bar">
         <div className={classNames("p-panel is-dark", `is-maas-${theme}`)}>
           <div className="p-panel__header">
             <NavigationBanner />

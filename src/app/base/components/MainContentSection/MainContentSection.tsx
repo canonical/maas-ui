@@ -1,6 +1,6 @@
 import type { HTMLProps, ReactNode } from "react";
 
-import { Col, Row, Strip } from "@canonical/react-components";
+import { Col, Strip } from "@canonical/react-components";
 import type { ColSize } from "@canonical/react-components";
 
 import NotificationList from "app/base/components/NotificationList";
@@ -25,9 +25,9 @@ const MainContentSection = ({
     <div {...props} id="main-content-section">
       <div>
         {header ? (
-          <Row>
+          <header aria-label="main content" className="row">
             <Col size={12}>{header}</Col>
-          </Row>
+          </header>
         ) : null}
         <Strip element="section" includeCol={false} shallow>
           {sidebar && (
