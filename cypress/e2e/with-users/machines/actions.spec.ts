@@ -64,7 +64,7 @@ context("Machine listing - actions", () => {
     cy.visit(generateMAASURL("/machines"));
     cy.waitForPageToLoad();
     // cy.wait for table data to fully load
-    cy.waitForTableToLoad({ name: "Machines" });
+    cy.waitForTableToLoad({ name: /Machines/i });
   });
 
   it("displays the correct actions in the action menu", () => {
