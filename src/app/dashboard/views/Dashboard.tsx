@@ -8,7 +8,6 @@ import ClearAllForm from "./DashboardHeader/ClearAllForm";
 import DiscoveriesList from "./DiscoveriesList";
 import { DashboardSidePanelViews } from "./constants";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import PageContent from "app/base/components/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSidePanel } from "app/base/side-panel-context";
@@ -30,8 +29,10 @@ const Dashboard = (): JSX.Element => {
 
   if (!isAdmin) {
     return (
-      <MainContentSection
+      <PageContent
         header={<SectionHeader title={Label.Permissions} />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
       />
     );
   }
