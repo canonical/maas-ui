@@ -26,10 +26,6 @@ it("can create an action for creating a zone", () => {
 it("can create an action for fetching zones", () => {
   expect(zoneActions[ZONE_ACTIONS.fetch]()).toEqual({
     type: `${ZoneMeta.MODEL}/${ZONE_ACTIONS.fetch}`,
-    meta: {
-      model: ZoneMeta.MODEL,
-      method: ZONE_WEBSOCKET_METHODS.list,
-    },
     payload: null,
   });
 });
