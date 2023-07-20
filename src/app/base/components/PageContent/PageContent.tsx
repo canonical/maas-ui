@@ -40,19 +40,18 @@ const PageContent = ({
   const authenticated = useSelector(status.authenticated);
   const connected = useSelector(status.connected);
   const hasSecondaryNav = isSettingsPage || isPreferencesPage;
-  const isSecondaryNavVisible =
-    hasSecondaryNav && authenticated && connected;
+  const isSecondaryNavVisible = hasSecondaryNav && authenticated && connected;
   const { theme } = useThemeContext();
 
   return (
     <>
       <main className="l-main">
-        {isSideNavVisible ? (
+        {isSecondaryNavVisible ? (
           <div
             className={classNames("l-main__nav", `is-maas-${theme}--accent`)}
           >
             <SecondaryNavigation
-              isOpen={!!isSideNavVisible}
+              isOpen={!!isSecondaryNavVisible}
               items={
                 isSettingsPage
                   ? settingsNavItems
