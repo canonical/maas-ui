@@ -16,9 +16,15 @@ app.get(`${BASENAME}/`, (req, res) =>
   res.redirect(`${BASENAME}${REACT_BASENAME}`)
 );
 
+const API_ENDPOINTS = [
+  `${BASENAME}/api`,
+  `${BASENAME}/accounts`,
+  `${BASENAME}/a`,
+];
+
 // Proxy API endpoints to the MAAS.
 app.use(
-  createProxyMiddleware([`${BASENAME}/api`, `${BASENAME}/accounts`], {
+  createProxyMiddleware(API_ENDPOINTS, {
     changeOrigin: true,
     onProxyReq(proxyReq) {
       // Django's CSRF protection requires requests to come from the correct

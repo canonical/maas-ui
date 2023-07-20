@@ -181,10 +181,6 @@ const zoneSlice = createSlice({
     },
     [fetch]: {
       prepare: () => ({
-        meta: {
-          model: ZoneMeta.MODEL,
-          method: ZONE_WEBSOCKET_METHODS.list,
-        },
         payload: null,
       }),
       reducer: () => {
