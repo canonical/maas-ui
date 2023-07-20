@@ -39,8 +39,9 @@ const PageContent = ({
   const isPreferencesPage = matchPath("account/prefs/*", pathname);
   const authenticated = useSelector(status.authenticated);
   const connected = useSelector(status.connected);
-  const isSideNavVisible =
-    (isSettingsPage || isPreferencesPage) && authenticated && connected;
+  const hasSecondaryNav = isSettingsPage || isPreferencesPage;
+  const isSecondaryNavVisible =
+    hasSecondaryNav && authenticated && connected;
   const { theme } = useThemeContext();
 
   return (
