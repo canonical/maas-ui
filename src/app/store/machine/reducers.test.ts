@@ -1,5 +1,6 @@
 import { produce } from "immer";
 
+import { DEFAULT_STATUSES } from "./constants";
 import reducers, {
   DEFAULT_COUNT_STATE,
   DEFAULT_LIST_STATE,
@@ -1899,7 +1900,7 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         ...initialState,
-        statuses: { def456: machineStatusFactory() },
+        statuses: { ...initialState.statuses, abc123: { ...DEFAULT_STATUSES } },
       })
     );
   });
