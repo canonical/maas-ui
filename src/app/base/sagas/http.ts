@@ -1,6 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { AnyAction } from "redux";
 import { call, put, takeEvery, takeLatest } from "typed-redux-saga/macro";
 import type { SagaGenerator } from "typed-redux-saga/macro";
+
+import { isLoaded, setIsLoaded } from "./loaded-endpoints";
 
 import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { Script } from "app/store/script/types";
@@ -526,19 +529,26 @@ export function* addMachineChassisSaga(
   }
 }
 
-export function* fetchZonesSaga(): SagaGenerator<void> {
+export function* fetchZonesSaga(action: AnyAction): SagaGenerator<void> {
+  const type = "zone/fetchStart";
   const csrftoken = yield* call(getCookie, "csrftoken");
   if (!csrftoken) {
     return;
   }
+  // TODO: add caching for all HTTP requests https://warthogs.atlassian.net/browse/MAASENG-1996
+  // Do not fetch again if loaded unless 'nocache' is specified.
+  if (isLoaded(type) && !action?.meta?.nocache) {
+    return;
+  }
   let response;
   try {
-    yield* put({ type: "zone/fetchStart" });
+    yield* put({ type });
     response = yield* call(api.zones.fetch, csrftoken);
     yield* put({
       type: "zone/fetchSuccess",
       payload: response,
     });
+    setIsLoaded(type);
   } catch (error) {
     yield* put({
       errors: true,
