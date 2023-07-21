@@ -1888,7 +1888,7 @@ const machineSlice = createSlice({
         );
         state.items.splice(index, 1);
         // Clean up the statuses for model.
-        delete state.statuses[id];
+        state.statuses[id] = { ...DEFAULT_STATUSES };
       });
     },
     [NodeActions.UNTAG]: generateActionParams<UntagParams>(NodeActions.UNTAG),

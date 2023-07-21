@@ -1,6 +1,6 @@
 import { produce } from "immer";
 
-import reducers, { actions } from "./slice";
+import reducers, { actions, DEFAULT_STATUSES } from "./slice";
 import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
 
@@ -1644,7 +1644,10 @@ describe("machine reducer", () => {
       machineStateFactory({
         items: [initialState.items[1]],
         selected: initialState.selected,
-        statuses: { def456: machineStatusFactory() },
+        statuses: {
+          abc123: { ...DEFAULT_STATUSES },
+          def456: machineStatusFactory(),
+        },
       })
     );
   });
