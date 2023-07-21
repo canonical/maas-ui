@@ -152,7 +152,20 @@ module.exports = {
       plugins: ["cypress", "no-only-tests"],
       rules: {
         "no-only-tests/no-only-tests": "error",
+        // vanilla framework often hides default inputs and displays styled ones instead
+        // because of this we need to use use force option to allow interacting with hidden fields
         "cypress/no-force": "warn",
+        "prettier/prettier": "error",
+      },
+    },
+    {
+      files: ["tests/**/*.[jt]s?(x)"],
+      extends: ["plugin:playwright/recommended"],
+      rules: {
+        // vanilla framework often hides default inputs and displays styled ones instead
+        // because of this we need to use use force option to allow interacting with hidden fields
+        "playwright/no-force-option": "off",
+        "no-only-tests/no-only-tests": "error",
         "prettier/prettier": "error",
       },
     },

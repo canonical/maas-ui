@@ -110,6 +110,7 @@
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-no-only-tests": "3.1.0",
+    "eslint-plugin-playwright": "0.15.3",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-unused-imports": "2.0.0",
     "formik-devtools-extension": "0.1.8",
