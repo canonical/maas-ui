@@ -34,10 +34,8 @@ describe("formatErrors", () => {
     expect(formatErrors(error, "name")).toEqual("Too long.");
   });
 
-  it("can return the errors for a single key from an array", () => {
-    const error = {
-      name: ["Too long.", "Too late."],
-    };
-    expect(formatErrors(error, "name")).toEqual("Too long. Too late.");
+  it("correctly formats fetch TypeError", () => {
+    const typeError = new TypeError("Failed to fetch");
+    expect(formatErrors(typeError)).toEqual("Failed to fetch");
   });
 });
