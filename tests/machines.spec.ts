@@ -36,13 +36,13 @@ test("machines list loads", async ({ page }) => {
   await expect(page.getByTestId("section-header-title")).toHaveText(
     /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i
   );
-  await expect(page.getByRole("grid", { name: /Loading/i })).not.toBeVisible();
+  await expect(page.getByRole("grid", { name: /Loading/i })).toBeHidden();
   // expect a single machine.list and machine.count request
   await expect(machineListRequests.length).toBe(1);
   await expect(machineCountRequests.length).toBe(1);
   // perform machine search
   await page.getByLabel("Search").type("doesnotexist");
-  await expect(page.getByRole("grid", { name: /Loading/i })).not.toBeVisible();
+  await expect(page.getByRole("grid", { name: /Loading/i })).toBeHidden();
   await expect(
     page.getByText(/No machines match the search criteria/)
   ).toBeVisible();
