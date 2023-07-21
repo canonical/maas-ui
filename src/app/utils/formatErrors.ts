@@ -20,7 +20,8 @@ const flattenErrors = <E>(errors: E): string | null => {
 
 export type ErrorType<E = null, I = any, K extends keyof I = any> =
   | APIError<E>
-  | EventError<I, E, K>;
+  | EventError<I, E, K>
+  | Error;
 
 export const formatErrors = <E, I, K extends keyof I>(
   errors?: ErrorType<E, I, K>,
@@ -34,9 +35,14 @@ export const formatErrors = <E, I, K extends keyof I>(
       if (errorKey && errorKey in errors) {
         errorMessage = flattenErrors(errors[errorKey as keyof typeof errors]);
       } else {
-        errorMessage = Object.entries(errors)
-          .map(([key, value]) => `${key}: ${flattenErrors(value)}`)
-          .join(" ");
+        const errorEntries = Object.entries(errors);
+        if (errorEntries.length > 0) {
+          errorMessage = Object.entries(errors)
+            .map(([key, value]) => `${key}: ${flattenErrors(value)}`)
+            .join(" ");
+        } else if (errors instanceof Error) {
+          errorMessage = errors?.message;
+        }
       }
     } else if (typeof errors === "string") {
       errorMessage = errors;
