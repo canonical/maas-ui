@@ -124,8 +124,8 @@ export const AppSideNavItems = ({
       ) : null}
       {isAuthenticated ? (
         <>
-          <ul className="p-side-navigation__list">
-            {isAdmin && showLinks ? (
+          {isAdmin && showLinks ? (
+            <ul className="p-side-navigation__list">
               <>
                 <AppSideNavItem
                   icon="settings"
@@ -133,8 +133,8 @@ export const AppSideNavItems = ({
                   path={path}
                 />
               </>
-            ) : null}
-          </ul>
+            </ul>
+          ) : null}
           <ul className="p-side-navigation__list">
             <AppSideNavItem
               icon="profile"
