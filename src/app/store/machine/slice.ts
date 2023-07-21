@@ -1648,7 +1648,7 @@ const machineSlice = createSlice({
     ) => {
       action.payload.forEach((id) => {
         // Clean up the statuses for model.
-        delete state.statuses[id];
+        state.statuses[id] = { ...DEFAULT_STATUSES };
       });
     },
     [NodeActions.UNTAG]: generateActionParams<UntagParams>(NodeActions.UNTAG),
