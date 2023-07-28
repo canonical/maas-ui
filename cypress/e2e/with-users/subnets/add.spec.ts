@@ -69,7 +69,9 @@ context("Subnets - Add", () => {
       "be.visible"
     );
 
-    cy.findByRole("button", { name: "Delete fabric" }).click();
+    cy.findByRole("complementary", { name: /Delete fabric/i }).within(() =>
+      cy.findByRole("button", { name: "Delete fabric" }).click()
+    );
 
     cy.url().should("include", generateMAASURL("/networks?by=fabric"));
 
@@ -96,7 +98,9 @@ context("Subnets - Add", () => {
       "be.visible"
     );
 
-    cy.findByRole("button", { name: "Delete space" }).click();
+    cy.findByRole("complementary", { name: /Delete space/i }).within(() =>
+      cy.findByRole("button", { name: "Delete space" }).click()
+    );
 
     cy.url().should("include", generateMAASURL("/networks?by=fabric"));
     cy.findByRole("table", { name: /Subnets/ }).within(() => {
