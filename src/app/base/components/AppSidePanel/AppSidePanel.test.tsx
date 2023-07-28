@@ -18,9 +18,9 @@ it("displays side panel as a child of #maas-ui DOM node", async () => {
 });
 
 it("adds a correct className for a wide panel", async () => {
-  renderWithBrowserRouter(
-    <AppSidePanel size="wide" title="side panel title" />
-  );
+  renderWithBrowserRouter(<AppSidePanel title="side panel title" />, {
+    sidePanelSize: "wide",
+  });
   expect(
     screen
       .getByRole("complementary", { name: "side panel title" })

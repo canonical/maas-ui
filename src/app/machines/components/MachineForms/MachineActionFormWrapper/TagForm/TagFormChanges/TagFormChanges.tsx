@@ -1,10 +1,15 @@
 import type { ReactNode } from "react";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 
 import type { ChipProps } from "@canonical/react-components";
-import { Modal, Button, Icon, ModularTable } from "@canonical/react-components";
+import {
+  Button,
+  Col,
+  Icon,
+  ModularTable,
+  Row,
+} from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { Portal } from "react-portal";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
@@ -19,12 +24,12 @@ import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import { getTagCounts } from "app/store/tag/utils";
-import TagDetails from "app/tags/components/TagDetails";
 import { toFormikNumber } from "app/utils";
 
 type Props = {
   tags: Tag[];
   newTags: Tag[TagMeta.PK][];
+  toggleTagDetails: (tag: Tag | null) => void;
 } & Pick<MachineActionFormProps, "selectedCount">;
 
 export enum Label {
@@ -114,18 +119,9 @@ export const TagFormChanges = ({
   tags,
   selectedCount,
   newTags,
+  toggleTagDetails,
 }: Props): JSX.Element | null => {
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
-  const [tagDetails, setTagDetails] = useState<Tag | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleTagDetails = (tag: Tag | null) => {
-    setTagDetails(tag);
-    if (tag) {
-      setIsOpen(true);
-    } else {
-      setIsOpen(false);
-    }
-  };
   const tagIdsAndCounts = getTagCounts(tags);
   const tagIds = tagIdsAndCounts ? Array.from(tagIdsAndCounts?.keys()) : [];
   const automaticTags = useSelector((state: RootState) =>
@@ -142,6 +138,7 @@ export const TagFormChanges = ({
   const hasManualTags = manualTags.length > 0;
   const hasAddedTags = addedTags.length > 0;
   const hasRemovedTags = removedTags.length > 0;
+
   const columns = useMemo(
     () => [
       {
@@ -173,120 +170,112 @@ export const TagFormChanges = ({
   if (!hasAutomaticTags && !hasManualTags && !hasAddedTags && !hasRemovedTags) {
     return <p className="u-text--muted">{Label.NoTags}</p>;
   }
+
   addedTags.forEach((tag) => {
     // Added tags will be applied to all machines.
     tagIdsAndCounts?.set(tag.id, machineCount);
   });
   return (
-    <>
-      <ModularTable
-        aria-label={Label.Table}
-        className="tag-form__changes"
-        columns={columns}
-        data={[
-          ...generateRows(
-            RowType.Added,
-            addedTags,
-            machineCount,
-            tagIdsAndCounts,
-            Label.Added,
-            toggleTagDetails,
-            newTags,
-            "positive",
-            (tag) => {
-              setFieldValue(
-                "added",
-                values.added.filter((id) => tag.id !== toFormikNumber(id))
-              );
-            },
-            <>
-              <span className="u-nudge-left--small">{Label.Discard}</span>
-              <Icon name="close" />
-            </>
-          ),
-          ...generateRows(
-            RowType.Removed,
-            removedTags,
-            machineCount,
-            tagIdsAndCounts,
-            Label.Removed,
-            toggleTagDetails,
-            newTags,
-            "negative",
-            (tag) => {
-              setFieldValue(
-                "removed",
-                values.removed.filter((id) => tag.id !== toFormikNumber(id))
-              );
-            },
-            <>
-              <span className="u-nudge-left--small">{Label.Discard}</span>
-              <Icon aria-hidden="true" name="close" />
-            </>
-          ),
-          ...generateRows(
-            RowType.Manual,
-            manualTags,
-            machineCount,
-            tagIdsAndCounts,
-            Label.Manual,
-            toggleTagDetails,
-            newTags,
-            "information",
-            (tag) => {
-              setFieldValue(
-                "removed",
-                values.removed.concat([tag.id.toString()])
-              );
-            },
-            <>
-              <span className="u-nudge-left--small">{Label.Remove}</span>
-              <Icon aria-hidden="true" name="delete" />
-            </>
-          ),
-          ...generateRows(
-            RowType.Auto,
-            automaticTags,
-            machineCount,
-            tagIdsAndCounts,
-            Label.Automatic,
-            toggleTagDetails,
-            newTags
-          ),
-        ]}
-        getCellProps={(props) => {
-          if (props.column.id === Column.Label) {
-            if (props.value?.rowSpan) {
-              // Apply the rowspan prop to those that provide the prop. This will
-              // appear as the first row in each type of tag change.
-              return { rowSpan: props.value?.rowSpan };
+    <Row>
+      <Col size={12}>
+        <ModularTable
+          aria-label={Label.Table}
+          className="tag-form__changes"
+          columns={columns}
+          data={[
+            ...generateRows(
+              RowType.Added,
+              addedTags,
+              machineCount,
+              tagIdsAndCounts,
+              Label.Added,
+              toggleTagDetails,
+              newTags,
+              "positive",
+              (tag) => {
+                setFieldValue(
+                  "added",
+                  values.added.filter((id) => tag.id !== toFormikNumber(id))
+                );
+              },
+              <>
+                <span className="u-nudge-left--small">{Label.Discard}</span>
+                <Icon name="close" />
+              </>
+            ),
+            ...generateRows(
+              RowType.Removed,
+              removedTags,
+              machineCount,
+              tagIdsAndCounts,
+              Label.Removed,
+              toggleTagDetails,
+              newTags,
+              "negative",
+              (tag) => {
+                setFieldValue(
+                  "removed",
+                  values.removed.filter((id) => tag.id !== toFormikNumber(id))
+                );
+              },
+              <>
+                <span className="u-nudge-left--small">{Label.Discard}</span>
+                <Icon aria-hidden="true" name="close" />
+              </>
+            ),
+            ...generateRows(
+              RowType.Manual,
+              manualTags,
+              machineCount,
+              tagIdsAndCounts,
+              Label.Manual,
+              toggleTagDetails,
+              newTags,
+              "information",
+              (tag) => {
+                setFieldValue(
+                  "removed",
+                  values.removed.concat([tag.id.toString()])
+                );
+              },
+              <>
+                <span className="u-nudge-left--small">{Label.Remove}</span>
+                <Icon aria-hidden="true" name="delete" />
+              </>
+            ),
+            ...generateRows(
+              RowType.Auto,
+              automaticTags,
+              machineCount,
+              tagIdsAndCounts,
+              Label.Automatic,
+              toggleTagDetails,
+              newTags
+            ),
+          ]}
+          getCellProps={(props) => {
+            if (props.column.id === Column.Label) {
+              if (props.value?.rowSpan) {
+                // Apply the rowspan prop to those that provide the prop. This will
+                // appear as the first row in each type of tag change.
+                return { rowSpan: props.value?.rowSpan };
+              }
+              // Hide all other label columns as this space will be taken up by the
+              // rowspan column.
+              return { className: "p-table--cell-collapse" };
             }
-            // Hide all other label columns as this space will be taken up by the
-            // rowspan column.
-            return { className: "p-table--cell-collapse" };
-          }
-          return {};
-        }}
-        getRowProps={(row) => row.values.label.row}
-      />
-      {hasAutomaticTags && (
-        <p className="u-text--muted u-nudge-right--small">
-          These tags cannot be unassigned. Go to the{" "}
-          <Link to={urls.tags.index}>Tags tab</Link> to manage automatic tags.
-        </p>
-      )}
-      {isOpen && tagDetails ? (
-        <Portal>
-          <Modal
-            className="tag-form__modal"
-            close={() => toggleTagDetails(null)}
-            title={tagDetails.name}
-          >
-            <TagDetails id={tagDetails.id} narrow />
-          </Modal>
-        </Portal>
-      ) : null}
-    </>
+            return {};
+          }}
+          getRowProps={(row) => row.values.label.row}
+        />
+        {hasAutomaticTags && (
+          <p className="u-text--muted u-nudge-right--small">
+            These tags cannot be unassigned. Go to the{" "}
+            <Link to={urls.tags.index}>Tags tab</Link> to manage automatic tags.
+          </p>
+        )}
+      </Col>
+    </Row>
   );
 };
 

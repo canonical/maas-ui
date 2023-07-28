@@ -1,12 +1,11 @@
-import type { ReactNode } from "react";
-import { useState } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import { useEffect } from "react";
 
-import { Col, Icon, Modal, Row, Spinner } from "@canonical/react-components";
+import { Icon, Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { Portal } from "react-portal";
 import { useSelector } from "react-redux";
 
-import AddTagForm from "../AddTagForm";
+import type { TagFormSecondaryContent } from "../TagForm";
 import TagFormChanges from "../TagFormChanges";
 import {
   useFetchTagsForSelected,
@@ -30,11 +29,15 @@ type Props = {
   machines: Machine[];
   newTags: Tag[TagMeta.PK][];
   setNewTags: (tags: Tag[TagMeta.PK][]) => void;
+  setNewTagName: (name: string) => void;
   viewingDetails?: boolean;
   viewingMachineConfig?: boolean;
   selectedMachines?: SelectedMachines | null;
   selectedCount?: number | null;
-} & Pick<MachineActionFormProps, "searchFilter">;
+  toggleTagDetails: (tag: Tag | null) => void;
+} & Pick<MachineActionFormProps, "searchFilter"> & {
+    setSecondaryContent: Dispatch<SetStateAction<TagFormSecondaryContent>>;
+  };
 
 export enum Label {
   AddTag = "Create a new tag",
@@ -42,21 +45,16 @@ export enum Label {
 }
 
 export const TagFormFields = ({
-  machines,
   newTags,
-  setNewTags,
+  setNewTagName,
   searchFilter,
   selectedMachines,
+  setSecondaryContent,
   selectedCount,
-  viewingDetails = false,
-  viewingMachineConfig = false,
+  toggleTagDetails,
 }: Props): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
-  const closePortal = () => setIsOpen(false);
-  const openPortal = () => setIsOpen(true);
-  const [newTagName, setNewTagName] = useState<string | null>(null);
-  const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const selectedTags = useSelectedTags("added");
+  const { setFormikState } = useFormikContext<TagFormValues>();
   const { tags, loading: tagsLoading } = useFetchTagsForSelected({
     selectedMachines,
     searchFilter,
@@ -69,83 +67,75 @@ export const TagFormFields = ({
   const availableTags = unchangedTags.filter(
     (tag) => tagIdsAndCounts?.get(tag.id) !== selectedCount
   );
+
+  useEffect(() => {
+    // add new tags to the formik state values
+    if (newTags.length > 0) {
+      setFormikState((previousState) => {
+        const tagsToAdd = newTags
+          .map((tag) => String(tag))
+          // filter out tags that are already in the added list
+          .filter(
+            (tag) => !previousState.values.added.find((id) => id === tag)
+          );
+        return {
+          ...previousState,
+          values: {
+            ...previousState.values,
+            added: [...previousState.values.added, ...tagsToAdd],
+          },
+        };
+      });
+    }
+  }, [newTags, setFormikState]);
+
   return (
     <>
-      <Row>
-        <Col size={12}>
-          <TagField
-            externalSelectedTags={selectedTags}
-            generateDropdownEntry={(
-              tag: TagSelectorTag,
-              highlightedName: ReactNode
-            ) => (
-              <div className="u-flex--between">
-                <span>{highlightedName}</span>
-                {hasKernelOptions(tags, tag) ? (
-                  <span
-                    aria-label="with kernel options"
-                    className="u-nudge-left--small"
-                  >
-                    <Icon name="tick" />
-                  </span>
-                ) : null}
-              </div>
-            )}
-            header={
-              <div className="u-flex--between p-text--x-small-capitalised u-nudge-down--x-small">
-                <span>Tag name</span>
-                <span>Kernel options</span>
-              </div>
-            }
-            label={Label.TagInput}
-            name="added"
-            onAddNewTag={(name) => {
-              setNewTagName(name);
-              openPortal();
-            }}
-            placeholder=""
-            showSelectedTags={false}
-            storedValue="id"
-            tags={availableTags.map(({ id, name }) => ({ id, name }))}
-          />
-          {tags.length === 0 && tagsLoading ? (
-            <Spinner text="Loading tags..." />
-          ) : (
-            <TagFormChanges
-              newTags={newTags}
-              selectedCount={selectedCount}
-              tags={tags}
-            />
-          )}
-        </Col>
-      </Row>
-      {isOpen ? (
-        <Portal>
-          <Modal
-            className="tag-form__modal"
-            close={() => closePortal()}
-            title={Label.AddTag}
-          >
-            <AddTagForm
-              machines={machines}
-              name={newTagName}
-              onTagCreated={(tag) => {
-                setFieldValue(
-                  "added",
-                  values.added.concat([tag.id.toString()])
-                );
-                setNewTagName(null);
-                setNewTags([...newTags, tag.id]);
-                closePortal();
-              }}
-              searchFilter={searchFilter}
-              selectedMachines={selectedMachines}
-              viewingDetails={viewingDetails}
-              viewingMachineConfig={viewingMachineConfig}
-            />
-          </Modal>
-        </Portal>
-      ) : null}
+      <TagField
+        externalSelectedTags={selectedTags}
+        generateDropdownEntry={(
+          tag: TagSelectorTag,
+          highlightedName: ReactNode
+        ) => (
+          <div className="u-flex--between">
+            <span>{highlightedName}</span>
+            {hasKernelOptions(tags, tag) ? (
+              <span
+                aria-label="with kernel options"
+                className="u-nudge-left--small"
+              >
+                <Icon name="tick" />
+              </span>
+            ) : null}
+          </div>
+        )}
+        header={
+          <div className="u-flex--between p-text--x-small-capitalised u-nudge-down--x-small">
+            <span>Tag name</span>
+            <span>Kernel options</span>
+          </div>
+        }
+        label={Label.TagInput}
+        name="added"
+        onAddNewTag={(name) => {
+          setNewTagName(name);
+          setSecondaryContent("addTag");
+        }}
+        placeholder=""
+        showSelectedTags={false}
+        storedValue="id"
+        tags={availableTags.map(({ id, name }) => ({ id, name }))}
+      />
+      {tags.length === 0 && tagsLoading ? (
+        <Spinner text="Loading tags..." />
+      ) : (
+        <TagFormChanges
+          newTags={newTags}
+          selectedCount={selectedCount}
+          tags={tags}
+          toggleTagDetails={toggleTagDetails}
+        />
+      )}
     </>
   );
 };

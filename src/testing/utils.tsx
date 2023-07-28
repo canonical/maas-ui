@@ -7,7 +7,10 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
-import type { SidePanelContent } from "app/base/side-panel-context";
+import type {
+  SidePanelContent,
+  SidePanelSize,
+} from "app/base/side-panel-context";
 import SidePanelContextProvider from "app/base/side-panel-context";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -94,6 +97,7 @@ type WrapperProps = {
   state?: RootState;
   store?: MockStoreEnhanced<RootState, {}>;
   sidePanelContent?: SidePanelContent;
+  sidePanelSize?: SidePanelSize;
 };
 
 export const BrowserRouterWithProvider = ({
@@ -101,6 +105,7 @@ export const BrowserRouterWithProvider = ({
   parentRoute,
   routePattern,
   sidePanelContent,
+  sidePanelSize,
   state,
   store,
 }: WrapperProps & { children: React.ReactNode }): React.ReactElement => {
@@ -112,7 +117,10 @@ export const BrowserRouterWithProvider = ({
   const route = <Route element={children} path={routePattern} />;
   return (
     <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      <SidePanelContextProvider value={sidePanelContent}>
+      <SidePanelContextProvider
+        initialSidePanelContent={sidePanelContent}
+        initialSidePanelSize={sidePanelSize}
+      >
         <BrowserRouter>
           <CompatRouter>
             {routePattern ? (

@@ -11,7 +11,6 @@ import TagFormFields, { Label } from "./TagFormFields";
 
 import type { RootState } from "app/store/root/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import { Label as AddTagFormLabel } from "app/tags/components/AddTagForm/AddTagForm";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -20,7 +19,6 @@ import {
   tagState as tagStateFactory,
 } from "testing/factories";
 import { tagStateListFactory } from "testing/factories/state";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 import {
   userEvent,
   render,
@@ -33,6 +31,11 @@ import {
 const mockStore = configureStore();
 let state: RootState;
 let tags: Tag[];
+const commonProps = {
+  setSecondaryContent: jest.fn(),
+  setNewTagName: jest.fn(),
+  toggleTagDetails: jest.fn(),
+};
 
 beforeEach(() => {
   jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
@@ -69,6 +72,7 @@ it("displays available tags in the dropdown", async () => {
   renderWithBrowserRouter(
     <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
       <TagFormFields
+        {...commonProps}
         machines={[]}
         newTags={[]}
         selectedCount={state.machine.items.length}
@@ -112,6 +116,7 @@ it("displays the tags to be added", () => {
       onSubmit={jest.fn()}
     >
       <TagFormFields
+        {...commonProps}
         machines={[]}
         newTags={[]}
         selectedCount={state.machine.items.length}
@@ -134,31 +139,8 @@ it("displays the tags to be added", () => {
   ).toBeInTheDocument();
 });
 
-it("can open a create tag form", async () => {
-  renderWithBrowserRouter(
-    <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-      <TagFormFields
-        machines={[]}
-        newTags={[]}
-        selectedCount={state.machine.items.length}
-        setNewTags={jest.fn()}
-      />
-    </Formik>,
-    { state }
-  );
-
-  await userEvent.type(
-    screen.getByRole("textbox", { name: Label.TagInput }),
-    "name1{enter}"
-  );
-  await waitFor(() =>
-    expect(
-      screen.getByRole("dialog", { name: Label.AddTag })
-    ).toBeInTheDocument()
-  );
-});
-
 it("updates the new tags after creating a tag", async () => {
+  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
   const setNewTags = jest.fn();
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
@@ -170,10 +152,15 @@ it("updates the new tags after creating a tag", async () => {
             onSubmit={jest.fn()}
           >
             <TagFormFields
+              {...commonProps}
               machines={state.machine.items}
-              newTags={[]}
+              newTags={tags}
               selectedCount={state.machine.items.length}
+              selectedMachines={{
+                items: machines.map((item) => item.system_id),
+              }}
               setNewTags={setNewTags}
+              viewingDetails={false}
             />
           </Formik>
         </CompatRouter>
@@ -181,28 +168,20 @@ it("updates the new tags after creating a tag", async () => {
     </Provider>
   );
   const { rerender } = render(<Form tags={[]} />);
-  expect(
-    screen.queryByRole("button", { name: /new-tag/i })
-  ).not.toBeInTheDocument();
-  await userEvent.type(
-    screen.getByRole("textbox", { name: Label.TagInput }),
-    "new-tag{enter}"
-  );
-  mockFormikFormSaved();
-  const newTag = tagFactory({ id: 8, name: "new-tag" });
-  state.tag.saved = true;
-  state.tag.items.push(newTag);
-  await userEvent.click(
-    screen.getByRole("button", { name: AddTagFormLabel.Submit })
-  );
-  rerender(<Form tags={[newTag.id]} />);
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
   });
+  const newTag = tagFactory({ id: 8, name: "new-tag" });
+  state.tag.saved = true;
+  state.tag.items.push(newTag);
+  expect(
+    within(changes).queryByRole("button", { name: /new-tag/i })
+  ).not.toBeInTheDocument();
+  rerender(<Form tags={[newTag.id]} />);
+
   await waitFor(() =>
     expect(
       within(changes).getByRole("button", { name: /new-tag/i })
     ).toBeInTheDocument()
   );
-  expect(setNewTags).toHaveBeenCalledWith([newTag.id]);
 });

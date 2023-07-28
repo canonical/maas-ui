@@ -23,18 +23,22 @@
   }
   .l-aside {
     z-index: $side-panel-z-index;
-    // TODO: remove .l-aside visibility workaround once https://github.com/canonical/vanilla-framework/issues/4629 is fixed
+    background-color: $color-x-light;
+  }
+  // override to allow for large width aside
+  .l-aside {
+    // add width transition for transition between aside sizes
     @include vf-transition(
       $property: #{transform,
       box-shadow,
-      visibility},
+      visibility, width},
       $duration: snap
     );
-    background-color: $color-x-light;
-  }
-  // TODO: remove .l-aside visibility workaround once https://github.com/canonical/vanilla-framework/issues/4629 is fixed
-  .l-aside.is-collapsed {
-    visibility: hidden;
+    @media (min-width: $breakpoint-x-small) {
+      &.is-large {
+        width: 67rem;
+      }
+    }
   }
   .l-navigation-bar.is-pinned {
     width: 100%;

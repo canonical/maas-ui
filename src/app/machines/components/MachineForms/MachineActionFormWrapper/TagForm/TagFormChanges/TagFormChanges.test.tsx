@@ -23,6 +23,10 @@ const mockStore = configureStore();
 
 let state: RootState;
 let tags: Tag[];
+const commonProps = {
+  selectedCount: 0,
+  toggleTagDetails: jest.fn(),
+};
 
 beforeEach(() => {
   jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
@@ -62,7 +66,7 @@ it("displays manual tags", () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} tags={tags} />
+            <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -93,7 +97,7 @@ it("displays automatic tags", () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} tags={tags} />
+            <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -124,7 +128,11 @@ it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
             initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[tags[1].id]} tags={tags} />
+            <TagFormChanges
+              {...commonProps}
+              newTags={[tags[1].id]}
+              tags={tags}
+            />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -153,7 +161,7 @@ it("discards added tags", async () => {
             initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} tags={[]} />
+            <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -170,9 +178,11 @@ it("discards added tags", async () => {
 });
 
 it("displays a tag details modal when chips are clicked", async () => {
-  tags[0].name = "tag1";
-  tags[0].machine_count = 2;
+  const expectedTag = tags[0];
+  expectedTag.name = "tag1";
+  expectedTag.machine_count = 2;
   const store = mockStore(state);
+  const handleToggleTagDetails = jest.fn();
   render(
     <Provider store={store}>
       <MemoryRouter>
@@ -181,14 +191,21 @@ it("displays a tag details modal when chips are clicked", async () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} selectedCount={2} tags={tags} />
+            <TagFormChanges
+              newTags={[]}
+              selectedCount={2}
+              tags={tags}
+              toggleTagDetails={handleToggleTagDetails}
+            />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
-  await userEvent.click(screen.getByRole("button", { name: "tag1 (2/2)" }));
-  expect(screen.getByRole("dialog", { name: "tag1" })).toBeInTheDocument();
+  await userEvent.click(
+    screen.getByRole("button", { name: `${expectedTag.name} (2/2)` })
+  );
+  expect(handleToggleTagDetails).toHaveBeenCalledWith(expectedTag);
 });
 
 it("can remove manual tags", async () => {
@@ -201,7 +218,7 @@ it("can remove manual tags", async () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} tags={tags} />
+            <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -231,7 +248,7 @@ it("displays removed tags", () => {
             initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} tags={[]} />
+            <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -262,7 +279,7 @@ it("discards removed tags", async () => {
             initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} tags={tags} />
+            <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -303,7 +320,7 @@ it("shows a message if no tags are assigned to the selected machines", () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges newTags={[]} tags={tags} />
+            <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>

@@ -5,12 +5,12 @@ import type { ValueOf } from "@canonical/react-components";
 import AddDeviceForm from "./AddDeviceForm";
 import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 
-import type { SidePanelContextTypes } from "app/base/side-panel-context";
+import type { SidePanelContentTypes } from "app/base/side-panel-context";
 import type { DeviceActionHeaderViews } from "app/devices/constants";
 import { DeviceSidePanelViews } from "app/devices/constants";
 import type { Device } from "app/store/device/types";
 
-type Props = SidePanelContextTypes & {
+type Props = SidePanelContentTypes & {
   devices: Device[];
   viewingDetails?: boolean;
 };

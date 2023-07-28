@@ -3,10 +3,10 @@ import { Button } from "@canonical/react-components";
 import { SpaceDetailsSidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
-import type { SidePanelContextTypes } from "app/base/side-panel-context";
+import type { SidePanelContentTypes } from "app/base/side-panel-context";
 import type { Space } from "app/store/space/types";
 
-type Props = SidePanelContextTypes & {
+type Props = SidePanelContentTypes & {
   space: Space;
 };
 

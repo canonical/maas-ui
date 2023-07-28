@@ -10,6 +10,7 @@ import Footer from "../Footer";
 import MainContentSection from "../MainContentSection";
 import SecondaryNavigation from "../SecondaryNavigation";
 
+import type { AppSidePanelProps } from "app/base/components/AppSidePanel";
 import { useThemeContext } from "app/base/theme-context";
 import { preferencesNavItems } from "app/preferences/constants";
 import { settingsNavItems } from "app/settings/constants";
@@ -20,9 +21,9 @@ export type Props = {
   header?: ReactNode;
   sidebar?: ReactNode;
   isNotificationListHidden?: boolean;
-  sidePanelContent: React.ReactNode;
-  sidePanelSize?: "wide";
-  sidePanelTitle: string | null;
+  sidePanelContent: AppSidePanelProps["content"];
+  sidePanelSize?: AppSidePanelProps["size"];
+  sidePanelTitle: AppSidePanelProps["title"];
 } & HTMLProps<HTMLDivElement>;
 
 const PageContent = ({
@@ -31,7 +32,6 @@ const PageContent = ({
   sidebar,
   isNotificationListHidden = false,
   sidePanelContent,
-  sidePanelSize,
   sidePanelTitle,
   ...props
 }: Props): JSX.Element => {
@@ -82,11 +82,7 @@ const PageContent = ({
           <Footer />
         </div>
       </main>
-      <AppSidePanel
-        content={sidePanelContent}
-        size={sidePanelSize}
-        title={sidePanelTitle}
-      />
+      <AppSidePanel content={sidePanelContent} title={sidePanelTitle} />
     </>
   );
 };

@@ -1,8 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
-
-import { usePrevious } from "@canonical/react-components";
-import { useLocation } from "react-router-dom-v5-compat";
+import { createContext, useCallback, useContext, useState } from "react";
 
 import { ControllerSidePanelViews } from "app/controllers/constants";
 import type { ControllerSidePanelContent } from "app/controllers/types";
@@ -72,8 +69,10 @@ export type SetSidePanelContent<T = SidePanelContent> = (
   sidePanelContent: T | null
 ) => void;
 
+export type SidePanelSize = "narrow" | "regular" | "large" | "wide";
 export type SidePanelContextType<T = SidePanelContent> = {
   sidePanelContent: T | null;
+  sidePanelSize: SidePanelSize;
 };
 
 export const SidePanelViews = {
@@ -94,64 +93,79 @@ export const SidePanelViews = {
   ...SpaceDetailsSidePanelViews,
 } as const;
 
-export type SetSidePanelContextType<T = SidePanelContent> = {
+export type SetSidePanelContextType = {
+  setSidePanelContent: SetSidePanelContent;
+  setSidePanelSize: (size: SidePanelSize) => void;
+};
+
+export type SidePanelContentTypes<T = SidePanelContent> = {
+  sidePanelContent: T | null;
   setSidePanelContent: SetSidePanelContent<T>;
 };
 
-export type SidePanelContextTypes<T = SidePanelContent> =
-  SidePanelContextType<T> & SetSidePanelContextType<T>;
-
 const SidePanelContext = createContext<SidePanelContextType>({
   sidePanelContent: null,
+  sidePanelSize: "regular",
 });
 
 const SetSidePanelContext = createContext<SetSidePanelContextType>({
   setSidePanelContent: () => {},
+  setSidePanelSize: () => {},
 });
 
 const useSidePanelContext = (): SidePanelContextType =>
   useContext(SidePanelContext);
+
 const useSetSidePanelContext = (): SetSidePanelContextType =>
   useContext(SetSidePanelContext);
 
 export const useSidePanel = (): SidePanelContextType &
   SetSidePanelContextType => {
-  const { sidePanelContent } = useSidePanelContext();
-  const { setSidePanelContent } = useSetSidePanelContext();
-  const { pathname } = useLocation();
-  const previousPathname = usePrevious(pathname);
+  const { sidePanelSize, sidePanelContent } = useSidePanelContext();
+  const { setSidePanelContent, setSidePanelSize } = useSetSidePanelContext();
+  const setSidePanelContentWithSizeReset = useCallback(
+    (content: SidePanelContent | null): void => {
+      if (content === null) {
+        setSidePanelSize("regular");
+      }
+      setSidePanelContent(content);
+    },
+    [setSidePanelContent, setSidePanelSize]
+  );
 
-  // close side panel on route change
-  useEffect(() => {
-    if (pathname !== previousPathname) {
-      setSidePanelContent(null);
-    }
-  }, [pathname, previousPathname, setSidePanelContent]);
-
-  // close side panel on unmount
-  useEffect(() => {
-    return () => setSidePanelContent(null);
-  }, [setSidePanelContent]);
-
-  return { sidePanelContent, setSidePanelContent };
+  return {
+    sidePanelContent,
+    setSidePanelContent: setSidePanelContentWithSizeReset,
+    sidePanelSize,
+    setSidePanelSize,
+  };
 };
 
 const SidePanelContextProvider = ({
   children,
-  value = null,
-}: PropsWithChildren<{ value?: SidePanelContent }>): React.ReactElement => {
-  const [sidePanelContent, setSidePanelContent] =
-    useState<SidePanelContent>(value);
+  initialSidePanelContent = null,
+  initialSidePanelSize = "regular",
+}: PropsWithChildren<{
+  initialSidePanelContent?: SidePanelContent;
+  initialSidePanelSize?: SidePanelSize;
+}>): React.ReactElement => {
+  const [sidePanelContent, setSidePanelContent] = useState<SidePanelContent>(
+    initialSidePanelContent
+  );
+  const [sidePanelSize, setSidePanelSize] =
+    useState<SidePanelSize>(initialSidePanelSize);
 
   return (
     <SetSidePanelContext.Provider
       value={{
         setSidePanelContent,
+        setSidePanelSize,
       }}
     >
       <SidePanelContext.Provider
         value={{
           sidePanelContent,
+          sidePanelSize,
         }}
       >
         {children}

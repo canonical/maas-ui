@@ -154,7 +154,7 @@ module.exports = {
         "no-only-tests/no-only-tests": "error",
         // vanilla framework often hides default inputs and displays styled ones instead
         // because of this we need to use use force option to allow interacting with hidden fields
-        "cypress/no-force": "warn",
+        "cypress/no-force": "off",
         "prettier/prettier": "error",
       },
     },
