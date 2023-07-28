@@ -22,7 +22,7 @@ const GroupCheckbox = ({
   grouping,
   groupName,
 }: Props): JSX.Element | null => {
-  const selected = useSelector(machineSelectors.selectedMachines);
+  const selected = useSelector(machineSelectors.selected);
   const allSelected = !!selected && "filter" in selected;
   if (!group) {
     return null;

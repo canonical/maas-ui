@@ -1,13 +1,7 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { ZoneColumn } from "./ZoneColumn";
 
-import DoubleRow from "app/base/components/DoubleRow";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -17,8 +11,9 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ZoneColumn", () => {
   let state: RootState;
@@ -50,137 +45,73 @@ describe("ZoneColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("ZoneColumn")).toMatchSnapshot();
-  });
-
   it("displays the zone name", () => {
     state.machine.items[0].zone.name = "zone-one";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find('[data-testid="zone"]').text()).toEqual("zone-one");
+    renderWithBrowserRouter(
+      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
+    );
+    expect(screen.getByTestId("zone")).toHaveTextContent("zone-one");
   });
 
   it("displays single space name", () => {
     state.machine.items[0].spaces = ["space1"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find('[data-testid="spaces"]').text()).toEqual("space1");
+    renderWithBrowserRouter(
+      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
+    );
+    expect(screen.getByTestId("spaces")).toHaveTextContent("space1");
   });
 
   it("displays spaces count for multiple spaces", () => {
     state.machine.items[0].spaces = ["space1", "space2"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find('[data-testid="spaces"]').text()).toEqual("2 spaces");
+    renderWithBrowserRouter(
+      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
+    );
+    expect(screen.getByTestId("spaces")).toHaveTextContent("2 spaces");
   });
 
   it("displays a sorted Tooltip for multiple spaces", () => {
     state.machine.items[0].spaces = ["space2", "space1", "space3"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
 
-    expect(wrapper.find("Tooltip").prop("message")).toEqual(
-      "space1\nspace2\nspace3"
+    expect(screen.getByRole("tooltip")).toHaveTextContent(
+      "space1 space2 space3"
     );
   });
 
-  it("displays a message if the machine cannot have its zone changed", () => {
+  it("displays a message if the machine cannot have its zone changed", async () => {
     state.machine.items[0].actions = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
-    const items = wrapper.find(DoubleRow).prop("menuLinks");
-    expect(items?.length).toBe(1);
-    expect(items && items[0]).toStrictEqual({
-      children: "Cannot change zone of this machine",
-      disabled: true,
-    });
+    await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
+
+    expect(
+      screen.getByRole("button", { name: "Cannot change zone of this machine" })
+    ).toBeDisabled();
   });
 
-  it("can change zones", () => {
+  it("can change zones", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", store }
     );
-    // Open the menu.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    act(() => {
-      wrapper.find("[data-testid='change-zone-link']").at(0).simulate("click");
-    });
+    await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
+    await userEvent.click(screen.getByTestId("change-zone-link"));
+
     expect(
       store.getActions().find((action) => action.type === "machine/setZone")
     ).toEqual({
@@ -201,43 +132,23 @@ describe("ZoneColumn", () => {
     });
   });
 
-  it("shows a spinner when changing zones", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("shows a spinner when changing zones", async () => {
+    renderWithBrowserRouter(
+      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(false);
-    // Open the menu.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    act(() => {
-      wrapper.find("[data-testid='change-zone-link']").at(0).simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
+    await userEvent.click(screen.getByTestId("change-zone-link"));
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ZoneColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("TableMenu").exists()).toBe(false);
+    renderWithBrowserRouter(<ZoneColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
+    expect(
+      screen.queryByRole("button", { name: "Change AZ:" })
+    ).not.toBeInTheDocument();
   });
 });

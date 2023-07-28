@@ -1,9 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
 import MachineSummary from "./MachineSummary";
 
 import type { RootState } from "app/store/root/types";
@@ -13,8 +7,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("MachineSummary", () => {
   let state: RootState;
@@ -27,36 +20,44 @@ describe("MachineSummary", () => {
   });
 
   it("displays a spinner if machines are loading", () => {
-    state.machine.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineSummary setSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    state.machine.items = [];
+    renderWithBrowserRouter(
+      <MachineSummary setSidePanelContent={jest.fn()} />,
+      {
+        route: "/machine/abc123/summary",
+        routePattern: "/machine/:id/summary",
+        state,
+      }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineSummary setSidePanelContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineSummary setSidePanelContent={jest.fn()} />,
+      {
+        route: "/machine/abc123/summary",
+        routePattern: "/machine/:id/summary",
+        state,
+      }
     );
-    expect(wrapper.find("MachineSummary")).toMatchSnapshot();
+
+    expect(screen.getByText("Machine Status")).toBeInTheDocument();
+    expect(screen.getByText("CPU")).toBeInTheDocument();
+    expect(screen.getByText("Memory")).toBeInTheDocument();
+    expect(screen.getByText("Storage")).toBeInTheDocument();
+    expect(screen.getByText("Owner")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Zone/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Resource pool/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Power type/i })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Tags/i })).toBeInTheDocument();
+    expect(screen.getByText("Hardware Information")).toBeInTheDocument();
+    expect(screen.getByLabelText("Numa nodes")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Network/i })).toBeInTheDocument();
   });
 
   it("shows workload annotations for deployed machines", () => {
@@ -66,26 +67,15 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/summary", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineSummary setSidePanelContent={jest.fn()} />}
-                path="/machine/:id/summary"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineSummary setSidePanelContent={jest.fn()} />,
+      {
+        route: "/machine/abc123/summary",
+        routePattern: "/machine/:id/summary",
+        state,
+      }
     );
-    expect(wrapper.find("WorkloadCard").exists()).toBe(true);
+    expect(screen.getByText("Workload annotations")).toBeInTheDocument();
   });
 
   it("shows workload annotations for allocated machines", () => {
@@ -95,26 +85,15 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/summary", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineSummary setSidePanelContent={jest.fn()} />}
-                path="/machine/:id/summary"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineSummary setSidePanelContent={jest.fn()} />,
+      {
+        route: "/machine/abc123/summary",
+        routePattern: "/machine/:id/summary",
+        state,
+      }
     );
-    expect(wrapper.find("WorkloadCard").exists()).toBe(true);
+    expect(screen.getByText("Workload annotations")).toBeInTheDocument();
   });
 
   it("does not show workload annotations for machines that are neither deployed nor allocated", () => {
@@ -124,25 +103,14 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/summary", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineSummary setSidePanelContent={jest.fn()} />}
-                path="/machine/:id/summary"
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineSummary setSidePanelContent={jest.fn()} />,
+      {
+        route: "/machine/abc123/summary",
+        routePattern: "/machine/:id/summary",
+        state,
+      }
     );
-    expect(wrapper.find("WorkloadCard").exists()).toBe(false);
+    expect(screen.queryByText("Workload annotations")).not.toBeInTheDocument();
   });
 });

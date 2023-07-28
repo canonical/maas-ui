@@ -1,7 +1,8 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
+import { createCachedSelector } from "re-reselect";
 
-import { ACTIONS } from "app/store/machine/slice";
+import { ACTIONS } from "app/store/machine/constants";
 import type {
   FilterGroupKey,
   Machine,
@@ -151,10 +152,7 @@ const active = createSelector(
  * @param {RootState} state - The redux state.
  * @returns {Machine[]} Selected machines.
  */
-const selectedMachines = createSelector(
-  [machineState],
-  ({ selectedMachines }) => selectedMachines
-);
+const selected = createSelector([machineState], ({ selected }) => selected);
 
 /**
  * Select the event errors for all machines.
@@ -434,6 +432,17 @@ const listCount = createSelector(
 );
 
 /**
+ * Get the total page count for a machine list request with a given callId.
+ */
+const listTotalPages = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.num_pages ?? null
+);
+
+/**
  * Get the stale value for a machine count request with a given callId
  */
 const countStale = createSelector(
@@ -442,17 +451,6 @@ const countStale = createSelector(
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
   (machineState, callId) => getCount(machineState, callId)?.stale ?? null
-);
-
-/**
- * Get the stale value for a machine list request with a given callId
- */
-const listNeedsUpdate = createSelector(
-  [
-    machineState,
-    (_state: RootState, callId: string | null | undefined) => callId,
-  ],
-  (machineState, callId) => getList(machineState, callId)?.needsUpdate ?? null
 );
 
 /**
@@ -529,15 +527,11 @@ const listLoading = createSelector(
  * @param selected - Whether to filter for selected machines.
  * @returns A list of machines.
  */
-const list = createSelector(
-  [
-    machineState,
-    defaultSelectors.all,
-    (_state: RootState, callId: string | null | undefined) => ({
-      callId,
-    }),
-  ],
-  (machineState, allMachines, { callId }) => {
+const list = createCachedSelector(
+  machineState,
+  defaultSelectors.all,
+  (_state: RootState, callId: string | null | undefined) => callId,
+  (machineState, allMachines, callId) => {
     const machines: Machine[] = [];
     getList(machineState, callId)?.groups?.forEach((group) => {
       group.items.forEach((systemId) => {
@@ -551,7 +545,7 @@ const list = createSelector(
     });
     return machines;
   }
-);
+)((_state, callId) => callId || "");
 
 /**
  * Get machine system_ids in a list request.
@@ -560,25 +554,26 @@ const list = createSelector(
  * @param selected - Whether to filter for selected machines.
  * @returns A list of machines.
  */
-const listIds = (
-  machineState: MachineState,
-  callId: string | null | undefined
-): Machine[MachineMeta.PK][] => {
-  const ids: Machine[MachineMeta.PK][] = [];
-  // Get the ids for all machines in a list or count re
-  const list = getList(machineState, callId);
-  if (list) {
-    // Get the ids for all machines in a list request matching the callId
-    list.groups?.forEach((group) => {
-      group.items.forEach((systemId) => {
-        if (!ids.includes(systemId)) {
-          ids.push(systemId);
-        }
+const listIds = createCachedSelector(
+  machineState,
+  (_state: RootState, callId: string | null | undefined) => callId,
+  (machineState, callId) => {
+    const ids: Machine[MachineMeta.PK][] = [];
+    // Get the ids for all machines in a list or count re
+    const list = getList(machineState, callId);
+    if (list) {
+      // Get the ids for all machines in a list request matching the callId
+      list.groups?.forEach((group) => {
+        group.items.forEach((systemId) => {
+          if (!ids.includes(systemId)) {
+            ids.push(systemId);
+          }
+        });
       });
-    });
+    }
+    return ids;
   }
-  return ids;
-};
+)((_state, callId) => callId || "");
 
 /**
  * Get the ids of machines in a list or details call that are not being used
@@ -675,12 +670,12 @@ const selectors = {
   linkingSubnet: statusSelectors["linkingSubnet"],
   list,
   listCount,
+  listTotalPages,
   listErrors,
   listGroup,
   listGroups,
   listLoaded,
   listLoading,
-  listNeedsUpdate,
   listStale,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
@@ -688,7 +683,7 @@ const selectors = {
   overridingFailedTesting: statusSelectors["overridingFailedTesting"],
   processing,
   releasing: statusSelectors["releasing"],
-  selectedMachines,
+  selected,
   settingPool: statusSelectors["settingPool"],
   settingZone: statusSelectors["settingZone"],
   statuses,

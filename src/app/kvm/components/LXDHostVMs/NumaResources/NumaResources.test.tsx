@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import NumaResources, { TRUNCATION_POINT } from "./NumaResources";
 
 import * as hooks from "app/base/hooks/analytics";
@@ -16,9 +11,7 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("NumaResources", () => {
   it("can expand truncated NUMA nodes if above truncation point", async () => {
@@ -31,26 +24,25 @@ describe("NumaResources", () => {
       }),
     });
     const state = rootStateFactory({ pod: podStateFactory({ items: [pod] }) });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <NumaResources id={pod.id} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Button[data-testid='show-more-numas']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("NumaResourcesCard").length).toBe(TRUNCATION_POINT);
 
-    wrapper.find("Button[data-testid='show-more-numas']").simulate("click");
-    await waitForComponentToPaint(wrapper);
+    renderWithBrowserRouter(<NumaResources id={pod.id} />, {
+      state,
+      route: "/kvm/1",
+    });
 
-    expect(
-      wrapper.find("Button[data-testid='show-more-numas'] span").text()
-    ).toBe("Show less NUMA nodes");
-    expect(wrapper.find("NumaResourcesCard").length).toBe(TRUNCATION_POINT + 1);
+    expect(screen.getByTestId("show-more-numas")).toBeInTheDocument();
+    expect(screen.getAllByLabelText("numa resources card")).toHaveLength(
+      TRUNCATION_POINT
+    );
+
+    await userEvent.click(screen.getByTestId("show-more-numas"));
+
+    expect(screen.getByTestId("show-more-numas")).toHaveTextContent(
+      "Show less NUMA nodes"
+    );
+    expect(screen.getAllByLabelText("numa resources card")).toHaveLength(
+      TRUNCATION_POINT + 1
+    );
   });
 
   it("shows wide cards if the pod has less than or equal to 2 NUMA nodes", () => {
@@ -61,16 +53,12 @@ describe("NumaResources", () => {
       }),
     });
     const state = rootStateFactory({ pod: podStateFactory({ items: [pod] }) });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <NumaResources id={pod.id} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<NumaResources id={pod.id} />, {
+      state,
+      route: "/kvm/1",
+    });
 
-    expect(wrapper.find(".numa-resources.is-wide").exists()).toBe(true);
+    expect(screen.getByTestId("numa-resources")).toHaveClass("is-wide");
   });
 
   it("can send an analytics event when expanding NUMA nodes if analytics enabled", async () => {
@@ -94,17 +82,12 @@ describe("NumaResources", () => {
       pod: podStateFactory({ items: [pod] }),
     });
     const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <NumaResources id={pod.id} />
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("Button[data-testid='show-more-numas']").simulate("click");
-    await waitForComponentToPaint(wrapper);
+    renderWithBrowserRouter(<NumaResources id={pod.id} />, {
+      state,
+      route: "/kvm/1",
+    });
 
+    await userEvent.click(screen.getByTestId("show-more-numas"));
     expect(useSendMock).toHaveBeenCalled();
     useSendMock.mockRestore();
   });

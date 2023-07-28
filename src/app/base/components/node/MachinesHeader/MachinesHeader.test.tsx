@@ -1,5 +1,4 @@
-import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -8,6 +7,7 @@ import configureStore from "redux-mock-store";
 import MachinesHeader from "./MachinesHeader";
 
 import type { RootState } from "app/store/root/types";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -17,18 +17,18 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 
+enableCallIdMocks();
 const mockStore = configureStore();
 
 describe("MachinesHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
         counts: machineStateCountsFactory({
-          "mocked-nanoid": machineStateCountFactory({
+          [callId]: machineStateCountFactory({
             count: 2,
             loaded: true,
             loading: false,
@@ -46,25 +46,21 @@ describe("MachinesHeader", () => {
     });
   });
 
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   it("renders", () => {
     state.machine.loaded = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachinesHeader machineCount={2} />
+            <MachinesHeader machineCount={2} title="Machines" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "Machines"
     );
   });

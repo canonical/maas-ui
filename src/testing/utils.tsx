@@ -1,19 +1,14 @@
-/* eslint-disable react/no-multi-comp */
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
-import { render } from "@testing-library/react";
-import type { ReactWrapper } from "enzyme";
-import { shallow } from "enzyme";
-import type { FormikHelpers } from "formik";
-import { act } from "react-dom/test-utils";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { AnyObject } from "app/base/types";
+import type { SidePanelContent } from "app/base/side-panel-context";
+import SidePanelContextProvider from "app/base/side-panel-context";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -38,26 +33,6 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-
-/**
- * Assert that some JSX from Enzyme is equal to some provided JSX.
- * @param {Object} actual - Some JSX from Enzyme.
- * @param {Object} expected - Some JSX provided in the test.
- */
-export const compareJSX = (
-  actual: ReactWrapper,
-  expected: ReactWrapper
-): void => {
-  const actualOutput = actual.debug();
-  // If the very first child of a component is another component then this
-  // will render that components markup, but we want to shallow render it.
-  // By wrapping the expected JSX in a div we stop enzyme from rendering the
-  // supplied component and then we compare against the actual output.
-  const expectedOutput = shallow(<div>{expected}</div>)
-    .children()
-    .debug();
-  expect(actualOutput).toBe(expectedOutput);
-};
 
 /**
  * Replace objects in an array with objects that have new values, given a match
@@ -88,42 +63,29 @@ export const reduceInitialState = <I,>(
 };
 
 /**
- * Fixes the error...
- * Warning: An update to Foo inside a test was not wrapped in act(...).\
- * https://github.com/enzymejs/enzyme/issues/2073
- * @param {ReactWrapper} wrapper The wrapper output from the enzyme `mount` command.
- * @returns {Promise} completion of wrapper update.
+ * A matcher function to find elements by text that is broken up by multiple child elements
+ * @param {string | RegExp} text The text content that you are looking for
+ * @returns {HTMLElement} An element matching the text provided
  */
-export const waitForComponentToPaint = async (
-  wrapper: ReactWrapper
-): Promise<void> => {
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve));
-    wrapper.update();
+export const getByTextContent = (text: string | RegExp): HTMLElement => {
+  return screen.getByText((_, element) => {
+    const hasText = (element: Element | null) => {
+      if (element) {
+        if (text instanceof RegExp && element.textContent) {
+          return text.test(element.textContent);
+        } else {
+          return element.textContent === text;
+        }
+      } else {
+        return false;
+      }
+    };
+    const elementHasText = hasText(element);
+    const childrenDontHaveText = Array.from(element?.children || []).every(
+      (child) => !hasText(child)
+    );
+    return elementHasText && childrenDontHaveText;
   });
-};
-
-/**
- * A utility to submit our custom FormikForm component.
- */
-export const submitFormikForm = (
-  wrapper: ReactWrapper,
-  values: AnyObject = {},
-  helpers: Partial<FormikHelpers<object>> = {}
-): void => {
-  const formikHelpers = {
-    resetForm: jest.fn(),
-    ...helpers,
-  } as FormikHelpers<object>;
-  const onSubmit = wrapper.find(FormikForm).prop("onSubmit");
-  // In strict mode this is correctly inferred as a function so can be use with
-  // `.invoke("onSubmit")` but with strict mode turned off we first have to be
-  // sure it is a function.
-  if (typeof onSubmit === "function") {
-    act(() => {
-      onSubmit(values, formikHelpers);
-    });
-  }
 };
 
 type WrapperProps = {
@@ -131,15 +93,17 @@ type WrapperProps = {
   routePattern?: string;
   state?: RootState;
   store?: MockStoreEnhanced<RootState, {}>;
+  sidePanelContent?: SidePanelContent;
 };
 
-const BrowserRouterWithProvider = ({
+export const BrowserRouterWithProvider = ({
   children,
   parentRoute,
   routePattern,
+  sidePanelContent,
   state,
   store,
-}: WrapperProps & { children: React.ReactElement }) => {
+}: WrapperProps & { children: React.ReactNode }): React.ReactElement => {
   const getMockStore = (state: RootState) => {
     const mockStore = configureStore();
     return mockStore(state);
@@ -148,17 +112,23 @@ const BrowserRouterWithProvider = ({
   const route = <Route element={children} path={routePattern} />;
   return (
     <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      <BrowserRouter>
-        <CompatRouter>
-          {routePattern ? (
-            <Routes>
-              {parentRoute ? <Route path={parentRoute}>{route}</Route> : route}
-            </Routes>
-          ) : (
-            children
-          )}
-        </CompatRouter>
-      </BrowserRouter>
+      <SidePanelContextProvider value={sidePanelContent}>
+        <BrowserRouter>
+          <CompatRouter>
+            {routePattern ? (
+              <Routes>
+                {parentRoute ? (
+                  <Route path={parentRoute}>{route}</Route>
+                ) : (
+                  route
+                )}
+              </Routes>
+            ) : (
+              children
+            )}
+          </CompatRouter>
+        </BrowserRouter>
+      </SidePanelContextProvider>
     </Provider>
   );
 };
@@ -174,7 +144,7 @@ const WithMockStoreProvider = ({
   };
   return (
     <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      {children}
+      <SidePanelContextProvider>{children}</SidePanelContextProvider>
     </Provider>
   );
 };
@@ -189,12 +159,16 @@ export const renderWithBrowserRouter = (
   const { route, ...wrapperProps } = options || {};
   window.history.pushState({}, "", route);
 
-  return render(ui, {
+  const rendered = render(ui, {
     wrapper: (props) => (
       <BrowserRouterWithProvider {...props} {...wrapperProps} />
     ),
     ...options,
   });
+
+  return {
+    ...rendered,
+  };
 };
 
 export const renderWithMockStore = (
@@ -213,6 +187,8 @@ export const renderWithMockStore = (
   });
   return {
     ...rendered,
+    rerender: (ui: React.ReactElement) =>
+      renderWithMockStore(ui, { container: rendered.container, ...options }),
   };
 };
 

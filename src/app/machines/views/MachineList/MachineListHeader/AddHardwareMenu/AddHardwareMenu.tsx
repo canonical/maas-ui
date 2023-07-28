@@ -1,6 +1,6 @@
 import { ContextualMenu } from "@canonical/react-components";
 
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 
 type Props = {
@@ -14,18 +14,19 @@ export const AddHardwareMenu = ({
 }: Props): JSX.Element => {
   return (
     <ContextualMenu
+      className="is-maas-select"
       data-testid="add-hardware-dropdown"
       hasToggleIcon
       links={[
         {
           children: "Machine",
           onClick: () =>
-            setSidePanelContent({ view: MachineHeaderViews.ADD_MACHINE }),
+            setSidePanelContent({ view: MachineSidePanelViews.ADD_MACHINE }),
         },
         {
           children: "Chassis",
           onClick: () =>
-            setSidePanelContent({ view: MachineHeaderViews.ADD_CHASSIS }),
+            setSidePanelContent({ view: MachineSidePanelViews.ADD_CHASSIS }),
         },
       ]}
       position="right"

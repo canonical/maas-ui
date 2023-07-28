@@ -1,13 +1,7 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { PoolColumn } from "./PoolColumn";
 
-import DoubleRow from "app/base/components/DoubleRow";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -18,8 +12,9 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("PoolColumn", () => {
   let state: RootState;
@@ -52,128 +47,85 @@ describe("PoolColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("PoolColumn")).toMatchSnapshot();
-  });
-
   it("displays pool", () => {
     state.machine.items[0].pool = modelRefFactory({ name: "pool-1" });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      {
+        route: "/machines",
+        state,
+      }
     );
 
-    expect(wrapper.find('[data-testid="pool"]').text()).toEqual("pool-1");
+    expect(screen.getByTestId("pool")).toHaveTextContent("pool-1");
   });
 
   it("displays description", () => {
     state.machine.items[0].description = "decomissioned";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      {
+        route: "/machines",
+        state,
+      }
     );
 
-    expect(wrapper.find('[data-testid="note"]').text()).toEqual(
-      "decomissioned"
-    );
+    expect(screen.getByTestId("note")).toHaveTextContent("decomissioned");
   });
 
-  it("displays a message if there are no additional pools", () => {
+  it("displays a message if there are no additional pools", async () => {
     state.resourcepool.items = [
       resourcePoolFactory({
         id: 0,
         name: "default",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      {
+        route: "/machines",
+        state,
+      }
     );
-    const items = wrapper.find(DoubleRow).prop("menuLinks");
-    expect(items?.length).toBe(1);
-    expect(items && items[0]).toStrictEqual({
-      children: "No other pools available",
-      disabled: true,
-    });
+    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    expect(
+      screen.getByRole("button", { name: "No other pools available" })
+    ).toBeDisabled();
   });
 
-  it("displays a message if the machine cannot have its pool changed", () => {
+  it("displays a message if the machine cannot have its pool changed", async () => {
     state.machine.items[0].actions = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      {
+        route: "/machines",
+        state,
+      }
     );
-    const items = wrapper.find(DoubleRow).prop("menuLinks");
-    expect(items?.length).toBe(1);
-    expect(items && items[0]).toStrictEqual({
-      children: "Cannot change pool of this machine",
-      disabled: true,
-    });
+    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    expect(
+      screen.getByRole("button", {
+        name: "Cannot change pool of this machine",
+      })
+    ).toBeDisabled();
   });
 
-  it("can change pools", () => {
+  it("can change pools", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      {
+        route: "/machines",
+        store,
+      }
     );
-    // Open the menu.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    act(() => {
-      wrapper.find("[data-testid='change-pool-link']").at(0).simulate("click");
-    });
+    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    await userEvent.click(screen.getByRole("button", { name: "Backup" }));
+
     expect(
       store.getActions().find((action) => action.type === "machine/setPool")
     ).toEqual({
@@ -194,43 +146,28 @@ describe("PoolColumn", () => {
     });
   });
 
-  it("shows a spinner when changing pools", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("shows a spinner when changing pools", async () => {
+    renderWithBrowserRouter(
+      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      {
+        route: "/machines",
+        state,
+      }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(false);
-    // Open the menu.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    act(() => {
-      wrapper.find("[data-testid='change-pool-link']").at(0).simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
+    await userEvent.click(screen.getByRole("button", { name: "Backup" }));
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<PoolColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
 
-    expect(wrapper.find("TableMenu").exists()).toBe(false);
+    expect(
+      screen.queryByRole("button", { name: "Change pool:" })
+    ).not.toBeInTheDocument();
   });
 });

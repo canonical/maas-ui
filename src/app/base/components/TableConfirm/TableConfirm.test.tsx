@@ -1,25 +1,31 @@
-import { mount, shallow } from "enzyme";
+import userEvent from "@testing-library/user-event";
 
 import TableConfirm from "./TableConfirm";
 
+import { render, screen } from "testing/utils";
+
 describe("TableConfirm", () => {
   it("renders", () => {
-    const wrapper = shallow(
+    render(
       <TableConfirm
-        confirmLabel="save"
+        confirmLabel="Yes I am"
         finished={false}
         inProgress={false}
-        message="Are you sure"
+        message="...ARE YOU SURE ABOUT THAT?"
         onClose={jest.fn()}
         onConfirm={jest.fn()}
       />
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(screen.getByText("...ARE YOU SURE ABOUT THAT?")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Yes I am" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
   });
 
-  it("can confirm", () => {
+  it("can confirm", async () => {
     const onConfirm = jest.fn();
-    const wrapper = shallow(
+    render(
       <TableConfirm
         confirmLabel="save"
         finished={false}
@@ -29,13 +35,14 @@ describe("TableConfirm", () => {
         onConfirm={onConfirm}
       />
     );
-    wrapper.find("ActionButton").simulate("click");
+    const confirmButton = screen.getByText(/save/i);
+    await userEvent.click(confirmButton);
     expect(onConfirm).toHaveBeenCalled();
   });
 
-  it("can cancel", () => {
+  it("can cancel", async () => {
     const onClose = jest.fn();
-    const wrapper = shallow(
+    render(
       <TableConfirm
         confirmLabel="save"
         finished={false}
@@ -45,13 +52,14 @@ describe("TableConfirm", () => {
         onConfirm={jest.fn()}
       />
     );
-    wrapper.find("Button").simulate("click");
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+    await userEvent.click(cancelButton);
     expect(onClose).toHaveBeenCalled();
   });
 
-  it("closes when it has finished", () => {
+  it("closes when it has finished", async () => {
     const onClose = jest.fn();
-    const wrapper = mount(
+    const { rerender } = render(
       <TableConfirm
         confirmLabel="save"
         finished={false}
@@ -61,16 +69,25 @@ describe("TableConfirm", () => {
         onConfirm={jest.fn()}
       />
     );
-    wrapper.find("ActionButton").simulate("click");
+    const confirmButton = screen.getByText(/save/i);
+    await userEvent.click(confirmButton);
     expect(onClose).not.toHaveBeenCalled();
-    wrapper.setProps({ finished: true });
-    wrapper.update();
+    rerender(
+      <TableConfirm
+        confirmLabel="save"
+        finished={true}
+        inProgress={false}
+        message="Are you sure"
+        onClose={onClose}
+        onConfirm={jest.fn()}
+      />
+    );
     expect(onClose).toHaveBeenCalled();
   });
 
-  it("runs onSuccess function when it has finished", () => {
+  it("runs onSuccess function when it has finished", async () => {
     const onSuccess = jest.fn();
-    const wrapper = mount(
+    const { rerender } = render(
       <TableConfirm
         confirmLabel="save"
         finished={false}
@@ -81,16 +98,26 @@ describe("TableConfirm", () => {
         onSuccess={onSuccess}
       />
     );
-    wrapper.find("ActionButton").simulate("click");
+    const confirmButton = screen.getByText(/save/i);
+    await userEvent.click(confirmButton);
     expect(onSuccess).not.toHaveBeenCalled();
-    wrapper.setProps({ finished: true });
-    wrapper.update();
+    rerender(
+      <TableConfirm
+        confirmLabel="save"
+        finished={true}
+        inProgress={false}
+        message="Are you sure"
+        onClose={jest.fn()}
+        onConfirm={jest.fn()}
+        onSuccess={onSuccess}
+      />
+    );
     expect(onSuccess).toHaveBeenCalled();
   });
 
   it("can display an error", () => {
     const onClose = jest.fn();
-    const wrapper = mount(
+    render(
       <TableConfirm
         confirmLabel="save"
         errors="It didn't work"
@@ -101,12 +128,12 @@ describe("TableConfirm", () => {
         onConfirm={jest.fn()}
       />
     );
-    expect(wrapper.find("Notification").text()).toBe("Error:It didn't work");
+    expect(screen.getByText("It didn't work")).toBeInTheDocument();
   });
 
   it("can display an error for a field", () => {
     const onClose = jest.fn();
-    const wrapper = mount(
+    render(
       <TableConfirm
         confirmLabel="save"
         errorKey="delete"
@@ -118,6 +145,6 @@ describe("TableConfirm", () => {
         onConfirm={jest.fn()}
       />
     );
-    expect(wrapper.find("Notification").text()).toBe("Error:It didn't work");
+    expect(screen.getByText("It didn't work")).toBeInTheDocument();
   });
 });

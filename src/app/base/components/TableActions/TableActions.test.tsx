@@ -1,36 +1,42 @@
-import { shallow } from "enzyme";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import TableActions from "./TableActions";
 
+import { renderWithBrowserRouter } from "testing/utils";
+
 describe("TableActions ", () => {
   it("renders a copy button if copy value provided", () => {
-    const wrapper = shallow(<TableActions copyValue="foo" />);
-    expect(wrapper.find("CopyButton").exists()).toBe(true);
+    renderWithBrowserRouter(<TableActions copyValue="foo" />);
+    expect(screen.getByText(/copy/i)).toBeInTheDocument();
   });
 
   it("renders an edit link if edit path provided", () => {
-    const wrapper = shallow(<TableActions editPath="/bar" />);
-    expect(wrapper.find("Button").props().to).toBe("/bar");
+    renderWithBrowserRouter(<TableActions editPath="/bar" />);
+    expect(screen.getByRole("link", { name: /edit/i })).toHaveAttribute(
+      "href",
+      "/bar"
+    );
   });
 
-  it("renders an edit button if edit on-click provided", () => {
+  it("renders an edit button if edit on-click provided", async () => {
     const onEdit = jest.fn();
-    const wrapper = shallow(<TableActions onEdit={onEdit} />);
-    wrapper.find("Button").simulate("click");
+    renderWithBrowserRouter(<TableActions onEdit={onEdit} />);
+    await userEvent.click(screen.getByText(/edit/i));
     expect(onEdit).toHaveBeenCalled();
-    expect(wrapper.find("Button").prop("element")).toBe(undefined);
+    expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
   });
 
-  it("renders a delete button if delete function provided", () => {
+  it("renders a delete button if delete function provided", async () => {
     const onDelete = jest.fn();
-    const wrapper = shallow(<TableActions onDelete={onDelete} />);
-    expect(wrapper.find("Button .p-icon--delete").exists()).toBe(true);
-    wrapper.find("Button").simulate("click");
+    renderWithBrowserRouter(<TableActions onDelete={onDelete} />);
+    expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
     expect(onDelete).toHaveBeenCalled();
   });
 
   it("correctly renders tooltips", () => {
-    const wrapper = shallow(
+    renderWithBrowserRouter(
       <TableActions
         deleteTooltip="delete tooltip"
         editPath="/bar"
@@ -38,14 +44,12 @@ describe("TableActions ", () => {
         onDelete={jest.fn()}
       />
     );
-    expect(wrapper.find("Tooltip").at(0).prop("message")).toBe("edit tooltip");
-    expect(wrapper.find("Tooltip").at(1).prop("message")).toBe(
-      "delete tooltip"
-    );
+    expect(screen.getByText(/edit tooltip/i)).toBeInTheDocument();
+    expect(screen.getByText(/delete tooltip/i)).toBeInTheDocument();
   });
 
   it("correctly disables buttons", () => {
-    const wrapper = shallow(
+    renderWithBrowserRouter(
       <TableActions
         deleteDisabled
         editDisabled
@@ -53,7 +57,10 @@ describe("TableActions ", () => {
         onDelete={jest.fn()}
       />
     );
-    expect(wrapper.find("Button").at(0).props().disabled).toBe(true);
-    expect(wrapper.find("Button").at(1).props().disabled).toBe(true);
+    expect(screen.getByRole("link", { name: /edit/i })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
+    expect(screen.getByRole("button", { name: /delete/i })).toBeDisabled();
   });
 });

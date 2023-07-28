@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Icon, Spinner } from "@canonical/react-components";
 import { formatDuration } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -97,7 +97,17 @@ const SessionTimeout = (): JSX.Element => {
         validationSchema={SessionTimeoutSchema}
       >
         <FormikField
-          help="Maximum session length is 14 days / 2 weeks. Format options are weeks, days, hours, and/or minutes."
+          help={
+            <span>
+              Maximum session length is 14 days / 2 weeks. Format options are
+              weeks, days, hours, and/or minutes.
+              <br />
+              <br />
+              <Icon name="warning" /> MAAS will automatically log out all users
+              after changing the session expiration time. New session timeout
+              applies after login.
+            </span>
+          }
           label={Labels.Expiration}
           name="session_length"
           required={true}

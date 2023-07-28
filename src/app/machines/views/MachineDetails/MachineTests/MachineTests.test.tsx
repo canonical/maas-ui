@@ -1,5 +1,4 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -19,9 +18,9 @@ import {
   machineDetails as machineDetailsFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
-  testStatus as testStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore, screen } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = jest.requireActual("@canonical/react-components/dist/hooks");
@@ -31,7 +30,7 @@ jest.mock("@canonical/react-components/dist/hooks", () => {
   };
 });
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineTests", () => {
   let state: RootState;
@@ -44,6 +43,7 @@ describe("MachineTests", () => {
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",
+            testing_status: TestStatusStatus.RUNNING,
           }),
         ],
       }),
@@ -74,7 +74,7 @@ describe("MachineTests", () => {
     ];
     const store = mockStore(state);
 
-    const wrapper = mount(
+    renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -85,18 +85,19 @@ describe("MachineTests", () => {
             </Routes>
           </CompatRouter>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
+      { store }
     );
 
-    expect(
-      wrapper.find("[data-testid='hardware-heading']").at(0).text()
-    ).toEqual("CPU");
-    expect(
-      wrapper.find("[data-testid='hardware-heading']").at(1).text()
-    ).toEqual("Network");
-    expect(
-      wrapper.find("[data-testid='hardware-heading']").at(2).text()
-    ).toEqual("Other Results");
+    expect(screen.getAllByTestId("hardware-heading")[0]).toHaveTextContent(
+      "CPU"
+    );
+    expect(screen.getAllByTestId("hardware-heading")[1]).toHaveTextContent(
+      "Network"
+    );
+    expect(screen.getAllByTestId("hardware-heading")[2]).toHaveTextContent(
+      "Other Results"
+    );
   });
 
   it("renders headings for each block device", () => {
@@ -124,7 +125,7 @@ describe("MachineTests", () => {
     ];
     const store = mockStore(state);
 
-    const wrapper = mount(
+    renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -135,11 +136,12 @@ describe("MachineTests", () => {
             </Routes>
           </CompatRouter>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
+      { store }
     );
-    expect(
-      wrapper.find("[data-testid='storage-heading']").first().text()
-    ).toEqual("/dev/sda (model: QEMU HARDDISK, serial: lxd_root)");
+    expect(screen.getByTestId("storage-heading")).toHaveTextContent(
+      "/dev/sda (model: QEMU HARDDISK, serial: lxd_root)"
+    );
   });
 
   it("shows a heading for a block device without a model and serial", () => {
@@ -166,7 +168,7 @@ describe("MachineTests", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -177,11 +179,10 @@ describe("MachineTests", () => {
             </Routes>
           </CompatRouter>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
+      { store }
     );
-    expect(
-      wrapper.find("[data-testid='storage-heading']").first().text()
-    ).toEqual("/dev/sda");
+    expect(screen.getByTestId("storage-heading")).toHaveTextContent("/dev/sda");
   });
 
   it("shows a heading for a network interface", () => {
@@ -206,7 +207,7 @@ describe("MachineTests", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -217,18 +218,19 @@ describe("MachineTests", () => {
             </Routes>
           </CompatRouter>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
+      { store }
     );
-    expect(
-      wrapper.find("[data-testid='hardware-device-heading']").first().text()
-    ).toEqual("ens4 (52:54:00:57:e9:ac)");
+    expect(screen.getByTestId("hardware-device-heading")).toHaveTextContent(
+      "ens4 (52:54:00:57:e9:ac)"
+    );
   });
 
   it("fetches script results if they haven't been fetched", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
     const store = mockStore(state);
-    mount(
+    renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -239,7 +241,8 @@ describe("MachineTests", () => {
             </Routes>
           </CompatRouter>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
+      { store }
     );
     expect(
       store
@@ -248,11 +251,11 @@ describe("MachineTests", () => {
     ).toBe(true);
   });
 
-  it("does not fetch script results if they have already been loaded", () => {
+  it("fetches script results on mount if they have already been loaded", () => {
     state.nodescriptresult.items = { abc123: [] };
-    state.scriptresult.items = [];
+    state.scriptresult.items = [scriptResultFactory()];
     const store = mockStore(state);
-    const wrapper = mount(
+    renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -263,14 +266,9 @@ describe("MachineTests", () => {
             </Routes>
           </CompatRouter>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
+      { store }
     );
-    expect(
-      store
-        .getActions()
-        .filter((action) => action.type === "scriptresult/getByNodeId").length
-    ).toBe(1);
-    wrapper.setProps({});
     expect(
       store
         .getActions()
@@ -288,10 +286,8 @@ describe("MachineTests", () => {
         locked: false,
         permissions: ["edit"],
         system_id: "abc123",
-        testing_status: testStatusFactory({
-          // This value is different to the value stored by usePrevious.
-          status: TestStatusStatus.PENDING,
-        }),
+        // This value is different to the value stored by usePrevious.
+        testing_status: TestStatusStatus.PENDING,
       }),
     ];
     state.nodescriptresult.items = { abc123: [1] };
@@ -304,7 +300,7 @@ describe("MachineTests", () => {
       }),
     ];
     const store = mockStore(state);
-    mount(
+    renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -315,12 +311,13 @@ describe("MachineTests", () => {
             </Routes>
           </CompatRouter>
         </MemoryRouter>
-      </Provider>
+      </Provider>,
+      { store }
     );
     expect(
       store
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
-    ).toBe(1);
+    ).toBe(2);
   });
 });

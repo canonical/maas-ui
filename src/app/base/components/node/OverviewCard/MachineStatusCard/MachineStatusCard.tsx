@@ -41,7 +41,7 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
       return false;
   }
 
-  return machine.testing_status.status === TestStatusStatus.FAILED;
+  return machine.testing_status === TestStatusStatus.FAILED;
 };
 
 const formatSyncInterval = (syncInterval: Seconds) =>

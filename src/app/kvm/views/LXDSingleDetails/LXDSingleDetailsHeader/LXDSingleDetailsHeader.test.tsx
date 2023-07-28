@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -56,12 +56,7 @@ describe("LXDSingleDetailsHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -81,12 +76,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -108,12 +98,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -134,12 +119,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -163,9 +143,7 @@ describe("LXDSingleDetailsHeader", () => {
           <CompatRouter>
             <LXDSingleDetailsHeader
               id={1}
-              setSearchFilter={jest.fn()}
               setSidePanelContent={setSidePanelContent}
-              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -175,7 +153,7 @@ describe("LXDSingleDetailsHeader", () => {
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.REFRESH_KVM,
+      view: KVMSidePanelViews.REFRESH_KVM,
       extras: { hostIds: [1] },
     });
   });

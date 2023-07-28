@@ -8,10 +8,11 @@ import ControllerListControls from "./ControllerListControls";
 import ControllerListHeader from "./ControllerListHeader";
 import ControllerListTable from "./ControllerListTable";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent/PageContent";
 import VaultNotification from "app/base/components/VaultNotification";
 import { useWindowTitle } from "app/base/hooks";
-import type { ControllerSidePanelContent } from "app/controllers/types";
+import { useSidePanel } from "app/base/side-panel-context";
+import ControllerForms from "app/controllers/components/ControllerForms/ControllerForms";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { FilterControllers } from "app/store/controller/utils";
@@ -19,6 +20,7 @@ import { actions as generalActions } from "app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 
 const ControllerList = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -27,9 +29,8 @@ const ControllerList = (): JSX.Element => {
   const currentFilters = FilterControllers.queryStringToFilters(
     location.search
   );
-
-  const [sidePanelContent, setSidePanelContent] =
-    useState<ControllerSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+  const selectedControllers = useSelector(controllerSelectors.selected);
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
     FilterControllers.filtersToString(currentFilters)
@@ -60,14 +61,23 @@ const ControllerList = (): JSX.Element => {
   );
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <ControllerListHeader
           setSearchFilter={setSearchFilter}
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
         />
       }
+      sidePanelContent={
+        sidePanelContent && (
+          <ControllerForms
+            controllers={selectedControllers}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        )
+      }
+      sidePanelTitle={getSidePanelTitle("Controllers", sidePanelContent)}
     >
       <VaultNotification />
       <ControllerListControls
@@ -83,7 +93,7 @@ const ControllerList = (): JSX.Element => {
         }}
         selectedIDs={selectedIDs}
       />
-    </MainContentSection>
+    </PageContent>
   );
 };
 

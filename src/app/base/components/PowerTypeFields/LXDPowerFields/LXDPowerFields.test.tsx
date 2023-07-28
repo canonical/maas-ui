@@ -1,66 +1,48 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import LXDPowerFields from "./LXDPowerFields";
 
-import type { RootState } from "app/store/root/types";
-import {
-  powerField as powerFieldFactory,
-  rootState as rootStateFactory,
-} from "testing/factories";
-
-const mockStore = configureStore();
+import { powerField as powerFieldFactory } from "testing/factories";
+import { renderWithMockStore, screen } from "testing/utils";
 
 describe("LXDPowerFields", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = rootStateFactory();
-  });
-
   it("can be given a custom power parameters name", () => {
-    const field = powerFieldFactory({ name: "field" });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LXDPowerFields
-            fields={[field]}
-            powerParametersValueName="custom-power-parameters"
-          />
-        </Formik>
-      </Provider>
+    const field = powerFieldFactory({ name: "field", label: "custom field" });
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LXDPowerFields
+          fields={[field]}
+          powerParametersValueName="custom-power-parameters"
+        />
+      </Formik>
     );
-    expect(
-      wrapper.find("input[name='custom-power-parameters.field']").exists()
-    ).toBe(true);
+    expect(screen.getByLabelText("custom field")).toHaveAttribute(
+      "name",
+      "custom-power-parameters.field"
+    );
   });
 
   it("renders certificate fields if the user can edit them", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LXDPowerFields canEditCertificate fields={[]} />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LXDPowerFields canEditCertificate fields={[]} />
+      </Formik>
     );
 
-    expect(wrapper.find("CertificateFields").exists()).toBe(true);
+    expect(
+      screen.getByLabelText(/Generate new certificate/i)
+    ).toBeInTheDocument();
   });
 
   it("does not render certificate fields if the user cannot edit them", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LXDPowerFields canEditCertificate={false} fields={[]} />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LXDPowerFields canEditCertificate={false} fields={[]} />
+      </Formik>
     );
 
-    expect(wrapper.find("CertificateFields").exists()).toBe(false);
+    expect(
+      screen.queryByLabelText(/Generate new certificate/i)
+    ).not.toBeInTheDocument();
   });
 });

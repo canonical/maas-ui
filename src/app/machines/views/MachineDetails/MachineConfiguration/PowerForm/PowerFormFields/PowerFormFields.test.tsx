@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import PowerFormFields from ".";
 
@@ -15,8 +12,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("PowerFormFields", () => {
   let state: RootState;
@@ -37,10 +33,12 @@ describe("PowerFormFields", () => {
       powerTypeFactory({
         fields: [
           powerFieldFactory({
+            label: "Node field",
             name: "node-field",
             scope: PowerFieldScope.NODE,
           }),
           powerFieldFactory({
+            label: "BMC field",
             name: "bmc-field",
             scope: PowerFieldScope.BMC,
           }),
@@ -57,29 +55,26 @@ describe("PowerFormFields", () => {
       power_type: "manual",
       system_id: "abc123",
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: "manual",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerFormFields machine={machine} />
-        </Formik>
-      </Provider>
+
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          powerParameters: {},
+          powerType: "manual",
+        }}
+        onSubmit={jest.fn()}
+      >
+        <PowerFormFields machine={machine} />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("Select[name='powerType']").prop("disabled")).toBe(
-      true
-    );
+    expect(screen.getByRole("combobox", { name: /Power type/ })).toBeDisabled();
     expect(
-      wrapper.find("input[name='powerParameters.node-field']").exists()
-    ).toBe(true);
+      screen.getByRole("textbox", { name: "Node field" })
+    ).toBeInTheDocument();
     expect(
-      wrapper.find("input[name='powerParameters.bmc-field']").exists()
-    ).toBe(false);
+      screen.queryByRole("textbox", { name: "BMC field" })
+    ).not.toBeInTheDocument();
   });
 });

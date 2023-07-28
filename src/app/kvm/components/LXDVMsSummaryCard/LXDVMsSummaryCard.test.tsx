@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -19,13 +19,14 @@ describe("LXDVMsSummaryCard", () => {
         loaded: false,
       }),
     });
+
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <LXDVMsSummaryCard id={1} />
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 });

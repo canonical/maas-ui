@@ -7,6 +7,7 @@ import { Link } from "react-router-dom-v5-compat";
 import DoubleRow from "app/base/components/DoubleRow";
 import urls from "app/base/urls";
 import { useToggleMenu } from "app/machines/hooks";
+import type { MachineMenuToggleHandler } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
@@ -16,7 +17,7 @@ import zoneSelectors from "app/store/zone/selectors";
 import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 type Props = {
-  onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  onToggleMenu?: MachineMenuToggleHandler;
   systemId: Machine[MachineMeta.PK];
 };
 
@@ -46,7 +47,7 @@ export const ZoneColumn = ({
     machineSelectors.getById(state, systemId)
   );
   const zones = useSelector(zoneSelectors.all);
-  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null);
   let zoneLinks;
   const machineZones = zones.filter((zone) => zone.id !== machine?.zone.id);
   if (machine?.actions.includes(NodeActions.SET_ZONE)) {

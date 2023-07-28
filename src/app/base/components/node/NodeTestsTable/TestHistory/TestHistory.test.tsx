@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TestHistory from "./TestHistory";
@@ -15,8 +11,9 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("TestHistory", () => {
   let state: RootState;
@@ -43,16 +40,9 @@ describe("TestHistory", () => {
     const scriptResult = scriptResultFactory({ id: 1 });
     state.scriptresult.items = [scriptResult];
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      { route: "/machine/abc123", store }
     );
     const actions = store.getActions();
 
@@ -78,19 +68,12 @@ describe("TestHistory", () => {
     state.scriptresult.items = [scriptResult];
     state.scriptresult.history = {};
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("displays a test history table if test has been run more than once", () => {
@@ -100,19 +83,12 @@ describe("TestHistory", () => {
       1: [partialScriptResultFactory(), partialScriptResultFactory()],
     };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("[data-testid='history-table']").exists()).toBe(true);
+    expect(screen.getByTestId("history-table")).toBeInTheDocument();
   });
 
   it("displays a link to the history details", () => {
@@ -122,19 +98,12 @@ describe("TestHistory", () => {
       1: [partialScriptResultFactory(), partialScriptResultFactory()],
     };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("[data-testid='details-link']").exists()).toBe(true);
+    expect(screen.getAllByTestId("details-link")).toHaveLength(2);
   });
 
   it("displays a message if the test has no history", () => {
@@ -144,18 +113,11 @@ describe("TestHistory", () => {
       1: [partialScriptResultFactory()],
     };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      { route: "/machine/abc123", store }
     );
 
-    expect(wrapper.find("[data-testid='no-history']").exists()).toBe(true);
+    expect(screen.getByTestId("no-history")).toBeInTheDocument();
   });
 });

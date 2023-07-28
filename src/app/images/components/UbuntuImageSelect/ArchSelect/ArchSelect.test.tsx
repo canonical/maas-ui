@@ -94,7 +94,7 @@ describe("ArchSelect", () => {
       { state }
     );
 
-    expect(screen.getByRole("checkbox", { name: "i386" })).toBeDisabled();
+    expect(screen.getByRole("checkbox", { name: /i386/i })).toBeDisabled();
     expect(
       screen.getByRole("tooltip", {
         name: "i386 is not available on 20.04 LTS.",
@@ -130,7 +130,7 @@ describe("ArchSelect", () => {
       </Formik>,
       { state }
     );
-    const archCheckbox = screen.getByRole("checkbox", { name: "amd64" });
+    const archCheckbox = screen.getByRole("checkbox", { name: /amd64/i });
 
     expect(archCheckbox).toBeChecked();
     expect(archCheckbox).toBeDisabled();

@@ -2,7 +2,7 @@
 
 # Build stage: Install yarn dependencies
 # ===
-FROM node:19 AS yarn-dependencies
+FROM node:20 AS yarn-dependencies
 WORKDIR /srv
 COPY . .
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn CYPRESS_INSTALL_BINARY=0 yarn install

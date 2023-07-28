@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import {
   Route,
@@ -18,7 +17,8 @@ import MaasIntro from "./MaasIntro";
 import MaasIntroSuccess from "./MaasIntroSuccess";
 import UserIntro from "./UserIntro";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent";
+import SectionHeader from "app/base/components/SectionHeader";
 import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -66,14 +66,19 @@ const Intro = (): JSX.Element => {
 
   let content: ReactNode;
   if (authLoading || configLoading) {
-    content = <Spinner text="Loading..." />;
+    content = (
+      <PageContent
+        header={<SectionHeader loading />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
   } else if (showIncomplete) {
-    // Prevent the user from reaching any of the intro urls if they are not an
-    // admin.
+    // Prevent the user from reaching any of the intro urls if they are not an admin
     content = <IncompleteCard />;
   }
   if (content) {
-    return <MainContentSection>{content}</MainContentSection>;
+    return <>{content}</>;
   }
   const base = `${urls.intro.index}`;
   return (

@@ -1,6 +1,5 @@
-import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
@@ -19,7 +18,13 @@ import {
   tagState as tagStateFactory,
 } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -73,26 +78,12 @@ it("dispatches an action to create a tag", async () => {
 });
 
 it("redirects to the newly created tag on save", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.tags.index }],
-  });
   const onClose = jest.fn();
-  const store = mockStore(state);
-  const TagForm = () => (
-    <Provider store={store}>
-      <Router history={history}>
-        <CompatRouter>
-          <Route
-            component={() => <AddTagForm onClose={onClose} />}
-            exact
-            path={urls.tags.index}
-          />
-        </CompatRouter>
-      </Router>
-    </Provider>
-  );
-  render(<TagForm />);
-  expect(history.location.pathname).toBe(urls.tags.index);
+  renderWithBrowserRouter(<AddTagForm onClose={onClose} />, {
+    route: urls.tags.index,
+    state,
+  });
+  expect(window.location.pathname).toBe(urls.tags.index);
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
@@ -104,7 +95,7 @@ it("redirects to the newly created tag on save", async () => {
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
-  expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
+  expect(window.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
   expect(onClose).toBeCalled();
 });
 

@@ -3,7 +3,8 @@ import AddSpace from "./components/AddSpace";
 import AddSubnet from "./components/AddSubnet";
 import AddVlan from "./components/AddVlan";
 
-import { SubnetForms } from "app/subnets/enum";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
+import { SubnetForms } from "app/subnets/constants";
 import type { SubnetForm } from "app/subnets/types";
 
 const FormComponents: Record<
@@ -18,7 +19,7 @@ const FormComponents: Record<
 
 export interface FormActionProps {
   activeForm: SubnetForm;
-  setActiveForm: React.Dispatch<React.SetStateAction<SubnetForm | null>>;
+  setActiveForm: SetSidePanelContent;
 }
 
 const FormActions = ({

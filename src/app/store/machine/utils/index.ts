@@ -21,3 +21,5 @@ export {
 export { FilterMachines, WORKLOAD_FILTER_PREFIX } from "./search";
 
 export { isTransientStatus } from "./status";
+
+export { createMachineListGroup } from "./createMachineListGroup";

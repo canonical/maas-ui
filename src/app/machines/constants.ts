@@ -1,6 +1,7 @@
+import { FetchGroupKey } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
-export const MachineActionHeaderViews = {
+export const MachineActionSidePanelViews = {
   ABORT_MACHINE: ["machineActionForm", NodeActions.ABORT],
   ACQUIRE_MACHINE: ["machineActionForm", NodeActions.ACQUIRE],
   CLONE_MACHINE: ["machineActionForm", NodeActions.CLONE],
@@ -26,14 +27,14 @@ export const MachineActionHeaderViews = {
   UNLOCK_MACHINE: ["machineActionForm", NodeActions.UNLOCK],
 } as const;
 
-export const MachineNonActionHeaderViews = {
+export const MachineNonActionSidePanelViews = {
   ADD_CHASSIS: ["machineNonActionForm", "addChassis"],
   ADD_MACHINE: ["machineNonActionForm", "addMachine"],
 } as const;
 
-export const MachineHeaderViews = {
-  ...MachineActionHeaderViews,
-  ...MachineNonActionHeaderViews,
+export const MachineSidePanelViews = {
+  ...MachineActionSidePanelViews,
+  ...MachineNonActionSidePanelViews,
 } as const;
 
 export const columns = [
@@ -85,3 +86,51 @@ export const columnLabels: Record<MachineColumns, string> = {
   disks: "Disks",
   storage: "Storage",
 };
+
+export const groupOptions: Array<{ value: FetchGroupKey | ""; label: string }> =
+  [
+    {
+      value: "",
+      label: "No grouping",
+    },
+    {
+      value: FetchGroupKey.Status,
+      label: "Group by status",
+    },
+    {
+      value: FetchGroupKey.Owner,
+      label: "Group by owner",
+    },
+    {
+      value: FetchGroupKey.Pool,
+      label: "Group by resource pool",
+    },
+    {
+      value: FetchGroupKey.Architecture,
+      label: "Group by architecture",
+    },
+    {
+      value: FetchGroupKey.Domain,
+      label: "Group by domain",
+    },
+    {
+      value: FetchGroupKey.Parent,
+      label: "Group by parent",
+    },
+    {
+      value: FetchGroupKey.Pod,
+      label: "Group by KVM",
+    },
+    {
+      value: FetchGroupKey.PodType,
+      label: "Group by KVM type",
+    },
+    {
+      value: FetchGroupKey.PowerState,
+      label: "Group by power state",
+    },
+    {
+      value: FetchGroupKey.Zone,
+      label: "Group by zone",
+    },
+  ];

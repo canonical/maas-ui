@@ -1,38 +1,15 @@
-import { shallow } from "enzyme";
-
 import VfResources from "./VfResources";
 
 import { podNetworkInterface as interfaceFactory } from "testing/factories";
+import { render, screen, within } from "testing/utils";
 
 describe("VfResources", () => {
-  it("renders", () => {
-    const wrapper = shallow(
-      <VfResources
-        interfaces={[
-          interfaceFactory({
-            name: "eth0",
-            virtual_functions: {
-              allocated_tracked: 1,
-              allocated_other: 2,
-              free: 3,
-            },
-          }),
-        ]}
-      />
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("can be made to have a dynamic layout", () => {
-    const wrapper = shallow(<VfResources dynamicLayout interfaces={[]} />);
+    render(<VfResources dynamicLayout interfaces={[]} />);
 
-    expect(
-      wrapper
-        .find(".vf-resources")
-        .prop("className")
-        ?.includes("vf-resources--dynamic-layout")
-    ).toBe(true);
+    expect(screen.getByLabelText("VF resources")).toHaveClass(
+      "vf-resources--dynamic-layout"
+    );
   });
 
   it("shows whether an interface has virtual functions or not", () => {
@@ -52,40 +29,31 @@ describe("VfResources", () => {
         },
       }),
     ];
-    const wrapper = shallow(
-      <VfResources dynamicLayout interfaces={[hasVfs, noVfs]} />
-    );
+    render(<VfResources dynamicLayout interfaces={[hasVfs, noVfs]} />);
 
-    expect(
-      wrapper.find("tbody tr").at(0).find("[data-testid='has-vfs']").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find("tbody tr").at(0).find("[data-testid='has-no-vfs']").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find("tbody tr").at(1).find("[data-testid='has-vfs']").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find("tbody tr").at(1).find("[data-testid='has-no-vfs']").exists()
-    ).toBe(true);
+    const rows = screen.getAllByRole("row");
+    expect(within(rows[1]).getByTestId("has-vfs")).toBeInTheDocument();
+    expect(within(rows[1]).queryByTestId("has-no-vfs")).not.toBeInTheDocument();
+    expect(within(rows[2]).queryByTestId("has-vfs")).not.toBeInTheDocument();
+    expect(within(rows[2]).getByTestId("has-no-vfs")).toBeInTheDocument();
   });
 
   it("can render as an aggregated meter", () => {
-    const wrapper = shallow(<VfResources interfaces={[]} showAggregated />);
-    expect(wrapper.find("[data-testid='iface-meter']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='iface-table']").exists()).toBe(false);
+    render(<VfResources interfaces={[]} showAggregated />);
+
+    expect(screen.getByTestId("iface-meter")).toBeInTheDocument();
+    expect(screen.queryByTestId("iface-table")).not.toBeInTheDocument();
   });
 
   it("can render as a table", () => {
-    const wrapper = shallow(
-      <VfResources interfaces={[]} showAggregated={false} />
-    );
-    expect(wrapper.find("[data-testid='iface-table']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='iface-meter']").exists()).toBe(false);
+    render(<VfResources interfaces={[]} showAggregated={false} />);
+
+    expect(screen.getByTestId("iface-table")).toBeInTheDocument();
+    expect(screen.queryByTestId("iface-meter")).not.toBeInTheDocument();
   });
 
   it("shows whether an interface has virtual functions or not", () => {
-    const wrapper = shallow(
+    render(
       <VfResources
         interfaces={[
           interfaceFactory({
@@ -115,26 +83,17 @@ describe("VfResources", () => {
         ]}
       />
     );
-    expect(
-      wrapper
-        .find("tbody tr")
-        .at(0)
-        .find("[data-testid='interface-name']")
-        .text()
-    ).toBe("aaa:");
-    expect(
-      wrapper
-        .find("tbody tr")
-        .at(1)
-        .find("[data-testid='interface-name']")
-        .text()
-    ).toBe("bbb:");
-    expect(
-      wrapper
-        .find("tbody tr")
-        .at(2)
-        .find("[data-testid='interface-name']")
-        .text()
-    ).toBe("ccc:");
+
+    const rows = screen.getAllByRole("row");
+
+    expect(within(rows[1]).getByTestId("interface-name")).toHaveTextContent(
+      "aaa:"
+    );
+    expect(within(rows[2]).getByTestId("interface-name")).toHaveTextContent(
+      "bbb:"
+    );
+    expect(within(rows[3]).getByTestId("interface-name")).toHaveTextContent(
+      "ccc:"
+    );
   });
 });

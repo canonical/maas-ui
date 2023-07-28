@@ -3,7 +3,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
-import { MachineHeaderViews } from "app/machines/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 import type { TestStatus } from "app/store/types/node";
@@ -149,7 +149,7 @@ const TestResults = ({
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
                   setSidePanelContent({
-                    view: MachineHeaderViews.TEST_MACHINE,
+                    view: MachineSidePanelViews.TEST_MACHINE,
                     extras: { hardwareType: hardwareType },
                   });
                   sendAnalytics(

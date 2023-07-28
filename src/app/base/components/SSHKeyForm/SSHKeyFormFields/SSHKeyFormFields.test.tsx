@@ -1,9 +1,4 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
 
 import SSHKeyFormFields from "./SSHKeyFormFields";
 
@@ -12,8 +7,7 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("SSHKeyFormFields", () => {
   let state: RootState;
@@ -29,76 +23,52 @@ describe("SSHKeyFormFields", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    // This component needs to be tested within the wrapping form so the
-    // context exists.
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <SSHKeyFormFields />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <SSHKeyFormFields />
+      </Formik>,
+      { route: "/", state }
     );
-    expect(wrapper.find("SSHKeyFormFields").exists()).toBe(true);
+    expect(
+      screen.getByRole("combobox", { name: "Source" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: "Launchpad" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "GitHub" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Upload" })).toBeInTheDocument();
+    expect(screen.getByText("About SSH keys")).toBeInTheDocument();
   });
 
   it("can show id field", async () => {
-    const store = mockStore(state);
-    // This component needs to be tested within the wrapping form so the
-    // context exists.
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <SSHKeyFormFields />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <SSHKeyFormFields />
+      </Formik>,
+      { route: "/", state }
     );
-    const protocol = wrapper.find("select[name='protocol']");
-    await act(async () => {
-      protocol.simulate("change", {
-        target: { name: "protocol", value: "lp" },
-      });
-    });
-    wrapper.update();
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Source" }),
+      "lp"
+    );
     expect(
-      wrapper
-        .findWhere(
-          (n) => n.name() === "FormikField" && n.prop("name") === "auth_id"
-        )
-        .exists()
-    ).toBe(true);
+      screen.getByRole("textbox", { name: "Launchpad ID" })
+    ).toBeInTheDocument();
   });
 
   it("can show key field", async () => {
-    const store = mockStore(state);
-    // This component needs to be tested within the wrapping form so the
-    // context exists.
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <SSHKeyFormFields />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <SSHKeyFormFields />
+      </Formik>,
+      { route: "/", state }
     );
-    const protocol = wrapper.find("select[name='protocol']");
-    await act(async () => {
-      protocol.simulate("change", {
-        target: { name: "protocol", value: "upload" },
-      });
-    });
-    wrapper.update();
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Source" }),
+      "upload"
+    );
     expect(
-      wrapper
-        .findWhere(
-          (n) => n.name() === "FormikField" && n.prop("name") === "key"
-        )
-        .exists()
-    ).toBe(true);
+      screen.getByRole("textbox", { name: "Public key" })
+    ).toBeInTheDocument();
   });
 });

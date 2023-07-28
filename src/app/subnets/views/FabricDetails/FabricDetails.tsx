@@ -3,18 +3,22 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import FabricDetailsHeader from "./FabricDetailsHeader";
+import FabricDeleteForm from "./FabricDetailsHeader/FabricDeleteForm";
+import { FabricDetailsSidePanelViews } from "./FabricDetailsHeader/constants";
 import FabricSummary from "./FabricSummary";
 import FabricVLANs from "./FabricVLANs";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
+import { useSidePanel } from "app/base/side-panel-context";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { FabricMeta } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import subnetURLs from "app/subnets/urls";
 import { isId } from "app/utils";
 
@@ -27,6 +31,7 @@ const FabricDetails = (): JSX.Element => {
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const isValidID = isId(id);
   useWindowTitle(`${fabric?.name || "Fabric"} details`);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     if (isValidID) {
@@ -54,14 +59,43 @@ const FabricDetails = (): JSX.Element => {
         />
       );
     }
-    return <MainContentSection header={<SectionHeader loading />} />;
+    return (
+      <PageContent
+        header={<SectionHeader loading />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
+  }
+
+  let content = null;
+
+  if (
+    sidePanelContent &&
+    sidePanelContent.view === FabricDetailsSidePanelViews.DELETE_FABRIC
+  ) {
+    content = (
+      <FabricDeleteForm
+        closeForm={() => setSidePanelContent(null)}
+        id={fabric.id}
+      />
+    );
   }
 
   return (
-    <MainContentSection header={<FabricDetailsHeader fabric={fabric} />}>
+    <PageContent
+      header={
+        <FabricDetailsHeader
+          fabric={fabric}
+          setSidePanelContent={setSidePanelContent}
+        />
+      }
+      sidePanelContent={content}
+      sidePanelTitle={getSidePanelTitle("Fabric", sidePanelContent)}
+    >
       <FabricSummary fabric={fabric} />
       <FabricVLANs fabric={fabric} />
-    </MainContentSection>
+    </PageContent>
   );
 };
 

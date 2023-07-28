@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -33,7 +33,7 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -49,9 +49,7 @@ describe("TestResults", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("2");
+    expect(screen.getByRole("link", { name: "2" })).toBeInTheDocument();
   });
 
   it("renders a link with a count of pending and running memory tests", () => {
@@ -63,7 +61,7 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -79,9 +77,7 @@ describe("TestResults", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("3");
+    expect(screen.getByRole("link", { name: "3" })).toBeInTheDocument();
   });
 
   it("renders a link with a count of failed storage tests", () => {
@@ -92,7 +88,7 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -108,9 +104,7 @@ describe("TestResults", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("5");
+    expect(screen.getByRole("link", { name: "5" })).toBeInTheDocument();
   });
 
   it("renders a results link", () => {
@@ -121,7 +115,7 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -138,8 +132,8 @@ describe("TestResults", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(1).find("Link").text()
-    ).toContain("View results");
+      screen.getByRole("link", { name: /View results/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a test network link if no tests run", () => {
@@ -148,7 +142,7 @@ describe("TestResults", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -165,7 +159,7 @@ describe("TestResults", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
-    ).toContain("Test network");
+      screen.getByRole("button", { name: /Test network/i })
+    ).toBeInTheDocument();
   });
 });

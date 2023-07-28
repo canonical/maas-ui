@@ -4,10 +4,13 @@ import { Route, Routes } from "react-router-dom-v5-compat";
 
 import DashboardConfigurationForm from "./DashboardConfigurationForm";
 import DashboardHeader from "./DashboardHeader";
+import ClearAllForm from "./DashboardHeader/ClearAllForm";
 import DiscoveriesList from "./DiscoveriesList";
+import { DashboardSidePanelViews } from "./constants";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import authSelectors from "app/store/auth/selectors";
@@ -22,18 +25,39 @@ export enum Label {
 const Dashboard = (): JSX.Element => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isAdmin = useSelector(authSelectors.isAdmin);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   if (!isAdmin) {
     return (
-      <MainContentSection
+      <PageContent
         header={<SectionHeader title={Label.Permissions} />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
+  }
+
+  let content: JSX.Element | null = null;
+
+  if (
+    sidePanelContent?.view === DashboardSidePanelViews.CLEAR_ALL_DISCOVERIES
+  ) {
+    content = (
+      <ClearAllForm
+        closeForm={() => {
+          setSidePanelContent(null);
+        }}
       />
     );
   }
 
   const base = urls.dashboard.index;
   return (
-    <MainContentSection header={<DashboardHeader />}>
+    <PageContent
+      header={<DashboardHeader setSidePanelContent={setSidePanelContent} />}
+      sidePanelContent={content}
+      sidePanelTitle="Clear all discoveries"
+    >
       {networkDiscovery === "disabled" && (
         <Notification severity="caution">{Label.Disabled}</Notification>
       )}
@@ -45,7 +69,7 @@ const Dashboard = (): JSX.Element => {
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
-    </MainContentSection>
+    </PageContent>
   );
 };
 

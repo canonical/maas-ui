@@ -4,8 +4,7 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
+    types: [opened, synchronize, reopened]
 jobs:
   lint:
     name: Lint
@@ -51,13 +50,13 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - run: yarn test
+      - run: yarn test:ci
 
   run-dotrun:
     timeout-minutes: 15
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install dotrun
         uses: canonical/install-dotrun@main
       - name: Install dependencies

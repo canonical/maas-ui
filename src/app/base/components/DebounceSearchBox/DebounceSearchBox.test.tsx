@@ -83,12 +83,11 @@ describe("DebounceSearchBox", () => {
     expect(
       screen.getByRole("alert", { name: Labels.Loading })
     ).toBeInTheDocument();
-
+    jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
     await waitFor(() => {
-      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+      expect(
+        screen.queryByRole("alert", { name: Labels.Loading })
+      ).not.toBeInTheDocument();
     });
-    expect(
-      screen.queryByRole("alert", { name: Labels.Loading })
-    ).not.toBeInTheDocument();
   });
 });

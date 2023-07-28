@@ -84,8 +84,10 @@ const MachinesFilterAccordion = ({
   });
 
   useEffect(() => {
-    dispatch(machineActions.filterGroups());
-  }, [dispatch]);
+    if (!filtersLoaded) {
+      dispatch(machineActions.filterGroups());
+    }
+  }, [dispatch, filtersLoaded]);
 
   return (
     <ContextualMenu

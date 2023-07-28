@@ -18,12 +18,14 @@ import LXDClusterResources from "./LXDClusterResources";
 import LXDClusterSettings from "./LXDClusterSettings";
 import LXDClusterVMs from "./LXDClusterVMs";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent/PageContent";
 import { useGetURLId } from "app/base/hooks/urls";
+import { useSidePanel } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
-import type { KVMSidePanelContent } from "app/kvm/types";
+import KVMForms from "app/kvm/components/KVMForms/KVMForms";
+import { getFormTitle } from "app/kvm/utils";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import type { RootState } from "app/store/root/types";
@@ -54,8 +56,7 @@ const LXDClusterDetails = (): JSX.Element => {
   const fetchedVmCluster = !gettingVmCluster && vmCluster;
 
   const loaded = clustersLoaded || fetchedVmCluster;
-  const [sidePanelContent, setSidePanelContent] =
-    useState<KVMSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   // Search filter is determined by the URL and used to initialise state.
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
@@ -92,16 +93,25 @@ const LXDClusterDetails = (): JSX.Element => {
 
   const base = urls.kvm.lxd.cluster.index(null);
   return (
-    <MainContentSection
+    <PageContent
       aria-label={Label.Title}
       header={
         <LXDClusterDetailsHeader
           clusterId={clusterId}
-          setSearchFilter={setSearchFilter}
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
         />
       }
+      sidePanelContent={
+        sidePanelContent ? (
+          <KVMForms
+            searchFilter={searchFilter}
+            setSearchFilter={setSearchFilter}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        ) : null
+      }
+      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
     >
       <Routes>
         <Route
@@ -161,7 +171,7 @@ const LXDClusterDetails = (): JSX.Element => {
           path={getRelativeRoute(urls.kvm.lxd.cluster.host.index(null), base)}
         />
       </Routes>
-    </MainContentSection>
+    </PageContent>
   );
 };
 

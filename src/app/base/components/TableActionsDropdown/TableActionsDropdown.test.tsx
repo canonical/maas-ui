@@ -1,10 +1,10 @@
-import { mount, shallow } from "enzyme";
-
 import TableActionsDropdown from "./TableActionsDropdown";
+
+import { render, screen, userEvent } from "testing/utils";
 
 describe("TableActionsDropdown", () => {
   it("can be explicitly disabled", () => {
-    const wrapper = shallow(
+    render(
       <TableActionsDropdown
         actions={[
           { label: "Action 1", type: "action-1" },
@@ -15,18 +15,16 @@ describe("TableActionsDropdown", () => {
         onActionClick={jest.fn()}
       />
     );
-    expect(wrapper.find("TableMenu").prop("disabled")).toBe(true);
+    expect(screen.getByRole("button")).toBeDisabled();
   });
 
   it("is disabled if no actions are provided", () => {
-    const wrapper = shallow(
-      <TableActionsDropdown actions={[]} onActionClick={jest.fn()} />
-    );
-    expect(wrapper.find("TableMenu").prop("disabled")).toBe(true);
+    render(<TableActionsDropdown actions={[]} onActionClick={jest.fn()} />);
+    expect(screen.getByRole("button")).toBeDisabled();
   });
 
-  it("can conditionally show actions", () => {
-    const wrapper = mount(
+  it("can conditionally show actions", async () => {
+    render(
       <TableActionsDropdown
         actions={[
           { label: "Action 1", show: true, type: "action-1" },
@@ -37,25 +35,30 @@ describe("TableActionsDropdown", () => {
       />
     );
     // Open menu
-    wrapper.find("button").simulate("click");
+    await userEvent.click(screen.getByRole("button"));
 
-    expect(wrapper.find("button[data-testid='action-1']").exists()).toBe(true);
-    expect(wrapper.find("button[data-testid='action-2']").exists()).toBe(true);
-    expect(wrapper.find("button[data-testid='action-3']").exists()).toBe(false);
+    expect(
+      screen.getByRole("button", { name: "Action 1" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Action 2" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Action 3" })
+    ).not.toBeInTheDocument();
   });
 
-  it("runs click function with action type as argument", () => {
+  it("runs click function with action type as argument", async () => {
     const onActionClick = jest.fn();
-    const wrapper = mount(
+    render(
       <TableActionsDropdown
         actions={[{ label: "Action 1", type: "action-1" }]}
         onActionClick={onActionClick}
       />
     );
     // Open menu and click the actions
-    wrapper.find("button").simulate("click");
-    wrapper.find("button[data-testid='action-1']").simulate("click");
-
+    await userEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button", { name: "Action 1" }));
     expect(onActionClick).toHaveBeenCalledWith("action-1");
   });
 });

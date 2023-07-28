@@ -39,6 +39,7 @@ describe("ConnectivityCard", () => {
         name: ConnectivityCardLabels.MainArchiveUrl,
       })
     );
+    await userEvent.tab();
     const icon = screen.getByLabelText("error");
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveClass("p-icon--error");

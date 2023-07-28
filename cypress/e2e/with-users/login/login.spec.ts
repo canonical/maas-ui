@@ -3,6 +3,7 @@ import { generateMAASURL } from "../../utils";
 context("Login page", () => {
   beforeEach(() => {
     cy.visit(generateMAASURL("/"));
+    cy.expandMainNavigation();
   });
 
   it("is disabled by default", () => {
@@ -19,6 +20,16 @@ context("Login page", () => {
     cy.get("input[name='password']").focus();
     cy.get("input[name='password']").blur();
     cy.get(".p-form-validation__message").should("exist");
+  });
+
+  it("displays an error message if submitted invalid login credentials", () => {
+    cy.findByRole("textbox", { name: /Username/ }).type("invalid-username");
+    cy.findByLabelText(/Password/)
+      .type("invalid-password")
+      .type("{enter}");
+    cy.findByRole("alert")
+      .should("be.visible")
+      .should("include.text", "Please enter a correct username and password");
   });
 
   it("enables the form if both fields have values", () => {
@@ -49,8 +60,9 @@ context("Login page", () => {
     cy.location("pathname").should("eq", generateMAASURL("/intro"));
 
     // Log out.
-    cy.get(".l-navigation__link:contains(Log out)").click();
-
+    cy.getMainNavigation().within(() =>
+      cy.findByRole("button", { name: /Log out/i }).click()
+    );
     // Set cookie to skip setup intro.
     cy.setCookie("skipsetupintro", "true");
 

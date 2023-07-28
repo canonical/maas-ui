@@ -1,8 +1,8 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import type { ReactNode } from "react";
 
 import classNames from "classnames";
-import { Portal } from "react-portal";
+import usePortal from "react-useportal";
 
 type Props = {
   children: ReactNode;
@@ -47,33 +47,62 @@ const Popover = ({
   content,
   position = "right",
 }: Props): JSX.Element => {
-  const el = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const closePortal = () => setIsOpen(false);
-  const openPortal = () => setIsOpen(true);
-  const positionStyle = getPositionStyle(el, position);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const positionStyle = getPositionStyle(buttonRef, position);
+  const { openPortal, closePortal, isOpen, Portal } = usePortal();
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLElement> | React.MouseEvent<HTMLElement>
+  ) => {
+    // do not close if the focus is within the tooltip wrapper
+    if (buttonRef?.current?.contains(document.activeElement)) {
+      return;
+    }
+
+    if (
+      e.relatedTarget
+        ? !contentRef.current?.contains(e.relatedTarget as Node)
+        : e.target !== contentRef.current
+    ) {
+      closePortal();
+    }
+  };
+
+  const handleClick: React.MouseEventHandler<HTMLElement> = (e) => {
+    // ignore clicks within the tooltip message
+    if (contentRef.current?.contains(e.target as Node)) {
+      return;
+    }
+    e.currentTarget.focus();
+    openPortal();
+  };
 
   return (
-    <div
+    <button
+      className="p-button--base u-no-padding u-no-margin--bottom u-width--100"
       data-testid="popover-container"
-      onBlur={closePortal}
+      onBlur={handleBlur}
+      onClick={handleClick}
       onFocus={openPortal}
-      onMouseOut={closePortal}
+      onMouseOut={handleBlur}
       onMouseOver={openPortal}
-      ref={el}
+      ref={buttonRef}
     >
       {children}
       {isOpen && content && (
         <Portal>
           <div
             className={classNames("p-popover", className)}
+            onClick={handleClick}
+            ref={contentRef}
             style={positionStyle}
           >
             {content}
           </div>
         </Portal>
       )}
-    </div>
+    </button>
   );
 };
 

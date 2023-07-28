@@ -27,6 +27,11 @@ export const AppSideNavItem = ({ navLink, icon, path }: Props): JSX.Element => {
         aria-current={isSelected(path, navLink) ? "page" : undefined}
         className="p-side-navigation__link"
         id={`${navLink.label}-${id}`}
+        onClick={(event) => {
+          // removing the focus from the link element after click
+          // this allows the side navigation to collapse on mouseleave
+          event.currentTarget.blur();
+        }}
         to={navLink.url}
       >
         {icon ? (

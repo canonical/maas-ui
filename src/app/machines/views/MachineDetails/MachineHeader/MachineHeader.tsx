@@ -14,31 +14,28 @@ import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useSendAnalytics } from "app/base/hooks";
-import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
-import { MachineHeaderViews } from "app/machines/constants";
-import type {
-  MachineSidePanelContent,
-  MachineSetSidePanelContent,
-} from "app/machines/types";
-import { getHeaderTitle } from "app/machines/utils";
+import { MachineSidePanelViews } from "app/machines/constants";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import { useFetchMachine } from "app/store/machine/utils/hooks";
+import { isUnconfiguredPowerType } from "app/store/machine/utils/common";
+import {
+  useFetchMachine,
+  useSelectedMachinesActionsDispatch,
+} from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
-  sidePanelContent: MachineSidePanelContent | null;
   setSidePanelContent: MachineSetSidePanelContent;
   systemId: Machine["system_id"];
 };
 
 const MachineHeader = ({
-  sidePanelContent,
   setSidePanelContent,
   systemId,
 }: Props): JSX.Element => {
@@ -52,9 +49,35 @@ const MachineHeader = ({
   const statuses = useSelector((state: RootState) =>
     machineSelectors.getStatuses(state, systemId)
   );
+  const { dispatch: dispatchForSelectedMachines } =
+    useSelectedMachinesActionsDispatch({
+      selectedMachines: { items: [systemId] },
+    });
   const powerMenuRef = useRef<HTMLSpanElement>(null);
   const isDetails = isMachineDetails(machine);
   useFetchMachine(systemId);
+
+  const handleActionClick = (action: NodeActions) => {
+    sendAnalytics(
+      "Machine details action form",
+      getNodeActionTitle(action),
+      "Open"
+    );
+
+    const isImmediateAction =
+      action === NodeActions.LOCK || action === NodeActions.UNLOCK;
+
+    if (isImmediateAction) {
+      dispatchForSelectedMachines(machineActions[action]);
+    } else {
+      const view = Object.values(MachineSidePanelViews).find(
+        ([, actionName]) => actionName === action
+      );
+      if (view) {
+        setSidePanelContent({ view });
+      }
+    }
+  };
 
   if (!machine || !isDetails) {
     return <SectionHeader loading />;
@@ -62,28 +85,17 @@ const MachineHeader = ({
 
   const urlBase = `/machine/${systemId}`;
   const checkingPower = statuses?.checkingPower;
+  const needsPowerConfiguration = isUnconfiguredPowerType(machine);
 
   return (
     <SectionHeader
-      sidePanelContent={
-        sidePanelContent ? (
-          <MachineHeaderForms
-            searchFilter=""
-            selectedCount={1}
-            selectedMachines={{ items: [machine.system_id] }}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-            viewingDetails
-          />
-        ) : null
-      }
-      sidePanelTitle={getHeaderTitle(machine.hostname, sidePanelContent)}
       subtitle={
         editingName ? null : (
           <div className="u-flex--wrap u-flex--align-center">
             <div className="u-nudge-left">
               {machine.locked ? (
                 <TooltipButton
+                  aria-label="locked"
                   className="u-nudge-left--small"
                   iconName="locked"
                   message="This machine is locked. You have to unlock it to perform any actions."
@@ -115,7 +127,7 @@ const MachineHeader = ({
                 title="Take action:"
               />
             </div>
-            <div>
+            <div className="u-hide--medium u-hide--small">
               <NodeActionMenuGroup
                 alwaysShowLifecycle
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
@@ -124,42 +136,21 @@ const MachineHeader = ({
                 isNodeLocked={machine.locked}
                 nodeDisplay="machine"
                 nodes={[machine]}
-                onActionClick={(action) => {
-                  sendAnalytics(
-                    "Machine details action form",
-                    getNodeActionTitle(action),
-                    "Open"
-                  );
-                  const view = Object.values(MachineHeaderViews).find(
-                    ([, actionName]) => actionName === action
-                  );
-                  if (view) {
-                    setSidePanelContent({ view });
-                  }
-                }}
+                onActionClick={handleActionClick}
                 singleNode
               />
+            </div>
+            <div className="u-hide--large">
               <NodeActionMenu
                 alwaysShowLifecycle
+                className="u-hide--large"
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
                 filterActions
                 hasSelection={true}
                 key="action-dropdown"
                 nodeDisplay="machine"
                 nodes={[machine]}
-                onActionClick={(action) => {
-                  sendAnalytics(
-                    "Machine details action form",
-                    getNodeActionTitle(action),
-                    "Open"
-                  );
-                  const view = Object.values(MachineHeaderViews).find(
-                    ([, actionName]) => actionName === action
-                  );
-                  if (view) {
-                    setSidePanelContent({ view });
-                  }
-                }}
+                onActionClick={handleActionClick}
                 toggleAppearance=""
                 toggleClassName="p-action-menu u-no-margin--bottom"
                 toggleLabel="Menu"
@@ -224,9 +215,7 @@ const MachineHeader = ({
           active: pathname.startsWith(`${urlBase}/testing`),
           component: Link,
           label: (
-            <ScriptStatus status={machine.testing_status.status}>
-              Tests
-            </ScriptStatus>
+            <ScriptStatus status={machine.testing_status}>Tests</ScriptStatus>
           ),
           to: `${urlBase}/testing`,
         },
@@ -249,7 +238,17 @@ const MachineHeader = ({
         {
           active: pathname.startsWith(`${urlBase}/configuration`),
           component: Link,
-          label: "Configuration",
+          label: (
+            <ScriptStatus
+              status={
+                needsPowerConfiguration
+                  ? ScriptResultStatus.FAILED
+                  : ScriptResultStatus.NONE
+              }
+            >
+              Configuration
+            </ScriptStatus>
+          ),
           to: `${urlBase}/configuration`,
         },
       ]}

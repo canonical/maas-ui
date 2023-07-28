@@ -8,22 +8,23 @@ import DeviceListControls from "./DeviceListControls";
 import DeviceListHeader from "./DeviceListHeader";
 import DeviceListTable from "./DeviceListTable";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent";
 import { useWindowTitle } from "app/base/hooks";
-import type { DeviceSidePanelContent } from "app/devices/types";
+import { useSidePanel } from "app/base/side-panel-context";
+import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { FilterDevices } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 
 const DeviceList = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const currentFilters = FilterDevices.queryStringToFilters(location.search);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<DeviceSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
     FilterDevices.filtersToString(currentFilters)
@@ -34,6 +35,7 @@ const DeviceList = (): JSX.Element => {
   );
   const devicesLoading = useSelector(deviceSelectors.loading);
   useWindowTitle("Devices");
+  const selectedDevices = useSelector(deviceSelectors.selected);
 
   useEffect(() => {
     dispatch(deviceActions.fetch());
@@ -51,14 +53,23 @@ const DeviceList = (): JSX.Element => {
   );
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <DeviceListHeader
           setSearchFilter={setSearchFilter}
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
         />
       }
+      sidePanelContent={
+        sidePanelContent && (
+          <DeviceHeaderForms
+            devices={selectedDevices}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        )
+      }
+      sidePanelTitle={getSidePanelTitle("Devices", sidePanelContent)}
     >
       <DeviceListControls filter={searchFilter} setFilter={setSearchFilter} />
       <DeviceListTable
@@ -70,7 +81,7 @@ const DeviceList = (): JSX.Element => {
         }}
         selectedIDs={selectedIDs}
       />
-    </MainContentSection>
+    </PageContent>
   );
 };
 

@@ -70,6 +70,14 @@
   .machine-list__machine .p-table-menu {
     display: none;
   }
+  
+  .machine-list .select-all-dropdown {
+      display: inline-flex;
+      margin-left: -0.8rem;
+      margin-top: -0.5rem;
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+  }
 
   .machine-list__machine:last-child td {
     // Force the cells in the last row to calculate their height.
@@ -132,8 +140,30 @@
     display: inline;
   }
 
-  .machine-list-controls {
-    grid-gap: 0.5rem;
+  .section-header__main-row {
+    .section-header__buttons {
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      grid-gap: 0.5rem;
+
+      @media screen and (max-width: ($breakpoint-node-action-menu-group - 1)) {
+        .p-node-action-menu-group,
+        .p-add-hardware-dropdown {
+          display: none;
+        }
+      }
+
+      @media screen and (min-width: $breakpoint-node-action-menu-group) {
+        .p-action-menu {
+          display: none;
+        }
+      }
+
+      .p-contextual-menu__toggle {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .hidden-columns-select-wrapper {
@@ -145,6 +175,7 @@
     padding-left: $spv--small;
     text-align: left;
     width: 100%;
+    margin-bottom: 0;
 
     i[class*="p-icon"]:last-child {
       margin-left: 0;

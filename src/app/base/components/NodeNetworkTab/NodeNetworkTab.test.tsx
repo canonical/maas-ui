@@ -1,10 +1,11 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import NodeNetworkTab, { ExpandedState } from "./NodeNetworkTab";
 
 describe("NodeNetworkTab", () => {
   it("displays the actions and interface and DHCP tables", () => {
-    const wrapper = mount(
+    render(
       <NodeNetworkTab
         actions={() => <div data-testid="actions"></div>}
         addInterface={() => <div data-testid="add-interface"></div>}
@@ -13,15 +14,15 @@ describe("NodeNetworkTab", () => {
         interfaceTable={() => <div data-testid="interface-table"></div>}
       />
     );
-    expect(wrapper.find("[data-testid='interface-table']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='dhcp-table']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='actions']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='expanded-form']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='add-interface']").exists()).toBe(false);
+    expect(screen.getByTestId("interface-table")).toBeInTheDocument();
+    expect(screen.getByTestId("dhcp-table")).toBeInTheDocument();
+    expect(screen.getByTestId("actions")).toBeInTheDocument();
+    expect(screen.queryByTestId("expanded-form")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("add-interface")).not.toBeInTheDocument();
   });
 
-  it("displays the add interface form when expanded", () => {
-    const wrapper = mount(
+  it("displays the add interface form when expanded", async () => {
+    render(
       <NodeNetworkTab
         actions={(_, setExpanded) => (
           <button
@@ -35,13 +36,13 @@ describe("NodeNetworkTab", () => {
         interfaceTable={jest.fn()}
       />
     );
-    expect(wrapper.find("[data-testid='add-interface']").exists()).toBe(false);
-    wrapper.find("button[data-testid='add-button']").simulate("click");
-    expect(wrapper.find("[data-testid='add-interface']").exists()).toBe(true);
+    expect(screen.queryByTestId("add-interface")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByTestId("add-button"));
+    expect(screen.getByTestId("add-interface")).toBeInTheDocument();
   });
 
-  it("displays a form when expanded", () => {
-    const wrapper = mount(
+  it("displays a form when expanded", async () => {
+    render(
       <NodeNetworkTab
         actions={(_, setExpanded) => (
           <button
@@ -59,8 +60,8 @@ describe("NodeNetworkTab", () => {
         interfaceTable={jest.fn()}
       />
     );
-    expect(wrapper.find("[data-testid='edit-interface']").exists()).toBe(false);
-    wrapper.find("button[data-testid='edit-button']").simulate("click");
-    expect(wrapper.find("[data-testid='edit-interface']").exists()).toBe(true);
+    expect(screen.queryByTestId("edit-interface")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByTestId("edit-button"));
+    expect(screen.getByTestId("edit-interface")).toBeInTheDocument();
   });
 });

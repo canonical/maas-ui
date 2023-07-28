@@ -1,13 +1,9 @@
-import { KVMHeaderViews } from "./constants";
-import type {
-  KVMSidePanelContent,
-  KVMStoragePoolResource,
-  KVMStoragePoolResources,
-} from "./types";
+import { KVMSidePanelViews } from "./constants";
+import type { KVMStoragePoolResource, KVMStoragePoolResources } from "./types";
 
-import type { MachineSidePanelContent } from "app/machines/types";
-import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
+import type { SidePanelContent } from "app/base/side-panel-context";
 import type { Pod } from "app/store/pod/types";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import { formatBytes } from "app/utils";
 
 /**
@@ -26,26 +22,25 @@ export const memoryWithUnit = (memory: number): string => {
  * @param sidePanelContent - The currently selected header content.
  * @returns Header title.
  */
-export const getFormTitle = (sidePanelContent: KVMSidePanelContent): string => {
-  switch (sidePanelContent.view) {
-    case KVMHeaderViews.ADD_LXD_HOST:
+export const getFormTitle = (sidePanelContent: SidePanelContent): string => {
+  switch (sidePanelContent && sidePanelContent.view) {
+    case KVMSidePanelViews.ADD_LXD_HOST:
       return "Add LXD host";
-    case KVMHeaderViews.ADD_VIRSH_HOST:
+    case KVMSidePanelViews.ADD_VIRSH_HOST:
       return "Add Virsh host";
-    case KVMHeaderViews.COMPOSE_VM:
+    case KVMSidePanelViews.COMPOSE_VM:
       return "Compose";
-    case KVMHeaderViews.DELETE_KVM:
+    case KVMSidePanelViews.DELETE_KVM:
       return "Delete";
-    case KVMHeaderViews.REFRESH_KVM:
+    case KVMSidePanelViews.REFRESH_KVM:
       return "Refresh";
     default:
       // We need to explicitly cast sidePanelContent here - TypeScript doesn't
       // seem to be able to infer remaining object tuple values as with string
       // values.
       // https://github.com/canonical/maas-ui/issues/3040
-      const machineSidePanelContent =
-        sidePanelContent as MachineSidePanelContent;
-      return getMachineHeaderTitle("", machineSidePanelContent);
+      const machineSidePanelContent = sidePanelContent;
+      return getSidePanelTitle("", machineSidePanelContent);
   }
 };
 

@@ -1,4 +1,4 @@
-import { generateMAASURL } from "../../utils";
+import { generateMAASURL, generateName } from "../../utils";
 
 context("Machine listing", () => {
   beforeEach(() => {
@@ -6,10 +6,16 @@ context("Machine listing", () => {
     cy.visit(generateMAASURL("/machines"));
   });
 
+  afterEach(() => {
+    cy.window()
+      // reset grouping to default
+      .then((win) => win.localStorage.removeItem("grouping"));
+  });
+
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains(
-      /machines in 1 pool/
-    );
+    cy.findByRole("heading", {
+      name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
+    }).should("exist");
   });
 
   it("can group machines by all supported keys", () => {
@@ -33,30 +39,72 @@ context("Machine listing", () => {
     });
     GROUP_BY_OPTIONS.forEach((option) => {
       getGroupBySelect().select(option);
-      cy.waitForTableToLoad({ name: "Machines" });
+      cy.findByRole("grid", { name: `Machines - ${option}` }).should("exist");
     });
   });
 
   it("displays machine counts with active filters", () => {
-    const searchFilter = "status:(=commissioning) hostname:(machine-)";
-    cy.addMachines(["machine-1", "machine-2"]);
+    const name = generateName();
+    const searchFilter = `status:(=commissioning) hostname:(${name})`;
+    const machines = [`${name}-1`, `${name}-2`];
+    cy.addMachines(machines);
     cy.findByRole("combobox", { name: "Group by" }).select("Group by status");
     cy.findByRole("searchbox").type(searchFilter);
     cy.findByText(/Showing 2 out of 2 machines/).should("exist");
-    cy.findByRole("grid", { name: "Machines" }).within(() =>
+    cy.findByRole("grid", { name: /Machines/ }).within(() =>
       // eslint-disable-next-line cypress/no-force
       cy
         .findByRole("checkbox", { name: /Commissioning/i })
         .click({ force: true })
     );
-    cy.findByRole("button", { name: /Take action/i }).click();
-    cy.findByLabelText("submenu").within(() => {
-      cy.findAllByRole("button", { name: /Delete/i }).click();
-    });
+    cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
     cy.findByRole("button", { name: /Delete 2 machines/ }).click();
     cy.findByRole("searchbox").should("have.value", searchFilter);
     cy.findByText(/No machines match the search criteria./).should("exist");
+  });
+
+  it("replaces the URL when selecting filters", () => {
+    // visit the dashboard first to have a page to go back to
+    const intialPage = generateMAASURL("/dashboard");
+    cy.visit(intialPage);
+    cy.visit(generateMAASURL("/machines"));
+
+    cy.findByRole("searchbox").should("have.value", "");
+
+    cy.findByRole("button", { name: /Filters/i }).click();
+
+    cy.findByLabelText("submenu").within(() => cy.findByText("Status").click());
+    cy.findByLabelText("submenu").within(() =>
+      cy.findByRole("checkbox", { name: "Testing" }).click()
+    );
+
+    // verify that the searchbox and URL are updated
+    const expectMachineFilters = () => {
+      cy.findByRole("searchbox").should("have.value", "status:(=testing)");
+      cy.location().should((loc) => {
+        expect(loc.search).to.eq("?status=%3Dtesting");
+        expect(loc.pathname).to.eq(generateMAASURL("/machines"));
+      });
+    };
+    expectMachineFilters();
+
+    cy.go("back");
+    // verify the user is navigated back to the previous page
+    // (and not one step in the machine filters history)
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq("");
+      expect(loc.pathname).to.eq(intialPage);
+    });
+
+    cy.go("forward");
+    // verify that previously selected filters are restored
+    expectMachineFilters();
+  });
+
+  it("can load filters from the URL", () => {
+    cy.visit(generateMAASURL("/machines?status=%3Dnew"));
+    cy.findByRole("searchbox").should("have.value", "status:(=new)");
   });
 
   it("can hide machine table columns", () => {
@@ -80,11 +128,12 @@ context("Machine listing", () => {
   });
 
   it("can select a machine range", () => {
-    const searchFilter = "machi";
-    const newMachines = ["machine-a", "machine-b", "machine-c"];
+    const name = generateName();
+    const newMachines = [`${name}-a`, `${name}-b`, `${name}-c`];
     cy.addMachines(newMachines);
     cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
-    cy.findByRole("searchbox", { name: "Search" }).type(searchFilter);
+    cy.findByRole("searchbox", { name: "Search" }).type(name);
+    cy.findByText(/Showing 3 out of 3 machines/).should("exist");
     // eslint-disable-next-line cypress/no-force
     cy.findByRole("checkbox", { name: `${newMachines[0]}.maas` }).click({
       force: true,
@@ -97,12 +146,8 @@ context("Machine listing", () => {
     cy.findByRole("checkbox", { name: `${newMachines[1]}.maas` }).should(
       "be.checked"
     );
-    cy.findByTestId("section-header-buttons").within(() =>
-      cy.findByRole("button", { name: /Take action/i }).click()
-    );
-    cy.findByLabelText("submenu").within(() => {
-      cy.findAllByRole("button", { name: /Delete/i }).click();
-    });
+    cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("button", { name: /Delete 3 machines/ }).click();
+    cy.findByText(/No machines match the search criteria./).should("exist");
   });
 });

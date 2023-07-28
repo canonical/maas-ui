@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineName from "./MachineName";
@@ -18,9 +13,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineName", () => {
   let state: RootState;
@@ -49,29 +44,21 @@ describe("MachineName", () => {
     });
   });
 
-  it("can update a machine with the new name and domain", () => {
+  it("can update a machine with the new name and domain", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineName
-              editingName={true}
-              id="abc123"
-              setEditingName={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineName editingName={true} id="abc123" setEditingName={jest.fn()} />,
+      { route: "/machine/abc123", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        hostname: "new-lease",
-        domain: "99",
-      })
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Hostname" }),
+      "new-lease"
     );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     expect(
       store.getActions().find((action) => action.type === "machine/update")
     ).toStrictEqual({

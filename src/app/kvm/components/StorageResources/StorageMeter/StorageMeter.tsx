@@ -19,7 +19,7 @@ const StorageMeter = ({ defaultPoolId, pools }: Props): JSX.Element | null => {
   const [, pool] = sortedPools[0];
 
   return (
-    <div className="u-width--full">
+    <div aria-label="storage meter" className="u-width--full">
       <StoragePopover defaultPoolId={defaultPoolId} pools={pools}>
         <KVMResourceMeter
           allocated={pool.allocated_tracked}

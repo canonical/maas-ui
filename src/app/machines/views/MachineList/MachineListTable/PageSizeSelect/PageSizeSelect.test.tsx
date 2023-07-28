@@ -9,18 +9,27 @@ const DEFAULT_PAGE_SIZE = DEFAULTS.pageSize;
 describe("PageSizeSelect", () => {
   it("renders", () => {
     render(
-      <PageSizeSelect pageSize={DEFAULT_PAGE_SIZE} setPageSize={jest.fn()} />
+      <PageSizeSelect
+        pageSize={DEFAULT_PAGE_SIZE}
+        paginate={jest.fn()}
+        setPageSize={jest.fn()}
+      />
     );
     expect(
       screen.getByRole("combobox", { name: "Items per page" })
     ).toBeInTheDocument();
   });
 
-  it("calls a function to update the page size", async () => {
+  it("calls a function to update the page size and reset to the first page", async () => {
     const setPageSize = jest.fn();
+    const setCurrentPage = jest.fn();
 
     render(
-      <PageSizeSelect pageSize={DEFAULT_PAGE_SIZE} setPageSize={setPageSize} />
+      <PageSizeSelect
+        pageSize={DEFAULT_PAGE_SIZE}
+        paginate={setCurrentPage}
+        setPageSize={setPageSize}
+      />
     );
 
     const pageSizeSelect = screen.getByRole("combobox", {
@@ -29,5 +38,6 @@ describe("PageSizeSelect", () => {
     await userEvent.selectOptions(pageSizeSelect, "100");
 
     expect(setPageSize).toHaveBeenCalledWith(100);
+    expect(setCurrentPage).toHaveBeenCalledWith(1);
   });
 });

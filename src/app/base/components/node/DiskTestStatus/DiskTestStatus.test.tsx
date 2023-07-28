@@ -1,63 +1,42 @@
-import { mount } from "enzyme";
-
+import "@testing-library/jest-dom/extend-expect";
 import DiskTestStatus from "./DiskTestStatus";
 
 import { ScriptResultStatus } from "app/store/scriptresult/types";
+import { render, screen } from "testing/utils";
 
 describe("DiskTestStatus", () => {
   it("can show passed test status", () => {
-    const wrapper = mount(
-      <DiskTestStatus testStatus={ScriptResultStatus.PASSED} />
-    );
-
-    expect(wrapper.find(".p-icon--success").exists()).toBe(true);
+    render(<DiskTestStatus testStatus={ScriptResultStatus.PASSED} />);
+    expect(screen.getByLabelText(/ok/)).toBeInTheDocument();
   });
 
   it("can show running test status", () => {
-    const wrapper = mount(
-      <DiskTestStatus testStatus={ScriptResultStatus.RUNNING} />
-    );
-
-    expect(wrapper.find(".p-icon--running").exists()).toBe(true);
+    render(<DiskTestStatus testStatus={ScriptResultStatus.RUNNING} />);
+    expect(screen.getByLabelText(/running/i)).toBeInTheDocument();
   });
 
   it("can show pending test status", () => {
-    const wrapper = mount(
-      <DiskTestStatus testStatus={ScriptResultStatus.PENDING} />
-    );
-
-    expect(wrapper.find(".p-icon--pending").exists()).toBe(true);
+    render(<DiskTestStatus testStatus={ScriptResultStatus.PENDING} />);
+    expect(screen.getByLabelText(/pending/)).toBeInTheDocument();
   });
 
   it("can show error test status", () => {
-    const wrapper = mount(
-      <DiskTestStatus testStatus={ScriptResultStatus.FAILED} />
-    );
-
-    expect(wrapper.find(".p-icon--error").exists()).toBe(true);
+    render(<DiskTestStatus testStatus={ScriptResultStatus.FAILED} />);
+    expect(screen.getByLabelText(/error/)).toBeInTheDocument();
   });
 
   it("can show timed out test status", () => {
-    const wrapper = mount(
-      <DiskTestStatus testStatus={ScriptResultStatus.TIMEDOUT} />
-    );
-
-    expect(wrapper.find(".p-icon--timed-out").exists()).toBe(true);
+    render(<DiskTestStatus testStatus={ScriptResultStatus.TIMEDOUT} />);
+    expect(screen.getByLabelText(/timed out/)).toBeInTheDocument();
   });
 
   it("can show warning test status", () => {
-    const wrapper = mount(
-      <DiskTestStatus testStatus={ScriptResultStatus.SKIPPED} />
-    );
-
-    expect(wrapper.find(".p-icon--warning").exists()).toBe(true);
+    render(<DiskTestStatus testStatus={ScriptResultStatus.SKIPPED} />);
+    expect(screen.getByLabelText(/skipped/)).toBeInTheDocument();
   });
 
   it("can show unknown test status", () => {
-    const wrapper = mount(
-      <DiskTestStatus testStatus={ScriptResultStatus.NONE} />
-    );
-
-    expect(wrapper.find(".p-icon--power-unknown").exists()).toBe(true);
+    render(<DiskTestStatus testStatus={ScriptResultStatus.NONE} />);
+    expect(screen.getByLabelText(/unknown/)).toBeInTheDocument();
   });
 });

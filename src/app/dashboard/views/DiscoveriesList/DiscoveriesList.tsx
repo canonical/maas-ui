@@ -18,6 +18,7 @@ import DiscoveryAddForm from "../DiscoveryAddForm";
 import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import MacAddressDisplay from "app/base/components/MacAddressDisplay";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useWindowTitle } from "app/base/hooks";
@@ -114,7 +115,9 @@ const generateRows = (
         {
           content: (
             <DoubleRow
-              primary={discovery.mac_address}
+              primary={
+                <MacAddressDisplay>{discovery.mac_address}</MacAddressDisplay>
+              }
               secondary={discovery.mac_organization || "Unknown"}
             />
           ),

@@ -1,5 +1,4 @@
 import { NotificationSeverity } from "@canonical/react-components";
-import reduxToolkit from "@reduxjs/toolkit";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
@@ -13,6 +12,7 @@ import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { NodeStatus } from "app/store/types/node";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -23,13 +23,13 @@ import {
 } from "testing/factories";
 import { userEvent, render, screen, waitFor } from "testing/utils";
 
+enableCallIdMocks();
 const mockStore = configureStore();
 
 let state: RootState;
 let scrollToSpy: jest.Mock;
 
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -186,7 +186,7 @@ it("can return to the details on cancel", async () => {
     }),
   ];
   state.machine.counts = {
-    "mocked-nanoid": machineStateCountFactory({
+    [callId]: machineStateCountFactory({
       count: 1,
       loaded: true,
     }),

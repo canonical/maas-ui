@@ -1,16 +1,15 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
 
 import BasePowerField from "./BasePowerField";
 
 import { PowerFieldType } from "app/store/general/types";
 import { powerField as powerFieldFactory } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { screen, render, userEvent } from "testing/utils";
 
 describe("BasePowerField", () => {
   it("can be given a custom power parameters name", () => {
     const field = powerFieldFactory({ name: "field-name" });
-    const wrapper = mount(
+    render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField
           field={field}
@@ -18,45 +17,50 @@ describe("BasePowerField", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("input").prop("name")).toBe(
-      "custom-power-parameters.field-name"
-    );
+    expect(
+      screen.getByRole("textbox", { name: "test-powerfield-label-1" })
+    ).toHaveAttribute("name", "custom-power-parameters.field-name");
   });
 
   it("correctly renders a string field type", () => {
     const field = powerFieldFactory({ field_type: PowerFieldType.STRING });
-    const wrapper = mount(
+    render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
-    expect(wrapper.find("input[type='text']").exists()).toBe(true);
-    expect(wrapper.find("input[type='password']").exists()).toBe(false);
-    expect(wrapper.find("select").exists()).toBe(false);
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("type", "password");
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 
   it("correctly renders a password field type", () => {
-    const field = powerFieldFactory({ field_type: PowerFieldType.PASSWORD });
-    const wrapper = mount(
+    const field = powerFieldFactory({
+      field_type: PowerFieldType.PASSWORD,
+      label: "Password",
+    });
+    render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
-    expect(wrapper.find("input[type='text']").exists()).toBe(false);
-    expect(wrapper.find("input[type='password']").exists()).toBe(true);
-    expect(wrapper.find("select").exists()).toBe(false);
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password")).toHaveAttribute(
+      "type",
+      "password"
+    );
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 
   it("correctly renders a choice field type", () => {
     const field = powerFieldFactory({ field_type: PowerFieldType.CHOICE });
-    const wrapper = mount(
+    render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
-    expect(wrapper.find("input[type='text']").exists()).toBe(false);
-    expect(wrapper.find("input[type='password']").exists()).toBe(false);
-    expect(wrapper.find("select").exists()).toBe(true);
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
   });
 
   it("correctly handles a multiple choice field type", async () => {
@@ -69,7 +73,7 @@ describe("BasePowerField", () => {
       label: "label",
       name: "field",
     });
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{ power_parameters: { field: ["value1"] } }}
         onSubmit={jest.fn()}
@@ -77,18 +81,14 @@ describe("BasePowerField", () => {
         <BasePowerField field={field} />
       </Formik>
     );
-    const findCheckbox = (i: number) =>
-      wrapper.find("input[data-testid='multi-choice-checkbox']").at(i);
+    expect(screen.getByTestId("field-label")).toHaveTextContent("label");
+    expect(screen.getAllByRole("checkbox")[0]).toBeChecked();
+    expect(screen.getAllByRole("checkbox")[1]).not.toBeChecked();
 
-    expect(wrapper.find("[data-testid='field-label']").text()).toBe("label");
-    expect(findCheckbox(0).prop("checked")).toBe(true);
-    expect(findCheckbox(1).prop("checked")).toBe(false);
+    await userEvent.click(screen.getAllByRole("checkbox")[0]);
+    await userEvent.click(screen.getAllByRole("checkbox")[1]);
 
-    findCheckbox(0).simulate("change");
-    findCheckbox(1).simulate("change");
-    await waitForComponentToPaint(wrapper);
-
-    expect(findCheckbox(0).prop("checked")).toBe(false);
-    expect(findCheckbox(1).prop("checked")).toBe(true);
+    expect(screen.getAllByRole("checkbox")[0]).not.toBeChecked();
+    expect(screen.getAllByRole("checkbox")[1]).toBeChecked();
   });
 });

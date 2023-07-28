@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom-v5-compat";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "../PageContent";
+
 import SectionHeader from "app/base/components/SectionHeader";
 import { capitaliseFirst, isId } from "app/utils";
 
@@ -34,12 +35,14 @@ const ModelNotFound = ({
     </p>
   );
   return inSection ? (
-    <MainContentSection
+    <PageContent
       data-testid={TestIds.NotFound}
       header={<SectionHeader title={title} />}
+      sidePanelContent={null}
+      sidePanelTitle={null}
     >
       {content}
-    </MainContentSection>
+    </PageContent>
   ) : (
     <>
       <h4>{title}</h4>

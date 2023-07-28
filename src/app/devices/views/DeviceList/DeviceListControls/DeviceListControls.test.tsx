@@ -1,40 +1,21 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import DeviceListControls from "./DeviceListControls";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("DeviceListControls", () => {
-  let initialState: RootState;
-
-  beforeEach(() => {
-    initialState = rootStateFactory();
-  });
+  let state: RootState = rootStateFactory();
 
   it("changes the search text when the filters change", () => {
-    const store = mockStore(initialState);
-    const Proxy = ({ filter }: { filter: string }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <DeviceListControls filter={filter} setFilter={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
+    const { rerender } = renderWithBrowserRouter(
+      <DeviceListControls filter={""} setFilter={jest.fn()} />,
+      { route: "/machines?q=test+search", state }
     );
-    const wrapper = mount(<Proxy filter="" />);
-    expect(wrapper.find("SearchBox").prop("value")).toBe("");
+    expect(screen.getByRole("searchbox")).toHaveValue("");
 
-    wrapper.setProps({ filter: "free-text" });
-    wrapper.update();
-    expect(wrapper.find("SearchBox").prop("value")).toBe("free-text");
+    rerender(<DeviceListControls filter={"free-text"} setFilter={jest.fn()} />);
+
+    expect(screen.getByRole("searchbox")).toHaveValue("free-text");
   });
 });

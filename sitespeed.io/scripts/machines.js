@@ -1,12 +1,13 @@
 const { constructURL } = require("../utils");
 
 const TIMEOUT = 120000;
+const allMachinesLoaded = "//h1[text()[normalize-space() = '1000']]";
 
 const coldCache = async (context, commands) => {
   await commands.cache.clearKeepCookies();
   await commands.measure.start("Machine list - cold cache");
   await commands.navigate(constructURL(context, "/machines"));
-  await commands.wait.byXpath("//*[text()='1000 Machines']", TIMEOUT);
+  await commands.wait.byXpath(allMachinesLoaded, TIMEOUT);
   return commands.measure.stop();
 };
 
@@ -14,7 +15,7 @@ const warmCache = async (context, commands) => {
   await commands.navigate(constructURL(context, "/machines"));
   await commands.measure.start("Machine list - warm cache");
   await commands.navigate(constructURL(context, "/machines"));
-  await commands.wait.byXpath("//*[text()='1000 Machines']", TIMEOUT);
+  await commands.wait.byXpath(allMachinesLoaded, TIMEOUT);
   return commands.measure.stop();
 };
 

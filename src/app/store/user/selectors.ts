@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import createCachedSelector from "re-reselect";
 
 import type { RootState } from "app/store/root/types";
 import { UserMeta } from "app/store/user/types";
@@ -66,18 +67,16 @@ const markingIntroCompleteErrors = createSelector(
  * @param state - The redux state.
  * @returns User.
  */
-const getByUsername = createSelector(
-  [
-    defaultSelectors.all,
-    (_state: RootState, username: string | null | undefined) => username,
-  ],
+const getByUsername = createCachedSelector(
+  defaultSelectors.all,
+  (_state: RootState, username: string | null | undefined) => username,
   (items, username) => {
     if (username === null || username === undefined) {
       return null;
     }
     return items.find((item) => item.username === username) || null;
   }
-);
+)((_state, username) => username);
 
 const selectors = {
   ...defaultSelectors,

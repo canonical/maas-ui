@@ -80,7 +80,7 @@ describe("MachineStatusCard", () => {
 
   it("renders a failed test warning", () => {
     const machine = machineDetailsFactory();
-    machine.testing_status.status = 3;
+    machine.testing_status = 3;
 
     const store = mockStore(state);
 

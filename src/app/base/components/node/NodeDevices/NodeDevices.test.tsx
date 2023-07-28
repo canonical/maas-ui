@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeDevices from "./NodeDevices";
@@ -10,6 +6,7 @@ import { HardwareType } from "app/base/enum";
 import urls from "app/base/urls";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
+import type { RootState } from "app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
@@ -18,8 +15,13 @@ import {
   nodeDeviceState as nodeDeviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import {
+  renderWithBrowserRouter,
+  renderWithMockStore,
+  screen,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("NodeDevices", () => {
   it("fetches node devices by node id if not already loaded", () => {
@@ -30,14 +32,13 @@ describe("NodeDevices", () => {
       }),
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <NodeDevices
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={jest.fn()}
-        />
-      </Provider>
+    renderWithMockStore(
+      <NodeDevices
+        bus={NodeDeviceBus.PCIE}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { store }
     );
 
     const expectedAction = nodeDeviceActions.getByNodeId(machine.system_id);
@@ -54,14 +55,13 @@ describe("NodeDevices", () => {
       }),
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <NodeDevices
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={jest.fn()}
-        />
-      </Provider>
+    renderWithMockStore(
+      <NodeDevices
+        bus={NodeDeviceBus.PCIE}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { store }
     );
 
     const expectedAction = nodeDeviceActions.getByNodeId(machine.system_id);
@@ -77,55 +77,51 @@ describe("NodeDevices", () => {
         loading: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NodeDevices
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={jest.fn()}
-        />
-      </Provider>
+    renderWithMockStore(
+      <NodeDevices
+        bus={NodeDeviceBus.PCIE}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { state }
     );
-
-    expect(wrapper.find("Placeholder").exists()).toBe(true);
+    expect(screen.getAllByText("Group name")).toHaveLength(5);
+    expect(screen.getAllByText("X devices")).toHaveLength(5);
+    expect(screen.getAllByText("Example vendor")).toHaveLength(5);
+    expect(screen.getAllByText("0000")).toHaveLength(15);
+    expect(screen.getAllByText("Example product description")).toHaveLength(5);
+    expect(screen.getAllByText("0000:00:00.0")).toHaveLength(5);
   });
 
   it("shows a PCI address column if showing PCI devices", () => {
     const machine = machineDetailsFactory();
     const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NodeDevices
-          bus={NodeDeviceBus.PCIE}
-          node={machine}
-          setSidePanelContent={jest.fn()}
-        />
-      </Provider>
+    renderWithMockStore(
+      <NodeDevices
+        bus={NodeDeviceBus.PCIE}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='pci-address-col']").exists()).toBe(true);
+    expect(screen.getByTestId("pci-address-col")).toBeInTheDocument();
   });
 
   it("shows bus and device address columns if showing USB devices", () => {
     const machine = machineDetailsFactory();
     const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <NodeDevices
-          bus={NodeDeviceBus.USB}
-          node={machine}
-          setSidePanelContent={jest.fn()}
-        />
-      </Provider>
+    renderWithMockStore(
+      <NodeDevices
+        bus={NodeDeviceBus.USB}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='bus-address-col']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='device-address-col']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("bus-address-col")).toBeInTheDocument();
+    expect(screen.getByTestId("device-address-col")).toBeInTheDocument();
   });
 
   it("groups node devices by hardware type", () => {
@@ -149,53 +145,20 @@ describe("NodeDevices", () => {
         items: [...networkDevices, ...storageDevices],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/pci-devices", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <NodeDevices
-              bus={NodeDeviceBus.PCIE}
-              node={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeDevices
+        bus={NodeDeviceBus.PCIE}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/machine/abc123/pci-devices", state }
     );
 
-    expect(
-      wrapper
-        .find("[data-testid='group-label']")
-        .at(0)
-        .find(".p-double-row__primary-row")
-        .text()
-    ).toBe("Network");
-    expect(
-      wrapper
-        .find("[data-testid='group-label']")
-        .at(0)
-        .find(".p-double-row__secondary-row")
-        .text()
-    ).toBe("1 device");
-    expect(
-      wrapper
-        .find("[data-testid='group-label']")
-        .at(1)
-        .find(".p-double-row__primary-row")
-        .text()
-    ).toBe("Storage");
-    expect(
-      wrapper
-        .find("[data-testid='group-label']")
-        .at(1)
-        .find(".p-double-row__secondary-row")
-        .text()
-    ).toBe("3 devices");
+    expect(screen.getByText("Network")).toBeInTheDocument();
+    expect(screen.getByText("1 device")).toBeInTheDocument();
+
+    expect(screen.getByText("Storage")).toBeInTheDocument();
+    expect(screen.getByText("3 devices")).toBeInTheDocument();
   });
 
   it("can link to the machine network and storage tabs", () => {
@@ -215,31 +178,23 @@ describe("NodeDevices", () => {
         items: [networkDevice, storageDevice],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/pci-devices", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <NodeDevices
-              bus={NodeDeviceBus.PCIE}
-              node={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeDevices
+        bus={NodeDeviceBus.PCIE}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/machine/abc123/pci-devices", state }
     );
 
-    expect(
-      wrapper.find("[data-testid='group-label']").at(0).find("Link").prop("to")
-    ).toBe(urls.machines.machine.network({ id: machine.system_id }));
-    expect(
-      wrapper.find("[data-testid='group-label']").at(1).find("Link").prop("to")
-    ).toBe(urls.machines.machine.storage({ id: machine.system_id }));
+    expect(screen.getByRole("link", { name: "Network" })).toHaveAttribute(
+      "href",
+      urls.machines.machine.network({ id: machine.system_id })
+    );
+    expect(screen.getByRole("link", { name: "Storage" })).toHaveAttribute(
+      "href",
+      urls.machines.machine.storage({ id: machine.system_id })
+    );
   });
 
   it("can link to the controller network and storage tabs", () => {
@@ -259,27 +214,19 @@ describe("NodeDevices", () => {
         items: [networkDevice, storageDevice],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/controller/abc123/pci-devices", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <NodeDevices bus={NodeDeviceBus.PCIE} node={controller} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeDevices bus={NodeDeviceBus.PCIE} node={controller} />,
+      { route: "/controller/abc123/pci-devices", state }
     );
 
-    expect(
-      wrapper.find("[data-testid='group-label']").at(0).find("Link").prop("to")
-    ).toBe(urls.controllers.controller.network({ id: controller.system_id }));
-    expect(
-      wrapper.find("[data-testid='group-label']").at(1).find("Link").prop("to")
-    ).toBe(urls.controllers.controller.storage({ id: controller.system_id }));
+    expect(screen.getByRole("link", { name: "Network" })).toHaveAttribute(
+      "href",
+      urls.controllers.controller.network({ id: controller.system_id })
+    );
+    expect(screen.getByRole("link", { name: "Storage" })).toHaveAttribute(
+      "href",
+      urls.controllers.controller.storage({ id: controller.system_id })
+    );
   });
 
   it("displays the NUMA node index of a node device", () => {
@@ -299,27 +246,15 @@ describe("NodeDevices", () => {
         items: [pciDevice],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/pci-devices", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <NodeDevices
-              bus={NodeDeviceBus.PCIE}
-              node={machine}
-              setSidePanelContent={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeDevices
+        bus={NodeDeviceBus.PCIE}
+        node={machine}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/machine/abc123/pci-devices", state }
     );
 
-    expect(wrapper.find("[data-testid='node-device-1-numa']").text()).toBe(
-      "128"
-    );
+    expect(screen.getByTestId("node-device-1-numa")).toHaveTextContent("128");
   });
 });

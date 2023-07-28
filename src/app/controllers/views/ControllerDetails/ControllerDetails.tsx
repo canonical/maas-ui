@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -15,17 +15,19 @@ import ControllerSummary from "./ControllerSummary";
 import ControllerUSBDevices from "./ControllerUSBDevices";
 import ControllerVLANs from "./ControllerVLANs";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import type { ControllerSidePanelContent } from "app/controllers/types";
+import ControllerForms from "app/controllers/components/ControllerForms/ControllerForms";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import { getRelativeRoute, isId } from "app/utils";
 
 const ControllerDetails = (): JSX.Element => {
@@ -35,8 +37,7 @@ const ControllerDetails = (): JSX.Element => {
     controllerSelectors.getById(state, id)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<ControllerSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   useScrollToTop();
 
   useEffect(() => {
@@ -66,14 +67,24 @@ const ControllerDetails = (): JSX.Element => {
   const base = urls.controllers.controller.index(null);
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <ControllerDetailsHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }
+      sidePanelContent={
+        sidePanelContent && controller ? (
+          <ControllerForms
+            controllers={[controller]}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+            viewingDetails
+          />
+        ) : null
+      }
+      sidePanelTitle={getSidePanelTitle("Controller", sidePanelContent)}
     >
       {controller && (
         <Routes>
@@ -175,7 +186,7 @@ const ControllerDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 

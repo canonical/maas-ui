@@ -1,8 +1,8 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import { ACTIONS, DEFAULT_STATUSES } from "./constants";
 import type {
-  Action,
   ApplyStorageLayoutParams,
   BaseMachineActionParams,
   CloneParams,
@@ -62,7 +62,8 @@ import type {
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
 import type { OverrideFailedTesting } from "./types/actions";
-import type { MachineActionStatus } from "./types/base";
+import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
+import { createMachineListGroup, isMachineDetails } from "./utils";
 
 import { ACTION_STATUS } from "app/base/constants";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -80,287 +81,33 @@ import {
 } from "app/store/utils/slice";
 import { preparePayloadParams, kebabToCamelCase } from "app/utils";
 
-export const ACTIONS: Action[] = [
-  {
-    name: NodeActions.ABORT,
-    status: "aborting",
-  },
-  {
-    name: NodeActions.ACQUIRE,
-    status: "acquiring",
-  },
-  {
-    name: "apply-storage-layout",
-    status: "applyingStorageLayout",
-  },
-  {
-    name: "check-power",
-    status: "checkingPower",
-  },
-  {
-    name: NodeActions.CLONE,
-    status: "cloning",
-  },
-  {
-    name: NodeActions.COMMISSION,
-    status: "commissioning",
-  },
-  {
-    name: "create-bcache",
-    status: "creatingBcache",
-  },
-  {
-    name: "create-bond",
-    status: "creatingBond",
-  },
-  {
-    name: "create-bridge",
-    status: "creatingBridge",
-  },
-  {
-    name: "create-cache-set",
-    status: "creatingCacheSet",
-  },
-  {
-    name: "create-logical-volume",
-    status: "creatingLogicalVolume",
-  },
-  {
-    name: "create-partition",
-    status: "creatingPartition",
-  },
-  {
-    name: "create-physical",
-    status: "creatingPhysical",
-  },
-  {
-    name: "create-raid",
-    status: "creatingRaid",
-  },
-  {
-    name: "create-vlan",
-    status: "creatingVlan",
-  },
-  {
-    name: "create-vmfs-datastore",
-    status: "creatingVmfsDatastore",
-  },
-  {
-    name: "create-volume-group",
-    status: "creatingVolumeGroup",
-  },
-  {
-    name: NodeActions.DELETE,
-    status: "deleting",
-  },
-  {
-    name: "delete-cache-set",
-    status: "deletingCacheSet",
-  },
-  {
-    name: "delete-disk",
-    status: "deletingDisk",
-  },
-  {
-    name: "delete-filesystem",
-    status: "deletingFilesystem",
-  },
-  {
-    name: "delete-interface",
-    status: "deletingInterface",
-  },
-  {
-    name: "delete-partition",
-    status: "deletingPartition",
-  },
-  {
-    name: "delete-volume-group",
-    status: "deletingVolumeGroup",
-  },
-  {
-    name: NodeActions.DEPLOY,
-    status: "deploying",
-  },
-  {
-    name: NodeActions.RESCUE_MODE,
-    status: "enteringRescueMode",
-  },
-  {
-    name: NodeActions.EXIT_RESCUE_MODE,
-    status: "exitingRescueMode",
-  },
-  {
-    name: "get-summary-xml",
-    status: "gettingSummaryXml",
-  },
-  {
-    name: "get-summary-yaml",
-    status: "gettingSummaryYaml",
-  },
-  {
-    name: "link-subnet",
-    status: "linkingSubnet",
-  },
-  {
-    name: NodeActions.LOCK,
-    status: "locking",
-  },
-  {
-    name: NodeActions.MARK_BROKEN,
-    status: "markingBroken",
-  },
-  {
-    name: NodeActions.MARK_FIXED,
-    status: "markingFixed",
-  },
-  {
-    name: "mount-special",
-    status: "mountingSpecial",
-  },
-  {
-    name: NodeActions.OVERRIDE_FAILED_TESTING,
-    status: "overridingFailedTesting",
-  },
-  {
-    name: NodeActions.RELEASE,
-    status: "releasing",
-  },
-  {
-    name: "set-boot-disk",
-    status: "settingBootDisk",
-  },
-  {
-    name: NodeActions.SET_POOL,
-    status: "settingPool",
-  },
-  {
-    name: NodeActions.SET_ZONE,
-    status: "settingZone",
-  },
-  {
-    name: NodeActions.TAG,
-    status: "tagging",
-  },
-  {
-    name: NodeActions.TEST,
-    status: "testing",
-  },
-  {
-    name: NodeActions.OFF,
-    status: "turningOff",
-  },
-  {
-    name: NodeActions.ON,
-    status: "turningOn",
-  },
-  {
-    name: NodeActions.UNLOCK,
-    status: "unlocking",
-  },
-  {
-    name: "unlink-subnet",
-    status: "unlinkingSubnet",
-  },
-  {
-    name: "unmount-special",
-    status: "unmountingSpecial",
-  },
-  {
-    name: NodeActions.UNTAG,
-    status: "untagging",
-  },
-  {
-    name: "update-disk",
-    status: "updatingDisk",
-  },
-  {
-    name: "update-filesystem",
-    status: "updatingFilesystem",
-  },
-  {
-    name: "update-interface",
-    status: "updatingInterface",
-  },
-  {
-    name: "update-vmfs-datastore",
-    status: "updatingVmfsDatastore",
-  },
-];
+export const DEFAULT_MACHINE_QUERY_STATE = {
+  params: null,
+  fetchedAt: null,
+  refetchedAt: null,
+  refetching: false,
+} as const;
 
-export const DEFAULT_STATUSES = {
-  aborting: false,
-  acquiring: false,
-  applyingStorageLayout: false,
-  checkingPower: false,
-  cloning: false,
-  creatingBcache: false,
-  creatingBond: false,
-  creatingBridge: false,
-  creatingCacheSet: false,
-  creatingLogicalVolume: false,
-  creatingPartition: false,
-  creatingPhysical: false,
-  creatingRaid: false,
-  creatingVlan: false,
-  creatingVmfsDatastore: false,
-  creatingVolumeGroup: false,
-  commissioning: false,
-  deleting: false,
-  deletingCacheSet: false,
-  deletingDisk: false,
-  deletingFilesystem: false,
-  deletingInterface: false,
-  deletingPartition: false,
-  deletingVolumeGroup: false,
-  deploying: false,
-  enteringRescueMode: false,
-  exitingRescueMode: false,
-  gettingSummaryXml: false,
-  gettingSummaryYaml: false,
-  linkingSubnet: false,
-  locking: false,
-  markingBroken: false,
-  markingFixed: false,
-  mountingSpecial: false,
-  overridingFailedTesting: false,
-  releasing: false,
-  settingBootDisk: false,
-  settingPool: false,
-  settingZone: false,
-  tagging: false,
-  testing: false,
-  turningOff: false,
-  turningOn: false,
-  unlocking: false,
-  unlinkingSubnet: false,
-  unmountingSpecial: false,
-  unsubscribing: false,
-  untagging: false,
-  updatingDisk: false,
-  updatingFilesystem: false,
-  updatingInterface: false,
-  updatingVmfsDatastore: false,
-};
-
-const DEFAULT_LIST_STATE = {
+export const DEFAULT_LIST_STATE = {
   count: null,
   cur_page: null,
   errors: null,
   groups: null,
   loaded: false,
   loading: true,
-  needsUpdate: false,
   stale: false,
   num_pages: null,
-};
+  ...DEFAULT_MACHINE_QUERY_STATE,
+} as const;
 
-const DEFAULT_COUNT_STATE = {
+export const DEFAULT_COUNT_STATE = {
   loading: false,
   loaded: false,
   stale: false,
   count: null,
   errors: null,
-};
+  ...DEFAULT_MACHINE_QUERY_STATE,
+} as const;
 
 const isArrayOfOptionsType = <T extends FilterGroupOptionType>(
   options: FilterGroupOption[],
@@ -506,8 +253,7 @@ const machineSlice = createSlice({
     filtersLoaded: false,
     filtersLoading: false,
     lists: {},
-    selected: [],
-    selectedMachines: null,
+    selected: null,
     statuses: {},
   } as MachineState,
   reducers: {
@@ -681,11 +427,16 @@ const machineSlice = createSlice({
       ) => {
         if (action.meta.callId) {
           if (action.meta.callId in state.counts) {
-            state.counts[action.meta.callId].loading = true;
+            // refetching
+            state.counts[action.meta.callId].refetching = true;
+            state.counts[action.meta.callId].refetchedAt = Date.now();
           } else {
+            // initial fetch
             state.counts[action.meta.callId] = {
               ...DEFAULT_COUNT_STATE,
               loading: true,
+              params: action?.meta.item || null,
+              fetchedAt: Date.now(),
             };
           }
         }
@@ -933,23 +684,45 @@ const machineSlice = createSlice({
         (item: Machine) => item.system_id === action.payload
       );
       state.items.splice(index, 1);
-      state.selected = state.selected.filter(
-        (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
-      );
       if (
-        state.selectedMachines &&
-        "items" in state.selectedMachines &&
-        state.selectedMachines.items &&
-        state.selectedMachines.items.length > 0
+        state.selected &&
+        "items" in state.selected &&
+        state.selected.items &&
+        state.selected.items.length > 0
       ) {
-        state.selectedMachines.items = state.selectedMachines.items.filter(
+        state.selected.items = state.selected.items.filter(
           (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
         );
       }
+      // Remove deleted machine from all lists
+      Object.values(state.lists).forEach((list) => {
+        list.groups?.forEach((group) => {
+          let index = group.items.indexOf(action.payload);
+          if (index !== -1) {
+            group.items.splice(index, 1);
+            // update the count
+            if (group.count && group.count > 0) {
+              group.count = group.count! - 1;
+            }
+            if (list.count && list.count > 0) {
+              list.count = list.count! - 1;
+            }
+            // Exit the loop early if the item has been found and removed
+            return;
+          }
+        });
+        // remove any empty groups
+        if (list.groups) {
+          list.groups = list.groups?.filter((group) => group.items.length > 0);
+        }
+      });
+
+      // we do not know if the deleted machine is in the the requested count
       // mark all machine count queries as stale and in need of re-fetch
       Object.keys(state.counts).forEach((callId) => {
         state.counts[callId].stale = true;
       });
+
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },
@@ -1120,7 +893,6 @@ const machineSlice = createSlice({
           if (action.meta.callId in state.lists) {
             state.lists[action.meta.callId].errors = action.payload;
             state.lists[action.meta.callId].loading = false;
-          } else {
           }
         }
         state = setErrors(state, action, "fetch");
@@ -1138,10 +910,20 @@ const machineSlice = createSlice({
         action: PayloadAction<null, string, GenericMeta>
       ) => {
         if (action.meta.callId) {
-          state.lists[action.meta.callId] = {
-            ...DEFAULT_LIST_STATE,
-            loading: true,
-          };
+          if (!state.lists[action.meta.callId]) {
+            // initial fetch
+            state.lists[action.meta.callId] = {
+              ...DEFAULT_LIST_STATE,
+              loading: true,
+              params: action?.meta.item || null,
+              fetchedAt: Date.now(),
+            };
+          } else {
+            // refetching
+            state.lists[action.meta.callId].refetching = true;
+            state.lists[action.meta.callId].params = action?.meta.item || null;
+            state.lists[action.meta.callId].refetchedAt = Date.now();
+          }
         }
       },
     },
@@ -1167,13 +949,19 @@ const machineSlice = createSlice({
               // are probably MachineDetails so this would overwrite them with the
               // simple machine. Existing items will be kept up to date via the
               // notify (sync) messages.
-              const existing = state.items.find(
+              const existingIndex = state.items.findIndex(
                 (draftItem: Machine) => draftItem.id === newItem.id
               );
-              if (!existing) {
+              if (!state.items[existingIndex]) {
                 state.items.push(newItem);
                 // Set up the statuses for this machine.
                 state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+                // update existing item if not of machine details type
+              } else if (
+                state.items[existingIndex] &&
+                !isMachineDetails(state.items[existingIndex])
+              ) {
+                state.items[existingIndex] = newItem;
               }
             });
           });
@@ -1636,10 +1424,6 @@ const machineSlice = createSlice({
         if (callId) {
           if (callId in state.details) {
             delete state.details[callId];
-          } else if (callId in state.lists) {
-            delete state.lists[callId];
-          } else if (callId in state.counts) {
-            delete state.counts[callId];
           } else if (callId in state.actions) {
             delete state.actions[callId];
           }
@@ -1706,20 +1490,6 @@ const machineSlice = createSlice({
     setPoolStart: statusHandlers.setPool.start,
     setPoolSuccess: statusHandlers.setPool.success,
     setSelected: {
-      prepare: (machineIDs: Machine[MachineMeta.PK][]) => ({
-        payload: machineIDs,
-      }),
-      reducer: (
-        state: MachineState,
-        action: PayloadAction<Machine[MachineMeta.PK][]>
-      ) => {
-        state.selected = action.payload;
-      },
-    },
-    // TODO: rename this to setSelected once everything has been migrated to the
-    // new selected type.
-    // https://github.com/canonical/app-tribe/issues/1256
-    setSelectedMachines: {
       prepare: (selected: SelectedMachines | null) => ({
         payload: selected,
       }),
@@ -1727,7 +1497,7 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<SelectedMachines | null>
       ) => {
-        state.selectedMachines = action.payload;
+        state.selected = action.payload;
       },
     },
     setZone: generateActionParams<SetZoneParams>(NodeActions.SET_ZONE),
@@ -1877,15 +1647,8 @@ const machineSlice = createSlice({
       action: PayloadAction<Machine[MachineMeta.PK][]>
     ) => {
       action.payload.forEach((id) => {
-        const index = state.items.findIndex(
-          (item: Machine) => item.system_id === id
-        );
-        state.items.splice(index, 1);
-        state.selected = state.selected.filter(
-          (machineId: Machine[MachineMeta.PK]) => machineId !== id
-        );
         // Clean up the statuses for model.
-        delete state.statuses[id];
+        state.statuses[id] = { ...DEFAULT_STATUSES };
       });
     },
     [NodeActions.UNTAG]: generateActionParams<UntagParams>(NodeActions.UNTAG),
@@ -1971,9 +1734,93 @@ const machineSlice = createSlice({
         state,
         action
       );
-      // mark all machine list queries as in need of update
+      // infer the new grouping value for each machine list
+      // based on machine details sent as notification payload
       Object.keys(state.lists).forEach((callId: string) => {
-        state.lists[callId].needsUpdate = true;
+        const list: MachineStateList = state.lists[callId];
+        let groups: MachineStateListGroup[] = list.groups ?? [];
+        const groupBy = list.params?.group_key ?? "";
+        const machine = action.payload;
+
+        // if groupBy is empty string, then we don't need to do anything
+        if (groupBy === "") {
+          return;
+        }
+
+        const currentMachineListGroup = groups?.find((group) =>
+          group.items.some((systemId) => systemId === action.payload.system_id)
+        );
+        // get the right value from action.payload based on the groupKey
+        const newMachineListGroup = createMachineListGroup({
+          groupBy,
+          machine,
+        });
+
+        if (!currentMachineListGroup || !newMachineListGroup) {
+          return;
+        }
+
+        // update the groups if machine grouping changed
+        if (currentMachineListGroup.value !== newMachineListGroup.value) {
+          // remove machine from the current group
+          groups = groups.map((group) => {
+            if (group.value === currentMachineListGroup.value) {
+              return {
+                ...group,
+                items: group.items.filter(
+                  (item) => item !== action.payload.system_id
+                ),
+                // decrement count by 1 if count is known,
+                // otherwise set to null indicating it needs to be fetched
+                count: group.count ? group.count - 1 : null,
+              };
+            }
+            return group;
+          });
+
+          // add machine to the new group
+          const newGroupExists = groups.find(
+            (group) => group.value === newMachineListGroup.value
+          );
+          if (newGroupExists) {
+            groups = groups.map((group) => {
+              if (group.value === newMachineListGroup.value) {
+                return {
+                  ...group,
+                  items: [...group.items, action.payload.system_id],
+                  // increment count by 1 if count is known,
+                  // otherwise set to null indicating it needs to be fetched
+                  count: group.count ? group.count + 1 : null,
+                };
+              }
+              return group;
+            });
+          } else {
+            // if the group does not exist create it
+            groups.push({
+              name: newMachineListGroup.name,
+              value: newMachineListGroup.value,
+              items: [action.payload.system_id],
+              // set count to null indicating it's unknown and needs to be fetched
+              count: null,
+              collapsed: false,
+            });
+          }
+
+          // remove any empty groups
+          groups = groups.filter((group) => group.items.length > 0);
+
+          // update the list
+          list.groups = groups;
+        }
+      });
+
+      // machine update can affect counts of filtered machine lists
+      // - mark all filtered machine counts as stale indicating they need to be fetched
+      Object.keys(state.counts).forEach((callId) => {
+        if (state.counts[callId].params !== null) {
+          state.counts[callId].stale = true;
+        }
       });
     },
     updateVmfsDatastore: {
@@ -1998,22 +1845,6 @@ const machineSlice = createSlice({
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
-    markAsUpdated: {
-      prepare: (callId: string) => ({
-        meta: {
-          callId,
-        },
-        payload: null,
-      }),
-      reducer: (
-        state: MachineState,
-        action: PayloadAction<null, string, GenericMeta>
-      ) => {
-        if (action.meta.callId && state.lists?.[action.meta.callId]) {
-          state.lists[action.meta.callId].needsUpdate = false;
-        }
-      },
-    },
   },
 });
 

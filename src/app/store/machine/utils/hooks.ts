@@ -11,12 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { FetchGroupKey } from "../types/actions";
 import type { FetchParams } from "../types/actions";
 
-import {
-  mapSortDirection,
-  mergeGroupUpdates,
-  selectedToFilters,
-  selectedToSeparateFilters,
-} from "./common";
+import { selectedToFilters, selectedToSeparateFilters } from "./common";
+import { generateCallId, transformToFetchParams } from "./query";
 import { FilterMachines } from "./search";
 
 import { ACTION_STATUS } from "app/base/constants";
@@ -268,14 +264,14 @@ export const useSelectedMachinesActionsDispatch = ({
 };
 
 export const useMachineSelectedCount = (
-  filters?: FetchFilters | null,
+  filters: FetchFilters | null,
   queryOptions?: UseFetchQueryOptions
 ): {
   selectedCount: number;
   selectedCountLoading: boolean;
 } => {
   const { isEnabled } = queryOptions || { isEnabled: true };
-  let selectedState = useSelector(machineSelectors.selectedMachines);
+  let selectedState = useSelector(machineSelectors.selected);
   let selectedCount = 0;
   // Shallow clone the selected state so that object can be modified.
   let selectedMachines = selectedState ? { ...selectedState } : null;
@@ -322,9 +318,9 @@ export const useMachineSelectedCount = (
  */
 export const useFetchSelectedMachines = (
   queryOptions: UseFetchQueryOptions
-): UseFetchMachinesData => {
+): Omit<UseFetchMachinesData, "totalPages"> => {
   const { isEnabled } = queryOptions || { isEnabled: true };
-  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedMachines = useSelector(machineSelectors.selected);
   const getIsSingleFilter = (
     selectedMachines: SelectedMachines | null
   ): selectedMachines is { filter: FetchFilters } => {
@@ -389,6 +385,8 @@ export const useFetchMachineCount = (
   const { isEnabled } = queryOptions || { isEnabled: true };
   const previousIsEnabled = usePrevious(isEnabled);
   const [callId, setCallId] = useState<string | null>(null);
+  const [staleCount, setStaleCount] = useState<number>(0);
+  const previousStaleCount = usePrevious(staleCount);
   const previousCallId = usePrevious(callId);
   const previousFilters = usePrevious(filters);
   const isStale = useSelector((state: RootState) =>
@@ -396,7 +394,7 @@ export const useFetchMachineCount = (
   );
   useEffect(() => {
     if (isStale) {
-      setCallId(nanoid());
+      setStaleCount((count) => count + 1);
     }
   }, [isStale]);
   const dispatch = useDispatch();
@@ -419,7 +417,7 @@ export const useFetchMachineCount = (
         !callId ||
         isEnabled !== previousIsEnabled
       ) {
-        setCallId(nanoid());
+        setCallId(generateCallId(filters));
       }
     }
   }, [
@@ -432,18 +430,23 @@ export const useFetchMachineCount = (
   ]);
 
   useEffect(() => {
-    return () => {
-      if (callId) {
-        dispatch(machineActions.removeRequest(callId));
-      }
-    };
-  }, [callId, dispatch]);
-
-  useEffect(() => {
-    if (isEnabled && callId && callId !== previousCallId) {
+    if (
+      (isEnabled && callId && isEnabled !== previousIsEnabled) ||
+      (isEnabled && callId && callId !== previousCallId) ||
+      (isEnabled && callId && staleCount !== previousStaleCount)
+    ) {
       dispatch(machineActions.count(callId, filters));
     }
-  }, [dispatch, filters, callId, previousCallId, isEnabled, previousIsEnabled]);
+  }, [
+    dispatch,
+    filters,
+    callId,
+    previousCallId,
+    isEnabled,
+    previousIsEnabled,
+    staleCount,
+    previousStaleCount,
+  ]);
 
   return {
     machineCount: machineCount || 0,
@@ -534,6 +537,7 @@ type UseFetchMachinesData = {
   machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;
+  totalPages: number | null;
 };
 
 /**
@@ -551,14 +555,18 @@ export const useFetchMachines = (
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousOptions = usePrevious(options, false);
+  const [staleCount, setStaleCount] = useState<number>(0);
+  const previousStaleCount = usePrevious(staleCount);
   const isStale = useSelector((state: RootState) =>
     machineSelectors.listStale(state, callId)
   );
+
   useEffect(() => {
     if (isStale) {
-      setCallId(nanoid());
+      setStaleCount((count) => count + 1);
     }
   }, [isStale]);
+
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId)
@@ -568,6 +576,9 @@ export const useFetchMachines = (
   );
   const machineCount = useSelector((state: RootState) =>
     machineSelectors.listCount(state, callId)
+  );
+  const totalPages = useSelector((state: RootState) =>
+    machineSelectors.listTotalPages(state, callId)
   );
   const machinesErrors = useSelector((state: RootState) =>
     machineSelectors.listErrors(state, callId)
@@ -614,7 +625,7 @@ export const useFetchMachines = (
         !callId ||
         isEnabled !== previousIsEnabled
       ) {
-        setCallId(nanoid());
+        setCallId(generateCallId(transformToFetchParams(options)));
       }
     }
   }, [
@@ -627,25 +638,23 @@ export const useFetchMachines = (
   ]);
 
   useEffect(() => {
-    if (isEnabled && callId && callId !== previousCallId) {
-      dispatch(
-        machineActions.fetch(
-          callId,
-          options
-            ? {
-                filter: options.filters ?? null,
-                group_collapsed: options.collapsedGroups,
-                group_key: options.grouping ?? null,
-                page_number: options?.pagination?.currentPage,
-                page_size: options?.pagination?.pageSize,
-                sort_direction: mapSortDirection(options.sortDirection),
-                sort_key: options.sortKey ?? null,
-              }
-            : null
-        )
-      );
+    if (
+      (isEnabled && callId && isEnabled !== previousIsEnabled) ||
+      (isEnabled && callId && callId !== previousCallId) ||
+      (isEnabled && callId && staleCount !== previousStaleCount)
+    ) {
+      dispatch(machineActions.fetch(callId, transformToFetchParams(options)));
     }
-  }, [callId, dispatch, options, previousCallId, isEnabled, previousIsEnabled]);
+  }, [
+    callId,
+    dispatch,
+    options,
+    previousCallId,
+    isEnabled,
+    previousIsEnabled,
+    staleCount,
+    previousStaleCount,
+  ]);
 
   return {
     callId,
@@ -654,99 +663,8 @@ export const useFetchMachines = (
     loading,
     groups,
     machineCount,
+    totalPages,
     machines,
-    machinesErrors,
-  };
-};
-
-export const useFetchMachinesWithGroupingUpdates = (
-  options?: UseFetchMachinesOptions | null,
-  queryOptions?: UseFetchQueryOptions
-): UseFetchMachinesData & {
-  groups: MachineStateListGroup[] | null;
-} => {
-  const dispatch = useDispatch();
-  const previousOptions = usePrevious(options, false);
-
-  // main fetch call returning the initial machines and groups
-  const {
-    callId: initialCallId,
-    machines,
-    groups: initialGroups,
-    loading,
-    loaded,
-    machinesErrors,
-    machineCount,
-  } = useFetchMachines(options, queryOptions);
-  const needsUpdate = useSelector((state: RootState) =>
-    machineSelectors.listNeedsUpdate(state, initialCallId)
-  );
-  const initialListIds = useSelector((state: RootState) =>
-    machineSelectors.listIds(state.machine, initialCallId)
-  );
-  const shouldFetchUpdates = !!needsUpdate;
-  const optionsWithoutPagination = useMemo(
-    () => ({
-      ...options,
-      pagination: undefined,
-    }),
-    [options]
-  );
-
-  // fetch updates for machines in the initial list of ids
-  const {
-    cleanup: cleanupExpandedGroups,
-    groups: updatedExpandedGroups,
-    loaded: updatedGroupsLoaded,
-  } = useFetchMachines(
-    { ...optionsWithoutPagination, filters: { id: initialListIds } },
-    { isEnabled: shouldFetchUpdates }
-  );
-
-  // fetch machine updates for groups
-  const {
-    cleanup: cleanupCollapsedGroups,
-    groups: updatedCollapsedGroups,
-    loaded: updatedCollapsedGroupsLoaded,
-  } = useFetchMachines(
-    { ...optionsWithoutPagination },
-    {
-      isEnabled: shouldFetchUpdates,
-    }
-  );
-  useEffect(() => {
-    // if options changed, it means we're getting a fresh page of results
-    // and need to reset subsequent updates
-    if (!fastDeepEqual(options, previousOptions)) {
-      cleanupExpandedGroups();
-      cleanupCollapsedGroups();
-    }
-  }, [options, previousOptions, cleanupExpandedGroups, cleanupCollapsedGroups]);
-
-  const groups = mergeGroupUpdates({
-    initialGroups,
-    updatedCollapsedGroups,
-    updatedExpandedGroups,
-  });
-
-  useEffect(() => {
-    if (initialCallId && updatedGroupsLoaded && updatedCollapsedGroupsLoaded) {
-      dispatch(machineActions.markAsUpdated(initialCallId));
-    }
-  }, [
-    dispatch,
-    initialCallId,
-    updatedGroupsLoaded,
-    updatedCollapsedGroupsLoaded,
-  ]);
-
-  return {
-    callId: initialCallId,
-    loaded,
-    loading,
-    groups,
-    machines,
-    machineCount,
     machinesErrors,
   };
 };
@@ -939,7 +857,7 @@ export const useCanAddVLAN = (
  * Whether any machines are selected.
  */
 export const useHasSelection = (): boolean => {
-  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedMachines = useSelector(machineSelectors.selected);
   if (!selectedMachines) {
     return false;
   }

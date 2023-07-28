@@ -18,7 +18,7 @@ import {
   vlan as vlanFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen, within, waitFor } from "testing/utils";
+import { render, screen, within, waitFor, userEvent } from "testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {
@@ -182,15 +182,13 @@ it("dispatches a delete action on submit", async () => {
   expect(
     screen.getByText(/Are you sure you want to delete this subnet?/)
   ).toBeInTheDocument();
-  screen.getByRole("button", { name: /Delete/i }).click();
+  await userEvent.click(screen.getByRole("button", { name: /Delete/i }));
 
-  await waitFor(() => {
-    const expectedAction = subnetActions.delete(subnetId);
-    const actualAction = store
-      .getActions()
-      .find((actualAction) => actualAction.type === expectedAction.type);
-    expect(actualAction).toStrictEqual(expectedAction);
-  });
+  const expectedAction = subnetActions.delete(subnetId);
+  const actualAction = store
+    .getActions()
+    .find((actualAction) => actualAction.type === expectedAction.type);
+  expect(actualAction).toStrictEqual(expectedAction);
 });
 
 it("redirects on save", async () => {

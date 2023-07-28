@@ -620,7 +620,7 @@ describe("NetworkTable", () => {
       await userEvent.click(
         within(
           screen.getByRole("columnheader", { name: Label.Name })
-        ).getByRole("button", { name: Label.Name })
+        ).getByRole("button", { name: `${Label.Name} (descending)` })
       );
       const names = screen
         .getAllByRole("row")

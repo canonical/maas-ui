@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
-import { CompatRouter, Link, Route, Routes } from "react-router-dom-v5-compat";
+import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import MachineDetails from "./MachineDetails";
@@ -14,9 +11,9 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineDetails", () => {
   let state: RootState;
@@ -29,6 +26,7 @@ describe("MachineDetails", () => {
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
+            fqdn: "test-machine",
             system_id: "abc123",
             devices: [machineDeviceFactory()],
           }),
@@ -46,30 +44,37 @@ describe("MachineDetails", () => {
     {
       component: "MachineSummary",
       path: urls.machines.machine.summary({ id: "abc123" }),
+      title: "details",
     },
     {
       component: "MachineInstances",
       path: urls.machines.machine.instances({ id: "abc123" }),
+      title: "instances",
     },
     {
       component: "MachineNetwork",
       path: urls.machines.machine.network({ id: "abc123" }),
+      title: "network",
     },
     {
       component: "MachineStorage",
       path: urls.machines.machine.storage({ id: "abc123" }),
+      title: "storage",
     },
     {
       component: "MachinePCIDevices",
       path: urls.machines.machine.pciDevices({ id: "abc123" }),
+      title: "PCI devices",
     },
     {
       component: "MachineUSBDevices",
       path: urls.machines.machine.usbDevices({ id: "abc123" }),
+      title: "USB devices",
     },
     {
       component: "MachineCommissioning",
       path: urls.machines.machine.commissioning.index({ id: "abc123" }),
+      title: "commissioning",
     },
     {
       component: "NodeTestDetails",
@@ -77,10 +82,12 @@ describe("MachineDetails", () => {
         id: "abc123",
         scriptResultId: 1,
       }),
+      title: "commissioning",
     },
     {
       component: "MachineTests",
       path: urls.machines.machine.testing.index({ id: "abc123" }),
+      title: "tests",
     },
     {
       component: "NodeTestDetails",
@@ -88,57 +95,38 @@ describe("MachineDetails", () => {
         id: "abc123",
         scriptResultId: 1,
       }),
+      title: "tests",
     },
     {
       component: "NodeLogs",
       path: urls.machines.machine.logs.index({ id: "abc123" }),
+      title: "logs",
     },
     {
       component: "MachineConfiguration",
       path: urls.machines.machine.configuration({ id: "abc123" }),
+      title: "configuration",
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, async () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Routes>
-                <Route
-                  element={<MachineDetails />}
-                  path={`${urls.machines.machine.index(null)}/*`}
-                />
-              </Routes>
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+  ].forEach(({ component, path, title }) => {
+    it(`Displays: ${component} at: ${path}`, () => {
+      renderWithBrowserRouter(<MachineDetails />, {
+        route: path,
+        state,
+        routePattern: `${urls.machines.machine.index(null)}/*`,
+      });
+      expect(document.title).toBe(
+        `${state.machine.items[0].fqdn} ${title} | MAAS`
       );
-      expect(wrapper.find(component).exists()).toBe(true);
     });
   });
 
   it("redirects to summary", () => {
-    window.history.pushState(
-      {},
-      "",
-      urls.machines.machine.index({ id: "abc123" })
-    );
-    const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <BrowserRouter>
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineDetails />}
-                path={`${urls.machines.machine.index(null)}/*`}
-              />
-            </Routes>
-          </CompatRouter>
-        </BrowserRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<MachineDetails />, {
+      route: urls.machines.machine.index({ id: "abc123" }),
+      state,
+      routePattern: `${urls.machines.machine.index(null)}/*`,
+    });
+
     expect(window.location.pathname).toBe(
       urls.machines.machine.summary({ id: "abc123" })
     );
@@ -146,22 +134,11 @@ describe("MachineDetails", () => {
 
   it("dispatches an action to set the machine as active", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineDetails />}
-                path={`${urls.machines.machine.index(null)}/*`}
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<MachineDetails />, {
+      route: "/machine/abc123",
+      store,
+      routePattern: `${urls.machines.machine.index(null)}/*`,
+    });
 
     expect(
       store.getActions().find((action) => action.type === "machine/setActive")
@@ -180,43 +157,22 @@ describe("MachineDetails", () => {
   });
 
   it("displays a message if the machine does not exist", () => {
-    const store = mockStore(state);
     state.machine.loading = false;
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/not-valid-id", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <MachineDetails />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='not-found']").exists()).toBe(true);
+    renderWithBrowserRouter(<MachineDetails />, {
+      route: "/machine/not-valid-id",
+      state,
+    });
+    expect(screen.getByTestId("not-found")).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<MachineDetails />}
-                path={`${urls.machines.machine.index(null)}/*`}
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.unmount();
+    const { unmount } = renderWithBrowserRouter(<MachineDetails />, {
+      route: "/machine/abc123",
+      store,
+      routePattern: `${urls.machines.machine.index(null)}/*`,
+    });
+    unmount();
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
@@ -224,29 +180,15 @@ describe("MachineDetails", () => {
 
   it("scrolls to the top when changing tabs", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={
-                  <>
-                    <Link to="/machine/abc123/commissioning" />
-                    <MachineDetails />
-                  </>
-                }
-                path={`${urls.machines.machine.index(null)}/*`}
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("Link").first().simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(scrollToSpy).toHaveBeenCalled();
+    renderWithBrowserRouter(<MachineDetails />, {
+      route: "/machine/abc123",
+      store,
+      routePattern: `${urls.machines.machine.index(null)}/*`,
+    });
+    const linkTo = screen.getByRole("link", { name: "USB" });
+    await userEvent.click(linkTo);
+    await waitFor(() => {
+      expect(scrollToSpy).toHaveBeenCalled();
+    });
   });
 });

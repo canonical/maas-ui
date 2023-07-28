@@ -122,12 +122,19 @@ export const CreateVolumeGroup = ({
             <Col medium={6} size={6} small={4}>
               <FormikField label="Name" name="name" required type="text" />
               <Input
+                aria-label="Size"
                 disabled
                 label="Size"
                 type="text"
                 value={`${formatSize(totalSize)}`}
               />
-              <Input disabled label="Type" type="text" value="Volume group" />
+              <Input
+                aria-label="Type"
+                disabled
+                label="Type"
+                type="text"
+                value="Volume group"
+              />
             </Col>
           </Row>
         </FormikForm>

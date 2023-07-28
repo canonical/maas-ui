@@ -25,7 +25,7 @@ const SecretStorage = (): JSX.Element => {
   return (
     <>
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <VaultSettings />
         </Col>
       </Row>

@@ -14,13 +14,15 @@ import LXDSingleResources from "./LXDSingleResources";
 import LXDSingleSettings from "./LXDSingleSettings";
 import LXDSingleVMs from "./LXDSingleVMs";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent/PageContent";
 import { useGetURLId } from "app/base/hooks/urls";
+import { useSidePanel } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
+import KVMForms from "app/kvm/components/KVMForms/KVMForms";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import type { KVMSidePanelContent } from "app/kvm/types";
+import { getFormTitle } from "app/kvm/utils";
 import { FilterMachines } from "app/store/machine/utils";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
@@ -44,8 +46,7 @@ const LXDSingleDetails = (): JSX.Element => {
   const [searchFilter, setFilter] = useState<string>(
     FilterMachines.filtersToString(currentFilters)
   );
-  const [sidePanelContent, setSidePanelContent] =
-    useState<KVMSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
@@ -75,16 +76,25 @@ const LXDSingleDetails = (): JSX.Element => {
   }
   const base = urls.kvm.lxd.single.index(null);
   return (
-    <MainContentSection
+    <PageContent
       aria-label={Label.Title}
       header={
         <LXDSingleDetailsHeader
           id={id}
-          setSearchFilter={setSearchFilter}
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
         />
       }
+      sidePanelContent={
+        sidePanelContent ? (
+          <KVMForms
+            searchFilter={searchFilter}
+            setSearchFilter={setSearchFilter}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        ) : null
+      }
+      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
     >
       {pod && (
         <Routes>
@@ -118,7 +128,7 @@ const LXDSingleDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 

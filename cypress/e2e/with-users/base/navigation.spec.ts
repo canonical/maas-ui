@@ -17,10 +17,6 @@ const expectExpandedNavigation = () => {
   );
 };
 
-const withinSideNavigtion = (fn: () => void) => {
-  cy.findByRole("navigation", { name: /main navigation/i }).within(fn);
-};
-
 context("Navigation - non-admin", () => {
   beforeEach(() => {
     cy.loginNonAdmin();
@@ -28,7 +24,7 @@ context("Navigation - non-admin", () => {
   });
 
   it("navigates to machines when clicking on the logo", () => {
-    withinSideNavigtion(() =>
+    cy.getMainNavigation().within(() =>
       cy.findByRole("link", { name: "Homepage" }).click()
     );
     cy.location("pathname").should("eq", generateMAASURL("/machines"));
@@ -55,6 +51,15 @@ context("Navigation - admin - collapse", () => {
     expectCollapsedNavigation();
   });
 
+  it("ignores the keyboard shortcut when modifier key is pressed", () => {
+    cy.viewport("ipad-mini");
+    cy.waitForPageToLoad();
+    expectCollapsedNavigation();
+    // ctrl + [ is often used as a shortcut for going back in browsers
+    cy.get("body").type("{ctrl}[");
+    expectCollapsedNavigation();
+  });
+
   it("expands and collapses the side navigation on click of a button", () => {
     cy.viewport("ipad-mini");
     cy.waitForPageToLoad();
@@ -72,7 +77,7 @@ context("Navigation - admin - collapse", () => {
         name: /main navigation/i,
       });
     getMainNavigation().should("not.be.visible");
-    cy.findByRole("banner").within(() =>
+    cy.findByRole("banner", { name: /navigation/i }).within(() =>
       cy.findByRole("button", { name: "Menu" }).click()
     );
     getMainNavigation()
@@ -92,9 +97,7 @@ context("Navigation - admin", () => {
     cy.viewport("macbook-13");
     cy.visit(generateMAASURL("/"));
     // set side navigation to expanded
-    cy.window().then((win) =>
-      win.localStorage.setItem("appSideNavIsCollapsed", "false")
-    );
+    cy.expandMainNavigation();
   });
 
   const expected = [
@@ -102,7 +105,6 @@ context("Navigation - admin", () => {
     { destinationUrl: "/devices", linkLabel: "Devices" },
     { destinationUrl: "/controllers", linkLabel: "Controllers" },
     { destinationUrl: "/kvm/lxd", linkLabel: "LXD" },
-    { destinationUrl: "/kvm/virsh", linkLabel: "Virsh" },
     { destinationUrl: "/images", linkLabel: "Images" },
     { destinationUrl: "/domains", linkLabel: "DNS" },
     { destinationUrl: "/networks", linkLabel: "Subnets" },
@@ -119,7 +121,7 @@ context("Navigation - admin", () => {
 
   it("navigates to /dashboard when clicking on the logo", () => {
     cy.waitForPageToLoad();
-    withinSideNavigtion(() =>
+    cy.getMainNavigation().within(() =>
       cy.findByRole("link", { name: "Homepage" }).click()
     );
     cy.location("pathname").should("eq", generateMAASURL("/dashboard"));
@@ -128,12 +130,15 @@ context("Navigation - admin", () => {
   expected.forEach(({ destinationUrl, linkLabel }) => {
     it(`navigates to ${destinationUrl} and highlights ${linkLabel} link`, () => {
       cy.waitForPageToLoad();
-      withinSideNavigtion(() =>
+      cy.getMainNavigation().within(() =>
         cy.findByRole("link", { name: linkLabel }).click()
       );
       cy.location("pathname").should("eq", generateMAASURL(destinationUrl));
       cy.get(".p-side-navigation__item.is-selected a").contains(linkLabel);
-      cy.findByRole("link", { current: "page" }).should("have.text", linkLabel);
+      cy.findAllByRole("link", {
+        current: "page",
+        name: linkLabel,
+      }).should("exist");
     });
   });
 });

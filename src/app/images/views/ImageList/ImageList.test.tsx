@@ -1,5 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ImageList, { Labels as ImageListLabels } from "./ImageList";
@@ -11,7 +9,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, render, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -29,15 +27,10 @@ describe("ImageList", () => {
       }),
     });
     const store = mockStore(state);
-    const { unmount } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/images", key: "testKey" }]}
-        >
-          <ImageList />
-        </MemoryRouter>
-      </Provider>
-    );
+    const { unmount } = renderWithBrowserRouter(<ImageList />, {
+      route: "/images",
+      store,
+    });
     unmount();
     expect(
       store

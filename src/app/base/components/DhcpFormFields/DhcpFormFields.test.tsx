@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -9,6 +8,7 @@ import { Labels } from "./DhcpFormFields";
 import DhcpForm from "app/base/components/DhcpForm";
 import { getIpRangeDisplayName } from "app/store/iprange/utils";
 import type { RootState } from "app/store/root/types";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,
@@ -26,14 +26,15 @@ import {
 } from "testing/factories";
 import { userEvent, render, screen, waitFor, within } from "testing/utils";
 
+enableCallIdMocks();
 const mockStore = configureStore();
 const machines = [machineFactory()];
 const ipRange = ipRangeFactory();
+
 describe("DhcpFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       controller: controllerStateFactory({ loaded: true }),
       device: deviceStateFactory({ loaded: true }),
@@ -58,7 +59,7 @@ describe("DhcpFormFields", () => {
       machine: machineStateFactory({
         items: machines,
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loading: false,
             loaded: true,
             groups: [
@@ -214,7 +215,9 @@ describe("DhcpFormFields", () => {
     await waitFor(() =>
       expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "false")
     );
-    within(screen.getByRole("grid")).getByText(machine.hostname).click();
+    await userEvent.click(
+      within(screen.getByRole("grid")).getByText(machine.hostname)
+    );
     expect(
       screen.getByRole("button", { name: new RegExp(machine.hostname, "i") })
     ).toHaveAccessibleDescription(Labels.AppliesTo);

@@ -45,17 +45,24 @@ const TagMachines = (): JSX.Element => {
   if (tag) {
     filters.tags = [tag.name];
   }
-  const { callId, loading, machineCount, machines, groups, machinesErrors } =
-    useFetchMachines({
-      filters,
-      sortDirection,
-      sortKey,
-      pagination: {
-        currentPage,
-        setCurrentPage,
-        pageSize: PAGE_SIZE,
-      },
-    });
+  const {
+    callId,
+    loading,
+    machineCount,
+    machines,
+    groups,
+    machinesErrors,
+    totalPages,
+  } = useFetchMachines({
+    filters,
+    sortDirection,
+    sortKey,
+    pagination: {
+      currentPage,
+      setCurrentPage,
+      pageSize: PAGE_SIZE,
+    },
+  });
 
   useWindowTitle(tag ? `Deployed machines for: ${tag.name}` : "Tag");
 
@@ -89,6 +96,7 @@ const TagMachines = (): JSX.Element => {
         showActions={false}
         sortDirection={sortDirection}
         sortKey={sortKey}
+        totalPages={totalPages}
       />
     </>
   );

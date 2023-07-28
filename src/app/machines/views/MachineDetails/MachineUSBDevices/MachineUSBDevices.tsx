@@ -19,7 +19,7 @@ const MachineUSBDevices = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  useWindowTitle(`${`${machine?.fqdn || "Machine"} `} PCI devices`);
+  useWindowTitle(`${`${machine?.fqdn || "Machine"} `} USB devices`);
 
   if (isMachineDetails(machine)) {
     return (

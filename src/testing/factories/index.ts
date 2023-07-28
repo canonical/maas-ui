@@ -20,6 +20,7 @@ export {
   domainState,
   eventState,
   fabricState,
+  fetchedAt,
   generalState,
   generatedCertificateState,
   hweKernelsState,

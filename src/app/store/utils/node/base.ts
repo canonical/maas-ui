@@ -1,3 +1,7 @@
+import {
+  SidePanelViews,
+  type SidePanelContent,
+} from "app/base/side-panel-context";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
 import type { Device } from "app/store/device/types";
@@ -163,6 +167,44 @@ export const getNodeActionLabel = (
     default:
       return `${isProcessing ? "Processing" : "Process"} ${modelString}`;
   }
+};
+
+/**
+ * Get title depending on side panel content.
+ * @param defaultTitle - Title to show if no header content open.
+ * @param sidePanelContent - The name of the header content to check.
+ * @returns Header title string.
+ */
+export const getSidePanelTitle = (
+  defaultTitle: string,
+  sidePanelContent: SidePanelContent | null
+): string => {
+  if (sidePanelContent) {
+    const [, name] = sidePanelContent.view;
+    switch (name) {
+      case SidePanelViews.ADD_CONTROLLER[1]:
+        return "Add controller";
+      case SidePanelViews.ADD_CHASSIS[1]:
+        return "Add chassis";
+      case SidePanelViews.ADD_MACHINE[1]:
+        return "Add machine";
+      case SidePanelViews.ADD_DEVICE[1]:
+        return "Add device";
+      case SidePanelViews.AddTag[1]:
+        return "Create new tag";
+      case SidePanelViews.DeleteTag[1]:
+        return "Delete tag";
+      case SidePanelViews.CREATE_ZONE[1]:
+        return "Add AZ";
+      case SidePanelViews.DELETE_SPACE[1]:
+        return "Delete space";
+      case SidePanelViews.DELETE_FABRIC[1]:
+        return "Delete fabric";
+      default:
+        return name ? getNodeActionTitle(name as NodeActions) : defaultTitle;
+    }
+  }
+  return defaultTitle;
 };
 
 // TODO: Replace NodeLinkType with NodeType when it is made available on all

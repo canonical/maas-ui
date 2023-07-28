@@ -1,6 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { AnyAction } from "redux";
 import { call, put, takeEvery, takeLatest } from "typed-redux-saga/macro";
 import type { SagaGenerator } from "typed-redux-saga/macro";
+
+import { isLoaded, setIsLoaded } from "./loaded-endpoints";
 
 import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { Script } from "app/store/script/types";
@@ -23,6 +26,7 @@ type UploadScript = {
 };
 
 const BAKERY_LOGIN_API = "/MAAS/accounts/discharge-request/";
+export const SERVICE_API = "/MAAS/a/v1/";
 export const ROOT_API = "/MAAS/api/2.0/";
 const SCRIPTS_API = `${ROOT_API}scripts/`;
 const LICENSE_KEY_API = `${ROOT_API}license-key/`;
@@ -30,6 +34,7 @@ const LICENSE_KEYS_API = `${ROOT_API}license-keys/`;
 const LOGIN_API = "/MAAS/accounts/login/";
 const LOGOUT_API = "/MAAS/accounts/logout/";
 const MACHINES_API = `${ROOT_API}machines/`;
+const ZONES_LIST_API = `${SERVICE_API}zones`;
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
@@ -267,6 +272,15 @@ export const api = {
             throw body;
           }
         });
+    },
+  },
+  zones: {
+    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
+      return fetch(`${ZONES_LIST_API}`, {
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+      })
+        .then(handleErrors)
+        .then((response) => response.json());
     },
   },
 };
@@ -515,6 +529,35 @@ export function* addMachineChassisSaga(
   }
 }
 
+export function* fetchZonesSaga(action: AnyAction): SagaGenerator<void> {
+  const type = "zone/fetchStart";
+  const csrftoken = yield* call(getCookie, "csrftoken");
+  if (!csrftoken) {
+    return;
+  }
+  // TODO: add caching for all HTTP requests https://warthogs.atlassian.net/browse/MAASENG-1996
+  // Do not fetch again if loaded unless 'nocache' is specified.
+  if (isLoaded(type) && !action?.meta?.nocache) {
+    return;
+  }
+  let response;
+  try {
+    yield* put({ type });
+    response = yield* call(api.zones.fetch, csrftoken);
+    yield* put({
+      type: "zone/fetchSuccess",
+      payload: response,
+    });
+    setIsLoaded(type);
+  } catch (error) {
+    yield* put({
+      errors: true,
+      payload: { error: error instanceof Error ? error.message : error },
+      type: "zone/fetchError",
+    });
+  }
+}
+
 export function* watchExternalLogin(): SagaGenerator<void> {
   yield* takeLatest("status/externalLogin", externalLoginSaga);
 }
@@ -553,4 +596,8 @@ export function* watchUploadScript(): SagaGenerator<void> {
 
 export function* watchAddMachineChassis(): SagaGenerator<void> {
   yield* takeEvery("machine/addChassis", addMachineChassisSaga);
+}
+
+export function* watchZonesFetch(): SagaGenerator<void> {
+  yield* takeLatest("zone/fetch", fetchZonesSaga);
 }

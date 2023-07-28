@@ -1,10 +1,8 @@
-import type { ReactNode } from "react";
-
 import classNames from "classnames";
 
 type StepperItem = {
   step: string;
-  title: ReactNode;
+  title: string;
 };
 
 type Props = {
@@ -20,7 +18,7 @@ export const Stepper = ({ currentStep, items }: Props): JSX.Element => {
         const isComplete =
           items.findIndex(({ step }) => step === currentStep) > i;
         return (
-          <li className="stepper__item" key={item.step}>
+          <li aria-label={item.title} className="stepper__item" key={item.step}>
             <p
               aria-checked={isComplete}
               className={classNames("stepper__title", {

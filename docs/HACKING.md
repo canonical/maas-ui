@@ -570,8 +570,7 @@ For details on developing integration tests, see the integration testing [README
 ## Unit tests
 
 Unit/integration tests use [Jest](https://jestjs.io/) and [React Testing
-Library](https://testing-library.com/), though many of our tests are still
-written with [Enzyme](https://enzymejs.github.io/enzyme/).
+Library](https://testing-library.com/).
 
 Tests can be run with:
 

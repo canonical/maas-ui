@@ -27,40 +27,40 @@ beforeEach(() => {
 });
 
 it("is unchecked if there are no filters, groups or items selected", () => {
-  state.machine.selectedMachines = null;
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  state.machine.selected = null;
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).not.toBeChecked();
 });
 
 it("is checked if there is a selected filter", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     filter: {
       owner: "admin",
     },
   };
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBeChecked();
 });
 
 it("is partially checked if a group is selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     groups: ["admin1"],
   };
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBePartiallyChecked();
 });
 
 it("is partially checked if a machine is selected", () => {
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     items: ["abc123"],
   };
-  renderWithMockStore(<AllCheckbox callId={callId} />, { state });
+  renderWithMockStore(<AllCheckbox callId={callId} filter={null} />, { state });
   expect(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBePartiallyChecked();
@@ -77,7 +77,7 @@ it("can dispatch an action to select all", async () => {
   await userEvent.click(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   );
-  const expected = machineActions.setSelectedMachines({
+  const expected = machineActions.setSelected({
     filter,
   });
   expect(
@@ -89,7 +89,7 @@ it("can dispatch an action to unselect all", async () => {
   const filter = {
     owner: ["admin1"],
   };
-  state.machine.selectedMachines = {
+  state.machine.selected = {
     filter,
   };
   const store = mockStore(state);
@@ -99,7 +99,7 @@ it("can dispatch an action to unselect all", async () => {
   await userEvent.click(
     screen.getByRole("checkbox", { name: Label.AllMachines })
   );
-  const expected = machineActions.setSelectedMachines(null);
+  const expected = machineActions.setSelected(null);
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);

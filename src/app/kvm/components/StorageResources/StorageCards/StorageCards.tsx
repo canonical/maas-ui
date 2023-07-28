@@ -49,7 +49,11 @@ const StorageCards = ({ defaultPoolId, pools }: Props): JSX.Element | null => {
   useListener(window, onResize, "resize", true);
 
   return (
-    <div className={`storage-cards storage-cards--${cardSize}`} ref={el}>
+    <div
+      aria-label="storage cards"
+      className={`storage-cards storage-cards--${cardSize}`}
+      ref={el}
+    >
       {sortedPools.map(([name, pool]) => {
         const allocatedWidth = (pool.allocated_tracked / pool.total) * 100;
         const otherWidth =

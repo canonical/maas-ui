@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -35,7 +35,8 @@ it("does not render test info if node is a controller", () => {
   state.controller.items = [controller];
 
   const store = mockStore(state);
-  const wrapper = mount(
+
+  render(
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
@@ -45,7 +46,7 @@ it("does not render test info if node is a controller", () => {
     </Provider>
   );
 
-  expect(wrapper.find("[data-testid='tests']").exists()).toBe(false);
+  expect(screen.queryByText(/tests/i)).not.toBeInTheDocument();
 });
 
 it("renders test info if node is a machine", () => {
@@ -53,7 +54,8 @@ it("renders test info if node is a machine", () => {
   state.machine.items = [machine];
 
   const store = mockStore(state);
-  const wrapper = mount(
+
+  render(
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
@@ -63,7 +65,7 @@ it("renders test info if node is a machine", () => {
     </Provider>
   );
 
-  expect(wrapper.find("[data-testid='tests']").exists()).toBe(true);
+  expect(screen.getByText(/tests/i)).toBeInTheDocument();
 });
 
 describe("node is a machine", () => {
@@ -75,7 +77,8 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -87,9 +90,7 @@ describe("node is a machine", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("2");
+    expect(screen.getByRole("link", { name: /2/i })).toBeInTheDocument();
   });
 
   it("renders a link with a count of pending and running tests", () => {
@@ -101,7 +102,8 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -113,9 +115,7 @@ describe("node is a machine", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("3");
+    expect(screen.getByRole("link", { name: /3/i })).toBeInTheDocument();
   });
 
   it("renders a link with a count of failed tests", () => {
@@ -126,7 +126,8 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -138,9 +139,7 @@ describe("node is a machine", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("5");
+    expect(screen.getByRole("link", { name: /5/i })).toBeInTheDocument();
   });
 
   it("renders a results link", () => {
@@ -151,7 +150,8 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -164,8 +164,8 @@ describe("node is a machine", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(1).find("Link").text()
-    ).toContain("View results");
+      screen.getByRole("link", { name: /view results/i })
+    ).toBeInTheDocument();
   });
 
   it("renders a test cpu link if no tests run", () => {
@@ -174,7 +174,8 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
 
     const store = mockStore(state);
-    const wrapper = mount(
+
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -187,7 +188,7 @@ describe("node is a machine", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
-    ).toContain("Test memory");
+      screen.getByRole("button", { name: /test memory/i })
+    ).toBeInTheDocument();
   });
 });

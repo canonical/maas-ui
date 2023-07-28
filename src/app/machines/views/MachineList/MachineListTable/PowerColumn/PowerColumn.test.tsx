@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import { PowerColumn } from "./PowerColumn";
 
 import { PowerTypeNames } from "app/store/general/constants";
@@ -14,8 +9,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("PowerColumn", () => {
   let state: RootState;
@@ -34,169 +28,102 @@ describe("PowerColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("PowerColumn")).toMatchSnapshot();
-  });
-
   it("displays the correct power state", () => {
     state.machine.items[0].power_state = PowerState.OFF;
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
 
-    expect(wrapper.find('[data-testid="power_state"]').text()).toEqual("off");
+    expect(screen.getByTestId("power_state")).toHaveTextContent("off");
   });
 
   it("displays the correct power type", () => {
     state.machine.items[0].power_type = "manual";
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
 
-    expect(wrapper.find('[data-testid="power_type"]').text()).toEqual("manual");
+    expect(screen.getByTestId("power_type")).toHaveTextContent("manual");
   });
 
-  it("can show a menu item to turn a machine on", () => {
+  it("can show a menu item to turn a machine on", async () => {
     state.machine.items[0].actions = [NodeActions.ON];
     state.machine.items[0].power_state = PowerState.OFF;
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
     // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
-    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
-      "Turn on"
-    );
+    expect(screen.getByText("Turn on")).toBeInTheDocument();
   });
 
-  it("can show a menu item to turn a machine off", () => {
+  it("can show a menu item to turn a machine off", async () => {
     state.machine.items[0].actions = [NodeActions.OFF];
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
+
     // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
-    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
-      "Turn off"
-    );
+    expect(screen.getByText("Turn off")).toBeInTheDocument();
   });
 
-  it("can show a menu item to check power", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+  it("can show a menu item to check power", async () => {
+    renderWithBrowserRouter(
+      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
+
     // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
-    expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
-      "Check power"
-    );
+    expect(screen.getByText("Check power")).toBeInTheDocument();
   });
 
-  it("can show a message when there are no menu items", () => {
+  it("can show a message when there are no menu items", async () => {
     state.machine.items[0].power_state = PowerState.UNKNOWN;
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
+
     // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 
-    expect(wrapper.find(".p-contextual-menu__link").at(1).text()).toEqual(
-      "No power actions available"
-    );
+    expect(screen.getByText("No power actions available")).toBeInTheDocument();
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<PowerColumn systemId="abc123" />, {
+      route: "/machines",
+      state,
+    });
 
-    expect(wrapper.find("TableMenu").exists()).toBe(false);
+    expect(
+      screen.queryByRole("button", { name: "Take action:" })
+    ).not.toBeInTheDocument();
   });
 
   it("shows a status tooltip if machine power is in error state", () => {
     state.machine.items[0].power_state = PowerState.ERROR;
     state.machine.items[0].status_message = "It's not working";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", state }
     );
 
-    expect(wrapper.find("Tooltip").prop("message")).toBe("It's not working");
+    expect(screen.getByRole("tooltip")).toHaveTextContent("It's not working");
   });
 });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
@@ -19,16 +19,18 @@ import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
 import MachineUSBDevices from "./MachineUSBDevices";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import type { MachineSidePanelContent } from "app/machines/types";
+import MachineForms from "app/machines/components/MachineForms";
 import { actions as machineActions } from "app/store/machine";
 import { MachineMeta } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import { getRelativeRoute, isId } from "app/utils";
 
 const MachineDetails = (): JSX.Element => {
@@ -36,8 +38,7 @@ const MachineDetails = (): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
   const { machine, loaded: detailsLoaded } = useFetchMachine(id);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<MachineSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,13 +71,27 @@ const MachineDetails = (): JSX.Element => {
   const base = urls.machines.machine.index(null);
 
   return (
-    <MainContentSection
+    <PageContent
       header={
         <MachineHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           systemId={id}
         />
+      }
+      sidePanelContent={
+        sidePanelContent && machine ? (
+          <MachineForms
+            searchFilter=""
+            selectedCount={1}
+            selectedMachines={{ items: [machine.system_id] }}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+            viewingDetails
+          />
+        ) : null
+      }
+      sidePanelTitle={
+        machine && getSidePanelTitle(machine.hostname, sidePanelContent)
       }
     >
       {machine && (
@@ -203,7 +218,7 @@ const MachineDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 

@@ -1,10 +1,10 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import DiscoveriesList, {
   Labels as DiscoveriesListLabels,
 } from "./DiscoveriesList";
 
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -38,12 +38,11 @@ import {
 
 const mockStore = configureStore<RootState, {}>();
 const route = "/dashboard";
-
 describe("DiscoveriesList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -81,9 +80,7 @@ describe("DiscoveriesList", () => {
         storage_test_status: testStatusFactory({
           status: TestStatusStatus.PASSED,
         }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.PASSED,
-        }),
+        testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
         zone: modelRefFactory(),
       }),

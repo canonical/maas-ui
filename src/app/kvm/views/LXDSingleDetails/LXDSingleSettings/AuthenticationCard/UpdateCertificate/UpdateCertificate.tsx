@@ -78,6 +78,7 @@ const UpdateCertificate = ({
     <FormikForm<UpdateCertificateValues>
       allowAllEmpty={shouldGenerateCert}
       allowUnchanged={shouldGenerateCert}
+      aria-label="Update certificate"
       errors={podErrors}
       initialValues={{ certificate: "", key: "", password: "" }}
       onCancel={onCancel}

@@ -7,6 +7,6 @@ context("User preferences", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains("My preferences");
+    cy.get(".p-side-navigation__title").contains("My preferences");
   });
 });

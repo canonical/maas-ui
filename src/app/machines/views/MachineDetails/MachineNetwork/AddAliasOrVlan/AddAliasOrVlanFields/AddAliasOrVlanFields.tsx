@@ -43,6 +43,7 @@ export const AddAliasOrVlanFields = ({
     <Row>
       <Col size={6}>
         <Input
+          aria-label="Name"
           disabled
           label="Name"
           name="name"
@@ -50,6 +51,7 @@ export const AddAliasOrVlanFields = ({
           value={nextNicName || ""}
         />
         <Input
+          aria-label="Type"
           disabled
           label="Type"
           name="type"

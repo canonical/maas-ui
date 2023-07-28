@@ -68,7 +68,7 @@ const NumaResourcesCard = ({ numaId, podId }: Props): JSX.Element => {
       );
 
       return (
-        <div className="numa-resources-card">
+        <div aria-label="numa resources card" className="numa-resources-card">
           <h5 className="numa-resources-card__title p-text--paragraph u-no-max-width">
             NUMA node {numa.node_id}
           </h5>

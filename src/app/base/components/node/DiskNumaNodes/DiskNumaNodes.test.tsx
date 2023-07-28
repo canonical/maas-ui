@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import DiskNumaNodes from "./DiskNumaNodes";
 
@@ -10,9 +10,8 @@ describe("DiskNumaNodes", () => {
       numa_node: 5,
       numa_nodes: undefined,
     });
-    const wrapper = mount(<DiskNumaNodes disk={disk} />);
-
-    expect(wrapper.find("[data-testid='numa-nodes']").text()).toBe("5");
+    render(<DiskNumaNodes disk={disk} />);
+    expect(screen.getByTestId("numa-nodes")).toHaveTextContent("5");
   });
 
   it("can show multiple numa nodes with a warning", () => {
@@ -20,14 +19,10 @@ describe("DiskNumaNodes", () => {
       numa_node: undefined,
       numa_nodes: [0, 1],
     });
-    const wrapper = mount(<DiskNumaNodes disk={disk} />);
-
-    expect(wrapper.find("[data-testid='numa-nodes']").text()).toBe("0, 1");
-    expect(
-      wrapper
-        .find("[role='tooltip']")
-        .text()
-        .match(/This volume is spread over multiple NUMA nodes/)
-    ).toBeTruthy();
+    render(<DiskNumaNodes disk={disk} />);
+    expect(screen.getByTestId("numa-nodes")).toHaveTextContent("0, 1");
+    expect(screen.getByRole("tooltip")).toHaveTextContent(
+      /This volume is spread over multiple NUMA nodes/
+    );
   });
 });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -8,12 +8,14 @@ import VirshDetailsHeader from "./VirshDetailsHeader";
 import VirshResources from "./VirshResources";
 import VirshSettings from "./VirshSettings";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent/PageContent";
 import { useGetURLId } from "app/base/hooks/urls";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
+import KVMForms from "app/kvm/components/KVMForms";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import type { KVMSidePanelContent } from "app/kvm/types";
+import { getFormTitle } from "app/kvm/utils";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -31,8 +33,7 @@ const VirshDetails = (): JSX.Element => {
     podSelectors.getById(state, id)
   );
   const loading = useSelector(podSelectors.loading);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<KVMSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
@@ -53,15 +54,20 @@ const VirshDetails = (): JSX.Element => {
   }
   const base = urls.kvm.virsh.details.index(null);
   return (
-    <MainContentSection
+    <PageContent
       aria-label={Label.Title}
       header={
-        <VirshDetailsHeader
-          id={id}
-          setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
-        />
+        <VirshDetailsHeader id={id} setSidePanelContent={setSidePanelContent} />
       }
+      sidePanelContent={
+        sidePanelContent ? (
+          <KVMForms
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        ) : null
+      }
+      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
     >
       {pod && (
         <Routes>
@@ -82,7 +88,7 @@ const VirshDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </MainContentSection>
+    </PageContent>
   );
 };
 

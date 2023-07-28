@@ -151,6 +151,7 @@ export const CreateRaidFields = ({
             }))}
           />
           <Input
+            aria-label="Size"
             data-testid="raid-size"
             disabled
             label="Size"
@@ -205,6 +206,7 @@ export const CreateRaidFields = ({
                         <td data-testid="spare-storage-device">
                           <Input
                             checked={isSpareDevice}
+                            data-testid={id}
                             disabled={!isSpareDevice && numSpare >= maxSpares}
                             id={id}
                             label=" "

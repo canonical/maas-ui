@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -7,16 +6,13 @@ import LXDVMsTable from "./LXDVMsTable";
 
 import { actions as machineActions } from "app/store/machine";
 import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
+import { generateCallId } from "app/store/machine/utils/query";
 import { rootState as rootStateFactory } from "testing/factories";
 import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("LXDVMsTable", () => {
-  beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-  });
-
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -40,7 +36,16 @@ describe("LXDVMsTable", () => {
       </Provider>
     );
 
-    const expectedAction = machineActions.fetch("mocked-nanoid", {
+    const options = {
+      filter: { pod: ["pod1"] },
+      group_collapsed: undefined,
+      group_key: null,
+      page_number: 1,
+      page_size: 10,
+      sort_direction: FetchSortDirection.Descending,
+      sort_key: FetchGroupKey.Hostname,
+    };
+    const expectedAction = machineActions.fetch(generateCallId(options), {
       filter: { pod: ["pod1"] },
       group_collapsed: undefined,
       group_key: null,
@@ -75,7 +80,7 @@ describe("LXDVMsTable", () => {
 
     unmount();
 
-    const expectedAction = machineActions.setSelectedMachines(null);
+    const expectedAction = machineActions.setSelected(null);
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);

@@ -32,6 +32,7 @@ export type GenericItemMeta<I> = {
 export type GenericMeta = {
   callId?: string;
   identifier?: number | string;
+  item?: unknown;
 };
 
 // Get the models that follow the generic shape. The following models are excluded:
@@ -174,7 +175,7 @@ export const updateErrors = <
  * @param setErrors - A function to update eventErrors.
  */
 // Defining the return type here means that all the reducers types get lost.
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
 export const generateCommonReducers = <
   S extends CommonStateTypes,
   K extends keyof S["items"][0],

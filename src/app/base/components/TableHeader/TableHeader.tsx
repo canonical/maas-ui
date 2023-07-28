@@ -34,6 +34,7 @@ const TableHeader = ({
       <span>{children}</span>
       {currentSort && currentSort.key === sortKey && (
         <Icon
+          aria-label={`(${currentSort.direction})`}
           name={
             currentSort.direction === "ascending"
               ? "chevron-up"

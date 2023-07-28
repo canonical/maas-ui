@@ -2,6 +2,7 @@
  * Selector for os info.
  */
 import { createSelector } from "@reduxjs/toolkit";
+import createCachedSelector from "re-reselect";
 
 import { generateGeneralSelector } from "./utils";
 
@@ -110,10 +111,11 @@ const _getOsReleases = (
  * @param {String} os - the OS to get releases of
  * @returns {OSInfoOption[]} - the available OS releases
  */
-const getOsReleases = createSelector(
-  [generalSelectors.get, (_state: RootState, os: string | undefined) => os],
+const getOsReleases = createCachedSelector(
+  generalSelectors.get,
+  (_state: RootState, os: string | undefined) => os,
   (allOsInfo, os) => _getOsReleases(allOsInfo, os)
-);
+)((_state, os) => os || "");
 
 /**
  * Returns an object with all OS releases

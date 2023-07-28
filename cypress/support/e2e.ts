@@ -25,6 +25,8 @@ declare global {
       waitForTableToLoad(options?: {
         name?: string | RegExp;
       }): Cypress.Chainable<JQuery<HTMLElement>>;
+      getMainNavigation(): Cypress.Chainable<JQuery<HTMLElement>>;
+      expandMainNavigation(): void;
     }
   }
 }

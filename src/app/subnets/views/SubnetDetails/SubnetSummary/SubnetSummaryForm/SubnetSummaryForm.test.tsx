@@ -71,15 +71,17 @@ it("can dispatch an action to update the subnet", async () => {
   await userEvent.clear(dnsField);
   await userEvent.type(dnsField, "fghij");
   await userEvent.click(
-    screen.getByRole("checkbox", { name: "Managed allocation" })
+    screen.getByRole("checkbox", { name: /Managed allocation/i })
   );
   await userEvent.click(
-    screen.getByRole("checkbox", { name: "Active discovery" })
+    screen.getByRole("checkbox", { name: /Active discovery/i })
   );
   await userEvent.click(
-    screen.getByRole("checkbox", { name: "Allow DNS resolution" })
+    screen.getByRole("checkbox", { name: /Allow DNS resolution/i })
   );
-  await userEvent.click(screen.getByRole("checkbox", { name: "Proxy access" }));
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: /Proxy access/i })
+  );
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Fabric" }),
     fabrics[1].id.toString()

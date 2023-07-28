@@ -1,32 +1,34 @@
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import StorageMeter from "./StorageMeter";
 
 import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
 
+const pools = {
+  "pool-1": storagePoolResourceFactory({
+    allocated_other: 1,
+    allocated_tracked: 2,
+    backend: "zfs",
+    name: "pool-1",
+    path: "/path1",
+    total: 3,
+  }),
+};
+
 describe("StorageMeter", () => {
   it("renders", () => {
-    const pools = {
-      "pool-1": storagePoolResourceFactory({
-        allocated_other: 1,
-        allocated_tracked: 2,
-        backend: "zfs",
-        name: "pool-1",
-        path: "/path1",
-        total: 3,
-      }),
-    };
-    const wrapper = shallow(<StorageMeter pools={pools} />);
+    render(<StorageMeter pools={pools} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(screen.getByText("Allocated")).toBeInTheDocument();
   });
 
   it("does not render if more than one pool present", () => {
-    const pools = {
-      "pool-1": storagePoolResourceFactory(),
-      "pool-2": storagePoolResourceFactory(),
-    };
-    const wrapper = mount(<StorageMeter pools={pools} />);
-    expect(wrapper.find("StorageMeter").prop("children")).toBeFalsy();
+    render(
+      <StorageMeter
+        pools={{ ...pools, "pool-2": storagePoolResourceFactory() }}
+      />
+    );
+
+    expect(screen.queryByText("Allocated")).not.toBeInTheDocument();
   });
 });

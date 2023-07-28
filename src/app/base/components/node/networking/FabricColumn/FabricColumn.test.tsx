@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -47,7 +47,7 @@ describe("FabricColumn", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -56,7 +56,7 @@ describe("FabricColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("DoubleRow").exists()).toBe(false);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("can display fabric and vlan details", () => {
@@ -74,7 +74,7 @@ describe("FabricColumn", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -83,8 +83,7 @@ describe("FabricColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    const links = wrapper.find("DoubleRow Link");
-    expect(links.at(0).text()).toBe("fabric-name");
-    expect(links.at(1).text()).toBe("2 (vlan-name)");
+    expect(screen.getByText("fabric-name")).toBeInTheDocument();
+    expect(screen.getByText("2 (vlan-name)")).toBeInTheDocument();
   });
 });

@@ -22,8 +22,20 @@ export const AddPartitionFields = ({
   return (
     <Row>
       <Col size={5}>
-        <Input disabled label="Name" type="text" value={partitionName} />
-        <Input disabled label="Type" type="text" value="Partition" />
+        <Input
+          aria-label="Name"
+          disabled
+          label="Name"
+          type="text"
+          value={partitionName}
+        />
+        <Input
+          aria-label="Type"
+          disabled
+          label="Type"
+          type="text"
+          value="Partition"
+        />
         <FormikField
           label="Size"
           min="0"

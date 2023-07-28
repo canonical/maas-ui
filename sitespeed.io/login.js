@@ -22,5 +22,5 @@ module.exports = async function (context, commands) {
     "[data-testid='section-header-title-spinner']",
     TIMEOUT
   );
-  await commands.wait.byXpath("//header//a[text()='admin']");
+  await commands.wait.byXpath("//a//span[text()='admin']");
 };

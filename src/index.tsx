@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -10,28 +10,32 @@ import packageInfo from "../package.json";
 import App from "./app/App";
 import * as serviceWorker from "./serviceWorker";
 
+import SidePanelContextProvider from "app/base/side-panel-context";
 import { history, store } from "redux-store";
 
 import "./scss/index.scss";
 
-const Root = (): JSX.Element => {
+const AppRoot = (): JSX.Element => {
   return (
     <Provider store={store}>
       <Router history={history}>
         <CompatRouter>
-          <StrictMode>
-            <App />
-          </StrictMode>
+          <SidePanelContextProvider>
+            <StrictMode>
+              <App />
+            </StrictMode>
+          </SidePanelContextProvider>
         </CompatRouter>
       </Router>
     </Provider>
   );
 };
 
-const rootNode = document.getElementById("root");
+const container = document.getElementById("root");
 
-if (rootNode) {
-  ReactDOM.render(<Root />, rootNode);
+if (container) {
+  const root = createRoot(container);
+  root.render(<AppRoot />);
 }
 
 // log the maas-ui version to the console
@@ -42,6 +46,6 @@ console.info(
   }`
 );
 
-export default Root;
+export default AppRoot;
 
 serviceWorker.unregister();

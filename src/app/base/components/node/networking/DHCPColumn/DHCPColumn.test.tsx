@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -34,12 +34,12 @@ describe("DHCPColumn", () => {
     state.vlan.loaded = false;
     const nic = machineInterfaceFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <DHCPColumn nic={nic} />
       </Provider>
     );
-    expect(wrapper.find("DoubleRow").exists()).toBe(false);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("can display the dhcp status", () => {
@@ -57,12 +57,12 @@ describe("DHCPColumn", () => {
       vlan_id: vlan.id,
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <DHCPColumn nic={nic} />
       </Provider>
     );
-    expect(wrapper.find("DoubleRow").prop("primary")).toBe("MAAS-provided");
+    expect(screen.getByText(/MAAS-provided/i)).toBeInTheDocument();
   });
 
   it("can display an icon if the vlan is relayed", () => {
@@ -79,11 +79,11 @@ describe("DHCPColumn", () => {
       vlan_id: vlan.id,
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <DHCPColumn nic={nic} />
       </Provider>
     );
-    expect(wrapper.find("DoubleRow Icon").exists()).toBe(true);
+    expect(screen.getByTestId("icon")).toBeInTheDocument();
   });
 });

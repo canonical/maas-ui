@@ -1,5 +1,7 @@
 import type { OutputParametricSelector, Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
+import { createCachedSelector } from "re-reselect";
+import type { ParametricSelector } from "re-reselect";
 
 import type { RootState } from "app/store/root/types";
 import type { CommonStates, CommonStateTypes } from "app/store/utils";
@@ -34,16 +36,7 @@ type BaseSelectors<
   errors: (state: RootState) => S["errors"];
   // This method is generated using createSelector with parameters so it results
   // in a function of type `OutputParametricSelector`.
-  getById: OutputParametricSelector<
-    // The provided state.
-    RootState,
-    // The provided parameter (id).
-    I[K] | undefined | null,
-    // The result (an item or null).
-    I | null,
-    // The computation function to select an item.
-    (items: S["items"], id: I[K] | null | undefined) => I | null
-  >;
+  getById: ParametricSelector<RootState, I[K] | null | undefined, I | null>;
   loaded: (state: RootState) => S["loaded"];
   loading: (state: RootState) => S["loading"];
   saved: (state: RootState) => S["saved"];
@@ -98,7 +91,7 @@ export const generateBaseSelectors = <
     (items, term) =>
       (items as Array<I>).filter((item) => searchFunction(item, term))
   );
-  const getById = createSelector(
+  const getById = createCachedSelector(
     [all, (_state: RootState, id: I[K] | null | undefined) => id],
     (items, id) => {
       // `0` is a valid id for some models (e.g. fabric) so do a strict check.
@@ -107,7 +100,7 @@ export const generateBaseSelectors = <
       }
       return (items as Array<I>).find((item) => item[indexKey] === id) || null;
     }
-  );
+  )((_state, id) => id || "");
 
   return {
     all,

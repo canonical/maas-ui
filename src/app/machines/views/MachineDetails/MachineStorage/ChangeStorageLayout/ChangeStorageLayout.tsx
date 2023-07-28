@@ -25,7 +25,7 @@ type Props = { systemId: Machine["system_id"] };
 // machine we should either filter this list, or add a boolean e.g. "allowable"
 // to each layout.
 // https://github.com/canonical/maas-ui/issues/3258
-const storageLayoutOptions: StorageLayoutOption[][] = [
+export const storageLayoutOptions: StorageLayoutOption[][] = [
   [
     { label: "Flat", sentenceLabel: "flat", value: StorageLayout.FLAT },
     { label: "LVM", sentenceLabel: "LVM", value: StorageLayout.LVM },

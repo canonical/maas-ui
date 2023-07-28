@@ -20,4 +20,10 @@ context("Machine add", () => {
     cy.get("button[type='submit']").click();
     cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
   });
+
+  it("closes the side panel on ESC key press", () => {
+    cy.findByRole("heading", { name: "Add machine" }).should("be.visible");
+    cy.get("body").type("{esc}");
+    cy.findByRole("heading", { name: "Add machine" }).should("not.exist");
+  });
 });

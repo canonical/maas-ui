@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef } from "react";
 
 import { Col, Link, Row } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
@@ -11,7 +11,7 @@ import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useSendAnalytics } from "app/base/hooks";
-import ThemePreviewContext from "app/base/theme-preview-context";
+import { useThemeContext } from "app/base/theme-context";
 import type { UsabillaLive } from "app/base/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -52,7 +52,14 @@ const GeneralForm = (): JSX.Element => {
   const saving = useSelector(configSelectors.saving);
   const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
-  const { setTheme } = useContext(ThemePreviewContext);
+  const { setTheme } = useThemeContext();
+
+  useEffect(() => {
+    // revert to persisted theme value on unmount
+    return () => {
+      setTheme(maasTheme ? maasTheme : "default");
+    };
+  }, [setTheme, maasTheme]);
 
   useEffect(() => {
     if (analyticsEnabled !== previousEnableAnalytics) {
@@ -120,8 +127,9 @@ const GeneralForm = (): JSX.Element => {
             Use MAAS name and unicode emoji(s) to describe your MAAS instance.{" "}
             <br />
             <br />
-            Examples: <br />⛔ maas-prod <br />
-            my-maas ⚠️ no-deploys
+            Examples: <br />
+            US-west-2 🇺🇸 MAAS-prod <br />
+            my-maas ❗ no-deploys
           </>
         }
         label="MAAS name"

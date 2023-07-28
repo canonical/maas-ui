@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import userEvent from "@testing-library/user-event";
 
 import NodeActionFormWrapper from "./NodeActionFormWrapper";
 
@@ -6,6 +6,7 @@ import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+import { render, screen, waitFor } from "testing/utils";
 
 describe("NodeActionFormWrapper", () => {
   afterEach(() => {
@@ -17,7 +18,7 @@ describe("NodeActionFormWrapper", () => {
       machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       machineFactory({ system_id: "def456", actions: [NodeActions.ABORT] }),
     ];
-    const wrapper = mount(
+    render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={jest.fn()}
@@ -31,10 +32,8 @@ describe("NodeActionFormWrapper", () => {
       </NodeActionFormWrapper>
     );
 
-    expect(wrapper.find("[data-testid='children']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='node-action-warning']").exists()).toBe(
-      false
-    );
+    expect(screen.getByTestId("children")).toBeInTheDocument();
+    expect(screen.queryByTestId("node-action-warning")).not.toBeInTheDocument();
   });
 
   it("displays a warning if not all selected nodes can perform selected action", () => {
@@ -42,7 +41,7 @@ describe("NodeActionFormWrapper", () => {
       machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       machineFactory({ system_id: "def456", actions: [] }),
     ];
-    const wrapper = mount(
+    render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={jest.fn()}
@@ -56,10 +55,8 @@ describe("NodeActionFormWrapper", () => {
       </NodeActionFormWrapper>
     );
 
-    expect(wrapper.find("[data-testid='node-action-warning']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("[data-testid='children']").exists()).toBe(false);
+    expect(screen.getByTestId("node-action-warning")).toBeInTheDocument();
+    expect(screen.queryByTestId("children")).not.toBeInTheDocument();
   });
 
   it(`does not display a warning when action has started even if not all
@@ -70,7 +67,7 @@ describe("NodeActionFormWrapper", () => {
       machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       machineFactory({ system_id: "def456", actions: [] }),
     ];
-    const wrapper = mount(
+    render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={jest.fn()}
@@ -84,19 +81,17 @@ describe("NodeActionFormWrapper", () => {
       </NodeActionFormWrapper>
     );
 
-    expect(wrapper.find("[data-testid='children']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='node-action-warning']").exists()).toBe(
-      false
-    );
+    expect(screen.getByTestId("children")).toBeInTheDocument();
+    expect(screen.queryByTestId("node-action-warning")).not.toBeInTheDocument();
   });
 
-  it("can run a function on actionable nodes if warning is shown", () => {
+  it("can run a function on actionable nodes if warning is shown", async () => {
     const onUpdateSelected = jest.fn();
     const nodes = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       machineFactory({ system_id: "def456", actions: [] }),
     ];
-    const wrapper = mount(
+    render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={jest.fn()}
@@ -110,12 +105,12 @@ describe("NodeActionFormWrapper", () => {
       </NodeActionFormWrapper>
     );
 
-    wrapper.find("button[data-testid='on-update-selected']").simulate("click");
+    await userEvent.click(screen.getByTestId("on-update-selected"));
 
     expect(onUpdateSelected).toHaveBeenCalledWith(["abc123"]);
   });
 
-  it("clears header content if no nodes are provided", () => {
+  it("clears header content if no nodes are provided", async () => {
     const clearSidePanelContent = jest.fn();
     const Proxy = ({ nodes }: { nodes: Node[] }) => (
       <NodeActionFormWrapper
@@ -130,15 +125,14 @@ describe("NodeActionFormWrapper", () => {
         Children
       </NodeActionFormWrapper>
     );
-    // Mount with one node selected.
-    const wrapper = mount(<Proxy nodes={[machineFactory()]} />);
+    // Render with one node selected.
+    const { rerender } = render(<Proxy nodes={[machineFactory()]} />);
 
     expect(clearSidePanelContent).not.toHaveBeenCalled();
 
     // Update with no nodes selected - clear header content should be called.
-    wrapper.setProps({ nodes: [] });
-    wrapper.update();
+    rerender(<Proxy nodes={[]} />);
 
-    expect(clearSidePanelContent).toHaveBeenCalled();
+    await waitFor(() => expect(clearSidePanelContent).toHaveBeenCalled());
   });
 });

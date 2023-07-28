@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { SSHKeyForm } from "./SSHKeyForm";
@@ -12,9 +7,9 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { userEvent, renderWithBrowserRouter, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("SSHKeyForm", () => {
   let state: RootState;
@@ -30,63 +25,58 @@ describe("SSHKeyForm", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("SSHKeyForm").exists()).toBe(true);
+    renderWithBrowserRouter(<SSHKeyForm />, { state });
+    expect(
+      screen.getByRole("combobox", { name: "Source" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: "Launchpad" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "GitHub" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Upload" })).toBeInTheDocument();
+    expect(screen.getByText("About SSH keys")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Import SSH key" })
+    ).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    const { unmount } = renderWithBrowserRouter(<SSHKeyForm />, { store });
 
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
     expect(
       store.getActions().some((action) => action.type === "sshkey/cleanup")
     ).toBe(true);
   });
 
-  it("can upload an SSH key", () => {
+  it("can upload an SSH key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<SSHKeyForm />, { store });
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Source" }),
+      "upload"
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        key: "ssh-rsa...",
-      })
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Public key" }),
+      "ssh-rsa..."
     );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Import SSH key" })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "sshkey/create")
     ).toStrictEqual({
       type: "sshkey/create",
       payload: {
         params: {
+          auth_id: "",
           key: "ssh-rsa...",
+          protocol: "upload",
         },
       },
       meta: {
@@ -96,23 +86,24 @@ describe("SSHKeyForm", () => {
     });
   });
 
-  it("can import an SSH key", () => {
+  it("can import an SSH key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<SSHKeyForm />, { store });
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Source" }),
+      "lp"
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        auth_id: "wallaroo",
-        protocol: "lp",
-      })
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Launchpad ID" }),
+      "wallaroo"
     );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Import SSH key" })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "sshkey/import")
     ).toStrictEqual({
@@ -120,6 +111,7 @@ describe("SSHKeyForm", () => {
       payload: {
         params: {
           auth_id: "wallaroo",
+          key: "",
           protocol: "lp",
         },
       },
@@ -130,23 +122,27 @@ describe("SSHKeyForm", () => {
     });
   });
 
-  it("adds a message when a SSH key is added", () => {
+  it("adds a message when a SSH key is added", async () => {
     state.sshkey.saved = true;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <SSHKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<SSHKeyForm />, { store });
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Source" }),
+      "lp"
     );
-    submitFormikForm(wrapper, {
-      auth_id: "wallaroo",
-      protocol: "lp",
-    });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Launchpad ID" }),
+      "wallaroo"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Import SSH key" })
+    );
+
     const actions = store.getActions();
+
     expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
       true
     );

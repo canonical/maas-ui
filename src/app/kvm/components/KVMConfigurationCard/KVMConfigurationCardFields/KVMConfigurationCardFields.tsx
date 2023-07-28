@@ -28,6 +28,7 @@ const KVMConfigurationCardFields = ({
     <Row>
       <Col size={5}>
         <Input
+          aria-label="KVM host type"
           disabled
           label="KVM host type"
           name="type"

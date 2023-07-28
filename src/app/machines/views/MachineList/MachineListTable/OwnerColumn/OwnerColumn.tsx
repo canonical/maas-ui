@@ -1,11 +1,13 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import { useMachineActions } from "app/base/hooks";
+import type { MachineMenuAction } from "app/base/hooks/node";
 import { useToggleMenu } from "app/machines/hooks";
+import type { MachineMenuToggleHandler } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -15,10 +17,12 @@ import { NodeActions } from "app/store/types/node";
 import userSelectors from "app/store/user/selectors";
 
 type Props = {
-  onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  onToggleMenu?: MachineMenuToggleHandler;
   systemId: Machine[MachineMeta.PK];
   showFullName?: boolean;
 };
+
+const actions: MachineMenuAction[] = [NodeActions.ACQUIRE, NodeActions.RELEASE];
 
 export const OwnerColumn = ({
   onToggleMenu,
@@ -32,7 +36,7 @@ export const OwnerColumn = ({
   const machineTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, machine?.tags || null)
   );
-  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null);
   const user = useSelector((state: RootState) =>
     userSelectors.getByUsername(state, machine?.owner || "")
   );
@@ -41,15 +45,17 @@ export const OwnerColumn = ({
     : machine?.owner || "-";
   const tagsDisplay = getTagsDisplay(machineTags);
 
+  const handleMachineActionClick = useCallback(() => {
+    if (machine) {
+      setUpdating(machine.status);
+    }
+  }, [machine]);
+
   const menuLinks = useMachineActions(
     systemId,
-    [NodeActions.ACQUIRE, NodeActions.RELEASE],
+    actions,
     "No owner actions available",
-    () => {
-      if (machine) {
-        setUpdating(machine.status);
-      }
-    }
+    handleMachineActionClick
   );
 
   useEffect(() => {
@@ -58,25 +64,32 @@ export const OwnerColumn = ({
     }
   }, [updating, machine?.status]);
 
+  const primary = useMemo(
+    () => (
+      <>
+        {updating === null ? null : <Spinner className="u-nudge-left--small" />}
+        <span data-testid="owner">{ownerDisplay}</span>
+      </>
+    ),
+    [updating, ownerDisplay]
+  );
+  const secondary = useMemo(
+    () => (
+      <span data-testid="tags" title={tagsDisplay}>
+        {tagsDisplay}
+      </span>
+    ),
+    [tagsDisplay]
+  );
+
   return (
     <DoubleRow
       menuLinks={onToggleMenu ? menuLinks : null}
       menuTitle="Take action:"
       onToggleMenu={toggleMenu}
-      primary={
-        <>
-          {updating === null ? null : (
-            <Spinner className="u-nudge-left--small" />
-          )}
-          <span data-testid="owner">{ownerDisplay}</span>
-        </>
-      }
+      primary={primary}
       primaryTitle={ownerDisplay}
-      secondary={
-        <span data-testid="tags" title={tagsDisplay}>
-          {tagsDisplay}
-        </span>
-      }
+      secondary={secondary}
       secondaryTitle={tagsDisplay}
     />
   );

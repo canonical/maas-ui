@@ -1,9 +1,10 @@
-import { mount } from "enzyme";
+/* eslint-disable testing-library/no-container */
 import { Formik } from "formik";
 
 import UploadTextArea from "./UploadTextArea";
 
-import { waitForComponentToPaint } from "testing/utils";
+import { render, screen, userEvent, waitFor } from "testing/utils";
+
 class MockFileReader {
   result: string;
   constructor() {
@@ -32,6 +33,10 @@ const createFile = (
   return file;
 };
 
+const getFileUploadInput = (container: HTMLElement) => {
+  return container.querySelector("input[type='file'") as HTMLElement;
+};
+
 describe("UploadTextArea", () => {
   beforeEach(async () => {
     const mockedFileReader = jest.spyOn(window, "FileReader");
@@ -46,71 +51,61 @@ describe("UploadTextArea", () => {
 
   it("accepts files of any mimetype", async () => {
     const files = [createFile("foo.sh", 2000, "")];
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" name="key" />
       </Formik>
     );
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField[name='key']").prop("error")).toEqual(null);
+    await userEvent.upload(getFileUploadInput(container), files);
+    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
   });
 
   it("displays an error if a file is larger than max size", async () => {
     const files = [createFile("foo.sh", 2000000, "")];
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField[name='key']").prop("error")).toEqual(
-      "File cannot be larger than 1MB."
+    await userEvent.upload(getFileUploadInput(container), files);
+    await waitFor(() =>
+      expect(
+        screen.getByText(/File cannot be larger than 1MB./i)
+      ).toBeInTheDocument()
     );
   });
 
   it("can populate the textarea from the file", async () => {
     const files = [createFile("foo.sh", 2000, "text/script")];
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" name="key" />
       </Formik>
     );
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("textarea[name='key']").prop("value")).toEqual(
-      "test file content"
+    await userEvent.upload(getFileUploadInput(container), files);
+    await waitFor(() =>
+      expect(screen.getByRole("textbox")).toHaveValue("test file content")
     );
   });
 
   it("clears errors on textarea change", async () => {
     const files = [createFile("foo.sh", 2000000, "text/script")];
-    const wrapper = mount(
+    const { container } = render(
       <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
         <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );
     // Create a max size error
-    wrapper.find("UploadTextArea input[type='file']").simulate("change", {
-      target: { files },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(
-      wrapper.find("FormikField[name='key']").prop("error")
-    ).not.toBeFalsy();
+    await userEvent.upload(getFileUploadInput(container), files);
+    await waitFor(() =>
+      expect(
+        screen.getByText(/File cannot be larger than 1MB./i)
+      ).toBeInTheDocument()
+    );
 
     // Clear error by changing textarea
-    wrapper.find("textarea[name='key']").simulate("change", {
-      target: { name: "key", value: "new-value" },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField[name='key']").prop("error")).toBeFalsy();
+    const textarea = screen.getByRole("textbox");
+    await userEvent.type(textarea, "new-value");
+    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
   });
 });

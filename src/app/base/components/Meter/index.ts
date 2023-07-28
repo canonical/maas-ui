@@ -1,1 +1,1 @@
-export { default } from "./Meter";
+export { default, color } from "./Meter";

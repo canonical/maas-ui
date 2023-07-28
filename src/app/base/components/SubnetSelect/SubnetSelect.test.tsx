@@ -1,9 +1,7 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-
-import DynamicSelect from "../DynamicSelect";
 
 import SubnetSelect from "./SubnetSelect";
 
@@ -40,39 +38,35 @@ describe("SubnetSelect", () => {
     });
   });
 
-  it("shows a spinner if the subnets haven't loaded", () => {
+  it("shows a spinner if the subnets haven’t loaded", () => {
     state.subnet.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
           <SubnetSelect name="subnet" />
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("displays the subnet options", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
           <SubnetSelect name="subnet" />
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { label: "Select subnet", value: "" },
-      {
-        label: "172.16.1.0/24 (sub1)",
-        value: "1",
-      },
-      {
-        label: "172.16.2.0/24 (sub2)",
-        value: "2",
-      },
-    ]);
+    expect(screen.getByRole("combobox")).toHaveTextContent("Select subnet");
+    expect(screen.getByRole("combobox")).toHaveTextContent(
+      "172.16.1.0/24 (sub1)"
+    );
+    expect(screen.getByRole("combobox")).toHaveTextContent(
+      "172.16.2.0/24 (sub2)"
+    );
   });
 
   it("can display a default option", () => {
@@ -81,52 +75,53 @@ describe("SubnetSelect", () => {
       label: "Default",
       value: "99",
     };
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
           <SubnetSelect defaultOption={defaultOption} name="subnet" />
         </Formik>
       </Provider>
     );
-    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
-      defaultOption
+    expect(screen.getByRole("combobox").childNodes[0]).toHaveTextContent(
+      "Default"
     );
   });
 
   it("can hide the default option", () => {
     state.subnet.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
           <SubnetSelect defaultOption={null} name="subnet" />
         </Formik>
       </Provider>
     );
-    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
+    expect(
+      screen.queryByRole("option", { name: "Default" })
+    ).not.toBeInTheDocument();
   });
 
   it("filter the subnets by vlan", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
           <SubnetSelect name="subnet" vlan={3} />
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { label: "Select subnet", value: "" },
-      {
-        label: "172.16.1.0/24 (sub1)",
-        value: "1",
-      },
-    ]);
+    expect(screen.getByRole("combobox")).toHaveTextContent(
+      "172.16.1.0/24 (sub1)"
+    );
+    expect(
+      screen.queryByRole("option", { name: "172.16.2.0/24 (sub2)" })
+    ).not.toBeInTheDocument();
   });
 
   it("can filter the subnets using a provided function", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
           <SubnetSelect
@@ -136,13 +131,12 @@ describe("SubnetSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { label: "Select subnet", value: "" },
-      {
-        label: "172.16.2.0/24 (sub2)",
-        value: "2",
-      },
-    ]);
+    expect(screen.getByRole("combobox")).toHaveTextContent(
+      "172.16.2.0/24 (sub2)"
+    );
+    expect(
+      screen.queryByRole("option", { name: "172.16.1.0/24 (sub1)" })
+    ).not.toBeInTheDocument();
   });
 
   it("orders the subnets by name", () => {
@@ -161,23 +155,14 @@ describe("SubnetSelect", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
           <SubnetSelect name="subnet" />
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { label: "Select subnet", value: "" },
-      {
-        label: "0.0.0.0/24 (sub2)",
-        value: "2",
-      },
-      {
-        label: "1.1.1.1/24 (sub1)",
-        value: "1",
-      },
-    ]);
+    expect(screen.getByRole("combobox")).toHaveTextContent("0.0.0.0/24 (sub2)");
+    expect(screen.getByRole("combobox")).toHaveTextContent("1.1.1.1/24 (sub1)");
   });
 });

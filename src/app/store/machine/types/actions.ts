@@ -433,6 +433,20 @@ export enum FetchGroupKey {
   ZoneId = "zone_id",
 }
 
+// subset of FetchGroupKey keys used for grouping in the UI
+export enum FetchGroupByKey {
+  Status = FetchGroupKey.Status,
+  Owner = FetchGroupKey.Owner,
+  Pool = FetchGroupKey.Pool,
+  Architecture = FetchGroupKey.Architecture,
+  Domain = FetchGroupKey.Domain,
+  Parent = FetchGroupKey.Parent,
+  Pod = FetchGroupKey.Pod,
+  PodType = FetchGroupKey.PodType,
+  PowerState = FetchGroupKey.PowerState,
+  Zone = FetchGroupKey.Zone,
+}
+
 export type FetchParams = {
   filter?: FetchFilters | null;
   group_key?: FetchGroupKey | null;

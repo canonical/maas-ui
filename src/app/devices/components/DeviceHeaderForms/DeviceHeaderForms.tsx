@@ -5,18 +5,13 @@ import type { ValueOf } from "@canonical/react-components";
 import AddDeviceForm from "./AddDeviceForm";
 import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 
+import type { SidePanelContextTypes } from "app/base/side-panel-context";
 import type { DeviceActionHeaderViews } from "app/devices/constants";
-import { DeviceHeaderViews } from "app/devices/constants";
-import type {
-  DeviceSidePanelContent,
-  DeviceSetSidePanelContent,
-} from "app/devices/types";
+import { DeviceSidePanelViews } from "app/devices/constants";
 import type { Device } from "app/store/device/types";
 
-type Props = {
+type Props = SidePanelContextTypes & {
   devices: Device[];
-  sidePanelContent: DeviceSidePanelContent;
-  setSidePanelContent: DeviceSetSidePanelContent;
   viewingDetails?: boolean;
 };
 
@@ -31,8 +26,12 @@ const DeviceHeaderForms = ({
     [setSidePanelContent]
   );
 
+  if (!sidePanelContent) {
+    return null;
+  }
+
   switch (sidePanelContent.view) {
-    case DeviceHeaderViews.ADD_DEVICE:
+    case DeviceSidePanelViews.ADD_DEVICE:
       return <AddDeviceForm clearSidePanelContent={clearSidePanelContent} />;
     default:
       // We need to explicitly cast sidePanelContent.view here - TypeScript doesn't

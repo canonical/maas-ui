@@ -1,8 +1,21 @@
 @mixin DebounceSearchBox {
   .debounce-search-box {
     position: relative;
-  }
 
+    .p-search-box__input {
+      position: static;
+    }
+    .p-search-box__button {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .p-search-box__reset {
+      position: absolute;
+      top: 0;
+      right: 2rem;
+    }
+  }
   .debounce-search-box__spinner-container {
     // Use Vanilla's calculation for the the height of the search box
     height: calc(

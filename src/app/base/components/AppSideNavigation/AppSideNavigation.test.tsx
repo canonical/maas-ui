@@ -28,7 +28,6 @@ import {
   render,
   waitFor,
   within,
-  act,
   renderWithBrowserRouter,
 } from "testing/utils";
 
@@ -346,7 +345,7 @@ describe("GlobalSideNav", () => {
         </Router>
       </Provider>
     );
-    act(() => history.push(urls.intro.images));
+    history.push(urls.intro.images);
     await waitFor(() =>
       expect(history.location.pathname).toBe(urls.intro.images)
     );
@@ -378,7 +377,7 @@ describe("GlobalSideNav", () => {
     expect(screen.getByRole("navigation")).toHaveClass("is-collapsed");
   });
 
-  it("persists collapsed state", () => {
+  it("persists collapsed state", async () => {
     state.user.auth.user = null;
     const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/",
@@ -386,7 +385,9 @@ describe("GlobalSideNav", () => {
     });
 
     const primaryNavigation = screen.getByRole("navigation");
-    screen.getByRole("button", { name: "expand main navigation" }).click();
+    await userEvent.click(
+      screen.getByRole("button", { name: "expand main navigation" })
+    );
     expect(primaryNavigation).toHaveClass("is-pinned");
     rerender(<AppSideNavigation />);
     expect(primaryNavigation).toHaveClass("is-pinned");

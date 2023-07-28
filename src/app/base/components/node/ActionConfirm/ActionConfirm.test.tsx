@@ -1,11 +1,10 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ActionConfirm from "./ActionConfirm";
 
 import * as maasUiHooks from "app/base/hooks/analytics";
+import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
@@ -14,8 +13,9 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: jest.fn(),
@@ -32,26 +32,29 @@ describe("ActionConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ActionConfirm
-          closeExpanded={jest.fn()}
-          confirmLabel="Confirm"
-          eventName="deleteFilesystem"
-          message={<span>Are you sure you want to do that?</span>}
-          onConfirm={jest.fn()}
-          onSaveAnalytics={{
-            action: "Action",
-            category: "Category",
-            label: "Label",
-          }}
-          statusKey="deletingFilesystem"
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <ActionConfirm
+        closeExpanded={jest.fn()}
+        confirmLabel="Confirm"
+        eventName="deleteFilesystem"
+        message={<span>Are you sure you want to do that?</span>}
+        onConfirm={jest.fn()}
+        onSaveAnalytics={{
+          action: "Action",
+          category: "Category",
+          label: "Label",
+        }}
+        statusKey="deletingFilesystem"
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    expect(wrapper.find("ActionButton").prop("loading")).toBe(true);
+    const actionButton = screen.getByRole("button", {
+      name: "Waiting for action to complete",
+    });
+    expect(actionButton).toBeInTheDocument();
+    expect(actionButton).toHaveClass("is-processing");
   });
 
   it("can show errors", () => {
@@ -72,25 +75,24 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <ActionConfirm
-          closeExpanded={closeExpanded}
-          confirmLabel="Confirm"
-          message="Are you sure you want to do that?"
-          onConfirm={jest.fn()}
-          onSaveAnalytics={{
-            action: "Action",
-            category: "Category",
-            label: "Label",
-          }}
-          statusKey="deletingFilesystem"
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <ActionConfirm
+        closeExpanded={closeExpanded}
+        confirmLabel="Confirm"
+        message="Are you sure you want to do that?"
+        onConfirm={jest.fn()}
+        onSaveAnalytics={{
+          action: "Action",
+          category: "Category",
+          label: "Label",
+        }}
+        statusKey="deletingFilesystem"
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='error-message']").text()).toBe("uh oh");
+    expect(screen.getByTestId("error-message")).toHaveTextContent("uh oh");
   });
 
   it("can change the submit appearance", () => {
@@ -104,26 +106,27 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <ActionConfirm
-          closeExpanded={closeExpanded}
-          confirmLabel="Confirm"
-          message="Are you sure you want to do that?"
-          onConfirm={jest.fn()}
-          onSaveAnalytics={{
-            action: "Action",
-            category: "Category",
-            label: "Label",
-          }}
-          statusKey="creatingCacheSet"
-          submitAppearance="positive"
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <ActionConfirm
+        closeExpanded={closeExpanded}
+        confirmLabel="Confirm"
+        message="Are you sure you want to do that?"
+        onConfirm={jest.fn()}
+        onSaveAnalytics={{
+          action: "Action",
+          category: "Category",
+          label: "Label",
+        }}
+        statusKey="creatingCacheSet"
+        submitAppearance="positive"
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    expect(wrapper.find("ActionButton").prop("appearance")).toBe("positive");
+    expect(screen.getByRole("button", { name: "Confirm" })).toHaveClass(
+      "p-button--positive"
+    );
   });
 
   it("sends an analytics event when saved", () => {
@@ -147,19 +150,18 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = jest.fn();
-    mount(
-      <Provider store={store}>
-        <ActionConfirm
-          closeExpanded={closeExpanded}
-          confirmLabel="Confirm"
-          eventName="deleteFilesystem"
-          message="Are you sure you want to do that?"
-          onConfirm={jest.fn()}
-          onSaveAnalytics={analyticsEvent}
-          statusKey="deletingFilesystem"
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <ActionConfirm
+        closeExpanded={closeExpanded}
+        confirmLabel="Confirm"
+        eventName="deleteFilesystem"
+        message="Are you sure you want to do that?"
+        onConfirm={jest.fn()}
+        onSaveAnalytics={analyticsEvent}
+        statusKey="deletingFilesystem"
+        systemId="abc123"
+      />,
+      { store }
     );
 
     expect(useSendMock).toHaveBeenCalled();
@@ -187,23 +189,22 @@ describe("ActionConfirm", () => {
     });
     const store = mockStore(state);
     const closeExpanded = jest.fn();
-    mount(
-      <Provider store={store}>
-        <ActionConfirm
-          closeExpanded={closeExpanded}
-          confirmLabel="Confirm"
-          eventName="deleteFilesystem"
-          message="Are you sure you want to do that?"
-          onConfirm={jest.fn()}
-          onSaveAnalytics={{
-            action: "Action",
-            category: "Category",
-            label: "Label",
-          }}
-          statusKey="deletingFilesystem"
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <ActionConfirm
+        closeExpanded={closeExpanded}
+        confirmLabel="Confirm"
+        eventName="deleteFilesystem"
+        message="Are you sure you want to do that?"
+        onConfirm={jest.fn()}
+        onSaveAnalytics={{
+          action: "Action",
+          category: "Category",
+          label: "Label",
+        }}
+        statusKey="deletingFilesystem"
+        systemId="abc123"
+      />,
+      { store }
     );
 
     expect(closeExpanded).toHaveBeenCalled();

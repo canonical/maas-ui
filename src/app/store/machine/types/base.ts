@@ -1,8 +1,8 @@
-import type { FetchFilters, FetchGroupKey } from "./actions";
+import type { FetchFilters, FetchGroupKey, FetchParams } from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { ActionState, APIError, Seconds } from "app/base/types";
-import type { CloneError } from "app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneResults/CloneResults";
+import type { CloneError } from "app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { PowerState, StorageLayout } from "app/store/types/enum";
 import type { ModelRef, TimestampFields } from "app/store/types/model";
@@ -42,19 +42,20 @@ export type BaseMachine = Omit<
   error_description: string;
   extra_macs: string[];
   fabrics: string[];
-  ip_addresses?: NodeIpAddress[];
+  ip_addresses: NodeIpAddress[] | null;
   link_type: NodeLinkType.MACHINE;
   owner: string;
   physical_disk_count: number;
-  pod?: ModelRef;
+  parent: string | null; // `parent` is a `system_id`
+  pod: ModelRef | null;
   pool: ModelRef;
   power_state: PowerState;
-  power_type: PowerType["name"] | "";
+  power_type: PowerType["name"] | "" | null;
   pxe_mac?: string;
   spaces: string[];
   storage: number;
-  testing_status: TestStatus;
-  vlan?: NodeVlan | null;
+  testing_status: TestStatus["status"];
+  vlan: NodeVlan | null;
   zone: ModelRef;
 };
 
@@ -211,10 +212,18 @@ export type FilterGroupOption<K = FilterGroupOptionType> = {
 
 export type MachineStateListGroup = {
   collapsed: boolean;
-  count: number;
+  count: number | null;
   items: Machine[MachineMeta.PK][];
   name: FilterGroupOption["label"] | null;
   value: FilterGroupOption["key"] | null;
+};
+
+type MachineQuery = {
+  // parameters used to fetch the list
+  params: FetchParams | null;
+  refetching: boolean;
+  fetchedAt: number | null;
+  refetchedAt: number | null;
 };
 
 export type MachineStateList = {
@@ -224,10 +233,9 @@ export type MachineStateList = {
   groups: MachineStateListGroup[] | null;
   loaded: boolean;
   loading: boolean;
-  needsUpdate: boolean;
   stale: boolean;
   num_pages: number | null;
-};
+} & MachineQuery;
 
 export type MachineStateLists = Record<string, MachineStateList>;
 
@@ -329,7 +337,7 @@ export type MachineStateCount = {
   loaded: boolean;
   loading: boolean;
   stale: boolean;
-};
+} & MachineQuery;
 
 export type MachineStateCounts = Record<string, MachineStateCount>;
 
@@ -357,7 +365,6 @@ export type MachineState = {
   filtersLoaded: boolean;
   filtersLoading: boolean;
   lists: MachineStateLists;
-  selected: Machine[MachineMeta.PK][];
-  selectedMachines: SelectedMachines | null;
+  selected: SelectedMachines | null;
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;

@@ -9,17 +9,12 @@ import ControllerName from "./ControllerName";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useSendAnalytics } from "app/base/hooks";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import {
   ControllerDetailsTabLabels,
-  ControllerHeaderViews,
+  ControllerSidePanelViews,
 } from "app/controllers/constants";
-import type {
-  ControllerSidePanelContent,
-  ControllerSetSidePanelContent,
-} from "app/controllers/types";
-import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
@@ -28,13 +23,11 @@ import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   systemId: Controller["system_id"];
-  sidePanelContent: ControllerSidePanelContent | null;
-  setSidePanelContent: ControllerSetSidePanelContent;
+  setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerDetailsHeader = ({
   systemId,
-  sidePanelContent,
   setSidePanelContent,
 }: Props): JSX.Element => {
   const controller = useSelector((state: RootState) =>
@@ -63,7 +56,7 @@ const ControllerDetailsHeader = ({
               getNodeActionTitle(action),
               "Open"
             );
-            const view = Object.values(ControllerHeaderViews).find(
+            const view = Object.values(ControllerSidePanelViews).find(
               ([, actionName]) => actionName === action
             );
             if (view) {
@@ -72,17 +65,6 @@ const ControllerDetailsHeader = ({
           }}
         />,
       ]}
-      sidePanelContent={
-        sidePanelContent ? (
-          <ControllerHeaderForms
-            controllers={[controller]}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-            viewingDetails
-          />
-        ) : null
-      }
-      sidePanelTitle={getHeaderTitle("Controller", sidePanelContent)}
       subtitleLoading={!isControllerDetails(controller)}
       tabLinks={[
         {

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
-import { renderHook, cleanup, act } from "@testing-library/react-hooks";
+import { renderHook, cleanup, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -22,10 +22,10 @@ import {
   useIsLimitedEditingAllowed,
   useFetchMachine,
   useFetchMachines,
-  useFetchMachinesWithGroupingUpdates,
   useFetchMachineCount,
   useFetchedCount,
 } from "./hooks";
+import { generateCallId } from "./query";
 
 import { actions as machineActions } from "app/store/machine";
 import type {
@@ -34,6 +34,7 @@ import type {
   Machine,
   SelectedMachines,
 } from "app/store/machine/types";
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { FetchNodeStatus, TestParams } from "app/store/types/node";
@@ -62,14 +63,10 @@ import {
 
 const mockStore = configureStore();
 
-const generateWrapper =
-  (store: MockStoreEnhanced<unknown>) =>
-  ({ children }: { children: ReactNode }) =>
-    <Provider store={store}>{children}</Provider>;
-
 describe("machine hook utils", () => {
   let state: RootState;
   let machine: Machine | null;
+  const mockCallId = "123456";
 
   beforeEach(() => {
     machine = machineFactory({
@@ -92,6 +89,7 @@ describe("machine hook utils", () => {
         items: [machine],
       }),
     });
+    jest.spyOn(query, "generateCallId").mockReturnValue(mockCallId);
   });
 
   afterEach(() => {
@@ -99,18 +97,6 @@ describe("machine hook utils", () => {
   });
 
   describe("useFetchMachineCount", () => {
-    beforeEach(() => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
-        .mockReturnValueOnce("mocked-nanoid-2")
-        .mockReturnValueOnce("mocked-nanoid-3");
-    });
-
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode; filters?: FetchFilters }) =>
@@ -121,7 +107,7 @@ describe("machine hook utils", () => {
       renderHook(() => useFetchMachineCount(), {
         wrapper: generateWrapper(store),
       });
-      const expected = machineActions.count("mocked-nanoid-1");
+      const expected = machineActions.count(mockCallId);
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -137,7 +123,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const expectedActionType = machineActions.count("mocked-nanoid-1").type;
+      const expectedActionType = machineActions.count(mockCallId).type;
       const getDispatches = () =>
         store
           .getActions()
@@ -157,7 +143,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const expectedActionType = machineActions.count("mocked-nanoid-1").type;
+      const expectedActionType = machineActions.count(mockCallId).type;
       const getDispatches = () =>
         store
           .getActions()
@@ -171,7 +157,7 @@ describe("machine hook utils", () => {
 
     it("returns the machine count", async () => {
       jest.restoreAllMocks();
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
+      jest.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
       const machineCount = 2;
       const counts = machineStateCountsFactory({
         "mocked-nanoid": machineStateCountFactory({
@@ -198,7 +184,7 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       rerender();
-      const expected = machineActions.count("mocked-nanoid-1");
+      const expected = machineActions.count(mockCallId);
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
@@ -214,7 +200,7 @@ describe("machine hook utils", () => {
         }
       );
       rerender({ filters: { hostname: "spotted-quoll" } });
-      const expected = machineActions.count("mocked-nanoid-1");
+      const expected = machineActions.count(mockCallId);
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
@@ -222,6 +208,8 @@ describe("machine hook utils", () => {
     });
 
     it("fetches again if the filters change", () => {
+      // clera all spies
+      jest.restoreAllMocks();
       const store = mockStore(state);
       const { rerender } = renderHook(
         ({ filters }) => useFetchMachineCount(filters),
@@ -235,7 +223,7 @@ describe("machine hook utils", () => {
         }
       );
       rerender({ filters: { hostname: "eastern-quoll" } });
-      const expected = machineActions.count("mocked-nanoid-1");
+      const expected = machineActions.count(mockCallId);
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
@@ -244,7 +232,7 @@ describe("machine hook utils", () => {
 
     it("fetches again if the query has been marked as stale", async () => {
       state.machine.counts = {
-        "mocked-nanoid-1": machineStateCountFactory({
+        [mockCallId]: machineStateCountFactory({
           stale: true,
         }),
       };
@@ -252,7 +240,7 @@ describe("machine hook utils", () => {
       renderHook(() => useFetchMachineCount(), {
         wrapper: generateWrapper(store),
       });
-      const expected = machineActions.count("mocked-nanoid-1");
+      const expected = machineActions.count(mockCallId);
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -266,9 +254,10 @@ describe("machine hook utils", () => {
     beforeEach(() => {
       jest
         .spyOn(reduxToolkit, "nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2")
         .mockReturnValueOnce("mocked-nanoid-3");
+      jest.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
     });
 
     afterEach(() => {
@@ -285,7 +274,7 @@ describe("machine hook utils", () => {
       renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
-      const expected = machineActions.fetch("mocked-nanoid-1");
+      const expected = machineActions.fetch(mockCallId);
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -293,7 +282,7 @@ describe("machine hook utils", () => {
 
     it("fetches again if the query has been marked as stale", async () => {
       state.machine.lists = {
-        "mocked-nanoid-1": machineStateListFactory({
+        [mockCallId]: machineStateListFactory({
           stale: true,
         }),
       };
@@ -301,7 +290,7 @@ describe("machine hook utils", () => {
       renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
-      const expected = machineActions.fetch("mocked-nanoid-1");
+      const expected = machineActions.fetch(mockCallId);
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -316,7 +305,7 @@ describe("machine hook utils", () => {
         loaded: true,
         items: [...machines, machineFactory()],
         lists: {
-          "mocked-nanoid-1": machineStateListFactory({
+          [mockCallId]: machineStateListFactory({
             loading: true,
             groups: [
               machineStateListGroupFactory({
@@ -336,7 +325,7 @@ describe("machine hook utils", () => {
     it("returns the loaded and loading states", () => {
       state.machine = machineStateFactory({
         lists: {
-          "mocked-nanoid-1": machineStateListFactory({
+          [mockCallId]: machineStateListFactory({
             loaded: false,
             loading: true,
           }),
@@ -356,7 +345,7 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       rerender();
-      const expected = machineActions.fetch("mocked-nanoid-1");
+      const expected = machineActions.fetch(mockCallId);
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
@@ -373,7 +362,7 @@ describe("machine hook utils", () => {
         }
       );
       rerender({ filters: { hostname: "spotted-quoll" } });
-      const expected = machineActions.fetch("mocked-nanoid-1");
+      const expected = machineActions.fetch(mockCallId);
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
@@ -393,7 +382,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const expectedActionType = machineActions.fetch("mocked-nanoid-1").type;
+      const expectedActionType = machineActions.fetch(mockCallId).type;
       const getDispatches = () =>
         store
           .getActions()
@@ -413,7 +402,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const expectedActionType = machineActions.fetch("mocked-nanoid-1").type;
+      const expectedActionType = machineActions.fetch(mockCallId).type;
       const getDispatches = () =>
         store
           .getActions()
@@ -435,7 +424,7 @@ describe("machine hook utils", () => {
         }
       );
       rerender(null);
-      const expected = machineActions.fetch("mocked-nanoid-1");
+      const expected = machineActions.fetch(mockCallId);
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
@@ -443,6 +432,7 @@ describe("machine hook utils", () => {
     });
 
     it("fetches again if the options change", () => {
+      jest.restoreAllMocks();
       const store = mockStore(state);
       const { rerender } = renderHook(
         (options: UseFetchMachinesOptions) => useFetchMachines(options),
@@ -455,7 +445,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const expected = machineActions.fetch("mocked-nanoid-1");
+      const expected = machineActions.fetch(mockCallId);
       let getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
@@ -491,145 +481,22 @@ describe("machine hook utils", () => {
     });
 
     it("cleans up list request on unmount", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
       const store = mockStore(state);
       renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
       cleanup();
-      const expected = machineActions.cleanupRequest("mocked-nanoid-1");
+      const expected = machineActions.cleanupRequest(generateCallId());
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
     });
   });
 
-  describe("useFetchMachinesWithGroupingUpdates", () => {
-    beforeEach(() => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
-        .mockReturnValueOnce("mocked-nanoid-2")
-        .mockReturnValueOnce("mocked-nanoid-3");
-    });
-
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
-    const generateWrapper =
-      (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
-
-    it("can return the initial set of machines", () => {
-      const store = mockStore(state);
-      renderHook(() => useFetchMachinesWithGroupingUpdates(), {
-        wrapper: generateWrapper(store),
-      });
-      const expected = machineActions.fetch("mocked-nanoid-1");
-      expect(
-        store.getActions().find((action) => action.type === expected.type)
-      ).toStrictEqual(expected);
-    });
-
-    it("fetches again if the query has been marked as needsUpdate", async () => {
-      state.machine.lists = {
-        "mocked-nanoid-1": machineStateListFactory({
-          needsUpdate: true,
-        }),
-      };
-      const store = mockStore(state);
-      renderHook(() => useFetchMachinesWithGroupingUpdates(), {
-        wrapper: generateWrapper(store),
-      });
-      const expected = machineActions.fetch("mocked-nanoid-1");
-      expect(
-        store.getActions().find((action) => action.type === expected.type)
-      ).toStrictEqual(expected);
-      const getDispatches = () =>
-        store.getActions().filter((action) => action.type === expected.type);
-      expect(getDispatches()).toHaveLength(3);
-    });
-
-    it("returns updated groups if the query has been marked as needsUpdate", async () => {
-      state.machine.lists = {
-        "mocked-nanoid-1": machineStateListFactory({
-          needsUpdate: true,
-          groups: [
-            machineStateListGroupFactory({
-              count: 3,
-              collapsed: true,
-              items: [],
-              name: "Deployed",
-            }),
-            machineStateListGroupFactory({
-              count: 1,
-              collapsed: false,
-              items: ["abcd"],
-              name: "New",
-            }),
-            machineStateListGroupFactory({
-              count: 1,
-              collapsed: false,
-              items: ["efgh"],
-              name: "Testing",
-            }),
-          ],
-        }),
-        "mocked-nanoid-2": machineStateListFactory({
-          groups: [
-            machineStateListGroupFactory({
-              collapsed: false,
-              count: 2,
-              items: ["abcd", "efgh"],
-              name: "Testing",
-            }),
-          ],
-        }),
-        "mocked-nanoid-3": machineStateListFactory({
-          groups: [
-            machineStateListGroupFactory({
-              collapsed: true,
-              count: 4,
-              items: [],
-              name: "Deployed",
-            }),
-          ],
-        }),
-      };
-      const store = mockStore(state);
-      const { result } = renderHook(
-        () => useFetchMachinesWithGroupingUpdates(),
-        {
-          wrapper: generateWrapper(store),
-        }
-      );
-      const expected = machineActions.fetch("mocked-nanoid-1");
-      expect(
-        store.getActions().find((action) => action.type === expected.type)
-      ).toStrictEqual(expected);
-      const getDispatches = () =>
-        store.getActions().filter((action) => action.type === expected.type);
-      expect(getDispatches()).toHaveLength(3);
-      expect(result.current.groups).toEqual([
-        {
-          collapsed: true,
-          count: 4,
-          items: [],
-          name: "Deployed",
-          value: null,
-        },
-        {
-          collapsed: false,
-          count: 2,
-          items: ["abcd", "efgh"],
-          name: "Testing",
-          value: null,
-        },
-      ]);
-    });
-  });
+  const generateWrapper =
+    (store: MockStoreEnhanced<unknown>) =>
+    ({ children }: { children?: ReactNode }) =>
+      <Provider store={store}>{children}</Provider>;
 
   describe("useFetchSelectedMachines", () => {
     afterEach(() => {
@@ -642,9 +509,9 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("can fetch selected machines", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-      const selectedMachines = { items: ["abc123", "def456"] };
-      state.machine.selectedMachines = selectedMachines;
+      jest.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
+      const selected = { items: ["abc123", "def456"] };
+      state.machine.selected = selected;
       const store = mockStore(state);
       renderHook(useFetchSelectedMachines, {
         wrapper: generateWrapper(store),
@@ -654,44 +521,45 @@ describe("machine hook utils", () => {
         .getActions()
         .find((action) => action.type === expected.type);
       expect(actual.payload.params.filter).toStrictEqual(
-        selectedToFilters(selectedMachines)
+        selectedToFilters(selected)
       );
     });
   });
 
   describe("useDispatchWithCallId", () => {
+    beforeEach(() => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode }) =>
         <Provider store={store}>{children}</Provider>;
 
     it("adds a callId to redux dispatch function", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
       const store = mockStore(state);
       const { result } = renderHook(() => useDispatchWithCallId(), {
         wrapper: generateWrapper(store),
       });
       const testAction = { type: "test" };
-      act(() => {
-        result.current.dispatch(testAction);
-      });
+      result.current.dispatch(testAction);
       const actual = store
         .getActions()
         .find((action) => action.type === testAction.type);
-      expect(actual).toStrictEqual({
-        type: "test",
-        meta: { callId: "mocked-nanoid" },
+      await waitFor(() => {
+        expect(actual).toStrictEqual({
+          type: "test",
+          meta: { callId: "mocked-nanoid" },
+        });
       });
     });
 
     it("cleans up request on unmount", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
       const store = mockStore(state);
       renderHook(() => useDispatchWithCallId(), {
         wrapper: generateWrapper(store),
       });
       cleanup();
-      const expected = machineActions.removeRequest("mocked-nanoid-1");
+      const expected = machineActions.removeRequest("mocked-nanoid");
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -699,13 +567,15 @@ describe("machine hook utils", () => {
   });
 
   describe("useMachineActionDispatch", () => {
+    beforeEach(() => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode }) =>
         <Provider store={store}>{children}</Provider>;
 
     it("adds a callId to redux dispatch function and returns action state", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
       state.machine.actions["mocked-nanoid"] = machineActionState({
         status: "success",
       });
@@ -714,22 +584,22 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       const testAction = { type: "test" };
-      act(() => {
-        result.current.dispatch(testAction);
-      });
-      const actual = store
-        .getActions()
-        .find((action) => action.type === testAction.type);
-      expect(actual).toStrictEqual({
-        type: "test",
-        meta: { callId: "mocked-nanoid" },
+      result.current.dispatch(testAction);
+
+      await waitFor(() => {
+        const actual = store
+          .getActions()
+          .find((action) => action.type === testAction.type);
+        expect(actual).toStrictEqual({
+          type: "test",
+          meta: { callId: "mocked-nanoid" },
+        });
       });
       expect(result.current.actionStatus).toEqual("success");
       expect(result.current.actionErrors).toEqual(null);
     });
 
     it("can return an error message", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
       state.machine.actions["mocked-nanoid"] = machineActionState({
         status: "success",
         failedSystemIds: ["abc123"],
@@ -739,15 +609,16 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       const testAction = { type: "test" };
-      act(() => {
-        result.current.dispatch(testAction);
-      });
-      const actual = store
-        .getActions()
-        .find((action) => action.type === testAction.type);
-      expect(actual).toStrictEqual({
-        type: "test",
-        meta: { callId: "mocked-nanoid" },
+      result.current.dispatch(testAction);
+
+      await waitFor(() => {
+        const actual = store
+          .getActions()
+          .find((action) => action.type === testAction.type);
+        expect(actual).toStrictEqual({
+          type: "test",
+          meta: { callId: "mocked-nanoid" },
+        });
       });
       expect(result.current.actionStatus).toEqual("success");
       expect(result.current.actionErrors).toEqual(
@@ -766,7 +637,7 @@ describe("machine hook utils", () => {
       jest
         .spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       state.machine.actions["mocked-nanoid"] = machineActionState({
         status: "success",
@@ -787,9 +658,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      act(() => {
-        result.current.dispatch(machineActions.test);
-      });
+      result.current.dispatch(machineActions.test);
       const expectedGroupsDispatch = machineActions.test({
         filter: {
           status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
@@ -798,12 +667,15 @@ describe("machine hook utils", () => {
       const expectedItemsDispatch = machineActions.test({
         filter: { id: ["abcd123"] },
       });
+
       const actual = store
         .getActions()
         .filter(
           (action) => action.type === machineActions.test({} as TestParams).type
         );
-      expect(actual[0].payload).toStrictEqual(expectedGroupsDispatch.payload);
+      await waitFor(() => {
+        expect(actual[0].payload).toStrictEqual(expectedGroupsDispatch.payload);
+      });
       expect(actual[1].payload).toStrictEqual(expectedItemsDispatch.payload);
       expect(result.current.actionErrors).toEqual(null);
     });
@@ -812,7 +684,7 @@ describe("machine hook utils", () => {
       jest
         .spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       state.machine.actions["mocked-nanoid"] = machineActionState({
         status: "success",
@@ -831,9 +703,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      act(() => {
-        result.current.dispatch(machineActions.test);
-      });
+      result.current.dispatch(machineActions.test);
       const expectedItemsDispatch = machineActions.test({
         filter: { id: ["abcd123"] },
       });
@@ -842,7 +712,9 @@ describe("machine hook utils", () => {
         .filter(
           (action) => action.type === machineActions.test({} as TestParams).type
         );
-      expect(actual).toHaveLength(1);
+      await waitFor(() => {
+        expect(actual).toHaveLength(1);
+      });
       expect(actual[0].payload).toStrictEqual(expectedItemsDispatch.payload);
     });
 
@@ -850,7 +722,7 @@ describe("machine hook utils", () => {
       jest
         .spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       state.machine.actions["mocked-nanoid"] = machineActionState({
         status: "success",
@@ -870,9 +742,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      act(() => {
-        result.current.dispatch(machineActions.test);
-      });
+      result.current.dispatch(machineActions.test);
       const expectedItemsDispatch = machineActions.test({
         filter: {
           status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
@@ -883,7 +753,9 @@ describe("machine hook utils", () => {
         .filter(
           (action) => action.type === machineActions.test({} as TestParams).type
         );
-      expect(actual).toHaveLength(1);
+      await waitFor(() => {
+        expect(actual).toHaveLength(1);
+      });
       expect(actual[0].payload).toStrictEqual(expectedItemsDispatch.payload);
     });
   });
@@ -905,28 +777,22 @@ describe("machine hook utils", () => {
 
   describe("useFetchMachine", () => {
     beforeEach(() => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      jest.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
     });
     afterEach(() => {
       jest.restoreAllMocks();
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode; id: string }) =>
+      ({ children }: { children?: ReactNode }) =>
         <Provider store={store}>{children}</Provider>;
 
     it("can get a machine", () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
       const store = mockStore(state);
-      renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
-        {
-          initialProps: {
-            id: "def456",
-          },
-          wrapper: generateWrapper(store),
-        }
-      );
+      renderHook(() => useFetchMachine("def456"), {
+        wrapper: generateWrapper(store),
+      });
       const expected = machineActions.get("def456", "mocked-nanoid");
       expect(
         store.getActions().find((action) => action.type === expected.type)
@@ -955,7 +821,7 @@ describe("machine hook utils", () => {
     it("gets a machine if the id changes", () => {
       jest
         .spyOn(reduxToolkit, "nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);
       const { rerender } = renderHook(
@@ -977,14 +843,14 @@ describe("machine hook utils", () => {
     });
 
     it("returns the machine and loading states", () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue(mockCallId);
       const machine = machineFactory({
         system_id: "abc123",
       });
       state.machine = machineStateFactory({
         items: [machine, machineFactory()],
         details: {
-          "mocked-nanoid-1": machineStateDetailsItemFactory({
+          [mockCallId]: machineStateDetailsItemFactory({
             loaded: true,
             loading: true,
             system_id: "abc123",
@@ -1007,7 +873,7 @@ describe("machine hook utils", () => {
     });
 
     it("cleans up machine request on unmount", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce(mockCallId);
       const store = mockStore(state);
       renderHook(
         ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
@@ -1019,7 +885,7 @@ describe("machine hook utils", () => {
         }
       );
       cleanup();
-      const expected = machineActions.cleanupRequest("mocked-nanoid-1");
+      const expected = machineActions.cleanupRequest(mockCallId);
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -1028,7 +894,7 @@ describe("machine hook utils", () => {
     it("cleans up machine requests when the id changes", async () => {
       jest
         .spyOn(reduxToolkit, "nanoid")
-        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);
       const { rerender } = renderHook(
@@ -1041,7 +907,7 @@ describe("machine hook utils", () => {
         }
       );
 
-      const expected1 = machineActions.cleanupRequest("mocked-nanoid-1");
+      const expected1 = machineActions.cleanupRequest(mockCallId);
       const expected2 = machineActions.cleanupRequest("mocked-nanoid-2");
       const getCleanupActions = () =>
         store.getActions().filter((action) => action.type === expected1.type);
@@ -1237,7 +1103,9 @@ describe("machine hook utils", () => {
     });
 
     it("does not allow limited editing when the nic is a VLAN", () => {
-      const nic = machineInterfaceFactory({ type: NetworkInterfaceTypes.VLAN });
+      const nic = machineInterfaceFactory({
+        type: NetworkInterfaceTypes.VLAN,
+      });
       const store = mockStore(state);
       const { result } = renderHook(
         () => useIsLimitedEditingAllowed(nic, machine),
@@ -1302,7 +1170,7 @@ describe("machine hook utils", () => {
 
   describe("useHasSelection", () => {
     it("can have no selected machines", () => {
-      state.machine.selectedMachines = null;
+      state.machine.selected = null;
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),
@@ -1311,7 +1179,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are filters", () => {
-      state.machine.selectedMachines = {
+      state.machine.selected = {
         filter: { hostname: "wistful-wallaby" },
       };
       const store = mockStore(state);
@@ -1322,7 +1190,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are empty filters", () => {
-      state.machine.selectedMachines = { filter: {} };
+      state.machine.selected = { filter: {} };
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),
@@ -1331,7 +1199,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are groups", () => {
-      state.machine.selectedMachines = { groups: ["Admin 2"] };
+      state.machine.selected = { groups: ["Admin 2"] };
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),
@@ -1340,7 +1208,7 @@ describe("machine hook utils", () => {
     });
 
     it("is selected if there are items", () => {
-      state.machine.selectedMachines = { items: ["abc123"] };
+      state.machine.selected = { items: ["abc123"] };
       const store = mockStore(state);
       const { result } = renderHook(() => useHasSelection(), {
         wrapper: generateWrapper(store),
@@ -1350,49 +1218,38 @@ describe("machine hook utils", () => {
   });
 
   describe("useFetchedCount", () => {
-    type Props = {
-      count: number | null;
-      loading?: boolean | null;
-    };
     it("handles when no counts have loaded", () => {
-      const { result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: null, loading: false } }
-      );
+      const { result } = renderHook(() => useFetchedCount(null, false));
       expect(result.current).toBe(0);
     });
 
     it("handles when the initial count is loading", () => {
-      const { result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: null, loading: true } }
-      );
+      const { result } = renderHook(() => useFetchedCount(null, true));
       expect(result.current).toBe(0);
     });
 
     it("can display a count", () => {
-      const { result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: 1, loading: false } }
-      );
+      const { result } = renderHook(() => useFetchedCount(1, false));
       expect(result.current).toBe(1);
     });
 
     it("displays the previous count while loading a new one", () => {
-      const { rerender, result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: 1, loading: false } }
-      );
+      const { rerender, result } = renderHook(() => useFetchedCount(1, false));
       expect(result.current).toBe(1);
       rerender({ count: null, loading: true });
       expect(result.current).toBe(1);
     });
 
     it("displays the new count when it has loaded", () => {
-      const { rerender, result } = renderHook<Props, unknown>(
-        ({ count, loading }: Props) => useFetchedCount(count, loading),
-        { initialProps: { count: 1, loading: false } }
-      );
+      const { rerender, result } = renderHook<
+        ReturnType<typeof useFetchedCount>,
+        {
+          count: number | null;
+          loading?: boolean | null;
+        }
+      >(({ count, loading }) => useFetchedCount(count, loading), {
+        initialProps: { count: 1, loading: false },
+      });
       expect(result.current).toBe(1);
       rerender({ count: null, loading: true });
       expect(result.current).toBe(1);

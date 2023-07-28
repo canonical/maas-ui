@@ -3,17 +3,21 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
+import SpaceDelete from "./SpaceDetailsHeader/SpaceDelete";
 import SpaceSubnets from "./SpaceSubnets";
 import SpaceSummary from "./SpaceSummary";
+import { SpaceDetailsSidePanelViews } from "./constants";
 
-import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import PageContent from "app/base/components/PageContent/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
+import { useSidePanel } from "app/base/side-panel-context";
 import type { RootState } from "app/store/root/types";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
 import { SpaceMeta } from "app/store/space/types";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 import subnetURLs from "app/subnets/urls";
 import { isId } from "app/utils";
 
@@ -25,6 +29,8 @@ const SpaceDetails = (): JSX.Element => {
   );
   const spacesLoading = useSelector(spaceSelectors.loading);
   const isValidID = isId(id);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
+
   useWindowTitle(`${space?.name || "Space"} details`);
 
   useEffect(() => {
@@ -36,9 +42,10 @@ const SpaceDetails = (): JSX.Element => {
     const unsetActiveSpaceAndCleanup = () => {
       dispatch(spaceActions.setActive(null));
       dispatch(spaceActions.cleanup());
+      setSidePanelContent(null);
     };
     return unsetActiveSpaceAndCleanup;
-  }, [dispatch, id, isValidID]);
+  }, [dispatch, id, isValidID, setSidePanelContent]);
 
   if (!space) {
     const spaceNotFound = !isValidID || !spacesLoading;
@@ -52,14 +59,44 @@ const SpaceDetails = (): JSX.Element => {
         />
       );
     }
-    return <MainContentSection header={<SectionHeader loading />} />;
+    return (
+      <PageContent
+        header={<SectionHeader loading />}
+        sidePanelContent={null}
+        sidePanelTitle={null}
+      />
+    );
+  }
+
+  let content = null;
+
+  if (
+    sidePanelContent &&
+    sidePanelContent.view === SpaceDetailsSidePanelViews.DELETE_SPACE
+  ) {
+    content = (
+      <SpaceDelete
+        handleClose={() => setSidePanelContent(null)}
+        space={space}
+      />
+    );
   }
 
   return (
-    <MainContentSection header={<SpaceDetailsHeader space={space} />}>
+    <PageContent
+      header={
+        <SpaceDetailsHeader
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
+          space={space}
+        />
+      }
+      sidePanelContent={content}
+      sidePanelTitle={getSidePanelTitle("Space", sidePanelContent)}
+    >
       <SpaceSummary space={space} />
       <SpaceSubnets space={space} />
-    </MainContentSection>
+    </PageContent>
   );
 };
 

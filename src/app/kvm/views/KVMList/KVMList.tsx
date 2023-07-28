@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,10 +9,12 @@ import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";
 import VirshTable from "./VirshTable";
 
-import MainContentSection from "app/base/components/MainContentSection";
+import PageContent from "app/base/components/PageContent/PageContent";
 import { useWindowTitle } from "app/base/hooks";
+import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
-import type { KVMSidePanelContent } from "app/kvm/types";
+import KVMForms from "app/kvm/components/KVMForms";
+import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { actions as poolActions } from "app/store/resourcepool";
@@ -33,8 +35,7 @@ const KVMList = (): JSX.Element => {
   const virshKvms = useSelector(podSelectors.virsh);
   const vmclusters = useSelector(vmclusterSelectors.all);
   const vmclustersLoading = useSelector(vmclusterSelectors.loading);
-  const [sidePanelContent, setSidePanelContent] =
-    useState<KVMSidePanelContent | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const hasLXDs = vmclusters.length + lxdKvms.length > 0;
   const hasVirsh = virshKvms.length > 0;
   const showingLXD = location.pathname.endsWith(urls.kvm.lxd.index);
@@ -90,18 +91,26 @@ const KVMList = (): JSX.Element => {
     );
   }
   return (
-    <MainContentSection
+    <PageContent
       aria-label={Label.Title}
       header={
         <KVMListHeader
           setSidePanelContent={setSidePanelContent}
-          sidePanelContent={sidePanelContent}
           title={title}
         />
       }
+      sidePanelContent={
+        sidePanelContent ? (
+          <KVMForms
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        ) : null
+      }
+      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : "KVM"}
     >
       {content}
-    </MainContentSection>
+    </PageContent>
   );
 };
 

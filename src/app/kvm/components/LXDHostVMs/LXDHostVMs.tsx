@@ -9,7 +9,7 @@ import NumaResources from "./NumaResources";
 import type { SetSearchFilter } from "app/base/types";
 import LXDVMsSummaryCard from "app/kvm/components/LXDVMsSummaryCard";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
-import { KVMHeaderViews } from "app/kvm/constants";
+import { KVMSidePanelViews } from "app/kvm/constants";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -73,7 +73,7 @@ const LXDHostVMs = ({
             }}
             onAddVMClick={() =>
               setSidePanelContent({
-                view: KVMHeaderViews.COMPOSE_VM,
+                view: KVMSidePanelViews.COMPOSE_VM,
                 extras: { hostId },
               })
             }

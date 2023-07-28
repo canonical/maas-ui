@@ -3,6 +3,7 @@ import { FilterGroupKey } from "./types";
 
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeActions, NodeStatusCode } from "app/store/types/node";
+import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -20,6 +21,8 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
+enableCallIdMocks();
 
 describe("machine selectors", () => {
   it("can get all items", () => {
@@ -91,10 +94,10 @@ describe("machine selectors", () => {
   it("can get the selected machines", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
-        selectedMachines: { items: ["abc123", "def456"] },
+        selected: { items: ["abc123", "def456"] },
       }),
     });
-    expect(machine.selectedMachines(state)).toStrictEqual({
+    expect(machine.selected(state)).toStrictEqual({
       items: ["abc123", "def456"],
     });
   });
@@ -586,7 +589,7 @@ describe("machine selectors", () => {
       machine: machineStateFactory({
         items: [...machines, machineFactory()],
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loading: true,
             groups: [
               machineStateListGroupFactory({
@@ -597,20 +600,20 @@ describe("machine selectors", () => {
         },
       }),
     });
-    expect(machine.list(state, "123456")).toStrictEqual(machines);
+    expect(machine.list(state, callId)).toStrictEqual(machines);
   });
 
   it("can get the count for a list", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             count: 5,
           }),
         },
       }),
     });
-    expect(machine.listCount(state, "123456")).toBe(5);
+    expect(machine.listCount(state, callId)).toBe(5);
   });
 
   it("can get a group in a list", () => {
@@ -625,13 +628,13 @@ describe("machine selectors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             groups,
           }),
         },
       }),
     });
-    expect(machine.listGroups(state, "123456")).toStrictEqual(groups);
+    expect(machine.listGroups(state, callId)).toStrictEqual(groups);
   });
 
   it("can get all groups in a list", () => {
@@ -646,15 +649,13 @@ describe("machine selectors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             groups,
           }),
         },
       }),
     });
-    expect(machine.listGroup(state, "123456", "admin2")).toStrictEqual(
-      groups[1]
-    );
+    expect(machine.listGroup(state, callId, "admin2")).toStrictEqual(groups[1]);
   });
 
   it("can get a nullish group in a list", () => {
@@ -669,39 +670,39 @@ describe("machine selectors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             groups,
           }),
         },
       }),
     });
-    expect(machine.listGroup(state, "123456", "")).toStrictEqual(groups[1]);
+    expect(machine.listGroup(state, callId, "")).toStrictEqual(groups[1]);
   });
 
   it("can get the loaded state for a list", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loaded: true,
           }),
         },
       }),
     });
-    expect(machine.listLoaded(state, "123456")).toBe(true);
+    expect(machine.listLoaded(state, callId)).toBe(true);
   });
 
   it("can get the loading state for a list", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         lists: {
-          "123456": machineStateListFactory({
+          [callId]: machineStateListFactory({
             loading: true,
           }),
         },
       }),
     });
-    expect(machine.listLoading(state, "123456")).toBe(true);
+    expect(machine.listLoading(state, callId)).toBe(true);
   });
 
   it("can get an interface by id", () => {
@@ -744,7 +745,7 @@ describe("machine selectors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         details: {
-          123456: machineStateDetailsItemFactory({
+          [callId]: machineStateDetailsItemFactory({
             system_id: "abc123",
           }),
           78910: machineStateDetailsItemFactory({
@@ -752,7 +753,7 @@ describe("machine selectors", () => {
           }),
         },
         lists: {
-          123456: machineStateListFactory({
+          [callId]: machineStateListFactory({
             groups: [
               machineStateListGroupFactory({
                 items: ["abc123", "def456"],
@@ -762,19 +763,19 @@ describe("machine selectors", () => {
         },
       }),
     });
-    expect(machine.unusedIdsInCall(state, "123456")).toStrictEqual([]);
+    expect(machine.unusedIdsInCall(state, callId)).toStrictEqual([]);
   });
 
   it("can get unused ids for a details request when the id is not being used", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         details: {
-          123456: machineStateDetailsItemFactory({
+          [callId]: machineStateDetailsItemFactory({
             system_id: "abc123",
           }),
         },
         lists: {
-          123456: machineStateListFactory({
+          [callId]: machineStateListFactory({
             groups: [
               machineStateListGroupFactory({
                 items: ["def456", "ghi789"],
@@ -784,14 +785,14 @@ describe("machine selectors", () => {
         },
       }),
     });
-    expect(machine.unusedIdsInCall(state, "123456")).toStrictEqual(["abc123"]);
+    expect(machine.unusedIdsInCall(state, callId)).toStrictEqual(["abc123"]);
   });
 
   it("can get unused ids for a list request when the ids are being used", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         details: {
-          123456: machineStateDetailsItemFactory({
+          [callId]: machineStateDetailsItemFactory({
             system_id: "abc123",
           }),
         },
@@ -820,7 +821,7 @@ describe("machine selectors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         details: {
-          123456: machineStateDetailsItemFactory({
+          [callId]: machineStateDetailsItemFactory({
             system_id: "abc123",
           }),
         },

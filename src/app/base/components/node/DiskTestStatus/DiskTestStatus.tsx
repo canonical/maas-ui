@@ -6,15 +6,15 @@ type Props = { testStatus: Disk["test_status"] };
 const DiskTestStatus = ({ testStatus }: Props): JSX.Element => {
   switch (testStatus) {
     case ScriptResultStatus.PENDING:
-      return <i className="p-icon--pending"></i>;
+      return <i aria-label="pending" className="p-icon--pending"></i>;
     case ScriptResultStatus.RUNNING:
     case ScriptResultStatus.APPLYING_NETCONF:
     case ScriptResultStatus.INSTALLING:
-      return <i className="p-icon--running"></i>;
+      return <i aria-label="running" className="p-icon--running"></i>;
     case ScriptResultStatus.PASSED:
       return (
         <>
-          <i className="p-icon--success is-inline"></i>
+          <i aria-label="ok" className="p-icon--success is-inline"></i>
           <span>OK</span>
         </>
       );
@@ -25,28 +25,31 @@ const DiskTestStatus = ({ testStatus }: Props): JSX.Element => {
     case ScriptResultStatus.FAILED_INSTALLING:
       return (
         <>
-          <i className="p-icon--error is-inline"></i>
+          <i aria-label="error" className="p-icon--error is-inline"></i>
           <span>Error</span>
         </>
       );
     case ScriptResultStatus.TIMEDOUT:
       return (
         <>
-          <i className="p-icon--timed-out is-inline"></i>
+          <i aria-label="timed out" className="p-icon--timed-out is-inline"></i>
           <span>Timed out</span>
         </>
       );
     case ScriptResultStatus.SKIPPED:
       return (
         <>
-          <i className="p-icon--warning is-inline"></i>
+          <i aria-label="skipped" className="p-icon--warning is-inline"></i>
           <span>Skipped</span>
         </>
       );
     default:
       return (
         <>
-          <i className="p-icon--power-unknown is-inline"></i>
+          <i
+            aria-label="unknown"
+            className="p-icon--power-unknown is-inline"
+          ></i>
           <span>Unknown</span>
         </>
       );

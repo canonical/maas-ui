@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -8,6 +7,7 @@ import KernelOptionsField, { Label } from "./KernelOptionsField";
 
 import { actions as machineActions } from "app/store/machine";
 import type { FetchFilters } from "app/store/machine/types";
+import * as query from "app/store/machine/utils/query";
 import type { RootState } from "app/store/root/types";
 import { FetchNodeStatus, NodeStatus } from "app/store/types/node";
 import {
@@ -20,12 +20,11 @@ import {
   tagState as tagStateFactory,
 } from "testing/factories";
 import { userEvent, render, screen } from "testing/utils";
-
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  jest.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       counts: machineStateCountsFactory({

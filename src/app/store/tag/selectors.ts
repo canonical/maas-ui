@@ -1,3 +1,4 @@
+import { createCachedSelector } from "re-reselect";
 import { createSelector } from "reselect";
 
 import type { RootState } from "app/store/root/types";
@@ -37,13 +38,11 @@ const getTagsFromIds = (
  * @param ids - A list of tag IDs.
  * @returns A list of tags.
  */
-const getByIDs = createSelector(
-  [
-    defaultSelectors.all,
-    (_state: RootState, tagIDs: Tag[TagMeta.PK][] | null) => tagIDs,
-  ],
+const getByIDs = createCachedSelector(
+  defaultSelectors.all,
+  (_state: RootState, tagIDs: Tag[TagMeta.PK][] | null) => tagIDs,
   (allTags, tagIDs) => getTagsFromIds(allTags, tagIDs)
-);
+)((_state, tagIDs) => tagIDs?.join(",") || ""); // cache by tagIDs
 
 const getList = (tagState: TagState, callId: string | null | undefined) =>
   callId && callId in tagState.lists ? tagState.lists[callId] : null;

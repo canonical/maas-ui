@@ -101,7 +101,7 @@ it("displays the tags in order", () => {
   expect(names[1].textContent).toBe("rad");
 });
 
-it("can change the sort order", () => {
+it("can change the sort order", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -124,7 +124,9 @@ it("can change the sort order", () => {
   });
   expect(names[0].textContent).toBe("cool");
   expect(names[1].textContent).toBe("rad");
-  screen.getByRole("button", { name: Label.Name }).click();
+  await userEvent.click(
+    screen.getByRole("button", { name: `${Label.Name} (descending)` })
+  );
   names = screen.queryAllByRole("gridcell", {
     name: Label.Name,
   });

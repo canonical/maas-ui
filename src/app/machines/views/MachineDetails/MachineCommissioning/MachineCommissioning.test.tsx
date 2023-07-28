@@ -1,5 +1,5 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -27,7 +27,6 @@ jest.mock("@canonical/react-components/dist/hooks", () => {
     usePrevious: jest.fn(),
   };
 });
-
 const mockStore = configureStore();
 
 describe("MachineCommissioning", () => {
@@ -49,11 +48,9 @@ describe("MachineCommissioning", () => {
       }),
     });
   });
-
   it("renders the spinner while script results are loading.", () => {
     const store = mockStore(state);
-
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -62,15 +59,13 @@ describe("MachineCommissioning", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(wrapper.find("Spinner").exists()).toEqual(true);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
-
   it("fetches script results if they haven't been fetched", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -89,12 +84,11 @@ describe("MachineCommissioning", () => {
         .some((action) => action.type === "scriptresult/getByNodeId")
     ).toBe(true);
   });
-
   it("does not fetch script results if they have already been loaded", () => {
     state.nodescriptresult.items = { abc123: [] };
     state.scriptresult.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -112,23 +106,32 @@ describe("MachineCommissioning", () => {
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
-    wrapper.setProps({});
+    rerender(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <Routes>
+              <Route element={<MachineCommissioning />} path="/machine/:id" />
+            </Routes>
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
     expect(
       store
         .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
     ).toBe(1);
   });
-
   it("refetchs script results when the machine commissioning status changes", () => {
-    // Mock the previous value to something different to the current machine.
     jest
       .spyOn(reactComponentHooks, "usePrevious")
       .mockImplementation(() => TestStatusStatus.PASSED);
     state.machine.items = [
       machineDetailsFactory({
         commissioning_status: testStatusFactory({
-          // This value is different to the value stored by usePrevious.
           status: TestStatusStatus.PENDING,
         }),
         locked: false,
@@ -137,7 +140,6 @@ describe("MachineCommissioning", () => {
       }),
     ];
     state.nodescriptresult.items = { abc123: [1] };
-    // Add existing script results.
     state.scriptresult.items = [
       scriptResultFactory({
         id: 1,
@@ -146,7 +148,7 @@ describe("MachineCommissioning", () => {
       }),
     ];
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}

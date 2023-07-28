@@ -1,13 +1,10 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { StatusColumn } from "./StatusColumn";
 
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import { PowerState } from "app/store/types/enum";
 import {
   NodeActions,
   NodeStatus,
@@ -22,8 +19,14 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import {
+  renderWithBrowserRouter,
+  userEvent,
+  screen,
+  within,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("StatusColumn", () => {
   let state: RootState;
@@ -67,40 +70,17 @@ describe("StatusColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("StatusColumn")).toMatchSnapshot();
-  });
-
   describe("status text", () => {
     it("displays the machine's status if not deploying or deployed", () => {
       machine.status = NodeStatus.NEW;
       machine.status_code = NodeStatusCode.NEW;
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
 
-      expect(wrapper.find("[data-testid='status-text']").text()).toBe("New");
+      expect(screen.getByTestId("status-text")).toHaveTextContent("New");
     });
 
     it("displays the short-form of Ubuntu release if deployed", () => {
@@ -109,19 +89,13 @@ describe("StatusColumn", () => {
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
 
-      expect(wrapper.find("[data-testid='status-text']").text()).toBe(
+      expect(screen.getByTestId("status-text")).toHaveTextContent(
         "Ubuntu 18.04 LTS"
       );
     });
@@ -132,21 +106,12 @@ describe("StatusColumn", () => {
       machine.osystem = "centos";
       machine.distro_series = "centos70";
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
 
-      expect(wrapper.find("[data-testid='status-text']").text()).toBe(
-        "CentOS 7"
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
+      expect(screen.getByTestId("status-text")).toHaveTextContent("CentOS 7");
     });
 
     it("displays 'Deploying OS release' if machine is deploying", () => {
@@ -155,19 +120,12 @@ describe("StatusColumn", () => {
       machine.osystem = "ubuntu";
       machine.distro_series = "bionic";
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
 
-      expect(wrapper.find("[data-testid='status-text']").text()).toBe(
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
+      );
+      expect(screen.getByTestId("status-text")).toHaveTextContent(
         "Deploying Ubuntu 18.04 LTS"
       );
     });
@@ -178,19 +136,12 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.BROKEN;
       const store = mockStore(state);
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
 
-      expect(wrapper.find("[data-testid='error-text']").text()).toBe(
+      expect(screen.getByTestId("error-text")).toHaveTextContent(
         "machine is on fire"
       );
     });
@@ -202,19 +153,12 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.TESTING;
       machine.status_message = "2 of 6 tests complete";
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
 
-      expect(wrapper.find("[data-testid='progress-text']").text()).toBe(
+      expect(screen.getByTestId("progress-text")).toHaveTextContent(
         "2 of 6 tests complete"
       );
     });
@@ -225,19 +169,11 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.ALLOCATED;
       machine.status_message = "This machine is allocated";
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
-
-      expect(wrapper.find("[data-testid='progress-text']").text()).toBe("");
+      expect(screen.getByTestId("progress-text")).toHaveTextContent("");
     });
   });
 
@@ -246,91 +182,88 @@ describe("StatusColumn", () => {
       machine.status = NodeStatus.COMMISSIONING;
       machine.status_code = NodeStatusCode.COMMISSIONING;
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
-
-      expect(wrapper.find(".p-icon--spinner").exists()).toBe(true);
+      expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     });
 
     it(`shows a warning and tooltip if machine has failed tests and is not in a
       state where the warning should be hidden`, () => {
       machine.status = NodeStatus.ALLOCATED;
       machine.status_code = NodeStatusCode.ALLOCATED;
-      machine.testing_status.status = TestStatusStatus.FAILED;
+      machine.testing_status = TestStatusStatus.FAILED;
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
+      );
+      expect(screen.getByLabelText(/warning/i)).toBeInTheDocument();
+    });
+
+    it("can show a menu with all possible options", async () => {
+      machine.actions = [
+        NodeActions.ABORT,
+        NodeActions.ACQUIRE,
+        NodeActions.COMMISSION,
+        NodeActions.DEPLOY,
+        NodeActions.EXIT_RESCUE_MODE,
+        NodeActions.LOCK,
+        NodeActions.MARK_BROKEN,
+        NodeActions.MARK_FIXED,
+        NodeActions.OVERRIDE_FAILED_TESTING,
+        NodeActions.RELEASE,
+        NodeActions.RESCUE_MODE,
+        NodeActions.TEST,
+        NodeActions.UNLOCK,
+      ];
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { state, route: "/machines" }
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: /take action/i })
+      );
+      expect(
+        within(screen.getByLabelText("submenu")).getAllByRole("button")
+      ).toHaveLength(machine.actions.length);
+      machine.actions.forEach((action) => {
+        expect(
+          within(screen.getByLabelText("submenu")).getByRole("button", {
+            name: action,
+          })
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("does not render table menu if onToggleMenu not provided", () => {
+      renderWithBrowserRouter(<StatusColumn systemId="abc123" />, {
+        state,
+        route: "/machines",
+      });
+      expect(
+        screen.queryByRole("button", { name: /take action/i })
+      ).not.toBeInTheDocument();
+    });
+
+    it("shows an error icon button and a tooltip if power type is not set and status is unknown", () => {
+      machine.power_state = PowerState.UNKNOWN;
+      machine.status_code = NodeStatusCode.NEW;
+      const store = mockStore(state);
+      renderWithBrowserRouter(
+        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        { route: "/machines", store }
       );
 
-      expect(wrapper.find(".p-icon--warning").exists()).toBe(true);
-      expect(wrapper.find("Tooltip").exists()).toBe(true);
+      expect(
+        screen.getByRole("button", { name: "Unconfigured power type" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Unconfigured power type. Go to the configuration tab of this machine.",
+        })
+      ).toBeInTheDocument();
     });
-  });
-
-  it("can show a menu with all possible options", () => {
-    machine.actions = [
-      NodeActions.ABORT,
-      NodeActions.ACQUIRE,
-      NodeActions.COMMISSION,
-      NodeActions.DEPLOY,
-      NodeActions.EXIT_RESCUE_MODE,
-      NodeActions.LOCK,
-      NodeActions.MARK_BROKEN,
-      NodeActions.MARK_FIXED,
-      NodeActions.OVERRIDE_FAILED_TESTING,
-      NodeActions.RELEASE,
-      NodeActions.RESCUE_MODE,
-      NodeActions.TEST,
-      NodeActions.UNLOCK,
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find(".p-contextual-menu__dropdown")).toMatchSnapshot();
-  });
-
-  it("does not render table menu if onToggleMenu not provided", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <StatusColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("TableMenu").exists()).toBe(false);
   });
 });

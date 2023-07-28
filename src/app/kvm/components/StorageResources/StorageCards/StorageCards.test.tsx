@@ -1,5 +1,3 @@
-import { mount } from "enzyme";
-
 import StorageCards, {
   updateCardSize,
   MEDIUM_MIN_WIDTH,
@@ -8,6 +6,7 @@ import StorageCards, {
 
 import { COLOURS } from "app/base/constants";
 import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 describe("StorageCards", () => {
   it("correctly calculates meter width", () => {
@@ -16,12 +15,8 @@ describe("StorageCards", () => {
       allocated_other: 30,
       total: 100,
     });
-    const wrapper = mount(
-      <StorageCards pools={{ pool: storagePoolResource }} />
-    );
-    const actualBg = wrapper
-      .find("[data-testid='storage-card-meter']")
-      .prop("style")?.backgroundImage;
+
+    render(<StorageCards pools={{ pool: storagePoolResource }} />);
     const expectedBg = `linear-gradient(
       to right,
       ${COLOURS.LINK} 0,
@@ -31,7 +26,9 @@ describe("StorageCards", () => {
       ${COLOURS.LINK_FADED} 50%,
       ${COLOURS.LINK_FADED} 100%
     )`;
-    expect(actualBg?.replace(/\s/g, "")).toEqual(expectedBg.replace(/\s/g, ""));
+    expect(screen.getByTestId("storage-card-meter")).toHaveStyle(
+      `background-image: ${expectedBg}`
+    );
   });
 
   describe("updateCardSize", () => {

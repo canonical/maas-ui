@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import { StorageColumn } from "./StorageColumn";
 
 import type { RootState } from "app/store/root/types";
@@ -11,8 +6,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("StorageColumn", () => {
   let state: RootState;
@@ -30,35 +24,14 @@ describe("StorageColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <StorageColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("StorageColumn")).toMatchSnapshot();
-  });
-
   it("displays the storage value correctly", () => {
     state.machine.items[0].storage = 2000;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <StorageColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<StorageColumn systemId="abc123" />, {
+      state,
+      route: "/machines",
+    });
 
-    expect(wrapper.find('[data-testid="storage-value"]').text()).toEqual("2");
-    expect(wrapper.find('[data-testid="storage-unit"]').text()).toEqual("TB");
+    expect(screen.getByTestId("storage-value")).toHaveTextContent("2");
+    expect(screen.getByTestId("storage-unit")).toHaveTextContent("TB");
   });
 });

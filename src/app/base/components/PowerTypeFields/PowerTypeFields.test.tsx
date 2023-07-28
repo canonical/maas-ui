@@ -1,10 +1,5 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
-import LXDPowerFields from "./LXDPowerFields";
 import PowerTypeFields from "./PowerTypeFields";
 
 import { PowerTypeNames } from "app/store/general/constants";
@@ -17,8 +12,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore, screen, userEvent, within } from "testing/utils";
 
 describe("PowerTypeFields", () => {
   let state: RootState;
@@ -62,51 +56,41 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ power_type: PowerTypeNames.MANUAL }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{ power_type: PowerTypeNames.MANUAL }}
+        onSubmit={jest.fn()}
+      >
+        <PowerTypeFields />
+      </Formik>,
+      { state }
     );
 
     expect(
-      wrapper.find("Input[name='power_parameters.field1']").props().label
-    ).toBe("Required text");
+      screen.getByRole("textbox", { name: "Required text" })
+    ).toBeInTheDocument();
     expect(
-      wrapper.find("Input[name='power_parameters.field1']").props().required
-    ).toBe(true);
+      screen.getByRole("textbox", { name: "Required text" })
+    ).toBeRequired();
     expect(
-      wrapper.find("Input[name='power_parameters.field2']").props().label
-    ).toBe("Non-required text");
+      screen.getByRole("textbox", { name: "Non-required text" })
+    ).toBeInTheDocument();
     expect(
-      wrapper.find("Input[name='power_parameters.field2']").props().required
-    ).toBe(false);
-    expect(
-      wrapper.find("Select[name='power_parameters.field3']").props().label
-    ).toBe("Select with choices");
-    expect(
-      wrapper.find("Select[name='power_parameters.field3']").find("option")
-        .length
-    ).toBe(2);
-    expect(
-      wrapper
-        .find("Select[name='power_parameters.field3']")
-        .find("option")
-        .at(0)
-        .text()
-    ).toBe("Choice 1");
-    expect(
-      wrapper
-        .find("Select[name='power_parameters.field3']")
-        .find("option")
-        .at(1)
-        .text()
-    ).toBe("Choice 2");
+      screen.getByRole("textbox", { name: "Non-required text" })
+    ).not.toBeRequired();
+
+    const selectWithChoices = screen.getByRole("combobox", {
+      name: "Select with choices",
+    });
+    expect(selectWithChoices).toBeInTheDocument();
+
+    // Go through each choice in the last field and ensure it's listed as a select option
+    powerTypes[0].fields[2].choices.forEach((choice) => {
+      expect(
+        // Index 1 is the label for this option
+        within(selectWithChoices).getByRole("option", { name: choice[1] })
+      ).toBeInTheDocument();
+    });
   });
 
   it("does not show select if showSelect is false", () => {
@@ -120,19 +104,17 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ power_type: PowerTypeNames.MANUAL }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields showSelect={false} />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{ power_type: PowerTypeNames.MANUAL }}
+        onSubmit={jest.fn()}
+      >
+        <PowerTypeFields showSelect={false} />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("Select").exists()).toBe(false);
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 
   it("can limit the fields to show based on their scope", () => {
@@ -141,10 +123,12 @@ describe("PowerTypeFields", () => {
         fields: [
           powerFieldFactory({
             name: "field1",
+            label: "Field 1",
             scope: PowerFieldScope.NODE,
           }),
           powerFieldFactory({
             name: "field2",
+            label: "Field 2",
             scope: PowerFieldScope.BMC,
           }),
         ],
@@ -152,166 +136,186 @@ describe("PowerTypeFields", () => {
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ power_type: PowerTypeNames.MANUAL }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields fieldScopes={[PowerFieldScope.NODE]} />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{ power_type: PowerTypeNames.MANUAL }}
+        onSubmit={jest.fn()}
+      >
+        <PowerTypeFields fieldScopes={[PowerFieldScope.NODE]} />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("Input[name='power_parameters.field1']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("Input[name='power_parameters.field2']").exists()).toBe(
-      false
-    );
+    expect(
+      screen.getByRole("textbox", { name: "Field 1" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: "Field 2" })
+    ).not.toBeInTheDocument();
   });
 
   it("can only show power types suitable for chassis", () => {
     const powerTypes = [
       powerTypeFactory({
         can_probe: true,
+        description: "virsh",
         fields: [],
         name: PowerTypeNames.VIRSH,
       }),
       powerTypeFactory({
         can_probe: false,
+        description: "manual",
         fields: [],
         name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ power_type: "" }} onSubmit={jest.fn()}>
-          <PowerTypeFields forChassis />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ power_type: "" }} onSubmit={jest.fn()}>
+        <PowerTypeFields forChassis />
+      </Formik>,
+      { state }
     );
 
+    expect(screen.getByRole("option", { name: "virsh" })).toBeInTheDocument();
     expect(
-      wrapper.find(`option[value='${PowerTypeNames.VIRSH}']`).exists()
-    ).toBe(true);
-    expect(
-      wrapper.find(`option[value='${PowerTypeNames.MANUAL}']`).exists()
-    ).toBe(false);
+      screen.queryByRole("option", { name: "manual" })
+    ).not.toBeInTheDocument();
   });
 
   it("can be given different values for formik field names", () => {
     const powerTypes = [
       powerTypeFactory({
-        fields: [powerFieldFactory({ name: "parameter1" })],
+        fields: [
+          powerFieldFactory({ name: "parameter1", label: "Parameter 1" }),
+        ],
         name: PowerTypeNames.MANUAL,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: PowerTypeNames.MANUAL,
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields
-            powerParametersValueName="powerParameters"
-            powerTypeValueName="powerType"
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          powerParameters: {},
+          powerType: PowerTypeNames.MANUAL,
+        }}
+        onSubmit={jest.fn()}
+      >
+        <PowerTypeFields
+          powerParametersValueName="powerParameters"
+          powerTypeValueName="powerType"
+        />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("Select[name='powerType']").exists()).toBe(true);
     expect(
-      wrapper.find("Input[name='powerParameters.parameter1']").exists()
-    ).toBe(true);
+      screen.getByRole("combobox", { name: "Power type" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Parameter 1" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Parameter 1" })).toHaveProperty(
+      "name",
+      "powerParameters.parameter1"
+    );
   });
 
   it("can disable the power type select", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            power_parameters: {},
-            power_type: PowerTypeNames.MANUAL,
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields disableSelect />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          power_parameters: {},
+          power_type: PowerTypeNames.MANUAL,
+        }}
+        onSubmit={jest.fn()}
+      >
+        <PowerTypeFields disableSelect />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("Select[name='power_type']").prop("disabled")).toBe(
-      true
-    );
+    expect(screen.getByRole("combobox", { name: "Power type" })).toBeDisabled();
   });
 
   it("resets the fields of the selected power type on change", async () => {
     // Mock two power types that share a power parameter "parameter1"
     const powerTypes = [
       powerTypeFactory({
+        description: "manual",
         fields: [
-          powerFieldFactory({ default: "default1", name: "parameter1" }),
-          powerFieldFactory({ default: "default2", name: "parameter2" }),
+          powerFieldFactory({
+            default: "default1",
+            name: "parameter1",
+            label: "Parameter 1",
+          }),
+          powerFieldFactory({
+            default: "default2",
+            name: "parameter2",
+            label: "Parameter 2",
+          }),
         ],
         name: PowerTypeNames.MANUAL,
       }),
       powerTypeFactory({
+        description: "virsh",
         fields: [
-          powerFieldFactory({ default: "default3", name: "parameter1" }),
-          powerFieldFactory({ default: "default4", name: "parameter3" }),
+          powerFieldFactory({
+            default: "default3",
+            name: "parameter1",
+            label: "Parameter 1",
+          }),
+          powerFieldFactory({
+            default: "default4",
+            name: "parameter3",
+            label: "Parameter 3",
+          }),
         ],
         name: PowerTypeNames.VIRSH,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            power_parameters: {
-              parameter1: "changed parameter1",
-              parameter2: "changed parameter2",
-              parameter3: "default4",
-            },
-            power_type: PowerTypeNames.MANUAL,
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          power_parameters: {
+            parameter1: "changed parameter1",
+            parameter2: "changed parameter2",
+            parameter3: "default4",
+          },
+          power_type: PowerTypeNames.MANUAL,
+        }}
+        onSubmit={jest.fn()}
+      >
+        <PowerTypeFields />
+      </Formik>,
+      { state }
+    );
+
+    // Fields should have changed parameters
+    expect(screen.getByRole("textbox", { name: "Parameter 1" })).toHaveValue(
+      "changed parameter1"
+    );
+    expect(screen.getByRole("textbox", { name: "Parameter 2" })).toHaveValue(
+      "changed parameter2"
     );
 
     // Change power type to "virsh"
-    await act(async () => {
-      wrapper.find("select[name='power_type']").simulate("change", {
-        target: { name: "power_type", value: PowerTypeNames.VIRSH },
-      });
-    });
-    wrapper.update();
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Power type" }),
+      screen.getByRole("option", { name: "virsh" })
+    );
 
     // Fields of selected power type should be reset to defaults
+    expect(screen.getByRole("textbox", { name: "Parameter 1" })).toHaveValue(
+      "default3"
+    );
     expect(
-      wrapper.find("input[name='power_parameters.parameter1']").prop("value")
-    ).toBe("default3");
-    expect(
-      wrapper.find("input[name='power_parameters.parameter2']").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find("input[name='power_parameters.parameter3']").prop("value")
-    ).toBe("default4");
+      screen.queryByRole("textbox", { name: "Parameter 2" })
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Parameter 3" })).toHaveValue(
+      "default4"
+    );
   });
 
   it("renders LXD power fields with custom props if selected", () => {
@@ -320,32 +324,47 @@ describe("PowerTypeFields", () => {
         fields: [
           powerFieldFactory({ name: "certificate" }),
           powerFieldFactory({ name: "key" }),
-          powerFieldFactory({ name: "password" }),
+          powerFieldFactory({ name: "password", label: "Password" }),
         ],
         name: PowerTypeNames.LXD,
       }),
     ];
     state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            power_parameters: {},
-            power_type: PowerTypeNames.LXD,
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields
-            customFieldProps={{ lxd: { initialShouldGenerateCert: false } }}
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          power_parameters: {},
+          power_type: PowerTypeNames.LXD,
+        }}
+        onSubmit={jest.fn()}
+      >
+        <PowerTypeFields
+          customFieldProps={{ lxd: { initialShouldGenerateCert: false } }}
+        />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find(LXDPowerFields).exists()).toBe(true);
-    expect(wrapper.find(LXDPowerFields).prop("initialShouldGenerateCert")).toBe(
-      false
-    );
+    expect(
+      screen.getByRole("textbox", { name: "Password" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", { name: "Generate new certificate" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", { name: "Generate new certificate" })
+    ).not.toBeChecked();
+    expect(
+      screen.getByRole("radio", { name: "Provide certificate and private key" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", { name: "Provide certificate and private key" })
+    ).toBeChecked();
+    expect(
+      screen.getByRole("textbox", { name: "Upload certificate" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Upload private key" })
+    ).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  plugins: ["prettier"],
+  plugins: ["unused-imports", "prettier"],
   extends: [
     "react-app", // Use the recommended rules from CRA.
     "plugin:prettier/recommended", // Ensure this is last in the list.
@@ -42,15 +42,19 @@ module.exports = {
       },
       rules: {
         "prettier/prettier": "error",
-        "@typescript-eslint/no-unused-vars": [
-          "error",
+        "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
           {
-            args: "none",
+            vars: "all",
+            varsIgnorePattern: "^_",
+            args: "after-used",
             ignoreRestSiblings: true,
+            argsIgnorePattern: "^_",
           },
         ],
         "@typescript-eslint/consistent-type-imports": 2,
-        "@typescript-eslint/explicit-module-boundary-types": ["error"],
         "import/namespace": "off",
         "import/no-named-as-default": 0,
         "import/order": [
@@ -120,7 +124,7 @@ module.exports = {
     {
       files: ["src/**/*.tsx"],
       rules: {
-        "react/no-multi-comp": ["error", { ignoreStateless: false }],
+        "react/no-multi-comp": ["off"],
       },
     },
     {
@@ -148,7 +152,20 @@ module.exports = {
       plugins: ["cypress", "no-only-tests"],
       rules: {
         "no-only-tests/no-only-tests": "error",
+        // vanilla framework often hides default inputs and displays styled ones instead
+        // because of this we need to use use force option to allow interacting with hidden fields
         "cypress/no-force": "warn",
+        "prettier/prettier": "error",
+      },
+    },
+    {
+      files: ["tests/**/*.[jt]s?(x)"],
+      extends: ["plugin:playwright/recommended"],
+      rules: {
+        // vanilla framework often hides default inputs and displays styled ones instead
+        // because of this we need to use use force option to allow interacting with hidden fields
+        "playwright/no-force-option": "off",
+        "no-only-tests/no-only-tests": "error",
         "prettier/prettier": "error",
       },
     },

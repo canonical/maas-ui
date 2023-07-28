@@ -7,6 +7,6 @@ context("Settings", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains("Settings");
+    cy.get(".p-side-navigation__title").contains("Settings");
   });
 });

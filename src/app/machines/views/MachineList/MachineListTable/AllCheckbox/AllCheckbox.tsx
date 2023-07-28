@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux";
 
+import AllDropdown from "./AllDropdown";
+import { generateSelectedAll } from "./utils";
+
 import TableCheckbox from "app/machines/components/TableCheckbox";
 import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
 import machineSelectors from "app/store/machine/selectors";
@@ -11,11 +14,11 @@ export enum Label {
 
 type Props = {
   callId?: string | null;
-  filter?: FetchFilters | null;
+  filter: FetchFilters | null;
 };
 
 const AllCheckbox = ({ callId, filter }: Props): JSX.Element => {
-  const selected = useSelector(machineSelectors.selectedMachines);
+  const selected = useSelector(machineSelectors.selected);
   // A filter exists in the selected state when all machines in the current
   // table are selected.
   const allSelected = !!selected && "filter" in selected;
@@ -25,20 +28,25 @@ const AllCheckbox = ({ callId, filter }: Props): JSX.Element => {
       ("groups" in selected && !!selected.groups?.length));
 
   return (
-    <TableCheckbox
-      aria-label={Label.AllMachines}
-      // Remove the labelled-by attribute so that the aria-label is used.
-      aria-labelledby=""
-      callId={callId}
-      isChecked={
-        allSelected
-          ? Checked.Checked
-          : someSelected
-          ? Checked.Mixed
-          : Checked.Unchecked
-      }
-      onGenerateSelected={(checked) => (checked && filter ? { filter } : null)}
-    />
+    <>
+      <TableCheckbox
+        aria-label={Label.AllMachines}
+        // TODO: Remove the labelled-by attribute so that the aria-label is used.
+        aria-labelledby=""
+        callId={callId}
+        isChecked={
+          allSelected
+            ? Checked.Checked
+            : someSelected
+            ? Checked.Mixed
+            : Checked.Unchecked
+        }
+        onGenerateSelected={(checked) =>
+          generateSelectedAll({ checked, filter })
+        }
+      />
+      <AllDropdown callId={callId} filter={filter} />
+    </>
   );
 };
 

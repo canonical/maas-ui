@@ -30,7 +30,7 @@ const HiddenColumnsSelect = ({
   };
   return (
     <ContextualMenu
-      className="filter-accordion"
+      className="is-maas-select"
       constrainPanelWidth
       dropdownProps={{ "aria-label": "columns menu" }}
       position="left"

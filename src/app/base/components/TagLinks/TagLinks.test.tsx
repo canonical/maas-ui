@@ -1,12 +1,13 @@
-import { mount } from "enzyme";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 
 import TagLinks from "./TagLinks";
 
+import { render, screen } from "testing/utils";
+
 describe("TagLinks", () => {
-  it("renders", () => {
-    const wrapper = mount(
+  it("displays tag links", () => {
+    render(
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >
@@ -19,6 +20,7 @@ describe("TagLinks", () => {
       </MemoryRouter>
     );
 
-    expect(wrapper.find("TagLinks")).toMatchSnapshot();
+    expect(screen.getByRole("link", { name: "tag-1" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "tag-2" })).toBeInTheDocument();
   });
 });
