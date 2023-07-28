@@ -58,7 +58,8 @@ export const App = (): JSX.Element => {
   const { pathname } = useLocation();
   const isSettingsPage = matchPath("settings/*", pathname);
   const isPreferencesPage = matchPath("account/prefs/*", pathname);
-  const isSideNavVisible = isSettingsPage || isPreferencesPage;
+  const hasSideNav = isSettingsPage || isPreferencesPage;
+  const isSideNavVisible = hasSideNav && connected && authenticated;
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
