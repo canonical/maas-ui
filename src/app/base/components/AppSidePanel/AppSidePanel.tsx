@@ -1,13 +1,8 @@
 import { useEffect, type ReactNode } from "react";
 
-import {
-  Col,
-  Row,
-  useOnEscapePressed,
-  usePrevious,
-} from "@canonical/react-components";
+import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
-import { useLocation } from "react-router-dom-v5-compat";
+import { useHistory } from "react-router-dom";
 
 import type { SidePanelSize } from "app/base/side-panel-context";
 import { useSidePanel } from "app/base/side-panel-context";
@@ -20,15 +15,16 @@ export type AppSidePanelProps = {
 
 const useCloseSidePanelOnRouteChange = (): void => {
   const { setSidePanelContent } = useSidePanel();
-  const { pathname } = useLocation();
-  const previousPathname = usePrevious(pathname);
+  const history = useHistory();
 
   // close side panel on route change
   useEffect(() => {
-    if (pathname !== previousPathname) {
-      setSidePanelContent(null);
-    }
-  }, [pathname, previousPathname, setSidePanelContent]);
+    const unlisten = history.listen(() => setSidePanelContent(null));
+
+    return () => {
+      unlisten();
+    };
+  }, [history, setSidePanelContent]);
 };
 
 const useResetSidePanelOnUnmount = (): void => {
@@ -61,7 +57,7 @@ const AppSidePanelContent = ({
         "is-large": size === "large",
         "is-wide": size === "wide",
       })}
-      data-testid="section-header-content"
+      data-testid="app-side-panel"
       id="aside-panel"
     >
       <Row>
