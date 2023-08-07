@@ -107,7 +107,7 @@
     "cypress-wait-until": "1.7.2",
     "cz-conventional-changelog": "3.3.0",
     "dotenv-flow": "3.2.0",
-    "eslint-config-prettier": "8.6.0",
+    "eslint-config-prettier": "9.0.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-no-only-tests": "3.1.0",
     "eslint-plugin-playwright": "0.15.3",
