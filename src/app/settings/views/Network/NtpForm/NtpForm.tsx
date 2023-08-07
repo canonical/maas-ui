@@ -44,8 +44,8 @@ const NtpForm = (): JSX.Element => {
             buttonsAlign="left"
             buttonsBordered={false}
             initialValues={{
-              ntp_external_only: ntpExternalOnly,
-              ntp_servers: ntpServers,
+              ntp_external_only: ntpExternalOnly ?? false,
+              ntp_servers: ntpServers ?? "",
             }}
             onSaveAnalytics={{
               action: "Saved",

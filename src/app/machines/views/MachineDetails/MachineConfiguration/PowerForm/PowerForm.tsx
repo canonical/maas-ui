@@ -94,7 +94,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             editable={editing}
             errors={errors}
             initialValues={{
-              powerType: machine.power_type,
+              powerType: machine.power_type ?? "",
               powerParameters: initialPowerParameters,
             }}
             onCancel={() => setEditing(false)}
