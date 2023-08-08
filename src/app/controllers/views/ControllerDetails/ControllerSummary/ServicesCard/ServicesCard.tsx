@@ -53,6 +53,10 @@ const SERVICE_ITEMS: ServiceItem[] = [
     types: [NodeType.REGION_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
   },
   {
+    name: ServiceName.TEMPORAL,
+    types: [NodeType.REGION_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
+  },
+  {
     name: ServiceName.RACKD,
     types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
     children: [
@@ -62,6 +66,10 @@ const SERVICE_ITEMS: ServiceItem[] = [
       },
       {
         name: ServiceName.TFTP,
+        types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
+      },
+      {
+        name: ServiceName.AGENT,
         types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
       },
     ],

@@ -4,6 +4,7 @@ export enum ServiceMeta {
 }
 
 export enum ServiceName {
+  AGENT = "agent",
   BIND9 = "bind9",
   DHCPD = "dhcpd",
   DHCPD6 = "dhcpd6",
@@ -19,6 +20,7 @@ export enum ServiceName {
   SYSLOG_RACK = "syslog_rack",
   SYSLOG_REGION = "syslog_region",
   TFTP = "tftp",
+  TEMPORAL = "temporal",
 }
 
 export enum ServiceStatus {
