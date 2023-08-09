@@ -30,7 +30,7 @@ const WindowsForm = (): JSX.Element => {
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        windows_kms_host: windowsKmsHost,
+        windows_kms_host: windowsKmsHost ?? "",
       }}
       onSaveAnalytics={{
         action: "Saved",
