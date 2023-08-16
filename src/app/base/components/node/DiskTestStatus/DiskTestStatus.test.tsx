@@ -1,4 +1,3 @@
-import "@testing-library/jest-dom/extend-expect";
 import DiskTestStatus from "./DiskTestStatus";
 
 import { ScriptResultStatus } from "app/store/scriptresult/types";
