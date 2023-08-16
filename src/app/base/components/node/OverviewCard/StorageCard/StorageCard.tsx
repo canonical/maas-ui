@@ -17,7 +17,7 @@ type Props = {
 const StorageCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__storage">
-      <strong className="p-muted-heading u-flex--between u-no-margin--bottom">
+      <strong className="p-muted-heading u-flex--between u-no-margin--bottom u-no-padding--top">
         Storage
       </strong>
       <h4 className="u-no-margin--bottom">

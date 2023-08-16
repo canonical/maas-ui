@@ -13,7 +13,7 @@ type Props = {
 const MemoryCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__memory">
-      <strong className="p-muted-heading u-flex--between u-no-margin--bottom">
+      <strong className="p-muted-heading u-flex--between u-no-margin--bottom u-no-padding--top">
         Memory
       </strong>
       <h4 className="u-no-margin--bottom">
