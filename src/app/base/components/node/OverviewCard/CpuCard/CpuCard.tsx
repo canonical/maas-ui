@@ -34,7 +34,9 @@ const CpuCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__cpu">
       <div className="u-flex--between">
-        <strong className="p-muted-heading u-no-margin--bottom">CPU</strong>
+        <strong className="p-muted-heading u-no-margin--bottom u-no-padding--top">
+          CPU
+        </strong>
         <small className="u-no-margin--bottom u-text--muted">
           {node.architecture}
         </small>

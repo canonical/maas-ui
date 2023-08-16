@@ -128,7 +128,7 @@ const ControllerStatusCard = ({ controller }: Props): JSX.Element => {
   return (
     <>
       <div className="overview-card__status" data-testid="controller-status">
-        <strong className="p-muted-heading">Overview</strong>
+        <strong className="p-muted-heading u-no-padding--top">Overview</strong>
         <h4 className="u-no-margin--bottom">
           {controller.node_type_display}&nbsp;
           {controller.versions && (

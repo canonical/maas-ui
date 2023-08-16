@@ -110,7 +110,7 @@ export const SecondaryNavigation = ({
         className={`p-side-navigation__drawer is-maas-${theme}--accent u-padding-top--medium`}
       >
         <h2
-          className="p-side-navigation__title p-heading--4 p-panel__logo-name"
+          className="p-side-navigation__title p-heading--4 p-panel__logo-name u-no-padding--top"
           data-testid="section-header-title"
         >
           {title}

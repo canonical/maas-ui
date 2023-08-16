@@ -85,7 +85,7 @@
       font-size: #{map-get($font-sizes, h4)}rem;
       line-height: map-get($line-heights, x-small);
       margin-bottom: 1.25rem !important;
-      padding-top: 0.051rem !important;
+      padding-top: 0 !important;
       margin-left: 2rem !important;
       @media only screen and (min-width: ($breakpoint-small + 1)) {
         margin-left: 2.5rem !important;
