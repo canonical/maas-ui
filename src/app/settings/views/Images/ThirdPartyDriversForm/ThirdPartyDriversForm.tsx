@@ -32,7 +32,7 @@ const ThirdPartyDriversForm = (): JSX.Element => {
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        enable_third_party_drivers: thirdPartyDriversEnabled,
+        enable_third_party_drivers: thirdPartyDriversEnabled ?? false,
       }}
       onSaveAnalytics={{
         action: "Saved",

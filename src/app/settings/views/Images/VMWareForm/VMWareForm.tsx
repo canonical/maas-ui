@@ -39,10 +39,10 @@ const VMWareForm = (): JSX.Element => {
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        vcenter_server: vCenterServer,
-        vcenter_username: vCenterUsername,
-        vcenter_password: vCenterPassword,
-        vcenter_datacenter: vCenterDatacenter,
+        vcenter_server: vCenterServer ?? "",
+        vcenter_username: vCenterUsername ?? "",
+        vcenter_password: vCenterPassword ?? "",
+        vcenter_datacenter: vCenterDatacenter ?? "",
       }}
       onSaveAnalytics={{
         action: "Saved",

@@ -67,16 +67,15 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
       </span>
     );
   }
-  const initialValues: FormValues = {
+  const initialValues = {
     description: vlan.description,
     fabric: vlan.fabric,
     mtu: vlan.mtu,
     name: vlan.name,
     vid: vlan.vid,
+    space: isId(vlan.space) ? vlan.space : undefined,
   };
-  if (isId(vlan.space)) {
-    initialValues.space = vlan.space;
-  }
+
   return (
     <FormikForm<FormValues>
       aria-label="Edit VLAN"

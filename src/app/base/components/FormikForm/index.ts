@@ -1,2 +1,2 @@
 export { default } from "./FormikForm";
-export type { Props as FormikFormProps } from "./FormikForm";
+export type { Props as FormikFormProps, FormikFormValues } from "./FormikForm";
