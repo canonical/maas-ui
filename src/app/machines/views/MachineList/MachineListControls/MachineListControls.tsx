@@ -6,12 +6,6 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
-import AddHardwareMenu from "../MachineListHeader/AddHardwareMenu";
-
-import GroupSelect from "./GroupSelect";
-import HiddenColumnsSelect from "./HiddenColumnsSelect";
-import MachinesFilterAccordion from "./MachinesFilterAccordion";
-
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
@@ -19,6 +13,11 @@ import { useSendAnalytics } from "app/base/hooks";
 import urls from "app/base/urls";
 import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
+import GroupSelect from "app/machines/views/MachineList/MachineListControls/GroupSelect";
+import HiddenColumnsSelect from "app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
+import MachinesFilterAccordion from "app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
+import AddHardwareMenu from "app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
+import type { useResponsiveColumns } from "app/machines/views/MachineList/hooks";
 import { actions as machineActions } from "app/store/machine";
 import type { FetchGroupKey } from "app/store/machine/types";
 import { useHasSelection } from "app/store/machine/utils/hooks";
@@ -34,7 +33,7 @@ export type MachineListControlsProps = {
   setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
   hiddenColumns: string[];
-  setHiddenColumns: React.Dispatch<React.SetStateAction<string[]>>;
+  setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
   setSidePanelContent: MachineSetSidePanelContent;
 };
 

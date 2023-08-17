@@ -1,27 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useMatch } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
 import MachineForms from "../components/MachineForms";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
-import { DEFAULTS } from "./MachineList/MachineListTable/constants";
+import { useGrouping, useResponsiveColumns } from "./MachineList/hooks";
 
 import PageContent from "app/base/components/PageContent/PageContent";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import MachineList from "app/machines/views/MachineList";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import { FetchGroupKey } from "app/store/machine/types";
 import { selectedToFilters, FilterMachines } from "app/store/machine/utils";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 import { getSidePanelTitle } from "app/store/utils/node/base";
 
 const Machines = (): JSX.Element => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
@@ -56,35 +53,9 @@ const Machines = (): JSX.Element => {
     [navigate, setFilter]
   );
 
-  const [storedGrouping, setStoredGrouping] =
-    useStorageState<FetchGroupKey | null>(
-      localStorage,
-      "grouping",
-      DEFAULTS.grouping
-    );
-  // fallback to "None" if the stored grouping is not valid
-  const grouping: FetchGroupKey =
-    typeof storedGrouping === "string" &&
-    Object.values(FetchGroupKey).includes(storedGrouping)
-      ? storedGrouping
-      : DEFAULTS.grouping;
+  const [grouping, setGrouping] = useGrouping();
 
-  const [hiddenColumns, setHiddenColumns] = useStorageState<string[]>(
-    localStorage,
-    "machineListHiddenColumns",
-    []
-  );
-
-  const handleSetGrouping = useCallback(
-    (group: FetchGroupKey | null) => {
-      setStoredGrouping(group);
-      // clear selected machines on grouping change
-      // we cannot reliably preserve the selected state for individual machines
-      // as we are only fetching information about a group from the back-end
-      dispatch(machineActions.setSelected(null));
-    },
-    [setStoredGrouping, dispatch]
-  );
+  const [hiddenColumns, setHiddenColumns] = useResponsiveColumns();
 
   // Get the count of selected machines that match the current filter
   const { selectedCount, selectedCountLoading } =
@@ -103,7 +74,7 @@ const Machines = (): JSX.Element => {
           grouping={grouping}
           hiddenColumns={hiddenColumns}
           searchFilter={searchFilter}
-          setGrouping={handleSetGrouping}
+          setGrouping={setGrouping}
           setHiddenColumns={setHiddenColumns}
           setHiddenGroups={setHiddenGroups}
           setSearchFilter={setSearchFilter}

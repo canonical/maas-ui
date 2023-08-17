@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useStorageState } from "react-storage-hooks";
 
 import ErrorsNotification from "./ErrorsNotification";
 import MachineListTable from "./MachineListTable";
 import { DEFAULTS } from "./MachineListTable/constants";
+import { usePageSize, type useResponsiveColumns } from "./hooks";
 
 import VaultNotification from "app/base/components/VaultNotification";
 import { useWindowTitle } from "app/base/hooks";
@@ -21,14 +21,12 @@ import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 type Props = {
   grouping: FetchGroupKey | null;
-  hiddenColumns: string[];
+  hiddenColumns: ReturnType<typeof useResponsiveColumns>[0];
   hiddenGroups: (string | null)[];
   headerFormOpen?: boolean;
   searchFilter: string;
   setHiddenGroups: (groups: (string | null)[]) => void;
 };
-
-const DEFAULT_PAGE_SIZE = DEFAULTS.pageSize;
 
 const MachineList = ({
   grouping,
@@ -48,16 +46,8 @@ const MachineList = ({
   const [sortDirection, setSortDirection] = useState<
     ValueOf<typeof SortDirection>
   >(DEFAULTS.sortDirection);
-  const [storedPageSize, setStoredPageSize] = useStorageState<number>(
-    localStorage,
-    "machineListPageSize",
-    DEFAULT_PAGE_SIZE
-  );
-  // fallback to default if the stored value is not valid
-  const pageSize =
-    storedPageSize && typeof storedPageSize === "number"
-      ? storedPageSize
-      : DEFAULT_PAGE_SIZE;
+
+  const [pageSize, setPageSize] = usePageSize();
 
   const {
     callId,
@@ -116,7 +106,7 @@ const MachineList = ({
         pageSize={pageSize}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
-        setPageSize={setStoredPageSize}
+        setPageSize={setPageSize}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={sortDirection}

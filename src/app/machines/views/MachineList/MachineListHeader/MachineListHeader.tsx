@@ -3,6 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import MachineListControls from "../MachineListControls";
+import type { useResponsiveColumns } from "../hooks";
 
 import MachinesHeader from "app/base/components/node/MachinesHeader";
 import type { SetSearchFilter } from "app/base/types";
@@ -15,10 +16,10 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 
 type Props = {
   grouping: FetchGroupKey | null;
-  hiddenColumns?: string[];
+  hiddenColumns?: ReturnType<typeof useResponsiveColumns>[0];
   setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
-  setHiddenColumns: React.Dispatch<React.SetStateAction<string[]>>;
+  setHiddenColumns: ReturnType<typeof useResponsiveColumns>[1];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
   setSidePanelContent: MachineSetSidePanelContent;
