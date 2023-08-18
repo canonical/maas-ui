@@ -9,47 +9,47 @@
     margin-bottom: 0;
 
     .fqdn-col {
-      @include breakpoint-widths(45%, 35%, 26%, 24%, 20%);
+      width: 20%;
     }
 
     .power-col {
-      @include breakpoint-widths(25%, 17%, 14%, 12%, 10%);
+      width: 10%;
     }
 
     .status-col {
-      @include breakpoint-widths(30%, 28%, 18%, 18%, 15%);
+      width: 15%;
     }
 
     .owner-col {
-      @include breakpoint-widths(0, 20%, 8%, 9%, 9%);
+      width: 9%;
     }
 
     .pool-col {
-      @include breakpoint-widths(0, 0, 0, 0, 7%);
+      width: 7%;
     }
 
     .zone-col {
-      @include breakpoint-widths(0, 0, 0, 9%, 7%);
+      width: 7%;
     }
 
     .fabric-col {
-      @include breakpoint-widths(0, 0, 0, 0, 7%);
+      width: 7%;
     }
 
     .cores-col {
-      @include breakpoint-widths(0, 0, 8%, 6%, 6%);
+      width: 6%;
     }
 
     .ram-col {
-      @include breakpoint-widths(0, 0, 9%, 8%, 7%);
+      width: 7%;
     }
 
     .disks-col {
-      @include breakpoint-widths(0, 0, 8%, 6%, 6%);
+      width: 6%;
     }
 
     .storage-col {
-      @include breakpoint-widths(0, 0, 9%, 8%, 6%);
+      width: 6%;
     }
   }
 
@@ -70,13 +70,13 @@
   .machine-list__machine .p-table-menu {
     display: none;
   }
-  
+
   .machine-list .select-all-dropdown {
-      display: inline-flex;
-      margin-left: -0.8rem;
-      margin-top: -0.5rem;
-      padding: 0.5rem;
-      margin-right: 0.5rem;
+    display: inline-flex;
+    margin-left: -0.8rem;
+    margin-top: -0.5rem;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
   }
 
   .machine-list__machine:last-child td {

@@ -108,6 +108,8 @@ context("Machine listing", () => {
 
   it("can hide machine table columns", () => {
     const allHeadersCount = 11;
+    cy.viewport("macbook-15");
+
     cy.findAllByRole("columnheader").should("have.length", allHeadersCount);
 
     cy.findAllByRole("button", { name: "Columns" }).click();
@@ -123,6 +125,12 @@ context("Machine listing", () => {
     // verify that the hidden column is still hidden after refresh
     cy.findAllByRole("columnheader").should("have.length", allHeadersCount - 1);
     cy.findByRole("header", { name: "Status" }).should("not.exist");
+
+    // verify that hidden columns are reset to default set for each breakpoint on window resize
+    cy.viewport("samsung-s10");
+    cy.findAllByRole("columnheader").should("have.length", 3);
+    cy.viewport("macbook-15");
+    cy.findAllByRole("columnheader").should("have.length", allHeadersCount);
   });
 
   it("can select a machine range", () => {
