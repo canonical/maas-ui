@@ -6,7 +6,6 @@ import {
   ContextualMenu,
   MainTable,
   Row,
-  SearchBox,
   Spinner,
 } from "@canonical/react-components";
 import classNames from "classnames";
@@ -19,6 +18,7 @@ import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import MacAddressDisplay from "app/base/components/MacAddressDisplay";
+import SearchBox from "app/base/components/SearchBox";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useWindowTitle } from "app/base/hooks";

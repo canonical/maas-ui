@@ -42,5 +42,5 @@ export const COLOURS = {
 } as const;
 
 // global keyboard shortcuts
-export const KEYBOARD_SHORTCUTS = ["["] as const;
+export const KEYBOARD_SHORTCUTS = ["[", "/"] as const;
 export type KeyboardShortcut = (typeof KEYBOARD_SHORTCUTS)[number];
