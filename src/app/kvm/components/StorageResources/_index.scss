@@ -18,6 +18,10 @@
   .storage-resources__header {
     flex: 0;
     margin-right: 0;
+
+    &-no-pool {
+      flex: 1;
+    }
   }
 
   @media only screen and (min-width: $breakpoint-small) {
@@ -43,6 +47,10 @@
     .storage-resources__header {
       flex: 0;
       margin-right: 0;
+
+      &-no-pool {
+        flex: 1;
+      }
     }
 
     .storage-resources__content {

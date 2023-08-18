@@ -30,5 +30,13 @@
     .pool-col {
       @include breakpoint-widths(0, 0, 0, 0, 12%);
     }
+
+    .select-all-dropdown {
+      display: inline-flex;
+      margin-left: -0.8rem;
+      margin-top: -$spv--small;
+      padding: $sph--small;
+      margin-right: $sph--small;
+    }
   }
 }
