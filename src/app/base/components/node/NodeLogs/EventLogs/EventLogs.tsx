@@ -1,19 +1,13 @@
 import { useEffect, useState } from "react";
 
-import {
-  Col,
-  Link,
-  Row,
-  SearchBox,
-  Select,
-  Spinner,
-} from "@canonical/react-components";
+import { Col, Link, Row, Select, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
 import EventLogsTable from "./EventLogsTable";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
+import SearchBox from "app/base/components/SearchBox";
 import type { ControllerDetails } from "app/store/controller/types";
 import { actions as eventActions } from "app/store/event";
 import eventSelectors from "app/store/event/selectors";
