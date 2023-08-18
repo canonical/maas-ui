@@ -159,6 +159,19 @@ describe("FormikFormContent", () => {
     ).toBeInTheDocument();
   });
 
+  it("can display custom components for non-field errors", () => {
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent errors={<div>Errors component text</div>}>
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
+    );
+
+    expect(screen.getByText("Errors component text")).toBeInTheDocument();
+  });
+
   it("can be inline", () => {
     renderWithBrowserRouter(
       <Formik initialValues={{}} onSubmit={jest.fn()}>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
@@ -22,6 +22,7 @@ export const useFormikErrors = <V = AnyObject, E = null>(
     if (
       errors &&
       typeof errors === "object" &&
+      !React.isValidElement(errors) &&
       !simpleObjectEquality(errors, previousErrors)
     ) {
       Object.entries(errors).forEach(([field, fieldErrors]) => {
@@ -58,7 +59,7 @@ export const useFormikFormDisabled = <V extends {}>({
   const newValues = { ...values };
   let hasErrors = false;
   if (errors) {
-    hasErrors = Object.keys(errors).length > 0;
+    hasErrors = React.isValidElement(errors) || Object.keys(errors).length > 0;
   }
   if (allowAllEmpty) {
     // If all fields are allowed to be empty then remove the empty fields from

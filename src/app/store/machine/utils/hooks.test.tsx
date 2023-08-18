@@ -1,7 +1,6 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
-import { renderHook, cleanup, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -60,6 +59,7 @@ import {
   vlan as vlanFactory,
   machineActionState,
 } from "testing/factories";
+import { renderHook, cleanup, waitFor, screen, render } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -621,9 +621,10 @@ describe("machine hook utils", () => {
         });
       });
       expect(result.current.actionStatus).toEqual("success");
-      expect(result.current.actionErrors).toEqual(
-        "Action failed for 1 machine"
-      );
+      render(result.current.actionErrors as ReactElement);
+      expect(
+        screen.getByText(/Action failed for 1 machine/)
+      ).toBeInTheDocument();
     });
   });
 

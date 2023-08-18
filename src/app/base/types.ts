@@ -56,6 +56,7 @@ export type AnyObject = Record<string, unknown>;
 export type EmptyObject = Record<string, never>;
 
 export type APIError<E = null> =
+  | JSX.Element
   | string
   | string[]
   | Record<"__all__" | string, string | string[]>
@@ -82,10 +83,12 @@ type UsabillaConfig =
 export type UsabillaLive = (type: string, config?: UsabillaConfig) => void;
 
 export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
+type ErrorMessage = string;
 export type ActionState = {
   status: ActionStatuses;
   errors: APIError;
   failedSystemIds?: Machine["system_id"][];
+  failureDetails?: Partial<Record<ErrorMessage, Machine["system_id"][]>>;
   successCount: number;
 };
 

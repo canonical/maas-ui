@@ -154,6 +154,7 @@ const statusHandlers = generateStatusHandlers<
               errors: null,
               successCount: 0,
               failedSystemIds: [],
+              failureDetails: {},
             };
           }
         }
@@ -175,6 +176,9 @@ const statusHandlers = generateStatusHandlers<
               actionsItem.failedSystemIds = [
                 ...action.payload.failed_system_ids,
               ] as Machine[MachineMeta.PK][];
+              actionsItem.failureDetails = {
+                ...action.payload.failure_details,
+              };
             }
           } else if (actionsItem) {
             actionsItem.status = ACTION_STATUS.error;
