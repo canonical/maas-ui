@@ -34,9 +34,9 @@
     .select-all-dropdown {
       display: inline-flex;
       margin-left: -0.8rem;
-      margin-top: -0.5rem;
-      padding: 0.5rem;
-      margin-right: 0.5rem;
+      margin-top: -$spv--small;
+      padding: $sph--small;
+      margin-right: $sph--small;
     }
   }
 }
