@@ -25,13 +25,20 @@ const StorageResources = ({
   const freeStorage = formatBytes(free, "B");
   const totalStorage = formatBytes(allocated + other + free, "B");
   const singlePool = Object.keys(pools).length === 1;
+  const noPool = Object.keys(pools).length === 0;
 
   return (
     <div
-      className={classNames("storage-resources", { "single-pool": singlePool })}
+      className={classNames("storage-resources", {
+        "single-pool": singlePool,
+      })}
       data-testid="lxd-cluster-storage"
     >
-      <div className="storage-resources__header">
+      <div
+        className={classNames("storage-resources__header", {
+          "storage-resources__header-no-pool": noPool,
+        })}
+      >
         <h4 className="p-text--x-small-capitalised">Storage</h4>
         {!singlePool && (
           <div data-testid="storage-summary">
@@ -57,13 +64,15 @@ const StorageResources = ({
           </div>
         )}
       </div>
-      <div className="storage-resources__content">
-        {singlePool ? (
-          <StorageMeter defaultPoolId={defaultPoolId} pools={pools} />
-        ) : (
-          <StorageCards defaultPoolId={defaultPoolId} pools={pools} />
-        )}
-      </div>
+      {!noPool && (
+        <div className="storage-resources__content">
+          {singlePool ? (
+            <StorageMeter defaultPoolId={defaultPoolId} pools={pools} />
+          ) : (
+            <StorageCards defaultPoolId={defaultPoolId} pools={pools} />
+          )}
+        </div>
+      )}
     </div>
   );
 };
