@@ -180,7 +180,7 @@ describe("DeployFormFields", () => {
     await userEvent.type(hardwareSyncInput, "0");
     await userEvent.tab();
     await waitFor(() =>
-      expect(hardwareSyncInput).toHaveErrorMessage(
+      expect(hardwareSyncInput).toHaveAccessibleErrorMessage(
         /Hardware sync interval must be at least 1 minute/
       )
     );

@@ -184,8 +184,8 @@ describe("DiscoveryAddForm", () => {
       screen.getByRole("textbox", {
         name: `${FormFieldLabels.Hostname}`,
       })
-      // react-components uses aria-errormessage to link the errors to the inputs so we can use the toHaveErrorMessage helper here.
-    ).toHaveErrorMessage(`Error: ${error}`);
+      // react-components uses aria-errormessage to link the errors to the inputs so we can use the toHaveAccessibleErrorMessage helper here.
+    ).toHaveAccessibleErrorMessage(`Error: ${error}`);
   });
 
   it("can dispatch to create a device", async () => {
