@@ -6,6 +6,7 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import { actions as userActions } from "app/store/user";
 import type { AuthState, User, UserState } from "app/store/user/types";
 
 type WithPrepare = {
@@ -135,23 +136,30 @@ const authSlice = createSlice<UserState, Reducers>({
       state.auth.user = action.payload;
     },
   },
-  extraReducers: {
+  extraReducers: (builder) => {
     // If the user list has not yet been loaded the message will be to
     // create the user.
-    "user/createNotify": (state: UserState, action: PayloadAction<User>) => {
-      // Check to see whether the auth user has been updated and if so
-      // update the stored auth user.
-      if (state.auth.user && state.auth.user.id === action.payload.id) {
-        state.auth.user = action.payload;
-      }
-    },
-    "user/updateNotify": (state: UserState, action: PayloadAction<User>) => {
-      // Check to see whether the auth user has been updated and if so
-      // update the stored auth user.
-      if (state.auth.user && state.auth.user.id === action.payload.id) {
-        state.auth.user = action.payload;
-      }
-    },
+    builder
+      .addCase(
+        userActions.createNotify,
+        (state: UserState, action: PayloadAction<User>) => {
+          // Check to see whether the auth user has been updated and if so
+          // update the stored auth user.
+          if (state.auth.user && state.auth.user.id === action.payload.id) {
+            state.auth.user = action.payload;
+          }
+        }
+      )
+      .addCase(
+        userActions.updateNotify,
+        (state: UserState, action: PayloadAction<User>) => {
+          // Check to see whether the auth user has been updated and if so
+          // update the stored auth user.
+          if (state.auth.user && state.auth.user.id === action.payload.id) {
+            state.auth.user = action.payload;
+          }
+        }
+      );
   },
 });
 

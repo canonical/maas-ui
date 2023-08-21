@@ -268,27 +268,39 @@ const scriptResultSlice = createSlice({
       },
     },
   },
-  extraReducers: {
-    "noderesult/createNotify": (state, action) => {
-      const existingIdx = state.items.findIndex(
-        (existingItem) => existingItem.id === action.payload.id
-      );
-      if (existingIdx !== -1) {
-        state.items[existingIdx] = action.payload;
-      } else {
-        state.items.push(action.payload);
+  extraReducers: (builder) => {
+    builder.addCase(
+      "noderesult/createNotify",
+      (
+        state,
+        action: PayloadAction<ScriptResult, "noderesult/createNotify">
+      ) => {
+        const existingIdx = state.items.findIndex(
+          (existingItem) => existingItem.id === action.payload.id
+        );
+        if (existingIdx !== -1) {
+          state.items[existingIdx] = action.payload;
+        } else {
+          state.items.push(action.payload);
+        }
       }
-    },
-    "noderesult/updateNotify": (state, action) => {
-      const existingIdx = state.items.findIndex(
-        (existingItem) => existingItem.id === action.payload.id
-      );
-      if (existingIdx !== -1) {
-        state.items[existingIdx] = action.payload;
-      } else {
-        state.items.push(action.payload);
+    );
+    builder.addCase(
+      "noderesult/updateNotify",
+      (
+        state,
+        action: PayloadAction<ScriptResult, "noderesult/updateNotify">
+      ) => {
+        const existingIdx = state.items.findIndex(
+          (existingItem) => existingItem.id === action.payload.id
+        );
+        if (existingIdx !== -1) {
+          state.items[existingIdx] = action.payload;
+        } else {
+          state.items.push(action.payload);
+        }
       }
-    },
+    );
   },
 });
 
