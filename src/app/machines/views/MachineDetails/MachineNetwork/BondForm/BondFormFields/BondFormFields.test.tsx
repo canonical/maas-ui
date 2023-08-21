@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 
-import { LinkMonitoring } from "../types";
+import { LinkMonitoring, MacSource } from "../types";
 
 import BondFormFields from "./BondFormFields";
 
@@ -27,6 +27,25 @@ const route = urls.machines.index;
 
 describe("BondFormFields", () => {
   let state: RootState;
+  const initialValues = {
+    bond_downdelay: 0,
+    bond_lacp_rate: "",
+    bond_miimon: 0,
+    bond_mode: BondMode.ACTIVE_BACKUP,
+    bond_updelay: 0,
+    bond_xmit_hash_policy: "",
+    fabric: "",
+    ip_address: "",
+    linkMonitoring: "",
+    mac_address: "",
+    macSource: MacSource.MANUAL,
+    macNic: "",
+    mode: "",
+    name: "",
+    subnet: "",
+    tags: [],
+    vlan: "",
+  };
   beforeEach(() => {
     state = rootStateFactory({
       general: generalStateFactory({
@@ -76,7 +95,7 @@ describe("BondFormFields", () => {
 
   it("does not display the hash policy field by default", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -89,7 +108,7 @@ describe("BondFormFields", () => {
 
   it("displays the hash policy field for some bond modes", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -107,7 +126,7 @@ describe("BondFormFields", () => {
 
   it("does not display the lacp rate field by default", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -120,7 +139,7 @@ describe("BondFormFields", () => {
 
   it("displays the lacp rate field for some bond modes", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -138,7 +157,7 @@ describe("BondFormFields", () => {
 
   it("does not display the monitoring fields by default", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -159,7 +178,7 @@ describe("BondFormFields", () => {
 
   it("displays the monitoring fields when link monitoring is set", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -183,7 +202,7 @@ describe("BondFormFields", () => {
 
   it("sets the mac address field when the nic field changes", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{ mac_address: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[{ nicId: 17 }]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -202,7 +221,7 @@ describe("BondFormFields", () => {
 
   it("enables the mac address field when the radio is changed to manual", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{ mac_address: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -221,7 +240,7 @@ describe("BondFormFields", () => {
 
   it("enables the mac nic field when the radio is changed to 'nic'", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
       { route, state }
@@ -239,7 +258,11 @@ describe("BondFormFields", () => {
   it("resets the mac address field when the radio is changed to 'nic'", async () => {
     renderWithBrowserRouter(
       <Formik
-        initialValues={{ macNic: "6a:6e:4a:29:a5:42", mac_address: "" }}
+        initialValues={{
+          ...initialValues,
+          macNic: "6a:6e:4a:29:a5:42",
+          mac_address: "",
+        }}
         onSubmit={jest.fn()}
       >
         <BondFormFields selected={[]} systemId="abc123" />
