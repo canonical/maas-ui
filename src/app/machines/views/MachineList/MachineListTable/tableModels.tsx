@@ -1,12 +1,10 @@
-import { Button } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
-import pluralize from "pluralize";
 
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
-import GroupCheckbox from "./GroupCheckbox";
+import GroupColumn from "./GroupColumn";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
@@ -20,18 +18,14 @@ import type {
   TableColumn,
   GenerateRowParams,
   RowContent,
+  GroupRowsProps,
 } from "./types";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import type { GetMachineMenuToggleHandler } from "app/machines/types";
-import type {
-  Machine,
-  MachineStateListGroup,
-  FetchFilters,
-  FetchGroupKey,
-} from "app/store/machine/types";
+import type { Machine } from "app/store/machine/types";
 
 /**
  * Filters columns by hiddenColumns.
@@ -318,11 +312,6 @@ export const generateRows = ({
   });
 };
 
-export enum Label {
-  HideGroup = "Hide",
-  ShowGroup = "Show",
-}
-
 export const generateGroupRows = ({
   callId,
   grouping,
@@ -334,18 +323,11 @@ export const generateGroupRows = ({
   hiddenColumns,
   filter,
   ...rowProps
-}: {
-  callId?: string | null;
-  grouping?: FetchGroupKey | null;
-  groups: MachineStateListGroup[] | null;
-  hiddenGroups: NonNullable<MachineListTableProps["hiddenGroups"]>;
-  setHiddenGroups: MachineListTableProps["setHiddenGroups"];
-  filter: FetchFilters | null;
-} & Omit<GenerateRowParams, "groupValue">) => {
+}: GroupRowsProps) => {
   let rows: MainTableRow[] = [];
 
   groups?.forEach((group) => {
-    const { collapsed, count, items: machineIDs, name, value } = group;
+    const { collapsed, items: machineIDs, name } = group;
     // When the table is set to ungrouped then there are no group headers.
     if (grouping) {
       rows.push({
@@ -355,55 +337,14 @@ export const generateGroupRows = ({
           {
             colSpan: columns.length - hiddenColumns.length,
             content: (
-              <>
-                <DoubleRow
-                  data-testid="group-cell"
-                  primary={
-                    showActions ? (
-                      <GroupCheckbox
-                        callId={callId}
-                        group={group}
-                        groupName={name}
-                        grouping={grouping}
-                      />
-                    ) : (
-                      <strong>{name}</strong>
-                    )
-                  }
-                  secondary={pluralize("machine", count ?? undefined, true)}
-                  secondaryClassName={
-                    showActions ? "u-nudge--secondary-row u-align--left" : null
-                  }
-                />
-                <div className="machine-list__group-toggle">
-                  <Button
-                    appearance="base"
-                    dense
-                    hasIcon
-                    onClick={() => {
-                      if (collapsed) {
-                        setHiddenGroups &&
-                          setHiddenGroups(
-                            hiddenGroups.filter(
-                              (hiddenGroup) => hiddenGroup !== value
-                            )
-                          );
-                      } else {
-                        setHiddenGroups &&
-                          setHiddenGroups(
-                            hiddenGroups.concat([value as string])
-                          );
-                      }
-                    }}
-                  >
-                    {collapsed ? (
-                      <i className="p-icon--plus">{Label.ShowGroup}</i>
-                    ) : (
-                      <i className="p-icon--minus">{Label.HideGroup}</i>
-                    )}
-                  </Button>
-                </div>
-              </>
+              <GroupColumn
+                filter={filter}
+                group={group}
+                grouping={grouping}
+                hiddenGroups={hiddenGroups}
+                setHiddenGroups={setHiddenGroups}
+                showActions={showActions}
+              />
             ),
           },
         ],
