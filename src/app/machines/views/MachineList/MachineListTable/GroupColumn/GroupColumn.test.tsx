@@ -40,11 +40,6 @@ it("displays the correct column name and machines count", () => {
 });
 
 it("displays correct fetched machines count when initial count is null", async () => {
-  mockedUseFetchMachineCount.mockReturnValue({
-    machineCountLoading: false,
-    machineCountLoaded: true,
-    machineCount: 2,
-  });
   const group = machineStateListGroupFactory({
     collapsed: false,
     count: null,
