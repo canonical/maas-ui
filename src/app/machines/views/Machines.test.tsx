@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import { MachineSidePanelViews } from "../constants";
 
+import { Label } from "./MachineList/MachineListTable/GroupColumn";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
-import { Label } from "./MachineList/MachineListTable/tableModels";
 import Machines from "./Machines";
 
 import { actions as machineActions } from "app/store/machine";

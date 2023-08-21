@@ -10,6 +10,7 @@ import type {
   Machine,
   MachineStateListGroup,
   FetchGroupKey,
+  FetchFilters,
 } from "app/store/machine/types";
 import type { useFetchMachines } from "app/store/machine/utils/hooks";
 
@@ -35,6 +36,15 @@ export type MachineListTableProps = {
   setSortDirection: (sortDirection: ValueOf<typeof SortDirection>) => void;
   setSortKey: (sortKey: FetchGroupKey | null) => void;
 };
+
+export type GroupRowsProps = {
+  callId?: string | null;
+  grouping?: FetchGroupKey | null;
+  groups: MachineStateListGroup[] | null;
+  hiddenGroups: NonNullable<MachineListTableProps["hiddenGroups"]>;
+  setHiddenGroups: MachineListTableProps["setHiddenGroups"];
+  filter: FetchFilters | null;
+} & Omit<GenerateRowParams, "groupValue">;
 
 export type TableColumn = MainTableCell & { key: string };
 
