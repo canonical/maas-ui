@@ -53,7 +53,7 @@ it("overrides the xpath errors", async () => {
   );
   expect(
     screen.getByRole("textbox", { name: Label.Definition })
-  ).toHaveErrorMessage(
+  ).toHaveAccessibleErrorMessage(
     "The definition is an invalid XPath expression. See our XPath expressions documentation for more examples."
   );
 });
