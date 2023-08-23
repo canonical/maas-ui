@@ -13,7 +13,6 @@ const docsUrls = {
     "https://maas.io/docs/how-to-do-a-fresh-install-of-maas#heading--configure-maas",
   customisingDeployedMachines: "https://maas.io/docs/how-to-customise-machines",
   dhcp: "https://maas.io/docs/how-to-enable-dhcp",
-  images: "https://maas.io/docs/about-images",
   ipmi: "https://maas.io/docs/power-drivers-reference#heading--ipmi",
   ipRanges:
     "https://maas.io/docs/how-to-enable-dhcp#heading--how-to-manage-ip-ranges",
@@ -29,6 +28,8 @@ const docsUrls = {
   tagsXpathExpressions:
     "https://maas.io/docs/how-to-tag-machines#heading--how-to-create-automatic-tags",
   vaultIntegration: "https://maas.io/docs/how-to-use-hashicorp-vault-with-maas",
+  windowsImages:
+    "https://maas.io/docs/how-to-customise-images#heading--custom-windows-images",
 } as const;
 
 export default docsUrls;
