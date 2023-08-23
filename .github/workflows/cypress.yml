@@ -1,5 +1,9 @@
 name: Cypress
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - "3.*"
 jobs:
   cypress:
     name: Cypress
