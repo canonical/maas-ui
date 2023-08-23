@@ -35,7 +35,7 @@ const MachineStorage = (): JSX.Element => {
             Learn more about deploying{" "}
             <a
               data-testid="docs-footer-link"
-              href={docsUrls.images}
+              href={docsUrls.windowsImages}
               onClick={() =>
                 sendAnalytics(
                   "Machine storage",
