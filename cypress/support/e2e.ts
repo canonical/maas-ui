@@ -31,6 +31,6 @@ declare global {
   }
 }
 
-Cypress.on("uncaught:exception", (err, _runnable) => {
+Cypress.on("uncaught:exception", () => {
   return false;
 });
