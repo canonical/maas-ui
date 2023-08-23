@@ -31,6 +31,13 @@ declare global {
   }
 }
 
-Cypress.on("uncaught:exception", () => {
-  return false;
+Cypress.on("uncaught:exception", (err, _runnable) => {
+  // run tests if canonicalGlobalNav, hljs, drpNs is not defined
+  if (
+    err.message.includes("canonicalGlobalNav") ||
+    err.message.includes("hljs") ||
+    err.message.includes("drpNs")
+  ) {
+    return false;
+  }
 });
