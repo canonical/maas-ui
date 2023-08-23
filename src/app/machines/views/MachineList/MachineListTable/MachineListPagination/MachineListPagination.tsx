@@ -23,7 +23,7 @@ export type Props = PropsWithSpread<
     machineCount: number | null;
     totalPages: number | null;
     machinesLoading?: boolean | null;
-    paginate: PaginationProps["paginate"];
+    paginate: NonNullable<PaginationProps["paginate"]>;
   },
   Partial<PaginationProps>
 >;

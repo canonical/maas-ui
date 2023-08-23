@@ -36,7 +36,7 @@ const SubnetsList = (): JSX.Element => {
     [navigate, searchText]
   );
   const setSearchText = useCallback(
-    (searchText) =>
+    (searchText: string) =>
       navigate(
         {
           pathname: "/networks",

@@ -1,5 +1,4 @@
-import type { ReactNode } from "react";
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 
 import type { ChipProps } from "@canonical/react-components";
 import {
@@ -12,6 +11,7 @@ import {
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
+import type { ColumnWithLooseAccessor } from "react-table";
 
 import TagChip from "../TagChip";
 import { useSelectedTags, useUnchangedTags } from "../hooks";
@@ -139,7 +139,7 @@ export const TagFormChanges = ({
   const hasAddedTags = addedTags.length > 0;
   const hasRemovedTags = removedTags.length > 0;
 
-  const columns = useMemo(
+  const columns = useMemo<ColumnWithLooseAccessor[]>(
     () => [
       {
         accessor: Column.Label,

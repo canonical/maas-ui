@@ -206,8 +206,9 @@ export const useSelectedMachinesActionsDispatch = ({
     !isSingleFilter ? { items: selectedMachines?.items } : null
   );
 
+  // TODO: add strict action type for useSelectedMachinesActionsDispatch https://warthogs.atlassian.net/browse/MAASENG-2121
   const dispatch = useCallback(
-    (action, args) => {
+    (action: (...args: any[]) => AnyAction, args?: Record<string, unknown>) => {
       if (groupFilters) {
         groupsDispatch(
           action({
