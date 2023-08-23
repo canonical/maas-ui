@@ -7,8 +7,8 @@ test.beforeEach(async ({ page, context }) => {
   machineListRequests = [];
   machineCountRequests = [];
   await context.addCookies([
-    { name: "skipsetupintro", value: "true", url: "http://0.0.0.0:5240/" },
-    { name: "skipintro", value: "true", url: "http://0.0.0.0:5240/" },
+    { name: "skipsetupintro", value: "true", url: "http://localhost:8400/" },
+    { name: "skipintro", value: "true", url: "http://localhost:8400/" },
   ]);
   await page.goto("/MAAS/r/machines");
   await page.getByLabel("Username").click();
