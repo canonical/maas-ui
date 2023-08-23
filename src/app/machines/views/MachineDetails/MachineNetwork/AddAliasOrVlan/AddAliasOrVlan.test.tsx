@@ -29,7 +29,12 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithBrowserRouter,
+  expectTooltipOnHover,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;
@@ -155,7 +160,7 @@ describe("AddAliasOrVlan", () => {
     ).toBeInTheDocument();
   });
 
-  it("disables the save-another button when there are no unused VLANS", () => {
+  it("disables the save-another button when there are no unused VLANS", async () => {
     state.vlan.items = [];
     renderWithBrowserRouter(
       <AddAliasOrVlan
@@ -166,16 +171,14 @@ describe("AddAliasOrVlan", () => {
       />,
       { route, state }
     );
-    expect(
-      screen.getByRole("button", {
-        name: AddAliasOrVlanLabels.SaveAndAdd,
-      })
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("tooltip", {
-        name: "There are no more unused VLANS for this interface.",
-      })
-    ).toBeInTheDocument();
+    const saveAndAddButton = screen.getByRole("button", {
+      name: AddAliasOrVlanLabels.SaveAndAdd,
+    });
+    expect(saveAndAddButton).toBeDisabled();
+    await expectTooltipOnHover(
+      saveAndAddButton,
+      "There are no more unused VLANS for this interface."
+    );
   });
 
   it("correctly initialises fabric and VLAN when adding an alias", () => {

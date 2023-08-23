@@ -13,10 +13,14 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import {
+  expectTooltipOnHover,
+  renderWithBrowserRouter,
+  screen,
+} from "testing/utils";
 
 describe("BulkActions", () => {
-  it("disables create volume group button with tooltip if selected devices are not eligible", () => {
+  it("disables create volume group button with tooltip if selected devices are not eligible", async () => {
     const selected = [
       diskFactory({
         partitions: [partitionFactory()],
@@ -45,15 +49,14 @@ describe("BulkActions", () => {
       />,
       { state }
     );
-
-    expect(
-      screen.getByRole("button", { name: "Create volume group" })
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("tooltip", {
-        name: "Select one or more unpartitioned and unformatted storage devices to create a volume group.",
-      })
-    ).toBeInTheDocument();
+    const createVolumeGroupButton = screen.getByRole("button", {
+      name: "Create volume group",
+    });
+    expect(createVolumeGroupButton).toBeDisabled();
+    await expectTooltipOnHover(
+      createVolumeGroupButton,
+      "Select one or more unpartitioned and unformatted storage devices to create a volume group."
+    );
   });
 
   it("enables create volume group button if selected devices are eligible", () => {

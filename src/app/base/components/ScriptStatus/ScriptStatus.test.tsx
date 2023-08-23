@@ -5,6 +5,7 @@ import { render, screen } from "@testing-library/react";
 import ScriptStatus from "./ScriptStatus";
 
 import { ScriptResultStatus } from "app/store/scriptresult/types";
+import { expectTooltipOnHover } from "testing/utils";
 
 const getIcon = (name: string, container: HTMLElement): Element | null => {
   return container.querySelector(`.p-icon--${name}`);
@@ -68,7 +69,7 @@ describe("ScriptStatus", () => {
     expect(getIcon("success", container)).not.toHaveClass("is-inline");
   });
 
-  it("can have its icon wrapped in a tooltip", () => {
+  it("can have its icon wrapped in a tooltip", async () => {
     render(
       <ScriptStatus
         status={ScriptResultStatus.PASSED}
@@ -76,7 +77,6 @@ describe("ScriptStatus", () => {
         tooltipPosition="top-right"
       />
     );
-
-    expect(screen.getByRole("tooltip")).toHaveTextContent("Tooltip!");
+    await expectTooltipOnHover(screen.getByRole("button"), "Tooltip!");
   });
 });

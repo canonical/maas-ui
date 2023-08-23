@@ -52,7 +52,7 @@ const ControllerList = (): JSX.Element => {
 
   // Update the URL when filters are changed.
   const setSearchFilter = useCallback(
-    (searchText) => {
+    (searchText: string) => {
       setFilter(searchText);
       const filters = FilterControllers.getCurrentFilters(searchText);
       navigate({ search: FilterControllers.filtersToQueryString(filters) });

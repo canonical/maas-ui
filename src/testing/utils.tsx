@@ -1,6 +1,7 @@
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -260,6 +261,44 @@ export const getTestState = (): RootState => {
       genericActions: zoneGenericActionsFactory({ fetch: "success" }),
     }),
   });
+};
+
+export const expectTooltipOnHover = async (
+  element: Element | null,
+  tooltipText: string | RegExp
+) => {
+  expect(
+    screen.queryByRole("tooltip", { name: tooltipText })
+  ).not.toBeInTheDocument();
+
+  if (!element) {
+    return {
+      message: () => `expected the element to exist`,
+      pass: false,
+    };
+  }
+
+  await userEvent.hover(element);
+
+  if (element.querySelector("i")) {
+    await userEvent.hover(element.querySelector("i")!);
+  }
+
+  const pass =
+    screen.getAllByRole("tooltip", { name: tooltipText }).length === 1;
+
+  if (pass) {
+    return {
+      message: () =>
+        `expected the element not to have tooltip '${tooltipText}'`,
+      pass: true,
+    };
+  } else {
+    return {
+      message: () => `expected the element to have tooltip '${tooltipText}'`,
+      pass: false,
+    };
+  }
 };
 
 export * from "@testing-library/react";

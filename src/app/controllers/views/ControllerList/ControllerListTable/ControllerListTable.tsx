@@ -100,6 +100,7 @@ const generateRows = ({
               controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER ? (
                 vaultEnabled ? (
                   <TooltipButton
+                    aria-label="security"
                     iconName="security-tick"
                     iconProps={{
                       "data-testid": "vault-icon",
@@ -123,6 +124,7 @@ const generateRows = ({
                   />
                 ) : controller.vault_configured === true ? (
                   <TooltipButton
+                    aria-label="security"
                     iconName="security"
                     iconProps={{
                       "data-testid": "vault-icon",
@@ -147,6 +149,7 @@ const generateRows = ({
                 ) : (
                   configuredControllers >= 1 && (
                     <TooltipButton
+                      aria-label="security"
                       iconName="security-warning"
                       iconProps={{
                         "data-testid": "vault-icon",

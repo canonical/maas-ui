@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -47,9 +48,10 @@ it("does not render test info if node is a controller", () => {
   );
 
   expect(screen.queryByText(/tests/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/test memory/i)).not.toBeInTheDocument();
 });
 
-it("renders test info if node is a machine", () => {
+it("renders test info if node is a machine", async () => {
   const machine = machineDetailsFactory();
   state.machine.items = [machine];
 
@@ -65,6 +67,7 @@ it("renders test info if node is a machine", () => {
     </Provider>
   );
 
+  await userEvent.click(screen.getByRole("button", { name: /test memory/i }));
   expect(screen.getByText(/tests/i)).toBeInTheDocument();
 });
 

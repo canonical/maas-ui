@@ -8,7 +8,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
@@ -63,7 +63,7 @@ describe("NameColumn", () => {
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 
-  it("can show multiple ip addresses", () => {
+  it("can show multiple ip addresses", async () => {
     state.machine.items[0].ip_addresses = [
       { ip: "127.0.0.1", is_boot: false },
       { ip: "127.0.0.2", is_boot: false },
@@ -73,7 +73,9 @@ describe("NameColumn", () => {
       { route: "/machines", state }
     );
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
-    expect(screen.getByRole("button", { name: "+1" })).toBeInTheDocument();
+    const button = screen.getByRole("button", { name: "+1" });
+    expect(button).toBeInTheDocument();
+    await userEvent.hover(button);
     expect(screen.getByRole("tooltip")).toBeInTheDocument();
   });
 
@@ -98,6 +100,9 @@ describe("NameColumn", () => {
       { route: "/machines", state }
     );
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
+    expect(
+      screen.queryByRole("button", { name: "+1" })
+    ).not.toBeInTheDocument();
     expect(screen.queryByTestId("Tooltip")).not.toBeInTheDocument();
   });
 

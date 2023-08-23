@@ -247,7 +247,7 @@ describe("StatusColumn", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("shows an error icon button and a tooltip if power type is not set and status is unknown", () => {
+    it("shows an error icon button and a tooltip if power type is not set and status is unknown", async () => {
       machine.power_state = PowerState.UNKNOWN;
       machine.status_code = NodeStatusCode.NEW;
       const store = mockStore(state);
@@ -256,9 +256,11 @@ describe("StatusColumn", () => {
         { route: "/machines", store }
       );
 
-      expect(
-        screen.getByRole("button", { name: "Unconfigured power type" })
-      ).toBeInTheDocument();
+      const button = screen.getByRole("button", {
+        name: "Unconfigured power type",
+      });
+      expect(button).toBeInTheDocument();
+      await userEvent.hover(button);
       expect(
         screen.getByRole("tooltip", {
           name: "Unconfigured power type. Go to the configuration tab of this machine.",

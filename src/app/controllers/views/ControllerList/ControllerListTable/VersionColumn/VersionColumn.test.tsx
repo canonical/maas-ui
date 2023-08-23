@@ -9,7 +9,7 @@ import {
   controllerVersionInfo as controllerVersionInfoFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 describe("VersionColumn", () => {
   let state: RootState;
@@ -59,7 +59,7 @@ describe("VersionColumn", () => {
     expect(screen.getByTestId("origin")).toHaveTextContent("latest/edge");
   });
 
-  it("can display the origin when it is a deb", () => {
+  it("can display the origin when it is a deb", async () => {
     state.controller.items[0].versions = controllerVersionsFactory({
       install_type: ControllerInstallType.DEB,
       origin: "stable",
@@ -69,10 +69,11 @@ describe("VersionColumn", () => {
       state,
     });
     expect(screen.getByTestId("origin")).toHaveTextContent(/Deb/);
+    await userEvent.click(screen.getByRole("button", { name: /information/i }));
     expect(screen.getByRole("tooltip")).toHaveTextContent("stable");
   });
 
-  it("can display a cohort tooltip", () => {
+  it("can display a cohort tooltip", async () => {
     state.controller.items[0].versions = controllerVersionsFactory({
       snap_cohort:
         "MSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViMUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNTI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjVhM2ViNzQwZGZmYzk5OWFiYWU=",
@@ -81,6 +82,8 @@ describe("VersionColumn", () => {
       route: "/controllers",
       state,
     });
+
+    await userEvent.click(screen.getByRole("button", { name: /information/i }));
     expect(screen.getByRole("tooltip")).toHaveTextContent(
       "Cohort key: MSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM UppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT I3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV hM2ViNzQwZGZmYzk5OWFiYWU="
     );

@@ -1,8 +1,7 @@
-import { render, screen } from "@testing-library/react";
-
 import DiskNumaNodes from "./DiskNumaNodes";
 
 import { nodeDisk as diskFactory } from "testing/factories";
+import { expectTooltipOnHover, render, screen } from "testing/utils";
 
 describe("DiskNumaNodes", () => {
   it("can show a single numa node", () => {
@@ -14,14 +13,16 @@ describe("DiskNumaNodes", () => {
     expect(screen.getByTestId("numa-nodes")).toHaveTextContent("5");
   });
 
-  it("can show multiple numa nodes with a warning", () => {
+  it("can show multiple numa nodes with a warning", async () => {
     const disk = diskFactory({
       numa_node: undefined,
       numa_nodes: [0, 1],
     });
     render(<DiskNumaNodes disk={disk} />);
-    expect(screen.getByTestId("numa-nodes")).toHaveTextContent("0, 1");
-    expect(screen.getByRole("tooltip")).toHaveTextContent(
+    const numaNodes = screen.getByTestId("numa-nodes");
+    expect(numaNodes).toHaveTextContent("0, 1");
+    await expectTooltipOnHover(
+      screen.getByRole("button", { name: /warning/i }),
       /This volume is spread over multiple NUMA nodes/
     );
   });

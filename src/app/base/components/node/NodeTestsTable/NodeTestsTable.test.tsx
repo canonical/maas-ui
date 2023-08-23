@@ -19,7 +19,12 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import {
+  expectTooltipOnHover,
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -123,7 +128,7 @@ describe("NodeTestsTable", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("disables suppress checkbox if test did not fail", () => {
+  it("disables suppress checkbox if test did not fail", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
       scriptResultFactory({
@@ -139,12 +144,12 @@ describe("NodeTestsTable", () => {
       { route: "/machine/abc123", state }
     );
 
-    expect(screen.getByTestId("suppress-script-results")).toBeDisabled();
-    expect(
-      screen.getByRole("tooltip", {
-        name: "Only failed testing scripts can be suppressed.",
-      })
-    ).toBeInTheDocument();
+    const checkbox = screen.getByTestId("suppress-script-results");
+    expect(checkbox).toBeDisabled();
+    await expectTooltipOnHover(
+      checkbox,
+      "Only failed testing scripts can be suppressed."
+    );
   });
 
   it("dispatches suppress for an unsuppressed script result", async () => {

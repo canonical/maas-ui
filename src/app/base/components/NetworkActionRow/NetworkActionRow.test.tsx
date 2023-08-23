@@ -10,7 +10,12 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithBrowserRouter,
+  expectTooltipOnHover,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -68,7 +73,7 @@ describe("NetworkActionRow", () => {
       });
     });
 
-    it("disables the button when networking is disabled", () => {
+    it("disables the button when networking is disabled", async () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
       const store = mockStore(state);
       renderWithBrowserRouter(
@@ -79,14 +84,14 @@ describe("NetworkActionRow", () => {
         />,
         { route: "/machine/abc123", store }
       );
-      expect(
-        screen.getByRole("button", { name: "Add interface" })
-      ).toBeDisabled();
-      expect(
-        screen.getByRole("tooltip", {
-          name: "Network can't be modified for this machine.",
-        })
-      ).toBeInTheDocument();
+      const addInterfaceButton = screen.getByRole("button", {
+        name: "Add interface",
+      });
+      expect(addInterfaceButton).toBeDisabled();
+      await expectTooltipOnHover(
+        addInterfaceButton,
+        "Network can't be modified for this machine."
+      );
     });
 
     it("disables the button when the form is expanded", () => {

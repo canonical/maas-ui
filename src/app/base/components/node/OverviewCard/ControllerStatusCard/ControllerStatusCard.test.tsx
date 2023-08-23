@@ -22,7 +22,7 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { render, screen, userEvent, within } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -100,7 +100,7 @@ it("dispatches an action to stop polling images on unmount", () => {
   );
 });
 
-it("renders correct version info for a deb install", () => {
+it("renders correct version info for a deb install", async () => {
   const controller = controllerDetailsFactory({
     versions: controllerVersionsFactory({
       current: controllerVersionInfoFactory({ version: "1.2.3" }),
@@ -118,6 +118,9 @@ it("renders correct version info for a deb install", () => {
     </Provider>
   );
 
+  await userEvent.hover(
+    screen.getByRole("button", { name: Labels.VersionDetails })
+  );
   expect(screen.getByLabelText(Labels.Version).textContent).toBe(
     "Version: 1.2.3"
   );
@@ -126,7 +129,7 @@ it("renders correct version info for a deb install", () => {
   );
 });
 
-it("renders correct version info for a snap install", () => {
+it("renders correct version info for a snap install", async () => {
   const controller = controllerDetailsFactory({
     versions: controllerVersionsFactory({
       current: controllerVersionInfoFactory({ version: "1.2.3" }),
@@ -144,6 +147,9 @@ it("renders correct version info for a snap install", () => {
     </Provider>
   );
 
+  await userEvent.hover(
+    screen.getByRole("button", { name: Labels.VersionDetails })
+  );
   expect(screen.getByLabelText(Labels.Version).textContent).toBe(
     "Version: 1.2.3"
   );
@@ -152,7 +158,7 @@ it("renders correct version info for a snap install", () => {
   );
 });
 
-it("renders correct version info for an unknown install type", () => {
+it("renders correct version info for an unknown install type", async () => {
   const controller = controllerDetailsFactory({
     versions: controllerVersionsFactory({
       current: controllerVersionInfoFactory({ version: "" }),
@@ -170,12 +176,15 @@ it("renders correct version info for an unknown install type", () => {
     </Provider>
   );
 
-  expect(screen.getByLabelText(Labels.Version).textContent).toBe(
-    "Version: Unknown (less than 2.3.0)"
+  await userEvent.hover(
+    screen.getByRole("button", { name: Labels.VersionDetails })
   );
-  expect(screen.getByLabelText(Labels.Origin).textContent).toBe(
-    "Origin: nowhere"
-  );
+  expect(
+    within(screen.getByRole("tooltip")).getByLabelText(Labels.Version)
+  ).toHaveTextContent("Version: Unknown (less than 2.3.0)");
+  expect(
+    within(screen.getByRole("tooltip")).getByLabelText(Labels.Origin)
+  ).toHaveTextContent("Origin: nowhere");
 });
 
 it("renders OS info", () => {
