@@ -32,7 +32,11 @@ declare global {
 }
 
 Cypress.on("uncaught:exception", (err, _runnable) => {
-  // run tests if canonicalGlobalNav, hljs, drpNs is not defined
+  /*
+   Prevent cypress tests from failing when visiting maas.io
+   due to scripts not being loaded early enough:
+   Error examples: 'canonicalGlobalNav is not defined'
+   */
   if (
     err.message.includes("canonicalGlobalNav") ||
     err.message.includes("hljs") ||
