@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
 import type { ReactNode, AriaAttributes } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { Form, Notification } from "@canonical/react-components";
 import { useFormikContext } from "formik";
@@ -50,7 +50,7 @@ const generateNonFieldError = <V extends object, E = null>(
   errors?: APIError<E>
 ) => {
   if (errors) {
-    if (typeof errors === "string") {
+    if (typeof errors === "string" || React.isValidElement(errors)) {
       return errors;
     } else if (typeof errors === "object") {
       let otherErrors: string[] = [];

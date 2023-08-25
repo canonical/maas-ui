@@ -5,7 +5,6 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { AnyAction } from "@reduxjs/toolkit";
 import { nanoid } from "@reduxjs/toolkit";
 import fastDeepEqual from "fast-deep-equal";
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FetchGroupKey } from "../types/actions";
@@ -23,6 +22,7 @@ import type {
   APIError,
   SortDirection,
 } from "app/base/types";
+import ErrorDetails from "app/machines/components/ErrorDetails";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
 import {
@@ -89,6 +89,7 @@ type MachineActionData = {
   successCount: ActionState["successCount"];
   failedSystemIds: ActionState["failedSystemIds"];
 };
+
 export const useMachineActionDispatch = <
   A extends AnyAction
 >(): MachineActionData & {
@@ -101,25 +102,12 @@ export const useMachineActionDispatch = <
   );
   const actionStatus = actionState?.status || ACTION_STATUS.idle;
   const failedSystemIds = actionState?.failedSystemIds || [];
-  const failedMachinesCount = failedSystemIds.length;
-  const { machines: failedMachines } = useFetchMachines(
-    { filters: { id: failedSystemIds } },
-    { isEnabled: failedMachinesCount > 0 }
-  );
-
-  const failedMachinesDescription =
-    failedMachines.length > 0
-      ? `: ${failedMachines.map((machine) => machine.hostname).join(", ")}`
-      : "";
+  const failedSystemIdsCount = failedSystemIds.length ?? 0;
 
   const actionErrors =
-    actionState?.errors || failedMachinesCount > 0
-      ? `Action failed for ${pluralize(
-          "machine",
-          failedMachinesCount,
-          true
-        )}${failedMachinesDescription}`
-      : null;
+    actionState && failedSystemIdsCount > 0 ? (
+      <ErrorDetails {...actionState} />
+    ) : null;
 
   return {
     dispatch: dispatchWithCallId,
