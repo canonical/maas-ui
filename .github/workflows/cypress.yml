@@ -4,7 +4,6 @@ on:
     branches:
       - main
       - "3.*"
-      - fix-cypress-yarn-install
 jobs:
   cypress:
     name: Cypress
