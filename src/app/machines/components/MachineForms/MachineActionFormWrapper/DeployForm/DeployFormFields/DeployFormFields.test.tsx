@@ -560,6 +560,11 @@ describe("DeployFormFields", () => {
     expect(
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
     ).toHaveAccessibleDescription(/Hardware sync interval: 15 minutes/);
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: /more about periodically sync hardware/i,
+      })
+    );
     expect(
       screen.getByRole("tooltip", {
         name: /Enable this to make MAAS periodically check the hardware/,

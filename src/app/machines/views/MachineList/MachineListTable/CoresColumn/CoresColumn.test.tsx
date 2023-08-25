@@ -7,7 +7,11 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import {
+  expectTooltipOnHover,
+  renderWithBrowserRouter,
+  screen,
+} from "testing/utils";
 
 describe("CoresColumn", () => {
   let state: RootState;
@@ -50,7 +54,7 @@ describe("CoresColumn", () => {
     expect(screen.getByTestId("arch")).toHaveTextContent("i386");
   });
 
-  it("displays a Tooltip with the full architecture", () => {
+  it("displays a Tooltip with the full architecture", async () => {
     state.machine.items[0].architecture = "amd64/generic";
 
     renderWithBrowserRouter(<CoresColumn systemId="abc123" />, {
@@ -58,6 +62,6 @@ describe("CoresColumn", () => {
       state,
     });
 
-    expect(screen.getByRole("tooltip")).toHaveTextContent("amd64/generic");
+    await expectTooltipOnHover(screen.getByTestId("arch"), "amd64/generic");
   });
 });

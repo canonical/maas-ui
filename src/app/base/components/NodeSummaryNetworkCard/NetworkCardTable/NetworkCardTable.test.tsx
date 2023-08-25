@@ -8,7 +8,12 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  userEvent,
+  within,
+} from "testing/utils";
 describe("NetworkCardInterface", () => {
   let state: RootState;
   beforeEach(() => {
@@ -69,7 +74,7 @@ describe("NetworkCardInterface", () => {
       ).toBeInTheDocument();
     });
 
-    it("can show DHCP relay information with a tooltip", () => {
+    it("can show DHCP relay information with a tooltip", async () => {
       state.fabric.items = [fabricFactory({ id: 1, name: "fabrice" })];
       state.vlan.items = [
         vlanFactory({ id: 2, name: "flan-vlan", relay_vlan: 3 }),
@@ -84,6 +89,13 @@ describe("NetworkCardInterface", () => {
       expect(
         screen.getByRole("gridcell", { name: /Relayed/i })
       ).toBeInTheDocument();
+
+      await userEvent.click(
+        within(screen.getByRole("gridcell", { name: /Relayed/i })).getByRole(
+          "button",
+          { name: "information" }
+        )
+      );
       expect(
         screen.getByRole("tooltip", { name: "Relayed via fabrice.99" })
       ).toBeInTheDocument();

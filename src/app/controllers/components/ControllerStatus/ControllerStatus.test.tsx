@@ -9,7 +9,12 @@ import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  userEvent,
+  expectTooltipOnHover,
+} from "testing/utils";
 
 const getIcon = () => screen.getByTestId("controller-status-icon");
 
@@ -28,7 +33,7 @@ describe("ControllerStatus", () => {
     });
   });
 
-  it("handles a dead controller", () => {
+  it("handles a dead controller", async () => {
     state.service = serviceStateFactory({
       items: [
         serviceFactory({
@@ -46,10 +51,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-error");
-    expect(screen.getByRole("tooltip")).toHaveTextContent("2 dead");
+    await expectTooltipOnHover(screen.getByRole("button"), "2 dead");
   });
 
-  it("handles a degraded controller", () => {
+  it("handles a degraded controller", async () => {
     state.service = serviceStateFactory({
       items: [
         serviceFactory({
@@ -67,10 +72,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--warning");
-    expect(screen.getByRole("tooltip")).toHaveTextContent("2 degraded");
+    await expectTooltipOnHover(getIcon(), "2 degraded");
   });
 
-  it("handles a running controller", () => {
+  it("handles a running controller", async () => {
     state.service = serviceStateFactory({
       items: [
         serviceFactory({
@@ -88,10 +93,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--success");
-    expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
+    await expectTooltipOnHover(getIcon(), "2 running");
   });
 
-  it("handles a powered off controller", () => {
+  it("handles a powered off controller", async () => {
     state.service = serviceStateFactory({
       items: [
         serviceFactory({
@@ -109,10 +114,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-off");
-    expect(screen.getByRole("tooltip")).toHaveTextContent("2 off");
+    await expectTooltipOnHover(getIcon(), "2 off");
   });
 
-  it("handles a controller with unknown status", () => {
+  it("handles a controller with unknown status", async () => {
     state.service = serviceStateFactory({
       items: [
         serviceFactory({
@@ -130,6 +135,7 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-unknown");
+    await userEvent.hover(getIcon());
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 });

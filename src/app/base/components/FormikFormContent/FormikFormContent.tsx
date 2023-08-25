@@ -2,6 +2,7 @@ import type { ReactNode, AriaAttributes } from "react";
 import React, { useEffect, useRef } from "react";
 
 import { Form, Notification } from "@canonical/react-components";
+import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 import { withFormikDevtools } from "formik-devtools-extension";
 import { useDispatch } from "react-redux";
@@ -21,7 +22,7 @@ import type { APIError } from "app/base/types";
 export type Props<V extends object, E> = {
   allowAllEmpty?: boolean;
   allowUnchanged?: boolean;
-  children?: ReactNode;
+  children?: ReactNode | ((formikContext: FormikContextType<V>) => ReactNode);
   className?: string;
   cleanup?: () => AnyAction;
   "data-testid"?: string;

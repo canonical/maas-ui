@@ -14,6 +14,22 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
+const expectDisabledButtonWithTooltip = async (
+  buttonLabel: string | RegExp,
+  tooltipLabel: string | RegExp
+) => {
+  const button = screen.getByRole("button", {
+    name: buttonLabel,
+  });
+  expect(button).toBeDisabled();
+  await userEvent.hover(button);
+  expect(
+    screen.getByRole("tooltip", {
+      name: tooltipLabel,
+    })
+  ).toBeInTheDocument();
+};
+
 describe("MachineNetworkActions", () => {
   let state: RootState;
   beforeEach(() => {
@@ -131,7 +147,7 @@ describe("MachineNetworkActions", () => {
       ).toBeDisabled();
     });
 
-    it("disables the button when no interfaces are selected", () => {
+    it("disables the button when no interfaces are selected", async () => {
       renderWithBrowserRouter(
         <MachineNetworkActions
           expanded={null}
@@ -142,16 +158,13 @@ describe("MachineNetworkActions", () => {
         />,
         { state, route: "/machine/abc123" }
       );
-
-      expect(
-        screen.getByRole("button", { name: /Create bond/i })
-      ).toBeDisabled();
-      screen
-        .getAllByRole("tooltip", { name: /no interfaces are selected/i })
-        .forEach((tooltip) => expect(tooltip).toBeInTheDocument());
+      await expectDisabledButtonWithTooltip(
+        /Create bond/i,
+        /no interfaces are selected/i
+      );
     });
 
-    it("disables the create bond button when only 1 interface is selected", () => {
+    it("disables the create bond button when only 1 interface is selected", async () => {
       state.machine.items = [
         machineDetailsFactory({
           interfaces: [
@@ -179,17 +192,13 @@ describe("MachineNetworkActions", () => {
         { state, route: "/machine/abc123" }
       );
 
-      expect(
-        screen.getByRole("button", { name: /Create bond/i })
-      ).toBeDisabled();
-      expect(
-        screen.getByRole("tooltip", {
-          name: /A bond must include more than one interface/i,
-        })
-      ).toBeInTheDocument();
+      await expectDisabledButtonWithTooltip(
+        /Create bond/i,
+        /A bond must include more than one interface/i
+      );
     });
 
-    it("disables the button when some selected interfaces are not physical", () => {
+    it("disables the button when some selected interfaces are not physical", async () => {
       state.machine.items = [
         machineDetailsFactory({
           interfaces: [
@@ -222,18 +231,13 @@ describe("MachineNetworkActions", () => {
         />,
         { state, route: "/machine/abc123" }
       );
-
-      expect(
-        screen.getByRole("button", { name: /Create bond/i })
-      ).toBeDisabled();
-      expect(
-        screen.getByRole("tooltip", {
-          name: /A bond can only include physical interfaces/i,
-        })
-      ).toBeInTheDocument();
+      await expectDisabledButtonWithTooltip(
+        /Create bond/i,
+        /A bond can only include physical interfaces/i
+      );
     });
 
-    it("disables the button when selected interfaces have different VLANS", () => {
+    it("disables the button when selected interfaces have different VLANS", async () => {
       state.machine.items = [
         machineDetailsFactory({
           interfaces: [
@@ -263,14 +267,10 @@ describe("MachineNetworkActions", () => {
         { state, route: "/machine/abc123" }
       );
 
-      expect(
-        screen.getByRole("button", { name: /Create bond/i })
-      ).toBeDisabled();
-      expect(
-        screen.getByRole("tooltip", {
-          name: /All selected interfaces must be on the same VLAN/i,
-        })
-      ).toBeInTheDocument();
+      await expectDisabledButtonWithTooltip(
+        /Create bond/i,
+        /All selected interfaces must be on the same VLAN/i
+      );
     });
   });
 
@@ -308,7 +308,7 @@ describe("MachineNetworkActions", () => {
       });
     });
 
-    it("disables the button when networking is disabled", () => {
+    it("disables the button when networking is disabled", async () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
 
       renderWithBrowserRouter(
@@ -321,14 +321,11 @@ describe("MachineNetworkActions", () => {
         />,
         { state, route: "/machine/abc123" }
       );
-      expect(
-        screen.getByRole("button", { name: /create bridge/i })
-      ).toBeDisabled();
-      screen
-        .getAllByRole("tooltip", {
-          name: new RegExp("Network can't be modified for this machine.", "i"),
-        })
-        .forEach((tooltip) => expect(tooltip).toBeInTheDocument());
+
+      await expectDisabledButtonWithTooltip(
+        /Create bond/i,
+        /Network can't be modified for this machine./i
+      );
     });
 
     it("disables the button when no interfaces are selected", () => {
@@ -348,7 +345,7 @@ describe("MachineNetworkActions", () => {
       ).toBeDisabled();
     });
 
-    it("disables the button when more than 1 interface is selected", () => {
+    it("disables the button when more than 1 interface is selected", async () => {
       state.machine.items = [
         machineDetailsFactory({
           interfaces: [
@@ -376,17 +373,13 @@ describe("MachineNetworkActions", () => {
         { state, route: "/machine/abc123" }
       );
 
-      expect(
-        screen.getByRole("button", { name: /create bridge/i })
-      ).toBeDisabled();
-      expect(
-        screen.getByRole("tooltip", {
-          name: /A bridge can only be created from one interface/i,
-        })
-      ).toBeInTheDocument();
+      await expectDisabledButtonWithTooltip(
+        /create bridge/i,
+        /A bridge can only be created from one interface/i
+      );
     });
 
-    it("disables the button when an alias is selected", () => {
+    it("disables the button when an alias is selected", async () => {
       state.machine.items = [
         machineDetailsFactory({
           interfaces: [
@@ -420,17 +413,13 @@ describe("MachineNetworkActions", () => {
         { state, route: "/machine/abc123" }
       );
 
-      expect(
-        screen.getByRole("button", { name: /create bridge/i })
-      ).toBeDisabled();
-      expect(
-        screen.getByRole("tooltip", {
-          name: /A bridge can not be created from an alias/i,
-        })
-      ).toBeInTheDocument();
+      await expectDisabledButtonWithTooltip(
+        /create bridge/i,
+        /A bridge can not be created from an alias/i
+      );
     });
 
-    it("disables the button when a bridge is selected", () => {
+    it("disables the button when a bridge is selected", async () => {
       state.machine.items = [
         machineDetailsFactory({
           interfaces: [
@@ -458,14 +447,10 @@ describe("MachineNetworkActions", () => {
         { state, route: "/machine/abc123" }
       );
 
-      expect(
-        screen.getByRole("button", { name: /create bridge/i })
-      ).toBeDisabled();
-      expect(
-        screen.getByRole("tooltip", {
-          name: /A bridge can only be created from one interface/i,
-        })
-      ).toBeInTheDocument();
+      await expectDisabledButtonWithTooltip(
+        /create bridge/i,
+        /A bridge can only be created from one interface/i
+      );
     });
   });
 });

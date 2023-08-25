@@ -219,8 +219,9 @@ describe("ComposeFormFields", () => {
       { store }
     );
 
-    expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
-
+    const enableHugepages = screen.getByLabelText("Enable hugepages");
+    expect(enableHugepages).toBeDisabled();
+    await userEvent.hover(enableHugepages);
     expect(
       screen.getByRole("tooltip", {
         name: "Hugepages are only supported on LXD KVMs.",
@@ -257,7 +258,9 @@ describe("ComposeFormFields", () => {
     );
 
     expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
-
+    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
+    // eslint-disable-next-line testing-library/prefer-user-event
+    fireEvent.mouseOver(screen.getByLabelText("Enable hugepages"));
     expect(
       screen.getByRole("tooltip", {
         name: "There are no free hugepages on this system.",
@@ -376,6 +379,11 @@ describe("ComposeFormFields", () => {
     expect(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     ).toBeDisabled();
+    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
+    // eslint-disable-next-line testing-library/prefer-user-event
+    fireEvent.mouseOver(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+    );
     expect(
       screen.getByRole("tooltip", {
         name: "Core pinning is only supported on LXD KVMs",
@@ -399,10 +407,8 @@ describe("ComposeFormFields", () => {
     // Enter duplicate core indices
     await userEvent.type(
       screen.getByRole("textbox", { name: "Pinned cores" }),
-      "0, 0"
+      "0, 0{tab}"
     );
-
-    fireEvent.blur(screen.getByRole("textbox", { name: "Pinned cores" }));
 
     expect(screen.getByText("Duplicate core indices detected.")).toHaveClass(
       "p-form-validation__message"

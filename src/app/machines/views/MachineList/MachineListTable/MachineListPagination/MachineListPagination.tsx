@@ -23,7 +23,7 @@ export type Props = PropsWithSpread<
     machineCount: number | null;
     totalPages: number | null;
     machinesLoading?: boolean | null;
-    paginate: PaginationProps["paginate"];
+    paginate: NonNullable<PaginationProps["paginate"]>;
   },
   Partial<PaginationProps>
 >;
@@ -61,7 +61,7 @@ const MachineListPagination = ({
           disabled={props.currentPage === 1}
           onClick={() => {
             setPageNumber((page) => Number(page) - 1);
-            props.paginate(props.currentPage - 1);
+            props.paginate(Number(props.currentPage) - 1);
           }}
           type="button"
         >
@@ -111,7 +111,7 @@ const MachineListPagination = ({
           disabled={props.currentPage === pages}
           onClick={() => {
             setPageNumber((page) => Number(page) + 1);
-            props.paginate(props.currentPage + 1);
+            props.paginate(Number(props.currentPage) + 1);
           }}
           type="button"
         >

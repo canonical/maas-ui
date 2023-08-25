@@ -43,7 +43,7 @@ it("does not render test info if node is a controller", () => {
     </Provider>
   );
 
-  expect(screen.queryByText(/tests/i)).not.toBeInTheDocument();
+  expect(screen.queryByTestId("tests")).not.toBeInTheDocument();
 });
 
 it("renders test info if node is a machine", () => {
@@ -61,7 +61,7 @@ it("renders test info if node is a machine", () => {
     </Provider>
   );
 
-  expect(screen.getByText(/tests/i)).toBeInTheDocument();
+  expect(screen.getByTestId("tests")).toBeInTheDocument();
 });
 
 describe("node is a machine", () => {

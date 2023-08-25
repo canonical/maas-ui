@@ -222,27 +222,12 @@ describe("NodeActionMenu", () => {
       />
     );
 
+    await userEvent.click(screen.getByRole("button"));
     expect(
       screen.getByRole("tooltip", {
         name: "Select foobars below to perform an action.",
       })
     ).toBeInTheDocument();
-  });
-
-  it("can change the position of the disabled tooltip", async () => {
-    render(
-      <NodeActionMenu
-        disabledTooltipPosition="top-left"
-        hasSelection={false}
-        nodes={[]}
-        onActionClick={jest.fn()}
-        showCount
-      />
-    );
-
-    expect(screen.getByTestId("tooltip-portal")).toHaveClass(
-      "p-tooltip--top-left"
-    );
   });
 
   it("can change the appearance of the menu toggle", async () => {

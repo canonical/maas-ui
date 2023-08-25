@@ -15,7 +15,12 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
-import { renderWithMockStore, screen, userEvent } from "testing/utils";
+import {
+  expectTooltipOnHover,
+  renderWithMockStore,
+  screen,
+  userEvent,
+} from "testing/utils";
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -241,6 +246,7 @@ describe("NetworkTableActions", () => {
     });
     expect(addAlias).toBeInTheDocument();
     expect(addAlias).not.toBeDisabled();
+    await userEvent.hover(addAlias);
     expect(
       screen.queryByRole("tooltip", {
         name: "IP mode needs to be configured for this interface.",
@@ -267,6 +273,7 @@ describe("NetworkTableActions", () => {
     });
     expect(addAlias).toBeInTheDocument();
     expect(addAlias).toBeDisabled();
+    await userEvent.hover(addAlias.querySelector("i")!);
     expect(
       screen.getByRole("tooltip", {
         name: "IP mode needs to be configured for this interface.",
@@ -319,11 +326,10 @@ describe("NetworkTableActions", () => {
     const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
     expect(addVLAN).toBeDisabled();
-    expect(
-      screen.getByRole("tooltip", {
-        name: "There are no unused VLANS for this interface.",
-      })
-    ).toBeInTheDocument();
+    await expectTooltipOnHover(
+      addVLAN,
+      "There are no unused VLANS for this interface."
+    );
   });
 
   it("can not display an action to add an alias or vlan", async () => {

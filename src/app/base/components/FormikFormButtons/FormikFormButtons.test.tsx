@@ -62,6 +62,9 @@ it("can display a tooltip for the secondary submit action", async () => {
       />
     </Formik>
   );
+  await userEvent.hover(
+    screen.getByRole("button", { name: "Save and add another" })
+  );
   expect(
     screen.getByRole("button", { name: "Save and add another" })
   ).toHaveAccessibleDescription("Will add another");

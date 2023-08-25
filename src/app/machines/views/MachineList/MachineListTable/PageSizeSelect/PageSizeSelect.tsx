@@ -3,7 +3,7 @@ import type { PaginationProps } from "@canonical/react-components";
 
 type Props = {
   pageSize: number;
-  paginate: PaginationProps["paginate"];
+  paginate: NonNullable<PaginationProps["paginate"]>;
   setPageSize: (pageSize: number) => void;
 };
 

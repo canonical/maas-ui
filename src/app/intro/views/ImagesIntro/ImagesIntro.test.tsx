@@ -13,7 +13,12 @@ import {
   bootResourceUbuntuSource as bootResourceUbuntuSourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, render, renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  render,
+  renderWithBrowserRouter,
+  userEvent,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -59,7 +64,7 @@ describe("ImagesIntro", () => {
     ).toBe(true);
   });
 
-  it("disables the continue button if no image and source has been configured", () => {
+  it("disables the continue button if no image and source has been configured", async () => {
     state.bootresource.ubuntu = bootResourceUbuntuFactory({ sources: [] });
     state.bootresource.resources = [];
     renderWithBrowserRouter(<ImagesIntro />, {
@@ -67,9 +72,11 @@ describe("ImagesIntro", () => {
       state,
     });
 
-    expect(
-      screen.getByRole("button", { name: ImagesIntroLabels.Continue })
-    ).toBeDisabled();
+    const button = screen.getByRole("button", {
+      name: ImagesIntroLabels.Continue,
+    });
+    expect(button).toBeDisabled();
+    await userEvent.hover(button.querySelector("i")!);
     expect(
       screen.getByRole("tooltip", { name: ImagesIntroLabels.CantContinue })
     ).toBeInTheDocument();

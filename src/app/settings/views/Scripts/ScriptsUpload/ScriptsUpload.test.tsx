@@ -70,9 +70,11 @@ describe("ScriptsUpload", () => {
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
     await userEvent.upload(upload, files);
 
-    expect(
-      screen.getByText("foo.sh (2000 bytes) ready for upload.")
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByText("foo.sh (2000 bytes) ready for upload.")
+      ).toBeInTheDocument()
+    );
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {

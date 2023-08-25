@@ -11,7 +11,11 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+import {
+  screen,
+  renderWithMockStore,
+  expectTooltipOnHover,
+} from "testing/utils";
 
 describe("ArchSelect", () => {
   let state: RootState;
@@ -76,7 +80,7 @@ describe("ArchSelect", () => {
     expect(screen.getByRole("checkbox", { name: "arm64" })).not.toBeChecked();
   });
 
-  it("disables a checkbox with tooltip if release does not support arch", () => {
+  it("disables a checkbox with tooltip if release does not support arch", async () => {
     const release = bootResourceUbuntuReleaseFactory({
       name: "focal",
       title: "20.04 LTS",
@@ -94,16 +98,26 @@ describe("ArchSelect", () => {
       { state }
     );
 
-    expect(screen.getByRole("checkbox", { name: /i386/i })).toBeDisabled();
-    expect(
-      screen.getByRole("tooltip", {
-        name: "i386 is not available on 20.04 LTS.",
-      })
-    ).toBeInTheDocument();
+    const checkbox = screen.getByRole("checkbox", { name: /i386/i });
+    expect(checkbox).toBeDisabled();
+
+    await expectTooltipOnHover(
+      screen.getByRole("button", { name: "information" }),
+      "i386 is not available on 20.04 LTS."
+    );
+    expect(screen.getByRole("tooltip")).toMatchInlineSnapshot(`
+      <span
+        class="p-tooltip__message"
+        id="mock-nanoid-7"
+        role="tooltip"
+      >
+        i386 is not available on 20.04 LTS.
+      </span>
+    `);
   });
 
   it(`disables a checkbox if it's the last checked arch for the default
-    commissioning release`, () => {
+    commissioning release`, async () => {
     state.config.items = [
       configFactory({
         name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
@@ -134,10 +148,9 @@ describe("ArchSelect", () => {
 
     expect(archCheckbox).toBeChecked();
     expect(archCheckbox).toBeDisabled();
-    expect(
-      screen.getByRole("tooltip", {
-        name: ArchSelectLabels.OneArchMustBeSelected,
-      })
-    ).toBeInTheDocument();
+    await expectTooltipOnHover(
+      screen.getByRole("button", { name: "information" }),
+      ArchSelectLabels.OneArchMustBeSelected
+    );
   });
 });

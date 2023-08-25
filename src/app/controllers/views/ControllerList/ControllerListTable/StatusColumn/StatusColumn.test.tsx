@@ -11,7 +11,7 @@ import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 describe("StatusColumn", () => {
   let state: RootState;
@@ -52,11 +52,13 @@ describe("StatusColumn", () => {
     expect(screen.getByTestId("version-error")).toBeInTheDocument();
   });
 
-  it("displays the controller status if there are no errors", () => {
+  it("displays the controller status if there are no errors", async () => {
     renderWithBrowserRouter(<StatusColumn systemId="abc123" />, {
       route: "/controllers",
       state,
     });
+
+    await userEvent.click(screen.getByRole("button", { name: /success/i }));
     expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
     expect(screen.getByTestId("controller-status-icon")).toHaveClass(
       "p-icon--success"

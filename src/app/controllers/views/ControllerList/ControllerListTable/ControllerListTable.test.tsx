@@ -223,7 +223,7 @@ describe("ControllerListTable", () => {
       expect(screen.queryByTestId("vault-icon")).not.toBeInTheDocument();
     });
 
-    it("shows icons with appropriate tooltips based on vault status for each controller", () => {
+    it("shows icons with appropriate tooltips based on vault status for each controller", async () => {
       const controllers = [
         controllerFactory({
           system_id: "abc123",
@@ -252,6 +252,9 @@ describe("ControllerListTable", () => {
       expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
         "p-icon--security"
       );
+      await userEvent.click(
+        within(rows[1]).getByRole("button", { name: /security/i })
+      );
       expect(
         within(rows[1]).getByTestId("vault-icon")
       ).toHaveAccessibleDescription(
@@ -266,6 +269,7 @@ describe("ControllerListTable", () => {
       expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
         "p-icon--security-warning"
       );
+      await userEvent.click(within(rows[2]).getByRole("button"));
       expect(
         within(rows[2]).getByTestId("vault-icon")
       ).toHaveAccessibleDescription(
@@ -278,7 +282,7 @@ describe("ControllerListTable", () => {
       ).toBeInTheDocument();
     });
 
-    it("displays a security-tick with appropriate tooltip on controllers once they are all configured and vault is enabled", () => {
+    it("displays a security-tick with appropriate tooltip on controllers once they are all configured and vault is enabled", async () => {
       const controllers = [
         controllerFactory({
           system_id: "abc123",
@@ -309,19 +313,20 @@ describe("ControllerListTable", () => {
       );
 
       const rows = screen.getAllByRole("row");
-      const tooltips = screen.getAllByRole("tooltip", {
-        name: "Vault is configured on this region controller for secret storage. Read more about Vault integration",
-      });
-
+      await userEvent.click(
+        screen.getAllByRole("button", { name: /security/i })[0]
+      );
+      expect(
+        screen.getAllByRole("tooltip", {
+          name: "Vault is configured on this region controller for secret storage. Read more about Vault integration",
+        })[0]
+      ).toBeInTheDocument();
       expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
         "p-icon--security-tick"
       );
-      expect(tooltips[0]).toBeInTheDocument();
-
       expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
         "p-icon--security-tick"
       );
-      expect(tooltips[1]).toBeInTheDocument();
     });
 
     it("does not show vault icons on rack controllers", () => {

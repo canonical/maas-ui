@@ -9,7 +9,12 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import {
+  expectTooltipOnHover,
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+} from "testing/utils";
 
 describe("PowerColumn", () => {
   let state: RootState;
@@ -115,7 +120,7 @@ describe("PowerColumn", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("shows a status tooltip if machine power is in error state", () => {
+  it("shows a status tooltip if machine power is in error state", async () => {
     state.machine.items[0].power_state = PowerState.ERROR;
     state.machine.items[0].status_message = "It's not working";
 
@@ -124,6 +129,9 @@ describe("PowerColumn", () => {
       { route: "/machines", state }
     );
 
-    expect(screen.getByRole("tooltip")).toHaveTextContent("It's not working");
+    await expectTooltipOnHover(
+      screen.getByLabelText("error"),
+      "It's not working"
+    );
   });
 });

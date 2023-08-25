@@ -8,7 +8,7 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("DisksColumn", () => {
   let state: RootState;
@@ -39,7 +39,7 @@ describe("DisksColumn", () => {
     expect(screen.getByTestId("primary")).toHaveTextContent("2");
   });
 
-  it("correctly shows error icon and tooltip if storage tests failed", () => {
+  it("correctly shows error icon and tooltip if storage tests failed", async () => {
     state.machine.items[0].storage_test_status = testStatusFactory({
       status: TestStatusStatus.FAILED,
     });
@@ -50,6 +50,8 @@ describe("DisksColumn", () => {
     });
 
     expect(screen.getByLabelText("error")).toHaveClass("p-icon--error");
+
+    await userEvent.hover(screen.getByRole("button"));
     expect(screen.getByRole("tooltip")).toHaveTextContent(
       "Machine has failed tests."
     );

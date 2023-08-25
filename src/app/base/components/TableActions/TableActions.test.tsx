@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 
 import TableActions from "./TableActions";
 
-import { renderWithBrowserRouter } from "testing/utils";
+import { expectTooltipOnHover, renderWithBrowserRouter } from "testing/utils";
 
 describe("TableActions ", () => {
   it("renders a copy button if copy value provided", () => {
@@ -35,7 +35,7 @@ describe("TableActions ", () => {
     expect(onDelete).toHaveBeenCalled();
   });
 
-  it("correctly renders tooltips", () => {
+  it("correctly renders tooltips", async () => {
     renderWithBrowserRouter(
       <TableActions
         deleteTooltip="delete tooltip"
@@ -44,8 +44,14 @@ describe("TableActions ", () => {
         onDelete={jest.fn()}
       />
     );
-    expect(screen.getByText(/edit tooltip/i)).toBeInTheDocument();
-    expect(screen.getByText(/delete tooltip/i)).toBeInTheDocument();
+    await expectTooltipOnHover(
+      screen.getByRole("link", { name: /edit/i }),
+      /edit tooltip/i
+    );
+    await expectTooltipOnHover(
+      screen.getByRole("button", { name: /delete/i }),
+      /delete tooltip/i
+    );
   });
 
   it("correctly disables buttons", () => {

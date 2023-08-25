@@ -1,4 +1,3 @@
-import type { KeyboardEvent, KeyboardEventHandler } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NotificationSeverity } from "@canonical/react-components";
@@ -209,10 +208,10 @@ export const usePreviousPersistent = <T extends unknown>(
  */
 export const useOnKeyPressed = (
   key: string,
-  onAfterPressed: KeyboardEventHandler
+  onAfterPressed: (event: globalThis.KeyboardEvent) => void
 ): void => {
   const keyDown = useCallback(
-    (event) => {
+    (event: globalThis.KeyboardEvent) => {
       if (event.key === key) {
         onAfterPressed(event);
       }
@@ -232,9 +231,9 @@ export const useOnKeyPressed = (
  */
 export const useGlobalKeyShortcut = (
   key: KeyboardShortcut,
-  onAfterPressed: KeyboardEventHandler
+  onAfterPressed: (event: globalThis.KeyboardEvent) => void
 ): void => {
-  useOnKeyPressed(key, (event: KeyboardEvent) => {
+  useOnKeyPressed(key, (event) => {
     // ignore keyboard events with modifiers
     if (event.ctrlKey || event.altKey || event.metaKey) {
       return;

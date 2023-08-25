@@ -1,6 +1,6 @@
 import SettingsTable from "./SettingsTable";
 
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 describe("SettingsTable", () => {
   it("can render", () => {
@@ -85,7 +85,7 @@ it("can render a disabled button ", () => {
   expect(button.classList.contains("is-disabled")).toBe(true);
 });
 
-it("can render a button with a tooltip", () => {
+it("can render a button with a tooltip", async () => {
   const tooltip = "Add a user to MAAS";
   renderWithBrowserRouter(
     <SettingsTable
@@ -96,5 +96,6 @@ it("can render a button with a tooltip", () => {
     {}
   );
 
+  await userEvent.hover(screen.getByRole("link", { name: "Add User" }));
   expect(screen.getByRole("tooltip")).toHaveTextContent(tooltip);
 });

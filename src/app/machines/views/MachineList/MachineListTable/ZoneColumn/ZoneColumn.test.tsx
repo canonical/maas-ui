@@ -75,7 +75,7 @@ describe("ZoneColumn", () => {
     expect(screen.getByTestId("spaces")).toHaveTextContent("2 spaces");
   });
 
-  it("displays a sorted Tooltip for multiple spaces", () => {
+  it("displays a sorted Tooltip for multiple spaces", async () => {
     state.machine.items[0].spaces = ["space2", "space1", "space3"];
 
     renderWithBrowserRouter(
@@ -83,8 +83,9 @@ describe("ZoneColumn", () => {
       { route: "/machines", state }
     );
 
+    await userEvent.hover(screen.getByTestId("spaces"));
     expect(screen.getByRole("tooltip")).toHaveTextContent(
-      "space1 space2 space3"
+      /space1 space2 space3/i
     );
   });
 

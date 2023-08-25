@@ -8,7 +8,7 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 describe("RamColumn", () => {
   let state: RootState;
@@ -42,7 +42,7 @@ describe("RamColumn", () => {
     expect(screen.getByTestId("memory")).toHaveTextContent("16");
   });
 
-  it("displays an error and tooltip if memory tests have failed", () => {
+  it("displays an error and tooltip if memory tests have failed", async () => {
     state.machine.items[0].memory = 16;
     state.machine.items[0].memory_test_status = testStatusFactory({
       status: TestStatusStatus.FAILED,
@@ -53,6 +53,7 @@ describe("RamColumn", () => {
       state,
     });
 
+    await userEvent.click(screen.getByRole("button", { name: /error/i }));
     expect(screen.getByRole("tooltip")).toHaveTextContent(
       "Machine has failed tests."
     );

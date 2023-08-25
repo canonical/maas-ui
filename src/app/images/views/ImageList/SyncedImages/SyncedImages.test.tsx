@@ -93,7 +93,7 @@ describe("SyncedImages", () => {
     expect(within(images_from).getByText("sources")).toBeInTheDocument();
   });
 
-  it("disables the button to change source if resources are downloading", () => {
+  it("disables the button to change source if resources are downloading", async () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         resources: [bootResourceFactory({ downloading: true })],
@@ -104,6 +104,11 @@ describe("SyncedImages", () => {
     expect(
       screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource })
     ).toBeDisabled();
+    await userEvent.hover(
+      screen
+        .getByRole("button", { name: SyncedImagesLabels.ChangeSource })
+        .querySelector("i")!
+    );
     expect(
       screen.getByRole("tooltip", {
         name: "Cannot change source while images are downloading.",

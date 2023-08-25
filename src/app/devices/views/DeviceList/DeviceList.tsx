@@ -44,7 +44,7 @@ const DeviceList = (): JSX.Element => {
 
   // Update the URL when filters are changed.
   const setSearchFilter = useCallback(
-    (searchText) => {
+    (searchText: string) => {
       setFilter(searchText);
       const filters = FilterDevices.getCurrentFilters(searchText);
       navigate({ search: FilterDevices.filtersToQueryString(filters) });
