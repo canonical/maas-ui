@@ -161,6 +161,7 @@ export const MachineActionFormWrapper = ({
       case NodeActions.OFF:
       case NodeActions.ON:
       case NodeActions.RESCUE_MODE:
+      case NodeActions.SOFT_OFF:
       case NodeActions.UNLOCK:
         return (
           <FieldlessForm
