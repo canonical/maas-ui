@@ -1,16 +1,26 @@
 import { useEffect, type ReactNode } from "react";
 
-import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
+import {
+  Col,
+  Icon,
+  Row,
+  Tooltip,
+  useOnEscapePressed,
+} from "@canonical/react-components";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 
-import type { SidePanelSize } from "app/base/side-panel-context";
-import { useSidePanel } from "app/base/side-panel-context";
+import type {
+  SidePanelContent,
+  SidePanelSize,
+} from "app/base/side-panel-context";
+import { SidePanelViews, useSidePanel } from "app/base/side-panel-context";
 
 export type AppSidePanelProps = {
   title: string | null;
   content?: ReactNode;
   size: SidePanelSize;
+  iconComponent?: ReactNode;
 };
 
 const useCloseSidePanelOnRouteChange = (): void => {
@@ -43,10 +53,35 @@ const useCloseSidePanelOnEscPressed = (): void => {
   useOnEscapePressed(() => setSidePanelContent(null));
 };
 
+export const getSidepanelIcon = (sidePanelContent: SidePanelContent | null) => {
+  if (sidePanelContent) {
+    const [, name] = sidePanelContent.view;
+    switch (name) {
+      case SidePanelViews.POWER_OFF_MACHINE_SOFT[1]:
+        return (
+          <Tooltip
+            message={
+              <>
+                A soft power off generally asks the OS to shutdown the system
+                gracefully before powering off. It is only supported by IPMI
+              </>
+            }
+            position="right"
+          >
+            <Icon name="information" />
+          </Tooltip>
+        );
+      default:
+        return <></>;
+    }
+  }
+};
+
 const AppSidePanelContent = ({
   title,
   size,
   content,
+  iconComponent,
 }: AppSidePanelProps): JSX.Element => {
   return (
     <aside
@@ -66,7 +101,7 @@ const AppSidePanelContent = ({
             <div className="row section-header">
               <div className="col-12">
                 <h3 className="section-header__title u-flex--no-shrink p-heading--4">
-                  {title}
+                  {title} {iconComponent}
                 </h3>
                 <hr />
               </div>
