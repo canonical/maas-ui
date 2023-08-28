@@ -22,6 +22,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           runTests: false
+          install-command: yarn install
       - name: Run Cypress tests without a user
         uses: cypress-io/github-action@v4
         with:
