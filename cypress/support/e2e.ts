@@ -30,3 +30,18 @@ declare global {
     }
   }
 }
+
+Cypress.on("uncaught:exception", (err, _runnable) => {
+  /*
+   Prevent cypress tests from failing when visiting maas.io
+   due to scripts not being loaded early enough:
+   Error examples: 'canonicalGlobalNav is not defined'
+   */
+  if (
+    err.message.includes("canonicalGlobalNav") ||
+    err.message.includes("hljs") ||
+    err.message.includes("drpNs")
+  ) {
+    return false;
+  }
+});
