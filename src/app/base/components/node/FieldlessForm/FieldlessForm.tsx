@@ -7,7 +7,7 @@ import type { EmptyObject } from "app/base/types";
 import type { actions as controllerActions } from "app/store/controller";
 import type { actions as machineActions } from "app/store/machine";
 import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
-import type { NodeActions } from "app/store/types/node";
+import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "app/utils";
 
@@ -58,9 +58,11 @@ export const FieldlessForm = <E,>({
         const [, actionFunction] =
           Object.entries(actions).find(([key]) => key === actionMethod) || [];
 
+        const params =
+          action === NodeActions.SOFT_OFF ? { stop_mode: "soft" } : {};
         if (actionFunction) {
           if (selectedMachines) {
-            dispatchForSelectedMachines(actionFunction);
+            dispatchForSelectedMachines(actionFunction, params);
           } else {
             nodes?.forEach((node) => {
               dispatch(actionFunction({ system_id: node.system_id }));
