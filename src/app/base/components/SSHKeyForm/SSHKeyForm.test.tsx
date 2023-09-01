@@ -7,7 +7,12 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { userEvent, renderWithBrowserRouter, screen } from "testing/utils";
+import {
+  userEvent,
+  renderWithBrowserRouter,
+  screen,
+  waitFor,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -141,11 +146,13 @@ describe("SSHKeyForm", () => {
       screen.getByRole("button", { name: "Import SSH key" })
     );
 
-    const actions = store.getActions();
-
-    expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
-      true
+    await waitFor(() =>
+      expect(
+        store.getActions().some((action) => action.type === "sshkey/cleanup")
+      ).toBe(true)
     );
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
+    expect(
+      store.getActions().some((action) => action.type === "message/add")
+    ).toBe(true);
   });
 });
