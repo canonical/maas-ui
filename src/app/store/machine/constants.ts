@@ -238,6 +238,10 @@ export const ACTIONS: Action[] = [
     status: "turningOn",
   },
   {
+    name: NodeActions.SOFT_OFF,
+    status: "turningOff",
+  },
+  {
     name: NodeActions.UNLOCK,
     status: "unlocking",
   },
