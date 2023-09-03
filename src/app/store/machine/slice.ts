@@ -61,7 +61,7 @@ import type {
   FilterGroupKey,
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
-import type { OverrideFailedTesting } from "./types/actions";
+import type { OverrideFailedTesting, SoftOffParams } from "./types/actions";
 import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
 import { createMachineListGroup, isMachineDetails } from "./utils";
 
@@ -1508,6 +1508,10 @@ const machineSlice = createSlice({
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
     setZoneSuccess: statusHandlers.setZone.success,
+    softOff: generateActionParams<SoftOffParams>(NodeActions.OFF),
+    softOffError: statusHandlers.softOff.error,
+    softOffStart: statusHandlers.softOff.start,
+    softOffSuccess: statusHandlers.softOff.success,
     suppressScriptResults: {
       prepare: (
         machineID: Machine[MachineMeta.PK],
