@@ -184,7 +184,6 @@ export const getSidePanelTitle = (
 ): string => {
   if (sidePanelContent) {
     const [, name] = sidePanelContent.view;
-    console.log({ sidePanelContent });
     switch (name) {
       case SidePanelViews.ADD_CONTROLLER[1]:
         return "Add controller";
