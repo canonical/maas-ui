@@ -1,14 +1,10 @@
 import { useEffect, type ReactNode } from "react";
 
-import {
-  Col,
-  Icon,
-  Row,
-  Tooltip,
-  useOnEscapePressed,
-} from "@canonical/react-components";
+import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
+
+import InfoIconTooltip from "../InfoIconTooltip/InfoIconTooltip";
 
 import type {
   SidePanelContent,
@@ -20,7 +16,6 @@ export type AppSidePanelProps = {
   title: string | null;
   content?: ReactNode;
   size: SidePanelSize;
-  iconComponent?: ReactNode;
 };
 
 const useCloseSidePanelOnRouteChange = (): void => {
@@ -59,21 +54,34 @@ export const getSidepanelIcon = (sidePanelContent: SidePanelContent | null) => {
     switch (name) {
       case SidePanelViews.POWER_OFF_MACHINE_SOFT[1]:
         return (
-          <Tooltip
+          <InfoIconTooltip
             message={
               <>
-                A soft power off generally asks the OS to shutdown the system
-                gracefully before powering off. It is only supported by IPMI
+                A soft power off generally asks the OS to
+                <br />
+                shutdown the system gracefully before powering off. <br />
+                It is only supported by IPMI
               </>
             }
-            position="right"
-          >
-            <Icon name="information" />
-          </Tooltip>
+          />
+        );
+      case SidePanelViews.POWER_OFF_MACHINE[1]:
+        return (
+          <InfoIconTooltip
+            message={
+              <>
+                Power off will perform a hard power off, which occurs
+                immediately <br />
+                without any warning to the OS.
+              </>
+            }
+          />
         );
       default:
         return <></>;
     }
+  } else {
+    return <></>;
   }
 };
 
@@ -81,8 +89,8 @@ const AppSidePanelContent = ({
   title,
   size,
   content,
-  iconComponent,
 }: AppSidePanelProps): JSX.Element => {
+  const { sidePanelContent } = useSidePanel();
   return (
     <aside
       aria-label={title ?? undefined}
@@ -101,7 +109,7 @@ const AppSidePanelContent = ({
             <div className="row section-header">
               <div className="col-12">
                 <h3 className="section-header__title u-flex--no-shrink p-heading--4">
-                  {title} {iconComponent}
+                  {title} {getSidepanelIcon(sidePanelContent)}
                 </h3>
                 <hr />
               </div>
