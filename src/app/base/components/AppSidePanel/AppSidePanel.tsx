@@ -4,7 +4,7 @@ import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 
-import InfoIconTooltip from "../InfoIconTooltip/InfoIconTooltip";
+import TooltipButton from "../TooltipButton/TooltipButton";
 
 import type {
   SidePanelContent,
@@ -54,7 +54,8 @@ export const getSidepanelIcon = (sidePanelContent: SidePanelContent | null) => {
     switch (name) {
       case SidePanelViews.POWER_OFF_MACHINE_SOFT[1]:
         return (
-          <InfoIconTooltip
+          <TooltipButton
+            iconName="information"
             message={
               <>
                 A soft power off generally asks the OS to
@@ -67,7 +68,8 @@ export const getSidepanelIcon = (sidePanelContent: SidePanelContent | null) => {
         );
       case SidePanelViews.POWER_OFF_MACHINE[1]:
         return (
-          <InfoIconTooltip
+          <TooltipButton
+            iconName="information"
             message={
               <>
                 Power off will perform a hard power off, which occurs
