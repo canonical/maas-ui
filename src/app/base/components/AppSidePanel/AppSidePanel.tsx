@@ -128,9 +128,15 @@ const AppSidePanel = (props: Omit<AppSidePanelProps, "size">): JSX.Element => {
   useCloseSidePanelOnEscPressed();
   useCloseSidePanelOnRouteChange();
   useResetSidePanelOnUnmount();
-  const { sidePanelSize } = useSidePanel();
+  const { sidePanelSize, sidePanelContent } = useSidePanel();
 
-  return <AppSidePanelContent {...props} size={sidePanelSize} />;
+  return (
+    <AppSidePanelContent
+      {...props}
+      sidePanelContent={sidePanelContent}
+      size={sidePanelSize}
+    />
+  );
 };
 
 export default AppSidePanel;
