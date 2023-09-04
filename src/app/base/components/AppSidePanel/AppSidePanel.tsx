@@ -16,6 +16,7 @@ export type AppSidePanelProps = {
   title: string | null;
   content?: ReactNode;
   size: SidePanelSize;
+  sidePanelContent: SidePanelContent;
 };
 
 const useCloseSidePanelOnRouteChange = (): void => {
@@ -91,8 +92,8 @@ const AppSidePanelContent = ({
   title,
   size,
   content,
+  sidePanelContent,
 }: AppSidePanelProps): JSX.Element => {
-  const { sidePanelContent } = useSidePanel();
   return (
     <aside
       aria-label={title ?? undefined}
@@ -110,9 +111,12 @@ const AppSidePanelContent = ({
           {title ? (
             <div className="row section-header">
               <div className="col-12">
-                <h3 className="section-header__title u-flex--no-shrink p-heading--4">
-                  {title} {getSidepanelIcon(sidePanelContent)}
-                </h3>
+                <div className="u-flex--align-center section-header__title">
+                  <h3 className="u-no-margin--bottom u-no-padding--top u-nudge-left--small u-flex--no-shrink p-heading--4">
+                    {title}
+                  </h3>
+                  {getSidepanelIcon(sidePanelContent)}
+                </div>
                 <hr />
               </div>
             </div>
