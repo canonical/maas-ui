@@ -16,6 +16,7 @@ jobs:
           browser: chrome
           config: baseUrl=http://maas.io/docs
           spec: "cypress/e2e/docs-links/**/*.spec.ts"
+          install-command: yarn install
       - name: Create issue on failure
         if: failure()
         uses: JasonEtco/create-an-issue@v2
