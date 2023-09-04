@@ -27,7 +27,7 @@ describe("rootReducer", () => {
     expect(newState).toMatchSnapshot();
   });
 
-  it("it should clear the state when disconnected from the websocket", () => {
+  it("it should clear the state on status/checkAuthenticatedError", () => {
     const authUser = userFactory();
     const initialState = rootStateFactory({
       machine: machineStateFactory({
@@ -44,11 +44,11 @@ describe("rootReducer", () => {
     const newState = createRootReducer(
       jest.fn().mockReturnValue(routerStateFactory())
     )(initialState, {
-      type: "status/websocketDisconnected",
+      type: "status/checkAuthenticatedError",
     });
 
     expect(newState.machine.items.length).toBe(0);
-    expect(newState.status.authenticating).toBe(true);
+    expect(newState.status.authenticating).toBe(false);
     expect(newState.user.items.length).toBe(0);
     expect(newState.user.auth.user).toStrictEqual(authUser);
   });

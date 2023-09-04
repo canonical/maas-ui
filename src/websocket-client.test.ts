@@ -20,8 +20,8 @@ describe("websocket client", () => {
     getCookieMock.mockImplementation(() => "abc123");
     client = new WebSocketClient();
     client.connect();
-    if (client.socket) {
-      jest.spyOn(client.socket, "send");
+    if (client.rws) {
+      jest.spyOn(client.rws, "send");
     }
   });
 
@@ -45,7 +45,7 @@ describe("websocket client", () => {
       method: "packagerepository.list",
     });
     expect(
-      JSON.parse((client.socket?.send as jest.Mock).mock.calls[0][0])
+      JSON.parse((client.rws?.send as jest.Mock).mock.calls[0][0])
     ).toStrictEqual({
       method: "packagerepository.list",
       request_id: 0,

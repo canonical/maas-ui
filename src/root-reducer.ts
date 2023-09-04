@@ -99,13 +99,7 @@ const createRootReducer =
           authenticating: false,
         } as StatusState,
       };
-    } else if (
-      [
-        "status/websocketError",
-        "status/websocketDisconnected",
-        "status/checkAuthenticatedError",
-      ].includes(action.type)
-    ) {
+    } else if (["status/checkAuthenticatedError"].includes(action.type)) {
       setupState = {
         status: state?.status,
         user: {
