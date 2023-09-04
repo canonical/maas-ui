@@ -33,6 +33,27 @@ describe("status", () => {
       )
     ).toStrictEqual(
       statusStateFactory({
+        connected: true,
+        connecting: true,
+        error: null,
+      })
+    );
+  });
+
+  it("should correctly reduce status/websocketConnect on initial connection", () => {
+    expect(
+      reducers(
+        statusStateFactory({
+          connected: false,
+          connecting: false,
+          error: null,
+        }),
+        {
+          type: "status/websocketConnect",
+        }
+      )
+    ).toStrictEqual(
+      statusStateFactory({
         connected: false,
         connecting: true,
         error: null,

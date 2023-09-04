@@ -33,6 +33,41 @@ export enum VaultErrors {
   CONNECTION_FAILED = "Vault connection failed",
 }
 
+const ConnectionStatus = () => {
+  const connected = useSelector(status.connected);
+  const connecting = useSelector(status.connecting);
+  const connectionError = useSelector(status.error);
+  const authenticated = useSelector(status.authenticated);
+  const shouldDisplayConnectionError =
+    authenticated && (!!connectionError || (!connecting && !connected));
+
+  useEffect(() => {
+    if (connectionError) {
+      Sentry.captureMessage(
+        `Connection Error: ${connectionError}`,
+        Sentry.Severity.Warning
+      );
+    }
+  }, [connectionError]);
+
+  return shouldDisplayConnectionError ? (
+    <div className="p-modal" style={{ alignItems: "flex-start" }}>
+      <section
+        className="p-modal__dialog"
+        style={{
+          paddingTop: "1rem",
+          paddingLeft: "2rem",
+          paddingRight: "2rem",
+        }}
+      >
+        <h5 className="u-no-margin--bottom u-no-padding--top">
+          Trying to reconnect...
+        </h5>
+      </section>
+    </div>
+  ) : null;
+};
+
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
@@ -76,18 +111,21 @@ export const App = (): JSX.Element => {
       dispatch(configActions.fetch());
     }
   }, [dispatch, connected]);
-
   const isLoading =
-    authLoading || connecting || authenticating || configLoading;
-  const hasWebsocketError = !!connectionError || !connected;
+    authLoading ||
+    authenticating ||
+    configLoading ||
+    (!connected && connecting);
   const hasAuthError = !authenticated && !connectionError;
   const hasVaultError =
     configErrors === VaultErrors.REQUEST_FAILED ||
     configErrors === VaultErrors.CONNECTION_FAILED;
-  const isLoaded = connected && authLoaded && authenticated;
+  const isLoaded = authLoaded && authenticated;
 
   let content: ReactNode = null;
-  if (isLoading) {
+  // display loading spinner only on initial load
+  // this prevents flashing of the loading screen when websocket connection is lost and restored
+  if (!isLoaded && isLoading) {
     content = (
       <PageContent
         header={<SectionHeader loading />}
@@ -113,7 +151,7 @@ export const App = (): JSX.Element => {
         <Login />
       </PageContent>
     );
-  } else if (hasWebsocketError || hasVaultError) {
+  } else if (hasVaultError) {
     content = (
       <PageContent
         header={<SectionHeader title="Failed to connect" />}
@@ -148,7 +186,8 @@ export const App = (): JSX.Element => {
   return (
     <div className="l-application" id={MAAS_UI_ID}>
       <ThemePreviewContextProvider>
-        {connected && authLoaded && authenticated ? (
+        <ConnectionStatus />
+        {authLoaded && authenticated ? (
           <AppSideNavigation />
         ) : (
           <header className="l-navigation-bar is-pinned">

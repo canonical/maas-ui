@@ -108,7 +108,6 @@ const statusSlice = createSlice({
       state.error = action.payload;
     },
     websocketConnect: (state: StatusState) => {
-      state.connected = false;
       state.connecting = true;
     },
     websocketConnected: (state: StatusState) => {
@@ -123,8 +122,8 @@ const statusSlice = createSlice({
     ) => {
       state.connected = false;
       if (
-        action.payload.code === 1000 &&
-        action.payload.reason === "Session expired"
+        action.payload?.code === 1000 &&
+        action.payload?.reason === "Session expired"
       ) {
         state.authenticated = false;
         state.authenticationError = action.payload.reason;
@@ -138,8 +137,6 @@ const statusSlice = createSlice({
       action: PayloadAction<StatusState["authenticationError"]>
     ) => {
       state.error = action.payload;
-      state.connected = false;
-      state.connecting = false;
     },
     externalLoginURL: (
       state: StatusState,
