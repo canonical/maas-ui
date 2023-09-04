@@ -516,7 +516,7 @@ export type SetZoneParams = BaseMachineActionParams &
   Omit<NodeSetZoneParams, "system_id">;
 
 export type SoftOffParams = BaseMachineActionParams & {
-  stop_mode: "soft";
+  stop_mode?: "soft";
 };
 
 export type TagParams = BaseMachineActionParams & {
