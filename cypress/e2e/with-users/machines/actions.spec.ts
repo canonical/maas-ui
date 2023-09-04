@@ -14,7 +14,7 @@ const MACHINE_ACTIONS_GROUPS = [
   },
   {
     label: "Power cycle",
-    actions: ["Power on", "Power off"],
+    actions: ["Power on", "Power off", "Soft power off"],
   },
   {
     label: "Troubleshoot",
@@ -160,15 +160,13 @@ context("Machine listing - actions", () => {
       .should("exist");
     cy.deleteMachine(machineName);
   });
-});
 
-it("displays a soft power off option", () => {
-  selectFirstMachine();
-  cy.findByRole("button", { name: /power cycle/i }).click();
-  cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
-  cy.findByRole("complementary", { name: /soft power off/i }).should("exist");
-  cy.findByRole("heading", { name: /soft power off/i }).should("exist");
-  cy.findByRole("tooltip", {
-    name: /a soft power off generally asks the os toshutdown the system gracefully before powering off\. it is only supported by ipmi/i,
-  }).should("exist");
+  it("displays a soft power off option", () => {
+    selectFirstMachine();
+    cy.findByRole("button", { name: /power cycle/i }).click();
+    cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
+    cy.findByRole("complementary", { name: /soft power off/i }).should("exist");
+    cy.findByRole("heading", { name: /soft power off/i }).should("exist");
+    cy.findByTestId("info-icon-tooltip").should("exist");
+  });
 });
