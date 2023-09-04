@@ -5,7 +5,7 @@ import { Icon, Tooltip } from "@canonical/react-components";
 const InfoIconTooltip = ({ message }: { message: ReactNode }) => {
   return (
     <Tooltip message={message} position="right">
-      <Icon name="information" />
+      <Icon data-testid="info-icon-tooltip" name="information" />
     </Tooltip>
   );
 };
