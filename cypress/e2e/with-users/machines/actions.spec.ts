@@ -167,6 +167,6 @@ context("Machine listing - actions", () => {
     cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
     cy.findByRole("complementary", { name: /soft power off/i }).should("exist");
     cy.findByRole("heading", { name: /soft power off/i }).should("exist");
-    cy.findByTestId("info-icon-tooltip").should("exist");
+    cy.findByRole("button", { name: /information/i }).should("exist");
   });
 });
