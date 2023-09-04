@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/browser";
 import type {
   Event as ReconnectingWebSocketEvent,
   ErrorEvent,
@@ -116,7 +117,7 @@ export function createConnection(
   // As the socket automatically tries to reconnect we don't reject this
   // promise, but rather wait for it to eventually connect.
   return new Promise((resolve, reject) => {
-    const readyState = websocketClient.socket?.readyState;
+    const readyState = websocketClient.rws?.readyState;
     const closedOrClosing: Readonly<Array<number>> = [
       WebSocket.CLOSED,
       WebSocket.CLOSING,
@@ -126,7 +127,7 @@ export function createConnection(
       resolve(websocketClient);
       return;
     } else if (
-      !websocketClient.socket ||
+      !websocketClient.rws ||
       (readyState && closedOrClosing.includes(readyState))
     ) {
       try {
@@ -139,8 +140,8 @@ export function createConnection(
       }
       websocketClient.connect();
     }
-    if (websocketClient.socket) {
-      websocketClient.socket.onopen = () => {
+    if (websocketClient.rws) {
+      websocketClient.rws.onopen = () => {
         resolve(websocketClient);
       };
     }
@@ -150,24 +151,26 @@ export function createConnection(
 /**
  * Create a channel to handle WebSocket messages.
  */
-export function watchMessages(socketClient: WebSocketClient): WebSocketChannel {
+export function watchWebsocketEvents(
+  socketClient: WebSocketClient
+): WebSocketChannel {
   return eventChannel((emit) => {
-    if (socketClient.socket) {
-      socketClient.socket.onmessage = (event) => {
+    if (socketClient.rws) {
+      socketClient.rws.onmessage = (event) => {
         emit(event);
       };
-      socketClient.socket.onopen = (event) => {
+      socketClient.rws.onopen = (event) => {
         emit(event);
       };
-      socketClient.socket.onerror = (event) => {
+      socketClient.rws.onerror = (event) => {
         emit(event);
       };
-      socketClient.socket.onclose = (event) => {
+      socketClient.rws.onclose = (event) => {
         emit(event);
       };
     }
     return () => {
-      socketClient.socket?.close();
+      socketClient.rws?.close();
     };
   });
 }
@@ -374,7 +377,7 @@ export function* handleUnsubscribe(
 /**
  * Handle messages received over the WebSocket.
  */
-export function* handleMessage(
+export function* handleWebsocketEvent(
   socketChannel: WebSocketChannel,
   socketClient: WebSocketClient
 ): SagaGenerator<void> {
@@ -635,17 +638,18 @@ export function* setupWebSocket({
   websocketClient: WebSocketClient;
   messageHandlers?: MessageHandler[];
 }): SagaGenerator<void> {
+  let socketClient: WebSocketClient;
   try {
-    const socketClient = yield* call(createConnection, websocketClient);
+    socketClient = yield* call(createConnection, websocketClient);
     yield* put({ type: "status/websocketConnected" });
     // Set up the list of models that have been loaded.
     resetLoaded();
-    const socketChannel = yield* call(watchMessages, socketClient);
+    const socketChannel = yield* call(watchWebsocketEvents, socketClient);
     while (true) {
       const { cancel } = yield* race({
         task: all(
           [
-            call(handleMessage, socketChannel, socketClient),
+            call(handleWebsocketEvent, socketChannel, socketClient),
             // Using takeEvery() instead of call() here to get around this issue:
             // https://github.com/canonical/maas-ui/issues/172
             takeEvery<
@@ -673,13 +677,14 @@ export function* setupWebSocket({
         cancel: take("status/websocketDisconnect"),
       });
       if (cancel) {
-        socketChannel.close();
         yield* put({ type: "status/websocketDisconnected" });
       }
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
+    Sentry.withScope((scope) => {
+      scope.setTag("action", "status/websocketError");
+      Sentry.captureException(error);
+    });
     yield* put({
       type: "status/websocketError",
       error: true,
