@@ -4,19 +4,13 @@ import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 
-import TooltipButton from "../TooltipButton/TooltipButton";
-
-import type {
-  SidePanelContent,
-  SidePanelSize,
-} from "app/base/side-panel-context";
-import { SidePanelViews, useSidePanel } from "app/base/side-panel-context";
+import type { SidePanelSize } from "app/base/side-panel-context";
+import { useSidePanel } from "app/base/side-panel-context";
 
 export type AppSidePanelProps = {
   title: string | null;
   content?: ReactNode;
   size: SidePanelSize;
-  sidePanelContent: SidePanelContent;
 };
 
 const useCloseSidePanelOnRouteChange = (): void => {
@@ -49,50 +43,10 @@ const useCloseSidePanelOnEscPressed = (): void => {
   useOnEscapePressed(() => setSidePanelContent(null));
 };
 
-export const getSidepanelIcon = (sidePanelContent: SidePanelContent | null) => {
-  if (sidePanelContent) {
-    const [, name] = sidePanelContent.view;
-    switch (name) {
-      case SidePanelViews.POWER_OFF_MACHINE_SOFT[1]:
-        return (
-          <TooltipButton
-            iconName="information"
-            message={
-              <>
-                A soft power off generally asks the OS to
-                <br />
-                shutdown the system gracefully before powering off. <br />
-                It is only supported by IPMI
-              </>
-            }
-          />
-        );
-      case SidePanelViews.POWER_OFF_MACHINE[1]:
-        return (
-          <TooltipButton
-            iconName="information"
-            message={
-              <>
-                Power off will perform a hard power off, which occurs
-                immediately <br />
-                without any warning to the OS.
-              </>
-            }
-          />
-        );
-      default:
-        return <></>;
-    }
-  } else {
-    return <></>;
-  }
-};
-
 const AppSidePanelContent = ({
   title,
   size,
   content,
-  sidePanelContent,
 }: AppSidePanelProps): JSX.Element => {
   return (
     <aside
@@ -111,12 +65,9 @@ const AppSidePanelContent = ({
           {title ? (
             <div className="row section-header">
               <div className="col-12">
-                <div className="u-flex--align-center section-header__title">
-                  <h3 className="u-no-margin--bottom u-no-padding--top u-nudge-left--small u-flex--no-shrink p-heading--4">
-                    {title}
-                  </h3>
-                  {getSidepanelIcon(sidePanelContent)}
-                </div>
+                <h3 className="section-header__title u-flex--no-shrink p-heading--4">
+                  {title}
+                </h3>
                 <hr />
               </div>
             </div>
@@ -128,21 +79,13 @@ const AppSidePanelContent = ({
   );
 };
 
-const AppSidePanel = (
-  props: Omit<AppSidePanelProps, "size" | "sidePanelContent">
-): JSX.Element => {
+const AppSidePanel = (props: Omit<AppSidePanelProps, "size">): JSX.Element => {
   useCloseSidePanelOnEscPressed();
   useCloseSidePanelOnRouteChange();
   useResetSidePanelOnUnmount();
-  const { sidePanelSize, sidePanelContent } = useSidePanel();
+  const { sidePanelSize } = useSidePanel();
 
-  return (
-    <AppSidePanelContent
-      {...props}
-      sidePanelContent={sidePanelContent}
-      size={sidePanelSize}
-    />
-  );
+  return <AppSidePanelContent {...props} size={sidePanelSize} />;
 };
 
 export default AppSidePanel;
