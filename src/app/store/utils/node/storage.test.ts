@@ -732,14 +732,14 @@ describe("isNodeStorageConfigurable", () => {
         machineDetailsFactory({ status_code: NodeStatusCode.READY })
       )
     ).toBe(true);
+  });
+
+  it("handles a machine in a non-configurable state", () => {
     expect(
       isNodeStorageConfigurable(
         machineDetailsFactory({ status_code: NodeStatusCode.ALLOCATED })
       )
-    ).toBe(true);
-  });
-
-  it("handles a machine in a non-configurable state", () => {
+    ).toBe(false);
     expect(
       isNodeStorageConfigurable(
         machineDetailsFactory({ status_code: NodeStatusCode.NEW })

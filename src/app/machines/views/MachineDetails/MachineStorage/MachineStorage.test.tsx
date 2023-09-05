@@ -4,6 +4,7 @@ import { storageLayoutOptions } from "./ChangeStorageLayout/ChangeStorageLayout"
 import MachineStorage from "./MachineStorage";
 
 import * as hooks from "app/base/hooks/analytics";
+import { NodeStatusCode } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -41,6 +42,7 @@ it("renders storage layout dropdown if machine's storage can be edited", async (
         machineDetailsFactory({
           locked: false,
           permissions: ["edit"],
+          status_code: NodeStatusCode.READY,
           system_id: "abc123",
         }),
       ],
