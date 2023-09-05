@@ -48,7 +48,7 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
           {
             active: canEdit && !machineStorageConfigurable,
             content:
-              "Storage configuration cannot be modified unless the machine is Ready or Allocated.",
+              "Storage configuration cannot be modified unless the machine is Ready.",
           },
           {
             active: canEdit && !osSupportsStorageConfig,
