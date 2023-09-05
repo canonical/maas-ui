@@ -88,6 +88,27 @@ export const MachineActionFormWrapper = ({
 
   const filter = selectedToFilters(selectedMachines || null);
 
+  const getHelperText = (action: MachineActions) => {
+    switch (action) {
+      case NodeActions.OFF:
+        return (
+          <p>
+            Power off will perform a hard power off, which occurs immediately
+            without any warning to the OS.
+          </p>
+        );
+      case NodeActions.SOFT_OFF:
+        return (
+          <p>
+            A soft power off generally asks the OS to shutdown the system
+            gracefully before powering off. It is only supported by IPMI
+          </p>
+        );
+      default:
+        return <></>;
+    }
+  };
+
   const getFormComponent = () => {
     if (!filter) {
       return null;
@@ -167,6 +188,7 @@ export const MachineActionFormWrapper = ({
           <FieldlessForm
             action={action}
             actions={machineActions}
+            buttonsHelp={getHelperText(action)}
             {...commonNodeFormProps}
           />
         );

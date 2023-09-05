@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { useDispatch } from "react-redux";
 
 import type { NodeActionFormProps } from "../types";
@@ -14,12 +16,16 @@ import { capitaliseFirst, kebabToCamelCase } from "app/utils";
 type Props<E = null> = NodeActionFormProps<E> & {
   actions: typeof machineActions | typeof controllerActions;
   action: NodeActions;
+  buttonsHelpClassName?: string;
+  buttonsHelp?: ReactNode;
   cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
 };
 
 export const FieldlessForm = <E,>({
   action,
   actions,
+  buttonsHelp,
+  buttonsHelpClassName,
   cleanup,
   clearSidePanelContent,
   errors,
@@ -39,6 +45,8 @@ export const FieldlessForm = <E,>({
     <ActionForm<EmptyObject, E>
       actionName={action}
       allowUnchanged
+      buttonsHelp={buttonsHelp}
+      buttonsHelpClassName={buttonsHelpClassName}
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
