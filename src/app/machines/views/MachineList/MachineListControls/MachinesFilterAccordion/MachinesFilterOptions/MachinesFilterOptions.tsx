@@ -33,7 +33,8 @@ const MachinesFilterOptions = ({
   setSearchText,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const filterOptions = useSelector((state: RootState) =>
+
+  let filterOptions = useSelector((state: RootState) =>
     machineSelectors.filterOptions(state, group)
   );
   const optionsLoading = useSelector((state: RootState) =>
@@ -43,6 +44,38 @@ const MachinesFilterOptions = ({
     machineSelectors.filterOptionsLoaded(state, group)
   );
   const currentFilters = FilterMachines.getCurrentFilters(searchText);
+
+  if (group === "workloads") {
+    // Workload annotations are key/value pairs, but we're given
+    // them as a string "key:value". So we need to split them.
+    const filterKeys = filterOptions.map((filter) => {
+      return filter.key.toString().split(":")[0];
+    });
+
+    // Find the count of each workload annotation key
+    const counts = filterKeys.reduce(
+      (result: { key: string; count: number }[], currentFilterKey) => {
+        const existingFilter = result.find(
+          (filter) => filter.key === currentFilterKey
+        );
+
+        if (existingFilter) {
+          existingFilter.count++;
+        } else {
+          result.push({ key: currentFilterKey, count: 1 });
+        }
+
+        return result;
+      },
+      []
+    );
+
+    // Turn array of keys and counts into valid filter options
+    filterOptions = counts.map((filterCount) => ({
+      key: filterCount.key,
+      label: `${filterCount.key} (${filterCount.count})`,
+    }));
+  }
 
   useEffect(() => {
     if (!optionsLoading && !optionsLoaded) {
