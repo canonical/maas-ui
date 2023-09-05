@@ -66,7 +66,7 @@ describe("StorageNotifications", () => {
 
     expect(
       screen.getByText(
-        "Storage configuration cannot be modified unless the machine is Ready or Allocated."
+        "Storage configuration cannot be modified unless the machine is Ready."
       )
     ).toBeInTheDocument();
   });

@@ -414,8 +414,7 @@ export const isMounted = (fs: Filesystem | null): fs is Filesystem => {
 export const isNodeStorageConfigurable = (
   node?: Controller | Machine | null
 ): boolean =>
-  nodeIsMachine(node) &&
-  [NodeStatusCode.READY, NodeStatusCode.ALLOCATED].includes(node.status_code);
+  nodeIsMachine(node) && [NodeStatusCode.READY].includes(node.status_code);
 
 /**
  * Returns whether a storage device is a partition.
