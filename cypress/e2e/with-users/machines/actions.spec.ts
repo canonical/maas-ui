@@ -167,6 +167,8 @@ context("Machine listing - actions", () => {
     cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
     cy.findByRole("complementary", { name: /soft power off/i }).should("exist");
     cy.findByRole("heading", { name: /soft power off/i }).should("exist");
-    cy.findByRole("button", { name: /information/i }).should("exist");
+    cy.findByText(
+      /a soft power off generally asks the os to shutdown the system gracefully before powering off\. it is only supported by ipmi/i
+    ).should("exist");
   });
 });
