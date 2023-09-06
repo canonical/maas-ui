@@ -234,7 +234,7 @@ describe("Machines", () => {
           machineFilterGroupFactory({
             key: FilterGroupKey.Workloads,
             loaded: true,
-            options: [{ key: "animal:springbox", label: "animal: springbok" }],
+            options: [{ key: "animal:springbok", label: "animal: springbok" }],
           }),
         ],
         filtersLoaded: true,
