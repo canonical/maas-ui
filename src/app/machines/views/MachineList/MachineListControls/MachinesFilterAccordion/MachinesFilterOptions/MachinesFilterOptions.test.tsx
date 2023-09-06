@@ -215,7 +215,10 @@ describe("MachinesFilterOptions", () => {
     filterGroup = machineFilterGroupFactory({
       key: FilterGroupKey.Workloads,
       loaded: true,
-      options: [{ key: "key1:value1", label: "key1: value1" }],
+      options: [
+        { key: "key1:value1", label: "key1: value1" },
+        { key: "key2:value1", label: "key2: value1" },
+      ],
     });
     state.machine.filters = [filterGroup];
     const setSearchText = jest.fn();
@@ -231,5 +234,12 @@ describe("MachinesFilterOptions", () => {
 
     // "workload-" prefix should be added to the key.
     expect(setSearchText).toHaveBeenCalledWith("workload-key1:()");
+
+    await userEvent.click(screen.getByRole("checkbox", { name: "key2 (1)" }));
+
+    // second annotation key should be added to search text
+    expect(setSearchText).toHaveBeenCalledWith(
+      "workload-key1:() workload-key2:()"
+    );
   });
 });
