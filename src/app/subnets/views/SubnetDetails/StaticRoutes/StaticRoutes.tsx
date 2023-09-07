@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button, MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import SubnetLink from "app/base/components/SubnetLink";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
+import { useFetchActions } from "app/base/hooks";
 import authSelectors from "app/store/auth/selectors";
 import { actions as staticRouteActions } from "app/store/staticroute";
 import staticRouteSelectors from "app/store/staticroute/selectors";
@@ -169,10 +170,7 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
   const loading = staticRoutesLoading || subnetsLoading;
   const isAddStaticRouteOpen = expanded?.type === ExpandedType.Create;
 
-  useEffect(() => {
-    dispatch(staticRouteActions.fetch());
-    dispatch(subnetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
   return (
     <TitledSection

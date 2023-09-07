@@ -1,18 +1,17 @@
 import type { HTMLProps } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useId, useOnEscapePressed } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
 import className from "classnames";
 import { useFormikContext } from "formik";
-import { useDispatch } from "react-redux";
 
 import SelectButton from "../../SelectButton";
 
 import MachineSelectBox from "./MachineSelectBox/MachineSelectBox";
 
 import OutsideClickHandler from "app/base/components/OutsideClickHandler";
-import { usePreviousPersistent } from "app/base/hooks";
+import { useFetchActions, usePreviousPersistent } from "app/base/hooks";
 import type { FetchFilters, Machine } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
@@ -40,7 +39,7 @@ export const MachineSelect = ({
   ...props
 }: Props): JSX.Element => {
   const { setFieldValue } = useFormikContext();
-  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const labelId = useId();
   const selectId = useId();
@@ -54,9 +53,7 @@ export const MachineSelect = ({
   const previousMachine = usePreviousPersistent(machine);
   const selectedMachine = machine || previousMachine;
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   const buttonLabel = selectedMachine?.hostname || defaultOption;
 

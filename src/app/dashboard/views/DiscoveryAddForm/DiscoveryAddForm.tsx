@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import { DeviceType } from "./types";
 import type { DiscoveryAddValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
-import { useCycled } from "app/base/hooks";
+import { useFetchActions, useCycled } from "app/base/hooks";
 import urls from "app/base/urls";
 import { hostnameValidation } from "app/base/validation";
 import { actions as deviceActions } from "app/store/device";
@@ -155,12 +155,12 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
     filters: { status: FetchNodeStatus.DEPLOYED },
   });
 
-  useEffect(() => {
-    dispatch(deviceActions.fetch());
-    dispatch(domainActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    deviceActions.fetch,
+    domainActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   if (
     !devicesLoaded ||

@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import APIKeyForm from "../APIKeyForm";
 
+import { useFetchActions } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tokenActions } from "app/store/token";
@@ -16,10 +15,7 @@ export enum Label {
 }
 
 export const APIKeyEdit = (): JSX.Element => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(tokenActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tokenActions.fetch]);
 
   const id = useGetURLId(TokenMeta.PK);
   const loading = useSelector(tokenSelectors.loading);

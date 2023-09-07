@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-
 import { Select } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 
@@ -26,13 +25,10 @@ export const DomainSelect = ({
   valueKey = "name",
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-  }, [dispatch]);
+  useFetchActions([domainActions.fetch]);
 
   return (
     <FormikField

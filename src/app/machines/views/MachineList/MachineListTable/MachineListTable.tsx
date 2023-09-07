@@ -1,8 +1,7 @@
-import { useMemo, memo, useCallback, useEffect, useState } from "react";
+import { useMemo, memo, useCallback, useState } from "react";
 
 import { MainTable } from "@canonical/react-components";
 import classNames from "classnames";
-import { useDispatch } from "react-redux";
 
 import AllCheckbox from "./AllCheckbox";
 import MachineListDisplayCount from "./MachineListDisplayCount";
@@ -17,7 +16,7 @@ import {
 import type { MachineListTableProps } from "./types";
 
 import TableHeader from "app/base/components/TableHeader";
-import { useSendAnalytics } from "app/base/hooks";
+import { useFetchActions, useSendAnalytics } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import {
   columnLabels,
@@ -67,7 +66,7 @@ export const MachineListTable = ({
     () => FilterMachines.parseFetchFilters(filter),
     [filter]
   );
-  const dispatch = useDispatch();
+
   const sendAnalytics = useSendAnalytics();
   const { selectedCount } = useMachineSelectedCount(parsedFilter);
 
@@ -90,19 +89,19 @@ export const MachineListTable = ({
   };
   const [showMAC, setShowMAC] = useState(false);
   const [showFullName, setShowFullName] = useState(false);
-  useEffect(() => {
-    dispatch(generalActions.fetchArchitectures());
-    dispatch(generalActions.fetchDefaultMinHweKernel());
-    dispatch(generalActions.fetchHweKernels());
-    dispatch(generalActions.fetchMachineActions());
-    dispatch(generalActions.fetchOsInfo());
-    dispatch(generalActions.fetchPowerTypes());
-    dispatch(generalActions.fetchVersion());
-    dispatch(resourcePoolActions.fetch());
-    dispatch(tagActions.fetch());
-    dispatch(userActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    generalActions.fetchArchitectures,
+    generalActions.fetchDefaultMinHweKernel,
+    generalActions.fetchHweKernels,
+    generalActions.fetchMachineActions,
+    generalActions.fetchOsInfo,
+    generalActions.fetchPowerTypes,
+    generalActions.fetchVersion,
+    resourcePoolActions.fetch,
+    tagActions.fetch,
+    userActions.fetch,
+    zoneActions.fetch,
+  ]);
 
   const toggleHandler = useCallback(
     (columnName: string, open: boolean) => {

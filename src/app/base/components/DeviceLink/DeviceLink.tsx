@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
@@ -19,15 +18,12 @@ export enum Labels {
 }
 
 const DeviceLink = ({ systemId }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );
   const devicesLoading = useSelector(deviceSelectors.loading);
 
-  useEffect(() => {
-    dispatch(deviceActions.fetch());
-  }, [dispatch]);
+  useFetchActions([deviceActions.fetch]);
 
   if (devicesLoading) {
     return <Spinner aria-label={Labels.LoadingDevices} />;

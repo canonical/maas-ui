@@ -1,14 +1,14 @@
 import type { KeyboardEvent } from "react";
-import { useEffect } from "react";
 
 import { MainTable } from "@canonical/react-components";
 import { highlightSubString as baseHighlightSubString } from "@canonical/react-components/dist/utils";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Placeholder from "../Placeholder";
 import VisuallyHidden from "../VisuallyHidden";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import { useFetchActions } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { actions as tagActions } from "app/store/tag";
@@ -129,13 +129,10 @@ export const MachineSelectTable = ({
   searchText,
   setSearchText,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const tags = useSelector(tagSelectors.all);
   const loadingMachines = useSelector(machineSelectors.loading);
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   const rows = generateRows(
     machines,

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   ContextualMenu,
@@ -20,6 +20,7 @@ import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
 import docsUrls from "app/base/docsUrls";
+import { useFetchActions } from "app/base/hooks";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
 import type { IPRange, IPRangeMeta } from "app/store/iprange/types";
@@ -214,9 +215,7 @@ const ReservedRanges = ({
   const isDisabled = isId(vlanId) && !hasVLANSubnets;
   const showSubnetColumn = isId(vlanId);
 
-  useEffect(() => {
-    dispatch(ipRangeActions.fetch());
-  }, [dispatch]);
+  useFetchActions([ipRangeActions.fetch]);
 
   const headers = [
     {

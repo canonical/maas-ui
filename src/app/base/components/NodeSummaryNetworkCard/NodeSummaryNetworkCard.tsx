@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import NetworkCardTable from "./NetworkCardTable";
 
+import { useFetchActions } from "app/base/hooks";
 import type { Device } from "app/store/device/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -104,14 +105,10 @@ const NodeSummaryNetworkCard = ({
   networkURL,
   node,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([fabricActions.fetch, vlanActions.fetch]);
 
   let content: JSX.Element;
 

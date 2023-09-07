@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, Route, Routes } from "react-router-dom-v5-compat";
 
 import PoolList from "./PoolList";
 
 import PageContent from "app/base/components/PageContent";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import PoolAdd from "app/pools/views/PoolAdd";
@@ -20,12 +19,10 @@ import { getRelativeRoute } from "app/utils";
 
 const Pools = (): JSX.Element => {
   const base = urls.pools.index;
-  const dispatch = useDispatch();
+
   const { machineCount } = useFetchMachineCount();
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
 

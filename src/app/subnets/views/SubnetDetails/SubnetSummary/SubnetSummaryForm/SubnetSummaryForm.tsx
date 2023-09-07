@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -7,6 +5,7 @@ import SubnetSummaryFormFields from "./SubnetSummaryFormFields";
 import type { SubnetSummaryFormValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useFetchActions } from "app/base/hooks";
 import { actions as fabricActions } from "app/store/fabric";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -48,10 +47,7 @@ const SubnetSummaryForm = ({
     vlanSelectors.getById(state, subnet?.vlan)
   );
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([fabricActions.fetch, vlanActions.fetch]);
 
   if (!subnet || !vlan) {
     return null;

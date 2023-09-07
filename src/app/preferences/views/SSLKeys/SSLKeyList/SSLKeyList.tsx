@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
 import urls from "app/base/urls";
 import SettingsTable from "app/settings/components/SettingsTable";
 import { actions as sslkeyActions } from "app/store/sslkey";
@@ -88,9 +88,7 @@ const SSLKeyList = (): JSX.Element => {
     setExpandedId(null);
   };
 
-  useEffect(() => {
-    dispatch(sslkeyActions.fetch());
-  }, [dispatch]);
+  useFetchActions([sslkeyActions.fetch]);
 
   return (
     <>

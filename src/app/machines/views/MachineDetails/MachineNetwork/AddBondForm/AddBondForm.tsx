@@ -25,7 +25,7 @@ import type {
   Selected,
   SetSelected,
 } from "app/base/components/node/networking/types";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
+import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -120,11 +120,11 @@ const AddBondForm = ({
     () => close()
   );
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   useEffect(() => {
     // When the form is first show then store the VLAN for this bond. This needs

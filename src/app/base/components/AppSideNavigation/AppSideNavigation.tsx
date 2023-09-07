@@ -12,6 +12,7 @@ import NavigationBanner from "./NavigationBanner";
 import { navGroups } from "./constants";
 
 import {
+  useFetchActions,
   useCompletedIntro,
   useCompletedUserIntro,
   useGoogleAnalytics,
@@ -72,13 +73,9 @@ const AppSideNavigation = (): JSX.Element => {
     navigate,
   ]);
 
-  useEffect(() => {
-    dispatch(controllerActions.fetch());
-  }, [dispatch]);
+  useFetchActions([controllerActions.fetch]);
 
-  useEffect(() => {
-    dispatch(podActions.fetch());
-  }, [dispatch]);
+  useFetchActions([podActions.fetch]);
 
   const virshKvms = useSelector(podSelectors.virsh);
   const kvmsLoaded = useSelector(podSelectors.loaded);

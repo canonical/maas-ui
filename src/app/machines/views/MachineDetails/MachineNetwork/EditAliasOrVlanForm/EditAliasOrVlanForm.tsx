@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import TagNameField from "app/base/components/TagNameField";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
+import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -84,11 +84,11 @@ const EditAliasOrVlanForm = ({
     () => close()
   );
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   if (!nic || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;

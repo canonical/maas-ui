@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import type { MaasIntroValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
 import TableConfirm from "app/base/components/TableConfirm";
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { UrlSchema } from "app/base/validation";
 import IntroSection from "app/intro/components/IntroSection";
@@ -60,9 +61,7 @@ const MaasIntro = (): JSX.Element => {
   const [showSkip, setShowSkip] = useState(false);
   const exitURL = useExitURL();
 
-  useEffect(() => {
-    dispatch(repoActions.fetch());
-  }, [dispatch]);
+  useFetchActions([repoActions.fetch]);
 
   const errors = {
     ...(configErrors && typeof configErrors === "object" ? configErrors : {}),

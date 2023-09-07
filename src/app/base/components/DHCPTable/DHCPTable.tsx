@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { List, MainTable, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import TitledSection from "../TitledSection";
@@ -11,6 +11,7 @@ import EditDHCP from "./EditDHCP";
 import DhcpSnippetType from "app/base/components/DhcpSnippetType";
 import TableActions from "app/base/components/TableActions";
 import docsUrls from "app/base/docsUrls";
+import { useFetchActions } from "app/base/hooks";
 import settingsURLs from "app/settings/urls";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
@@ -136,7 +137,6 @@ const DHCPTable = ({
   ipRanges,
   modelName,
 }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<DHCPSnippet["id"] | null>(null);
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippets = useSelector((state: RootState) =>
@@ -148,9 +148,7 @@ const DHCPTable = ({
         )
   );
 
-  useEffect(() => {
-    dispatch(dhcpsnippetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([dhcpsnippetActions.fetch]);
 
   return (
     <TitledSection className={className} title={Labels.SectionTitle}>

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import type { CloneFormValues } from "../CloneForm";
 
@@ -11,6 +11,7 @@ import CloneStorageTable from "./CloneStorageTable";
 import SourceMachineSelect from "./SourceMachineSelect";
 
 import FormikField from "app/base/components/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as fabricActions } from "app/store/fabric";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
@@ -30,17 +31,17 @@ export const CloneFormFields = ({
   setSelectedMachine,
 }: Props): JSX.Element => {
   const { setFieldValue, values } = useFormikContext<CloneFormValues>();
-  const dispatch = useDispatch();
+
   const machineInState = useSelector((state: RootState) =>
     machineSelectors.getById(state, values.source)
   );
   const { loading: loadingMachineDetails } = useFetchMachine(values.source);
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   // The machine in state can change between types Machine and MachineDetails at
   // any time if it's not the "active" machine, so we set the MachineDetails

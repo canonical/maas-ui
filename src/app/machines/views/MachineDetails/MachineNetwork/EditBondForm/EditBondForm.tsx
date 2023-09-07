@@ -21,7 +21,7 @@ import type {
   Selected,
   SetSelected,
 } from "app/base/components/node/networking/types";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
+import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -113,11 +113,11 @@ const EditBondForm = ({
     () => closeForm()
   );
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   useEffect(() => {
     // Set the bond parents as selected so that they appear in the table and the

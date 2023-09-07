@@ -1,9 +1,7 @@
-import { useEffect } from "react";
-
 import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import IPColumn from "./IPColumn";
 import PXEColumn from "./PXEColumn";
@@ -24,7 +22,11 @@ import type {
   Selected,
   SetSelected,
 } from "app/base/components/node/networking/types";
-import { useIsAllNetworkingDisabled, useTableSort } from "app/base/hooks";
+import {
+  useFetchActions,
+  useIsAllNetworkingDisabled,
+  useTableSort,
+} from "app/base/hooks";
 import type { Sort } from "app/base/types";
 import { SortDirection } from "app/base/types";
 import NetworkTableActions from "app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
@@ -435,7 +437,6 @@ const NetworkTable = ({
   setExpanded,
   setSelected,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
@@ -458,11 +459,11 @@ const NetworkTable = ({
     : null;
   const hasActions = !!setExpanded;
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   const rows = generateRows(
     checkboxHandler,

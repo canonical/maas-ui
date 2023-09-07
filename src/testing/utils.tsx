@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -299,6 +301,16 @@ export const expectTooltipOnHover = async (
       pass: false,
     };
   }
+};
+
+const generateWrapper =
+  (store = configureStore()(rootStateFactory())) =>
+  ({ children }: { children: ReactNode }) =>
+    <Provider store={store}>{children}</Provider>;
+
+type Hook = Parameters<typeof renderHook>[0];
+export const renderHookWithMockStore = (hook: Hook) => {
+  return renderHook(hook, { wrapper: generateWrapper() });
 };
 
 export * from "@testing-library/react";

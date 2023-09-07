@@ -1,13 +1,12 @@
-import { useEffect } from "react";
-
 import type { MainTableProps } from "@canonical/react-components";
 import { MainTable, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SpaceLink from "app/base/components/SpaceLink";
 import SubnetLink from "app/base/components/SubnetLink";
 import TitledSection from "app/base/components/TitledSection";
 import VLANLink from "app/base/components/VLANLink";
+import { useFetchActions } from "app/base/hooks";
 import type { Fabric } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
 import { actions as spaceActions } from "app/store/space";
@@ -77,7 +76,6 @@ const generateRows = (vlans: VLAN[], subnets: Subnet[]) => {
 };
 
 const FabricVLANs = ({ fabric }: { fabric: Fabric }): JSX.Element => {
-  const dispatch = useDispatch();
   const vlans = useSelector((state: RootState) =>
     vlanSelectors.getByFabric(state, fabric.id)
   );
@@ -87,11 +85,7 @@ const FabricVLANs = ({ fabric }: { fabric: Fabric }): JSX.Element => {
   const vlansLoading = useSelector(vlanSelectors.loading);
   const loading = spacesLoading || subnetsLoading || vlansLoading;
 
-  useEffect(() => {
-    dispatch(spaceActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([spaceActions.fetch, subnetActions.fetch, vlanActions.fetch]);
 
   return (
     <TitledSection title="VLANs on this fabric">

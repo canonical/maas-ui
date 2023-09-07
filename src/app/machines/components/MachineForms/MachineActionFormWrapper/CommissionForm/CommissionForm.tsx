@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,7 +7,7 @@ import CommissionFormFields from "./CommissionFormFields";
 import type { CommissionFormValues, FormattedScript } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
-import { useGetURLId } from "app/base/hooks";
+import { useFetchActions, useGetURLId } from "app/base/hooks";
 import urls from "app/base/urls";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
@@ -104,9 +102,7 @@ export const CommissionForm = ({
     {}
   );
 
-  useEffect(() => {
-    dispatch(scriptActions.fetch());
-  }, [dispatch]);
+  useFetchActions([scriptActions.fetch]);
 
   return (
     <ActionForm<CommissionFormValues, MachineEventErrors>

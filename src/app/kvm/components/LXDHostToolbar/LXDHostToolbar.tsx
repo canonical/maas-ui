@@ -1,12 +1,10 @@
-import { useEffect } from "react";
-
 import { Icon, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import Switch from "app/base/components/Switch";
-import { useSendAnalytics } from "app/base/hooks";
+import { useFetchActions, useSendAnalytics } from "app/base/hooks";
 import urls from "app/base/urls";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
@@ -35,7 +33,6 @@ const LXDHostToolbar = ({
   title,
   viewByNuma,
 }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -45,9 +42,7 @@ const LXDHostToolbar = ({
   const sendAnalytics = useSendAnalytics();
   const location = useLocation();
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   if (!pod) {
     return null;

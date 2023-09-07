@@ -1,11 +1,10 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom-v5-compat";
 
 import LicenseKeyForm from "../LicenseKeyForm";
 
+import { useFetchActions } from "app/base/hooks";
 import { actions as licenseKeysActions } from "app/store/licensekeys";
 import licenseKeysSelectors from "app/store/licensekeys/selectors";
 import type { LicenseKeys } from "app/store/licensekeys/types";
@@ -17,7 +16,6 @@ export enum Labels {
 }
 
 export const LicenseKeyEdit = (): JSX.Element => {
-  const dispatch = useDispatch();
   const { osystem, distro_series } = useParams<{
     osystem?: LicenseKeys["osystem"];
     distro_series?: LicenseKeys["distro_series"];
@@ -32,9 +30,7 @@ export const LicenseKeyEdit = (): JSX.Element => {
     )
   );
 
-  useEffect(() => {
-    dispatch(licenseKeysActions.fetch());
-  }, [dispatch]);
+  useFetchActions([licenseKeysActions.fetch]);
 
   if (loading) {
     return <Spinner text={Labels.Loading} />;

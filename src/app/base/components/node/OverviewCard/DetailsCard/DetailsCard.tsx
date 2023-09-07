@@ -1,11 +1,9 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import { useCanEdit, useSendAnalytics } from "app/base/hooks";
+import { useFetchActions, useCanEdit, useSendAnalytics } from "app/base/hooks";
 import urls from "app/base/urls";
 import type { ControllerDetails } from "app/store/controller/types";
 import { actions as generalActions } from "app/store/general";
@@ -37,7 +35,6 @@ export enum Labels {
 }
 
 const DetailsCard = ({ node }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const powerTypes = useSelector(powerTypesSelectors.get);
   const tagsLoaded = useSelector(tagSelectors.loaded);
   const machineTags = useSelector((state: RootState) =>
@@ -59,10 +56,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
   );
   const tagsDisplay = getTagsDisplay(machineTags);
 
-  useEffect(() => {
-    dispatch(generalActions.fetchPowerTypes());
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchPowerTypes, tagActions.fetch]);
 
   return (
     <div

@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -9,6 +7,7 @@ import * as Yup from "yup";
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
@@ -51,9 +50,7 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
   const saving = useSelector(tagSelectors.saving);
   const errors = useSelector(tagSelectors.errors);
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   if (!tag) {
     return <Spinner data-testid="Spinner" />;

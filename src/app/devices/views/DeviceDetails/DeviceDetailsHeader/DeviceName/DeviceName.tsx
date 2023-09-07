@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import NodeName from "app/base/components/NodeName";
+import { useFetchActions } from "app/base/hooks";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
@@ -30,9 +29,7 @@ const DeviceName = ({
   const saving = useSelector(deviceSelectors.saving);
   const domains = useSelector(domainSelectors.all);
 
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-  }, [dispatch]);
+  useFetchActions([domainActions.fetch]);
 
   return (
     <NodeName

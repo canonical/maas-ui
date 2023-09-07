@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import type { HTMLProps } from "react";
 
 import { Select } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import type { Zone } from "app/store/zone/types";
@@ -27,13 +27,10 @@ export const ZoneSelect = ({
   valueKey = "name",
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const zones = useSelector(zoneSelectors.all);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([zoneActions.fetch]);
 
   return (
     <FormikField

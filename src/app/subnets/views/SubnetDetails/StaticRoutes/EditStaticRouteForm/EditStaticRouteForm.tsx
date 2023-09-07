@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -9,6 +7,7 @@ import { Labels } from "../StaticRoutes";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import SubnetSelect from "app/base/components/SubnetSelect";
+import { useFetchActions } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as staticRouteActions } from "app/store/staticroute";
 import staticRouteSelectors from "app/store/staticroute/selectors";
@@ -57,10 +56,7 @@ const EditStaticRouteForm = ({
     subnetSelectors.getById(state, staticRoute?.source)
   );
 
-  useEffect(() => {
-    dispatch(staticRouteActions.fetch());
-    dispatch(subnetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
   if (!staticRoute || loading) {
     return (

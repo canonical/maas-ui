@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import settingsURLs from "app/settings/urls";
 import { actions as repositoryActions } from "app/store/packagerepository";
@@ -117,14 +117,10 @@ export const RepositoriesList = (): JSX.Element => {
   );
 
   // Fetch repositories on load
-  useEffect(() => {
-    dispatch(repositoryActions.fetch());
-  }, [dispatch]);
+  useFetchActions([repositoryActions.fetch]);
 
   // Clean up saved and error states on unmount.
-  useEffect(() => {
-    dispatch(repositoryActions.cleanup());
-  }, [dispatch]);
+  useFetchActions([repositoryActions.cleanup]);
 
   return (
     <SettingsTable
