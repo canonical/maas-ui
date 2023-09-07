@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import DHCPTable from "app/base/components/DHCPTable";
+import { useFetchActions } from "app/base/hooks";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
 import type { RootState } from "app/store/root/types";
@@ -16,16 +15,12 @@ type Props = {
 };
 
 const DHCPSnippets = ({ modelName, subnetIds }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByIds(state, subnetIds)
   );
   const ipranges = useSelector(ipRangeSelectors.all);
 
-  useEffect(() => {
-    dispatch(subnetActions.fetch());
-    dispatch(ipRangeActions.fetch());
-  }, [dispatch]);
+  useFetchActions([subnetActions.fetch, ipRangeActions.fetch]);
 
   return (
     <DHCPTable ipRanges={ipranges} modelName={modelName} subnets={subnets} />

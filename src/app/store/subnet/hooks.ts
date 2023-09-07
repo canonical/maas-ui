@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { getHasIPAddresses } from "./utils";
 
+import { useFetchActions } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -18,7 +17,6 @@ import vlanSelectors from "app/store/vlan/selectors";
 export const useIsDHCPEnabled = (
   id?: Subnet[SubnetMeta.PK] | null
 ): boolean => {
-  const dispatch = useDispatch();
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, id)
   );
@@ -26,10 +24,7 @@ export const useIsDHCPEnabled = (
     vlanSelectors.getById(state, subnet?.vlan)
   );
 
-  useEffect(() => {
-    dispatch(vlanActions.fetch());
-    dispatch(subnetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([vlanActions.fetch, subnetActions.fetch]);
 
   return vlanOnSubnet?.dhcp_on || false;
 };
@@ -39,15 +34,12 @@ export const useIsDHCPEnabled = (
  * @param id - The id of the subnet to check.
  */
 export const useCanBeDeleted = (id?: Subnet[SubnetMeta.PK] | null): boolean => {
-  const dispatch = useDispatch();
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, id)
   );
   const isDHCPEnabled = useIsDHCPEnabled(id);
 
-  useEffect(() => {
-    dispatch(subnetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([subnetActions.fetch]);
 
   return !isDHCPEnabled || (isDHCPEnabled && !getHasIPAddresses(subnet));
 };

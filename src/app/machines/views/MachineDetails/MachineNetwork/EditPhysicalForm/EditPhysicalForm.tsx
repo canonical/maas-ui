@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import EditPhysicalFields from "./EditPhysicalFields";
 import type { EditPhysicalValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
+import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -85,11 +85,11 @@ const EditPhysicalForm = ({
     () => close()
   );
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   if (!isMachineDetails(machine) || !nic) {
     return <Spinner />;

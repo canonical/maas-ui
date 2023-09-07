@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Row, Col, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { ACTION_STATUS } from "app/base/constants";
+import { useFetchActions } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
 import { ZONE_ACTIONS } from "app/store/zone/constants";
@@ -37,9 +38,7 @@ const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
     zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.update, id)
   );
 
-  useEffect(() => {
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([zoneActions.fetch]);
 
   if (zone) {
     return (

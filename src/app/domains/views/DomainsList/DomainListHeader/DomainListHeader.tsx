@@ -1,13 +1,12 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import DomainListHeaderForm from "../DomainListHeaderForm";
 import { DomainListSidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import { useSidePanel } from "app/base/side-panel-context";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -17,14 +16,11 @@ export enum Labels {
 }
 
 const DomainListHeader = (): JSX.Element => {
-  const dispatch = useDispatch();
   const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-  }, [dispatch]);
+  useFetchActions([domainActions.fetch]);
 
   let buttons: JSX.Element[] | null = [
     <Button

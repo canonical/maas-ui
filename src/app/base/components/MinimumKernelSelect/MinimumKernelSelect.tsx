@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import type { HTMLProps } from "react";
 
 import { Select } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import { hweKernels as hweKernelsSelectors } from "app/store/general/selectors";
 
@@ -26,13 +26,10 @@ export const MinimumKernelSelect = ({
   name,
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const hweKernels = useSelector(hweKernelsSelectors.get);
   const hweKernelsLoaded = useSelector(hweKernelsSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(generalActions.fetchHweKernels());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchHweKernels]);
 
   return (
     <FormikField

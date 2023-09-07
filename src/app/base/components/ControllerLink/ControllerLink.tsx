@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -19,15 +18,12 @@ export enum Labels {
 }
 
 const ControllerLink = ({ systemId }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
 
-  useEffect(() => {
-    dispatch(controllerActions.fetch());
-  }, [dispatch]);
+  useFetchActions([controllerActions.fetch]);
 
   if (controllersLoading) {
     return <Spinner aria-label={Labels.LoadingControllers} />;

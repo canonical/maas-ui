@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useAddMessage } from "app/base/hooks";
+import { useFetchActions, useAddMessage } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import type { Props as SettingsTableProps } from "app/settings/components/SettingsTable/SettingsTable";
 import { actions as sshkeyActions } from "app/store/sshkey";
@@ -171,9 +171,7 @@ const SSHKeyList = ({ sidebar = true, ...tableProps }: Props): JSX.Element => {
     setExpandedId(null);
   };
 
-  useEffect(() => {
-    dispatch(sshkeyActions.fetch());
-  }, [dispatch]);
+  useFetchActions([sshkeyActions.fetch]);
 
   return (
     <>

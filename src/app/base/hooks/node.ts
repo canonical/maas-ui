@@ -1,8 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import type { ButtonProps, MenuLink } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useFetchActions } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import {
   machineActions as machineActionsSelectors,
@@ -96,12 +97,9 @@ export const useMachineActions = (
  * @returns Whether the rack controller is connected.
  */
 export const useIsRackControllerConnected = (): boolean => {
-  const dispatch = useDispatch();
   const powerTypes = useSelector(powerTypesSelectors.get);
 
-  useEffect(() => {
-    dispatch(generalActions.fetchPowerTypes());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchPowerTypes]);
 
   // If power types exist then a rack controller is connected.
   return powerTypes.length > 0;

@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
@@ -29,7 +29,6 @@ const LXDClusterDetailsHeader = ({
   setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
@@ -39,9 +38,7 @@ const LXDClusterDetailsHeader = ({
   const location = useLocation();
   const canRefresh = !!cluster?.hosts.length;
 
-  useEffect(() => {
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([zoneActions.fetch]);
 
   let title: ReactNode = <Spinner text="Loading..." />;
   if (cluster) {

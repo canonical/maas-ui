@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import BridgeFormFields from "../BridgeFormFields";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useFetchActions } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -68,9 +69,7 @@ const EditBridgeForm = ({
     () => close()
   );
 
-  useEffect(() => {
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([vlanActions.fetch]);
 
   if (vlansLoading || !nic || !isMachineDetails(machine)) {
     return <Spinner text="Loading..." />;

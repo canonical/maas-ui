@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import {
   Button,
   Col,
@@ -7,13 +5,14 @@ import {
   Row,
   Spinner,
 } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
 import TitledSection from "app/base/components/TitledSection";
 import docsUrls from "app/base/docsUrls";
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -55,7 +54,6 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
 };
 
 const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const vlans = useSelector(vlanSelectors.all);
@@ -68,11 +66,11 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   if (!vlan || fabricsLoading || subnetsLoading || vlansLoading) {
     return (

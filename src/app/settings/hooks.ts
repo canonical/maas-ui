@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-import { useDispatch, useSelector } from "react-redux";
-
+import { useFetchActions } from "app/base/hooks";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
@@ -28,8 +27,6 @@ export const useDhcpTarget = (
   target: Subnet | Machine | Device | Controller | null;
   type: "iprange" | "subnet" | "controller" | "device" | "machine" | null;
 } => {
-  const dispatch = useDispatch();
-
   const iprange = useSelector((state: RootState) =>
     ipRangeSelectors.getById(state, ipRangeId)
   );
@@ -62,12 +59,12 @@ export const useDhcpTarget = (
     // The machine loaded state will only be true if a machine was found.
     (!!nodeId && ((controllerLoaded && deviceLoaded) || machineLoaded));
 
-  useEffect(() => {
-    dispatch(subnetActions.fetch());
-    dispatch(ipRangeActions.fetch());
-    dispatch(controllerActions.fetch());
-    dispatch(deviceActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    subnetActions.fetch,
+    ipRangeActions.fetch,
+    controllerActions.fetch,
+    deviceActions.fetch,
+  ]);
 
   return {
     loading: isLoading,

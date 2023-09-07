@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import {
   Button,
   Col,
@@ -10,12 +8,12 @@ import {
   Strip,
 } from "@canonical/react-components";
 import type { Location } from "history";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
+import { useFetchActions, useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
 import CPUColumn from "app/kvm/components/CPUColumn";
@@ -179,7 +177,6 @@ const LXDClusterHostsTable = ({
   searchFilter,
   setSidePanelContent,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation<Location>();
   const pools = useSelector(poolSelectors.all);
   const podsLoaded = useSelector(podSelectors.loaded);
@@ -199,9 +196,7 @@ const LXDClusterHostsTable = ({
     currentPage * VMS_PER_PAGE
   );
 
-  useEffect(() => {
-    dispatch(poolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([poolActions.fetch]);
 
   return (
     <>

@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -20,16 +19,13 @@ export enum Labels {
 }
 
 const FabricLink = ({ id }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
   );
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const fabricDisplay = getFabricDisplay(fabric);
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-  }, [dispatch]);
+  useFetchActions([fabricActions.fetch]);
 
   if (fabricsLoading) {
     return <Spinner aria-label={Labels.Loading} />;

@@ -1,8 +1,6 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
@@ -11,6 +9,7 @@ import { DashboardSidePanelViews } from "../constants";
 import ClearAllForm from "./ClearAllForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import { actions as discoveryActions } from "app/store/discovery";
@@ -22,13 +21,11 @@ export enum Labels {
 
 const DashboardHeader = (): JSX.Element => {
   const location = useLocation();
-  const dispatch = useDispatch();
+
   const discoveries = useSelector(discoverySelectors.all);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
-  useEffect(() => {
-    dispatch(discoveryActions.fetch());
-  }, [dispatch]);
+  useFetchActions([discoveryActions.fetch]);
 
   const buttons: JSX.Element[] = [
     <Button

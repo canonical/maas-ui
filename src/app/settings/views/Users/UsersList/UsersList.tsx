@@ -8,7 +8,12 @@ import type { Dispatch } from "redux";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TableHeader from "app/base/components/TableHeader";
-import { useAddMessage, useTableSort, useWindowTitle } from "app/base/hooks";
+import {
+  useFetchActions,
+  useAddMessage,
+  useTableSort,
+  useWindowTitle,
+} from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
 import SettingsTable from "app/settings/components/SettingsTable";
@@ -150,9 +155,7 @@ const UsersList = (): JSX.Element => {
     () => setDeleting(null)
   );
 
-  useEffect(() => {
-    dispatch(userActions.fetch());
-  }, [dispatch]);
+  useFetchActions([userActions.fetch]);
 
   useEffect(() => {
     return () => {

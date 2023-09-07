@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
@@ -29,7 +29,6 @@ const LXDSingleDetailsHeader = ({
   setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
@@ -38,10 +37,7 @@ const LXDSingleDetailsHeader = ({
     zoneSelectors.getById(state, pod?.zone)
   );
 
-  useEffect(() => {
-    dispatch(podActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([podActions.fetch, zoneActions.fetch]);
 
   let title: ReactNode = <Spinner text="Loading..." />;
   if (pod) {

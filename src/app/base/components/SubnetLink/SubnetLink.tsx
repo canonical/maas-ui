@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -16,16 +15,13 @@ type Props = {
 };
 
 const SubnetLink = ({ id }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, id)
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const subnetDisplay = getSubnetDisplay(subnet);
 
-  useEffect(() => {
-    dispatch(subnetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([subnetActions.fetch]);
 
   if (subnetsLoading) {
     return <Spinner aria-label="Loading subnets" />;

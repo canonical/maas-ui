@@ -1,12 +1,11 @@
-import { useEffect } from "react";
-
 import { CodeSnippet, Col, Row, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import AppliedTo from "../AppliedTo";
 
 import Definition from "app/base/components/Definition";
 import ModelNotFound from "app/base/components/ModelNotFound";
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -29,15 +28,12 @@ export enum Label {
 }
 
 const TagDetails = ({ id, narrow }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
   const tagsLoading = useSelector(tagSelectors.loading);
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {
     return <ModelNotFound id={id} linkURL={urls.tags.index} modelName="tag" />;

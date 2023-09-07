@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-
 import { Select } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
 import { simpleSortByKey } from "app/utils";
@@ -20,13 +19,10 @@ export const SpaceSelect = ({
   disabled,
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const spaces = useSelector(spaceSelectors.all);
   const spacesLoaded = useSelector(spaceSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(spaceActions.fetch());
-  }, [dispatch]);
+  useFetchActions([spaceActions.fetch]);
 
   return (
     <FormikField

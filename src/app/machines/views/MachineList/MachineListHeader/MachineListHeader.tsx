@@ -6,6 +6,7 @@ import { useMatch } from "react-router-dom-v5-compat";
 import MachineListControls from "../MachineListControls";
 
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import { useFetchActions } from "app/base/hooks";
 import type { SidePanelContextType } from "app/base/side-panel-context";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
@@ -60,9 +61,7 @@ export const MachineListHeader = ({
     }
   }, [machinesPathMatch, selectedMachines, setSidePanelContent]);
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
 

@@ -1,9 +1,7 @@
-import { useEffect } from "react";
-
 import { MainTable, Spinner } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import RemoveInterface from "./RemoveInterface";
 
@@ -16,7 +14,11 @@ import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab
 import TableHeader from "app/base/components/TableHeader";
 import TableMenu from "app/base/components/TableMenu";
 import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
-import { useIsAllNetworkingDisabled, useTableSort } from "app/base/hooks";
+import {
+  useFetchActions,
+  useIsAllNetworkingDisabled,
+  useTableSort,
+} from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceMeta } from "app/store/device/types";
@@ -226,7 +228,6 @@ const DeviceNetworkTable = ({
   setExpanded,
   systemId,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );
@@ -242,11 +243,11 @@ const DeviceNetworkTable = ({
     direction: SortDirection.DESCENDING,
   });
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   if (!isDeviceDetails(device)) {
     return <Spinner text="Loading..." />;

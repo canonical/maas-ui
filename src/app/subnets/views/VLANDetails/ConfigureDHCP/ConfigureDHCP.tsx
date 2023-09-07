@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import DHCPReservedRanges from "./DHCPReservedRanges";
 import FormikForm from "app/base/components/FormikForm";
 import TitledSection from "app/base/components/TitledSection";
 import docsUrls from "app/base/docsUrls";
-import { useCycled } from "app/base/hooks";
+import { useFetchActions, useCycled } from "app/base/hooks";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
@@ -80,13 +80,13 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
     subnetsLoading ||
     vlansLoading;
 
-  useEffect(() => {
-    dispatch(controllerActions.fetch());
-    dispatch(fabricActions.fetch());
-    dispatch(ipRangeActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    controllerActions.fetch,
+    fabricActions.fetch,
+    ipRangeActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   const Schema = Yup.object()
     .shape({

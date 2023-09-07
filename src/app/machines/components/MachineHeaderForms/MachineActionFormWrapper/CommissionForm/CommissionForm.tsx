@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -7,6 +5,7 @@ import CommissionFormFields from "./CommissionFormFields";
 import type { CommissionFormValues, FormattedScript } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
+import { useFetchActions } from "app/base/hooks";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
@@ -94,9 +93,7 @@ export const CommissionForm = ({
     {}
   );
 
-  useEffect(() => {
-    dispatch(scriptActions.fetch());
-  }, [dispatch]);
+  useFetchActions([scriptActions.fetch]);
 
   return (
     <ActionForm<CommissionFormValues, MachineEventErrors>

@@ -6,7 +6,6 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip } from "@canonical/react-components";
-import { useDispatch } from "react-redux";
 import type { NavigateFunction } from "react-router-dom-v5-compat";
 import { useNavigate, Link } from "react-router-dom-v5-compat";
 
@@ -16,7 +15,7 @@ import TableActions from "app/base/components/TableActions";
 import TableHeader from "app/base/components/TableHeader";
 import TooltipButton from "app/base/components/TooltipButton";
 import docsUrls from "app/base/docsUrls";
-import { useTableSort } from "app/base/hooks";
+import { useFetchActions, useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
 import { actions as tagActions } from "app/store/tag";
@@ -159,7 +158,6 @@ const TagTable = ({
   tags,
   ...tableProps
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
@@ -174,9 +172,7 @@ const TagTable = ({
     currentPage * TAGS_PER_PAGE
   );
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   useEffect(() => {
     // Go to the first page if the search text or filters are updated.

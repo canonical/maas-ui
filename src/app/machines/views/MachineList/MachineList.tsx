@@ -9,7 +9,7 @@ import MachineListTable from "./MachineListTable";
 import { DEFAULTS } from "./MachineListTable/constants";
 
 import VaultNotification from "app/base/components/VaultNotification";
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import type { SortDirection } from "app/base/types";
 import { actions as controllerActions } from "app/store/controller";
 import { actions as generalActions } from "app/store/general";
@@ -87,10 +87,7 @@ const MachineList = ({
   );
 
   // Fetch vault enabled status and controllers on page load
-  useEffect(() => {
-    dispatch(controllerActions.fetch());
-    dispatch(generalActions.fetchVaultEnabled());
-  }, [dispatch]);
+  useFetchActions([controllerActions.fetch, generalActions.fetchVaultEnabled]);
 
   return (
     <>

@@ -1,13 +1,12 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { VLANDetailsViews } from "../constants";
 
 import VLANDeleteForm from "./VLANDeleteForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import { useSidePanel } from "app/base/side-panel-context";
 import authSelectors from "app/store/auth/selectors";
 import { actions as fabricActions } from "app/store/fabric";
@@ -43,7 +42,6 @@ const generateTitle = (
 
 const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
-  const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
@@ -53,9 +51,7 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
   );
   const isAdmin = useSelector(authSelectors.isAdmin);
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-  }, [dispatch]);
+  useFetchActions([fabricActions.fetch]);
 
   const buttons = [];
   if (isAdmin) {

@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 
 import { Select, Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import BasePowerField from "./BasePowerField";
 import IPMIPowerFields from "./IPMIPowerFields";
@@ -11,6 +10,7 @@ import type { LXDPowerFieldsProps } from "./LXDPowerFields";
 import LXDPowerFields from "./LXDPowerFields";
 
 import FormikField from "app/base/components/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import type { AnyObject } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { PowerTypeNames } from "app/store/general/constants";
@@ -42,7 +42,6 @@ export const PowerTypeFields = <V extends AnyObject>({
   fieldScopes = [PowerFieldScope.BMC, PowerFieldScope.NODE],
   showSelect = true,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const allPowerTypes = useSelector(powerTypesSelectors.get);
   const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
@@ -56,9 +55,7 @@ export const PowerTypeFields = <V extends AnyObject>({
     values,
   } = useFormikContext<V>();
 
-  useEffect(() => {
-    dispatch(generalActions.fetchPowerTypes());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchPowerTypes]);
 
   // Only power types that can probe are suitable for use when adding a chassis.
   const powerTypes = forChassis ? chassisPowerTypes : allPowerTypes;

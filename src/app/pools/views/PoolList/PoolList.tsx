@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Col,
@@ -13,7 +13,7 @@ import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
 import urls from "app/base/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -136,9 +136,7 @@ const Pools = (): JSX.Element => {
     () => setDeleting(null)
   );
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   const resourcePools = useSelector(resourcePoolSelectors.all);
 
