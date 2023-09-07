@@ -13,6 +13,7 @@ import TagForm from "./TagForm";
 import DeleteForm from "app/base/components/node/DeleteForm";
 import FieldlessForm from "app/base/components/node/FieldlessForm";
 import NodeActionWarning from "app/base/components/node/NodeActionWarning";
+import PowerOffForm from "app/base/components/node/PowerOffForm";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
@@ -88,27 +89,6 @@ export const MachineActionFormWrapper = ({
 
   const filter = selectedToFilters(selectedMachines || null);
 
-  const getHelperText = (action: MachineActions) => {
-    switch (action) {
-      case NodeActions.OFF:
-        return (
-          <p>
-            Power off will perform a hard power off, which occurs immediately
-            without any warning to the OS.
-          </p>
-        );
-      case NodeActions.SOFT_OFF:
-        return (
-          <p>
-            A soft power off generally asks the OS to shutdown the system
-            gracefully before powering off. It is only supported by IPMI
-          </p>
-        );
-      default:
-        return <></>;
-    }
-  };
-
   const getFormComponent = () => {
     if (!filter) {
       return null;
@@ -179,16 +159,22 @@ export const MachineActionFormWrapper = ({
       case NodeActions.EXIT_RESCUE_MODE:
       case NodeActions.LOCK:
       case NodeActions.MARK_FIXED:
-      case NodeActions.OFF:
       case NodeActions.ON:
       case NodeActions.RESCUE_MODE:
-      case NodeActions.SOFT_OFF:
       case NodeActions.UNLOCK:
         return (
           <FieldlessForm
             action={action}
             actions={machineActions}
-            buttonsHelp={getHelperText(action)}
+            {...commonNodeFormProps}
+          />
+        );
+      case NodeActions.OFF:
+      case NodeActions.SOFT_OFF:
+        return (
+          <PowerOffForm
+            action={action}
+            actions={machineActions}
             {...commonNodeFormProps}
           />
         );
