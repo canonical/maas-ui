@@ -75,7 +75,6 @@ export const PowerColumn = ({
           dispatch(
             machineActions.softOff({
               system_id: systemId,
-              stop_mode: "soft",
             })
           );
           setUpdating(machine.power_state);
