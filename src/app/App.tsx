@@ -101,8 +101,7 @@ export const App = (): JSX.Element => {
   useFetchActions([statusActions.checkAuthenticated]);
 
   useEffect(() => {
-    // When a user logs out the redux store is reset so the authentication
-    // info needs to be fetched again to know if external auth is being used.
+    // Needs to be fetched again to know if external auth is being used.
     if (previousAuthenticated && !authenticated) {
       dispatch(statusActions.checkAuthenticated());
     }

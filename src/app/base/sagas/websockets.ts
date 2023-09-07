@@ -400,7 +400,7 @@ export function* handleWebsocketEvent(
         payload: { code, reason },
       });
     } else if (websocketEvent.type === "open") {
-      yield* put({ type: "status/websocketConnected" });
+      yield* put({ type: "status/websocketConnect" });
       resetLoaded();
     } else if ("data" in websocketEvent) {
       const response = JSON.parse(websocketEvent.data);

@@ -31,6 +31,13 @@ const connected = (state: RootState): boolean => state.status.connected;
 const connecting = (state: RootState): boolean => state.status.connecting;
 
 /**
+ * Number of times the websocket has been connected.
+ * @param {RootState} state - The redux state.
+ * @returns {StatusState["connecting"]} TheStatusState connecting status.
+ */
+const connectedCount = (state: RootState) => state.status.connectedCount;
+
+/**
  * Status errors.
  * @param {RootState} state - The redux state.
  * @returns {StatusState["error"]} TheStatusState error status.
@@ -74,6 +81,7 @@ const status = {
   authenticationError,
   connected,
   connecting,
+  connectedCount,
   error,
   externalAuthURL,
   externalLoginURL,

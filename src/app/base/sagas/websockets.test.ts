@@ -57,6 +57,7 @@ describe("websocket sagas", () => {
     socketClient.connect();
     if (socketClient.rws) {
       socketClient.rws.onerror = jest.fn();
+      socketClient.rws.close = jest.fn();
     }
     socketChannel = eventChannel(() => () => null);
   });
@@ -116,6 +117,22 @@ describe("websocket sagas", () => {
       .run();
   });
 
+  it("stops pinging the websocket when disconnected", () => {
+    return expectSaga(watchWebSockets, socketClient)
+      .dispatch({
+        type: "status/websocketDisconnected",
+      })
+      .put({
+        type: "status/websocketPingStop",
+        meta: {
+          pollStop: true,
+          model: "status",
+          method: "ping",
+        },
+      })
+      .run();
+  });
+
   it("can create a WebSocket connection", () => {
     expect.assertions(1);
     const socket = createConnection(socketClient);
@@ -137,6 +154,13 @@ describe("websocket sagas", () => {
     expect(response).toEqual({
       data: '{"message": "secret"}',
     });
+  });
+
+  it("closes WebSocket connection when channel is closed", () => {
+    const channel = watchWebsocketEvents(socketClient);
+    expect(socketClient.rws?.close).not.toHaveBeenCalled();
+    channel.close();
+    expect(socketClient.rws?.close).toHaveBeenCalled();
   });
 
   it("can send a WebSocket message", () => {
@@ -538,7 +562,7 @@ describe("websocket sagas", () => {
     const saga = handleWebsocketEvent(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
     expect(saga.next({ type: "open" }).value).toEqual(
-      put({ type: "status/websocketConnected" })
+      put({ type: "status/websocketConnect" })
     );
   });
 

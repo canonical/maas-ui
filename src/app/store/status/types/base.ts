@@ -6,6 +6,7 @@ export type StatusState = {
   authenticationError: APIError;
   connected: boolean;
   connecting: boolean;
+  connectedCount: number;
   error: APIError;
   externalAuthURL: string | null;
   externalLoginURL: string | null;

@@ -15,8 +15,10 @@ const statusSlice = createSlice({
     externalLoginURL: null,
     connected: false,
     connecting: false,
-    noUsers: false,
+    // The number of times the websocket connection has been successful
+    connectedCount: 0,
     error: null,
+    noUsers: false,
   } as StatusState,
   reducers: {
     checkAuthenticated: {
@@ -115,6 +117,7 @@ const statusSlice = createSlice({
       state.connecting = false;
       state.authenticationError = null;
       state.error = null;
+      state.connectedCount = state.connectedCount + 1;
     },
     websocketDisconnect: (
       state: StatusState,
