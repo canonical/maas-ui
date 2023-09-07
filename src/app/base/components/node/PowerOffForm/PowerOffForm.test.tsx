@@ -43,7 +43,7 @@ describe("PowerOffForm", () => {
     jest.restoreAllMocks();
   });
 
-  it("can dispatch a power off action on machines", async () => {
+  it("can dispatch a soft power off action on machines", async () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
