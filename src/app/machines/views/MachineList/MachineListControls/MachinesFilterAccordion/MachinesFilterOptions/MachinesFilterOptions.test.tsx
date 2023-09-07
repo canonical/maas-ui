@@ -181,4 +181,65 @@ describe("MachinesFilterOptions", () => {
     await userEvent.click(screen.getByRole("checkbox", { name: "Status 1" }));
     expect(setSearchText).toHaveBeenCalledWith("");
   });
+
+  it("displays workload annotation filters", () => {
+    filterGroup = machineFilterGroupFactory({
+      key: FilterGroupKey.Workloads,
+      loaded: true,
+      options: [
+        { key: "key1:value1", label: "key1: value1" },
+        { key: "key1:value2", label: "key1: value2" },
+        { key: "key2:value1", label: "key2: value1" },
+      ],
+    });
+    state.machine.filters = [filterGroup];
+    renderWithMockStore(
+      <MachinesFilterOptions
+        group={FilterGroupKey.Workloads}
+        setSearchText={jest.fn()}
+      />,
+      { state }
+    );
+
+    // The values don't matter, we just need to display
+    // how many of each key there are.
+    expect(
+      screen.getByRole("checkbox", { name: "key1 (2)" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("checkbox", { name: "key2 (1)" })
+    ).toBeInTheDocument();
+  });
+
+  it("sets search text for workload annotation filters", async () => {
+    filterGroup = machineFilterGroupFactory({
+      key: FilterGroupKey.Workloads,
+      loaded: true,
+      options: [
+        { key: "key1:value1", label: "key1: value1" },
+        { key: "key2:value1", label: "key2: value1" },
+      ],
+    });
+    state.machine.filters = [filterGroup];
+    const setSearchText = jest.fn();
+    renderWithMockStore(
+      <MachinesFilterOptions
+        group={FilterGroupKey.Workloads}
+        setSearchText={setSearchText}
+      />,
+      { state }
+    );
+
+    await userEvent.click(screen.getByRole("checkbox", { name: "key1 (1)" }));
+
+    // "workload-" prefix should be added to the key.
+    expect(setSearchText).toHaveBeenCalledWith("workload-key1:()");
+
+    await userEvent.click(screen.getByRole("checkbox", { name: "key2 (1)" }));
+
+    // second annotation key should be added to search text
+    expect(setSearchText).toHaveBeenCalledWith(
+      "workload-key1:() workload-key2:()"
+    );
+  });
 });
