@@ -10,6 +10,7 @@ import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
 import { FetchGroupKey } from "./types/actions";
 
+import { actions as statusActions } from "app/store/status/slice";
 import {
   NodeActions,
   NodeStatus,
@@ -306,6 +307,42 @@ describe("machine reducer", () => {
       },
     });
     expect(reducers(initialState, actions.invalidateQueries())).toEqual(
+      machineStateFactory({
+        counts: {
+          [callId]: machineStateCountFactory({
+            loaded: true,
+            stale: true,
+          }),
+        },
+        lists: {
+          [callId]: machineStateListFactory({
+            loaded: true,
+            stale: true,
+          }),
+        },
+      })
+    );
+  });
+
+  it("invalidates queries on status/websocketDisconnected", () => {
+    const initialState = machineStateFactory({
+      loading: false,
+      counts: {
+        [callId]: machineStateCountFactory({
+          loaded: true,
+          stale: false,
+        }),
+      },
+      lists: {
+        [callId]: machineStateListFactory({
+          loaded: true,
+          stale: false,
+        }),
+      },
+    });
+    expect(
+      reducers(initialState, statusActions.websocketDisconnected())
+    ).toEqual(
       machineStateFactory({
         counts: {
           [callId]: machineStateCountFactory({

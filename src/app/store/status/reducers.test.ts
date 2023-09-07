@@ -35,6 +35,7 @@ describe("status", () => {
       statusStateFactory({
         connected: true,
         connecting: true,
+        connectedCount: 0,
         error: null,
       })
     );
@@ -78,7 +79,27 @@ describe("status", () => {
     );
   });
 
-  it("should correctly reduce status/websocketConnected", () => {
+  it("should correctly reduce status/websocketConnected on initial connection", () => {
+    expect(
+      reducers(
+        statusStateFactory({
+          connected: false,
+          connecting: true,
+        }),
+        {
+          type: "status/websocketConnected",
+        }
+      )
+    ).toStrictEqual(
+      statusStateFactory({
+        connected: true,
+        connecting: false,
+        connectedCount: 1,
+      })
+    );
+  });
+
+  it("should correctly reduce status/websocketConnected on error", () => {
     expect(
       reducers(
         statusStateFactory({
@@ -96,7 +117,28 @@ describe("status", () => {
         authenticationError: null,
         connected: true,
         connecting: false,
+        connectedCount: 1,
         error: null,
+      })
+    );
+  });
+
+  it("status/websocketConnected should increment connectedCount on reconnect", () => {
+    expect(
+      reducers(
+        statusStateFactory({
+          connected: true,
+          connectedCount: 1,
+        }),
+        {
+          type: "status/websocketConnected",
+        }
+      )
+    ).toStrictEqual(
+      statusStateFactory({
+        connected: true,
+        connecting: false,
+        connectedCount: 2,
       })
     );
   });

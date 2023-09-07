@@ -244,6 +244,15 @@ const generateActionParams = <P extends BaseMachineActionParams>(
   },
 });
 
+const invalidateQueries = (state: MachineState) => {
+  Object.keys(state.lists).forEach((callId) => {
+    state.lists[callId].stale = true;
+  });
+  Object.keys(state.counts).forEach((callId) => {
+    state.counts[callId].stale = true;
+  });
+};
+
 const machineSlice = createSlice({
   name: MachineMeta.MODEL,
   initialState: {
@@ -983,14 +992,7 @@ const machineSlice = createSlice({
       },
     },
     // marks all queries as stale which will trigger a re-fetch
-    invalidateQueries: (state) => {
-      Object.keys(state.lists).forEach((callId) => {
-        state.lists[callId].stale = true;
-      });
-      Object.keys(state.counts).forEach((callId) => {
-        state.counts[callId].stale = true;
-      });
-    },
+    invalidateQueries,
     filterGroups: {
       prepare: () => ({
         meta: {
@@ -1849,6 +1851,12 @@ const machineSlice = createSlice({
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
+  },
+  extraReducers: (builder) => {
+    // Invalidate all machine queries when the websocket disconnects
+    // This ensures we have the latest data when the connection resumes
+    // and necessary model subscriptions (update notifications) are reactivated.
+    builder.addCase("status/websocketDisconnected", invalidateQueries);
   },
 });
 
