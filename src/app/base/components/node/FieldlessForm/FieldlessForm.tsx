@@ -9,11 +9,11 @@ import type { EmptyObject } from "app/base/types";
 import type { actions as controllerActions } from "app/store/controller";
 import type { actions as machineActions } from "app/store/machine";
 import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
-import { NodeActions } from "app/store/types/node";
+import type { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "app/utils";
 
-type Props<E = null> = NodeActionFormProps<E> & {
+export type FieldlessFormProps<E = null> = NodeActionFormProps<E> & {
   actions: typeof machineActions | typeof controllerActions;
   action: NodeActions;
   buttonsHelpClassName?: string;
@@ -36,7 +36,7 @@ export const FieldlessForm = <E,>({
   processingCount,
   selectedCount,
   viewingDetails,
-}: Props<E>): JSX.Element => {
+}: FieldlessFormProps<E>): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
@@ -66,11 +66,9 @@ export const FieldlessForm = <E,>({
         const [, actionFunction] =
           Object.entries(actions).find(([key]) => key === actionMethod) || [];
 
-        const params =
-          action === NodeActions.SOFT_OFF ? { stop_mode: "soft" } : {};
         if (actionFunction) {
           if (selectedMachines) {
-            dispatchForSelectedMachines(actionFunction, params);
+            dispatchForSelectedMachines(actionFunction);
           } else {
             nodes?.forEach((node) => {
               dispatch(actionFunction({ system_id: node.system_id }));
