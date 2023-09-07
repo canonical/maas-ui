@@ -61,7 +61,7 @@ import type {
   FilterGroupKey,
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
-import type { OverrideFailedTesting, SoftOffParams } from "./types/actions";
+import type { OverrideFailedTesting } from "./types/actions";
 import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
 import { createMachineListGroup, isMachineDetails } from "./utils";
 
@@ -1508,7 +1508,39 @@ const machineSlice = createSlice({
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
     setZoneSuccess: statusHandlers.setZone.success,
-    softOff: generateActionParams<SoftOffParams>(NodeActions.OFF),
+    softOff: {
+      prepare: (params: BaseMachineActionParams) => {
+        let actionParams;
+        if ("filter" in params) {
+          const { filter, system_id, ...extra } = params;
+          actionParams = {
+            action: NodeActions.OFF,
+            filter,
+            system_id,
+            extra: { ...extra, stop_mode: "soft" },
+          };
+        } else {
+          const { system_id, ...extra } = params;
+          actionParams = {
+            action: NodeActions.OFF,
+            extra: { ...extra, stop_mode: "soft" },
+            system_id,
+          };
+        }
+        return {
+          meta: {
+            model: MachineMeta.MODEL,
+            method: "soft_power_off",
+          },
+          payload: {
+            params: actionParams,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
     softOffError: statusHandlers.softOff.error,
     softOffStart: statusHandlers.softOff.start,
     softOffSuccess: statusHandlers.softOff.success,
