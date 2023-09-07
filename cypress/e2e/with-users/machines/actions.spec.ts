@@ -161,7 +161,7 @@ context("Machine listing - actions", () => {
     cy.deleteMachine(machineName);
   });
 
-  it("displays a soft power off option", () => {
+  it("can open a soft power off form", () => {
     selectFirstMachine();
     cy.findByRole("button", { name: /power cycle/i }).click();
     cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
