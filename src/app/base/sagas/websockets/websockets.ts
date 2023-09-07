@@ -204,7 +204,7 @@ export function* handleWebsocketEvent(
       }
 
       case "open": {
-        yield* put({ type: "status/websocketConnected" });
+        yield* put({ type: "status/websocketConnect" });
         resetLoaded();
         break;
       }
@@ -477,6 +477,16 @@ function* handleWebsocketPing() {
     },
   });
 }
+function* handleWebsocketPingStop() {
+  yield* put({
+    type: "status/websocketPingStop",
+    meta: {
+      pollStop: true,
+      model: "status",
+      method: "ping",
+    },
+  });
+}
 
 /**
  * Set up websocket connection on request via status/websocketConnect action
@@ -492,4 +502,5 @@ export function* watchWebSockets(
     messageHandlers,
   });
   yield* takeLatest("status/websocketConnected", handleWebsocketPing);
+  yield* takeLatest("status/websocketDisconnected", handleWebsocketPingStop);
 }
