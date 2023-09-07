@@ -3,18 +3,14 @@ import { useSelector } from "react-redux";
 
 import SubnetLink from "app/base/components/SubnetLink";
 import TitledSection from "app/base/components/TitledSection";
-import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
+import type { Subnet } from "app/store/subnet/types";
 
 type Props = {
-  id: VLAN[VLANMeta.PK] | null;
+  subnets: Subnet[];
 };
 
-const VLANSubnets = ({ id }: Props): JSX.Element | null => {
-  const subnets = useSelector((state: RootState) =>
-    subnetSelectors.getByVLAN(state, id)
-  );
+const VLANSubnets = ({ subnets }: Props): JSX.Element | null => {
   const subnetsLoading = useSelector(subnetSelectors.loading);
 
   return (

@@ -17,6 +17,7 @@ export const vlan = extend<TimestampedModel, BaseVLAN>(timestampedModel, {
   relay_vlan: null,
   secondary_rack: null,
   space: random,
+  subnet_ids: () => [],
   vid: random,
 });
 

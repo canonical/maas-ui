@@ -70,8 +70,9 @@ it(`shows a warning and disables Configure DHCP button if there are no subnets
 });
 
 it("does not show a warning if there are subnets attached to the VLAN", () => {
-  const vlan = vlanFactory();
-  const subnet = subnetFactory({ vlan: vlan.id });
+  const subnetId = 1;
+  const vlan = vlanFactory({ subnet_ids: [subnetId] });
+  const subnet = subnetFactory({ id: subnetId, vlan: vlan.id });
   const state = rootStateFactory({
     subnet: subnetStateFactory({ items: [subnet] }),
     vlan: vlanStateFactory({ items: [vlan] }),
