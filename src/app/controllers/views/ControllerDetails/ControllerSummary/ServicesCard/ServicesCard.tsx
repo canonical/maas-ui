@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 
 import { Card, Icon, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import ServiceStatus from "./ServiceStatus";
 
+import { useFetchActions } from "app/base/hooks";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
 import { actions as serviceActions } from "app/store/service";
@@ -158,15 +158,12 @@ const generateTitle = (services: Service[]) => {
 };
 
 const ServicesCard = ({ controller }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const services = useSelector((state: RootState) =>
     serviceSelectors.getByIDs(state, controller.service_ids)
   );
   const servicesLoading = useSelector(serviceSelectors.loading);
 
-  useEffect(() => {
-    dispatch(serviceActions.fetch());
-  }, [dispatch]);
+  useFetchActions([serviceActions.fetch]);
 
   return (
     <Card>

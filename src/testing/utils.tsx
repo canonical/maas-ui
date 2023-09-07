@@ -1,7 +1,9 @@
 /* eslint-disable react/no-multi-comp */
+import type { ReactNode } from "react";
+
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -252,5 +254,16 @@ export const getTestState = (): RootState => {
   });
 };
 
+const generateWrapper =
+  (store = configureStore()(rootStateFactory())) =>
+  ({ children }: { children: ReactNode }) =>
+    <Provider store={store}>{children}</Provider>;
+
+type Hook = Parameters<typeof renderHook>[0];
+export const renderHookWithMockStore = (
+  hook: Hook
+): ReturnType<typeof renderHook> => {
+  return renderHook(hook, { wrapper: generateWrapper() });
+};
 export * from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";

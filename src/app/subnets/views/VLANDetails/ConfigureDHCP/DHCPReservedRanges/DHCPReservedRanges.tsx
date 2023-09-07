@@ -1,9 +1,8 @@
 import type { ChangeEventHandler } from "react";
-import { useEffect } from "react";
 
 import { MainTable } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
 
@@ -11,6 +10,7 @@ import FormikField from "app/base/components/FormikField";
 import SubnetLink from "app/base/components/SubnetLink";
 import SubnetSelect from "app/base/components/SubnetSelect";
 import TitledSection from "app/base/components/TitledSection";
+import { useFetchActions } from "app/base/hooks";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
 import type { IPRange } from "app/store/iprange/types";
@@ -134,16 +134,13 @@ const generateFormRow = (
 const DHCPReservedRanges = ({ id }: Props): JSX.Element | null => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<ConfigureDHCPValues>();
-  const dispatch = useDispatch();
+
   const ipRanges = useSelector((state: RootState) =>
     ipRangeSelectors.getByVLAN(state, id)
   );
   const subnets = useSelector(subnetSelectors.all);
 
-  useEffect(() => {
-    dispatch(ipRangeActions.fetch());
-    dispatch(subnetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([ipRangeActions.fetch, subnetActions.fetch]);
 
   if (!values.enableDHCP) {
     return null;

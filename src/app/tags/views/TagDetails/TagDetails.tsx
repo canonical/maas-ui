@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-
 import { Button, Col, Icon, Row, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import TagUpdate from "../TagUpdate";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
@@ -37,7 +35,6 @@ export type Props = {
 };
 
 const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -48,9 +45,7 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
 
   useWindowTitle(tag ? `Tag: ${tag.name}` : "Tag");
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {
     return <ModelNotFound id={id} linkURL={urls.tags.index} modelName="tag" />;

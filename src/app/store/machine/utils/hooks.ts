@@ -20,7 +20,7 @@ import {
 import { FilterMachines } from "./search";
 
 import { ACTION_STATUS } from "app/base/constants";
-import { useCanEdit } from "app/base/hooks";
+import { useFetchActions, useCanEdit } from "app/base/hooks";
 import type {
   ActionStatuses,
   ActionState,
@@ -855,15 +855,12 @@ export const useFormattedOS = (
   node?: Host | null,
   hideUbuntuTitle?: boolean
 ): string => {
-  const dispatch = useDispatch();
   const loading = useSelector(osInfoSelectors.loading);
   const osReleases = useSelector((state: RootState) =>
     osInfoSelectors.getOsReleases(state, node?.osystem)
   );
 
-  useEffect(() => {
-    dispatch(generalActions.fetchOsInfo());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchOsInfo]);
 
   if (!node || !node.osystem || !node.distro_series || loading) {
     return "";
@@ -888,12 +885,9 @@ export const useFormattedOS = (
 export const useHasInvalidArchitecture = (
   machine?: Machine | null
 ): boolean => {
-  const dispatch = useDispatch();
   const architectures = useSelector(architecturesSelectors.get);
 
-  useEffect(() => {
-    dispatch(generalActions.fetchArchitectures());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchArchitectures]);
 
   if (!machine) {
     return false;

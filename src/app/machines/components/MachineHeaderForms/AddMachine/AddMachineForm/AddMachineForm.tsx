@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Link, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import type { AddMachineValues } from "../types";
 
 import FormikForm from "app/base/components/FormikForm";
 import docsUrls from "app/base/docsUrls";
-import { useAddMessage } from "app/base/hooks";
+import { useFetchActions, useAddMessage } from "app/base/hooks";
 import type { ClearSidePanelContent } from "app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
@@ -67,15 +67,15 @@ export const AddMachineForm = ({
   const [savingMachine, setSavingMachine] = useState<string | null>(null);
 
   // Fetch all data required for the form.
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-    dispatch(generalActions.fetchArchitectures());
-    dispatch(generalActions.fetchDefaultMinHweKernel());
-    dispatch(generalActions.fetchHweKernels());
-    dispatch(generalActions.fetchPowerTypes());
-    dispatch(resourcePoolActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    domainActions.fetch,
+    generalActions.fetchArchitectures,
+    generalActions.fetchDefaultMinHweKernel,
+    generalActions.fetchHweKernels,
+    generalActions.fetchPowerTypes,
+    resourcePoolActions.fetch,
+    zoneActions.fetch,
+  ]);
 
   useAddMessage(
     machineSaved,

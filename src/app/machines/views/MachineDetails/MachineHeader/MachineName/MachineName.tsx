@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import NodeName from "app/base/components/NodeName";
+import { useFetchActions } from "app/base/hooks";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as machineActions } from "app/store/machine";
@@ -29,9 +28,7 @@ const MachineName = ({
   const saving = useSelector(machineSelectors.saving);
   const domains = useSelector(domainSelectors.all);
 
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-  }, [dispatch]);
+  useFetchActions([domainActions.fetch]);
 
   return (
     <NodeName

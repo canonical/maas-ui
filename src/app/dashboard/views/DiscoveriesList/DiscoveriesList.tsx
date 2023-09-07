@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ReactNode } from "react";
 
 import {
@@ -21,7 +21,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import MacAddressDisplay from "app/base/components/MacAddressDisplay";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TooltipButton from "app/base/components/TooltipButton";
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
 import type { Discovery } from "app/store/discovery/types";
@@ -192,9 +192,7 @@ const DiscoveriesList = (): JSX.Element => {
 
   useWindowTitle("Dashboard");
 
-  useEffect(() => {
-    dispatch(discoveryActions.fetch());
-  }, [dispatch]);
+  useFetchActions([discoveryActions.fetch]);
 
   if (loaded && !searchString && discoveries.length === 0) {
     return <div data-testid="no-discoveries">No new discoveries.</div>;

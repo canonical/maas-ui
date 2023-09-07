@@ -1,9 +1,7 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -25,7 +23,6 @@ export enum Label {
 }
 
 const VirshSettings = ({ id }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -35,11 +32,11 @@ const VirshSettings = ({ id }: Props): JSX.Element | null => {
   const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
   useWindowTitle(`Virsh ${`${pod?.name} ` || ""} settings`);
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-    dispatch(tagActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    resourcePoolActions.fetch,
+    tagActions.fetch,
+    zoneActions.fetch,
+  ]);
 
   if (!isPodDetails(pod) || !loaded) {
     return <Spinner text="Loading..." />;

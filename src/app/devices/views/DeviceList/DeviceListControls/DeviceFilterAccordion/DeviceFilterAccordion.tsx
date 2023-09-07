@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import FilterAccordion from "app/base/components/FilterAccordion";
+import { useFetchActions } from "app/base/hooks";
 import deviceSelectors from "app/store/device/selectors";
 import { FilterDevices, getDeviceValue } from "app/store/device/utils";
 import { actions as tagActions } from "app/store/tag";
@@ -37,14 +36,11 @@ const DeviceFilterAccordion = ({
   searchText,
   setSearchText,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const devices = useSelector(deviceSelectors.all);
   const devicesLoaded = useSelector(deviceSelectors.loaded);
   const tags = useSelector(tagSelectors.all);
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   return (
     <FilterAccordion

@@ -1,11 +1,10 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom-v5-compat";
 
 import RepositoryForm from "../RepositoryForm";
 
+import { useFetchActions } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import { actions as repositoryActions } from "app/store/packagerepository";
 import repositorySelectors from "app/store/packagerepository/selectors";
@@ -13,10 +12,7 @@ import { ResourcePoolMeta } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
 
 export const RepositoryEdit = (): JSX.Element => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(repositoryActions.fetch());
-  }, [dispatch]);
+  useFetchActions([repositoryActions.fetch]);
   const id = useGetURLId(ResourcePoolMeta.PK);
   const { type } = useParams<{
     type: "ppa" | "repository";

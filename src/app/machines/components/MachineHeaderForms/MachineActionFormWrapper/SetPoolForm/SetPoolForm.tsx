@@ -7,6 +7,7 @@ import SetPoolFormFields from "./SetPoolFormFields";
 import type { SetPoolFormValues } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
+import { useFetchActions } from "app/base/hooks";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
@@ -47,9 +48,7 @@ export const SetPoolForm = ({
   const errorsToShow =
     Object.keys(errors || {}).length > 0 ? errors : poolErrors;
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   useEffect(
     () => () => {

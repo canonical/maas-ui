@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import NodeName from "app/base/components/NodeName";
+import { useFetchActions } from "app/base/hooks";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
@@ -29,9 +28,7 @@ const ControllerName = ({
   const saving = useSelector(controllerSelectors.saving);
   const domains = useSelector(domainSelectors.all);
 
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-  }, [dispatch]);
+  useFetchActions([domainActions.fetch]);
 
   return (
     <NodeName

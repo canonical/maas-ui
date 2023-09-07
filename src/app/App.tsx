@@ -27,6 +27,7 @@ import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
+import { useFetchActions } from "app/base/hooks";
 import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
@@ -97,9 +98,7 @@ export const App = (): JSX.Element => {
   const hasSideNav = isSettingsPage || isPreferencesPage;
   const isSideNavVisible = hasSideNav && connected && authenticated;
 
-  useEffect(() => {
-    dispatch(statusActions.checkAuthenticated());
-  }, [dispatch]);
+  useFetchActions([statusActions.checkAuthenticated]);
 
   useEffect(() => {
     // When a user logs out the redux store is reset so the authentication

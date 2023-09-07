@@ -1,13 +1,12 @@
-import { useEffect } from "react";
-
 import { MainTable, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import TableHeader from "app/base/components/TableHeader";
 import DHCPColumn from "app/base/components/node/networking/DHCPColumn";
 import FabricColumn from "app/base/components/node/networking/FabricColumn";
 import NameColumn from "app/base/components/node/networking/NameColumn";
 import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
+import { useFetchActions } from "app/base/hooks";
 import deviceSelectors from "app/store/device/selectors";
 import type {
   Device,
@@ -39,7 +38,6 @@ const EditInterfaceTable = ({
   nicId,
   systemId,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );
@@ -50,10 +48,7 @@ const EditInterfaceTable = ({
   );
   const link = getLinkFromNic(nic, linkId);
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([fabricActions.fetch, vlanActions.fetch]);
 
   if (!isDeviceDetails(device) || !nic) {
     return <Spinner text="Loading..." />;

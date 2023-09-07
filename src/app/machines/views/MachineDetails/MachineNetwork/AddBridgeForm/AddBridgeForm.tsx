@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import type { BridgeFormValues } from "./types";
 import FormCard from "app/base/components/FormCard";
 import FormikForm from "app/base/components/FormikForm";
 import type { Selected } from "app/base/components/node/networking/types";
+import { useFetchActions } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -77,9 +78,7 @@ const AddBridgeForm = ({
     () => close()
   );
 
-  useEffect(() => {
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([vlanActions.fetch]);
 
   // A bridge can only be created with one interface.
   if (selected.length !== 1) {

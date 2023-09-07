@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
@@ -10,7 +10,7 @@ import ControllerListTable from "./ControllerListTable";
 
 import MainContentSection from "app/base/components/MainContentSection";
 import VaultNotification from "app/base/components/VaultNotification";
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import { useSidePanel } from "app/base/side-panel-context";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -41,11 +41,11 @@ const ControllerList = (): JSX.Element => {
   const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
   useWindowTitle("Controllers");
 
-  useEffect(() => {
-    dispatch(controllerActions.fetch());
-    dispatch(tagActions.fetch());
-    dispatch(generalActions.fetchVaultEnabled());
-  }, [dispatch]);
+  useFetchActions([
+    controllerActions.fetch,
+    tagActions.fetch,
+    generalActions.fetchVaultEnabled,
+  ]);
 
   // Update the URL when filters are changed.
   const setSearchFilter = useCallback(

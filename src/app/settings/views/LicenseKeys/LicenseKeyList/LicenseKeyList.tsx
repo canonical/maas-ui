@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import settingsURLs from "app/settings/urls";
 import { actions as generalActions } from "app/store/general";
@@ -121,10 +121,7 @@ const LicenseKeyList = (): JSX.Element => {
     setExpandedId(null);
   };
 
-  useEffect(() => {
-    dispatch(licenseKeysActions.fetch());
-    dispatch(generalActions.fetchOsInfo());
-  }, [dispatch]);
+  useFetchActions([licenseKeysActions.fetch, generalActions.fetchOsInfo]);
 
   const addBtnDisabled = osystems.length === 0;
   const tooltip = addBtnDisabled

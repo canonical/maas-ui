@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { Icon } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import TooltipButton from "app/base/components/TooltipButton";
+import { useFetchActions } from "app/base/hooks";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
@@ -22,14 +21,12 @@ export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );
-  const dispatch = useDispatch();
+
   const services = useSelector((state: RootState) =>
     controllerSelectors.servicesForController(state, controller?.system_id)
   );
 
-  useEffect(() => {
-    dispatch(serviceActions.fetch());
-  }, [dispatch]);
+  useFetchActions([serviceActions.fetch]);
 
   if (!controller || !services?.length) {
     return null;

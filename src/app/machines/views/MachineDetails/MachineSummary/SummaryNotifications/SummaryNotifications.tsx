@@ -1,9 +1,11 @@
-import { useEffect } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import { useCanEdit, useIsRackControllerConnected } from "app/base/hooks";
+import {
+  useFetchActions,
+  useCanEdit,
+  useIsRackControllerConnected,
+} from "app/base/hooks";
 import urls from "app/base/urls";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import { actions as generalActions } from "app/store/general";
@@ -41,7 +43,6 @@ const formatEventText = (event: NodeEvent) => {
 };
 
 const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
@@ -54,9 +55,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
   const hasSyncFailed =
     isDeployedWithHardwareSync(machine) && getHasSyncFailed(machine);
 
-  useEffect(() => {
-    dispatch(generalActions.fetchArchitectures());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchArchitectures]);
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will

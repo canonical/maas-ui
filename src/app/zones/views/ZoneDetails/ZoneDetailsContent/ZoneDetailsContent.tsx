@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { Row, Col } from "@canonical/react-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Definition from "app/base/components/Definition";
+import { useFetchActions } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -13,14 +12,11 @@ type Props = {
 };
 
 const ZoneDetailsContent = ({ id }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, id)
   );
 
-  useEffect(() => {
-    dispatch(actions.fetch());
-  }, [dispatch]);
+  useFetchActions([actions.fetch]);
 
   if (zone) {
     return (

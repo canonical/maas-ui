@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-
 import { Spinner, Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import UserForm from "../UserForm";
 
+import { useFetchActions } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -14,10 +13,8 @@ import userSelectors from "app/store/user/selectors";
 
 export const UserEdit = (): JSX.Element => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(userActions.fetch());
-  }, [dispatch]);
+
+  useFetchActions([userActions.fetch]);
 
   const id = useGetURLId(PodMeta.PK);
   const loading = useSelector(userSelectors.loading);

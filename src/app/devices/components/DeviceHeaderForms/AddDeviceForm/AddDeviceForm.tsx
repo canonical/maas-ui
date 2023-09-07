@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import ZoneSelect from "app/base/components/ZoneSelect";
-import { useAddMessage } from "app/base/hooks";
+import { useFetchActions, useAddMessage } from "app/base/hooks";
 import type { ClearSidePanelContent } from "app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as deviceActions } from "app/store/device";
@@ -72,11 +72,11 @@ export const AddDeviceForm = ({
   const [savingDevice, setSavingDevice] = useState<string | null>(null);
 
   // Fetch all data required for the form.
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    domainActions.fetch,
+    subnetActions.fetch,
+    zoneActions.fetch,
+  ]);
 
   useAddMessage(
     devicesSaved,

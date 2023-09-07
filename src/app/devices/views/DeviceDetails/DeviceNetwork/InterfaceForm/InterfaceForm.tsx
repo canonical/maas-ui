@@ -1,15 +1,13 @@
-import { useEffect } from "react";
-
 import type { PropsWithSpread } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import InterfaceFormFields from "./InterfaceFormFields";
 
 import type { FormikFormProps } from "app/base/components/FormikForm";
 import FormikForm from "app/base/components/FormikForm";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
+import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
@@ -86,7 +84,6 @@ const InterfaceForm = ({
   systemId,
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
@@ -100,11 +97,11 @@ const InterfaceForm = ({
   const errors = useSelector(deviceSelectors.errors);
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(device);
 
-  useEffect(() => {
-    dispatch(fabricActions.fetch());
-    dispatch(subnetActions.fetch());
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    fabricActions.fetch,
+    subnetActions.fetch,
+    vlanActions.fetch,
+  ]);
 
   if (!isDeviceDetails(device)) {
     return <Spinner data-testid="loading-device-details" text="Loading..." />;

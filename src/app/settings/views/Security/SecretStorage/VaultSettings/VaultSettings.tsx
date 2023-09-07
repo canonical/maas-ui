@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-
 import {
   Icon,
   Spinner,
   CodeSnippet,
   CodeSnippetBlockAppearance,
 } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import docsUrls from "app/base/docsUrls";
+import { useFetchActions } from "app/base/hooks";
 import { useId } from "app/base/hooks/base";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -25,7 +24,6 @@ export enum Labels {
 }
 
 const VaultSettings = (): JSX.Element => {
-  const dispatch = useDispatch();
   const controllersLoading = useSelector(controllerSelectors.loading);
   const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
   const vaultEnabled = useSelector((state: RootState) =>
@@ -38,10 +36,7 @@ const VaultSettings = (): JSX.Element => {
       controllerSelectors.getVaultConfiguredControllers(state)
   );
 
-  useEffect(() => {
-    dispatch(controllerActions.fetch());
-    dispatch(generalActions.fetchVaultEnabled());
-  }, [dispatch]);
+  useFetchActions([controllerActions.fetch, generalActions.fetchVaultEnabled]);
 
   if (controllersLoading || vaultEnabledLoading)
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
