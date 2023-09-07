@@ -9,7 +9,7 @@ import { DEFAULTS } from "./MachineList/MachineListTable/constants";
 import Machines from "./Machines";
 
 import { actions as machineActions } from "app/store/machine";
-import { FetchGroupKey } from "app/store/machine/types";
+import { FetchGroupKey, FilterGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -88,6 +88,7 @@ describe("Machines", () => {
       }),
       testing_status: testStatusFactory({ status: TestStatusStatus.PASSED }),
       system_id: "abc123",
+      workload_annotations: { animal: "springbok" },
       zone: modelRefFactory(),
     }),
     machineFactory({
@@ -227,7 +228,13 @@ describe("Machines", () => {
         lists: {
           "78910": machineList,
         },
-        filters: [machineFilterGroupFactory()],
+        filters: [
+          machineFilterGroupFactory({
+            key: FilterGroupKey.Workloads,
+            loaded: true,
+            options: [{ key: "animal:springbok", label: "animal: springbok" }],
+          }),
+        ],
         filtersLoaded: true,
         statuses: {
           abc123: machineStatusFactory(),
@@ -429,5 +436,20 @@ describe("Machines", () => {
     expect(
       fetches2[fetches.length - 1].payload.params.group_collapsed
     ).toStrictEqual(["deployed"]);
+  });
+
+  it("correctly sets the search text for workload annotation filters", async () => {
+    renderWithBrowserRouter(<Machines />, { route: "/machines", state });
+
+    await userEvent.click(screen.getByRole("button", { name: "Filters" }));
+    await userEvent.click(screen.getByRole("tab", { name: "Workload" }));
+
+    await userEvent.click(screen.getByRole("checkbox", { name: "animal (1)" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("searchbox")).toHaveValue("workload-animal:()");
+    });
+
+    expect(screen.getByRole("checkbox", { name: "animal (1)" })).toBeChecked();
   });
 });

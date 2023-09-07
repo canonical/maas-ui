@@ -4,7 +4,6 @@ import { createCachedSelector } from "re-reselect";
 
 import { ACTIONS } from "app/store/machine/slice";
 import type {
-  FilterGroupKey,
   Machine,
   MachineState,
   MachineStateCount,
@@ -13,7 +12,7 @@ import type {
   MachineStateListGroup,
   MachineStateList,
 } from "app/store/machine/types";
-import { MachineMeta } from "app/store/machine/types";
+import { FilterGroupKey, MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
@@ -367,10 +366,43 @@ const filterOptions = createSelector(
     (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
       groupKey,
   ],
-  (machineState, groupKey) =>
-    [...(getFilterGroup(machineState, groupKey)?.options ?? [])].sort(
-      simpleSortByKey("label")
-    )
+  (machineState, groupKey) => {
+    const filterOptions = [
+      ...(getFilterGroup(machineState, groupKey)?.options ?? []),
+    ].sort(simpleSortByKey("label"));
+
+    if (groupKey !== FilterGroupKey.Workloads) {
+      return filterOptions;
+    } else {
+      const filterKeys = filterOptions.map((filter) => {
+        return filter.key.toString().split(":")[0];
+      });
+
+      // Find the count of each workload annotation key
+      const counts = filterKeys.reduce(
+        (result: { key: string; count: number }[], currentFilterKey) => {
+          const existingFilter = result.find(
+            (filter) => filter.key === currentFilterKey
+          );
+
+          if (existingFilter) {
+            existingFilter.count++;
+          } else {
+            result.push({ key: currentFilterKey, count: 1 });
+          }
+
+          return result;
+        },
+        []
+      );
+
+      // Turn array of keys and counts into valid filter options
+      return counts.map((filterCount) => ({
+        key: filterCount.key,
+        label: `${filterCount.key} (${filterCount.count})`,
+      }));
+    }
+  }
 );
 
 /**
