@@ -1,11 +1,10 @@
-import { useEffect } from "react";
-
 import type { SelectProps } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
@@ -31,13 +30,10 @@ export const SubnetSelect = ({
   vlan,
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   let subnets: Subnet[] = useSelector(subnetSelectors.all);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(subnetActions.fetch());
-  }, [dispatch]);
+  useFetchActions([subnetActions.fetch]);
 
   if (!subnetsLoaded) {
     return <Spinner />;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import type { DHCPFormValues } from "./types";
 import DhcpFormFields from "app/base/components/DhcpFormFields";
 import FormikForm from "app/base/components/FormikForm";
 import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
-import { useAddMessage } from "app/base/hooks";
+import { useFetchActions, useAddMessage } from "app/base/hooks";
 import { useDhcpTarget } from "app/settings/hooks";
 import { actions as controllerActions } from "app/store/controller";
 import { actions as deviceActions } from "app/store/device";
@@ -84,12 +84,12 @@ export const DhcpForm = ({
     () => setSaving(null)
   );
 
-  useEffect(() => {
-    dispatch(subnetActions.fetch());
-    dispatch(controllerActions.fetch());
-    dispatch(deviceActions.fetch());
-    dispatch(ipRangeActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    subnetActions.fetch,
+    controllerActions.fetch,
+    deviceActions.fetch,
+    ipRangeActions.fetch,
+  ]);
 
   if (
     editing &&

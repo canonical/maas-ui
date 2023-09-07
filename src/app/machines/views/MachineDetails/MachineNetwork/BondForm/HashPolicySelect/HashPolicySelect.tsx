@@ -1,13 +1,12 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import type { BondFormValues } from "../types";
 
 import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import { bondOptions as bondOptionsSelectors } from "app/store/general/selectors";
 import { BondMode, BondXmitHashPolicy } from "app/store/general/types";
@@ -36,7 +35,6 @@ export const HashPolicySelect = ({
   name,
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const xmitHashPolicies = useSelector(bondOptionsSelectors.xmitHashPolicies);
   const loaded = useSelector(bondOptionsSelectors.loaded);
   const { values } = useFormikContext<BondFormValues>();
@@ -50,9 +48,7 @@ export const HashPolicySelect = ({
     options.unshift(defaultOption);
   }
 
-  useEffect(() => {
-    dispatch(generalActions.fetchBondOptions());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchBondOptions]);
 
   if (!loaded) {
     return <Spinner />;

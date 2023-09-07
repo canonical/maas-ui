@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import DeleteConfirm from "./DeleteConfirm";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import type { RootState } from "app/store/root/types";
@@ -30,9 +31,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([zoneActions.fetch]);
 
   useEffect(() => {
     if (deleteStatus === "success") {

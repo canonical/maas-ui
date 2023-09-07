@@ -1,12 +1,11 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { KVMSidePanelViews } from "app/kvm/constants";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
@@ -18,15 +17,12 @@ type Props = Required<Pick<SectionHeaderProps, "title">> & {
 };
 
 const KVMListHeader = ({ setSidePanelContent, title }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
   const lxdTabActive = location.pathname.endsWith(urls.kvm.lxd.index);
 
-  useEffect(() => {
-    dispatch(podActions.fetch());
-  }, [dispatch]);
+  useFetchActions([podActions.fetch]);
 
   return (
     <SectionHeader

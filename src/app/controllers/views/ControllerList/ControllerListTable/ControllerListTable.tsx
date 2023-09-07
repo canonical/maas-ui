@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-
 import { MainTable, Spinner, Link } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import StatusColumn from "./StatusColumn";
 import VLANsColumn from "./VLANsColumn";
@@ -14,7 +12,7 @@ import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import TooltipButton from "app/base/components/TooltipButton";
 import docsUrls from "app/base/docsUrls";
-import { useTableSort } from "app/base/hooks";
+import { useFetchActions, useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import ImageStatus from "app/controllers/components/ImageStatus";
 import { actions as controllerActions } from "app/store/controller";
@@ -231,13 +229,10 @@ const ControllerListTable = ({
   const { configuredControllers } = useSelector((state: RootState) =>
     controllerSelectors.getVaultConfiguredControllers(state)
   );
-  const dispatch = useDispatch();
+
   const vaultEnabled = useSelector(vaultEnabledSelectors.get);
 
-  useEffect(() => {
-    dispatch(generalActions.fetchVaultEnabled());
-    dispatch(controllerActions.fetch());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchVaultEnabled, controllerActions.fetch]);
 
   return (
     <MainTable

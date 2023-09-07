@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
@@ -28,7 +28,6 @@ export enum Label {
 const PAGE_SIZE = DEFAULTS.pageSize;
 
 const TagMachines = (): JSX.Element => {
-  const dispatch = useDispatch();
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -66,9 +65,7 @@ const TagMachines = (): JSX.Element => {
 
   useWindowTitle(tag ? `Deployed machines for: ${tag.name}` : "Tag");
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {
     return <ModelNotFound id={id} linkURL={urls.tags.index} modelName="tag" />;

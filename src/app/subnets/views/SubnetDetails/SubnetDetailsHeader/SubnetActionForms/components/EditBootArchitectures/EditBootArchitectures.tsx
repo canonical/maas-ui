@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import BootArchitecturesTable from "./BootArchitecturesTable";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useFetchActions } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import { knownBootArchitectures as knownBootArchitecturesSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
@@ -39,9 +40,7 @@ export const EditBootArchitectures = ({
   const saving = useSelector(subnetSelectors.saving);
   const cleanup = useCallback(() => subnetActions.cleanup(), []);
 
-  useEffect(() => {
-    dispatch(generalActions.fetchKnownBootArchitectures());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchKnownBootArchitectures]);
 
   if (!subnet || architecturesLoading) {
     return (

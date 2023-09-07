@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import type { HTMLProps } from "react";
 
 import { Select } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 
@@ -22,13 +22,10 @@ export const ResourcePoolSelect = ({
   valueKey = "name",
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   return (
     <FormikField

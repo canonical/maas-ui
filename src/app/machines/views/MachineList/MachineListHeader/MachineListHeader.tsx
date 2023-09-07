@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -6,6 +6,7 @@ import MachineListControls from "../MachineListControls";
 import type { useResponsiveColumns } from "../hooks";
 
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import { useFetchActions } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
@@ -39,9 +40,7 @@ export const MachineListHeader = ({
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-  }, [dispatch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
 

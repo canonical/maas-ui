@@ -1,12 +1,10 @@
-import { useEffect } from "react";
-
 import { Spinner, Strip } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import AuthenticationCard from "./AuthenticationCard";
 import DangerZoneCard from "./DangerZoneCard";
 
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
 import type { KVMSetSidePanelContent } from "app/kvm/types";
@@ -34,7 +32,6 @@ const LXDSingleSettings = ({
   id,
   setSidePanelContent,
 }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
@@ -44,11 +41,11 @@ const LXDSingleSettings = ({
   const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
   useWindowTitle(`LXD ${`${pod?.name} ` || ""} settings`);
 
-  useEffect(() => {
-    dispatch(resourcePoolActions.fetch());
-    dispatch(tagActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    resourcePoolActions.fetch,
+    tagActions.fetch,
+    zoneActions.fetch,
+  ]);
 
   if (!isPodDetails(pod) || !loaded) {
     return <Spinner text="Loading..." />;

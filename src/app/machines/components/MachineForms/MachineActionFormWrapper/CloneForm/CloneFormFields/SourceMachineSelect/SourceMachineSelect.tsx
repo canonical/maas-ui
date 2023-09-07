@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Notification } from "@canonical/react-components";
 import classNames from "classnames";
-import { useDispatch } from "react-redux";
 
 import SourceMachineDetails from "./SourceMachineDetails";
 
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
 import { MachineSelectTable } from "app/base/components/MachineSelectTable/MachineSelectTable";
+import { useFetchActions } from "app/base/hooks";
 import MachineListPagination from "app/machines/views/MachineList/MachineListTable/MachineListPagination";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
@@ -35,7 +35,6 @@ export const SourceMachineSelect = ({
   onMachineClick,
   selectedMachine = null,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,9 +50,7 @@ export const SourceMachineSelect = ({
     },
   });
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   let content: ReactNode;
   if (loadingMachineDetails || selectedMachine) {

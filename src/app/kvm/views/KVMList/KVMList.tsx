@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom-v5-compat";
 
 import KVMListHeader from "./KVMListHeader";
@@ -10,7 +10,7 @@ import LxdTable from "./LxdTable";
 import VirshTable from "./VirshTable";
 
 import PageContent from "app/base/components/PageContent/PageContent";
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import { useSidePanel } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import KVMForms from "app/kvm/components/KVMForms";
@@ -27,7 +27,6 @@ export enum Label {
 }
 
 const KVMList = (): JSX.Element => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const podsLoading = useSelector(podSelectors.loading);
@@ -43,12 +42,12 @@ const KVMList = (): JSX.Element => {
   const title = showingLXD ? "LXD" : showingVirsh ? "Virsh" : "KVM";
   useWindowTitle(title);
 
-  useEffect(() => {
-    dispatch(podActions.fetch());
-    dispatch(poolActions.fetch());
-    dispatch(vmclusterActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    podActions.fetch,
+    poolActions.fetch,
+    vmclusterActions.fetch,
+    zoneActions.fetch,
+  ]);
 
   // Redirect to the appropriate tab when arriving at /kvm.
   useEffect(() => {

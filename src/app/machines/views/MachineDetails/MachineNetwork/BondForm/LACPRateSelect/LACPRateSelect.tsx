@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
+import { useFetchActions } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import { bondOptions as bondOptionsSelectors } from "app/store/general/selectors";
 
@@ -19,7 +18,6 @@ export const LACPRateSelect = ({
   name,
   ...props
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const lacpRates = useSelector(bondOptionsSelectors.lacpRates);
   const loaded = useSelector(bondOptionsSelectors.loaded);
   const options: Option[] =
@@ -32,9 +30,7 @@ export const LACPRateSelect = ({
     options.unshift(defaultOption);
   }
 
-  useEffect(() => {
-    dispatch(generalActions.fetchBondOptions());
-  }, [dispatch]);
+  useFetchActions([generalActions.fetchBondOptions]);
 
   if (!loaded) {
     return <Spinner />;

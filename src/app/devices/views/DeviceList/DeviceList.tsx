@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
@@ -9,7 +9,7 @@ import DeviceListHeader from "./DeviceListHeader";
 import DeviceListTable from "./DeviceListTable";
 
 import PageContent from "app/base/components/PageContent";
-import { useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import { useSidePanel } from "app/base/side-panel-context";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { actions as deviceActions } from "app/store/device";
@@ -37,10 +37,7 @@ const DeviceList = (): JSX.Element => {
   useWindowTitle("Devices");
   const selectedDevices = useSelector(deviceSelectors.selected);
 
-  useEffect(() => {
-    dispatch(deviceActions.fetch());
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([deviceActions.fetch, tagActions.fetch]);
 
   // Update the URL when filters are changed.
   const setSearchFilter = useCallback(

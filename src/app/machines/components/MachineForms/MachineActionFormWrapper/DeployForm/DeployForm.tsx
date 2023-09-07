@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -7,7 +5,7 @@ import * as Yup from "yup";
 import DeployFormFields from "./DeployFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
-import { useSendAnalytics } from "app/base/hooks";
+import { useFetchActions, useSendAnalytics } from "app/base/hooks";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
 import {
@@ -66,10 +64,10 @@ export const DeployForm = ({
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);
   const sendAnalytics = useSendAnalytics();
 
-  useEffect(() => {
-    dispatch(generalActions.fetchDefaultMinHweKernel());
-    dispatch(generalActions.fetchOsInfo());
-  }, [dispatch]);
+  useFetchActions([
+    generalActions.fetchDefaultMinHweKernel,
+    generalActions.fetchOsInfo,
+  ]);
 
   if (!defaultMinHweKernelLoaded || !osInfoLoaded) {
     return (

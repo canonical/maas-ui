@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import { DashboardSidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import type { SetSidePanelContent } from "app/base/side-panel-context";
 import urls from "app/base/urls";
 import { actions as discoveryActions } from "app/store/discovery";
@@ -24,12 +23,10 @@ const DashboardHeader = ({
   setSidePanelContent: SetSidePanelContent;
 }): JSX.Element => {
   const location = useLocation();
-  const dispatch = useDispatch();
+
   const discoveries = useSelector(discoverySelectors.all);
 
-  useEffect(() => {
-    dispatch(discoveryActions.fetch());
-  }, [dispatch]);
+  useFetchActions([discoveryActions.fetch]);
 
   const buttons: JSX.Element[] = [
     <Button

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Link, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import AddChassisFormFields from "../AddChassisFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import docsUrls from "app/base/docsUrls";
-import { useAddMessage } from "app/base/hooks";
+import { useFetchActions, useAddMessage } from "app/base/hooks";
 import type { ClearSidePanelContent } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -44,10 +44,7 @@ export const AddChassisForm = ({
   const [secondarySubmit, setSecondarySubmit] = useState(false);
   const [savingChassis, setSavingChassis] = useState<string | null>(null);
 
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-    dispatch(generalActions.fetchPowerTypes());
-  }, [dispatch]);
+  useFetchActions([domainActions.fetch, generalActions.fetchPowerTypes]);
 
   useAddMessage(
     machineSaved,

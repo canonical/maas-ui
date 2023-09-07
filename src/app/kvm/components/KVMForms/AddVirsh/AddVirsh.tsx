@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import AddVirshFields from "./AddVirshFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage } from "app/base/hooks";
+import { useFetchActions, useAddMessage } from "app/base/hooks";
 import type { ClearSidePanelContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
@@ -56,11 +56,11 @@ export const AddVirsh = ({ clearSidePanelContent }: Props): JSX.Element => {
   const initialPowerParameters = useInitialPowerParameters();
   const loaded = powerTypesLoaded && resourcePoolsLoaded && zonesLoaded;
 
-  useEffect(() => {
-    dispatch(generalActions.fetchPowerTypes());
-    dispatch(resourcePoolActions.fetch());
-    dispatch(zoneActions.fetch());
-  }, [dispatch]);
+  useFetchActions([
+    generalActions.fetchPowerTypes,
+    resourcePoolActions.fetch,
+    zoneActions.fetch,
+  ]);
 
   useAddMessage(
     podSaved,

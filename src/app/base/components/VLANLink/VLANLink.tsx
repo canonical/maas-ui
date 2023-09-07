@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
@@ -16,16 +15,13 @@ type Props = {
 };
 
 const VLANLink = ({ id }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
   const vlansLoading = useSelector(vlanSelectors.loading);
   const vlanDisplay = getVLANDisplay(vlan);
 
-  useEffect(() => {
-    dispatch(vlanActions.fetch());
-  }, [dispatch]);
+  useFetchActions([vlanActions.fetch]);
 
   if (vlansLoading) {
     return <Spinner aria-label="Loading VLANs" />;

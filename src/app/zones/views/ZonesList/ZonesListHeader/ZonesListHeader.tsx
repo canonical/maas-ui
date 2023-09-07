@@ -1,11 +1,10 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import ZonesListTitle from "./ZonesListTitle";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import type { SetSidePanelContent } from "app/base/side-panel-context";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -16,13 +15,10 @@ const ZonesListHeader = ({
 }: {
   setSidePanelContent: SetSidePanelContent;
 }): JSX.Element => {
-  const dispatch = useDispatch();
   const zonesCount = useSelector(zoneSelectors.count);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(actions.fetch());
-  }, [dispatch]);
+  useFetchActions([actions.fetch]);
 
   const buttons = [
     <Button

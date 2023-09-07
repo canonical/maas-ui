@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-
 import { MainTable } from "@canonical/react-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { FilterDevices } from "app/store/device/utils";
 import { FilterMachines } from "app/store/machine/utils";
@@ -16,11 +15,8 @@ export enum TestIds {
 
 const ZonesListTable = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(actions.fetch());
-  }, [dispatch]);
+  useFetchActions([actions.fetch]);
 
   const headers = [
     { content: "Name", sortKey: "name" },

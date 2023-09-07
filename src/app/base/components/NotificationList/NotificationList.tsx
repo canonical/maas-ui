@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import {
   Notification,
   NotificationSeverity,
@@ -9,6 +7,7 @@ import type { Dispatch } from "redux";
 
 import NotificationGroup from "app/base/components/NotificationGroup";
 import NotificationGroupNotification from "app/base/components/NotificationGroup/Notification";
+import { useFetchActions } from "app/base/hooks";
 import { actions as messageActions } from "app/store/message";
 import messageSelectors from "app/store/message/selectors";
 import type { Message } from "app/store/message/types";
@@ -52,9 +51,7 @@ const NotificationList = (): JSX.Element => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(notificationActions.fetch());
-  }, [dispatch]);
+  useFetchActions([notificationActions.fetch]);
 
   return (
     <>

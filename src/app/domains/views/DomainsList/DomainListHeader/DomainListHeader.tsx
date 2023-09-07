@@ -1,12 +1,11 @@
-import { useEffect } from "react";
-
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { DomainListSidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import { useFetchActions } from "app/base/hooks";
 import type { SetSidePanelContent } from "app/base/side-panel-context";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -20,13 +19,10 @@ const DomainListHeader = ({
 }: {
   setSidePanelContent: SetSidePanelContent;
 }): JSX.Element => {
-  const dispatch = useDispatch();
   const domainCount = useSelector(domainSelectors.count);
   const domainsLoaded = useSelector(domainSelectors.loaded);
 
-  useEffect(() => {
-    dispatch(domainActions.fetch());
-  }, [dispatch]);
+  useFetchActions([domainActions.fetch]);
 
   let buttons: JSX.Element[] | null = [
     <Button

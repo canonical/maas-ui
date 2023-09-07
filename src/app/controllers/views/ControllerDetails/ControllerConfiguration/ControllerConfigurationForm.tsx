@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import NodeConfigurationFields, {
 } from "app/base/components/NodeConfigurationFields";
 import type { NodeConfigurationValues } from "app/base/components/NodeConfigurationFields";
 import TagLinks from "app/base/components/TagLinks";
-import { useCanEdit } from "app/base/hooks";
+import { useFetchActions, useCanEdit } from "app/base/hooks";
 import urls from "app/base/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -47,9 +47,7 @@ const ControllerConfigurationForm = ({
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const canEdit = useCanEdit(node, true);
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   if (!isControllerDetails(node)) {
     return <Spinner text="Loading..." />;

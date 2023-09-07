@@ -1,11 +1,9 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import EditableSection from "app/base/components/EditableSection";
 import TagLinks from "app/base/components/TagLinks";
-import { useCanEdit } from "app/base/hooks";
+import { useFetchActions, useCanEdit } from "app/base/hooks";
 import urls from "app/base/urls";
 import TagActionForm from "app/machines/components/MachineForms/MachineActionFormWrapper/TagForm";
 import machineSelectors from "app/store/machine/selectors";
@@ -19,7 +17,6 @@ import { NodeActions } from "app/store/types/node";
 type Props = { systemId: MachineDetails["system_id"] };
 
 const TagForm = ({ systemId }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -36,9 +33,7 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
   )[0]?.error;
   const canEdit = useCanEdit(machine, true);
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  useFetchActions([tagActions.fetch]);
 
   if (!machine || tagsLoading) {
     return <Spinner text="Loading..." />;
