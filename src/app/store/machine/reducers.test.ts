@@ -4,6 +4,7 @@ import reducers, { actions, DEFAULT_STATUSES } from "./slice";
 import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
 
+import { actions as statusActions } from "app/store/status/slice";
 import { NodeActions, NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   filterGroup as filterGroupFactory,
@@ -109,6 +110,42 @@ describe("machine reducer", () => {
         },
         lists: {
           "5678": machineStateListFactory({
+            loaded: true,
+            stale: true,
+          }),
+        },
+      })
+    );
+  });
+
+  it("invalidates queries on status/websocketDisconnected", () => {
+    const initialState = machineStateFactory({
+      loading: false,
+      counts: {
+        "1234": machineStateCountFactory({
+          loaded: true,
+          stale: false,
+        }),
+      },
+      lists: {
+        "1234": machineStateListFactory({
+          loaded: true,
+          stale: false,
+        }),
+      },
+    });
+    expect(
+      reducers(initialState, statusActions.websocketDisconnected())
+    ).toEqual(
+      machineStateFactory({
+        counts: {
+          "1234": machineStateCountFactory({
+            loaded: true,
+            stale: true,
+          }),
+        },
+        lists: {
+          "1234": machineStateListFactory({
             loaded: true,
             stale: true,
           }),
