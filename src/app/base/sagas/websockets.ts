@@ -709,6 +709,16 @@ function* handleWebsocketPing() {
     },
   });
 }
+function* handleWebsocketPingStop() {
+  yield* put({
+    type: "status/websocketPingStop",
+    meta: {
+      pollStop: true,
+      model: "status",
+      method: "ping",
+    },
+  });
+}
 
 /**
  * Set up websocket connections when requested.
@@ -724,4 +734,5 @@ export function* watchWebSockets(
     messageHandlers,
   });
   yield* takeLatest("status/websocketConnected", handleWebsocketPing);
+  yield* takeLatest("status/websocketDisconnected", handleWebsocketPingStop);
 }
