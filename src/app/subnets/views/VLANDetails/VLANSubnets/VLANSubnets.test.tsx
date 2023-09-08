@@ -36,7 +36,7 @@ it("renders correct details", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <VLANSubnets subnets={[subnet]} />
+          <VLANSubnets id={vlan.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
