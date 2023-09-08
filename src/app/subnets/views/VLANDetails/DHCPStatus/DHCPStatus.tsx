@@ -62,7 +62,7 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
     vlanSelectors.getById(state, id)
   );
   const vlanSubnets = useSelector((state: RootState) =>
-    subnetSelectors.getByIds(state, vlan ? vlan.subnet_ids : [])
+    subnetSelectors.getByIds(state, vlan?.subnet_ids || [])
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
 
