@@ -24,6 +24,7 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import { getFullVLANName } from "app/store/vlan/utils";
+import { useGetVlanSubnets } from "app/subnets/hooks";
 import { isId } from "app/utils";
 
 type Props = {
@@ -61,9 +62,7 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
-  const vlanSubnets = useSelector((state: RootState) =>
-    subnetSelectors.getByIds(state, vlan?.subnet_ids || [])
-  );
+  const vlanSubnets = useGetVlanSubnets(id);
   const subnetsLoading = useSelector(subnetSelectors.loading);
 
   useFetchActions([
