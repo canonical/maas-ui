@@ -7,6 +7,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import PowerIcon from "app/base/components/PowerIcon";
 import { useToggleMenu } from "app/machines/hooks";
 import type { MachineMenuToggleHandler } from "app/machines/types";
+import { PowerTypeNames } from "app/store/general/constants";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -65,6 +66,21 @@ export const PowerColumn = ({
         setUpdating(machine.power_state);
       },
     });
+    if (machine.power_type === PowerTypeNames.IPMI) {
+      menuLinks.push({
+        children: (
+          <PowerIcon powerState={PowerState.OFF}>Soft power off</PowerIcon>
+        ),
+        onClick: () => {
+          dispatch(
+            machineActions.softOff({
+              system_id: systemId,
+            })
+          );
+          setUpdating(machine.power_state);
+        },
+      });
+    }
   }
   if (powerState !== PowerState.UNKNOWN) {
     menuLinks.push({

@@ -1954,4 +1954,39 @@ describe("machine reducer", () => {
       })
     );
   });
+
+  it("reduces softOff", () => {
+    const machine = machineFactory({ system_id: "abc123" });
+    const initialState = machineStateFactory({
+      items: [machine],
+      statuses: { abc123: machineStatusFactory() },
+    });
+    expect(
+      reducers(initialState, actions.softOff({ system_id: machine.system_id }))
+    ).toEqual(
+      machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory() },
+      })
+    );
+  });
+
+  it("reduces softOffStart", () => {
+    const machine = machineFactory({ system_id: "abc123" });
+    const initialState = machineStateFactory({
+      items: [machine],
+      statuses: { abc123: machineStatusFactory() },
+    });
+    expect(
+      reducers(
+        initialState,
+        actions.softOffStart({ system_id: machine.system_id })
+      )
+    ).toEqual(
+      machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory({ turningOff: true }) },
+      })
+    );
+  });
 });

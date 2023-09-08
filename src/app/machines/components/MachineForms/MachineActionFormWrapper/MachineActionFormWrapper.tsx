@@ -13,6 +13,7 @@ import TagForm from "./TagForm";
 import DeleteForm from "app/base/components/node/DeleteForm";
 import FieldlessForm from "app/base/components/node/FieldlessForm";
 import NodeActionWarning from "app/base/components/node/NodeActionWarning";
+import PowerOffForm from "app/base/components/node/PowerOffForm";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
@@ -158,12 +159,20 @@ export const MachineActionFormWrapper = ({
       case NodeActions.EXIT_RESCUE_MODE:
       case NodeActions.LOCK:
       case NodeActions.MARK_FIXED:
-      case NodeActions.OFF:
       case NodeActions.ON:
       case NodeActions.RESCUE_MODE:
       case NodeActions.UNLOCK:
         return (
           <FieldlessForm
+            action={action}
+            actions={machineActions}
+            {...commonNodeFormProps}
+          />
+        );
+      case NodeActions.OFF:
+      case NodeActions.SOFT_OFF:
+        return (
+          <PowerOffForm
             action={action}
             actions={machineActions}
             {...commonNodeFormProps}

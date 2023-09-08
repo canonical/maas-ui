@@ -174,6 +174,7 @@ export enum NodeActions {
   RESCUE_MODE = "rescue-mode",
   SET_POOL = "set-pool",
   SET_ZONE = "set-zone",
+  SOFT_OFF = "soft-off",
   TAG = "tag",
   TEST = "test",
   UNLOCK = "unlock",

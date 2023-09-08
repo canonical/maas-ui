@@ -1510,6 +1510,80 @@ const machineSlice = createSlice({
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
     setZoneSuccess: statusHandlers.setZone.success,
+    softOff: {
+      prepare: (params: BaseMachineActionParams) => {
+        let actionParams;
+        if ("filter" in params) {
+          const { filter, system_id, ...extra } = params;
+          actionParams = {
+            action: NodeActions.OFF,
+            filter,
+            system_id,
+            extra: { ...extra, stop_mode: "soft" },
+          };
+        } else {
+          const { system_id, ...extra } = params;
+          actionParams = {
+            action: NodeActions.OFF,
+            extra: { ...extra, stop_mode: "soft" },
+            system_id,
+          };
+        }
+        return {
+          meta: {
+            model: MachineMeta.MODEL,
+            method: "soft_power_off",
+          },
+          payload: {
+            params: actionParams,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    softOffError: statusHandlers.softOff.error,
+    softOffStart: {
+      prepare: (params) => {
+        if ("filter" in params) {
+          return {
+            meta: {
+              item: { filter: { id: params.filter.id } },
+            },
+            payload: null,
+          };
+        } else {
+          return {
+            meta: {
+              item: { filter: { id: [params.system_id] } },
+            },
+            payload: null,
+          };
+        }
+      },
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          null,
+          string,
+          GenericItemMeta<
+            { filter: { id: Machine[MachineMeta.PK][] } } | { system_id: never }
+          >
+        >
+      ) => {
+        if ("filter" in action.meta.item) {
+          action.meta.item.filter.id.forEach((id) => {
+            if (state.statuses[id]) {
+              state.statuses[id].turningOff = true;
+            }
+          });
+        } else {
+          state.statuses[action.meta.item.system_id].turningOff = true;
+        }
+      },
+    },
+    softOffSuccess: statusHandlers.softOff.success,
     suppressScriptResults: {
       prepare: (
         machineID: Machine[MachineMeta.PK],

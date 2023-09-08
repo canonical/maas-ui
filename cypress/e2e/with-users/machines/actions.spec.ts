@@ -14,7 +14,7 @@ const MACHINE_ACTIONS_GROUPS = [
   },
   {
     label: "Power cycle",
-    actions: ["Power on", "Power off"],
+    actions: ["Power on", "Power off", "Soft power off"],
   },
   {
     label: "Troubleshoot",
@@ -159,5 +159,16 @@ context("Machine listing - actions", () => {
       .within(() => cy.findByText(tagName))
       .should("exist");
     cy.deleteMachine(machineName);
+  });
+
+  it("can open a soft power off form", () => {
+    selectFirstMachine();
+    cy.findByRole("button", { name: /power cycle/i }).click();
+    cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
+    cy.findByRole("complementary", { name: /soft power off/i }).should("exist");
+    cy.findByRole("heading", { name: /soft power off/i }).should("exist");
+    cy.findByText(
+      /a soft power off generally asks the os to shutdown the system gracefully before powering off\. it is only supported by ipmi/i
+    ).should("exist");
   });
 });

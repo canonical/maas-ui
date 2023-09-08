@@ -74,6 +74,8 @@ export const getNodeActionTitle = (actionName: NodeActions): string => {
       return "Power off";
     case NodeActions.ON:
       return "Power on";
+    case NodeActions.SOFT_OFF:
+      return "Soft power off";
     case NodeActions.OVERRIDE_FAILED_TESTING:
       return "Override failed testing";
     case NodeActions.RELEASE:
@@ -134,6 +136,7 @@ export const getNodeActionLabel = (
     case NodeActions.ON:
       return `${isProcessing ? "Powering" : "Power"} on ${modelString}`;
     case NodeActions.OFF:
+    case NodeActions.SOFT_OFF:
       return `${isProcessing ? "Powering" : "Power"} off ${modelString}`;
     case NodeActions.MARK_BROKEN:
       return `${isProcessing ? "Marking" : "Mark"} ${modelString} broken`;
