@@ -1547,14 +1547,14 @@ const machineSlice = createSlice({
         if ("filter" in params) {
           return {
             meta: {
-              item: { ids: params.filter },
+              item: { filter: { id: params.filter.id } },
             },
             payload: null,
           };
         } else {
           return {
             meta: {
-              item: { ids: [params.system_id] },
+              item: { filter: { id: [params.system_id] } },
             },
             payload: null,
           };
@@ -1565,10 +1565,10 @@ const machineSlice = createSlice({
         action: PayloadAction<
           null,
           string,
-          GenericItemMeta<{ ids: Machine[MachineMeta.PK][] }>
+          GenericItemMeta<{ filter: { id: Machine[MachineMeta.PK][] } }>
         >
       ) => {
-        action.meta.item.ids.forEach((id) => {
+        action.meta.item.filter.id.forEach((id) => {
           if (state.statuses[id]) {
             state.statuses[id].turningOff = true;
           }
