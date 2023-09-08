@@ -1542,7 +1542,39 @@ const machineSlice = createSlice({
       },
     },
     softOffError: statusHandlers.softOff.error,
-    softOffStart: statusHandlers.softOff.start,
+    softOffStart: {
+      prepare: (params) => {
+        if ("filter" in params) {
+          return {
+            meta: {
+              item: { ids: params.filter },
+            },
+            payload: null,
+          };
+        } else {
+          return {
+            meta: {
+              item: { ids: [params.system_id] },
+            },
+            payload: null,
+          };
+        }
+      },
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          null,
+          string,
+          GenericItemMeta<{ ids: Machine[MachineMeta.PK][] }>
+        >
+      ) => {
+        action.meta.item.ids.forEach((id) => {
+          if (state.statuses[id]) {
+            state.statuses[id].turningOff = true;
+          }
+        });
+      },
+    },
     softOffSuccess: statusHandlers.softOff.success,
     suppressScriptResults: {
       prepare: (
