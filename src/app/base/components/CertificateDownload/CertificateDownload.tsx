@@ -34,9 +34,7 @@ const CertificateDownload = ({
         <div className="certificate-download">
           <CodeSnippet
             blocks={[
-              { code: "lxc config trust add - <<EOF" },
-              { code: certificate },
-              { code: "EOF" },
+              { code: `lxc config trust add - <<EOF\n\n${certificate}\nEOF` },
             ]}
             className="u-no-margin--bottom"
             data-testid={TestIds.CertCodeSnippet}
