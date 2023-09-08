@@ -1565,14 +1565,20 @@ const machineSlice = createSlice({
         action: PayloadAction<
           null,
           string,
-          GenericItemMeta<{ filter: { id: Machine[MachineMeta.PK][] } }>
+          GenericItemMeta<
+            { filter: { id: Machine[MachineMeta.PK][] } } | { system_id: never }
+          >
         >
       ) => {
-        action.meta.item.filter.id.forEach((id) => {
-          if (state.statuses[id]) {
-            state.statuses[id].turningOff = true;
-          }
-        });
+        if ("filter" in action.meta.item) {
+          action.meta.item.filter.id.forEach((id) => {
+            if (state.statuses[id]) {
+              state.statuses[id].turningOff = true;
+            }
+          });
+        } else {
+          state.statuses[action.meta.item.system_id].turningOff = true;
+        }
       },
     },
     softOffSuccess: statusHandlers.softOff.success,
