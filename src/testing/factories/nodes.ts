@@ -256,6 +256,7 @@ export const machine = extend<SimpleNode, Machine>(simpleNode, {
   actions,
   architecture: "amd64/generic",
   description: "a test machine",
+  ephemeral_deploy: false,
   cpu_count: 1,
   cpu_test_status: testStatus,
   distro_series: "",
