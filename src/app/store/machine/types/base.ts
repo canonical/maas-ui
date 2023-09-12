@@ -39,6 +39,7 @@ export type BaseMachine = Omit<
   "cpu_speed" | "interface_test_status"
 > & {
   actions: MachineActions[];
+  ephemeral_deploy: boolean;
   error_description: string;
   extra_macs: string[];
   fabrics: string[];
