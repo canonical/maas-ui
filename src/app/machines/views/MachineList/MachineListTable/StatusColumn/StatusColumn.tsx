@@ -126,6 +126,10 @@ export const StatusColumn = ({
   const toggleMenu = useToggleMenu(onToggleMenu || null);
   const actionLinks = useMachineActions(systemId, actions);
   const statusText = getStatusText(machine, formattedOS);
+  const isEphemerallyDeployed =
+    machine &&
+    machine.status_code === NodeStatusCode.DEPLOYED &&
+    machine.ephemeral_deploy;
   const seeLogs = React.useMemo(
     () => ({
       children: "See logs",
@@ -147,8 +151,13 @@ export const StatusColumn = ({
     [statusText]
   );
   const secondary = React.useMemo(
-    () => <Progress machine={machine} />,
-    [machine]
+    () =>
+      isEphemerallyDeployed ? (
+        <span>Deployed in memory</span>
+      ) : (
+        <Progress machine={machine} />
+      ),
+    [machine, isEphemerallyDeployed]
   );
   const icon = React.useMemo(
     () => (machine ? getStatusIcon(machine) : null),
