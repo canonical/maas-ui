@@ -21,6 +21,7 @@ import {
   TestStatusStatus,
 } from "app/store/types/node";
 import { breakLines, getStatusText } from "app/utils";
+import { isEphemerallyDeployed } from "app/utils/IsEphemerallyDeployed";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [
@@ -126,10 +127,6 @@ export const StatusColumn = ({
   const toggleMenu = useToggleMenu(onToggleMenu || null);
   const actionLinks = useMachineActions(systemId, actions);
   const statusText = getStatusText(machine, formattedOS);
-  const isEphemerallyDeployed =
-    machine &&
-    machine.status_code === NodeStatusCode.DEPLOYED &&
-    machine.ephemeral_deploy;
   const seeLogs = React.useMemo(
     () => ({
       children: "See logs",
@@ -152,12 +149,12 @@ export const StatusColumn = ({
   );
   const secondary = React.useMemo(
     () =>
-      isEphemerallyDeployed ? (
+      isEphemerallyDeployed(machine) ? (
         <span>Deployed in memory</span>
       ) : (
         <Progress machine={machine} />
       ),
-    [machine, isEphemerallyDeployed]
+    [machine]
   );
   const icon = React.useMemo(
     () => (machine ? getStatusIcon(machine) : null),
