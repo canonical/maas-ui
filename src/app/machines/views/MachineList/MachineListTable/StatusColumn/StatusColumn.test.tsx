@@ -268,4 +268,17 @@ describe("StatusColumn", () => {
       ).toBeInTheDocument();
     });
   });
+
+  it('displays a "Deployed in memory" status for epmerally deployed machines', () => {
+    machine.ephemeral_deploy = true;
+    machine.status_code = NodeStatusCode.DEPLOYED;
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(
+      <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { route: "/machines", store }
+    );
+
+    expect(screen.getByText(/deployed in memory/i)).toBeInTheDocument();
+  });
 });
