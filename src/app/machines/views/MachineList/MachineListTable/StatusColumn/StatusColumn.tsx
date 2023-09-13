@@ -20,8 +20,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "app/store/types/node";
-import { breakLines, getStatusText } from "app/utils";
-import { isEphemerallyDeployed } from "app/utils/IsEphemerallyDeployed";
+import { breakLines, getStatusText, isEphemerallyDeployed } from "app/utils";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [

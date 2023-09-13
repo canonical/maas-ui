@@ -17,6 +17,7 @@ export { getRelativeRoute } from "./getRelativeRoute";
 export { getStatusText } from "./getStatusText";
 export { groupAsMap } from "./groupAsMap";
 export { isComparable } from "./isComparable";
+export { isEphemerallyDeployed } from "./IsEphemerallyDeployed";
 export { isId } from "./isId";
 export { isVersionNewer } from "./isVersionNewer";
 export { kebabToCamelCase } from "./kebabToCamelCase";
