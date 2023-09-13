@@ -19,13 +19,14 @@ import { render, screen, within } from "testing/utils";
 const mockStore = configureStore();
 
 it("renders correct details", () => {
-  const vlan = vlanFactory({ id: 5005 });
+  const vlan = vlanFactory({ id: 5005, subnet_ids: [1] });
   const subnet = subnetFactory({
     allow_dns: true,
     allow_proxy: false,
     managed: true,
     statistics: subnetStatisticsFactory({ usage_string: "25%" }),
     vlan: vlan.id,
+    id: 1,
   });
   const state = rootStateFactory({
     subnet: subnetStateFactory({ items: [subnet] }),
