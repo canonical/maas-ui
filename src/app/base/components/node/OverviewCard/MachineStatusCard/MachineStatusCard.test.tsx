@@ -15,9 +15,14 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineStatusCard", () => {
   let state: RootState;
@@ -205,5 +210,24 @@ describe("MachineStatusCard", () => {
     expect(
       screen.getByText(/This machine hardware info is synced every 15 minutes./)
     ).toBeVisible();
+  });
+
+  it("indicates when a machine is deployed ephemerally", () => {
+    const machine = machineDetailsFactory({
+      ephemeral_deploy: true,
+      status: NodeStatus.DEPLOYED,
+      status_code: NodeStatusCode.DEPLOYED,
+      sync_interval: 900,
+    });
+    const store = mockStore(state);
+
+    renderWithBrowserRouter(<MachineStatusCard machine={machine} />, {
+      store,
+      route: "/machines",
+    });
+
+    expect(
+      screen.getByRole("heading", { name: /deployed in memory/i })
+    ).toBeInTheDocument();
   });
 });
