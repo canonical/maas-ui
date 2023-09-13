@@ -628,7 +628,7 @@ describe("DeployFormFields", () => {
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
     ).not.toBeChecked();
     await userEvent.click(
-      screen.getByRole("button", { name: /Start deployment for machine/ })
+      screen.getByRole("button", { name: /Deploy machine/ })
     );
 
     await waitFor(() => {
@@ -664,7 +664,7 @@ describe("DeployFormFields", () => {
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
     );
     await userEvent.click(
-      screen.getByRole("button", { name: /Start deployment for machine/ })
+      screen.getByRole("button", { name: /Deploy machine/ })
     );
     await waitFor(() =>
       expect(
