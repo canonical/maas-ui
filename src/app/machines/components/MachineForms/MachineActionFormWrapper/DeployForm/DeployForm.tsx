@@ -24,10 +24,12 @@ const DeploySchema = Yup.object().shape({
   kernel: Yup.string(),
   includeUserData: Yup.boolean(),
   enableHwSync: Yup.boolean(),
+  ephemeralDeploy: Yup.boolean(),
   vmHostType: Yup.string().oneOf([PodType.LXD, PodType.VIRSH, ""]),
 });
 
 export type DeployFormValues = {
+  ephemeralDeploy: boolean;
   includeUserData: boolean;
   kernel: string;
   oSystem: string;
@@ -102,6 +104,7 @@ export const DeployForm = ({
       cleanup={machineActions.cleanup}
       errors={errors || actionErrors}
       initialValues={{
+        ephemeralDeploy: false,
         oSystem: initialOS,
         release: initialRelease,
         kernel: defaultMinHweKernel || "",
@@ -131,6 +134,7 @@ export const DeployForm = ({
         if (selectedMachines) {
           dispatchForSelectedMachines(machineActions.deploy, {
             distro_series: values.release,
+            ephemeral_deploy: values.ephemeralDeploy,
             hwe_kernel: values.kernel,
             osystem: values.oSystem,
             ...(values.enableHwSync && { enable_hw_sync: true }),
@@ -147,6 +151,7 @@ export const DeployForm = ({
             dispatch(
               machineActions.deploy({
                 distro_series: values.release,
+                ephemeral_deploy: values.ephemeralDeploy,
                 hwe_kernel: values.kernel,
                 osystem: values.oSystem,
                 system_id: machine.system_id,

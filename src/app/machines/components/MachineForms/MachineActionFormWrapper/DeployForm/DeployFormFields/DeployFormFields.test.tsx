@@ -18,7 +18,13 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -674,5 +680,42 @@ describe("DeployFormFields", () => {
         true
       );
     });
+  });
+
+  it("selects 'Deploy to disk' as the default deployment target", () => {
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines/add", state }
+    );
+
+    expect(screen.getByRole("radio", { name: "Deploy to disk" })).toBeChecked();
+    expect(
+      screen.getByRole("radio", { name: "Deploy in memory" })
+    ).not.toBeChecked();
+  });
+
+  it("hides 'Register as MAAS KVM host' if 'Deploy in memory' is selected", async () => {
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines/add", state }
+    );
+
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Deploy in memory" })
+    );
+
+    expect(
+      screen.queryByRole("checkbox", { name: "Register as MAAS KVM host" })
+    ).not.toBeInTheDocument();
   });
 });

@@ -249,6 +249,7 @@ export type DeleteVolumeGroupParams = {
 export type DeployParams = BaseMachineActionParams & {
   distro_series?: Machine["distro_series"];
   enable_hw_sync?: boolean;
+  ephemeral_deploy: boolean;
   hwe_kernel?: string;
   install_kvm?: boolean;
   osystem?: Machine["osystem"];

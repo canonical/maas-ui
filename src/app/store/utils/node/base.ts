@@ -120,9 +120,7 @@ export const getNodeActionLabel = (
     case NodeActions.DELETE:
       return `${isProcessing ? "Deleting" : "Delete"} ${modelString}`;
     case NodeActions.DEPLOY:
-      return `${
-        isProcessing ? "Starting" : "Start"
-      } deployment for ${modelString}`;
+      return `${isProcessing ? "Deploying" : "Deploy"} ${modelString}`;
     case NodeActions.EXIT_RESCUE_MODE:
       return `${
         isProcessing ? "Exiting" : "Exit"

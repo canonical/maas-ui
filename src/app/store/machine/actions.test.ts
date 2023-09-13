@@ -444,6 +444,7 @@ describe("machine actions", () => {
     expect(
       actions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         hwe_kernel: "ga-16.04",
         install_kvm: false,
         osystem: "ubuntu",
@@ -460,6 +461,7 @@ describe("machine actions", () => {
           action: NodeActions.DEPLOY,
           extra: {
             distro_series: "bionic",
+            ephemeral_deploy: false,
             hwe_kernel: "ga-16.04",
             install_kvm: false,
             osystem: "ubuntu",
@@ -474,6 +476,7 @@ describe("machine actions", () => {
     expect(
       actions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         hwe_kernel: "ga-16.04",
         install_kvm: false,
         osystem: "ubuntu",
@@ -490,6 +493,7 @@ describe("machine actions", () => {
           action: NodeActions.DEPLOY,
           extra: {
             distro_series: "bionic",
+            ephemeral_deploy: false,
             hwe_kernel: "ga-16.04",
             install_kvm: false,
             osystem: "ubuntu",
