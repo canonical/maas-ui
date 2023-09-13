@@ -16,7 +16,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "app/store/types/node";
-import { breakLines } from "app/utils";
+import { breakLines, isEphemerallyDeployed } from "app/utils";
 
 type Props = {
   machine: MachineDetails;
@@ -74,6 +74,9 @@ const MachineStatusCard = ({ machine }: Props): JSX.Element => {
             </i>
           )}
           {machine.status}
+          {isEphemerallyDeployed(machine) && (
+            <span className="p-text--small"> in memory</span>
+          )}
         </h4>
 
         {machine.show_os_info ? (
