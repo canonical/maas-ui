@@ -20,7 +20,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "app/store/types/node";
-import { breakLines, getStatusText } from "app/utils";
+import { breakLines, getStatusText, isEphemerallyDeployed } from "app/utils";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [
@@ -147,7 +147,12 @@ export const StatusColumn = ({
     [statusText]
   );
   const secondary = React.useMemo(
-    () => <Progress machine={machine} />,
+    () =>
+      isEphemerallyDeployed(machine) ? (
+        <span>Deployed in memory</span>
+      ) : (
+        <Progress machine={machine} />
+      ),
     [machine]
   );
   const icon = React.useMemo(
