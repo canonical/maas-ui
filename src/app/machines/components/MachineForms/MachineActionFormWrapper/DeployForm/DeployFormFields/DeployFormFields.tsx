@@ -136,53 +136,86 @@ export const DeployFormFields = (): JSX.Element => {
         </div>
         <Row>
           <Col size={12}>
-            <p>Customise options</p>
+            <p>Deployment target</p>
           </Col>
           <Col size={12}>
             <Input
-              checked={deployVmHost}
-              disabled={!canBeKVMHost || noImages}
-              help="Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
-              id="deployVmHost"
-              label={
-                <>
-                  Register as MAAS KVM host.{" "}
-                  <a
-                    href={docsUrls.kvmIntroduction}
-                    rel="noreferrer noopener"
-                    target="_blank"
-                  >
-                    KVM docs
-                  </a>
-                </>
-              }
-              onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                const { checked } = evt.target;
-                if (checked) {
-                  setDeployVmHost(true);
-                  setFieldValue("vmHostType", PodType.LXD);
-                } else {
-                  clearVmHostOptions();
-                }
+              checked={!values.ephemeralDeploy}
+              label="Deploy to disk"
+              name="ephemeralDeploy"
+              onChange={() => {
+                setFieldValue("ephemeralDeploy", false);
               }}
-              type="checkbox"
+              type="radio"
             />
-            {deployVmHost && (
+            <Input
+              checked={values.ephemeralDeploy}
+              help="No disk layout will be applied during deployment. All system data will be reset upon reboot or shutdown."
+              label="Deploy in memory"
+              name="ephemeralDeploy"
+              onChange={() => {
+                setFieldValue("ephemeralDeploy", true);
+              }}
+              type="radio"
+            />
+          </Col>
+        </Row>
+        <div className="u-sv2">
+          <hr className="u-sv2" />
+        </div>
+        <Row>
+          <Col size={12}>
+            <p>Customise options</p>
+          </Col>
+          <Col size={12}>
+            {!values.ephemeralDeploy && (
               <>
-                <FormikField
-                  label="LXD"
-                  name="vmHostType"
-                  type="radio"
-                  value={PodType.LXD}
-                  wrapperClassName="u-nudge-right--x-large"
+                <Input
+                  checked={deployVmHost}
+                  disabled={!canBeKVMHost || noImages}
+                  help="Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
+                  id="deployVmHost"
+                  label={
+                    <>
+                      Register as MAAS KVM host.{" "}
+                      <a
+                        href={docsUrls.kvmIntroduction}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                      >
+                        KVM docs
+                      </a>
+                    </>
+                  }
+                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                    const { checked } = evt.target;
+                    if (checked) {
+                      setDeployVmHost(true);
+                      setFieldValue("vmHostType", PodType.LXD);
+                    } else {
+                      clearVmHostOptions();
+                    }
+                  }}
+                  type="checkbox"
                 />
-                <FormikField
-                  label="libvirt"
-                  name="vmHostType"
-                  type="radio"
-                  value={PodType.VIRSH}
-                  wrapperClassName="u-nudge-right--x-large"
-                />
+                {deployVmHost && (
+                  <>
+                    <FormikField
+                      label="LXD"
+                      name="vmHostType"
+                      type="radio"
+                      value={PodType.LXD}
+                      wrapperClassName="u-nudge-right--x-large"
+                    />
+                    <FormikField
+                      label="libvirt"
+                      name="vmHostType"
+                      type="radio"
+                      value={PodType.VIRSH}
+                      wrapperClassName="u-nudge-right--x-large"
+                    />
+                  </>
+                )}
               </>
             )}
             <FormikField

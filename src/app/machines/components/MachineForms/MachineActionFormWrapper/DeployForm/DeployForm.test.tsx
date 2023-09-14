@@ -161,7 +161,7 @@ describe("DeployForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for 2 machines" })
+      screen.getByRole("button", { name: "Deploy 2 machines" })
     );
 
     expect(
@@ -169,12 +169,14 @@ describe("DeployForm", () => {
     ).toStrictEqual([
       machineActions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
       }),
       machineActions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "def456",
@@ -211,7 +213,7 @@ describe("DeployForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for machine" })
+      screen.getByRole("button", { name: "Deploy machine" })
     );
 
     expect(
@@ -219,6 +221,7 @@ describe("DeployForm", () => {
     ).toStrictEqual([
       machineActions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
@@ -245,7 +248,7 @@ describe("DeployForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for machine" })
+      screen.getByRole("button", { name: "Deploy machine" })
     );
 
     expect(
@@ -253,6 +256,7 @@ describe("DeployForm", () => {
     ).toStrictEqual(
       machineActions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
@@ -282,13 +286,14 @@ describe("DeployForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for machine" })
+      screen.getByRole("button", { name: "Deploy machine" })
     );
     expect(
       store.getActions().find((action) => action.type === "machine/deploy")
     ).toStrictEqual(
       machineActions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         enable_hw_sync: true,
         hwe_kernel: "",
         osystem: "ubuntu",
@@ -314,13 +319,14 @@ describe("DeployForm", () => {
       screen.getByRole("option", { name: "No minimum kernel" })
     );
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for machine" })
+      screen.getByRole("button", { name: "Deploy machine" })
     );
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
       machineActions.deploy({
         distro_series: "bionic",
+        ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
@@ -361,7 +367,7 @@ describe("DeployForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for machine" })
+      screen.getByRole("button", { name: "Deploy machine" })
     );
 
     expect(mockSendAnalytics).toHaveBeenCalled();
@@ -395,7 +401,7 @@ describe("DeployForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for machine" })
+      screen.getByRole("button", { name: "Deploy machine" })
     );
 
     const action = store
@@ -429,12 +435,57 @@ describe("DeployForm", () => {
     await userEvent.click(screen.getByRole("radio", { name: /libvirt/i }));
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Start deployment for machine" })
+      screen.getByRole("button", { name: "Deploy machine" })
     );
     const action = store
       .getActions()
       .find((action) => action.type === "machine/deploy");
     expect(action?.payload?.params?.extra?.install_kvm).toBe(true);
     expect(action?.payload?.params?.extra?.register_vmhost).toBeUndefined();
+  });
+
+  it("can deploy machines ephemerally", async () => {
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Deploy in memory" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Deploy 2 machines" })
+    );
+
+    expect(
+      store.getActions().filter((action) => action.type === "machine/deploy")
+    ).toStrictEqual([
+      machineActions.deploy({
+        distro_series: "bionic",
+        ephemeral_deploy: true,
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "abc123",
+      }),
+      machineActions.deploy({
+        distro_series: "bionic",
+        ephemeral_deploy: true,
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "def456",
+      }),
+    ]);
   });
 });
