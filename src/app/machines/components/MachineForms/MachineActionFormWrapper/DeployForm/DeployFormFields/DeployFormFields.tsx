@@ -143,7 +143,7 @@ export const DeployFormFields = (): JSX.Element => {
               checked={!values.ephemeralDeploy}
               label="Deploy to disk"
               name="ephemeralDeploy"
-              onClick={() => {
+              onChange={() => {
                 setFieldValue("ephemeralDeploy", false);
               }}
               type="radio"
@@ -153,7 +153,7 @@ export const DeployFormFields = (): JSX.Element => {
               help="No disk layout will be applied during deployment. All system data will be reset upon reboot or shutdown."
               label="Deploy in memory"
               name="ephemeralDeploy"
-              onClick={() => {
+              onChange={() => {
                 setFieldValue("ephemeralDeploy", true);
               }}
               type="radio"
