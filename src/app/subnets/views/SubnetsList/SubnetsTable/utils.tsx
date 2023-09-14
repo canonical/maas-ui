@@ -177,12 +177,12 @@ const getByFabric = (data: SubnetsTableData): SubnetsTableRow[] => {
         simpleSortByKey("vid")
       );
       vlansInFabric.forEach((vlan) => {
-        const subnetsInVLAN = getSubnetsInVLAN(data.subnets, vlan.id);
-        const vlanHasSubnets = subnetsInVLAN.length > 0;
+        const vlanHasSubnets = vlan.subnet_ids.length > 0;
         if (!vlanHasSubnets) {
           const space = getSpaceById(data.spaces, vlan.space);
           rows.push(getRowData({ fabric, vlan, space, data }));
         } else {
+          const subnetsInVLAN = getSubnetsInVLAN(data.subnets, vlan.id);
           subnetsInVLAN.forEach((subnet) => {
             const space = getSpaceById(data.spaces, subnet.space);
             rows.push(getRowData({ fabric, vlan, subnet, space, data }));
