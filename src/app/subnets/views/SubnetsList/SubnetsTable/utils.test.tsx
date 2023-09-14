@@ -14,7 +14,7 @@ import {
 
 test("getTableData generates correct sortData for fabric", () => {
   const fabrics = [fabricFactory({ id: 1, vlan_ids: [1] })];
-  const vlans = [vlanFactory({ id: 1, fabric: 1 })];
+  const vlans = [vlanFactory({ id: 1, fabric: 1, subnet_ids: [1] })];
   const subnets = [subnetFactory({ vlan: 1, cidr: "172.16.1.0/24" })];
   const spaces = [spaceFactory({ vlan_ids: [1] })];
   expect(
@@ -131,9 +131,15 @@ test("filterSubnetsBySearchText matches a correct number of results with each va
     fabricFactory({ id: 3, name: "test-fabric-3" }),
   ];
   const vlans = [
-    vlanFactory({ id: 1, fabric: 1, space: 1, name: "test-vlan" }),
+    vlanFactory({
+      id: 1,
+      fabric: 1,
+      space: 1,
+      name: "test-vlan",
+      subnet_ids: [1],
+    }),
   ];
-  const subnets = [subnetFactory({ cidr: "172.16.1.0/24", vlan: 1 })];
+  const subnets = [subnetFactory({ cidr: "172.16.1.0/24", vlan: 1, id: 1 })];
   const spaces = [spaceFactory({ id: 1, name: "space-1" })];
   const tableRows = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
 
