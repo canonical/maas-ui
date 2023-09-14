@@ -24,6 +24,10 @@
 
 maas-ui built with TypeScript in strict mode. Any new modules in should be written in [TypeScript](https://www.typescriptlang.org/).
 
+## Code style
+
+Prioritize clear, self-explanatory code, and only use JSDoc to provide context or additional information that cannot be inferred from the code itself.
+
 ### Dealing with problems
 
 There are cases where determining a type for a particular object can be difficult. We provide an "escape hatch" type called `TSFixMe` (aliased to `any`) which you can use, but please make a best effort to avoid this and determine the correct types where possible.
