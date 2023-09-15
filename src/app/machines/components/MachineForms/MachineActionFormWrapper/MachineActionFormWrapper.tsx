@@ -40,6 +40,9 @@ type Props = Omit<MachineActionFormProps, "processingCount"> & {
   viewingDetails: boolean;
 };
 
+/**
+ * Displays specified machine action form for selected machines.
+ */
 export const MachineActionFormWrapper = ({
   action,
   applyConfiguredNetworking,

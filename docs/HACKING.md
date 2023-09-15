@@ -28,6 +28,24 @@ maas-ui built with TypeScript in strict mode. Any new modules in should be writt
 
 Prioritize clear, self-explanatory code, and only use JSDoc to provide context or additional information that cannot be inferred from the code itself.
 
+## React Components
+
+We encourage [component-driven](https://www.componentdriven.org/) development, and use of [Storybook](https://storybook.js.org/) for interactive documentation.
+
+Follow the presentational and container components pattern where appropriate. Read more on good component design in the  [React documentation](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state).
+
+When developing new features or extending existing ones, consider the following:
+
+- Think of all the variations of a UI component and how each can be represented using props.
+- Prefer a single `variant` prop for representing visual variations of a component.
+
+```tsx
+<Button variant="primary" />
+```
+
+- Create stories for each variant in [Storybook](https://storybook.js.org/).
+- Add state management, side effects, and application-specific logic into container component passing the state as props to the presentational component.
+
 ### Dealing with problems
 
 There are cases where determining a type for a particular object can be difficult. We provide an "escape hatch" type called `TSFixMe` (aliased to `any`) which you can use, but please make a best effort to avoid this and determine the correct types where possible.
