@@ -34,7 +34,7 @@ const VLANDetails = (): JSX.Element => {
   );
   const vlansLoading = useSelector(vlanSelectors.loading);
   const subnets = useSelector((state: RootState) =>
-    subnetSelectors.getByVLAN(state, id)
+    subnetSelectors.getByIds(state, vlan?.subnet_ids || [])
   );
   const [showDHCPForm, setShowDHCPForm] = useState(false);
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
@@ -94,10 +94,7 @@ const VLANDetails = (): JSX.Element => {
           <VLANSubnets id={id} />
         </>
       )}
-      <DHCPSnippets
-        modelName={VLANMeta.MODEL}
-        subnetIds={subnets.map(({ id }) => id)}
-      />
+      <DHCPSnippets modelName={VLANMeta.MODEL} subnetIds={vlan.subnet_ids} />
     </PageContent>
   );
 };
