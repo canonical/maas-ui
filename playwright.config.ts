@@ -40,7 +40,7 @@ const config: PlaywrightTestConfig = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    baseURL: "http://0.0.0.0:5240/",
+    baseURL: "http://localhost:8400/",
   },
 
   /* Configure projects for major browsers */
@@ -99,10 +99,10 @@ const config: PlaywrightTestConfig = {
   // outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
+  webServer: {
+    command: "yarn start",
+    port: 8400,
+  },
 };
 
 export default config;
