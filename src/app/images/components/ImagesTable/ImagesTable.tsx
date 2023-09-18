@@ -8,6 +8,7 @@ import DeleteImageConfirm from "./DeleteImageConfirm";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableActions from "app/base/components/TableActions";
+import TooltipButton from "app/base/components/TooltipButton/TooltipButton";
 import type { ImageValue } from "app/images/types";
 import type { BootResource } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
@@ -151,6 +152,22 @@ const generateResourceRow = ({
       { content: resource.arch, className: "arch-col" },
       { content: resource.size, className: "size-col" },
       {
+        // Icons needed: power-unknown, close, task-outstanding
+        // Aria labels: Unknown, supported, not supported
+        // Messages:
+        // - "It is unknown if this image can be deployed in memory."
+        // - "This image can be deployed in memory."
+        // - "This image cannot be deployed in memory."
+        content: (
+          <TooltipButton
+            iconName="task-outstanding"
+            iconProps={{ "aria-label": "supported" }}
+            message="This image can be deployed in memory."
+          />
+        ),
+        className: "diskless-col",
+      },
+      {
         content: (
           <DoubleRow
             data-testid="resource-status"
@@ -271,6 +288,7 @@ const ImagesTable = ({
         { content: "Release", className: "release-col", sortKey: "title" },
         { content: "Architecture", className: "arch-col", sortKey: "arch" },
         { content: "Size", className: "size-col", sortKey: "size" },
+        { content: "Deployable in memory", className: "diskless-col" },
         {
           content: <span className="p-double-row__header-spacer">Status</span>,
           className: "status-col",

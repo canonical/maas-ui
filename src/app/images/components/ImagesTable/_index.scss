@@ -1,7 +1,7 @@
 @mixin ImagesTable {
   .images-table {
     .release-col {
-      @include breakpoint-widths(0.25, 0.25, 0.2, 0.2, 0.2, true);
+      @include breakpoint-widths(0.25, 0.25, 0.2, 0.2, 0.15, true);
     }
 
     .arch-col {
@@ -13,7 +13,7 @@
     }
 
     .status-col {
-      @include breakpoint-widths(0.25, 0.45, 0.3, 0.35, 0.25, true);
+      @include breakpoint-widths(0.25, 0.45, 0.3, 0.35, 0.2, true);
     }
 
     .actions-col {
@@ -26,6 +26,10 @@
 
     .last-deployed-col {
       @include breakpoint-widths(0, 0, 0.15, 0.2, 0.15, true);
+    }
+
+    .diskless-col {
+      @include breakpoint-widths(0, 0, 0, 0, 0.1, true);
     }
   }
 }
