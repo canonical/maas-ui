@@ -257,6 +257,7 @@ export enum FilterGroupKey {
   Arch = "arch",
   CpuCount = "cpu_count",
   CpuSpeed = "cpu_speed",
+  DeploymentTarget = "deployment_target",
   Description = "description",
   DistroSeries = "distro_series",
   Domain = "domain",
