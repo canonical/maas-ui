@@ -20,9 +20,18 @@ const meta: Meta<typeof MachineActionFormWrapper> = {
 };
 export default meta;
 
-export const Example = {
+export const SingleMachine = {
   args: {
+    selectedCount: 1,
     selectedMachines: { items: ["abc123"] },
+    action: NodeActions.ABORT,
+  },
+};
+
+export const MultipleMachines = {
+  args: {
+    selectedCount: 2,
+    selectedMachines: { items: ["abc123", "def456"] },
     action: NodeActions.ABORT,
   },
 };
