@@ -37,6 +37,38 @@ export enum Labels {
   MachineCount = "Machine count",
 }
 
+const EphemeralSupportIcon = ({
+  supports_ephemeral,
+}: {
+  supports_ephemeral: boolean | null;
+}) => {
+  if (supports_ephemeral === true) {
+    return (
+      <TooltipButton
+        iconName="task-outstanding"
+        iconProps={{ "aria-label": "supported" }}
+        message="This image can be deployed in memory."
+      />
+    );
+  } else if (supports_ephemeral === false) {
+    return (
+      <TooltipButton
+        iconName="close"
+        iconProps={{ "aria-label": "not supported" }}
+        message="This image cannot be deployed in memory."
+      />
+    );
+  } else {
+    return (
+      <TooltipButton
+        iconName="power-unknown"
+        iconProps={{ "aria-label": "unknown" }}
+        message="It is unknown if this image can be deployed in memory."
+      />
+    );
+  }
+};
+
 /**
  * Check whether a given resource matches a form image value.
  * @param resource - the resource to check.
@@ -152,19 +184,7 @@ const generateResourceRow = ({
       { content: resource.arch, className: "arch-col" },
       { content: resource.size, className: "size-col" },
       {
-        // Icons needed: power-unknown, close, task-outstanding
-        // Aria labels: Unknown, supported, not supported
-        // Messages:
-        // - "It is unknown if this image can be deployed in memory."
-        // - "This image can be deployed in memory."
-        // - "This image cannot be deployed in memory."
-        content: (
-          <TooltipButton
-            iconName="task-outstanding"
-            iconProps={{ "aria-label": "supported" }}
-            message="This image can be deployed in memory."
-          />
-        ),
+        content: <EphemeralSupportIcon supports_ephemeral={null} />,
         className: "diskless-col",
       },
       {
