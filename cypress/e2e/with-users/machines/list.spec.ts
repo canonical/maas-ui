@@ -154,4 +154,19 @@ context("Machine listing", () => {
     cy.findByRole("button", { name: /Delete 3 machines/ }).click();
     cy.findByText(/No machines match the search criteria./).should("exist");
   });
+
+  it("can filter machine list by deployment target", () => {
+    cy.findByRole("button", { name: /filters/i }).click();
+    cy.findByRole("tab", { name: /deployment target/i })
+      .should("exist")
+      .click();
+    cy.findByRole("checkbox", { name: /deployed to disk/i }).should("exist");
+    cy.findByRole("checkbox", { name: /deployed in memory/i })
+      .should("exist")
+      .click();
+    cy.findByRole("searchbox").should(
+      "have.value",
+      "deployment_target:(=memory)"
+    );
+  });
 });
