@@ -2,8 +2,9 @@
 
 ![CI](https://github.com/canonical/maas-ui/workflows/CI/badge.svg)
 ![Playwright Tests](https://github.com/canonical/maas-ui/workflows/Playwright%20Tests/badge.svg)
-![Cypress](https://github.com/canonical/maas-ui/workflows/Cypress/badge.svg)
 ![accessibility](https://github.com/canonical/maas-ui/workflows/accessibility/badge.svg)
+![Cypress](https://github.com/canonical/maas-ui/workflows/Cypress/badge.svg)
+![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 - [About](#about)
