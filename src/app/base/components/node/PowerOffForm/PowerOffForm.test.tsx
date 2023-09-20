@@ -62,7 +62,7 @@ describe("PowerOffForm", () => {
 
     await userEvent.click(
       screen.getByRole("button", {
-        name: /power off machine/i,
+        name: /soft power off machine/i,
       })
     );
     expect(

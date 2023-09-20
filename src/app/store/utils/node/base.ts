@@ -134,7 +134,6 @@ export const getNodeActionLabel = (
     case NodeActions.ON:
       return `${isProcessing ? "Powering" : "Power"} on ${modelString}`;
     case NodeActions.OFF:
-    case NodeActions.SOFT_OFF:
       return `${isProcessing ? "Powering" : "Power"} off ${modelString}`;
     case NodeActions.MARK_BROKEN:
       return `${isProcessing ? "Marking" : "Mark"} ${modelString} broken`;
@@ -158,6 +157,8 @@ export const getNodeActionLabel = (
       return `${isProcessing ? "Setting" : "Set"} pool for ${modelString}`;
     case NodeActions.SET_ZONE:
       return `${isProcessing ? "Setting" : "Set"} zone for ${modelString}`;
+    case NodeActions.SOFT_OFF:
+      return `${isProcessing ? "Powering" : "Soft power"} off ${modelString}`;
     case NodeActions.TAG:
     case NodeActions.UNTAG:
       return `${isProcessing ? "Updating" : "Update"} tags for ${modelString}`;
