@@ -39,7 +39,7 @@ jobs:
           timeout: 200000
           interval: 500
       - name: Run sitespeed.io tests
-        run: yarn sitespeed --browsertime.domain=${{env.MAAS_DOMAIN}}
+        run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
       - name: Upload results
         uses: actions/upload-artifact@v3
         with:

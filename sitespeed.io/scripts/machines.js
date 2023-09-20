@@ -1,13 +1,25 @@
 const { constructURL } = require("../utils");
 
 const TIMEOUT = 120000;
-const allMachinesLoaded = "//h1[text()[normalize-space() = '1000']]";
+
+const waitForMachines = async (context, commands, pageSize = 50) => {
+  context.log.info("waiting for machine list count");
+  await commands.wait.byCondition(
+    `document.querySelector('[data-testid="section-header-title"]').textContent.includes("1000 machines")`,
+    TIMEOUT
+  );
+  context.log.info(`waiting for ${pageSize} machine list rows`);
+  await commands.wait.byCondition(
+    `document.querySelectorAll('table[aria-label] tbody tr.machine-list__machine')?.length === ${pageSize}`,
+    TIMEOUT
+  );
+};
 
 const coldCache = async (context, commands) => {
   await commands.cache.clearKeepCookies();
   await commands.measure.start("Machine list - cold cache");
   await commands.navigate(constructURL(context, "/machines"));
-  await commands.wait.byXpath(allMachinesLoaded, TIMEOUT);
+  await waitForMachines(context, commands);
   return commands.measure.stop();
 };
 
@@ -15,7 +27,7 @@ const warmCache = async (context, commands) => {
   await commands.navigate(constructURL(context, "/machines"));
   await commands.measure.start("Machine list - warm cache");
   await commands.navigate(constructURL(context, "/machines"));
-  await commands.wait.byXpath(allMachinesLoaded, TIMEOUT);
+  await waitForMachines(context, commands);
   return commands.measure.stop();
 };
 
@@ -28,10 +40,7 @@ const customPageSize = async (context, commands, pageSize) => {
   );
   await commands.measure.start(`Machine list - ${pageSize} per page`);
   await commands.navigate(constructURL(context, "/machines"));
-  await commands.wait.byCondition(
-    `document.querySelectorAll('table[aria-label=\"Machines\"] tbody tr').length === ${pageSize}`,
-    TIMEOUT
-  );
+  await waitForMachines(context, commands, pageSize);
   return commands.measure.stop();
 };
 
