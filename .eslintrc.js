@@ -2,8 +2,9 @@ module.exports = {
   root: true,
   plugins: ["unused-imports", "prettier"],
   extends: [
-    "react-app", // Use the recommended rules from CRA.
-    "plugin:prettier/recommended", // Ensure this is last in the list.
+    "react-app",
+    "plugin:prettier/recommended",
+    "plugin:storybook/recommended",
   ],
   parserOptions: {
     ecmaFeatures: {

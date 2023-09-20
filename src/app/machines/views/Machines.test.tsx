@@ -284,7 +284,7 @@ describe("Machines", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    expect(window.location.search).toBe("?status=new");
+    await waitFor(() => expect(window.location.search).toBe("?status=new"));
   });
 
   it("can hide groups", async () => {

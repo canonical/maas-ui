@@ -29,7 +29,92 @@ import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 
-const AppSideNavigation = (): JSX.Element => {
+type SideNavigationProps = {
+  authUser: ReturnType<typeof authSelectors.get>;
+  filteredGroups: typeof navGroups;
+  isAdmin: boolean;
+  isAuthenticated: boolean;
+  isCollapsed: boolean;
+  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  logout: () => void;
+  path: string;
+  showLinks: boolean;
+  theme: string;
+  vaultIncomplete: boolean;
+};
+
+export const AppSideNavigation = ({
+  authUser,
+  filteredGroups,
+  isAdmin,
+  isAuthenticated,
+  isCollapsed,
+  setIsCollapsed,
+  logout,
+  path,
+  showLinks,
+  theme,
+  vaultIncomplete,
+}: SideNavigationProps) => (
+  <>
+    <header aria-label="navigation" className="l-navigation-bar">
+      <div className={classNames("p-panel is-dark", `is-maas-${theme}`)}>
+        <div className="p-panel__header">
+          <NavigationBanner />
+          <div className="p-panel__controls u-nudge-down--small u-no-margin--top">
+            <Button
+              appearance="base"
+              className="has-icon is-dark"
+              onClick={() => {
+                setIsCollapsed(!isCollapsed);
+              }}
+            >
+              Menu
+            </Button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <nav
+      aria-label="main navigation"
+      className={classNames(`l-navigation is-maas is-maas-${theme}`, {
+        "is-collapsed": isCollapsed,
+        "is-pinned": !isCollapsed,
+      })}
+    >
+      <div className="l-navigation__drawer">
+        <div className="p-panel is-dark">
+          <div className={`p-panel__header is-sticky is-maas-${theme}`}>
+            <NavigationBanner>
+              <div className="l-navigation__controls">
+                <AppSideNavCollapseToggle
+                  isCollapsed={isCollapsed}
+                  setIsCollapsed={setIsCollapsed}
+                />
+              </div>
+            </NavigationBanner>
+          </div>
+          <div className="p-panel__content">
+            <div className="p-side-navigation--icons is-dark">
+              <AppSideNavItems
+                authUser={authUser}
+                groups={filteredGroups}
+                isAdmin={isAdmin}
+                isAuthenticated={isAuthenticated}
+                logout={logout}
+                path={path}
+                showLinks={showLinks}
+                vaultIncomplete={vaultIncomplete}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </>
+);
+
+const AppSideNavigationContainer = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -118,63 +203,20 @@ const AppSideNavigation = (): JSX.Element => {
   }, [hideVirsh]);
 
   return (
-    <>
-      <header aria-label="navigation" className="l-navigation-bar">
-        <div className={classNames("p-panel is-dark", `is-maas-${theme}`)}>
-          <div className="p-panel__header">
-            <NavigationBanner />
-            <div className="p-panel__controls u-nudge-down--small u-no-margin--top">
-              <Button
-                appearance="base"
-                className="has-icon is-dark"
-                onClick={() => {
-                  setIsCollapsed(!isCollapsed);
-                }}
-              >
-                Menu
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-      <nav
-        aria-label="main navigation"
-        className={classNames(`l-navigation is-maas is-maas-${theme}`, {
-          "is-collapsed": isCollapsed,
-          "is-pinned": !isCollapsed,
-        })}
-      >
-        <div className="l-navigation__drawer">
-          <div className="p-panel is-dark">
-            <div className={`p-panel__header is-sticky is-maas-${theme}`}>
-              <NavigationBanner>
-                <div className="l-navigation__controls">
-                  <AppSideNavCollapseToggle
-                    isCollapsed={isCollapsed}
-                    setIsCollapsed={setIsCollapsed}
-                  />
-                </div>
-              </NavigationBanner>
-            </div>
-            <div className="p-panel__content">
-              <div className="p-side-navigation--icons is-dark">
-                <AppSideNavItems
-                  authUser={authUser}
-                  groups={filteredGroups}
-                  isAdmin={isAdmin}
-                  isAuthenticated={isAuthenticated}
-                  logout={logout}
-                  path={path}
-                  showLinks={showLinks}
-                  vaultIncomplete={vaultIncomplete}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </>
+    <AppSideNavigation
+      authUser={authUser}
+      filteredGroups={filteredGroups}
+      isAdmin={isAdmin}
+      isAuthenticated={isAuthenticated}
+      isCollapsed={isCollapsed}
+      logout={logout}
+      path={path}
+      setIsCollapsed={setIsCollapsed}
+      showLinks={showLinks}
+      theme={theme}
+      vaultIncomplete={vaultIncomplete}
+    />
   );
 };
 
-export default AppSideNavigation;
+export default AppSideNavigationContainer;

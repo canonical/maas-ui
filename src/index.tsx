@@ -15,19 +15,25 @@ import { history, store } from "redux-store";
 
 import "./scss/index.scss";
 
-const AppRoot = (): JSX.Element => {
+export const RootProviders = ({ children }: { children: JSX.Element }) => {
   return (
     <Provider store={store}>
       <Router history={history}>
         <CompatRouter>
-          <SidePanelContextProvider>
-            <StrictMode>
-              <App />
-            </StrictMode>
-          </SidePanelContextProvider>
+          <SidePanelContextProvider>{children}</SidePanelContextProvider>
         </CompatRouter>
       </Router>
     </Provider>
+  );
+};
+
+const AppRoot = (): JSX.Element => {
+  return (
+    <StrictMode>
+      <RootProviders>
+        <App />
+      </RootProviders>
+    </StrictMode>
   );
 };
 

@@ -45,7 +45,7 @@ const TooltipButton = ({
         type="button"
         {...buttonProps}
       >
-        {children}
+        {typeof children === "string" ? <span>{children}</span> : children}
         {iconName ? (
           <Icon aria-label={iconName} name={iconName} {...iconProps} />
         ) : null}
