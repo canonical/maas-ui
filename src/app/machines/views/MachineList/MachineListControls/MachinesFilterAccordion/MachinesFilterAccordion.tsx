@@ -12,7 +12,7 @@ import { FilterGroupKey } from "app/store/machine/types";
 export enum Label {
   Toggle = "Filters",
   Arch = "Architecture",
-  Deploy = "Deployment Target",
+  DeploymentTarget = "Deployment Target",
   Fabrics = "Fabric",
   Owner = "Owner",
   Pod = "KVM",
@@ -49,7 +49,7 @@ const filterOrder = [
 
 const filterNames = new Map<FilterGroupKey, string>([
   [FilterGroupKey.Arch, Label.Arch],
-  [FilterGroupKey.DeploymentTarget, Label.Deploy],
+  [FilterGroupKey.DeploymentTarget, Label.DeploymentTarget],
   [FilterGroupKey.Fabrics, Label.Fabrics],
   [FilterGroupKey.Owner, Label.Owner],
   [FilterGroupKey.Pod, Label.Pod],
