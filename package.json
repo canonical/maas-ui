@@ -91,7 +91,6 @@
     "@storybook/preset-create-react-app": "7.4.1",
     "@storybook/react": "7.4.1",
     "@storybook/react-webpack5": "7.4.1",
-    "@storybook/testing-library": "0.2.0",
     "@storybook/theming": "7.4.1",
     "@testing-library/cypress": "9.0.0",
     "@testing-library/jest-dom": "6.0.0",

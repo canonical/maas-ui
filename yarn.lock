@@ -5301,15 +5301,6 @@
     fs-extra "^11.1.0"
     read-pkg-up "^7.0.1"
 
-"@storybook/testing-library@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@storybook/testing-library/-/testing-library-0.2.0.tgz#09202b90ea5bd67b503dbb1a0b1f3ab3eb005d04"
-  integrity sha512-Ff6jNnrsosmDshgCf0Eb5Cz7IA34p/1Ps5N3Kp3598kfXpBSccSkQQvVFUXC3kIHw/isIXWPqntZuKqnWUz7Gw==
-  dependencies:
-    "@testing-library/dom" "^9.0.0"
-    "@testing-library/user-event" "^14.0.0"
-    ts-dedent "^2.2.0"
-
 "@storybook/theming@7.4.1":
   version "7.4.1"
   resolved "https://registry.yarnpkg.com/@storybook/theming/-/theming-7.4.1.tgz#72297d3cfcee3c8bfeefe8187d9a4616a2c3c51e"
@@ -5599,11 +5590,6 @@
   version "14.4.3"
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.4.3.tgz#af975e367743fa91989cd666666aec31a8f50591"
   integrity sha512-kCUc5MEwaEMakkO5x7aoD+DLi02ehmEM2QCGWvNqAS1dV/fAvORWEjnjsEIvml59M7Y5kCkWN6fCCyPOe8OL6Q==
-
-"@testing-library/user-event@^14.0.0":
-  version "14.5.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.0.tgz#4036add379525b635a64bce4d727820d4ba516a7"
-  integrity sha512-nQRCteEZvULJJrlcGQuNhwGekz25TOUILA+sTWI9PB/vNKKivS+7K7XRTwoikw/2fmJPaM4pPKy+hLWEGg9+JA==
 
 "@tootallnate/once@1":
   version "1.1.2"
