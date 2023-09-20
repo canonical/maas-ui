@@ -13,7 +13,7 @@ const PowerOffForm = ({ action, actions, ...props }: FieldlessFormProps) => {
     ) : action === NodeActions.SOFT_OFF ? (
       <p>
         A soft power off generally asks the OS to shutdown the system gracefully
-        before powering off. It is only supported by IPMI
+        before powering off. It is only supported by IPMI.
       </p>
     ) : (
       <></>
