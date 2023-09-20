@@ -158,7 +158,7 @@ export const getNodeActionLabel = (
     case NodeActions.SET_ZONE:
       return `${isProcessing ? "Setting" : "Set"} zone for ${modelString}`;
     case NodeActions.SOFT_OFF:
-      return `${isProcessing ? "Powering" : "Soft Power"} off ${modelString}`;
+      return `${isProcessing ? "Powering" : "Soft power"} off ${modelString}`;
     case NodeActions.TAG:
     case NodeActions.UNTAG:
       return `${isProcessing ? "Updating" : "Update"} tags for ${modelString}`;
