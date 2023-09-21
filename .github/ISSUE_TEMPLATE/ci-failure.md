@@ -1,5 +1,5 @@
 ---
-name: {{ env.WORKFLOW }} failure
+name: '{{ env.WORKFLOW }} failure'
 about: ''
 title: '{{ env.BRANCH_NAME }} {{ env.WORKFLOW }} run failed'
 assignees: ''
