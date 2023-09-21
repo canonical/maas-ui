@@ -7,7 +7,10 @@ import "../src/scss/index.scss";
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    // Add Storybook actions for matching props by default (e.g. onClick, setContent).
+    // Can be overriden in stories.
+    // https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args
+    actions: { argTypesRegex: "^on[A-Z].*|^set[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
