@@ -29,6 +29,7 @@ export type Props = {
   showSelectedTags?: boolean;
   tags: Tag[];
   disabledTags?: Tag[];
+  name: string;
 };
 
 type UpdateTags = (newSelectedTags: Tag[], clearFilter?: boolean) => void;
@@ -202,6 +203,7 @@ export const TagSelector = ({
   showSelectedTags = true,
   tags = [],
   disabledTags = [],
+  name,
   ...props
 }: Props): JSX.Element => {
   const wrapperRef = useClickOutside<HTMLDivElement>(() =>
@@ -264,6 +266,7 @@ export const TagSelector = ({
               "tags-selected": hasSelectedTags,
             })}
             disabled={disabled}
+            name={name}
             onChange={(e) => setFilter(e.target.value)}
             onFocus={() => setDropdownOpen(true)}
             onKeyPress={(e) => {
