@@ -1,28 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
-import { useStorageState } from "react-storage-hooks";
 
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
-import { useSendAnalytics } from "app/base/hooks";
 import urls from "app/base/urls";
-import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 import GroupSelect from "app/machines/views/MachineList/MachineListControls/GroupSelect";
 import HiddenColumnsSelect from "app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
+import MachineActionMenu from "app/machines/views/MachineList/MachineListControls/MachineActionMenu";
 import MachinesFilterAccordion from "app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
 import AddHardwareMenu from "app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
 import type { useResponsiveColumns } from "app/machines/views/MachineList/hooks";
 import { actions as machineActions } from "app/store/machine";
 import type { FetchGroupKey } from "app/store/machine/types";
 import { useHasSelection } from "app/store/machine/utils/hooks";
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
 
 export type MachineListControlsProps = {
   machineCount: number;
@@ -37,98 +31,6 @@ export type MachineListControlsProps = {
   setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const ResponsiveNodeActionMenu = ({
-  hasSelection,
-  setSidePanelContent,
-}: {
-  hasSelection: ReturnType<typeof useHasSelection>;
-  setSidePanelContent: MachineSetSidePanelContent;
-}) => {
-  const sendAnalytics = useSendAnalytics();
-  const [tagsSeen, setTagsSeen] = useStorageState(
-    localStorage,
-    "machineViewTagsSeen",
-    false
-  );
-  const getTitle = useCallback(
-    (action: NodeActions) => {
-      if (action === NodeActions.TAG) {
-        const title = getNodeActionTitle(action);
-        if (!tagsSeen) {
-          return (
-            <>
-              {title} <i className="p-text--small">(NEW)</i>
-            </>
-          );
-        }
-        return title;
-      }
-      return null;
-    },
-    [tagsSeen]
-  );
-
-  return (
-    <>
-      <div className="u-hide--medium u-hide--small">
-        <NodeActionMenuGroup
-          alwaysShowLifecycle
-          excludeActions={[NodeActions.IMPORT_IMAGES]}
-          getTitle={getTitle}
-          hasSelection={hasSelection}
-          nodeDisplay="machine"
-          onActionClick={(action) => {
-            if (action === NodeActions.TAG && !tagsSeen) {
-              setTagsSeen(true);
-            }
-            const view = Object.values(MachineSidePanelViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
-            sendAnalytics(
-              "Machine list action form",
-              getNodeActionTitle(action),
-              "Open"
-            );
-          }}
-        />
-      </div>
-      <div className="u-hide--large">
-        <NodeActionMenu
-          alwaysShowLifecycle
-          className="is-maas-select"
-          constrainPanelWidth
-          excludeActions={[NodeActions.IMPORT_IMAGES]}
-          getTitle={getTitle}
-          hasSelection={hasSelection}
-          menuPosition="left"
-          nodeDisplay="machine"
-          onActionClick={(action) => {
-            if (action === NodeActions.TAG && !tagsSeen) {
-              setTagsSeen(true);
-            }
-            const view = Object.values(MachineSidePanelViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
-            sendAnalytics(
-              "Machine list action form",
-              getNodeActionTitle(action),
-              "Open"
-            );
-          }}
-          toggleAppearance=""
-          toggleClassName="p-action-menu"
-          toggleLabel="Menu"
-        />
-      </div>
-    </>
-  );
-};
 const MachineListControls = ({
   machineCount,
   resourcePoolsCount,
@@ -190,7 +92,7 @@ const MachineListControls = ({
         ) : (
           <>
             <div className="machine-list-controls__item">
-              <ResponsiveNodeActionMenu
+              <MachineActionMenu
                 hasSelection={hasSelection}
                 setSidePanelContent={setSidePanelContent}
               />
