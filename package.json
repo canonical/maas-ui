@@ -110,6 +110,7 @@
     "@types/redux-mock-store": "1.0.3",
     "@types/redux-saga": "0.10.5",
     "@welldone-software/why-did-you-render": "7.0.1",
+    "addon-redux": "2.0.11",
     "address": "1.2.2",
     "babel-plugin-named-exports-order": "0.0.2",
     "colors": "1.4.0",

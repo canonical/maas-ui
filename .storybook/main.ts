@@ -8,6 +8,7 @@ const config: StorybookConfig = {
     "@storybook/preset-create-react-app",
     "@storybook/addon-interactions",
     "@storybook/addon-a11y",
+    "addon-redux",
   ],
   framework: {
     name: "@storybook/react-webpack5",

@@ -1,4 +1,6 @@
+import type { StoreEnhancer } from "@reduxjs/toolkit";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { enhancer } from "addon-redux";
 import { createBrowserHistory } from "history";
 import { createReduxHistoryContext } from "redux-first-history";
 import createSagaMiddleware from "redux-saga";
@@ -31,6 +33,7 @@ const middleware = [
 export const store = configureStore({
   reducer,
   middleware,
+  enhancers: process.env.STORYBOOK ? [enhancer as StoreEnhancer] : undefined,
   devTools: process.env.NODE_ENV !== "production",
 });
 
