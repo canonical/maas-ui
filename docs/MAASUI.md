@@ -77,6 +77,46 @@ We also use some libraries/middleware to help with certain functions:
 - [Reselect](https://github.com/reduxjs/reselect), for computing and retrieving derived data from the Redux store.
 - [Redux-Saga](https://redux-saga.js.org/), for handling actions which lead to side effects (e.g. async API calls).
 
+#### Slice structure
+
+Most redux slices follow a similar structure in regards to the data from the server they store.
+
+##### Typical slice
+
+A typical slice contains:
+
+- An `items` property for storing the list of all items of a particular model
+- Associated `loading`, `loaded`, and `errors` properties
+
+```ts
+controller: {
+  items: Controller[],
+  loading: boolean,
+  loaded: boolean,
+  errors: [],
+  [...]
+}
+```
+
+##### state.machine slice
+
+The state slice for the `machine` model includes additional properties: `lists`, `counts`, and `filters`.
+
+- Requested data is stored in `machine.lists` and `machine.counts`
+- Data is indexed by a unique identifier based on request parameters
+- Filters supported by the server are stored in `machine.filters`
+- `machine.items` contains machine data referenced from `lists`
+
+```ts
+machine: {
+  items: Machine[];
+  lists: { [query: string]: Machine["system_id"][] };
+  counts: { [query: string]: number };
+  filters: { [filter]: string };
+  [...]
+}
+```
+
 #### Redux Toolkit
 
 MAAS-UI uses [Redux Toolkit](https://redux-toolkit.js.org/) to create actions and reducers for each MAAS model.
