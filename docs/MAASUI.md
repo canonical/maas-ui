@@ -79,7 +79,7 @@ We also use some libraries/middleware to help with certain functions:
 
 #### Slice structure
 
-Most redux slices follow a similar structure in regards to the data from the server they store.
+Most Redux slices have a similar structure when it comes to storing data received from the server. However, the `state.machine` slice is an exception. This is because, unlike other models which are filtered on the front-end, machine list filtering is handled on the server.
 
 ##### Typical slice
 
@@ -105,7 +105,7 @@ The state slice for the `machine` model includes additional properties: `lists`,
 - Requested data is stored in `machine.lists` and `machine.counts`
 - Data is indexed by a unique identifier based on request parameters
 - Filters supported by the server are stored in `machine.filters`
-- `machine.items` contains machine data referenced from `lists`
+- `machine.lists` contains machine IDs for each request, referencing data in `machine.items`
 
 ```ts
 machine: {
