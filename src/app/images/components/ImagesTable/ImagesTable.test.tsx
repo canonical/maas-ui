@@ -476,4 +476,47 @@ describe("ImagesTable", () => {
       expect(row).toHaveTextContent(resourcesByReleaseTitle[i].title);
     });
   });
+
+  it("can show support for deploying to memory", async () => {
+    const supported_resource = resourceFactory({ canDeployToMemory: true });
+    const unsupported_resource = resourceFactory({ canDeployToMemory: false });
+    renderWithMockStore(
+      <ImagesTable
+        handleClear={jest.fn()}
+        images={[]}
+        resources={[supported_resource, unsupported_resource]}
+      />,
+      { state }
+    );
+
+    const tableBody = screen.getAllByRole("rowgroup")[1];
+    const rows = within(tableBody).getAllByRole("row");
+
+    expect(
+      within(rows[0]).getByRole("gridcell", { name: "supported" })
+    ).toBeInTheDocument();
+    expect(
+      within(rows[1]).getByRole("gridcell", { name: "not supported" })
+    ).toBeInTheDocument();
+
+    await userEvent.click(
+      within(rows[0]).getByRole("button", { name: "supported" })
+    );
+
+    expect(
+      screen.getByRole("tooltip", {
+        name: "This image can be deployed in memory.",
+      })
+    ).toBeInTheDocument();
+
+    await userEvent.click(
+      within(rows[1]).getByRole("button", { name: "not supported" })
+    );
+
+    expect(
+      screen.getByRole("tooltip", {
+        name: "This image cannot be deployed in memory.",
+      })
+    ).toBeInTheDocument();
+  });
 });
