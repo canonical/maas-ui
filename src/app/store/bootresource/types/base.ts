@@ -11,6 +11,7 @@ export type BaseImageFields = {
 
 export type BootResource = Model & {
   arch: string;
+  canDeployToMemory: boolean;
   complete: boolean;
   downloading: boolean;
   icon: "in-progress" | "queued" | "succeeded" | "waiting";
