@@ -37,11 +37,8 @@ Cypress.on("uncaught:exception", (err, _runnable) => {
    due to scripts not being loaded early enough:
    Error examples: 'canonicalGlobalNav is not defined'
    */
-  if (
-    err.message.includes("canonicalGlobalNav") ||
-    err.message.includes("hljs") ||
-    err.message.includes("drpNs")
-  ) {
+  const unloadedScripts = ["canonicalGlobalNav", "hljs", "drpNs", "cpNs"];
+  if (unloadedScripts.some((script) => err.message.includes(script))) {
     return false;
   }
 });
