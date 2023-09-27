@@ -50,20 +50,12 @@ const EphemeralSupportIcon = ({
         message="This image can be deployed in memory."
       />
     );
-  } else if (supports_ephemeral === false) {
+  } else {
     return (
       <TooltipButton
         iconName="close"
         iconProps={{ "aria-label": "not supported" }}
         message="This image cannot be deployed in memory."
-      />
-    );
-  } else {
-    return (
-      <TooltipButton
-        iconName="power-unknown"
-        iconProps={{ "aria-label": "unknown" }}
-        message="It is unknown if this image can be deployed in memory."
       />
     );
   }
@@ -184,7 +176,11 @@ const generateResourceRow = ({
       { content: resource.arch, className: "arch-col" },
       { content: resource.size, className: "size-col" },
       {
-        content: <EphemeralSupportIcon supports_ephemeral={null} />,
+        content: (
+          <EphemeralSupportIcon
+            supports_ephemeral={resource.canDeployToMemory}
+          />
+        ),
         className: "diskless-col",
       },
       {
