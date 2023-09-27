@@ -1,9 +1,11 @@
 import reducers, { actions } from "./slice";
 
+import { actions as subnetActions } from "app/store/subnet/slice";
 import {
   vlan as vlanFactory,
   vlanEventError as vlanEventErrorFactory,
   vlanState as vlanStateFactory,
+  subnet as subnetFactory,
   vlanStatus as vlanStatusFactory,
   vlanStatuses as vlanStatusesFactory,
 } from "testing/factories";
@@ -395,6 +397,26 @@ describe("vlan reducer", () => {
           statuses: vlanStatusesFactory({
             0: vlanStatusFactory({ configuringDHCP: false }),
           }),
+        })
+      );
+    });
+  });
+
+  describe("subnet/createNotify", () => {
+    it("updates VLAN subnet_ids when a subnet is created", () => {
+      const vlan1 = vlanFactory({ id: 1, subnet_ids: [] });
+      const vlan2 = vlanFactory({ id: 2, subnet_ids: [] });
+      const initialState = vlanStateFactory({
+        items: [vlan1, vlan2],
+      });
+      const subnet = subnetFactory({ id: 3, vlan: 1 });
+      const expectedVlans = [{ ...vlan1, subnet_ids: [subnet.id] }, vlan2];
+
+      expect(
+        reducers(initialState, subnetActions.createNotify(subnet))
+      ).toEqual(
+        vlanStateFactory({
+          items: expectedVlans,
         })
       );
     });

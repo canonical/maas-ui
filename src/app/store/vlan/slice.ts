@@ -1,6 +1,8 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import type { Subnet } from "../subnet/types";
+
 import { VLANMeta } from "./types";
 import type {
   ConfigureDHCPParams,
@@ -168,6 +170,22 @@ const vlanSlice = createSlice({
     ) => {
       state.active = action.payload ? action.payload[VLANMeta.PK] : null;
     },
+  },
+  extraReducers: (builder) => {
+    // Add the newly created subnet's ID to the corresponding VLAN's subnet_ids array
+    builder.addCase(
+      "subnet/createNotify",
+      (state, action: PayloadAction<Subnet, "subnet/createNotify">) => {
+        const { id: subnetId, vlan: vlanId } = action.payload;
+
+        const vlanIndex = state.items.findIndex((item) => item.id === vlanId);
+
+        const vlanExists = vlanIndex !== -1;
+        if (vlanExists) {
+          state.items[vlanIndex].subnet_ids.push(subnetId);
+        }
+      }
+    );
   },
 });
 
