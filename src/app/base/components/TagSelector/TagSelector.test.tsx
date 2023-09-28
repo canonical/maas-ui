@@ -16,7 +16,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -35,7 +34,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -50,7 +48,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={[
@@ -77,7 +74,6 @@ describe("TagSelector", () => {
       <TagSelector
         initialSelected={[tags[0]]}
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -90,7 +86,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -105,7 +100,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -120,7 +114,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         showSelectedTags={false}
@@ -137,7 +130,6 @@ describe("TagSelector", () => {
       <TagSelector
         initialSelected={tags}
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -155,7 +147,6 @@ describe("TagSelector", () => {
       <TagSelector
         allowNewTags
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -177,7 +168,6 @@ describe("TagSelector", () => {
       <TagSelector
         allowNewTags
         label="Tags"
-        name="tags"
         onAddNewTag={onAddNewTag}
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
@@ -199,7 +189,6 @@ describe("TagSelector", () => {
       <TagSelector
         allowNewTags
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={tags}
@@ -219,7 +208,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={[...tags, { displayName: "other", name: "other" }]}
@@ -235,7 +223,6 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         tags={[
@@ -267,7 +254,6 @@ describe("TagSelector", () => {
       <TagSelector
         disabledTags={[{ id: 2, name: "disabledTag" }]}
         initialSelected={tags}
-        name="tags"
         tags={tags}
       />
     );
@@ -281,7 +267,6 @@ describe("TagSelector", () => {
       <TagSelector
         header={<span data-testid="dropdown-header">A header</span>}
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         showSelectedTags={false}
@@ -302,7 +287,6 @@ describe("TagSelector", () => {
           <span data-testid="dropdown-item">An item</span>
         )}
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         placeholder="Select or create tags"
         showSelectedTags={false}
@@ -320,7 +304,6 @@ describe("TagSelector", () => {
       <TagSelector
         externalSelectedTags={[tags[0]]}
         label="Tags"
-        name="tags"
         onTagsUpdate={jest.fn()}
         tags={tags}
       />
@@ -334,7 +317,6 @@ describe("TagSelector", () => {
       <TagSelector
         externalSelectedTags={[tags[0]]}
         label="Tags"
-        name="tags"
         onTagsUpdate={onTagsUpdate}
         tags={tags}
       />
