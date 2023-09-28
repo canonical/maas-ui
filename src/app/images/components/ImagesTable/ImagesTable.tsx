@@ -38,11 +38,11 @@ export enum Labels {
 }
 
 const EphemeralSupportIcon = ({
-  supports_ephemeral,
+  canDeployToMemory,
 }: {
-  supports_ephemeral: boolean | null;
+  canDeployToMemory: boolean | null;
 }) => {
-  return supports_ephemeral === true ? (
+  return canDeployToMemory ? (
     <TooltipButton
       iconName="task-outstanding"
       iconProps={{ "aria-label": "supported" }}
@@ -174,7 +174,7 @@ const generateResourceRow = ({
       {
         content: (
           <EphemeralSupportIcon
-            supports_ephemeral={resource.canDeployToMemory}
+            canDeployToMemory={resource.canDeployToMemory}
           />
         ),
         className: "diskless-col",
