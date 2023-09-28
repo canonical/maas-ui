@@ -42,23 +42,19 @@ const EphemeralSupportIcon = ({
 }: {
   supports_ephemeral: boolean | null;
 }) => {
-  if (supports_ephemeral === true) {
-    return (
-      <TooltipButton
-        iconName="task-outstanding"
-        iconProps={{ "aria-label": "supported" }}
-        message="This image can be deployed in memory."
-      />
-    );
-  } else {
-    return (
-      <TooltipButton
-        iconName="close"
-        iconProps={{ "aria-label": "not supported" }}
-        message="This image cannot be deployed in memory."
-      />
-    );
-  }
+  return supports_ephemeral === true ? (
+    <TooltipButton
+      iconName="task-outstanding"
+      iconProps={{ "aria-label": "supported" }}
+      message="This image can be deployed in memory."
+    />
+  ) : (
+    <TooltipButton
+      iconName="close"
+      iconProps={{ "aria-label": "not supported" }}
+      message="This image cannot be deployed in memory."
+    />
+  );
 };
 
 /**
