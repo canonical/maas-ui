@@ -8,6 +8,7 @@ import DeleteImageConfirm from "./DeleteImageConfirm";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableActions from "app/base/components/TableActions";
+import TooltipButton from "app/base/components/TooltipButton/TooltipButton";
 import type { ImageValue } from "app/images/types";
 import type { BootResource } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
@@ -35,6 +36,26 @@ export enum Labels {
   LastDeployed = "Last deployed",
   MachineCount = "Machine count",
 }
+
+const EphemeralSupportIcon = ({
+  canDeployToMemory,
+}: {
+  canDeployToMemory: boolean | null;
+}) => {
+  return canDeployToMemory ? (
+    <TooltipButton
+      iconName="task-outstanding"
+      iconProps={{ "aria-label": "supported" }}
+      message="This image can be deployed in memory."
+    />
+  ) : (
+    <TooltipButton
+      iconName="close"
+      iconProps={{ "aria-label": "not supported" }}
+      message="This image cannot be deployed in memory."
+    />
+  );
+};
 
 /**
  * Check whether a given resource matches a form image value.
@@ -150,6 +171,14 @@ const generateResourceRow = ({
       { content: resource.title, className: "release-col" },
       { content: resource.arch, className: "arch-col" },
       { content: resource.size, className: "size-col" },
+      {
+        content: (
+          <EphemeralSupportIcon
+            canDeployToMemory={resource.canDeployToMemory}
+          />
+        ),
+        className: "diskless-col",
+      },
       {
         content: (
           <DoubleRow
@@ -271,6 +300,7 @@ const ImagesTable = ({
         { content: "Release", className: "release-col", sortKey: "title" },
         { content: "Architecture", className: "arch-col", sortKey: "arch" },
         { content: "Size", className: "size-col", sortKey: "size" },
+        { content: "Deployable in memory", className: "diskless-col" },
         {
           content: <span className="p-double-row__header-spacer">Status</span>,
           className: "status-col",

@@ -36,6 +36,7 @@ export const bootResource = extend<Model, BootResource>(model, {
   numberOfNodes: 0,
   lastUpdate: "Tue, 08 Jun. 2021 02:12:47",
   lastDeployed: "Tue, 08 Jun. 2021 02:12:47",
+  canDeployToMemory: true,
 });
 
 export const bootResourceUbuntu = define<BootResourceUbuntu>({
