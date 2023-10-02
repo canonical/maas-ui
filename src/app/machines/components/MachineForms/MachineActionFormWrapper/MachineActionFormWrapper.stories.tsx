@@ -1,6 +1,5 @@
 import type { Meta } from "@storybook/react";
 
-// import MachineActionFormWrapper from "./MachineActionFormWrapper";
 import { MachineActionForm } from "./MachineActionFormWrapper";
 
 import { ACTION_STATUS } from "app/base/constants";
