@@ -1,5 +1,7 @@
+import type { ValueOf } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
+import type { AnyAction, Dispatch } from "redux";
 
 import CloneForm from "./CloneForm";
 import CommissionForm from "./CommissionForm";
@@ -18,19 +20,26 @@ import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import { useScrollOnRender } from "app/base/hooks";
-import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
+import type {
+  APIError,
+  ActionStatuses,
+  ClearSidePanelContent,
+  SetSearchFilter,
+} from "app/base/types";
 import urls from "app/base/urls";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type {
+  FetchFilters,
   MachineActions,
   MachineEventErrors,
 } from "app/store/machine/types";
 import { selectedToFilters } from "app/store/machine/utils";
 import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
+import type { actions as resourcePoolActions } from "app/store/resourcepool";
 import { NodeActions } from "app/store/types/node";
 
-type Props = Omit<MachineActionFormProps, "processingCount"> & {
+type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
   action: MachineActions;
   applyConfiguredNetworking?: boolean;
   clearSidePanelContent: ClearSidePanelContent;
@@ -40,29 +49,42 @@ type Props = Omit<MachineActionFormProps, "processingCount"> & {
   viewingDetails: boolean;
 };
 
-/**
- * Displays specified machine action form for selected machines.
- */
-export const MachineActionFormWrapper = ({
+type Props = ContainerProps & {
+  actionStatus: ActionStatuses;
+  actionErrors: APIError<null>;
+  clearSelectedMachines: () => void;
+  dispatch: Dispatch<AnyAction>;
+  dispatchForSelectedMachines: (
+    a:
+      | ValueOf<typeof machineActions>
+      | typeof resourcePoolActions.createWithMachines,
+    args?: Record<string, unknown> & {
+      filter?: never;
+    }
+  ) => void;
+  filter: FetchFilters | null;
+  onRenderRef: (targetNode: HTMLDivElement | null) => void;
+};
+
+export const MachineActionForm = ({
   action,
+  actionErrors,
+  actionStatus,
   applyConfiguredNetworking,
+  clearSelectedMachines,
   clearSidePanelContent,
+  dispatch,
+  dispatchForSelectedMachines,
+  filter,
   hardwareType,
+  onRenderRef,
   searchFilter,
   selectedCount,
   selectedCountLoading,
   selectedMachines,
   setSearchFilter,
   viewingDetails,
-}: Props): JSX.Element | null => {
-  const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const dispatch = useDispatch();
-  const {
-    dispatch: dispatchForSelectedMachines,
-    actionStatus,
-    actionErrors,
-  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
-
+}: Props) => {
   const commonMachineFormProps = {
     searchFilter,
     clearSidePanelContent,
@@ -85,13 +107,6 @@ export const MachineActionFormWrapper = ({
     selectedCount,
     selectedCountLoading,
   };
-  const clearSelectedMachines = () => {
-    dispatch(machineActions.setSelected(null));
-    dispatch(machineActions.invalidateQueries());
-  };
-
-  const filter = selectedToFilters(selectedMachines || null);
-
   const getFormComponent = () => {
     if (!filter) {
       return null;
@@ -199,6 +214,59 @@ export const MachineActionFormWrapper = ({
       ) : null}
       {getFormComponent()}
     </div>
+  );
+};
+
+/**
+ * Displays specified machine action form for selected machines.
+ */
+export const MachineActionFormWrapper = ({
+  action,
+  applyConfiguredNetworking,
+  clearSidePanelContent,
+  hardwareType,
+  searchFilter,
+  selectedCount,
+  selectedCountLoading,
+  selectedMachines,
+  setSearchFilter,
+  viewingDetails,
+}: ContainerProps): JSX.Element | null => {
+  const onRenderRef = useScrollOnRender<HTMLDivElement>();
+  const dispatch = useDispatch();
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionStatus,
+    actionErrors,
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+
+  const clearSelectedMachines = () => {
+    dispatch(machineActions.setSelected(null));
+    dispatch(machineActions.invalidateQueries());
+  };
+
+  const filter = selectedToFilters(selectedMachines || null);
+
+  return (
+    <MachineActionForm
+      action={action}
+      actionErrors={actionErrors}
+      actionStatus={actionStatus}
+      applyConfiguredNetworking={applyConfiguredNetworking}
+      clearSelectedMachines={clearSelectedMachines}
+      clearSidePanelContent={clearSidePanelContent}
+      dispatch={dispatch}
+      dispatchForSelectedMachines={dispatchForSelectedMachines}
+      filter={filter}
+      hardwareType={hardwareType}
+      onRenderRef={onRenderRef}
+      searchFilter={searchFilter}
+      selectedCount={selectedCount}
+      selectedCountLoading={selectedCountLoading}
+      selectedMachines={selectedMachines}
+      setSearchFilter={setSearchFilter}
+      viewingDetails={viewingDetails}
+    />
   );
 };
 
