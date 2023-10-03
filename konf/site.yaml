@@ -5,4 +5,4 @@ readinessPath: "/"
 demo:
   env:
     - name: MAAS_URL
-      value: "http://10.131.211.203:5240/"
+      value: "http://maas-ui-demo.internal:5240/"
