@@ -21,15 +21,11 @@ describe("config actions", () => {
     expect(actions.update(values)).toEqual({
       type: "config/update",
       payload: {
-        params: [
-          { name: "maas_name", value: "bionic-maas" },
-          { name: "enable_analytics", value: true },
-        ],
+        params: { items: { maas_name: "bionic-maas", enable_analytics: true } },
       },
       meta: {
-        dispatchMultiple: true,
         model: "config",
-        method: "update",
+        method: "bulk_update",
       },
     });
   });

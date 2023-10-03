@@ -21,6 +21,7 @@ const ThirdPartyDriversForm = (): JSX.Element => {
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const thirdPartyDriversEnabled = useSelector(
     configSelectors.thirdPartyDriversEnabled
@@ -31,6 +32,8 @@ const ThirdPartyDriversForm = (): JSX.Element => {
       aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
+      cleanup={configActions.cleanup}
+      errors={errors}
       initialValues={{
         enable_third_party_drivers: thirdPartyDriversEnabled ?? false,
       }}

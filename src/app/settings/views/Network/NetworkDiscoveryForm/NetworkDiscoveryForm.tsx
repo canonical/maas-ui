@@ -26,6 +26,7 @@ const NetworkDiscoveryForm = (): JSX.Element => {
   const loading = useSelector(configSelectors.loading);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const activeDiscoveryInterval = useSelector(
     configSelectors.activeDiscoveryInterval
@@ -48,6 +49,8 @@ const NetworkDiscoveryForm = (): JSX.Element => {
           <FormikForm<NetworkDiscoveryValues>
             buttonsAlign="left"
             buttonsBordered={false}
+            cleanup={configActions.cleanup}
+            errors={errors}
             initialValues={{
               active_discovery_interval: activeDiscoveryInterval || "",
               network_discovery: networkDiscovery || "",
