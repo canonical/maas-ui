@@ -24,6 +24,7 @@ const DeployForm = (): JSX.Element => {
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const defaultOSystem = useSelector(configSelectors.defaultOSystem);
   const defaultDistroSeries = useSelector(configSelectors.defaultDistroSeries);
@@ -37,6 +38,8 @@ const DeployForm = (): JSX.Element => {
       aria-label="deploy configuration"
       buttonsAlign="left"
       buttonsBordered={false}
+      cleanup={configActions.cleanup}
+      errors={errors}
       initialValues={{
         default_osystem: defaultOSystem || "",
         default_distro_series: defaultDistroSeries || "",
