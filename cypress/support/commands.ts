@@ -54,7 +54,9 @@ Cypress.Commands.add("deleteMachine", (hostname: string) => {
   cy.visit(generateMAASURL("/machines"));
   cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
   cy.findByRole("searchbox").type(hostname);
-  cy.findByText(/Showing 1 out of 1 machines/).should("exist");
+  cy.findByText(/Showing 1 out of 1 machines/, {
+    timeout: LONG_TIMEOUT,
+  }).should("exist");
   cy.findByRole("grid", { name: /Machines/ }).within(() =>
     cy
       .findByRole("checkbox", { name: new RegExp(hostname) })
@@ -146,7 +148,9 @@ Cypress.Commands.add("waitForPageToLoad", () => {
 
 Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
   cy.findByRole("grid", { name: /Loading/i }).should("exist");
-  cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
+  cy.findByRole("grid", { name: /Loading/i, timeout: LONG_TIMEOUT }).should(
+    "not.exist"
+  );
   return cy.findByRole("grid", { name }).should("exist");
 });
 

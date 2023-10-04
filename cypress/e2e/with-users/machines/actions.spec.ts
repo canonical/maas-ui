@@ -117,7 +117,10 @@ context("Machine listing - actions", () => {
     const machineName = generateName("machine");
     cy.addMachine(machineName);
     cy.findByRole("searchbox", { name: "Search" }).type(machineName);
-    cy.findByRole("checkbox", { name: `${machineName}.maas` }).click({
+    cy.waitForTableToLoad({ name: /Machines/i });
+    cy.findByRole("checkbox", {
+      name: `${machineName}.maas`,
+    }).click({
       force: true,
     });
     openMachineActionForm("Categorise", "Set pool");
