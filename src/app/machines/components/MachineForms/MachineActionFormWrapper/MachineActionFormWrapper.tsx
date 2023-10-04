@@ -1,4 +1,3 @@
-import type { ValueOf } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 import type { AnyAction, Dispatch } from "redux";
@@ -20,23 +19,16 @@ import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import { useScrollOnRender } from "app/base/hooks";
-import type {
-  APIError,
-  ActionStatuses,
-  ClearSidePanelContent,
-  SetSearchFilter,
-} from "app/base/types";
+import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type {
-  FetchFilters,
   MachineActions,
   MachineEventErrors,
 } from "app/store/machine/types";
 import { selectedToFilters } from "app/store/machine/utils";
 import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
-import type { actions as resourcePoolActions } from "app/store/resourcepool";
 import { NodeActions } from "app/store/types/node";
 
 type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
@@ -50,21 +42,17 @@ type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
 };
 
 type Props = ContainerProps & {
-  actionStatus: ActionStatuses;
-  actionErrors: APIError<null>;
   clearSelectedMachines: () => void;
   dispatch: Dispatch<AnyAction>;
-  dispatchForSelectedMachines: (
-    a:
-      | ValueOf<typeof machineActions>
-      | typeof resourcePoolActions.createWithMachines,
-    args?: Record<string, unknown> & {
-      filter?: never;
-    }
-  ) => void;
-  filter: FetchFilters | null;
-  onRenderRef: (targetNode: HTMLDivElement | null) => void;
-};
+  dispatchForSelectedMachines: ReturnType<
+    typeof useSelectedMachinesActionsDispatch
+  >["dispatch"];
+  filter: ReturnType<typeof selectedToFilters>;
+  onRenderRef: ReturnType<typeof useScrollOnRender<HTMLDivElement>>;
+} & Omit<
+    ReturnType<typeof useSelectedMachinesActionsDispatch>,
+    "failedSystemIds" | "successCount"
+  >;
 
 export const MachineActionForm = ({
   action,
