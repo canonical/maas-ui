@@ -30,6 +30,7 @@ const ProxyForm = (): JSX.Element => {
   const loading = useSelector(configSelectors.loading);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const httpProxy = useSelector(configSelectors.httpProxy);
   const proxyType = useSelector(configSelectors.proxyType);
@@ -50,6 +51,8 @@ const ProxyForm = (): JSX.Element => {
           <FormikForm<ProxyFormValues>
             buttonsAlign="left"
             buttonsBordered={false}
+            cleanup={configActions.cleanup}
+            errors={errors}
             initialValues={{
               httpProxy: httpProxy || "",
               proxyType,

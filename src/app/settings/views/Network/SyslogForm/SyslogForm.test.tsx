@@ -74,17 +74,11 @@ describe("SyslogForm", () => {
       {
         type: "config/update",
         payload: {
-          params: [
-            {
-              name: "remote_syslog",
-              value: "0.0.0.0",
-            },
-          ],
+          params: { items: { remote_syslog: "0.0.0.0" } },
         },
         meta: {
-          dispatchMultiple: true,
           model: "config",
-          method: "update",
+          method: "bulk_update",
         },
       },
     ]);

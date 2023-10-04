@@ -73,18 +73,16 @@ describe("NtpForm", () => {
       {
         type: "config/update",
         payload: {
-          params: [
-            {
-              name: "ntp_external_only",
-              value: false,
+          params: {
+            items: {
+              ntp_external_only: false,
+              ntp_servers: "ntp.test",
             },
-            { name: "ntp_servers", value: "ntp.test" },
-          ],
+          },
         },
         meta: {
-          dispatchMultiple: true,
           model: "config",
-          method: "update",
+          method: "bulk_update",
         },
       },
     ]);

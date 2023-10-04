@@ -27,6 +27,7 @@ const KernelParametersForm = (): JSX.Element => {
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const kernelParams = useSelector(configSelectors.kernelParams);
 
@@ -35,6 +36,8 @@ const KernelParametersForm = (): JSX.Element => {
       aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
+      cleanup={configActions.cleanup}
+      errors={errors}
       initialValues={{
         kernel_opts: kernelParams || "",
       }}

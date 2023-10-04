@@ -43,15 +43,13 @@ const statusSlice = createSlice({
       prepare: <V extends ConfigValues>(values: {
         [name: string]: Config<V>["value"];
       }) => {
-        const params = Object.keys(values).map((key) => ({
-          name: key,
-          value: values[key],
-        }));
+        const params = {
+          items: values,
+        };
         return {
           meta: {
-            dispatchMultiple: true,
             model: "config",
-            method: "update",
+            method: "bulk_update",
           },
           payload: {
             params,

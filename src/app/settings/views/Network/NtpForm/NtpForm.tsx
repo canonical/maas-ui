@@ -23,6 +23,7 @@ const NtpForm = (): JSX.Element => {
   const loading = useSelector(configSelectors.loading);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const ntpExternalOnly = useSelector(configSelectors.ntpExternalOnly);
   const ntpServers = useSelector(configSelectors.ntpServers);
@@ -43,6 +44,8 @@ const NtpForm = (): JSX.Element => {
           <FormikForm
             buttonsAlign="left"
             buttonsBordered={false}
+            cleanup={configActions.cleanup}
+            errors={errors}
             initialValues={{
               ntp_external_only: ntpExternalOnly ?? false,
               ntp_servers: ntpServers ?? "",

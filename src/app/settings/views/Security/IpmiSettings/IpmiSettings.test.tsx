@@ -66,16 +66,17 @@ describe("IpmiSettings", () => {
     expect(updateConfigAction).toEqual({
       type: "config/update",
       payload: {
-        params: [
-          { name: "maas_auto_ipmi_user", value: "maas" },
-          { name: "maas_auto_ipmi_k_g_bmc_key", value: "password" },
-          { name: "maas_auto_ipmi_user_privilege_level", value: "USER" },
-        ],
+        params: {
+          items: {
+            maas_auto_ipmi_user: "maas",
+            maas_auto_ipmi_k_g_bmc_key: "password",
+            maas_auto_ipmi_user_privilege_level: "USER",
+          },
+        },
       },
       meta: {
-        dispatchMultiple: true,
         model: "config",
-        method: "update",
+        method: "bulk_update",
       },
     });
   });

@@ -24,6 +24,7 @@ export enum Labels {
 const VMWareForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
+  const errors = useSelector(configSelectors.errors);
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
@@ -38,6 +39,8 @@ const VMWareForm = (): JSX.Element => {
       aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
+      cleanup={configActions.cleanup}
+      errors={errors}
       initialValues={{
         vcenter_server: vCenterServer ?? "",
         vcenter_username: vCenterUsername ?? "",

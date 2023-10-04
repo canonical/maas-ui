@@ -21,6 +21,7 @@ const WindowsForm = (): JSX.Element => {
 
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const windowsKmsHost = useSelector(configSelectors.windowsKmsHost);
 
@@ -29,6 +30,8 @@ const WindowsForm = (): JSX.Element => {
       aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
+      cleanup={configActions.cleanup}
+      errors={errors}
       initialValues={{
         windows_kms_host: windowsKmsHost ?? "",
       }}

@@ -95,12 +95,11 @@ describe("CommissioningForm", () => {
     expect(updateConfigAction).toEqual({
       type: "config/update",
       payload: {
-        params: [{ name: "commissioning_distro_series", value: "xenial" }],
+        params: { items: { commissioning_distro_series: "xenial" } },
       },
       meta: {
-        dispatchMultiple: true,
         model: "config",
-        method: "update",
+        method: "bulk_update",
       },
     });
   });

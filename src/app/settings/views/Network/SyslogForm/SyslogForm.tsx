@@ -22,6 +22,7 @@ const SyslogForm = (): JSX.Element => {
   const loading = useSelector(configSelectors.loading);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const remoteSyslog = useSelector(configSelectors.remoteSyslog);
 
@@ -41,6 +42,8 @@ const SyslogForm = (): JSX.Element => {
           <FormikForm
             buttonsAlign="left"
             buttonsBordered={false}
+            cleanup={configActions.cleanup}
+            errors={errors}
             initialValues={{
               remote_syslog: remoteSyslog || "",
             }}
