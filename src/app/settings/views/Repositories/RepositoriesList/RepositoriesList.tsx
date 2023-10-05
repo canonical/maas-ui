@@ -136,6 +136,7 @@ export const RepositoriesList = (): JSX.Element => {
         },
       ]}
       defaultSort="id"
+      emptyStateMsg="No repositories available."
       headers={[
         { content: "Name", sortKey: "name" },
         { content: "URL", sortKey: "url" },
