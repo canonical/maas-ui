@@ -25,6 +25,7 @@ const CommissioningForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
   const commissioningDistroSeries = useSelector(
     configSelectors.commissioningDistroSeries
   );
@@ -37,6 +38,8 @@ const CommissioningForm = (): JSX.Element => {
       aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
+      cleanup={configActions.cleanup}
+      errors={errors}
       initialValues={{
         commissioning_distro_series: commissioningDistroSeries || "",
         default_min_hwe_kernel: defaultMinKernelVersion || "",

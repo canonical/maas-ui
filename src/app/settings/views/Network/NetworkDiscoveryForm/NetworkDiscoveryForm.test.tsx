@@ -91,21 +91,16 @@ describe("NetworkDiscoveryForm", () => {
       {
         type: "config/update",
         payload: {
-          params: [
-            {
-              name: "active_discovery_interval",
-              value: "604800",
+          params: {
+            items: {
+              active_discovery_interval: "604800",
+              network_discovery: "enabled",
             },
-            {
-              name: "network_discovery",
-              value: "enabled",
-            },
-          ],
+          },
         },
         meta: {
-          dispatchMultiple: true,
           model: "config",
-          method: "update",
+          method: "bulk_update",
         },
       },
     ]);

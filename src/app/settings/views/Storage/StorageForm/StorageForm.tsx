@@ -21,12 +21,11 @@ const StorageSchema = Yup.object().shape({
 
 const StorageForm = (): JSX.Element => {
   const dispatch = useDispatch();
-  const updateConfig = configActions.update;
-
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   const defaultStorageLayout = useSelector(
     configSelectors.defaultStorageLayout
@@ -51,6 +50,8 @@ const StorageForm = (): JSX.Element => {
           <FormikForm<StorageFormValues>
             buttonsAlign="left"
             buttonsBordered={false}
+            cleanup={configActions.cleanup}
+            errors={errors}
             initialValues={{
               default_storage_layout: defaultStorageLayout || "",
               disk_erase_with_quick_erase: diskEraseWithQuick || false,
@@ -63,7 +64,7 @@ const StorageForm = (): JSX.Element => {
               label: "Storage form",
             }}
             onSubmit={(values, { resetForm }) => {
-              dispatch(updateConfig(values));
+              dispatch(configActions.update(values));
               resetForm({ values });
             }}
             saved={saved}

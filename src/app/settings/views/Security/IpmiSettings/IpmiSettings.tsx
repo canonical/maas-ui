@@ -43,6 +43,7 @@ const IpmiSettings = (): JSX.Element => {
   const configLoading = useSelector(configSelectors.loading);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
   const ipmiUser = useSelector(configSelectors.maasAutoIpmiUser);
   const bmcKey = useSelector(configSelectors.maasAutoIpmiKGBmcKey);
   const ipmiPrivilegeLevel = useSelector(
@@ -65,6 +66,8 @@ const IpmiSettings = (): JSX.Element => {
             aria-label={Labels.FormLabel}
             buttonsAlign="left"
             buttonsBordered={false}
+            cleanup={configActions.cleanup}
+            errors={errors}
             initialValues={{
               maas_auto_ipmi_user: ipmiUser || "maas",
               maas_auto_ipmi_k_g_bmc_key: bmcKey || "",

@@ -75,20 +75,18 @@ describe("StorageForm", () => {
         {
           type: "config/update",
           payload: {
-            params: [
-              { name: ConfigNames.DEFAULT_STORAGE_LAYOUT, value: "bcache" },
-              { name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE, value: false },
-              { name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE, value: false },
-              {
-                name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
-                value: false,
+            params: {
+              items: {
+                [ConfigNames.DEFAULT_STORAGE_LAYOUT]: "bcache",
+                [ConfigNames.DISK_ERASE_WITH_QUICK_ERASE]: false,
+                [ConfigNames.DISK_ERASE_WITH_SECURE_ERASE]: false,
+                [ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE]: false,
               },
-            ],
+            },
           },
           meta: {
-            dispatchMultiple: true,
             model: "config",
-            method: "update",
+            method: "bulk_update",
           },
         },
       ]);

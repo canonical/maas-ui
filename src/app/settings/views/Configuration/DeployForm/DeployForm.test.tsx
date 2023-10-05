@@ -150,13 +150,10 @@ describe("DeployFormFields", () => {
       const action = store
         .getActions()
         .find((action) => action.type === "config/update");
-      return expect(action.payload.params).toEqual(
-        expect.arrayContaining([
-          {
-            name: "hardware_sync_interval",
-            value: "30m",
-          },
-        ])
+      return expect(action.payload.params.items).toEqual(
+        expect.objectContaining({
+          hardware_sync_interval: "30m",
+        })
       );
     });
   });

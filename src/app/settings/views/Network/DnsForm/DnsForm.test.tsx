@@ -82,16 +82,17 @@ describe("DnsForm", () => {
       {
         type: "config/update",
         payload: {
-          params: [
-            { name: "dnssec_validation", value: "auto" },
-            { name: "dns_trusted_acl", value: "" },
-            { name: "upstream_dns", value: "0.0.0.0" },
-          ],
+          params: {
+            items: {
+              dnssec_validation: "auto",
+              dns_trusted_acl: "",
+              upstream_dns: "0.0.0.0",
+            },
+          },
         },
         meta: {
-          dispatchMultiple: true,
           model: "config",
-          method: "update",
+          method: "bulk_update",
         },
       },
     ]);

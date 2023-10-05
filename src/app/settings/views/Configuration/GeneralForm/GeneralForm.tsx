@@ -50,6 +50,7 @@ const GeneralForm = (): JSX.Element => {
   );
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
   const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
   const { setTheme } = useThemeContext();
@@ -78,6 +79,8 @@ const GeneralForm = (): JSX.Element => {
       aria-label="Configuration - General"
       buttonsAlign="right"
       buttonsBordered={true}
+      cleanup={configActions.cleanup}
+      errors={errors}
       initialValues={{
         maas_name: maasName || "",
         theme: maasTheme || ColorValues.Default,
