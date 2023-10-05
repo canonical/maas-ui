@@ -43,6 +43,7 @@ export const BootArchitecturesTable = (): JSX.Element => {
       className="boot-architectures-table"
       defaultSort="name"
       defaultSortDirection="ascending"
+      emptyStateMsg="No boot architectures available."
       headers={[
         {
           className: "name-col",
