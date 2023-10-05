@@ -363,4 +363,29 @@ describe("VMsTable", () => {
       screen.getByRole("columnheader", { name: /KVM host/i })
     ).toBeInTheDocument();
   });
+
+  it("shows a message if table is empty", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [],
+      }),
+    });
+
+    renderWithBrowserRouter(
+      <VMsTable
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={[]}
+      />,
+      { state, route: "/kvm/1/project" }
+    );
+
+    expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
+  });
 });

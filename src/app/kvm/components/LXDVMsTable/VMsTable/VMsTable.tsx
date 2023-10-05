@@ -33,6 +33,7 @@ export enum Label {
   Cores = "Cores",
   Ram = "Ram",
   Pool = "Pool",
+  EmptyList = "No VMs available",
 }
 
 export type GetHostColumn = (vm: Machine) => ReactNode;
@@ -285,7 +286,9 @@ const VMsTable = ({
                 match the search criteria.
               </span>
             </Strip>
-          ) : null
+          ) : (
+            Label.EmptyList
+          )
         }
         headers={[
           {
