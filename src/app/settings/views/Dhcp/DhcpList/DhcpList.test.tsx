@@ -24,6 +24,7 @@ import {
   render,
   within,
   renderWithMockStore,
+  renderWithBrowserRouter,
 } from "testing/utils";
 
 const mockStore = configureStore();
@@ -207,5 +208,12 @@ describe("DhcpList", () => {
 
     rows = screen.getAllByTestId("dhcp-row");
     expect(rows.length).toBe(1);
+  });
+
+  it("displays a message when DHCP list is empty", () => {
+    state.dhcpsnippet.items = [];
+    renderWithBrowserRouter(<DhcpList />, { state, route: "/" });
+
+    expect(screen.getByText("No DHCP snippets available.")).toBeInTheDocument();
   });
 });

@@ -232,6 +232,7 @@ const DhcpList = (): JSX.Element => {
   return (
     <SettingsTable
       buttons={[{ label: "Add snippet", url: settingsURLs.dhcp.add }]}
+      emptyStateMsg="No DHCP snippets available."
       headers={[
         {
           content: "Snippet name",
