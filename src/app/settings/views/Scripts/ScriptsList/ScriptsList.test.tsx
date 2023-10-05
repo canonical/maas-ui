@@ -21,6 +21,7 @@ import {
   render,
   within,
   renderWithMockStore,
+  renderWithBrowserRouter,
 } from "testing/utils";
 
 const mockStore = configureStore();
@@ -370,5 +371,21 @@ describe("ScriptsList", () => {
         "Never"
       )
     ).toBeInTheDocument();
+  });
+
+  it("displays a message if there are no scripts", () => {
+    const state = rootStateFactory({
+      script: scriptStateFactory({
+        loaded: true,
+        items: [],
+      }),
+    });
+
+    renderWithBrowserRouter(<ScriptsList type="testing" />, {
+      state,
+      route: "/",
+    });
+
+    expect(screen.getByText(ScriptsListLabels.EmptyList)).toBeInTheDocument();
   });
 });

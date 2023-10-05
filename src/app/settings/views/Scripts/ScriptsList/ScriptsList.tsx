@@ -20,6 +20,9 @@ import { parseUtcDatetime } from "app/utils/time";
 export enum Labels {
   Actions = "Table actions",
   DeleteConfirm = "Confirm or cancel script deletion",
+  EmptyList = "No scripts available.",
+  Loading = "Loading...",
+  NoResults = "No scripts match the search criteria.",
 }
 
 type Props = {
@@ -178,6 +181,13 @@ const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
         { label: "Upload script", url: `/settings/scripts/${type}/upload` },
       ]}
       defaultSort="name"
+      emptyStateMsg={
+        scriptsLoading
+          ? Labels.Loading
+          : searchText
+          ? Labels.NoResults
+          : Labels.EmptyList
+      }
       headers={[
         {
           content: "Script name",
