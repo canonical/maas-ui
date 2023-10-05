@@ -117,6 +117,7 @@ const VirshTable = (): JSX.Element => {
   return (
     <MainTable
       className="virsh-table"
+      emptyStateMsg="No pods available."
       headers={[
         {
           className: "name-col",

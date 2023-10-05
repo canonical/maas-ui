@@ -117,4 +117,11 @@ describe("VirshTable", () => {
     ).toHaveAccessibleName("Resource pool (ascending)");
     expect(getName(0)).toBe(secondPod.name);
   });
+
+  it("displays a message when empty", () => {
+    state.pod.items = [];
+    renderWithBrowserRouter(<VirshTable />, { route: "/kvm", state });
+
+    expect(screen.getByText("No pods available.")).toBeInTheDocument();
+  });
 });
