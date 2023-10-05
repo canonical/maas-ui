@@ -34,6 +34,7 @@ import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
 
 export enum Label {
+  EmptyList = "No machines available.",
   Loading = "Loading machines",
   Machines = "Machines",
   NoResults = "No machines match the search criteria.",
@@ -456,7 +457,9 @@ export const MachineListTable = ({
           "machine-list--grouped": grouping,
           "machine-list--loading": machinesLoading,
         })}
-        emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
+        emptyStateMsg={
+          !machinesLoading && filter ? Label.NoResults : Label.EmptyList
+        }
         headers={filterColumns(headers, hiddenColumns, showActions)}
         rows={machinesLoading ? skeletonRows : machineRows}
         {...props}
