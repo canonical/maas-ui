@@ -176,6 +176,7 @@ const NodeTestsTable = ({ node, scriptResults }: Props): JSX.Element => {
       <MainTable
         aria-label="Test results"
         className="node-tests-table p-table-expanding--light"
+        emptyStateMsg="No results available."
         expanding
         headers={[
           ...(showSuppressCol
