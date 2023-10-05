@@ -1,4 +1,4 @@
-import DeviceListTable from "./DeviceListTable";
+import DeviceListTable, { Labels } from "./DeviceListTable";
 
 import urls from "app/base/urls";
 import type { Device } from "app/store/device/types";
@@ -293,5 +293,19 @@ describe("DeviceListTable", () => {
 
       expect(onSelectedChange).toHaveBeenCalledWith([]);
     });
+  });
+
+  it("displays a message when empty", () => {
+    const onSelectedChange = jest.fn();
+    renderWithBrowserRouter(
+      <DeviceListTable
+        devices={[]}
+        onSelectedChange={onSelectedChange}
+        selectedIDs={[]}
+      />,
+      { state }
+    );
+
+    expect(screen.getByText(Labels.EmptyList)).toBeInTheDocument();
   });
 });

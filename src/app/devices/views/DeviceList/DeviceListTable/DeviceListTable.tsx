@@ -24,6 +24,11 @@ type Props = {
   selectedIDs: Device[DeviceMeta.PK][];
 };
 
+export enum Labels {
+  EmptyList = "No devices available.",
+  NoResults = "No devices match the search criteria.",
+}
+
 type SortKey = keyof Device;
 
 const getSortValue = (sortKey: SortKey, device: Device) => {
@@ -153,8 +158,10 @@ const DeviceListTable = ({
         loading ? (
           <Spinner text="Loading..." />
         ) : hasFilter ? (
-          "No devices match the search criteria."
-        ) : null
+          Labels.NoResults
+        ) : (
+          Labels.EmptyList
+        )
       }
       headers={[
         {
