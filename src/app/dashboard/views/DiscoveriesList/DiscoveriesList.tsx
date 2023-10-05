@@ -34,6 +34,8 @@ export enum Labels {
   NoNewDiscoveries = "No new discoveries.",
   AddDiscovery = "Add discovery...",
   DeleteDiscovery = "Delete discovery...",
+  NoResults = "No discoveries match the search criteria.",
+  EmptyList = "No discoveries available.",
 }
 
 enum ExpandedType {
@@ -251,8 +253,10 @@ const DiscoveriesList = (): JSX.Element => {
         emptyStateMsg={
           loading ? (
             <Spinner text="Loading..." />
+          ) : searchString ? (
+            Labels.NoResults
           ) : (
-            "No discoveries match the search criteria."
+            Labels.EmptyList
           )
         }
         expanding
