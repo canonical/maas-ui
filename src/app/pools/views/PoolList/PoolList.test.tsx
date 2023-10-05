@@ -17,6 +17,7 @@ import {
   render,
   within,
   renderWithMockStore,
+  renderWithBrowserRouter,
 } from "testing/utils";
 
 const mockStore = configureStore();
@@ -253,5 +254,12 @@ describe("PoolList", () => {
       { state }
     );
     expect(screen.getByText("Pools are not for swimming.")).toBeInTheDocument();
+  });
+
+  it("displays a message when rendering an empty list", () => {
+    state.resourcepool.items = [];
+    renderWithBrowserRouter(<PoolList />, { state, route: "/pools" });
+
+    expect(screen.getByText("No pools available.")).toBeInTheDocument();
   });
 });
