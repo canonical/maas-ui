@@ -1,4 +1,4 @@
-import ControllerListTable from "./ControllerListTable";
+import ControllerListTable, { Label } from "./ControllerListTable";
 
 import urls from "app/base/urls";
 import type { Controller } from "app/store/controller/types";
@@ -377,5 +377,18 @@ describe("ControllerListTable", () => {
         within(rows[3]).queryByTestId("vault-icon")
       ).not.toBeInTheDocument();
     });
+  });
+
+  it("displays message for empty state", () => {
+    renderWithBrowserRouter(
+      <ControllerListTable
+        controllers={[]}
+        onSelectedChange={jest.fn()}
+        selectedIDs={[]}
+      />,
+      { state }
+    );
+
+    expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
   });
 });

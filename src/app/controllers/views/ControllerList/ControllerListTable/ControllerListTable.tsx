@@ -35,6 +35,11 @@ type Props = {
 
 type SortKey = keyof Controller | "version";
 
+export enum Label {
+  NoResults = "No controllers match the search criteria.",
+  EmptyList = "No controllers available.",
+}
+
 const getSortValue = (sortKey: SortKey, controller: Controller) => {
   switch (sortKey) {
     case "version":
@@ -242,8 +247,10 @@ const ControllerListTable = ({
         loading ? (
           <Spinner text="Loading..." />
         ) : hasFilter ? (
-          "No controllers match the search criteria."
-        ) : null
+          Label.NoResults
+        ) : (
+          Label.EmptyList
+        )
       }
       headers={[
         {
