@@ -23,6 +23,7 @@ export enum Labels {
   TableAction = "Table action",
   ContextualMenu = "Actions",
   TableLable = "Domains table",
+  EmptyList = "No domains available.",
 }
 
 const DomainsTable = (): JSX.Element => {
@@ -147,6 +148,7 @@ const DomainsTable = (): JSX.Element => {
       data-testid="domains-table"
       defaultSort="name"
       defaultSortDirection="ascending"
+      emptyStateMsg={Labels.EmptyList}
       expanding={true}
       headers={headers}
       paginate={50}
