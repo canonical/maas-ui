@@ -100,6 +100,7 @@ const SSLKeyList = (): JSX.Element => {
       <SettingsTable
         aria-label={Label.Title}
         buttons={[{ label: "Add SSL key", url: urls.preferences.sslKeys.add }]}
+        emptyStateMsg="No SSL keys available."
         headers={[
           {
             content: "Key",
