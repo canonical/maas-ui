@@ -89,6 +89,7 @@ const ZonesListTable = (): JSX.Element => {
       data-testid={TestIds.ZonesTable}
       defaultSort="name"
       defaultSortDirection="ascending"
+      emptyStateMsg="No zones available."
       headers={headers}
       rows={rows}
       sortable
