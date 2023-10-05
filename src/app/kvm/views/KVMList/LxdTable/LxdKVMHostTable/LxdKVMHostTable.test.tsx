@@ -158,4 +158,12 @@ describe("LxdKVMHostTable", () => {
     expect(screen.getByTestId("host-type")).toHaveTextContent("Cluster");
     expect(screen.getByTestId("hosts-count")).toHaveTextContent("2 KVM hosts");
   });
+
+  it("displays a message when empty", () => {
+    renderWithBrowserRouter(<LxdKVMHostTable rows={[]} />, {
+      route: "/kvm",
+    });
+
+    expect(screen.getByText("No hosts available.")).toBeInTheDocument();
+  });
 });
