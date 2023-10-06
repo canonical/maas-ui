@@ -1,5 +1,5 @@
 import type { MainTableProps } from "@canonical/react-components";
-import { MainTable, Spinner } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import SpaceLink from "app/base/components/SpaceLink";
@@ -18,7 +18,7 @@ import { getSubnetsInVLAN } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
-import { simpleSortByKey } from "app/utils";
+import { generateEmptyStateMsg, simpleSortByKey } from "app/utils";
 
 const generateRows = (vlans: VLAN[], subnets: Subnet[]) => {
   const headers = ["VLAN", "Space", "Subnet", "Available"] as const;
@@ -91,13 +91,10 @@ const FabricVLANs = ({ fabric }: { fabric: Fabric }): JSX.Element => {
     <TitledSection title="VLANs on this fabric">
       <MainTable
         className="fabric-vlans"
-        emptyStateMsg={
-          loading ? (
-            <Spinner text="Loading..." />
-          ) : (
-            "There are no VLANs on this fabric"
-          )
-        }
+        emptyStateMsg={generateEmptyStateMsg({
+          isLoading: loading,
+          emptyStateMsg: "There are no VLANs on this fabric",
+        })}
         headers={[
           {
             className: "vlan-col",

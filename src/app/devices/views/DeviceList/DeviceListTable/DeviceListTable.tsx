@@ -1,4 +1,4 @@
-import { MainTable, Spinner } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import { Link } from "react-router-dom-v5-compat";
 
 import OwnerColumn from "./OwnerColumn";
@@ -13,7 +13,11 @@ import { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
 import type { Device, DeviceMeta } from "app/store/device/types";
 import { getIpAssignmentDisplay } from "app/store/device/utils";
-import { generateCheckboxHandlers, isComparable } from "app/utils";
+import {
+  generateCheckboxHandlers,
+  generateEmptyStateMsg,
+  isComparable,
+} from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {
@@ -154,15 +158,12 @@ const DeviceListTable = ({
   return (
     <MainTable
       className="device-list-table"
-      emptyStateMsg={
-        loading ? (
-          <Spinner text="Loading..." />
-        ) : hasFilter ? (
-          Labels.NoResults
-        ) : (
-          Labels.EmptyList
-        )
-      }
+      emptyStateMsg={generateEmptyStateMsg({
+        isLoading: loading,
+        hasFilter,
+        emptyStateMsg: Labels.EmptyList,
+        emptySearchMsg: Labels.NoResults,
+      })}
       headers={[
         {
           className: "fqdn-col",

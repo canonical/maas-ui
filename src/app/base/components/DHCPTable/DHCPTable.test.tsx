@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DHCPTable, { Labels, TestIds } from "./DHCPTable";
+import DHCPTable, { TestIds } from "./DHCPTable";
 
 import { Labels as FormLabels } from "app/base/components/DhcpForm";
 import { MachineMeta } from "app/store/machine/types";
@@ -69,9 +69,7 @@ describe("DHCPTable", () => {
       </Provider>
     );
 
-    expect(
-      screen.getByRole("alert", { name: Labels.LoadingData })
-    ).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("shows snippets for a machine", () => {

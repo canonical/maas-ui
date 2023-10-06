@@ -1,4 +1,4 @@
-import { MainTable, Spinner, Link } from "@canonical/react-components";
+import { MainTable, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import StatusColumn from "./StatusColumn";
@@ -22,7 +22,11 @@ import { actions as generalActions } from "app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
-import { generateCheckboxHandlers, isComparable } from "app/utils";
+import {
+  generateEmptyStateMsg,
+  generateCheckboxHandlers,
+  isComparable,
+} from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {
@@ -243,15 +247,12 @@ const ControllerListTable = ({
     <MainTable
       aria-label="controllers list"
       className="controller-list-table"
-      emptyStateMsg={
-        loading ? (
-          <Spinner text="Loading..." />
-        ) : hasFilter ? (
-          Label.NoResults
-        ) : (
-          Label.EmptyList
-        )
-      }
+      emptyStateMsg={generateEmptyStateMsg({
+        isLoading: loading,
+        hasFilter,
+        emptyStateMsg: Label.EmptyList,
+        emptySearchMsg: Label.NoResults,
+      })}
       headers={[
         {
           className: "fqdn-col",

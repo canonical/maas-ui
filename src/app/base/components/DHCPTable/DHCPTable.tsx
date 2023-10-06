@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { List, MainTable, Spinner } from "@canonical/react-components";
+import { List, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
@@ -21,7 +21,7 @@ import { getIpRangeDisplayName } from "app/store/iprange/utils";
 import type { RootState } from "app/store/root/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Node } from "app/store/types/node";
-import { isId } from "app/utils";
+import { generateEmptyStateMsg, isId } from "app/utils";
 
 type BaseProps = {
   className?: string;
@@ -158,13 +158,10 @@ const DHCPTable = ({
             className="dhcp-snippets-table p-table-expanding--light"
             defaultSort="name"
             defaultSortDirection="descending"
-            emptyStateMsg={
-              dhcpsnippetLoading ? (
-                <Spinner aria-label={Labels.LoadingData} text="Loading..." />
-              ) : (
-                `No DHCP snippets applied to this ${modelName}.`
-              )
-            }
+            emptyStateMsg={generateEmptyStateMsg({
+              isLoading: dhcpsnippetLoading,
+              emptyStateMsg: `No DHCP snippets applied to this ${modelName}.`,
+            })}
             expanding
             headers={[
               {

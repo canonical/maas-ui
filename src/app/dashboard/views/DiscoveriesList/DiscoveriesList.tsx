@@ -6,7 +6,6 @@ import {
   ContextualMenu,
   MainTable,
   Row,
-  Spinner,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,6 +26,7 @@ import discoverySelectors from "app/store/discovery/selectors";
 import type { Discovery } from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
+import { generateEmptyStateMsg } from "app/utils";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",
@@ -250,15 +250,12 @@ const DiscoveriesList = (): JSX.Element => {
         data-testid="discoveries-table"
         defaultSort="lastSeen"
         defaultSortDirection="ascending"
-        emptyStateMsg={
-          loading ? (
-            <Spinner text="Loading..." />
-          ) : searchString ? (
-            Labels.NoResults
-          ) : (
-            Labels.EmptyList
-          )
-        }
+        emptyStateMsg={generateEmptyStateMsg({
+          isLoading: loading,
+          hasFilter: !!searchString,
+          emptyStateMsg: Labels.EmptyList,
+          emptySearchMsg: Labels.NoResults,
+        })}
         expanding
         headers={headers}
         rows={generateRows(

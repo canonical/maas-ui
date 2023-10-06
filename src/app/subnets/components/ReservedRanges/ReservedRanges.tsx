@@ -5,7 +5,6 @@ import {
   ContextualMenu,
   MainTable,
   Notification,
-  Spinner,
 } from "@canonical/react-components";
 import type { MainTableCell } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
@@ -33,7 +32,7 @@ import {
 import type { RootState } from "app/store/root/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import { isId } from "app/utils";
+import { generateEmptyStateMsg, isId } from "app/utils";
 
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;
@@ -299,15 +298,12 @@ const ReservedRanges = ({
         )}
         defaultSort="name"
         defaultSortDirection="descending"
-        emptyStateMsg={
-          ipRangeLoading ? (
-            <Spinner text="Loading..." />
-          ) : (
-            `No IP ranges have been reserved for this ${
-              isSubnet ? "subnet" : "VLAN"
-            }.`
-          )
-        }
+        emptyStateMsg={generateEmptyStateMsg({
+          isLoading: ipRangeLoading,
+          emptyStateMsg: `No IP ranges have been reserved for this ${
+            isSubnet ? "subnet" : "VLAN"
+          }.`,
+        })}
         expanding
         headers={headers}
         responsive
