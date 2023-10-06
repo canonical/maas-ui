@@ -10,6 +10,7 @@ export { formatErrors } from "./formatErrors";
 export { formatMacAddress } from "./formatMacAddress";
 export { formatSpeedUnits } from "./formatSpeedUnits";
 export { generateCheckboxHandlers } from "./generateCheckboxHandlers";
+export { generateEmptyStateMsg } from "./generateEmptyStateMsg";
 export { getCookie } from "./getCookie";
 export { getNextName } from "./getNextName";
 export { getRanges } from "./getRanges";
