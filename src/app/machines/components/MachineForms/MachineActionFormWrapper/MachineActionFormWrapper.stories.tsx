@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react";
 import { MachineActionForm } from "./MachineActionFormWrapper";
 
 import { ACTION_STATUS } from "app/base/constants";
+import ErrorDetails from "app/machines/components/ErrorDetails";
 import { NodeActions } from "app/store/types/node";
 
 const meta: Meta<typeof MachineActionForm> = {
@@ -56,11 +57,15 @@ export const MultipleMachinesError = {
     selectedMachines: { items: ["abc123", "def456"] },
     action: NodeActions.ABORT,
     actionStatus: ACTION_STATUS.error,
-    actionErrors: [
-      "There was an error",
-      "There was another error",
-      "There was a third error",
-    ],
+    actionErrors: (
+      <ErrorDetails
+        failedSystemIds={["abc123", "def456"]}
+        failureDetails={{
+          "There was an error": ["abc123"],
+          "There was another error": ["def456"],
+        }}
+      />
+    ),
     filter: {},
   },
 };

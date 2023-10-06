@@ -12,7 +12,7 @@ const ErrorDetailsItem = ({
   systemIds: ActionState["failedSystemIds"];
 }) => {
   return (
-    <dl>
+    <dl className="u-no-margin--bottom">
       <dt>{errorMessage}</dt>
       {systemIds?.map((systemId) => (
         <dd key={systemId}>
