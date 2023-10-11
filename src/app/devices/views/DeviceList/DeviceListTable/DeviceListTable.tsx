@@ -16,6 +16,7 @@ import { getIpAssignmentDisplay } from "app/store/device/utils";
 import {
   generateCheckboxHandlers,
   generateEmptyStateMsg,
+  getTableStatus,
   isComparable,
 } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
@@ -154,15 +155,14 @@ const DeviceListTable = ({
   const { handleGroupCheckbox, handleRowCheckbox } =
     generateCheckboxHandlers<Device[DeviceMeta.PK]>(onSelectedChange);
   const deviceIDs = devices.map((device) => device.system_id);
+  const tableStatus = getTableStatus({ isLoading: loading, hasFilter });
 
   return (
     <MainTable
       className="device-list-table"
-      emptyStateMsg={generateEmptyStateMsg({
-        isLoading: loading,
-        hasFilter,
-        emptyStateMsg: Labels.EmptyList,
-        emptySearchMsg: Labels.NoResults,
+      emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+        default: Labels.EmptyList,
+        filtered: Labels.NoResults,
       })}
       headers={[
         {

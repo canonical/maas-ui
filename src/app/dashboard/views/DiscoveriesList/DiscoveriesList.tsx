@@ -26,7 +26,7 @@ import discoverySelectors from "app/store/discovery/selectors";
 import type { Discovery } from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
-import { generateEmptyStateMsg } from "app/utils";
+import { generateEmptyStateMsg, getTableStatus } from "app/utils";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",
@@ -227,6 +227,11 @@ const DiscoveriesList = (): JSX.Element => {
     },
   ];
 
+  const tableStatus = getTableStatus({
+    isLoading: loading,
+    hasFilter: !!searchString,
+  });
+
   return (
     <div aria-label={Labels.DiscoveriesList}>
       <Row>
@@ -250,11 +255,9 @@ const DiscoveriesList = (): JSX.Element => {
         data-testid="discoveries-table"
         defaultSort="lastSeen"
         defaultSortDirection="ascending"
-        emptyStateMsg={generateEmptyStateMsg({
-          isLoading: loading,
-          hasFilter: !!searchString,
-          emptyStateMsg: Labels.EmptyList,
-          emptySearchMsg: Labels.NoResults,
+        emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+          default: Labels.EmptyList,
+          filtered: Labels.NoResults,
         })}
         expanding
         headers={headers}

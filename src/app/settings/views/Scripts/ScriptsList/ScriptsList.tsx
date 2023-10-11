@@ -15,7 +15,7 @@ import type { RootState } from "app/store/root/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
-import { generateEmptyStateMsg } from "app/utils";
+import { generateEmptyStateMsg, getTableStatus } from "app/utils";
 import { parseUtcDatetime } from "app/utils/time";
 
 export enum Labels {
@@ -176,17 +176,20 @@ const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
     }
   }, [dispatch, scriptsLoaded, type]);
 
+  const tableStatus = getTableStatus({
+    isLoading: scriptsLoading,
+    hasFilter: !!searchText,
+  });
+
   return (
     <SettingsTable
       buttons={[
         { label: "Upload script", url: `/settings/scripts/${type}/upload` },
       ]}
       defaultSort="name"
-      emptyStateMsg={generateEmptyStateMsg({
-        isLoading: scriptsLoading,
-        emptyStateMsg: Labels.EmptyList,
-        hasFilter: !!searchText,
-        emptySearchMsg: Labels.NoResults,
+      emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+        default: Labels.EmptyList,
+        filtered: Labels.NoResults,
       })}
       headers={[
         {

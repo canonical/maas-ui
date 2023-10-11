@@ -22,7 +22,7 @@ import type { Pod } from "app/store/pod/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
-import { generateEmptyStateMsg, formatBytes } from "app/utils";
+import { generateEmptyStateMsg, formatBytes, getTableStatus } from "app/utils";
 
 export enum Label {
   Name = "Name",
@@ -274,13 +274,16 @@ const VMsTable = ({
     }
   };
 
+  const tableStatus = getTableStatus({
+    hasFilter: Boolean(searchFilter && vms.length === 0),
+  });
+
   return (
     <>
       <MainTable
         className="vms-table"
-        emptyStateMsg={generateEmptyStateMsg({
-          hasFilter: Boolean(searchFilter && vms.length === 0),
-          emptySearchMsg: (
+        emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+          filtered: (
             <Strip rowClassName="u-align--center" shallow>
               <span data-testid="no-vms">
                 No VMs in this {displayForCluster ? "cluster" : "KVM host"}{" "}
@@ -288,7 +291,7 @@ const VMsTable = ({
               </span>
             </Strip>
           ),
-          emptyStateMsg: Label.EmptyList,
+          default: Label.EmptyList,
         })}
         headers={[
           {

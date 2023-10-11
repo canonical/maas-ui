@@ -26,6 +26,7 @@ import {
   generateEmptyStateMsg,
   generateCheckboxHandlers,
   isComparable,
+  getTableStatus,
 } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
@@ -242,16 +243,15 @@ const ControllerListTable = ({
   const vaultEnabled = useSelector(vaultEnabledSelectors.get);
 
   useFetchActions([generalActions.fetchVaultEnabled, controllerActions.fetch]);
+  const tableStatus = getTableStatus({ isLoading: loading, hasFilter });
 
   return (
     <MainTable
       aria-label="controllers list"
       className="controller-list-table"
-      emptyStateMsg={generateEmptyStateMsg({
-        isLoading: loading,
-        hasFilter,
-        emptyStateMsg: Label.EmptyList,
-        emptySearchMsg: Label.NoResults,
+      emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+        default: Label.EmptyList,
+        filtered: Label.NoResults,
       })}
       headers={[
         {

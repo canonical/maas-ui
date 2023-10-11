@@ -32,7 +32,7 @@ import {
 import type { RootState } from "app/store/root/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import { generateEmptyStateMsg, isId } from "app/utils";
+import { generateEmptyStateMsg, getTableStatus, isId } from "app/utils";
 
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;
@@ -256,6 +256,8 @@ const ReservedRanges = ({
     });
   }
 
+  const tableStatus = getTableStatus({ isLoading: ipRangeLoading });
+
   return (
     <TitledSection
       buttons={
@@ -298,9 +300,8 @@ const ReservedRanges = ({
         )}
         defaultSort="name"
         defaultSortDirection="descending"
-        emptyStateMsg={generateEmptyStateMsg({
-          isLoading: ipRangeLoading,
-          emptyStateMsg: `No IP ranges have been reserved for this ${
+        emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+          default: `No IP ranges have been reserved for this ${
             isSubnet ? "subnet" : "VLAN"
           }.`,
         })}
