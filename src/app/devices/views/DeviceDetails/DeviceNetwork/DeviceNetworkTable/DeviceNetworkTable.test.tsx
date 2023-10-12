@@ -204,4 +204,23 @@ describe("DeviceNetworkTable", () => {
     const rows = screen.getAllByRole("row");
     expect(rows[1]).toHaveClass("is-active");
   });
+
+  it("displays an empty table description", () => {
+    state.device.items = [
+      deviceDetailsFactory({
+        interfaces: [],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <DeviceNetworkTable
+        expanded={null}
+        setExpanded={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
+    );
+    expect(screen.getByText("No interfaces available.")).toBeInTheDocument();
+  });
 });

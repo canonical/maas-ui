@@ -140,4 +140,11 @@ describe("DomainsTable", () => {
       },
     });
   });
+
+  it("displays an empty table message", () => {
+    state.domain.items = [];
+    renderWithBrowserRouter(<DomainsTable />, { route: "/domains", state });
+
+    expect(screen.getByText(DomainsTableLabels.EmptyList)).toBeInTheDocument();
+  });
 });

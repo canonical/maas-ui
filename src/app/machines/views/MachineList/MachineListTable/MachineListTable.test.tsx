@@ -302,6 +302,42 @@ describe("MachineListTable", () => {
     expect(screen.getByText(Label.NoResults)).toBeInTheDocument();
   });
 
+  it("displays a message if there are no machines", () => {
+    groups = [];
+    state.machine = machineStateFactory({
+      items: [],
+      lists: {
+        [callId]: machineStateListFactory({
+          loading: false,
+          groups,
+        }),
+      },
+    });
+
+    renderWithBrowserRouter(
+      <MachineListTable
+        callId={callId}
+        currentPage={1}
+        filter=""
+        grouping={FetchGroupKey.Status}
+        groups={groups}
+        hiddenGroups={[]}
+        machineCount={10}
+        machines={machines}
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection="none"
+        sortKey={null}
+        totalPages={1}
+      />,
+      { state }
+    );
+    expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
+  });
+
   it("includes groups", () => {
     renderWithBrowserRouter(
       <MachineListTable

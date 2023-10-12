@@ -166,6 +166,7 @@ const Pools = (): JSX.Element => {
               <MainTable
                 className="p-table-expanding--light"
                 defaultSortDirection="ascending"
+                emptyStateMsg="No pools available."
                 expanding={true}
                 headers={[
                   {

@@ -20,6 +20,7 @@ import {
   render,
   within,
   renderWithMockStore,
+  renderWithBrowserRouter,
 } from "testing/utils";
 
 const mockStore = configureStore();
@@ -273,5 +274,13 @@ describe("UsersList", () => {
       )
     ).toBeInTheDocument();
     expect(screen.queryByRole("table")).not.toBeInTheDocument();
+  });
+
+  it("displays a message when there are no users", () => {
+    state.user.items = [];
+
+    renderWithBrowserRouter(<UsersList />, { state, route: "/settings/users" });
+
+    expect(screen.getByText("No users available.")).toBeInTheDocument();
   });
 });

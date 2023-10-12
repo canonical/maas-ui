@@ -6,7 +6,6 @@ import {
   ContextualMenu,
   MainTable,
   Row,
-  Spinner,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,6 +26,7 @@ import discoverySelectors from "app/store/discovery/selectors";
 import type { Discovery } from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
+import { generateEmptyStateMsg, getTableStatus } from "app/utils";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",
@@ -34,6 +34,8 @@ export enum Labels {
   NoNewDiscoveries = "No new discoveries.",
   AddDiscovery = "Add discovery...",
   DeleteDiscovery = "Delete discovery...",
+  NoResults = "No discoveries match the search criteria.",
+  EmptyList = "No discoveries available.",
 }
 
 enum ExpandedType {
@@ -225,6 +227,11 @@ const DiscoveriesList = (): JSX.Element => {
     },
   ];
 
+  const tableStatus = getTableStatus({
+    isLoading: loading,
+    hasFilter: !!searchString,
+  });
+
   return (
     <div aria-label={Labels.DiscoveriesList}>
       <Row>
@@ -248,13 +255,10 @@ const DiscoveriesList = (): JSX.Element => {
         data-testid="discoveries-table"
         defaultSort="lastSeen"
         defaultSortDirection="ascending"
-        emptyStateMsg={
-          loading ? (
-            <Spinner text="Loading..." />
-          ) : (
-            "No discoveries match the search criteria."
-          )
-        }
+        emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+          default: Labels.EmptyList,
+          filtered: Labels.NoResults,
+        })}
         expanding
         headers={headers}
         rows={generateRows(

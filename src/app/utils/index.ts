@@ -15,6 +15,7 @@ export { getNextName } from "./getNextName";
 export { getRanges } from "./getRanges";
 export { getRelativeRoute } from "./getRelativeRoute";
 export { getStatusText } from "./getStatusText";
+export { getTableStatus, generateEmptyStateMsg } from "./table";
 export { groupAsMap } from "./groupAsMap";
 export { isComparable } from "./isComparable";
 export { isEphemerallyDeployed } from "./IsEphemerallyDeployed";

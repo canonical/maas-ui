@@ -9,7 +9,11 @@ import {
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+import {
+  screen,
+  renderWithMockStore,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 describe("APIKeyList", () => {
   let state: RootState;
@@ -49,5 +53,15 @@ describe("APIKeyList", () => {
     expect(
       screen.getByRole("grid", { name: APIKeyListLabels.Title })
     ).toBeInTheDocument();
+  });
+
+  it("can display an empty state message", () => {
+    state.token.items = [];
+    renderWithBrowserRouter(<APIKeyList />, {
+      state,
+      route: "/account/prefs/api-keys",
+    });
+
+    expect(screen.getByText(APIKeyListLabels.EmptyList)).toBeInTheDocument();
   });
 });

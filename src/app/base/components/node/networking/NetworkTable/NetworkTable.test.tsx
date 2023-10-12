@@ -136,6 +136,26 @@ describe("NetworkTable", () => {
     expect(within(ipPrimary).getByText("1.2.3.99")).toBeInTheDocument();
   });
 
+  it("displays a message when empty", () => {
+    state.subnet.items = [];
+    state.fabric.items = [];
+    state.vlan.items = [];
+    state.machine.items = [machine];
+
+    renderWithBrowserRouter(
+      <NetworkTable
+        expanded={null}
+        node={machine}
+        selected={[]}
+        setExpanded={jest.fn()}
+        setSelected={jest.fn()}
+      />,
+      { state }
+    );
+
+    expect(screen.getByText(Label.EmptyList)).toBeInTheDocument();
+  });
+
   it("can display an interface that is an alias", () => {
     const fabric = fabricFactory({ name: "fabric-name" });
     state.fabric.items = [fabric];

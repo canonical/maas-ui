@@ -175,6 +175,7 @@ const UsersList = (): JSX.Element => {
   return (
     <SettingsTable
       buttons={[{ label: "Add user", url: settingsURLs.users.add }]}
+      emptyStateMsg="No users available."
       headers={[
         {
           content: (

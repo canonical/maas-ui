@@ -64,6 +64,7 @@ export enum Label {
   Actions = "Actions",
   ActionsMenu = "Interface actions",
   DHCP = "DHCP",
+  EmptyList = "No interfaces availaable",
   Fabric = "Fabric",
   IP = "IP Address",
   MAC = "MAC",
@@ -494,6 +495,7 @@ const NetworkTable = ({
       })}
       defaultSort="name"
       defaultSortDirection="descending"
+      emptyStateMsg={Label.EmptyList}
       expanding
       headers={[
         {

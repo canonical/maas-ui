@@ -263,4 +263,13 @@ describe("NodeTestsTable", () => {
       "Unsuppress",
     ]);
   });
+
+  it("displays a message when there is no script result", () => {
+    renderWithBrowserRouter(
+      <NodeTestsTable node={machine} scriptResults={[]} />,
+      { route: "/machine/abc123", state }
+    );
+
+    expect(screen.getByText("No results available.")).toBeInTheDocument();
+  });
 });

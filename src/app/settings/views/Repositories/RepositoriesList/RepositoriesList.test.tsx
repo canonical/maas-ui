@@ -19,6 +19,7 @@ import {
   render,
   within,
   renderWithMockStore,
+  renderWithBrowserRouter,
 } from "testing/utils";
 
 const mockStore = configureStore();
@@ -259,5 +260,16 @@ describe("RepositoriesList", () => {
       actions.some((action) => action.type === "packagerepository/cleanup")
     ).toBe(true);
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
+  });
+
+  it("displays a message when there are no repositories", () => {
+    state.packagerepository.items = [];
+
+    renderWithBrowserRouter(<RepositoriesList />, {
+      state,
+      route: "/settings/repositories",
+    });
+
+    expect(screen.getByText("No repositories available.")).toBeInTheDocument();
   });
 });

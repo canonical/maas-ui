@@ -22,7 +22,7 @@ import type { Pod } from "app/store/pod/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
-import { formatBytes } from "app/utils";
+import { generateEmptyStateMsg, formatBytes, getTableStatus } from "app/utils";
 
 export enum Label {
   Name = "Name",
@@ -33,6 +33,7 @@ export enum Label {
   Cores = "Cores",
   Ram = "Ram",
   Pool = "Pool",
+  EmptyList = "No VMs available",
 }
 
 export type GetHostColumn = (vm: Machine) => ReactNode;
@@ -273,20 +274,25 @@ const VMsTable = ({
     }
   };
 
+  const tableStatus = getTableStatus({
+    hasFilter: Boolean(searchFilter && vms.length === 0),
+  });
+
   return (
     <>
       <MainTable
         className="vms-table"
-        emptyStateMsg={
-          searchFilter && vms.length === 0 ? (
+        emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+          filtered: (
             <Strip rowClassName="u-align--center" shallow>
               <span data-testid="no-vms">
                 No VMs in this {displayForCluster ? "cluster" : "KVM host"}{" "}
                 match the search criteria.
               </span>
             </Strip>
-          ) : null
-        }
+          ),
+          default: Label.EmptyList,
+        })}
         headers={[
           {
             className: "name-col",

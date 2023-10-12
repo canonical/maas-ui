@@ -115,6 +115,7 @@ const CacheSetsTable = ({ canEditStorage, node }: Props): JSX.Element => {
   return (
     <MainTable
       className="p-table-expanding--light"
+      emptyStateMsg="No cache set available."
       expanding
       headers={isMachine ? headers : headers.slice(0, -1)}
       responsive

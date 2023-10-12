@@ -33,4 +33,12 @@ describe("EventLogsTable", () => {
     });
     expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
   });
+
+  it("displays a message if there is no data", () => {
+    renderWithMockStore(<EventLogsTable events={[]} />, {
+      state,
+    });
+
+    expect(screen.getByText("No event logs available.")).toBeInTheDocument();
+  });
 });

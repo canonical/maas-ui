@@ -182,6 +182,7 @@ const SSHKeyList = ({ sidebar = true, ...tableProps }: Props): JSX.Element => {
       )}
       <SettingsTable
         aria-label="SSH keys"
+        emptyStateMsg="No SSH keys available."
         headers={[
           {
             content: "Source",

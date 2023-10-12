@@ -14,7 +14,7 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render } from "testing/utils";
+import { render, renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -61,5 +61,13 @@ describe("LicenseKeyList", () => {
     expect(
       store.getActions().some((action) => action.type === "licensekeys/fetch")
     ).toBe(true);
+  });
+
+  it("displays a message when there are no licennse keys", () => {
+    const state = { ...initialState };
+    state.licensekeys.items = [];
+
+    renderWithBrowserRouter(<LicenseKeyList />, { state, route: "/" });
+    expect(screen.getByText("No license keys available.")).toBeInTheDocument();
   });
 });

@@ -191,4 +191,15 @@ describe("SSHKeyList", () => {
     );
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
+
+  it("displays a message if there are no SSH keys", () => {
+    state.sshkey.items = [];
+    const store = mockStore(state);
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      store,
+    });
+
+    expect(screen.getByText("No SSH keys available.")).toBeInTheDocument();
+  });
 });

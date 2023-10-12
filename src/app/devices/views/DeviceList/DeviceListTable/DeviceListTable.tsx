@@ -1,4 +1,4 @@
-import { MainTable, Spinner } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import { Link } from "react-router-dom-v5-compat";
 
 import OwnerColumn from "./OwnerColumn";
@@ -13,7 +13,12 @@ import { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
 import type { Device, DeviceMeta } from "app/store/device/types";
 import { getIpAssignmentDisplay } from "app/store/device/utils";
-import { generateCheckboxHandlers, isComparable } from "app/utils";
+import {
+  generateCheckboxHandlers,
+  generateEmptyStateMsg,
+  getTableStatus,
+  isComparable,
+} from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {
@@ -23,6 +28,11 @@ type Props = {
   onSelectedChange: (newSelectedIDs: Device[DeviceMeta.PK][]) => void;
   selectedIDs: Device[DeviceMeta.PK][];
 };
+
+export enum Labels {
+  EmptyList = "No devices available.",
+  NoResults = "No devices match the search criteria.",
+}
 
 type SortKey = keyof Device;
 
@@ -145,17 +155,15 @@ const DeviceListTable = ({
   const { handleGroupCheckbox, handleRowCheckbox } =
     generateCheckboxHandlers<Device[DeviceMeta.PK]>(onSelectedChange);
   const deviceIDs = devices.map((device) => device.system_id);
+  const tableStatus = getTableStatus({ isLoading: loading, hasFilter });
 
   return (
     <MainTable
       className="device-list-table"
-      emptyStateMsg={
-        loading ? (
-          <Spinner text="Loading..." />
-        ) : hasFilter ? (
-          "No devices match the search criteria."
-        ) : null
-      }
+      emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+        default: Labels.EmptyList,
+        filtered: Labels.NoResults,
+      })}
       headers={[
         {
           className: "fqdn-col",

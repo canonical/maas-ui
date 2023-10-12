@@ -165,6 +165,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
   return (
     <MainTable
       className="lxd-table"
+      emptyStateMsg="No hosts available."
       headers={[
         {
           className: "name-col",

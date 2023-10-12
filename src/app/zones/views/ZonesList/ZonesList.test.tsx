@@ -36,4 +36,15 @@ describe("ZonesList", () => {
 
     expect(screen.getByTestId(TestIds.ZonesTable)).toBeInTheDocument();
   });
+
+  it("shows a message if there are no zones", () => {
+    const state = rootStateFactory({
+      zone: zoneStateFactory({
+        items: [],
+      }),
+    });
+    renderWithBrowserRouter(<ZonesList />, { route: "/zones", state });
+
+    expect(screen.getByText("No zones available.")).toBeInTheDocument();
+  });
 });

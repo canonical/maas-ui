@@ -138,6 +138,7 @@ const LicenseKeyList = (): JSX.Element => {
           tooltip,
         },
       ]}
+      emptyStateMsg="No license keys available."
       headers={[
         {
           content: "Operating System",

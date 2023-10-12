@@ -32,8 +32,10 @@ import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
 import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
+import { generateEmptyStateMsg, getTableStatus } from "app/utils";
 
 export enum Label {
+  EmptyList = "No machines available.",
   Loading = "Loading machines",
   Machines = "Machines",
   NoResults = "No machines match the search criteria.",
@@ -415,6 +417,11 @@ export const MachineListTable = ({
     [grouping]
   );
 
+  const tableStatus = getTableStatus({
+    isLoading: !!machinesLoading,
+    hasFilter: !!filter,
+  });
+
   return (
     <>
       {machineCount ? (
@@ -456,7 +463,10 @@ export const MachineListTable = ({
           "machine-list--grouped": grouping,
           "machine-list--loading": machinesLoading,
         })}
-        emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
+        emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+          default: Label.EmptyList,
+          filtered: Label.NoResults,
+        })}
         headers={filterColumns(headers, hiddenColumns, showActions)}
         rows={machinesLoading ? skeletonRows : machineRows}
         {...props}

@@ -269,6 +269,7 @@ const DeviceNetworkTable = ({
       className="p-table-expanding--light device-network-table"
       defaultSort="name"
       defaultSortDirection="descending"
+      emptyStateMsg="No interfaces available."
       expanding
       headers={[
         {

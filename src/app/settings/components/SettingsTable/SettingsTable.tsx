@@ -21,6 +21,7 @@ export type TableButtons = {
 export type Props = {
   buttons?: TableButtons[];
   defaultSort?: string;
+  emptyStateMsg?: MainTableProps["emptyStateMsg"];
   headers?: MainTableProps["headers"];
   helpLabel?: string;
   helpLink?: string;
@@ -36,6 +37,7 @@ export type Props = {
 export const SettingsTable = ({
   buttons,
   defaultSort,
+  emptyStateMsg,
   headers,
   helpLabel,
   helpLink,
@@ -85,6 +87,7 @@ export const SettingsTable = ({
         })}
         defaultSort={defaultSort}
         defaultSortDirection="ascending"
+        emptyStateMsg={emptyStateMsg}
         expanding={true}
         headers={headers}
         paginate={20}

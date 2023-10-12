@@ -15,6 +15,7 @@ import type { Token, TokenMeta, TokenState } from "app/store/token/types";
 
 export enum Label {
   Title = "API keys",
+  EmptyList = "No API keys available.",
 }
 
 const generateRows = (
@@ -108,6 +109,7 @@ const APIKeyList = (): JSX.Element => {
             url: urls.preferences.apiKeys.add,
           },
         ]}
+        emptyStateMsg={Label.EmptyList}
         headers={[
           {
             content: "Name",

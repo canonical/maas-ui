@@ -1,4 +1,4 @@
-import { MainTable, Spinner, Link } from "@canonical/react-components";
+import { MainTable, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import StatusColumn from "./StatusColumn";
@@ -22,7 +22,12 @@ import { actions as generalActions } from "app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
-import { generateCheckboxHandlers, isComparable } from "app/utils";
+import {
+  generateEmptyStateMsg,
+  generateCheckboxHandlers,
+  isComparable,
+  getTableStatus,
+} from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {
@@ -34,6 +39,11 @@ type Props = {
 };
 
 type SortKey = keyof Controller | "version";
+
+export enum Label {
+  NoResults = "No controllers match the search criteria.",
+  EmptyList = "No controllers available.",
+}
 
 const getSortValue = (sortKey: SortKey, controller: Controller) => {
   switch (sortKey) {
@@ -233,18 +243,16 @@ const ControllerListTable = ({
   const vaultEnabled = useSelector(vaultEnabledSelectors.get);
 
   useFetchActions([generalActions.fetchVaultEnabled, controllerActions.fetch]);
+  const tableStatus = getTableStatus({ isLoading: loading, hasFilter });
 
   return (
     <MainTable
       aria-label="controllers list"
       className="controller-list-table"
-      emptyStateMsg={
-        loading ? (
-          <Spinner text="Loading..." />
-        ) : hasFilter ? (
-          "No controllers match the search criteria."
-        ) : null
-      }
+      emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+        default: Label.EmptyList,
+        filtered: Label.NoResults,
+      })}
       headers={[
         {
           className: "fqdn-col",

@@ -60,6 +60,7 @@ const EventLogsTable = ({ events }: Props): JSX.Element => {
     <MainTable
       aria-label={Label.Title}
       className="event-logs-table"
+      emptyStateMsg="No event logs available."
       headers={[
         {
           content: "Time",

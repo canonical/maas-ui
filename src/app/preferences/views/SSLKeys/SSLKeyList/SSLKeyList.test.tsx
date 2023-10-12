@@ -17,6 +17,7 @@ import {
   render,
   within,
   renderWithMockStore,
+  renderWithBrowserRouter,
 } from "testing/utils";
 
 const mockStore = configureStore();
@@ -202,5 +203,15 @@ describe("SSLKeyList", () => {
       true
     );
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
+  });
+
+  it("displays an empty state message", () => {
+    state.sslkey.items = [];
+    renderWithBrowserRouter(<SSLKeyList />, {
+      state,
+      route: "/account/prefs/ssl-keys",
+    });
+
+    expect(screen.getByText("No SSL keys available.")).toBeInTheDocument();
   });
 });
