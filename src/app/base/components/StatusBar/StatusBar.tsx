@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 
+import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import { useUsabilla } from "app/base/hooks";
 import configSelectors from "app/store/config/selectors";
 import controllerSelectors from "app/store/controller/selectors";
 import {
@@ -53,6 +55,7 @@ export const StatusBar = (): JSX.Element | null => {
   const activeMachine = useSelector(machineSelectors.active);
   const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
+  const allowUsabilla = useUsabilla();
 
   if (!(maasName && version)) {
     return null;
@@ -95,6 +98,27 @@ export const StatusBar = (): JSX.Element | null => {
           :&nbsp;
           <span data-testid="status-bar-version">{version}</span>
         </div>
+        <ul className="p-inline-list--middot u-no-margin--bottom">
+          <li className="p-inline-list__item">
+            <a href={`${process.env.REACT_APP_BASENAME}/docs/`}>
+              Local documentation
+            </a>
+          </li>
+          <li className="p-inline-list__item">
+            <a href="https://www.ubuntu.com/legal">Legal information</a>
+          </li>
+          {allowUsabilla ? (
+            <li className="p-inline-list__item">
+              <Button
+                appearance="link"
+                className="u-no-margin u-no-padding"
+                onClick={() => window.usabilla_live("click")}
+              >
+                Give feedback
+              </Button>
+            </li>
+          ) : null}
+        </ul>
         {status && (
           <div
             className="p-status-bar__secondary u-flex--grow u-flex--wrap"
