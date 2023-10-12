@@ -42,6 +42,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.useRealTimers();
+  process.env = originalEnv;
 });
 
 it("can show if a machine is currently commissioning", () => {
