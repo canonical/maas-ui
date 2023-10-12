@@ -100,12 +100,22 @@ export const StatusBar = (): JSX.Element | null => {
         </div>
         <ul className="p-inline-list--middot u-no-margin--bottom">
           <li className="p-inline-list__item">
-            <a href={`${process.env.REACT_APP_BASENAME}/docs/`}>
+            <a
+              href={`${process.env.REACT_APP_BASENAME}/docs/`}
+              rel="noreferrer"
+              target="_blank"
+            >
               Local documentation
             </a>
           </li>
           <li className="p-inline-list__item">
-            <a href="https://www.ubuntu.com/legal">Legal information</a>
+            <a
+              href="https://www.ubuntu.com/legal"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Legal information
+            </a>
           </li>
           {allowUsabilla ? (
             <li className="p-inline-list__item">
