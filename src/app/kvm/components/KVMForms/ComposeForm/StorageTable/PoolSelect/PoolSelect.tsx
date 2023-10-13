@@ -1,10 +1,10 @@
+import { Meter } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 
-import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
 import { getSortedPoolsArray } from "app/kvm/utils";
 import podSelectors from "app/store/pod/selectors";

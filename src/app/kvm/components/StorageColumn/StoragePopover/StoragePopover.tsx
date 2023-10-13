@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { Fragment } from "react";
 
-import Meter from "app/base/components/Meter";
+import { Meter } from "@canonical/maas-react-components";
+
 import Popover from "app/base/components/Popover";
 import { COLOURS } from "app/base/constants";
 import type { KVMStoragePoolResources } from "app/kvm/types";

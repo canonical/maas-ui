@@ -1,4 +1,5 @@
-import Meter from "app/base/components/Meter";
+import { Meter } from "@canonical/maas-react-components";
+
 import { COLOURS } from "app/base/constants";
 import { formatBytes } from "app/utils";
 
