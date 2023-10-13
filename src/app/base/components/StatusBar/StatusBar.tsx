@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Button } from "@canonical/react-components";
+import { Button, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { useUsabilla } from "app/base/hooks";
@@ -100,22 +100,22 @@ export const StatusBar = (): JSX.Element | null => {
         </div>
         <ul className="p-inline-list--middot u-no-margin--bottom">
           <li className="p-inline-list__item">
-            <a
+            <Link
               href={`${process.env.REACT_APP_BASENAME}/docs/`}
               rel="noreferrer"
               target="_blank"
             >
               Local documentation
-            </a>
+            </Link>
           </li>
           <li className="p-inline-list__item">
-            <a
+            <Link
               href="https://www.ubuntu.com/legal"
               rel="noreferrer"
               target="_blank"
             >
               Legal information
-            </a>
+            </Link>
           </li>
           {allowUsabilla ? (
             <li className="p-inline-list__item">
