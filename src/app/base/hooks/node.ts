@@ -25,6 +25,7 @@ export type MachineMenuAction = Exclude<
   | NodeActions.SET_ZONE
   | NodeActions.TAG
   | NodeActions.UNTAG
+  | NodeActions.CHECK_POWER
 >;
 
 /**
