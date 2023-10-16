@@ -52,6 +52,8 @@ export const getNodeActionTitle = (actionName: NodeActions): string => {
       return "Abort";
     case NodeActions.ACQUIRE:
       return "Allocate";
+    case NodeActions.CHECK_POWER:
+      return "Check power";
     case NodeActions.CLONE:
       return "Clone from";
     case NodeActions.COMMISSION:
@@ -109,6 +111,10 @@ export const getNodeActionLabel = (
       } actions for ${modelString}`;
     case NodeActions.ACQUIRE:
       return `${isProcessing ? "Allocating" : "Allocate"} ${modelString}`;
+    case NodeActions.CHECK_POWER:
+      return `${
+        isProcessing ? "Checking power" : "Check power"
+      } for ${modelString}`;
     case NodeActions.CLONE:
       return isProcessing ? "Cloning in progress" : `Clone to ${modelString}`;
     case NodeActions.COMMISSION:
@@ -266,6 +272,12 @@ export const canOpenActionForm = (
     // select the machine to actually perform the clone action. The destination
     // machines can only be in a subset of statuses.
     return [NodeStatus.READY, NodeStatus.FAILED_TESTING].includes(node.status);
+  }
+
+  if (nodeIsMachine(node) && actionName === NodeActions.CHECK_POWER) {
+    // "Check power" should always be shown for machines, but this action
+    // won't show up in the node.actions list, so we need to return true here.
+    return true;
   }
   return node.actions.some((nodeAction) => nodeAction === actionName);
 };

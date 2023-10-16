@@ -118,9 +118,7 @@ describe("MachineHeader", () => {
         { store, route: "/machine/abc123" }
       );
 
-      await userEvent.click(
-        screen.getByRole("button", { name: /take action:/i })
-      );
+      await userEvent.click(screen.getByRole("button", { name: /Power/i }));
       await userEvent.click(
         screen.getByRole("button", { name: /check power/i })
       );

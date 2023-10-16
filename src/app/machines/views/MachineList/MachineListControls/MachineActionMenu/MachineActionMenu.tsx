@@ -47,7 +47,7 @@ const MachineActionMenu = ({
       <div className="u-hide--medium u-hide--small">
         <NodeActionMenuGroup
           alwaysShowLifecycle
-          excludeActions={[NodeActions.IMPORT_IMAGES]}
+          excludeActions={[NodeActions.IMPORT_IMAGES, NodeActions.CHECK_POWER]}
           getTitle={getTitle}
           hasSelection={hasSelection}
           nodeDisplay="machine"
@@ -74,7 +74,7 @@ const MachineActionMenu = ({
           alwaysShowLifecycle
           className="is-maas-select"
           constrainPanelWidth
-          excludeActions={[NodeActions.IMPORT_IMAGES]}
+          excludeActions={[NodeActions.IMPORT_IMAGES, NodeActions.CHECK_POWER]}
           getTitle={getTitle}
           hasSelection={hasSelection}
           menuPosition="left"

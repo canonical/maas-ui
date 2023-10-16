@@ -64,7 +64,7 @@ describe("NodeActionMenuGroup", () => {
       screen.queryByRole("button", { name: Labels.Lock })
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: Labels.PowerCycle })
+      screen.queryByRole("button", { name: Labels.Power })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: Labels.Troubleshoot })
