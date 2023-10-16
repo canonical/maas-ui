@@ -114,7 +114,7 @@ const MachineHeader = ({
                   : `Power ${machine.power_state}`}
               </PowerIcon>
             </div>
-            <div className="u-hide--medium u-hide--small">
+            <div className="u-hide--medium u-hide--small u-nudge-right">
               <NodeActionMenuGroup
                 alwaysShowLifecycle
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
@@ -127,7 +127,7 @@ const MachineHeader = ({
                 singleNode
               />
             </div>
-            <div className="u-hide--large">
+            <div className="u-hide--large u-nudge-right">
               <NodeActionMenu
                 alwaysShowLifecycle
                 className="u-hide--large"
