@@ -42,59 +42,41 @@ const MachineActionMenu = ({
     [tagsSeen]
   );
 
+  const commonProps = {
+    alwaysShowLifecycle: true,
+    excludeActions: [NodeActions.IMPORT_IMAGES, NodeActions.CHECK_POWER],
+    getTitle,
+    hasSelection,
+    nodeDisplay: "machine",
+    onActionClick: (action: NodeActions) => {
+      if (action === NodeActions.TAG && !tagsSeen) {
+        setTagsSeen(true);
+      }
+      const view = Object.values(MachineSidePanelViews).find(
+        ([, actionName]) => actionName === action
+      );
+      if (view) {
+        setSidePanelContent({ view });
+      }
+      sendAnalytics(
+        "Machine list action form",
+        getNodeActionTitle(action),
+        "Open"
+      );
+    },
+  };
+
   return (
     <>
       <div className="u-hide--medium u-hide--small">
-        <NodeActionMenuGroup
-          alwaysShowLifecycle
-          excludeActions={[NodeActions.IMPORT_IMAGES, NodeActions.CHECK_POWER]}
-          getTitle={getTitle}
-          hasSelection={hasSelection}
-          nodeDisplay="machine"
-          onActionClick={(action) => {
-            if (action === NodeActions.TAG && !tagsSeen) {
-              setTagsSeen(true);
-            }
-            const view = Object.values(MachineSidePanelViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
-            sendAnalytics(
-              "Machine list action form",
-              getNodeActionTitle(action),
-              "Open"
-            );
-          }}
-        />
+        <NodeActionMenuGroup {...commonProps} />
       </div>
       <div className="u-hide--large">
         <NodeActionMenu
-          alwaysShowLifecycle
+          {...commonProps}
           className="is-maas-select"
           constrainPanelWidth
-          excludeActions={[NodeActions.IMPORT_IMAGES, NodeActions.CHECK_POWER]}
-          getTitle={getTitle}
-          hasSelection={hasSelection}
           menuPosition="left"
-          nodeDisplay="machine"
-          onActionClick={(action) => {
-            if (action === NodeActions.TAG && !tagsSeen) {
-              setTagsSeen(true);
-            }
-            const view = Object.values(MachineSidePanelViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
-            sendAnalytics(
-              "Machine list action form",
-              getNodeActionTitle(action),
-              "Open"
-            );
-          }}
           toggleAppearance=""
           toggleClassName="p-action-menu"
           toggleLabel="Menu"
