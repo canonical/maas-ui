@@ -275,8 +275,7 @@ export const canOpenActionForm = (
   }
 
   if (nodeIsMachine(node) && actionName === NodeActions.CHECK_POWER) {
-    // "Check power" should always be shown for machines, but this action
-    // won't show up in the node.actions list, so we need to return true here.
+    // "Check power" is always shown for machines, even though it's not listed in node.actions.
     return true;
   }
   return node.actions.some((nodeAction) => nodeAction === actionName);
