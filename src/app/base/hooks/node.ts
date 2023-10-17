@@ -20,12 +20,12 @@ import { kebabToCamelCase } from "app/utils";
 // without needing the user to provide any additional information.
 export type MachineMenuAction = Exclude<
   MachineActions,
+  | NodeActions.CHECK_POWER
   | NodeActions.CLONE
   | NodeActions.SET_POOL
   | NodeActions.SET_ZONE
   | NodeActions.TAG
   | NodeActions.UNTAG
-  | NodeActions.CHECK_POWER
 >;
 
 /**
