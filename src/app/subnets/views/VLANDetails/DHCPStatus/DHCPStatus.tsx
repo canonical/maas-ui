@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Button,
   Col,
@@ -140,9 +141,7 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
         </Col>
       </Row>
       <p>
-        <a href={docsUrls.dhcp} rel="noreferrer noopener" target="_blank">
-          About DHCP
-        </a>
+        <ExternalLink to={docsUrls.dhcp}>About DHCP</ExternalLink>
       </p>
     </TitledSection>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as React from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Col,
   Input,
@@ -178,13 +179,9 @@ export const DeployFormFields = (): JSX.Element => {
                   label={
                     <>
                       Register as MAAS KVM host.{" "}
-                      <a
-                        href={docsUrls.kvmIntroduction}
-                        rel="noreferrer noopener"
-                        target="_blank"
-                      >
+                      <ExternalLink to={docsUrls.kvmIntroduction}>
                         KVM docs
-                      </a>
+                      </ExternalLink>
                     </>
                   }
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,13 +221,9 @@ export const DeployFormFields = (): JSX.Element => {
               label={
                 <>
                   Cloud-init user-data&hellip;{" "}
-                  <a
-                    href={docsUrls.cloudInit}
-                    rel="noreferrer noopener"
-                    target="_blank"
-                  >
+                  <ExternalLink to={docsUrls.cloudInit}>
                     Cloud-init docs
-                  </a>
+                  </ExternalLink>
                 </>
               }
               name="includeUserData"
@@ -267,17 +260,13 @@ export const DeployFormFields = (): JSX.Element => {
                   <TooltipButton
                     aria-label="more about periodically sync hardware"
                     message={`Enable this to make MAAS periodically check the
-                    hardware configuration of this machine and reflect any
-                    possible change after the deployment.`}
+                  hardware configuration of this machine and reflect any
+                  possible change after the deployment.`}
                     positionElementClassName="u-display--inline"
                   />{" "}
-                  <a
-                    href={docsUrls.customisingDeployedMachines}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
+                  <ExternalLink to={docsUrls.customisingDeployedMachines}>
                     Hardware sync docs
-                  </a>
+                  </ExternalLink>
                 </>
               }
               name="enableHwSync"

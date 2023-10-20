@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import {
   Icon,
   Spinner,
@@ -79,13 +80,9 @@ const VaultSettings = (): JSX.Element => {
             <section aria-labelledby={id}>
               <p>
                 1. Get the $wrapped_token and $role_id from Vault.{" "}
-                <a
-                  href="https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#approle-response-wrapping"
-                  rel="noreferrer noopener"
-                  target="_blank"
-                >
+                <ExternalLink to="https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#approle-response-wrapping">
                   Find out more from Hashicorp Vault
-                </a>
+                </ExternalLink>
                 .
               </p>
               <p>2. SSH into each region controller and configure Vault.</p>
@@ -131,7 +128,6 @@ const VaultSettings = (): JSX.Element => {
             </section>
           </>
         )}
-
         <a href={docsUrls.vaultIntegration}>More about Vault integration</a>
       </>
     );

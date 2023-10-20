@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import {
   ContextualMenu,
   MainTable,
@@ -330,9 +331,7 @@ const ReservedRanges = ({
           />
         </FormCard>
       ) : null}
-      <a href={docsUrls.ipRanges} rel="noreferrer noopener" target="_blank">
-        About IP ranges
-      </a>
+      <ExternalLink to={docsUrls.ipRanges}>About IP ranges</ExternalLink>
     </TitledSection>
   );
 };

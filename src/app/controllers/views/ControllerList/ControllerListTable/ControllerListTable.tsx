@@ -1,4 +1,5 @@
-import { MainTable, Link } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
+import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import StatusColumn from "./StatusColumn";
@@ -119,14 +120,12 @@ const generateRows = ({
                         Vault is configured on this region controller for secret
                         storage.
                         <br />
-                        <Link
+                        <ExternalLink
                           className="is-on-dark"
-                          href={docsUrls.vaultIntegration}
-                          rel="noreferrer noopener"
-                          target="_blank"
+                          to={docsUrls.vaultIntegration}
                         >
                           Read more about Vault integration
-                        </Link>
+                        </ExternalLink>
                       </p>
                     }
                   />
@@ -143,14 +142,12 @@ const generateRows = ({
                         Vault is configured on this controller. <br />
                         Once all controllers are configured, migrate the
                         secrets. <br />
-                        <Link
+                        <ExternalLink
                           className="is-on-dark"
-                          href={docsUrls.vaultIntegration}
-                          rel="noreferrer noopener"
-                          target="_blank"
+                          to={docsUrls.vaultIntegration}
                         >
                           Read more about Vault integration
-                        </Link>
+                        </ExternalLink>
                       </p>
                     }
                   />
@@ -167,14 +164,12 @@ const generateRows = ({
                         <p id="tooltip-description-warning">
                           Missing Vault configuration.
                           <br />
-                          <Link
+                          <ExternalLink
                             className="is-on-dark"
-                            href={docsUrls.vaultIntegration}
-                            rel="noreferrer noopener"
-                            target="_blank"
+                            to={docsUrls.vaultIntegration}
                           >
                             Read more about Vault integration
-                          </Link>
+                          </ExternalLink>
                         </p>
                       }
                     />

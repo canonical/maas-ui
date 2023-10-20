@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Link } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
@@ -91,13 +91,9 @@ export const CloneForm = ({
           The clone function allows you to apply storage and/or network
           interface configuration from the source machine to selected
           destination machines.{" "}
-          <Link
-            href="https://discourse.maas.io/t/cloning-ui/4855"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+          <ExternalLink to="https://discourse.maas.io/t/cloning-ui/4855">
             Find out more
-          </Link>
+          </ExternalLink>
         </p>
       }
       initialValues={{

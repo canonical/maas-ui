@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -66,13 +67,9 @@ export const KernelOptionsField = ({
         <>
           Kernel options are appended to the kernel command line during booting
           while machines are commissioning or deploying.{" "}
-          <a
-            href={docsUrls.tagsKernelOptions}
-            rel="noreferrer noopener"
-            target="_blank"
-          >
+          <ExternalLink to={docsUrls.tagsKernelOptions}>
             Read more about kernel options in tag management
-          </a>
+          </ExternalLink>
           .
         </>
       }

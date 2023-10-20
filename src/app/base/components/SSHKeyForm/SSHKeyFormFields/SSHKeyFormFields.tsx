@@ -1,4 +1,5 @@
-import { Col, Link, Row, Select, Textarea } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
+import { Col, Row, Select, Textarea } from "@canonical/react-components";
 import type { ColSize } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
@@ -55,8 +56,8 @@ export const SSHKeyFormFields = ({
                   <TooltipButton
                     iconName="help"
                     message={`Begins with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519',
-                    'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or
-                    'ecdsa-sha2-nistp521`}
+                  'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or
+                  'ecdsa-sha2-nistp521`}
                     position="btm-left"
                   />
                 </>
@@ -73,9 +74,7 @@ export const SSHKeyFormFields = ({
           </p>
         </Col>
       </Row>
-      <Link href={docsUrls.sshKeys} rel="noreferrer noopener" target="_blank">
-        About SSH keys
-      </Link>
+      <ExternalLink to={docsUrls.sshKeys}>About SSH keys</ExternalLink>
     </>
   );
 };

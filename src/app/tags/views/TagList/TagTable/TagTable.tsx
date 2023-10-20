@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import type {
   MainTableProps,
   PropsWithSpread,
@@ -219,14 +220,12 @@ const TagTable = ({
                       <br />
                       machine that matches their definition.
                       <br />
-                      <a
+                      <ExternalLink
                         className="is-on-dark"
-                        href={docsUrls.tagsAutomatic}
-                        rel="noreferrer noopener"
-                        target="_blank"
+                        to={docsUrls.tagsAutomatic}
                       >
                         Check the documentation about automatic tags.
-                      </a>
+                      </ExternalLink>
                     </>
                   }
                   position="top-center"

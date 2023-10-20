@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import { List, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
@@ -204,9 +205,9 @@ const DHCPTable = ({
               <Link to={settingsURLs.dhcp.index}>
                 All snippets: Settings &gt; DHCP snippets
               </Link>,
-              <a href={docsUrls.dhcp} rel="noreferrer noopener" target="_blank">
+              <ExternalLink to={docsUrls.dhcp}>
                 About DHCP snippets
-              </a>,
+              </ExternalLink>,
             ]}
             middot
           />
