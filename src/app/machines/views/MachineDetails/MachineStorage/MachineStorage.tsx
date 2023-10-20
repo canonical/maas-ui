@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
@@ -33,9 +34,8 @@ const MachineStorage = (): JSX.Element => {
         <Strip shallow>
           <p>
             Learn more about deploying{" "}
-            <a
+            <ExternalLink
               data-testid="docs-footer-link"
-              href={docsUrls.windowsImages}
               onClick={() =>
                 sendAnalytics(
                   "Machine storage",
@@ -43,11 +43,10 @@ const MachineStorage = (): JSX.Element => {
                   "Windows"
                 )
               }
-              rel="noopener noreferrer"
-              target="_blank"
+              to={docsUrls.windowsImages}
             >
               Windows
-            </a>
+            </ExternalLink>
           </p>
           <p>
             Change the default layout in{" "}

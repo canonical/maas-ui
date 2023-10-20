@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -71,13 +72,9 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
               <span className="p-form-help-text">
                 This is a manual tag. Definitions cannot be added to manual
                 tags. To learn more about this, check our{" "}
-                <a
-                  href={docsUrls.tagsXpathExpressions}
-                  rel="noreferrer noopener"
-                  target="_blank"
-                >
+                <ExternalLink to={docsUrls.tagsXpathExpressions}>
                   XPath expressions documentation
-                </a>
+                </ExternalLink>
                 .
               </span>
             </Definition>

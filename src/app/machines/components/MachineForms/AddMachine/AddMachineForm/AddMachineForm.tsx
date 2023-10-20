@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { Link, Spinner, Strip } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
+import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -126,13 +127,9 @@ export const AddMachineForm = ({
         <FormikForm<AddMachineValues>
           buttonsHelp={
             <p>
-              <Link
-                href={docsUrls.addMachines}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
+              <ExternalLink to={docsUrls.addMachines}>
                 Help with adding machines
-              </Link>
+              </ExternalLink>
             </p>
           }
           buttonsHelpClassName="u-align--right"

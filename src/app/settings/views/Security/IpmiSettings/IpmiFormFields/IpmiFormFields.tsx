@@ -1,4 +1,4 @@
-import { Link } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
 
 import FormikField from "app/base/components/FormikField";
 import TooltipButton from "app/base/components/TooltipButton";
@@ -29,13 +29,7 @@ const IpmiFormFields = (): JSX.Element => {
           <>
             Specify this key to encrypt all communication between IPMI clients
             and the BMC. Leave this blank for no encryption.&nbsp;
-            <Link
-              href={docsUrls.ipmi}
-              rel="noreferrer noopener"
-              target="_blank"
-            >
-              IPMI and BMC key
-            </Link>
+            <ExternalLink to={docsUrls.ipmi}>IPMI and BMC key</ExternalLink>
           </>
         }
         label={

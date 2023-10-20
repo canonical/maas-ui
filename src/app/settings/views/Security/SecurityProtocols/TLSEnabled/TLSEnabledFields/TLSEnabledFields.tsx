@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Slider } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
@@ -41,13 +42,9 @@ const TLSEnabledFields = (): JSX.Element => {
         />
       </div>
       <p>
-        <a
-          href={docsUrls.autoRenewTLSCert}
-          rel="noreferrer noopener"
-          target="_blank"
-        >
+        <ExternalLink to={docsUrls.autoRenewTLSCert}>
           How to set up auto-renew for certificates
-        </a>
+        </ExternalLink>
       </p>
     </>
   );

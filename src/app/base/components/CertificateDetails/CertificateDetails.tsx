@@ -1,4 +1,4 @@
-import { Link } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
 
 import CertificateDownload from "app/base/components/CertificateDownload";
 import CertificateMetadata from "app/base/components/CertificateMetadata";
@@ -29,9 +29,8 @@ const CertificateDetails = ({
     <div className="certificate-details">
       <p>Certificate</p>
       <p>
-        <Link
+        <ExternalLink
           data-testid="read-more-link"
-          href="https://discourse.maas.io/t/lxd-authentication/4856"
           onClick={() =>
             sendAnalytics(
               eventCategory,
@@ -39,11 +38,10 @@ const CertificateDetails = ({
               "Read more about authentication"
             )
           }
-          rel="noopener noreferrer"
-          target="_blank"
+          to="https://discourse.maas.io/t/lxd-authentication/4856"
         >
           {Labels.ReadMore}
-        </Link>
+        </ExternalLink>
       </p>
       <CertificateMetadata metadata={metadata} />
       <CertificateDownload certificate={certificate} filename={metadata.CN} />

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import { CodeSnippet, Textarea } from "@canonical/react-components";
 import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
@@ -39,13 +40,9 @@ const getDefinitionError = (
     return (
       <span id={definitionErrorId}>
         The definition is an invalid XPath expression. See our{" "}
-        <a
-          href={docsUrls.tagsXpathExpressions}
-          rel="noreferrer noopener"
-          target="_blank"
-        >
+        <ExternalLink to={docsUrls.tagsXpathExpressions}>
           XPath expressions documentation
-        </a>{" "}
+        </ExternalLink>{" "}
         for more examples.
       </span>
     );
@@ -94,13 +91,9 @@ export const DefinitionField = ({ id }: Props): JSX.Element => {
       <p className="p-form-help-text u-sv1">
         Add an XPath expression as a definition. MAAS will auto-assign this tag
         to all current and future machines that match this definition.{" "}
-        <a
-          href={docsUrls.tagsXpathExpressions}
-          rel="noreferrer noopener"
-          target="_blank"
-        >
+        <ExternalLink to={docsUrls.tagsXpathExpressions}>
           Learn how to use XPath expressions
-        </a>
+        </ExternalLink>
         .
       </p>
       <p className="p-form-help-text u-sv1">
