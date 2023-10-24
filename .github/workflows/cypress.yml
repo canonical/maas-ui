@@ -30,7 +30,10 @@ jobs:
           spec: "cypress/e2e/no-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
       - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+        run: |
+          sudo maas createadmin --username=admin --password=test --email=fake@example.org
+          maas login admin http://127.0.0.1:5240/MAAS/api/2.0/ < $(maas apikey --username=admin)
+          while [ $(maas image boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Create MAAS non-admin user
         run: |
           export API_KEY=`sudo maas apikey --username=admin`
