@@ -36,8 +36,9 @@ jobs:
         run: |
           export API_KEY=`sudo maas apikey --username=admin`
           maas login admin http://localhost:5240/MAAS $API_KEY
-          while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
           maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
+      - name: Ensure that images have successfully synced
+        run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Run Cypress tests with a user
         uses: cypress-io/github-action@v4
         with:
