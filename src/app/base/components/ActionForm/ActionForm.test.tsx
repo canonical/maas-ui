@@ -1,41 +1,21 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
-
+import type { ActionFormProps } from "./ActionForm";
 import ActionForm, { Labels } from "./ActionForm";
 
 import { TestIds } from "app/base/components/FormikFormButtons";
-import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
-
-let state: RootState;
-const mockStore = configureStore();
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("ActionForm", () => {
-  beforeEach(() => {
-    state = rootStateFactory();
-  });
-
   it("shows a spinner if form has not fully loaded", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ActionForm
-              actionName="action"
-              initialValues={{}}
-              loaded={false}
-              modelName="machine"
-              onSubmit={jest.fn()}
-              processingCount={0}
-              selectedCount={1}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ActionForm
+        actionName="action"
+        initialValues={{}}
+        loaded={false}
+        modelName="machine"
+        onSubmit={jest.fn()}
+        processingCount={0}
+        selectedCount={1}
+      />
     );
 
     expect(
@@ -44,22 +24,15 @@ describe("ActionForm", () => {
   });
 
   it("can show the default submit label", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ActionForm
-              actionName="action"
-              initialValues={{}}
-              modelName="machine"
-              onSubmit={jest.fn()}
-              processingCount={0}
-              selectedCount={1}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ActionForm
+        actionName="action"
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={jest.fn()}
+        processingCount={0}
+        selectedCount={1}
+      />
     );
 
     expect(
@@ -68,23 +41,16 @@ describe("ActionForm", () => {
   });
 
   it("can override the submit label", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ActionForm
-              actionName="action"
-              initialValues={{}}
-              modelName="machine"
-              onSubmit={jest.fn()}
-              processingCount={0}
-              selectedCount={1}
-              submitLabel="Special save"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ActionForm
+        actionName="action"
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={jest.fn()}
+        processingCount={0}
+        selectedCount={1}
+        submitLabel="Special save"
+      />
     );
 
     expect(
@@ -93,22 +59,15 @@ describe("ActionForm", () => {
   });
 
   it("can show the correct saving state", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ActionForm
-              actionName="action"
-              initialValues={{}}
-              modelName="machine"
-              onSubmit={jest.fn()}
-              processingCount={1}
-              selectedCount={2}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ActionForm
+        actionName="action"
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={jest.fn()}
+        processingCount={1}
+        selectedCount={2}
+      />
     );
 
     await userEvent.click(screen.getByRole("button"));
@@ -120,45 +79,31 @@ describe("ActionForm", () => {
   });
 
   it("disables the submit button when selectedCount equals 0", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ActionForm
-              actionName="action"
-              initialValues={{}}
-              modelName="machine"
-              onSubmit={jest.fn()}
-              selectedCount={0}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ActionForm
+        actionName="action"
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={jest.fn()}
+        selectedCount={0}
+      />
     );
 
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
   it("shows correct saving label if selectedCount changes after submit", async () => {
-    const store = mockStore(state);
-    const Proxy = ({ selectedCount }: { selectedCount: number }) => (
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ActionForm
-              actionName="action"
-              initialValues={{}}
-              modelName="machine"
-              onSubmit={jest.fn()}
-              processingCount={2}
-              selectedCount={selectedCount}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const Proxy = ({ selectedCount }: Partial<ActionFormProps<{}>>) => (
+      <ActionForm
+        actionName="action"
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={jest.fn()}
+        processingCount={2}
+        selectedCount={selectedCount}
+      />
     );
-    const { rerender } = render(<Proxy selectedCount={2} />);
+    const { rerender } = renderWithBrowserRouter(<Proxy selectedCount={2} />);
 
     // Submit the form to start processing.
     await userEvent.click(screen.getByRole("button"));
@@ -175,27 +120,65 @@ describe("ActionForm", () => {
   });
 
   it("can override showing the processing count", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ActionForm
-              actionName="action"
-              initialValues={{}}
-              modelName="machine"
-              onSubmit={jest.fn()}
-              processingCount={1}
-              selectedCount={2}
-              showProcessingCount={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ActionForm
+        actionName="action"
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={jest.fn()}
+        processingCount={1}
+        selectedCount={2}
+        showProcessingCount={false}
+      />
     );
 
     await userEvent.click(screen.getByRole("button"));
 
+    expect(screen.queryByTestId(TestIds.SavingLabel)).not.toBeInTheDocument();
+  });
+
+  it("displays a correct action status", () => {
+    const Proxy = ({ actionStatus, errors }: Partial<ActionFormProps<{}>>) => (
+      <ActionForm
+        actionName="action"
+        actionStatus={actionStatus}
+        errors={errors}
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={jest.fn()}
+      />
+    );
+
+    const { rerender } = renderWithBrowserRouter(
+      <Proxy actionStatus="loading" />
+    );
+    expect(screen.getByTestId(TestIds.SavingLabel)).toBeInTheDocument();
+
+    rerender(<Proxy actionStatus="success" />);
+    expect(screen.queryByTestId(TestIds.SavingLabel)).not.toBeInTheDocument();
+
+    const errors = { field: "Error message" };
+    rerender(<Proxy errors={errors} />);
+    expect(screen.getByText("Error message")).toBeInTheDocument();
+  });
+
+  it("sets saved status when processingCount drops to 0", () => {
+    const onSubmit = jest.fn();
+    const Proxy = ({ processingCount }: Partial<ActionFormProps<{}>>) => (
+      <ActionForm
+        actionName="action"
+        actionStatus="idle"
+        initialValues={{}}
+        modelName="machine"
+        onSubmit={onSubmit}
+        processingCount={processingCount}
+      />
+    );
+
+    const { rerender } = renderWithBrowserRouter(<Proxy processingCount={1} />);
+    expect(screen.getByTestId(TestIds.SavingLabel)).toBeInTheDocument();
+
+    rerender(<Proxy processingCount={0} />);
     expect(screen.queryByTestId(TestIds.SavingLabel)).not.toBeInTheDocument();
   });
 });

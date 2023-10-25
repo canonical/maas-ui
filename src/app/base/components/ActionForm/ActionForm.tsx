@@ -31,7 +31,7 @@ const getLabel = (
   return getNodeActionLabel(modelString, actionName, processing);
 };
 
-export type Props<V extends object, E = null> = Omit<
+export type ActionFormProps<V extends object, E = null> = Omit<
   FormikFormProps<V, E>,
   "buttonsAlign" | "saved" | "saving" | "savingLabel" | "submitLabel"
 > & {
@@ -65,7 +65,7 @@ const ActionForm = <V extends object, E = null>({
   submitLabel,
   actionStatus,
   ...formikFormProps
-}: Props<V, E>): JSX.Element | null => {
+}: ActionFormProps<V, E>): JSX.Element | null => {
   const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
   const processingComplete = useProcessing({
     hasErrors: !!errors,
@@ -80,18 +80,13 @@ const ActionForm = <V extends object, E = null>({
     );
   }
   // TODO: remove processingComplete once actionStatus has been implemented across all forms
-  // github.com/canonical/app-tribe/issues/1289
-  const statusProps = actionStatus
-    ? {
-        saving: actionStatus === "loading",
-        saved: actionStatus === "success",
-        errors: errors || actionErrors,
-      }
-    : {
-        saved: processingComplete,
-        saving: !!processingCount && processingCount > 0,
-        errors: errors || actionErrors,
-      };
+  // https://warthogs.atlassian.net/browse/MAASENG-2312
+  const statusProps = {
+    saving:
+      actionStatus === "loading" || (!!processingCount && processingCount > 0),
+    saved: actionStatus === "success" || processingComplete,
+    errors: errors || actionErrors,
+  };
 
   return (
     <FormikForm<V, E>
