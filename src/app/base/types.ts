@@ -7,6 +7,10 @@ import type { Machine } from "app/store/machine/types";
 
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
 export type Seconds = number;
 export type Minutes = number;
 export type Days = number;
