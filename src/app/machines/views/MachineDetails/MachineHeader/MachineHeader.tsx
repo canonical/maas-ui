@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -11,7 +11,6 @@ import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
 import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
-import TableMenu from "app/base/components/TableMenu";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useSendAnalytics } from "app/base/hooks";
 import { MachineSidePanelViews } from "app/machines/constants";
@@ -53,7 +52,6 @@ const MachineHeader = ({
     useSelectedMachinesActionsDispatch({
       selectedMachines: { items: [systemId] },
     });
-  const powerMenuRef = useRef<HTMLSpanElement>(null);
   const isDetails = isMachineDetails(machine);
   useFetchMachine(systemId);
 
@@ -69,6 +67,8 @@ const MachineHeader = ({
 
     if (isImmediateAction) {
       dispatchForSelectedMachines(machineActions[action]);
+    } else if (action === NodeActions.CHECK_POWER) {
+      dispatch(machineActions.checkPower(systemId));
     } else {
       const view = Object.values(MachineSidePanelViews).find(
         ([, actionName]) => actionName === action
@@ -113,21 +113,8 @@ const MachineHeader = ({
                   ? "Checking power"
                   : `Power ${machine.power_state}`}
               </PowerIcon>
-              <TableMenu
-                className="u-nudge-right--small p-table-menu u-nudge-left--large"
-                links={[
-                  {
-                    children: "Check power",
-                    onClick: () => {
-                      dispatch(machineActions.checkPower(systemId));
-                    },
-                  },
-                ]}
-                positionNode={powerMenuRef?.current}
-                title="Take action:"
-              />
             </div>
-            <div className="u-hide--medium u-hide--small">
+            <div className="u-hide--medium u-hide--small u-nudge-right">
               <NodeActionMenuGroup
                 alwaysShowLifecycle
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
@@ -140,7 +127,7 @@ const MachineHeader = ({
                 singleNode
               />
             </div>
-            <div className="u-hide--large">
+            <div className="u-hide--large u-nudge-right">
               <NodeActionMenu
                 alwaysShowLifecycle
                 className="u-hide--large"
