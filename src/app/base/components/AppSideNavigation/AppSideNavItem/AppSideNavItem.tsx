@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
-import { Icon } from "@canonical/react-components";
+import { Navigation } from "@canonical/maas-react-components";
+import classNames from "classnames";
 import { Link } from "react-router-dom-v5-compat";
 
 import type { NavItem } from "../types";
@@ -17,33 +18,31 @@ type Props = {
 export const AppSideNavItem = ({ navLink, icon, path }: Props): JSX.Element => {
   const id = useId();
   return (
-    <li
+    <Navigation.Item
       aria-labelledby={`${navLink.label}-${id}`}
-      className={`p-side-navigation__item${
-        isSelected(path, navLink) ? " is-selected" : ""
-      }`}
+      className={classNames({ "is-selected": isSelected(path, navLink) })}
     >
-      <Link
+      <Navigation.Link
         aria-current={isSelected(path, navLink) ? "page" : undefined}
-        className="p-side-navigation__link"
+        as={Link}
         id={`${navLink.label}-${id}`}
-        onClick={(event) => {
+        onClick={(e: MouseEvent<HTMLAnchorElement>) => {
           // removing the focus from the link element after click
           // this allows the side navigation to collapse on mouseleave
-          event.currentTarget.blur();
+          e.currentTarget.blur();
         }}
         to={navLink.url}
       >
         {icon ? (
           typeof icon === "string" ? (
-            <Icon className="p-side-navigation__icon" light name={icon} />
+            <Navigation.Icon name={icon} />
           ) : (
             <>{icon}</>
           )
         ) : null}
-        <span className="p-side-navigation__label">{navLink.label}</span>
-      </Link>
-    </li>
+        <Navigation.Label>{navLink.label}</Navigation.Label>
+      </Navigation.Link>
+    </Navigation.Item>
   );
 };
 
