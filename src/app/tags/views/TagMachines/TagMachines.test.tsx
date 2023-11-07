@@ -94,7 +94,7 @@ it("dispatches actions to fetch necessary data", () => {
       group_key: null,
       page_number: 1,
       page_size: 50,
-      sort_direction: FetchSortDirection.Descending,
+      sort_direction: FetchSortDirection.Ascending,
       sort_key: FetchGroupKey.Hostname,
     }),
     tagActions.fetch(),
