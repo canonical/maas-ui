@@ -91,35 +91,38 @@ const StoragePopover = ({
                         value: freeBytes > 0 ? freeBytes : 0,
                       },
                     ]}
-                    label={
-                      <ul className="p-inline-list u-no-margin--bottom">
-                        <li
-                          className="p-inline-list__item"
-                          data-testid="pool-allocated"
-                        >
-                          <i className="p-circle--link is-inline"></i>
-                          {`${allocated.value}${allocated.unit}`}
-                        </li>
-                        {showOthers && (
+                    max={pool.total}
+                  >
+                    <Meter.Label>
+                      {
+                        <ul className="p-inline-list u-no-margin--bottom">
                           <li
                             className="p-inline-list__item"
-                            data-testid="pool-others"
+                            data-testid="pool-allocated"
                           >
-                            <i className="p-circle--positive is-inline"></i>
-                            {`${other.value}${other.unit}`}
+                            <i className="p-circle--link is-inline"></i>
+                            {`${allocated.value}${allocated.unit}`}
                           </li>
-                        )}
-                        <li
-                          className="p-inline-list__item"
-                          data-testid="pool-free"
-                        >
-                          <i className="p-circle--link-faded is-inline"></i>
-                          {`${free.value}${free.unit}`}
-                        </li>
-                      </ul>
-                    }
-                    max={pool.total}
-                  />
+                          {showOthers && (
+                            <li
+                              className="p-inline-list__item"
+                              data-testid="pool-others"
+                            >
+                              <i className="p-circle--positive is-inline"></i>
+                              {`${other.value}${other.unit}`}
+                            </li>
+                          )}
+                          <li
+                            className="p-inline-list__item"
+                            data-testid="pool-free"
+                          >
+                            <i className="p-circle--link-faded is-inline"></i>
+                            {`${free.value}${free.unit}`}
+                          </li>
+                        </ul>
+                      }
+                    </Meter.Label>
+                  </Meter>
                 </div>
               </Fragment>
             );
