@@ -74,6 +74,13 @@ export const AppSideNavigation = ({
         <Navigation.Header>
           <NavigationBanner>
             <Navigation.Controls>
+              <NavigationBar.MenuButton
+                onClick={() => {
+                  setIsCollapsed(!isCollapsed);
+                }}
+              >
+                Close menu
+              </NavigationBar.MenuButton>
               <Navigation.CollapseToggle
                 isCollapsed={isCollapsed}
                 setIsCollapsed={setIsCollapsed}
