@@ -131,8 +131,10 @@ const generateDropdownContent = (
                     value: free >= 0 ? free : 0,
                   },
                 ]}
-                label={
-                  free >= 0 ? (
+                max={pool.total}
+              >
+                <Meter.Label>
+                  {free >= 0 ? (
                     <ul className="p-inline-list u-no-margin--bottom">
                       <li
                         className="p-inline-list__item"
@@ -163,10 +165,9 @@ const generateDropdownContent = (
                       Only {byteDisplay(freeBytes, true)} GB available in {name}
                       .
                     </div>
-                  )
-                }
-                max={pool.total}
-              />
+                  )}
+                </Meter.Label>
+              </Meter>
             </div>
           </button>
         );
