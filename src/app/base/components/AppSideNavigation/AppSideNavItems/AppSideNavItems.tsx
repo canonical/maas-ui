@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
+import { Navigation } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
-import classNames from "classnames";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { NavGroup } from "../types";
@@ -43,33 +43,14 @@ const AppSideNavItemGroup = ({
 
   return (
     <>
-      <li
-        className={classNames("p-side-navigation__item", {
-          "has-active-child": hasActiveChild,
-        })}
-      >
-        <span
-          className="p-side-navigation__text"
-          key={`${group.groupTitle}-${id}`}
-        >
-          {group.groupIcon ? (
-            <Icon
-              className="p-side-navigation__icon"
-              light
-              name={group.groupIcon}
-            />
-          ) : null}
-          <div
-            className="p-side-navigation__label p-heading--small"
-            id={`${group.groupTitle}-${id}`}
-          >
+      <Navigation.Item hasActiveChild={hasActiveChild}>
+        <Navigation.Text key={`${group.groupTitle}-${id}`}>
+          {group.groupIcon ? <Navigation.Icon name={group.groupIcon} /> : null}
+          <Navigation.Label id={`${group.groupTitle}-${id}`} variant="group">
             {group.groupTitle}
-          </div>
-        </span>
-        <ul
-          aria-labelledby={`${group.groupTitle}-${id}`}
-          className="p-side-navigation__list"
-        >
+          </Navigation.Label>
+        </Navigation.Text>
+        <Navigation.List aria-labelledby={`${group.groupTitle}-${id}`}>
           {group.navLinks.map((navLink) => {
             if (!navLink.adminOnly || isAdmin) {
               return (
@@ -90,8 +71,8 @@ const AppSideNavItemGroup = ({
               );
             } else return null;
           })}
-        </ul>
-      </li>
+        </Navigation.List>
+      </Navigation.Item>
     </>
   );
 };

@@ -1,12 +1,10 @@
 import { useEffect, useMemo } from "react";
 
-import { Button } from "@canonical/react-components";
-import classNames from "classnames";
+import { Navigation, NavigationBar } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
-import AppSideNavCollapseToggle from "./AppSideNavCollapseToggle";
 import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
 import { navGroups } from "./constants";
@@ -57,60 +55,53 @@ export const AppSideNavigation = ({
   vaultIncomplete,
 }: SideNavigationProps) => (
   <>
-    <header aria-label="navigation" className="l-navigation-bar">
-      <div className={classNames("p-panel is-dark", `is-maas-${theme}`)}>
-        <div className="p-panel__header">
-          <NavigationBanner />
-          <div className="p-panel__controls u-nudge-down--small u-no-margin--top">
-            <Button
-              appearance="base"
-              className="has-icon is-dark"
-              onClick={() => {
-                setIsCollapsed(!isCollapsed);
-              }}
-            >
-              Menu
-            </Button>
-          </div>
-        </div>
-      </div>
-    </header>
-    <nav
-      aria-label="main navigation"
-      className={classNames(`l-navigation is-maas is-maas-${theme}`, {
-        "is-collapsed": isCollapsed,
-        "is-pinned": !isCollapsed,
-      })}
-    >
-      <div className="l-navigation__drawer">
-        <div className="p-panel is-dark">
-          <div className={`p-panel__header is-sticky is-maas-${theme}`}>
-            <NavigationBanner>
-              <div className="l-navigation__controls">
-                <AppSideNavCollapseToggle
-                  isCollapsed={isCollapsed}
-                  setIsCollapsed={setIsCollapsed}
-                />
-              </div>
-            </NavigationBanner>
-          </div>
-          <div className="p-panel__content">
-            <div className="p-side-navigation--icons is-dark">
-              <AppSideNavItems
-                authUser={authUser}
-                groups={filteredGroups}
-                isAdmin={isAdmin}
-                isAuthenticated={isAuthenticated}
-                logout={logout}
-                path={path}
-                showLinks={showLinks}
-                vaultIncomplete={vaultIncomplete}
+    <NavigationBar className={`is-maas-${theme}`}>
+      <Navigation.Header>
+        <NavigationBanner />
+        <Navigation.Controls>
+          <NavigationBar.MenuButton
+            onClick={() => {
+              setIsCollapsed(!isCollapsed);
+            }}
+          >
+            Menu
+          </NavigationBar.MenuButton>
+        </Navigation.Controls>
+      </Navigation.Header>
+    </NavigationBar>
+    <Navigation className={`is-maas-${theme}`} isCollapsed={isCollapsed}>
+      <Navigation.Drawer>
+        <Navigation.Header>
+          <NavigationBanner>
+            <Navigation.Controls>
+              <NavigationBar.MenuButton
+                onClick={() => {
+                  setIsCollapsed(!isCollapsed);
+                }}
+              >
+                Close menu
+              </NavigationBar.MenuButton>
+              <Navigation.CollapseToggle
+                isCollapsed={isCollapsed}
+                setIsCollapsed={setIsCollapsed}
               />
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+            </Navigation.Controls>
+          </NavigationBanner>
+        </Navigation.Header>
+        <Navigation.Content>
+          <AppSideNavItems
+            authUser={authUser}
+            groups={filteredGroups}
+            isAdmin={isAdmin}
+            isAuthenticated={isAuthenticated}
+            logout={logout}
+            path={path}
+            showLinks={showLinks}
+            vaultIncomplete={vaultIncomplete}
+          />
+        </Navigation.Content>
+      </Navigation.Drawer>
+    </Navigation>
   </>
 );
 
