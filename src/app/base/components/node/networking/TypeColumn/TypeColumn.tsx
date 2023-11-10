@@ -1,6 +1,10 @@
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import type { NetworkInterface, NetworkLink, Node } from "@/app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  Node,
+} from "@/app/store/types/node";
 import { getInterfaceNumaNodes, getInterfaceTypeText } from "@/app/store/utils";
 
 type Props = {

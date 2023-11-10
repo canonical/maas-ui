@@ -16,7 +16,10 @@ import type {
 } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";
 import type { RootState } from "@/app/store/root/types";
-import type { NetworkLink, UpdateInterfaceParams } from "@/app/store/types/node";
+import type {
+  NetworkLink,
+  UpdateInterfaceParams,
+} from "@/app/store/types/node";
 import { preparePayload } from "@/app/utils";
 
 type Props = {

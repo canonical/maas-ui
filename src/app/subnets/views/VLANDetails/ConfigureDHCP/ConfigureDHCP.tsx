@@ -25,7 +25,11 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import { actions as vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
-import type { ConfigureDHCPParams, VLAN, VLANMeta } from "@/app/store/vlan/types";
+import type {
+  ConfigureDHCPParams,
+  VLAN,
+  VLANMeta,
+} from "@/app/store/vlan/types";
 import { isId } from "@/app/utils";
 
 type Props = {

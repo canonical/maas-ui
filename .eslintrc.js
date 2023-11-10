@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
   root: true,
   plugins: ["unused-imports", "prettier"],
@@ -22,7 +24,7 @@ module.exports = {
     },
     "import/resolver": {
       typescript: {
-        alias: { "@": path.resolve(__dirname, "src" )},
+        alias: { "@": path.resolve(__dirname, "src") },
       },
     },
   },

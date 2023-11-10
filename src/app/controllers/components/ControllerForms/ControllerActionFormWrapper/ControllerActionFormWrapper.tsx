@@ -13,7 +13,10 @@ import controllerSelectors, {
   statusSelectors,
 } from "@/app/store/controller/selectors";
 import { ACTIONS } from "@/app/store/controller/slice";
-import type { Controller, ControllerActions } from "@/app/store/controller/types";
+import type {
+  Controller,
+  ControllerActions,
+} from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import { kebabToCamelCase } from "@/app/utils";

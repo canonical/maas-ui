@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import packageInfo from "../../package.json";
 
+import Routes from "./Routes";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
@@ -15,7 +16,6 @@ import ThemePreviewContextProvider from "./base/theme-context";
 import { MAAS_UI_ID } from "./constants";
 import { formatErrors } from "./utils";
 
-import Routes from "./Routes";
 import AppSideNavigation from "@/app/base/components/AppSideNavigation";
 import Login from "@/app/base/components/Login";
 import StatusBar from "@/app/base/components/StatusBar";

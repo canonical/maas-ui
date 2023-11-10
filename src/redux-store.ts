@@ -10,7 +10,9 @@ import WebSocketClient from "./websocket-client";
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
     history: createBrowserHistory({
-      basename: `${import.meta.env.VITE_APP_BASENAME}${import.meta.env.VITE_APP_VITE_BASENAME}`,
+      basename: `${import.meta.env.VITE_APP_BASENAME}${
+        import.meta.env.VITE_APP_VITE_BASENAME
+      }`,
     }),
   });
 

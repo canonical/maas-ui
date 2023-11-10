@@ -11,7 +11,10 @@ import { useFetchActions, useGetURLId } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { MachineActionFormProps } from "@/app/machines/types";
 import { actions as machineActions } from "@/app/store/machine";
-import { MachineMeta, type MachineEventErrors } from "@/app/store/machine/types";
+import {
+  MachineMeta,
+  type MachineEventErrors,
+} from "@/app/store/machine/types";
 import { isUnconfiguredPowerType } from "@/app/store/machine/utils/common";
 import {
   useFetchMachine,

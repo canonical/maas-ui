@@ -8,7 +8,10 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
 import { actions as configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { humanReadableToSeconds, secondsToDuration } from "@/app/utils/timeSpan";
+import {
+  humanReadableToSeconds,
+  secondsToDuration,
+} from "@/app/utils/timeSpan";
 
 type SessionTimeoutFormValues = {
   session_length: string;

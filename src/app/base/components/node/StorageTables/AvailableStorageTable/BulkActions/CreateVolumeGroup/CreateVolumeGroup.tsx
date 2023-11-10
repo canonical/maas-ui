@@ -22,7 +22,11 @@ import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import type { Disk, Partition } from "@/app/store/types/node";
-import { formatSize, formatType, splitDiskPartitionIds } from "@/app/store/utils";
+import {
+  formatSize,
+  formatType,
+  splitDiskPartitionIds,
+} from "@/app/store/utils";
 
 type CreateVolumeGroupValues = {
   name: string;

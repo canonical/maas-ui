@@ -9,7 +9,11 @@ import urls from "@/app/base/urls";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
-import type { NetworkInterface, NetworkLink, Node } from "@/app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  Node,
+} from "@/app/store/types/node";
 import {
   getInterfaceDiscovered,
   getInterfaceFabric,

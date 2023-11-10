@@ -3,7 +3,11 @@ import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import RowCheckbox from "@/app/base/components/RowCheckbox";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import type { NetworkInterface, NetworkLink, Node } from "@/app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  Node,
+} from "@/app/store/types/node";
 import { getInterfaceName, getLinkInterface } from "@/app/store/utils";
 import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 

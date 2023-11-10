@@ -129,7 +129,9 @@ export class WebSocketClient {
     }
     const { hostname, port } = window.location;
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    return `${protocol}//${hostname}:${port}${import.meta.env.VITE_APP_BASENAME}/ws?csrftoken=${csrftoken}`;
+    return `${protocol}//${hostname}:${port}${
+      import.meta.env.VITE_APP_BASENAME
+    }/ws?csrftoken=${csrftoken}`;
   }
 
   /**

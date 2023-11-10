@@ -3,7 +3,11 @@ import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import { useFetchActions, useCanEdit, useSendAnalytics } from "@/app/base/hooks";
+import {
+  useFetchActions,
+  useCanEdit,
+  useSendAnalytics,
+} from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { actions as generalActions } from "@/app/store/general";

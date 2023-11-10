@@ -8,10 +8,9 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import packageInfo from "../package.json";
 
 import App from "./app/App";
-import * as serviceWorker from "./serviceWorker";
-
 import SidePanelContextProvider from "./app/base/side-panel-context";
 import { history, store } from "./redux-store";
+import * as serviceWorker from "./serviceWorker";
 
 import "./scss/index.scss";
 

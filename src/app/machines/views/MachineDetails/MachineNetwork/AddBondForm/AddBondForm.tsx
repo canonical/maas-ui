@@ -37,7 +37,10 @@ import {
 } from "@/app/store/general/types";
 import { actions as machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
-import type { CreateBondParams, MachineDetails } from "@/app/store/machine/types";
+import type {
+  CreateBondParams,
+  MachineDetails,
+} from "@/app/store/machine/types";
 import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";

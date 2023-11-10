@@ -16,7 +16,10 @@ import type {
 } from "@/app/store/device/types";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
-import { FilterGroupKey, FilterGroupType } from "@/app/store/machine/types/base";
+import {
+  FilterGroupKey,
+  FilterGroupType,
+} from "@/app/store/machine/types/base";
 import type { FilterGroup, BaseMachine } from "@/app/store/machine/types/base";
 import { PodType } from "@/app/store/pod/constants";
 import type {

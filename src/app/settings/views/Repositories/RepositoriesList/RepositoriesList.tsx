@@ -5,7 +5,11 @@ import type { Dispatch } from "redux";
 
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import {
+  useFetchActions,
+  useAddMessage,
+  useWindowTitle,
+} from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import settingsURLs from "@/app/settings/urls";
 import { actions as repositoryActions } from "@/app/store/packagerepository";

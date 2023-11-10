@@ -1,4 +1,7 @@
-import type { Controller, ControllerDetails } from "@/app/store/controller/types";
+import type {
+  Controller,
+  ControllerDetails,
+} from "@/app/store/controller/types";
 import { NodeType } from "@/app/store/types/node";
 
 /**

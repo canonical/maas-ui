@@ -5,7 +5,11 @@ import { Link } from "react-router-dom-v5-compat";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
-import type { NetworkInterface, NetworkLink, Node } from "@/app/store/types/node";
+import type {
+  NetworkInterface,
+  NetworkLink,
+  Node,
+} from "@/app/store/types/node";
 import { getInterfaceFabric, isBondOrBridgeParent } from "@/app/store/utils";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { getVLANDisplay } from "@/app/store/vlan/utils";

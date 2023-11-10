@@ -16,7 +16,11 @@ import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
-import { getLinkInterface, getRemoveTypeText, isAlias } from "@/app/store/utils";
+import {
+  getLinkInterface,
+  getRemoveTypeText,
+  isAlias,
+} from "@/app/store/utils";
 
 type Props = {
   expanded: Expanded | null;

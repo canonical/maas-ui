@@ -11,7 +11,10 @@ import { useFetchActions } from "@/app/base/hooks";
 import type { RootState } from "@/app/store/root/types";
 import { actions as staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
-import type { StaticRoute, StaticRouteMeta } from "@/app/store/staticroute/types";
+import type {
+  StaticRoute,
+  StaticRouteMeta,
+} from "@/app/store/staticroute/types";
 import { actions as subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { getIsDestinationForSource } from "@/app/store/subnet/utils";

@@ -6,7 +6,11 @@ import type { Dispatch } from "redux";
 
 import TableActions from "@/app/base/components/TableActions";
 import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import {
+  useFetchActions,
+  useAddMessage,
+  useWindowTitle,
+} from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import { actions as sslkeyActions } from "@/app/store/sslkey";

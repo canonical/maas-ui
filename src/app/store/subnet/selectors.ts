@@ -6,7 +6,11 @@ import fabricSelectors from "@/app/store/fabric/selectors";
 import type { PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import { SubnetMeta } from "@/app/store/subnet/types";
-import type { Subnet, SubnetState, SubnetStatus } from "@/app/store/subnet/types";
+import type {
+  Subnet,
+  SubnetState,
+  SubnetStatus,
+} from "@/app/store/subnet/types";
 import { generateBaseSelectors } from "@/app/store/utils";
 import { isId } from "@/app/utils";
 
