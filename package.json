@@ -32,7 +32,7 @@
     "sitespeed": "docker run -v \"$(pwd)/sitespeed.io:/sitespeed.io\" --add-host=host.docker.internal:host-gateway sitespeedio/sitespeed.io:25.2.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa --browsertime.domain=host.docker.internal --browsertime.port=8400 --browsertime.iterations=1",
     "start": "concurrently \"yarn serve-proxy\" \"yarn serve-react\" \"yarn show-ready\"",
     "test-cypress": "start-server-and-test start '8401' serve-base 'tcp:8400' cypress-run",
-    "test-ui": "TZ=UTC jest --testEnvironmentOptions={url: 'http://example.com/MAAS/r'} --watchAll=false",
+    "test-ui": "TZ=UTC jest --watchAll=false",
     "test:debug": "jest --inspect-brk test --runInBand --no-cache  --testTimeout=100000000",
     "test": "yarn test-ui",
     "test:ci": "yarn test-ui --runInBand",
