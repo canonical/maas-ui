@@ -1,6 +1,6 @@
 import TagsHeader from "./TagsHeader";
 
-import { TagSidePanelViews } from "app/tags/constants";
+import { TagSidePanelViews } from "@/app/tags/constants";
 import { rootState as rootStateFactory } from "testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 

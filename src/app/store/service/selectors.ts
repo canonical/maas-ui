@@ -1,9 +1,9 @@
 import { createSelector } from "reselect";
 
-import type { RootState } from "app/store/root/types";
-import { ServiceMeta } from "app/store/service/types";
-import type { Service, ServiceState } from "app/store/service/types";
-import { generateBaseSelectors } from "app/store/utils";
+import type { RootState } from "@/app/store/root/types";
+import { ServiceMeta } from "@/app/store/service/types";
+import type { Service, ServiceState } from "@/app/store/service/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (service: Service, term: string) =>
   service.name.includes(term);

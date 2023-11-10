@@ -9,22 +9,22 @@ import EditBridgeForm from "../EditBridgeForm";
 import EditPhysicalForm from "../EditPhysicalForm";
 import InterfaceFormTable from "../InterfaceFormTable";
 
-import FormCard from "app/base/components/FormCard";
+import FormCard from "@/app/base/components/FormCard";
 import type {
   Selected,
   SetSelected,
-} from "app/base/components/node/networking/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "@/app/base/components/node/networking/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceTypeText,
   getInterfaceType,
   getLinkFromNic,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 type Props = {
   close: () => void;

@@ -1,8 +1,8 @@
-import Definition from "app/base/components/Definition";
-import SpaceLink from "app/base/components/SpaceLink";
-import TooltipButton from "app/base/components/TooltipButton";
-import type { Space, SpaceMeta } from "app/store/space/types";
-import { isId } from "app/utils";
+import Definition from "@/app/base/components/Definition";
+import SpaceLink from "@/app/base/components/SpaceLink";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import type { Space, SpaceMeta } from "@/app/store/space/types";
+import { isId } from "@/app/utils";
 
 type Props = {
   spaceId?: Space[SpaceMeta.PK] | null;

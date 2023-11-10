@@ -1,7 +1,7 @@
 import CommissionForm from "../CommissionForm";
 
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

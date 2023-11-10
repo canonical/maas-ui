@@ -1,10 +1,10 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import { NodeStatus } from "app/store/types/node";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

@@ -2,7 +2,7 @@ import { NodeActions } from "../types/node";
 
 import type { Action } from "./types";
 
-import { DiskTypes } from "app/store/types/enum";
+import { DiskTypes } from "@/app/store/types/enum";
 
 // From models/partition.py. This should ideally be available over the websocket.
 // https://github.com/canonical/maas-ui/issues/1866

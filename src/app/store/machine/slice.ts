@@ -65,21 +65,21 @@ import type { OverrideFailedTesting } from "./types/actions";
 import type { MachineActionStatus, MachineStateListGroup } from "./types/base";
 import { createMachineListGroup, isMachineDetails } from "./utils";
 
-import { ACTION_STATUS } from "app/base/constants";
-import type { ScriptResult } from "app/store/scriptresult/types";
-import type { UpdateInterfaceParams } from "app/store/types/node";
-import { NodeActions } from "app/store/types/node";
-import { generateStatusHandlers, updateErrors } from "app/store/utils";
+import { ACTION_STATUS } from "@/app/base/constants";
+import type { ScriptResult } from "@/app/store/scriptresult/types";
+import type { UpdateInterfaceParams } from "@/app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
+import { generateStatusHandlers, updateErrors } from "@/app/store/utils";
 import type {
   StatusHandlers,
   GenericItemMeta,
   GenericMeta,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
-import { preparePayloadParams, kebabToCamelCase } from "app/utils";
+} from "@/app/store/utils/slice";
+import { preparePayloadParams, kebabToCamelCase } from "@/app/utils";
 
 export const DEFAULT_MACHINE_QUERY_STATE = {
   params: null,

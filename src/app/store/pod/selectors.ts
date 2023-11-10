@@ -1,16 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import controller from "app/store/controller/selectors";
-import type { Controller } from "app/store/controller/types";
-import machine from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { PodType } from "app/store/pod/constants";
-import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
-import { PodMeta } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import type { Host } from "app/store/types/host";
-import { generateBaseSelectors } from "app/store/utils";
-import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
+import controller from "@/app/store/controller/selectors";
+import type { Controller } from "@/app/store/controller/types";
+import machine from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { LxdServerGroup, Pod, PodState } from "@/app/store/pod/types";
+import { PodMeta } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Host } from "@/app/store/types/host";
+import { generateBaseSelectors } from "@/app/store/utils";
+import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 
 const searchFunction = (pod: Pod, term: string) => pod.name.includes(term);
 

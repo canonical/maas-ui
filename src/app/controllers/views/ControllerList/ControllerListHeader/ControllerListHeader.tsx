@@ -1,15 +1,15 @@
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import ModelListSubtitle from "app/base/components/ModelListSubtitle";
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useSendAnalytics } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import type { SetSearchFilter } from "app/base/types";
-import { ControllerSidePanelViews } from "app/controllers/constants";
-import controllerSelectors from "app/store/controller/selectors";
-import { getNodeActionTitle } from "app/store/utils";
+import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useSendAnalytics } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import type { SetSearchFilter } from "@/app/base/types";
+import { ControllerSidePanelViews } from "@/app/controllers/constants";
+import controllerSelectors from "@/app/store/controller/selectors";
+import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
   setSearchFilter: SetSearchFilter;

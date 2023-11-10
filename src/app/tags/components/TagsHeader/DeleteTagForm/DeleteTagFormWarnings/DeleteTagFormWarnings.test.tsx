@@ -6,9 +6,9 @@ import configureStore from "redux-mock-store";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,

@@ -2,15 +2,15 @@ import configureStore from "redux-mock-store";
 
 import { StatusColumn } from "./StatusColumn";
 
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { PowerState } from "app/store/types/enum";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { PowerState } from "@/app/store/types/enum";
 import {
   NodeActions,
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

@@ -5,9 +5,9 @@ import { useStorageState } from "react-storage-hooks";
 
 import { DEFAULTS } from "./MachineListTable/constants";
 
-import type { MachineColumnToggle } from "app/machines/constants";
-import { actions as machineActions } from "app/store/machine/slice";
-import { FetchGroupKey } from "app/store/machine/types";
+import type { MachineColumnToggle } from "@/app/machines/constants";
+import { actions as machineActions } from "@/app/store/machine/slice";
+import { FetchGroupKey } from "@/app/store/machine/types";
 
 const breakpoints: {
   max: number;

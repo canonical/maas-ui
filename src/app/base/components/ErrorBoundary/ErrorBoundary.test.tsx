@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import ErrorBoundary, { Labels } from "./ErrorBoundary";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,

@@ -7,7 +7,7 @@ import DomainListHeaderForm, {
   Labels as DomainListHeaderFormLabels,
 } from "./DomainListHeaderForm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
 import {
   userEvent,

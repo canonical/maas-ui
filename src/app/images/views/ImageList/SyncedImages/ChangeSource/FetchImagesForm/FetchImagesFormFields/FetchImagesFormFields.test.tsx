@@ -4,7 +4,7 @@ import FetchImagesFormFields, {
   Labels as FetchImagesFormFieldsLabels,
 } from "./FetchImagesFormFields";
 
-import { BootResourceSourceType } from "app/store/bootresource/types";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import { userEvent, render, screen } from "testing/utils";
 
 describe("FetchImagesFormFields", () => {

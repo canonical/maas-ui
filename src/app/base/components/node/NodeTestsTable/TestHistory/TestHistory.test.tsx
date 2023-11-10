@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import TestHistory from "./TestHistory";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,

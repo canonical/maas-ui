@@ -7,17 +7,17 @@ import { Link } from "react-router-dom-v5-compat";
 
 import MachineCheckbox from "../MachineCheckbox";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import MacAddressDisplay from "app/base/components/MacAddressDisplay";
-import NonBreakingSpace from "app/base/components/NonBreakingSpace";
-import urls from "app/base/urls";
-import machineSelectors from "app/store/machine/selectors";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
+import NonBreakingSpace from "@/app/base/components/NonBreakingSpace";
+import urls from "@/app/base/urls";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   Machine,
   MachineMeta,
   MachineStateListGroup,
-} from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   callId?: string | null;

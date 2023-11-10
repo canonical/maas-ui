@@ -1,10 +1,10 @@
 import type { RecordType } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { TimestampedModel } from "app/store/types/model";
-import type { BaseNode, NodeType } from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
-import type { User } from "app/store/user/types";
+import type { APIError } from "@/app/base/types";
+import type { TimestampedModel } from "@/app/store/types/model";
+import type { BaseNode, NodeType } from "@/app/store/types/node";
+import type { GenericState } from "@/app/store/types/state";
+import type { User } from "@/app/store/user/types";
 
 export type DomainResource = {
   dnsdata_id: number | null;

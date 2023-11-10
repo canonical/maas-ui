@@ -6,15 +6,15 @@ import LXDHostToolbar from "../LXDHostToolbar";
 
 import NumaResources from "./NumaResources";
 
-import type { SetSearchFilter } from "app/base/types";
-import LXDVMsSummaryCard from "app/kvm/components/LXDVMsSummaryCard";
-import LXDVMsTable from "app/kvm/components/LXDVMsTable";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import type { VMCluster } from "app/store/vmcluster/types";
+import type { SetSearchFilter } from "@/app/base/types";
+import LXDVMsSummaryCard from "@/app/kvm/components/LXDVMsSummaryCard";
+import LXDVMsTable from "@/app/kvm/components/LXDVMsTable";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId?: VMCluster["id"];

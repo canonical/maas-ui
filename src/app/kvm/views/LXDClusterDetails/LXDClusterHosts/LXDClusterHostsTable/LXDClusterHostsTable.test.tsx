@@ -1,10 +1,10 @@
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
-import urls from "app/base/urls";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import { PodType } from "app/store/pod/constants";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import { PodType } from "@/app/store/pod/constants";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,

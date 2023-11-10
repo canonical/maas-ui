@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import AddBridgeForm from "./AddBridgeForm";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

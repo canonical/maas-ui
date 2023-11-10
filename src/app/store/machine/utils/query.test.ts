@@ -7,7 +7,7 @@ import {
   generateCallId,
 } from "./query";
 
-import type { Sort } from "app/base/types";
+import type { Sort } from "@/app/base/types";
 
 describe("machine utilities", () => {
   beforeEach(() => {

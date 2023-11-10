@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { SagaGenerator } from "typed-redux-saga";
-import { call } from "typed-redux-saga/macro";
+import { call } from "typed-redux-saga";
 
 import type {
   WebSocketAction,
@@ -9,20 +9,20 @@ import type {
   WebSocketResponseResult,
 } from "../../../websocket-client";
 
-import { actions as domainActions } from "app/store/domain";
+import { actions as domainActions } from "@/app/store/domain";
 import type {
   DeleteRecordParams,
   UpdateRecordParams,
-} from "app/store/domain/types";
-import { isAddressRecord } from "app/store/domain/utils";
-import { actions as machineActions } from "app/store/machine";
-import type { FetchFilters, Machine } from "app/store/machine/types";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
+} from "@/app/store/domain/types";
+import { isAddressRecord } from "@/app/store/domain/utils";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FetchFilters, Machine } from "@/app/store/machine/types";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
 import type {
   CreateWithMachinesParams,
   ResourcePool,
-} from "app/store/resourcepool/types";
-import type { GenericMeta } from "app/store/utils/slice";
+} from "@/app/store/resourcepool/types";
+import type { GenericMeta } from "@/app/store/utils/slice";
 
 export type NextActionCreator<R = unknown> = (
   result: WebSocketResponseResult<R>["result"]

@@ -1,11 +1,11 @@
-import { PodType } from "app/store/pod/constants";
+import { PodType } from "@/app/store/pod/constants";
 import type {
   Pod,
   PodDetails,
   PodNuma,
   PodResource,
-} from "app/store/pod/types";
-import type { VMClusterResource } from "app/store/vmcluster/types";
+} from "@/app/store/pod/types";
+import type { VMClusterResource } from "@/app/store/vmcluster/types";
 
 export const formatHostType = (type: Pod["type"]): string => {
   switch (type) {

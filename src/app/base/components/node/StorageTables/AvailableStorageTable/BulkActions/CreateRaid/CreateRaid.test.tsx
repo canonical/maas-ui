@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import CreateRaid from "./CreateRaid";
 
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

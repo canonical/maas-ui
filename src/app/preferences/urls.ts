@@ -1,5 +1,5 @@
-import type { Token } from "app/store/token/types";
-import { argPath } from "app/utils";
+import type { Token } from "@/app/store/token/types";
+import { argPath } from "@/app/utils";
 
 const urls = {
   apiKeys: {

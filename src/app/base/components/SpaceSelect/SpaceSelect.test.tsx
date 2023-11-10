@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import SpaceSelect from "./SpaceSelect";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,

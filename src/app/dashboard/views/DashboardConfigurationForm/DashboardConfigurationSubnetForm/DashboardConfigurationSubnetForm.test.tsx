@@ -4,9 +4,9 @@ import DashboardConfigurationSubnetForm, {
   Labels as SubnetFormLabels,
 } from "./DashboardConfigurationSubnetForm";
 
-import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
+import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   configState as configStateFactory,
   fabric as fabricFactory,

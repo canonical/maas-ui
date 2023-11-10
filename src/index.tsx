@@ -10,8 +10,8 @@ import packageInfo from "../package.json";
 import App from "./app/App";
 import * as serviceWorker from "./serviceWorker";
 
-import SidePanelContextProvider from "app/base/side-panel-context";
-import { history, store } from "redux-store";
+import SidePanelContextProvider from "./app/base/side-panel-context";
+import { history, store } from "./redux-store";
 
 import "./scss/index.scss";
 
@@ -48,7 +48,7 @@ if (container) {
 // eslint-disable-next-line no-console
 console.info(
   `${packageInfo.name} ${packageInfo.version} ${
-    process.env.REACT_APP_GIT_SHA ?? ""
+    import.meta.env.VITE_APP_GIT_SHA ?? ""
   }`
 );
 

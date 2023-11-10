@@ -6,18 +6,18 @@ import * as Yup from "yup";
 
 import VLANControllers from "../VLANSummary/VLANControllers";
 
-import FabricSelect from "app/base/components/FabricSelect";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import SpaceSelect from "app/base/components/SpaceSelect";
-import type { RootState } from "app/store/root/types";
-import { getSpaceDisplay } from "app/store/space/utils";
-import { VLANMTURange, VLANVidRange } from "app/store/types/enum";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
-import { VLANMeta } from "app/store/vlan/types";
-import { isId } from "app/utils";
+import FabricSelect from "@/app/base/components/FabricSelect";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import SpaceSelect from "@/app/base/components/SpaceSelect";
+import type { RootState } from "@/app/store/root/types";
+import { getSpaceDisplay } from "@/app/store/space/utils";
+import { VLANMTURange, VLANVidRange } from "@/app/store/types/enum";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
+import { VLANMeta } from "@/app/store/vlan/types";
+import { isId } from "@/app/utils";
 
 type Props = {
   close: () => void;

@@ -1,5 +1,5 @@
-import TooltipButton from "app/base/components/TooltipButton";
-import type { Subnet } from "app/store/subnet/types";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import type { Subnet } from "@/app/store/subnet/types";
 
 type Props = {
   allowProxy: Subnet["allow_proxy"];

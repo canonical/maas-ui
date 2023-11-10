@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import AddBondForm from "./AddBondForm";
 
-import urls from "app/base/urls";
-import { BondMode } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import { BondMode } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

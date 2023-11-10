@@ -2,8 +2,8 @@ import { array, define, extend, random } from "cooky-cutter";
 
 import { model, timestampedModel } from "./model";
 
-import { PodType } from "app/store/pod/constants";
-import { IPAddressType } from "app/store/subnet/types";
+import { PodType } from "@/app/store/pod/constants";
+import { IPAddressType } from "@/app/store/subnet/types";
 import type {
   BaseSubnet,
   SubnetBMC,
@@ -16,9 +16,9 @@ import type {
   SubnetStatisticsRange,
   SubnetScanFailure,
   SubnetScanResult,
-} from "app/store/subnet/types";
-import type { Model, TimestampedModel } from "app/store/types/model";
-import { NodeType } from "app/store/types/node";
+} from "@/app/store/subnet/types";
+import type { Model, TimestampedModel } from "@/app/store/types/model";
+import { NodeType } from "@/app/store/types/node";
 
 export const subnetStatisticsRange = define<SubnetStatisticsRange>({
   end: "172.16.2.1",

@@ -11,7 +11,7 @@ import type {
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const resourcePoolSlice = createSlice({
   name: ResourcePoolMeta.MODEL,

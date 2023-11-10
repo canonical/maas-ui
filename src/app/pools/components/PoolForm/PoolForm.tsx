@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
-import FormCard from "app/base/components/FormCard";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as poolActions } from "app/store/resourcepool";
-import poolSelectors from "app/store/resourcepool/selectors";
-import type { ResourcePool } from "app/store/resourcepool/types";
+import FormCard from "@/app/base/components/FormCard";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as poolActions } from "@/app/store/resourcepool";
+import poolSelectors from "@/app/store/resourcepool/selectors";
+import type { ResourcePool } from "@/app/store/resourcepool/types";
 
 type Props = {
   pool?: ResourcePool | null;

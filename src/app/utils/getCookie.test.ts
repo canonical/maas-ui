@@ -1,4 +1,4 @@
-import { getCookie } from "app/utils";
+import { getCookie } from "@/app/utils";
 
 describe("getCookie", () => {
   it("returns undefined if a cookie is not found", () => {

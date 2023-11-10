@@ -8,19 +8,19 @@ import { Link } from "react-router-dom-v5-compat";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import Placeholder from "app/base/components/Placeholder";
-import { HardwareType } from "app/base/enum";
-import urls from "app/base/urls";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import { actions as nodeDeviceActions } from "app/store/nodedevice";
-import nodeDeviceSelectors from "app/store/nodedevice/selectors";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import type { NodeDevice } from "app/store/nodedevice/types";
-import type { RootState } from "app/store/root/types";
-import { nodeIsMachine } from "app/store/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import Placeholder from "@/app/base/components/Placeholder";
+import { HardwareType } from "@/app/base/enum";
+import urls from "@/app/base/urls";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import nodeDeviceSelectors from "@/app/store/nodedevice/selectors";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import type { NodeDevice } from "@/app/store/nodedevice/types";
+import type { RootState } from "@/app/store/root/types";
+import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
   bus: NodeDeviceBus;

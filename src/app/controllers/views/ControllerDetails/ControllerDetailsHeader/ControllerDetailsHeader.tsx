@@ -6,20 +6,20 @@ import { Link } from "react-router-dom-v5-compat";
 
 import ControllerName from "./ControllerName";
 
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useSendAnalytics } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import urls from "app/base/urls";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useSendAnalytics } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
 import {
   ControllerDetailsTabLabels,
   ControllerSidePanelViews,
-} from "app/controllers/constants";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller } from "app/store/controller/types";
-import { isControllerDetails } from "app/store/controller/utils";
-import type { RootState } from "app/store/root/types";
-import { getNodeActionTitle } from "app/store/utils";
+} from "@/app/controllers/constants";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller } from "@/app/store/controller/types";
+import { isControllerDetails } from "@/app/store/controller/utils";
+import type { RootState } from "@/app/store/root/types";
+import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
   systemId: Controller["system_id"];

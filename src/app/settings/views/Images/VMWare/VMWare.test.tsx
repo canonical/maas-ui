@@ -7,8 +7,8 @@ import { Labels as VMWareFormLabels } from "../VMWareForm/VMWareForm";
 
 import VMWare, { Labels as VMWareLabels } from "./VMWare";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

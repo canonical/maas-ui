@@ -3,8 +3,8 @@ import configureStore from "redux-mock-store";
 
 import ActionConfirm from "./ActionConfirm";
 
-import * as maasUiHooks from "app/base/hooks/analytics";
-import type { RootState } from "app/store/root/types";
+import * as maasUiHooks from "@/app/base/hooks/analytics";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,

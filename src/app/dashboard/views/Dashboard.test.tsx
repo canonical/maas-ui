@@ -2,10 +2,10 @@ import Dashboard, { Label } from "./Dashboard";
 import { Label as DashboardConfigurationFormLabel } from "./DashboardConfigurationForm/DashboardConfigurationForm";
 import { Labels as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesList";
 
-import urls from "app/base/urls";
-import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   configState as configStateFactory,

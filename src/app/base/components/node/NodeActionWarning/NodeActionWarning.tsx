@@ -1,6 +1,6 @@
 import { Button } from "@canonical/react-components";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 
 const getErrorSentence = (
   action: NodeActions,

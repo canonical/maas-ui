@@ -10,8 +10,8 @@ import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
 import * as readScript from "./readScript";
 import type { ReadScriptResponse } from "./readScript";
 
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,

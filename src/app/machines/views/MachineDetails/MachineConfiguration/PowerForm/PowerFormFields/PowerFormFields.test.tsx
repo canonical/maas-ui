@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import PowerFormFields from ".";
 
-import { PowerFieldScope } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { PowerFieldScope } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,

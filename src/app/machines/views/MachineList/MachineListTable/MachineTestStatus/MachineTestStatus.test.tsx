@@ -1,6 +1,6 @@
 import MachineTestStatus from "./MachineTestStatus";
 
-import { TestStatusStatus } from "app/store/types/node";
+import { TestStatusStatus } from "@/app/store/types/node";
 import { render, screen, userEvent } from "testing/utils";
 
 describe("MachineTestStatus", () => {

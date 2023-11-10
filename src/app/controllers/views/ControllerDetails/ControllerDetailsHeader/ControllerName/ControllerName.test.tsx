@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerName from "./ControllerName";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,

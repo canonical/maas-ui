@@ -6,21 +6,21 @@ import * as Yup from "yup";
 
 import type { DHCPFormValues } from "./types";
 
-import DhcpFormFields from "app/base/components/DhcpFormFields";
-import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
-import { useFetchActions, useAddMessage } from "app/base/hooks";
-import { useDhcpTarget } from "app/settings/hooks";
-import { actions as controllerActions } from "app/store/controller";
-import { actions as deviceActions } from "app/store/device";
-import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
-import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
-import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import { actions as ipRangeActions } from "app/store/iprange";
-import ipRangeSelectors from "app/store/iprange/selectors";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
+import DhcpFormFields from "@/app/base/components/DhcpFormFields";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
+import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import { useDhcpTarget } from "@/app/settings/hooks";
+import { actions as controllerActions } from "@/app/store/controller";
+import { actions as deviceActions } from "@/app/store/device";
+import { actions as dhcpsnippetActions } from "@/app/store/dhcpsnippet";
+import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
+import { actions as ipRangeActions } from "@/app/store/iprange";
+import ipRangeSelectors from "@/app/store/iprange/selectors";
+import { useFetchMachines } from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
 
 const DhcpSchema = Yup.object()
   .shape({

@@ -7,7 +7,7 @@ import type { Script, ScriptState } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const scriptSlice = createSlice({
   name: ScriptMeta.MODEL,

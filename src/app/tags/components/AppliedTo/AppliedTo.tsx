@@ -2,12 +2,12 @@ import { useSelector } from "react-redux";
 
 import NodesTagsLink from "../NodesTagsLink";
 
-import { ControllerMeta } from "app/store/controller/types";
-import { DeviceMeta } from "app/store/device/types";
-import { MachineMeta } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import { ControllerMeta } from "@/app/store/controller/types";
+import { DeviceMeta } from "@/app/store/device/types";
+import { MachineMeta } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 type Props = {
   id: Tag[TagMeta.PK];

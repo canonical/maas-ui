@@ -1,6 +1,6 @@
 import type urls from "./urls";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 
 export const ControllerActionHeaderViews = {
   DELETE_CONTROLLER: ["controllerActionForm", NodeActions.DELETE],

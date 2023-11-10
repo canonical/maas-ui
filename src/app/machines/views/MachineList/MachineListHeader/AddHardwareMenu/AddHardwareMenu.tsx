@@ -1,7 +1,7 @@
 import { ContextualMenu } from "@canonical/react-components";
 
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineSetSidePanelContent } from "app/machines/types";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
 
 type Props = {
   disabled?: boolean;

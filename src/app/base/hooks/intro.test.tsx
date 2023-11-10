@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import { useCompletedIntro, useCompletedUserIntro } from "./intro";
 
-import { ConfigNames } from "app/store/config/types";
-import { getCookie } from "app/utils";
+import { ConfigNames } from "@/app/store/config/types";
+import { getCookie } from "@/app/utils";
 import {
   authState as authStateFactory,
   config as configFactory,
@@ -17,8 +17,8 @@ import {
 
 const mockStore = configureStore();
 
-jest.mock("app/utils", () => ({
-  ...jest.requireActual("app/utils"),
+jest.mock("@/app/utils", () => ({
+  ...jest.requireActual("@/app/utils"),
   getCookie: jest.fn(),
 }));
 

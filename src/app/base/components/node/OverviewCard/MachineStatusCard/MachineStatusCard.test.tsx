@@ -4,9 +4,9 @@ import configureStore from "redux-mock-store";
 
 import MachineStatusCard from "./MachineStatusCard";
 
-import docsUrls from "app/base/docsUrls";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus, NodeStatusCode } from "app/store/types/node";
+import docsUrls from "@/app/base/docsUrls";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,

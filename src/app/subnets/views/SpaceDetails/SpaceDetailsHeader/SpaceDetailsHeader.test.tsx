@@ -8,7 +8,7 @@ import { SpaceDetailsSidePanelViews } from "../constants";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,

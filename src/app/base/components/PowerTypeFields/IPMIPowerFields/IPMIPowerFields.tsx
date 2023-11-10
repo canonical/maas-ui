@@ -6,9 +6,9 @@ import { useFormikContext } from "formik";
 
 import BasePowerField from "../BasePowerField";
 
-import type { AnyObject } from "app/base/types";
-import type { PowerField as PowerFieldType } from "app/store/general/types";
-import type { PowerParameters } from "app/store/types/node";
+import type { AnyObject } from "@/app/base/types";
+import type { PowerField as PowerFieldType } from "@/app/store/general/types";
+import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
   fields: PowerFieldType[];

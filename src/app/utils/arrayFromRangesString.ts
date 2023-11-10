@@ -1,4 +1,4 @@
-import { RANGE_REGEX } from "app/base/validation";
+import { RANGE_REGEX } from "@/app/base/validation";
 
 // Convert a string of ranges into an array of numbers,
 // e.g "0-2,4,6-7" => [0, 1, 2, 4, 6, 7]

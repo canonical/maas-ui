@@ -8,10 +8,10 @@ import type {
 } from "@canonical/react-components";
 import { ContextualMenu, Tooltip } from "@canonical/react-components";
 
-import type { DataTestElement } from "app/base/types";
-import type { Node } from "app/store/types/node";
-import { NodeActions } from "app/store/types/node";
-import { canOpenActionForm, getNodeActionTitle } from "app/store/utils";
+import type { DataTestElement } from "@/app/base/types";
+import type { Node } from "@/app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
+import { canOpenActionForm, getNodeActionTitle } from "@/app/store/utils";
 
 export enum Label {
   TakeAction = "Take action",

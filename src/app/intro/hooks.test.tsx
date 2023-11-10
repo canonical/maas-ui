@@ -7,8 +7,8 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useExitURL } from "./hooks";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,

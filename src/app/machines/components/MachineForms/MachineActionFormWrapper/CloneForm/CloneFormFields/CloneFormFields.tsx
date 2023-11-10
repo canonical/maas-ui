@@ -10,16 +10,16 @@ import CloneNetworkTable from "./CloneNetworkTable";
 import CloneStorageTable from "./CloneStorageTable";
 import SourceMachineSelect from "./SourceMachineSelect";
 
-import FormikField from "app/base/components/FormikField";
-import { useFetchActions } from "app/base/hooks";
-import { actions as fabricActions } from "app/store/fabric";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import { useFetchMachine } from "app/store/machine/utils/hooks";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import { actions as vlanActions } from "app/store/vlan";
+import FormikField from "@/app/base/components/FormikField";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as fabricActions } from "@/app/store/fabric";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import { useFetchMachine } from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import { actions as vlanActions } from "@/app/store/vlan";
 
 type Props = {
   selectedMachine: MachineDetails | null;

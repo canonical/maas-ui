@@ -3,14 +3,14 @@ import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
-import LabelledList from "app/base/components/LabelledList";
-import TooltipButton from "app/base/components/TooltipButton";
-import { useSendAnalytics } from "app/base/hooks";
-import urls from "app/base/urls";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import LabelledList from "@/app/base/components/LabelledList";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useSendAnalytics } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { FilterMachines, isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   id: Machine["system_id"];

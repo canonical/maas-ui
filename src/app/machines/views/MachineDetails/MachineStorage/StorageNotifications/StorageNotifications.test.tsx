@@ -1,8 +1,8 @@
 import StorageNotifications from "./StorageNotifications";
 
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { NodeStatusCode } from "app/store/types/node";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

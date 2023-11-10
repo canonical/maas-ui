@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import UpdateCertificateFields from "./UpdateCertificateFields";
 
-import { Labels } from "app/base/components/CertificateFields/CertificateFields";
+import { Labels } from "@/app/base/components/CertificateFields/CertificateFields";
 import { generatedCertificate as generatedCertificateFactory } from "testing/factories";
 import { render, screen, waitFor } from "testing/utils";
 describe("UpdateCertificateFields", () => {

@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import PoolColumn from "./PoolColumn";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,

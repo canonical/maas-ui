@@ -5,7 +5,7 @@ import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/Reposito
 
 import RepositoryEdit from "./RepositoryEdit";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,

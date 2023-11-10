@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
-import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   discovery as discoveryFactory,

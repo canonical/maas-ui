@@ -3,20 +3,20 @@ import type { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import urls from "app/base/urls";
-import fabricSelectors from "app/store/fabric/selectors";
-import subnetSelectors from "app/store/subnet/selectors";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import type { NetworkInterface, NetworkLink, Node } from "app/store/types/node";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink, Node } from "@/app/store/types/node";
 import {
   getInterfaceDiscovered,
   getInterfaceFabric,
   getInterfaceSubnet,
   getLinkInterface,
-} from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
+} from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
   link?: NetworkLink | null;

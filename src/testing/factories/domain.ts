@@ -6,9 +6,9 @@ import type {
   Domain,
   DomainDetails,
   DomainResource,
-} from "app/store/domain/types";
-import { RecordType } from "app/store/domain/types";
-import type { TimestampedModel } from "app/store/types/model";
+} from "@/app/store/domain/types";
+import { RecordType } from "@/app/store/domain/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 
 export const domain = extend<TimestampedModel, Domain>(timestampedModel, {
   name: (i: number) => `test name ${i}`,

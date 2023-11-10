@@ -20,6 +20,11 @@ module.exports = {
     react: {
       version: "detect",
     },
+    "import/resolver": {
+      typescript: {
+        alias: { "@": path.resolve(__dirname, "src" )},
+      },
+    },
   },
   globals: {
     usabilla_live: false,

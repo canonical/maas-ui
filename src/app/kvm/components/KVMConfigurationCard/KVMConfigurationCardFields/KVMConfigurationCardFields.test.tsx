@@ -1,7 +1,7 @@
 import KVMConfigurationCard from "../KVMConfigurationCard";
 
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podPowerParameters as powerParametersFactory,

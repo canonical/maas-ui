@@ -7,7 +7,7 @@ import RepositoriesList, {
   Labels as RepositoriesListLabels,
 } from "./RepositoriesList";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,

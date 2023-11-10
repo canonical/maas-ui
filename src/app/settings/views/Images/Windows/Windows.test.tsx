@@ -7,8 +7,8 @@ import { Labels as WindowsFormLabels } from "../WindowsForm/WindowsForm";
 
 import Windows, { Labels as WindowsLabels } from "./Windows";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

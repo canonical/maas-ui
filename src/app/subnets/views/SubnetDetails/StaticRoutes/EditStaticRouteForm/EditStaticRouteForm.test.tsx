@@ -7,7 +7,7 @@ import { Labels } from "../StaticRoutes";
 
 import EditStaticRouteForm from "./EditStaticRouteForm";
 
-import { actions as staticRouteActions } from "app/store/staticroute";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
 import {
   rootState as rootStateFactory,
   staticRouteState as staticRouteStateFactory,

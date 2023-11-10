@@ -3,10 +3,10 @@ import type { HTMLProps } from "react";
 import { Select } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
-import { useFetchActions } from "app/base/hooks";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 
 type Props = {
   disabled?: boolean;

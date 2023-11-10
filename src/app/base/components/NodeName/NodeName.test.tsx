@@ -1,8 +1,8 @@
 import NodeName from "./NodeName";
 import type { Props as NodeNameProps } from "./NodeName";
 
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,

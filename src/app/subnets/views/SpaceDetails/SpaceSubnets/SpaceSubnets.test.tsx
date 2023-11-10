@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SpaceSubnets from "./SpaceSubnets";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,

@@ -2,7 +2,7 @@ import { generateClusterRows, generateSingleHostRows } from "../LxdTable";
 
 import LxdKVMHostTable from "./LxdKVMHostTable";
 
-import { PodType } from "app/store/pod/constants";
+import { PodType } from "@/app/store/pod/constants";
 import {
   pod as podFactory,
   podResources as podResourcesFactory,

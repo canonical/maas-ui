@@ -3,18 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InterfaceForm from "../InterfaceForm";
 
-import FormCard from "app/base/components/FormCard";
-import { useCycled, useScrollOnRender } from "app/base/hooks";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
+import FormCard from "@/app/base/components/FormCard";
+import { useCycled, useScrollOnRender } from "@/app/base/hooks";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
 import type {
   CreateInterfaceParams,
   Device,
   DeviceMeta,
-} from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import type { RootState } from "app/store/root/types";
-import { preparePayload } from "app/utils";
+} from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import type { RootState } from "@/app/store/root/types";
+import { preparePayload } from "@/app/utils";
 
 type Props = {
   closeForm: () => void;

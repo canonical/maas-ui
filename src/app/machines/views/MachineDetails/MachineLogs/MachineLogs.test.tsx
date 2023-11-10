@@ -1,9 +1,9 @@
 import MachineLogs, { Label } from "./MachineLogs";
 
-import { Label as EventLogsLabel } from "app/base/components/node/NodeLogs/EventLogs/EventLogs";
-import { Label as InstallationOutputLabel } from "app/base/components/node/NodeLogs/InstallationOutput/InstallationOutput";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import { Label as EventLogsLabel } from "@/app/base/components/node/NodeLogs/EventLogs/EventLogs";
+import { Label as InstallationOutputLabel } from "@/app/base/components/node/NodeLogs/InstallationOutput/InstallationOutput";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

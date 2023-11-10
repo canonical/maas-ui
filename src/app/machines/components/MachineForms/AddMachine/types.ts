@@ -1,5 +1,5 @@
-import type { PowerType } from "app/store/general/types";
-import type { PowerParameters } from "app/store/types/node";
+import type { PowerType } from "@/app/store/general/types";
+import type { PowerParameters } from "@/app/store/types/node";
 
 export type AddMachineValues = {
   architecture: string;

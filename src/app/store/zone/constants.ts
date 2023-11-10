@@ -1,4 +1,4 @@
-import { COMMON_ACTIONS, COMMON_WEBSOCKET_METHODS } from "app/base/constants";
+import { COMMON_ACTIONS, COMMON_WEBSOCKET_METHODS } from "@/app/base/constants";
 
 export const ZONE_ACTIONS = {
   ...COMMON_ACTIONS,

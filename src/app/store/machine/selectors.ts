@@ -2,7 +2,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 import { createCachedSelector } from "re-reselect";
 
-import { ACTIONS } from "app/store/machine/constants";
+import { ACTIONS } from "@/app/store/machine/constants";
 import type {
   Machine,
   MachineState,
@@ -11,16 +11,16 @@ import type {
   MachineStatuses,
   MachineStateListGroup,
   MachineStateList,
-} from "app/store/machine/types";
-import { FilterGroupKey, MachineMeta } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface } from "app/store/types/node";
+} from "@/app/store/machine/types";
+import { FilterGroupKey, MachineMeta } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
-} from "app/store/utils";
-import { simpleSortByKey } from "app/utils";
+} from "@/app/store/utils";
+import { simpleSortByKey } from "@/app/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,

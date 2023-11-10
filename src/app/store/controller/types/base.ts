@@ -5,10 +5,10 @@ import type {
   ImageSyncStatus,
 } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { CertificateMetadata, PowerType } from "app/store/general/types";
-import type { PowerState, StorageLayout } from "app/store/types/enum";
-import type { ModelRef, TimestampFields } from "app/store/types/model";
+import type { APIError } from "@/app/base/types";
+import type { CertificateMetadata, PowerType } from "@/app/store/general/types";
+import type { PowerState, StorageLayout } from "@/app/store/types/enum";
+import type { ModelRef, TimestampFields } from "@/app/store/types/model";
 import type {
   NodeActions,
   BaseNode,
@@ -30,9 +30,9 @@ import type {
   NodeVlan,
   WorkloadAnnotations,
   NodeDeviceRef,
-} from "app/store/types/node";
-import type { EventError, GenericState } from "app/store/types/state";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
+} from "@/app/store/types/node";
+import type { EventError, GenericState } from "@/app/store/types/state";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 
 export type ControllerVersionInfo = {
   snap_revision?: string;

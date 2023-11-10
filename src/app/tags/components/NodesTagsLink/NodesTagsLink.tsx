@@ -1,13 +1,13 @@
 import pluralize from "pluralize";
 import { Link, useLocation } from "react-router-dom-v5-compat";
 
-import urls from "app/base/urls";
-import { ControllerMeta } from "app/store/controller/types";
-import { DeviceMeta } from "app/store/device/types";
-import { MachineMeta } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import type { Tag } from "app/store/tag/types";
-import type { NodeModel } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import { ControllerMeta } from "@/app/store/controller/types";
+import { DeviceMeta } from "@/app/store/device/types";
+import { MachineMeta } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import type { Tag } from "@/app/store/tag/types";
+import type { NodeModel } from "@/app/store/types/node";
 
 type Props = {
   count: number;

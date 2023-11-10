@@ -1,9 +1,9 @@
 import { Labels as SourceMachineDetailsLabel } from "./SourceMachineDetails/SourceMachineDetails";
 import SourceMachineSelect, { Label } from "./SourceMachineSelect";
 
-import type { Machine } from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import type { Machine } from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,

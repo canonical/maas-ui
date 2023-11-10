@@ -9,16 +9,16 @@ import LicenseKeyFormFields from "../LicenseKeyFormFields";
 
 import type { LicenseKeyFormValues } from "./types";
 
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import settingsURLs from "app/settings/urls";
-import { actions as generalActions } from "app/store/general";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
-import { actions as licenseKeysActions } from "app/store/licensekeys";
-import licenseKeysSelectors from "app/store/licensekeys/selectors";
-import type { LicenseKeys } from "app/store/licensekeys/types";
-import { LicenseKeysMeta } from "app/store/licensekeys/types";
+import FormCard from "@/app/base/components/FormCard";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import settingsURLs from "@/app/settings/urls";
+import { actions as generalActions } from "@/app/store/general";
+import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
+import { actions as licenseKeysActions } from "@/app/store/licensekeys";
+import licenseKeysSelectors from "@/app/store/licensekeys/selectors";
+import type { LicenseKeys } from "@/app/store/licensekeys/types";
+import { LicenseKeysMeta } from "@/app/store/licensekeys/types";
 
 type Props = {
   licenseKey?: LicenseKeys;

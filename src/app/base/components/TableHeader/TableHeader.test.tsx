@@ -3,7 +3,7 @@
 
 import TableHeader from "./TableHeader";
 
-import { SortDirection } from "app/base/types";
+import { SortDirection } from "@/app/base/types";
 import { render, screen, userEvent } from "testing/utils";
 
 describe("TableHeader ", () => {

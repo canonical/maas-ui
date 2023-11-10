@@ -1,10 +1,10 @@
 import NodeActionConfirmationText from "../../NodeActionConfirmationText";
 import type { NodeActionFormProps } from "../types";
 
-import ActionForm from "app/base/components/ActionForm";
-import type { EmptyObject } from "app/base/types";
-import { NodeActions } from "app/store/types/node";
-import { capitaliseFirst } from "app/utils";
+import ActionForm from "@/app/base/components/ActionForm";
+import type { EmptyObject } from "@/app/base/types";
+import { NodeActions } from "@/app/store/types/node";
+import { capitaliseFirst } from "@/app/utils";
 
 type Props<E = null> = NodeActionFormProps<E> & {
   onSubmit: () => void;

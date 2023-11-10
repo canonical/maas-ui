@@ -4,18 +4,18 @@ import * as Yup from "yup";
 
 import { Labels } from "../StaticRoutes";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import SubnetSelect from "app/base/components/SubnetSelect";
-import { useFetchActions } from "app/base/hooks";
-import type { RootState } from "app/store/root/types";
-import { actions as staticRouteActions } from "app/store/staticroute";
-import staticRouteSelectors from "app/store/staticroute/selectors";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import { getIsDestinationForSource } from "app/store/subnet/utils";
-import { toFormikNumber } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import SubnetSelect from "@/app/base/components/SubnetSelect";
+import { useFetchActions } from "@/app/base/hooks";
+import type { RootState } from "@/app/store/root/types";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
+import staticRouteSelectors from "@/app/store/staticroute/selectors";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import { getIsDestinationForSource } from "@/app/store/subnet/utils";
+import { toFormikNumber } from "@/app/utils";
 
 export type AddStaticRouteValues = {
   source: Subnet[SubnetMeta.PK];

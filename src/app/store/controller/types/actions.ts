@@ -1,8 +1,8 @@
 import type { Controller, ControllerDetails, ControllerStatus } from "./base";
 import type { ControllerMeta } from "./enum";
 
-import type { PowerParameters } from "app/store/types/node";
-import type { Zone } from "app/store/zone/types";
+import type { PowerParameters } from "@/app/store/types/node";
+import type { Zone } from "@/app/store/zone/types";
 
 export type Action = {
   name: string;

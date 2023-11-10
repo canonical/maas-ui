@@ -8,14 +8,14 @@ import ClearAllForm from "./DashboardHeader/ClearAllForm";
 import DiscoveriesList from "./DiscoveriesList";
 import { DashboardSidePanelViews } from "./constants";
 
-import PageContent from "app/base/components/PageContent";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useSidePanel } from "app/base/side-panel-context";
-import urls from "app/base/urls";
-import NotFound from "app/base/views/NotFound";
-import authSelectors from "app/store/auth/selectors";
-import configSelectors from "app/store/config/selectors";
-import { getRelativeRoute } from "app/utils";
+import PageContent from "@/app/base/components/PageContent";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
+import NotFound from "@/app/base/views/NotFound";
+import authSelectors from "@/app/store/auth/selectors";
+import configSelectors from "@/app/store/config/selectors";
+import { getRelativeRoute } from "@/app/utils";
 
 export enum Label {
   Disabled = "List of devices will not update as discovery is turned off.",

@@ -10,9 +10,9 @@ import type {
 } from "./types";
 import { ZoneMeta } from "./types";
 
-import { ACTION_STATUS } from "app/base/constants";
-import type { RootState } from "app/store/root/types";
-import { isId } from "app/utils";
+import { ACTION_STATUS } from "@/app/base/constants";
+import type { RootState } from "@/app/store/root/types";
+import { isId } from "@/app/utils";
 
 const all = (state: RootState): ZoneState["items"] =>
   state[ZoneMeta.MODEL].items;

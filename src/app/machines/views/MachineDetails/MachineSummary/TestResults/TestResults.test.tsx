@@ -1,7 +1,7 @@
 import TestResults from "./TestResults";
 
-import { HardwareType } from "app/base/enum";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

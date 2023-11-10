@@ -3,20 +3,20 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
-import settingsURLs from "app/settings/urls";
-import { actions as generalActions } from "app/store/general";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
-import { actions as licenseKeysActions } from "app/store/licensekeys";
-import licenseKeysSelectors from "app/store/licensekeys/selectors";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import { useFetchActions, useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import settingsURLs from "@/app/settings/urls";
+import { actions as generalActions } from "@/app/store/general";
+import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
+import { actions as licenseKeysActions } from "@/app/store/licensekeys";
+import licenseKeysSelectors from "@/app/store/licensekeys/selectors";
 import type {
   LicenseKeys,
   LicenseKeysState,
-} from "app/store/licensekeys/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/licensekeys/types";
+import type { RootState } from "@/app/store/root/types";
 
 const generateRows = (
   licenseKeys: LicenseKeys[],

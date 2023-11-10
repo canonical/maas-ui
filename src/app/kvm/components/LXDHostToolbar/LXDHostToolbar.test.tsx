@@ -5,11 +5,11 @@ import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "./LXDHostToolbar";
 
-import * as hooks from "app/base/hooks/analytics";
-import urls from "app/base/urls";
-import { ConfigNames } from "app/store/config/types";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import urls from "@/app/base/urls";
+import { ConfigNames } from "@/app/store/config/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

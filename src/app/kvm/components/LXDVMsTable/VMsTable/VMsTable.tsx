@@ -10,19 +10,19 @@ import IPColumn from "./IPColumn";
 import NameColumn from "./NameColumn";
 import StatusColumn from "./StatusColumn";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import Placeholder from "app/base/components/Placeholder";
-import TableHeader from "app/base/components/TableHeader";
-import { SortDirection } from "app/base/types";
-import AllCheckbox from "app/machines/views/MachineList/MachineListTable/AllCheckbox";
-import type { Machine } from "app/store/machine/types";
-import { FilterGroupKey, FetchGroupKey } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import type { Pod } from "app/store/pod/types";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
-import { getTagNamesForIds } from "app/store/tag/utils";
-import { generateEmptyStateMsg, formatBytes, getTableStatus } from "app/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import Placeholder from "@/app/base/components/Placeholder";
+import TableHeader from "@/app/base/components/TableHeader";
+import { SortDirection } from "@/app/base/types";
+import AllCheckbox from "@/app/machines/views/MachineList/MachineListTable/AllCheckbox";
+import type { Machine } from "@/app/store/machine/types";
+import { FilterGroupKey, FetchGroupKey } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import type { Pod } from "@/app/store/pod/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag } from "@/app/store/tag/types";
+import { getTagNamesForIds } from "@/app/store/tag/utils";
+import { generateEmptyStateMsg, formatBytes, getTableStatus } from "@/app/utils";
 
 export enum Label {
   Name = "Name",

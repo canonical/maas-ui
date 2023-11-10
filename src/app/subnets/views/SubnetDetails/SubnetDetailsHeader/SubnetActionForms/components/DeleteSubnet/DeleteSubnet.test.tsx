@@ -7,9 +7,9 @@ import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
 
-import urls from "app/base/urls";
-import { actions as subnetActions } from "app/store/subnet";
-import { actions as vlanActions } from "app/store/vlan";
+import urls from "@/app/base/urls";
+import { actions as subnetActions } from "@/app/store/subnet";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   subnetDetails as subnetFactory,
   subnetIP as subnetIPFactory,

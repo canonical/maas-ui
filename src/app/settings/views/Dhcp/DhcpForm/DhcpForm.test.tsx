@@ -4,8 +4,8 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import { DhcpForm } from "./DhcpForm";
 
-import settingsURLs from "app/settings/urls";
-import type { RootState } from "app/store/root/types";
+import settingsURLs from "@/app/settings/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,

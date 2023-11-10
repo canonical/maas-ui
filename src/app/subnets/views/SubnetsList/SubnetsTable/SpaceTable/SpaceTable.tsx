@@ -5,14 +5,14 @@ import { Pagination, ModularTable } from "@canonical/react-components";
 import {
   CellContents,
   SpaceCellContents,
-} from "app/subnets/views/SubnetsList/SubnetsTable/components";
+} from "@/app/subnets/views/SubnetsList/SubnetsTable/components";
 import {
   subnetColumnLabels,
   SubnetsColumns,
-} from "app/subnets/views/SubnetsList/SubnetsTable/constants";
-import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
-import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
-import { groupRowsBySpace } from "app/subnets/views/SubnetsList/SubnetsTable/utils";
+} from "@/app/subnets/views/SubnetsList/SubnetsTable/constants";
+import { usePagination } from "@/app/subnets/views/SubnetsList/SubnetsTable/hooks";
+import type { SubnetsTableRow } from "@/app/subnets/views/SubnetsList/SubnetsTable/types";
+import { groupRowsBySpace } from "@/app/subnets/views/SubnetsList/SubnetsTable/utils";
 
 const SpaceTable = ({
   data,

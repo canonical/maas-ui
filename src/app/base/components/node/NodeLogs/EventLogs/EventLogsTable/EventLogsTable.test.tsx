@@ -1,6 +1,6 @@
 import EventLogsTable, { Label } from "./EventLogsTable";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   eventRecord as eventRecordFactory,
   eventState as eventStateFactory,

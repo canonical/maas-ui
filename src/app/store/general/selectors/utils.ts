@@ -1,6 +1,6 @@
-import type { APIError } from "app/base/types";
-import type { GeneralState } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import type { APIError } from "@/app/base/types";
+import type { GeneralState } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 
 type GeneralSelector<T extends keyof GeneralState> = {
   errors: (state: RootState) => APIError;

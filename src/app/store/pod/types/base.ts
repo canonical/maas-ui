@@ -2,15 +2,15 @@ import type { ValueOf } from "@canonical/react-components";
 
 import type { PodType } from "../constants";
 
-import type { APIError } from "app/base/types";
+import type { APIError } from "@/app/base/types";
 import type {
   CertificateData,
   CertificateMetadata,
-} from "app/store/general/types";
-import type { Model, TimestampedModel } from "app/store/types/model";
-import type { Node } from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
-import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
+} from "@/app/store/general/types";
+import type { Model, TimestampedModel } from "@/app/store/types/model";
+import type { Node } from "@/app/store/types/node";
+import type { GenericState } from "@/app/store/types/state";
+import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 
 export type PodStoragePool = {
   available: number;

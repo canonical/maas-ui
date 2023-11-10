@@ -1,7 +1,7 @@
 import { OwnerColumn } from "./OwnerColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,

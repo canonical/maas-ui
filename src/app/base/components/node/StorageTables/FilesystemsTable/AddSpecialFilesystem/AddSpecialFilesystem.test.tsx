@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
-import { actions as machineActions } from "app/store/machine";
+import { actions as machineActions } from "@/app/store/machine";
 import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,

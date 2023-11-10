@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetails from "./ZoneDetails";
 
-import { Labels } from "app/base/components/EditableSection";
-import type { RootState } from "app/store/root/types";
+import { Labels } from "@/app/base/components/EditableSection";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   zone as zoneFactory,

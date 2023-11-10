@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
-import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
-import { getRanges } from "app/utils";
+import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
+import { getRanges } from "@/app/utils";
 
 export type Props = {
   allocated: number | number[];

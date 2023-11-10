@@ -5,11 +5,11 @@ import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import TableConfirm from "app/base/components/TableConfirm";
-import urls from "app/base/urls";
-import { actions as domainActions } from "app/store/domain";
-import domainSelectors from "app/store/domain/selectors";
-import type { Domain, DomainMeta } from "app/store/domain/types";
+import TableConfirm from "@/app/base/components/TableConfirm";
+import urls from "@/app/base/urls";
+import { actions as domainActions } from "@/app/store/domain";
+import domainSelectors from "@/app/store/domain/selectors";
+import type { Domain, DomainMeta } from "@/app/store/domain/types";
 
 export enum Labels {
   Domain = "Domain",

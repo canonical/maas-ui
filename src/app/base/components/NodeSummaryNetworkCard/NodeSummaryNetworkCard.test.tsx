@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   deviceState as deviceStateFactory,
   fabricState as fabricStateFactory,

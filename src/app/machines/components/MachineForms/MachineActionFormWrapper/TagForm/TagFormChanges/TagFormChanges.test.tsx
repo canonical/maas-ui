@@ -7,8 +7,8 @@ import configureStore from "redux-mock-store";
 
 import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 
-import type { RootState } from "app/store/root/types";
-import type { Tag } from "app/store/tag/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Tag } from "@/app/store/tag/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

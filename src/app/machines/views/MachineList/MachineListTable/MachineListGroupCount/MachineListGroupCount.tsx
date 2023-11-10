@@ -1,13 +1,13 @@
 import pluralize from "pluralize";
 
-import Placeholder from "app/base/components/Placeholder/Placeholder";
+import Placeholder from "@/app/base/components/Placeholder/Placeholder";
 import type {
   FetchFilters,
   MachineStateListGroup,
   FetchGroupKey,
-} from "app/store/machine/types";
-import { selectedToFilters } from "app/store/machine/utils";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
+} from "@/app/store/machine/types";
+import { selectedToFilters } from "@/app/store/machine/utils";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 
 /**
  * Displays the aggregate count of machines in a specified machine list group

@@ -1,8 +1,8 @@
 import WebSocketClient, { WebSocketMessageType } from "./websocket-client";
 
-import { getCookie } from "app/utils";
+import { getCookie } from "@/app/utils";
 
-jest.mock("app/utils");
+jest.mock("@/app/utils");
 
 const testAction = {
   meta: { model: "test", method: "test" },

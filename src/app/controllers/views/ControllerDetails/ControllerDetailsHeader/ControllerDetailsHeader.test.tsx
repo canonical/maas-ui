@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import ControllerDetailsHeader from "./ControllerDetailsHeader";
 
-import type { ControllerActions } from "app/store/controller/types";
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
+import type { ControllerActions } from "@/app/store/controller/types";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
 import {
   controller as controllerFactory,
   controllerDetails as controllerDetailsFactory,

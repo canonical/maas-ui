@@ -9,7 +9,7 @@ import type { MainTableProps } from "@canonical/react-components";
 import classNames from "classnames";
 import { Link } from "react-router-dom-v5-compat";
 
-import SearchBox from "app/base/components/SearchBox";
+import SearchBox from "@/app/base/components/SearchBox";
 
 export type TableButtons = {
   disabled?: boolean;

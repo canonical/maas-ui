@@ -1,8 +1,8 @@
 import { useFormikContext } from "formik";
 
-import FormikField from "app/base/components/FormikField";
-import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
-import { formatMacAddress } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import { formatMacAddress } from "@/app/utils";
 
 type Props = FormikFieldProps;
 

@@ -18,9 +18,9 @@ import {
   SERVICE_API,
 } from "./http";
 
-import { ScriptType } from "app/store/script/types";
-import { ScriptResultNames } from "app/store/scriptresult/types";
-import { getCookie } from "app/utils";
+import { ScriptType } from "@/app/store/script/types";
+import { ScriptResultNames } from "@/app/store/scriptresult/types";
+import { getCookie } from "@/app/utils";
 import { zone as zoneFactory } from "testing/factories";
 
 jest.mock("../../../bakery", () => {

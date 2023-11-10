@@ -1,11 +1,11 @@
 import { Row, Col } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import Definition from "app/base/components/Definition";
-import { useFetchActions } from "app/base/hooks";
-import type { RootState } from "app/store/root/types";
-import { actions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
+import Definition from "@/app/base/components/Definition";
+import { useFetchActions } from "@/app/base/hooks";
+import type { RootState } from "@/app/store/root/types";
+import { actions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   id: number;

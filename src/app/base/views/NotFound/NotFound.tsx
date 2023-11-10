@@ -1,6 +1,6 @@
-import PageContent from "app/base/components/PageContent";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useWindowTitle } from "app/base/hooks";
+import PageContent from "@/app/base/components/PageContent";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useWindowTitle } from "@/app/base/hooks";
 
 type Props = {
   includeSection?: boolean;

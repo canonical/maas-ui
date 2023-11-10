@@ -7,10 +7,10 @@ import * as Yup from "yup";
 
 import FormikFormContent from "./FormikFormContent";
 
-import { TestIds } from "app/base/components/FormikFormButtons";
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { TestIds } from "@/app/base/components/FormikFormButtons";
+import * as hooks from "@/app/base/hooks/analytics";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

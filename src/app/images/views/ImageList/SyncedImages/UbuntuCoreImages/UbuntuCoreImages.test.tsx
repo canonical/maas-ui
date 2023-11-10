@@ -7,8 +7,8 @@ import UbuntuCoreImages, {
   Labels as UbuntuCoreImagesLabels,
 } from "./UbuntuCoreImages";
 
-import { actions as bootResourceActions } from "app/store/bootresource";
-import type { RootState } from "app/store/root/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceUbuntuCoreImage as ubuntuCoreImageFactory,

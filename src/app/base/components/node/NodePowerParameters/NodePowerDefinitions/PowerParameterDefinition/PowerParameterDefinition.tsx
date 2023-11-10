@@ -1,7 +1,7 @@
-import Definition from "app/base/components/Definition";
-import type { PowerField } from "app/store/general/types";
-import { PowerFieldType } from "app/store/general/types";
-import type { PowerParameter } from "app/store/types/node";
+import Definition from "@/app/base/components/Definition";
+import type { PowerField } from "@/app/store/general/types";
+import { PowerFieldType } from "@/app/store/general/types";
+import type { PowerParameter } from "@/app/store/types/node";
 
 type Props = {
   field: PowerField;

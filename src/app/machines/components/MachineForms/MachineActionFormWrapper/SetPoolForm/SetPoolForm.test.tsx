@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import SetPoolForm from "./SetPoolForm";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import EditPhysicalFields from "./EditPhysicalFields";
 
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

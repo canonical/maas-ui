@@ -3,8 +3,8 @@ import configureStore from "redux-mock-store";
 
 import MachineDetails from "./MachineDetails";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDevice as machineDeviceFactory,

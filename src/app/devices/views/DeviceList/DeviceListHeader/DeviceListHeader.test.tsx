@@ -2,8 +2,8 @@ import { MemoryRouter } from "react-router-dom";
 
 import DeviceListHeader from "./DeviceListHeader";
 
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { RootState } from "app/store/root/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,

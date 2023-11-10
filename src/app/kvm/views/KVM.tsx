@@ -5,8 +5,8 @@ import LXDClusterDetails from "./LXDClusterDetails";
 import LXDSingleDetails from "./LXDSingleDetails";
 import VirshDetails from "./VirshDetails";
 
-import urls from "app/base/urls";
-import { getRelativeRoute } from "app/utils";
+import urls from "@/app/base/urls";
+import { getRelativeRoute } from "@/app/utils";
 
 const KVM = (): JSX.Element => {
   const base = urls.kvm.index;

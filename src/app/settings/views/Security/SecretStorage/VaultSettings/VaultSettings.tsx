@@ -7,14 +7,14 @@ import {
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions } from "app/base/hooks";
-import { useId } from "app/base/hooks/base";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
-import { actions as generalActions } from "app/store/general";
-import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
-import type { RootState } from "app/store/root/types";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions } from "@/app/base/hooks";
+import { useId } from "@/app/base/hooks/base";
+import { actions as controllerActions } from "@/app/store/controller";
+import controllerSelectors from "@/app/store/controller/selectors";
+import { actions as generalActions } from "@/app/store/general";
+import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
+import type { RootState } from "@/app/store/root/types";
 
 export enum Labels {
   Loading = "Loading...",

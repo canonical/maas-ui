@@ -12,21 +12,21 @@ import EditDisk from "./EditDisk";
 import EditPartition from "./EditPartition";
 import StorageDeviceActions from "./StorageDeviceActions";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
-import RowCheckbox from "app/base/components/RowCheckbox";
-import TagLinks from "app/base/components/TagLinks";
-import ActionConfirm from "app/base/components/node/ActionConfirm";
-import DiskBootStatus from "app/base/components/node/DiskBootStatus";
-import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
-import DiskTestStatus from "app/base/components/node/DiskTestStatus";
-import urls from "app/base/urls";
-import type { ControllerDetails } from "app/store/controller/types";
-import { FilterControllers } from "app/store/controller/utils";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineDetails } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import type { Disk, Node, Partition } from "app/store/types/node";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import GroupCheckbox from "@/app/base/components/GroupCheckbox";
+import RowCheckbox from "@/app/base/components/RowCheckbox";
+import TagLinks from "@/app/base/components/TagLinks";
+import ActionConfirm from "@/app/base/components/node/ActionConfirm";
+import DiskBootStatus from "@/app/base/components/node/DiskBootStatus";
+import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
+import DiskTestStatus from "@/app/base/components/node/DiskTestStatus";
+import urls from "@/app/base/urls";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { FilterControllers } from "@/app/store/controller/utils";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import type { Disk, Node, Partition } from "@/app/store/types/node";
 import {
   diskAvailable,
   formatSize,
@@ -38,7 +38,7 @@ import {
   isPartition,
   nodeIsMachine,
   partitionAvailable,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 // Actions that are performed on multiple devices at once
 export enum BulkAction {

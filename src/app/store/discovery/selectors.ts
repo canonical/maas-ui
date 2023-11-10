@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { DiscoveryMeta } from "app/store/discovery/types";
-import type { Discovery, DiscoveryState } from "app/store/discovery/types";
-import { FilterDiscoveries } from "app/store/discovery/utils";
-import type { RootState } from "app/store/root/types";
-import { generateBaseSelectors } from "app/store/utils";
+import { DiscoveryMeta } from "@/app/store/discovery/types";
+import type { Discovery, DiscoveryState } from "@/app/store/discovery/types";
+import { FilterDiscoveries } from "@/app/store/discovery/utils";
+import type { RootState } from "@/app/store/root/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
   DiscoveryState,

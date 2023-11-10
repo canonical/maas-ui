@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import NetworkActionRow from "./NetworkActionRow";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

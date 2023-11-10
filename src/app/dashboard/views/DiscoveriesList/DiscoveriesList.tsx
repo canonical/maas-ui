@@ -15,18 +15,18 @@ import DiscoveryAddForm from "../DiscoveryAddForm";
 
 import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import MacAddressDisplay from "app/base/components/MacAddressDisplay";
-import SearchBox from "app/base/components/SearchBox";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import TooltipButton from "app/base/components/TooltipButton";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import { actions as discoveryActions } from "app/store/discovery";
-import discoverySelectors from "app/store/discovery/selectors";
-import type { Discovery } from "app/store/discovery/types";
-import { DiscoveryMeta } from "app/store/discovery/types";
-import type { RootState } from "app/store/root/types";
-import { generateEmptyStateMsg, getTableStatus } from "app/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
+import SearchBox from "@/app/base/components/SearchBox";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { actions as discoveryActions } from "@/app/store/discovery";
+import discoverySelectors from "@/app/store/discovery/selectors";
+import type { Discovery } from "@/app/store/discovery/types";
+import { DiscoveryMeta } from "@/app/store/discovery/types";
+import type { RootState } from "@/app/store/root/types";
+import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",

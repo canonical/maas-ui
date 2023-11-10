@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import poolSelectors from "app/store/resourcepool/selectors";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import poolSelectors from "@/app/store/resourcepool/selectors";
 import type {
   ResourcePool,
   ResourcePoolMeta,
-} from "app/store/resourcepool/types";
-import type { RootState } from "app/store/root/types";
-import zoneSelectors from "app/store/zone/selectors";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+} from "@/app/store/resourcepool/types";
+import type { RootState } from "@/app/store/root/types";
+import zoneSelectors from "@/app/store/zone/selectors";
+import type { Zone, ZoneMeta } from "@/app/store/zone/types";
 
 type Props = {
   poolId?: ResourcePool[ResourcePoolMeta.PK] | null;

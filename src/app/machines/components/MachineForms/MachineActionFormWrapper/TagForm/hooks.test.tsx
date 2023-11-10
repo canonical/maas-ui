@@ -8,7 +8,7 @@ import configureStore from "redux-mock-store";
 
 import { useFetchTags, useSelectedTags, useUnchangedTags } from "./hooks";
 
-import { actions as tagActions } from "app/store/tag";
+import { actions as tagActions } from "@/app/store/tag";
 import {
   tag as tagFactory,
   tagState as tagStateFactory,

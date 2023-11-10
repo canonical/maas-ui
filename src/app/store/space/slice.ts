@@ -7,7 +7,7 @@ import type { CreateParams, Space, SpaceState, UpdateParams } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const spaceSlice = createSlice({
   name: SpaceMeta.MODEL,

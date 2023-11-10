@@ -3,8 +3,8 @@ import configureStore from "redux-mock-store";
 
 import CacheSetsTable from "./CacheSetsTable";
 
-import { actions as machineActions } from "app/store/machine";
-import { DiskTypes } from "app/store/types/enum";
+import { actions as machineActions } from "@/app/store/machine";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

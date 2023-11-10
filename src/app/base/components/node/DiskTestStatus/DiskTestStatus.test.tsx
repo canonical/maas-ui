@@ -1,6 +1,6 @@
 import DiskTestStatus from "./DiskTestStatus";
 
-import { ScriptResultStatus } from "app/store/scriptresult/types";
+import { ScriptResultStatus } from "@/app/store/scriptresult/types";
 import { render, screen } from "testing/utils";
 
 describe("DiskTestStatus", () => {

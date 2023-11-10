@@ -12,8 +12,8 @@ import type {
   PowerFieldType,
 } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { MachineActions } from "app/store/machine/types";
+import type { APIError } from "@/app/base/types";
+import type { MachineActions } from "@/app/store/machine/types";
 
 export type Architecture = string;
 

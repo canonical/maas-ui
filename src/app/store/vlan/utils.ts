@@ -1,7 +1,7 @@
-import type { Fabric } from "app/store/fabric/types";
-import { getFabricDisplay } from "app/store/fabric/utils";
-import type { VLAN, VLANDetails } from "app/store/vlan/types";
-import { VlanVid } from "app/store/vlan/types";
+import type { Fabric } from "@/app/store/fabric/types";
+import { getFabricDisplay } from "@/app/store/fabric/utils";
+import type { VLAN, VLANDetails } from "@/app/store/vlan/types";
+import { VlanVid } from "@/app/store/vlan/types";
 
 /**
  * Get the VLAN display text.

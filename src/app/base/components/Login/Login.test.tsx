@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import Login, { Labels } from "./Login";
 
-import type { RootState } from "app/store/root/types";
-import { actions as statusActions } from "app/store/status";
+import type { RootState } from "@/app/store/root/types";
+import { actions as statusActions } from "@/app/store/status";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,

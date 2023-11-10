@@ -2,14 +2,14 @@ import configureStore from "redux-mock-store";
 
 import NodeTestsTable from "./NodeTestsTable";
 
-import * as hooks from "app/base/hooks/analytics";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

@@ -1,6 +1,6 @@
 import VaultNotification from "./VaultNotification";
 
-import { NodeType } from "app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 import {
   rootState as rootStateFactory,
   controller as controllerFactory,

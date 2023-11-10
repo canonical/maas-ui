@@ -6,21 +6,21 @@ import NumaCard from "./NumaCard";
 import TestResults from "./TestResults";
 import WorkloadCard from "./WorkloadCard";
 
-import NodeSummaryNetworkCard from "app/base/components/NodeSummaryNetworkCard";
-import HardwareCard from "app/base/components/node/HardwareCard";
-import OverviewCard from "app/base/components/node/OverviewCard";
-import { HardwareType } from "app/base/enum";
-import { useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import urls from "app/base/urls";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import machineSelectors from "app/store/machine/selectors";
-import { MachineMeta } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import { useFetchMachine } from "app/store/machine/utils/hooks";
-import type { RootState } from "app/store/root/types";
-import { NodeStatusCode } from "app/store/types/node";
-import { isId } from "app/utils";
+import NodeSummaryNetworkCard from "@/app/base/components/NodeSummaryNetworkCard";
+import HardwareCard from "@/app/base/components/node/HardwareCard";
+import OverviewCard from "@/app/base/components/node/OverviewCard";
+import { HardwareType } from "@/app/base/enum";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import urls from "@/app/base/urls";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import { MachineMeta } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import { useFetchMachine } from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatusCode } from "@/app/store/types/node";
+import { isId } from "@/app/utils";
 
 type Props = {
   setSidePanelContent: MachineSetSidePanelContent;

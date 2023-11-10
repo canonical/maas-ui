@@ -6,14 +6,14 @@ import pluralize from "pluralize";
 
 import type { ComposeFormDefaults, ComposeFormValues } from "../ComposeForm";
 
-import DomainSelect from "app/base/components/DomainSelect";
-import FormikField from "app/base/components/FormikField";
-import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
-import ShowAdvanced from "app/base/components/ShowAdvanced";
-import ZoneSelect from "app/base/components/ZoneSelect";
-import { PodType } from "app/store/pod/constants";
-import type { Pod } from "app/store/pod/types";
-import { arrayFromRangesString, getRanges } from "app/utils";
+import DomainSelect from "@/app/base/components/DomainSelect";
+import FormikField from "@/app/base/components/FormikField";
+import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
+import ShowAdvanced from "@/app/base/components/ShowAdvanced";
+import ZoneSelect from "@/app/base/components/ZoneSelect";
+import { PodType } from "@/app/store/pod/constants";
+import type { Pod } from "@/app/store/pod/types";
+import { arrayFromRangesString, getRanges } from "@/app/utils";
 
 type Props = {
   architectures: Pod["architectures"];

@@ -1,8 +1,8 @@
 import StatusBar from "./StatusBar";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus, NodeType } from "app/store/types/node";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus, NodeType } from "@/app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -17,7 +17,7 @@ import {
 import { screen, renderWithMockStore } from "testing/utils";
 
 let state: RootState;
-const originalEnv = process.env;
+const originalEnv = import.meta.env;
 
 beforeEach(() => {
   jest.useFakeTimers("modern");
@@ -42,7 +42,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.useRealTimers();
-  process.env = originalEnv;
+  import.meta.env = originalEnv;
 });
 
 it("can show if a machine is currently commissioning", () => {
@@ -213,7 +213,7 @@ it("displays last image sync timestamp for a rack or region+rack controller", ()
 });
 
 it("displays the feedback link when analytics enabled and not in development environment", () => {
-  process.env = { ...originalEnv, NODE_ENV: "production" };
+  import.meta.env = { ...originalEnv, NODE_ENV: "production" };
 
   state.config = configStateFactory({
     items: [
@@ -230,7 +230,7 @@ it("displays the feedback link when analytics enabled and not in development env
 });
 
 it("hides the feedback link when analytics disabled", () => {
-  process.env = { ...originalEnv, NODE_ENV: "production" };
+  import.meta.env = { ...originalEnv, NODE_ENV: "production" };
   state.config = configStateFactory({
     items: [
       ...state.config.items,
@@ -245,7 +245,7 @@ it("hides the feedback link when analytics disabled", () => {
 });
 
 it("hides the feedback link in development environment", () => {
-  process.env = { ...originalEnv, NODE_ENV: "development" };
+  import.meta.env = { ...originalEnv, NODE_ENV: "development" };
   state.config = configStateFactory({
     items: [
       ...state.config.items,

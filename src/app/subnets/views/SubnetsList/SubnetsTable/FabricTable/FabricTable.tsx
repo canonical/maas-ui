@@ -2,14 +2,14 @@ import { useMemo } from "react";
 
 import { Pagination, ModularTable } from "@canonical/react-components";
 
-import { CellContents } from "app/subnets/views/SubnetsList/SubnetsTable/components";
+import { CellContents } from "@/app/subnets/views/SubnetsList/SubnetsTable/components";
 import {
   subnetColumnLabels,
   SubnetsColumns,
-} from "app/subnets/views/SubnetsList/SubnetsTable/constants";
-import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
-import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
-import { groupRowsByFabricAndVlan } from "app/subnets/views/SubnetsList/SubnetsTable/utils";
+} from "@/app/subnets/views/SubnetsList/SubnetsTable/constants";
+import { usePagination } from "@/app/subnets/views/SubnetsList/SubnetsTable/hooks";
+import type { SubnetsTableRow } from "@/app/subnets/views/SubnetsList/SubnetsTable/types";
+import { groupRowsByFabricAndVlan } from "@/app/subnets/views/SubnetsList/SubnetsTable/utils";
 
 const FabricTable = ({
   data,

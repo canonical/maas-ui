@@ -3,7 +3,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import APIKeyList, { Label as APIKeyListLabels } from "./APIKeyList";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,

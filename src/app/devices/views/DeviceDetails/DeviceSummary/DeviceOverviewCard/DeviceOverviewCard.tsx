@@ -1,13 +1,13 @@
 import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import LabelledList from "app/base/components/LabelledList";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device, DeviceMeta } from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import { getTagsDisplay } from "app/store/tag/utils";
+import LabelledList from "@/app/base/components/LabelledList";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device, DeviceMeta } from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import { getTagsDisplay } from "@/app/store/tag/utils";
 
 type Props = {
   systemId: Device[DeviceMeta.PK];

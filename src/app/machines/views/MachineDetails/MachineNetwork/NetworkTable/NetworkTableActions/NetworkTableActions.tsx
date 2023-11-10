@@ -1,27 +1,27 @@
 import { useSelector } from "react-redux";
 
-import type { SetExpanded } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import TableMenu from "app/base/components/TableMenu";
-import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
-import TooltipButton from "app/base/components/TooltipButton";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { SetExpanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import TableMenu from "@/app/base/components/TableMenu";
+import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
 import {
   isMachineDetails,
   useCanAddVLAN,
   useIsLimitedEditingAllowed,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   canAddAlias,
   hasInterfaceType,
   getInterfaceTypeText,
   getLinkInterface,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 type Props = {
   link?: NetworkLink | null;

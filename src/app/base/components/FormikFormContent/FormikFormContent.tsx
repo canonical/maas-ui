@@ -9,15 +9,15 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 import type { AnyAction } from "redux";
 
-import type { FormikFormButtonsProps } from "app/base/components/FormikFormButtons";
-import FormikFormButtons from "app/base/components/FormikFormButtons";
+import type { FormikFormButtonsProps } from "@/app/base/components/FormikFormButtons";
+import FormikFormButtons from "@/app/base/components/FormikFormButtons";
 import {
   useCycled,
   useFormikErrors,
   useFormikFormDisabled,
   useSendAnalyticsWhen,
-} from "app/base/hooks";
-import type { APIError } from "app/base/types";
+} from "@/app/base/hooks";
+import type { APIError } from "@/app/base/types";
 
 export type Props<V extends object, E> = {
   allowAllEmpty?: boolean;
@@ -96,7 +96,7 @@ const FormikFormContent = <V extends object, E = null>({
   ...buttonsProps
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
-  if (process.env.NODE_ENV === "development") {
+  if (import.meta.env.NODE_ENV === "development") {
     withFormikDevtools(formikContext);
   }
   const dispatch = useDispatch();

@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SpaceSummaryForm from "./SpaceSummaryForm";
 
-import { actions as spaceActions } from "app/store/space";
+import { actions as spaceActions } from "@/app/store/space";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,

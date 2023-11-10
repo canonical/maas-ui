@@ -4,8 +4,8 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import IntroSection from "./IntroSection";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,

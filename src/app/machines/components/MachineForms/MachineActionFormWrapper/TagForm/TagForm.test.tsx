@@ -8,9 +8,9 @@ import TagForm, { Label } from "./TagForm";
 import { Label as TagFormChangesLabel } from "./TagFormChanges";
 import { Label as TagFormFieldsLabel } from "./TagFormFields";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { Label as AddTagFormLabel } from "app/tags/components/AddTagForm/AddTagForm";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
 import {
   machine as machineFactory,
   machineActionState,

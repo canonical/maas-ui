@@ -1,8 +1,8 @@
 import FilterAccordion, { Labels } from "./FilterAccordion";
 import type { Props as FilterAccordionProps } from "./FilterAccordion";
 
-import type { MachineDetails, MachineMeta } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
+import type { MachineDetails, MachineMeta } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
 import { machineDetails as machineDetailsFactory } from "testing/factories";
 import { userEvent, render, screen } from "testing/utils";
 

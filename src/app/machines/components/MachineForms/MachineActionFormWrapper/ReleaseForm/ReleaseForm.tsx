@@ -6,14 +6,14 @@ import * as Yup from "yup";
 
 import ReleaseFormFields from "./ReleaseFormFields";
 
-import ActionForm from "app/base/components/ActionForm";
-import type { MachineActionFormProps } from "app/machines/types";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineEventErrors } from "app/store/machine/types";
-import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
-import { NodeActions } from "app/store/types/node";
+import ActionForm from "@/app/base/components/ActionForm";
+import type { MachineActionFormProps } from "@/app/machines/types";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineEventErrors } from "@/app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import { NodeActions } from "@/app/store/types/node";
 
 export type ReleaseFormValues = {
   enableErase: boolean;

@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import DeleteConfirm from "./DeleteConfirm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,

@@ -3,8 +3,8 @@ import { Route, Routes } from "react-router-dom-v5-compat";
 import { storageLayoutOptions } from "./ChangeStorageLayout/ChangeStorageLayout";
 import MachineStorage from "./MachineStorage";
 
-import * as hooks from "app/base/hooks/analytics";
-import { NodeStatusCode } from "app/store/types/node";
+import * as hooks from "@/app/base/hooks/analytics";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,

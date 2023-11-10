@@ -9,11 +9,11 @@ import {
 } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 
-import { useSendAnalyticsWhen } from "app/base/hooks";
-import type { AnalyticsEvent } from "app/base/types";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import type { Machine, MachineStatus } from "app/store/machine/types";
-import { formatErrors } from "app/utils";
+import { useSendAnalyticsWhen } from "@/app/base/hooks";
+import type { AnalyticsEvent } from "@/app/base/types";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import type { Machine, MachineStatus } from "@/app/store/machine/types";
+import { formatErrors } from "@/app/utils";
 
 type Props = {
   confirmLabel: string;

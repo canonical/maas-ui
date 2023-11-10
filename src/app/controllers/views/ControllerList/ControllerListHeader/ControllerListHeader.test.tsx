@@ -1,7 +1,7 @@
 import ControllerListHeader from "./ControllerListHeader";
 
-import { ControllerSidePanelViews } from "app/controllers/constants";
-import type { RootState } from "app/store/root/types";
+import { ControllerSidePanelViews } from "@/app/controllers/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

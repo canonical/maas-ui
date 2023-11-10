@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddVlan from "./AddVlan";
 
-import { actions as vlanActions } from "app/store/vlan";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   space as spaceFactory,
   fabric as fabricFactory,

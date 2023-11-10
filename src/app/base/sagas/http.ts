@@ -1,16 +1,16 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { AnyAction } from "redux";
-import { call, put, takeEvery, takeLatest } from "typed-redux-saga/macro";
+import { call, put, takeEvery, takeLatest } from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import { isLoaded, setIsLoaded } from "./loaded-endpoints";
 
-import type { LicenseKeys } from "app/store/licensekeys/types";
-import type { Script } from "app/store/script/types";
-import { ScriptResultNames } from "app/store/scriptresult/types";
-import type { SimpleNode } from "app/store/types/node";
-import { getCookie } from "app/utils";
-import bakery from "bakery";
+import type { LicenseKeys } from "@/app/store/licensekeys/types";
+import type { Script } from "@/app/store/script/types";
+import { ScriptResultNames } from "@/app/store/scriptresult/types";
+import type { SimpleNode } from "@/app/store/types/node";
+import { getCookie } from "@/app/utils";
+import bakery from "@/bakery";
 
 type CSRFToken = string;
 

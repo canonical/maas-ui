@@ -3,16 +3,16 @@ import type { ReactNode } from "react";
 import type { ValueOf } from "@canonical/react-components";
 import type { MainTableCell } from "@canonical/react-components/dist/components/MainTable/MainTable";
 
-import type { SortDirection } from "app/base/types";
-import type { MachineColumns } from "app/machines/constants";
-import type { GetMachineMenuToggleHandler } from "app/machines/types";
+import type { SortDirection } from "@/app/base/types";
+import type { MachineColumns } from "@/app/machines/constants";
+import type { GetMachineMenuToggleHandler } from "@/app/machines/types";
 import type {
   Machine,
   MachineStateListGroup,
   FetchGroupKey,
   FetchFilters,
-} from "app/store/machine/types";
-import type { useFetchMachines } from "app/store/machine/utils/hooks";
+} from "@/app/store/machine/types";
+import type { useFetchMachines } from "@/app/store/machine/utils/hooks";
 
 export type MachineListTableProps = {
   callId?: string | null;

@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import { Labels } from "./DhcpFormFields";
 
-import DhcpForm from "app/base/components/DhcpForm";
-import { getIpRangeDisplayName } from "app/store/iprange/utils";
-import type { RootState } from "app/store/root/types";
+import DhcpForm from "@/app/base/components/DhcpForm";
+import { getIpRangeDisplayName } from "@/app/store/iprange/utils";
+import type { RootState } from "@/app/store/root/types";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   ipRange as ipRangeFactory,

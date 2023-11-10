@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import TagIdField from "./TagIdField";
 
-import type { Tag } from "app/store/tag/types";
+import type { Tag } from "@/app/store/tag/types";
 import { tag as tagFactory } from "testing/factories";
 import { screen, render, userEvent } from "testing/utils";
 

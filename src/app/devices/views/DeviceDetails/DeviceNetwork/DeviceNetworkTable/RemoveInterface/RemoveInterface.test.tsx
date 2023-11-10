@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import RemoveInterface from "./RemoveInterface";
 
-import * as analyticsHooks from "app/base/hooks/analytics";
-import * as baseHooks from "app/base/hooks/base";
-import { actions as deviceActions } from "app/store/device";
-import type { RootState } from "app/store/root/types";
+import * as analyticsHooks from "@/app/base/hooks/analytics";
+import * as baseHooks from "@/app/base/hooks/base";
+import { actions as deviceActions } from "@/app/store/device";
+import type { RootState } from "@/app/store/root/types";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceEventError as deviceEventErrorFactory,

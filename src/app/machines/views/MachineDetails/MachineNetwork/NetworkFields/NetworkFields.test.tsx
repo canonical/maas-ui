@@ -8,12 +8,12 @@ import NetworkFields, {
   networkFieldsInitialValues,
 } from "./NetworkFields";
 
-import { Label as FabricSelectLabel } from "app/base/components/FabricSelect/FabricSelect";
-import { Label as LinkModeSelectLabel } from "app/base/components/LinkModeSelect/LinkModeSelect";
-import { Label as SubnetSelectLabel } from "app/base/components/SubnetSelect/SubnetSelect";
-import { Label as VLANSelectLabel } from "app/base/components/VLANSelect/VLANSelect";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import { Label as FabricSelectLabel } from "@/app/base/components/FabricSelect/FabricSelect";
+import { Label as LinkModeSelectLabel } from "@/app/base/components/LinkModeSelect/LinkModeSelect";
+import { Label as SubnetSelectLabel } from "@/app/base/components/SubnetSelect/SubnetSelect";
+import { Label as VLANSelectLabel } from "@/app/base/components/VLANSelect/VLANSelect";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

@@ -3,8 +3,8 @@ import configureStore from "redux-mock-store";
 
 import CertificateDetails, { Labels } from "./CertificateDetails";
 
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   certificateMetadata as metadataFactory,
   config as configFactory,

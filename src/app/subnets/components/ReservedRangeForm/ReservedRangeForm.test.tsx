@@ -5,10 +5,10 @@ import configureStore from "redux-mock-store";
 
 import ReservedRangeForm, { Labels } from "./ReservedRangeForm";
 
-import { actions as ipRangeActions } from "app/store/iprange";
-import type { IPRange } from "app/store/iprange/types";
-import { IPRangeType } from "app/store/iprange/types";
-import type { RootState } from "app/store/root/types";
+import { actions as ipRangeActions } from "@/app/store/iprange";
+import type { IPRange } from "@/app/store/iprange/types";
+import { IPRangeType } from "@/app/store/iprange/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   ipRange as ipRangeFactory,

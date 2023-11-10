@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MachinesHeader from "./MachinesHeader";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,

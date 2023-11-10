@@ -9,16 +9,16 @@ import TestActions from "./TestActions";
 import TestHistory from "./TestHistory";
 import TestMetrics from "./TestMetrics";
 
-import ScriptStatus from "app/base/components/ScriptStatus";
-import TableHeader from "app/base/components/TableHeader";
-import { useSendAnalytics } from "app/base/hooks";
-import type { ControllerDetails } from "app/store/controller/types";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineDetails } from "app/store/machine/types";
-import type { ScriptResult } from "app/store/scriptresult/types";
-import { ScriptResultType } from "app/store/scriptresult/types";
-import { canBeSuppressed } from "app/store/scriptresult/utils";
-import { nodeIsMachine } from "app/store/utils";
+import ScriptStatus from "@/app/base/components/ScriptStatus";
+import TableHeader from "@/app/base/components/TableHeader";
+import { useSendAnalytics } from "@/app/base/hooks";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { ScriptResult } from "@/app/store/scriptresult/types";
+import { ScriptResultType } from "@/app/store/scriptresult/types";
+import { canBeSuppressed } from "@/app/store/scriptresult/utils";
+import { nodeIsMachine } from "@/app/store/utils";
 
 export enum ScriptResultAction {
   VIEW_METRICS = "viewMetrics",

@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import VLANDeleteForm from "./VLANDeleteForm";
 
-import { actions as vlanActions } from "app/store/vlan";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

@@ -7,8 +7,8 @@ import type {
   ScriptResult,
   ScriptResultData,
   ScriptResultResult,
-} from "app/store/scriptresult/types";
-import type { Model } from "app/store/types/model";
+} from "@/app/store/scriptresult/types";
+import type { Model } from "@/app/store/types/model";
 
 export const scriptResultResult = define<ScriptResultResult>({
   name: (i: number) => `test result ${i}`,

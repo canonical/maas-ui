@@ -11,12 +11,12 @@ import ProxyAccessLabel from "../../components/ProxyAccessLabel";
 import SubnetSpace from "../../components/SubnetSpace";
 import type { SubnetSummaryFormValues } from "../types";
 
-import FabricSelect from "app/base/components/FabricSelect";
-import FormikField from "app/base/components/FormikField";
-import VLANSelect from "app/base/components/VLANSelect";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { RootState } from "app/store/root/types";
-import vlanSelectors from "app/store/vlan/selectors";
+import FabricSelect from "@/app/base/components/FabricSelect";
+import FormikField from "@/app/base/components/FormikField";
+import VLANSelect from "@/app/base/components/VLANSelect";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { RootState } from "@/app/store/root/types";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 const SubnetSummaryFormFields = (): JSX.Element => {
   const { handleChange, setFieldValue, values } =

@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import type { ControllerDetails } from "app/store/controller/types";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { actions as scriptResultActions } from "app/store/scriptresult";
-import scriptResultsSelectors from "app/store/scriptresult/selectors";
-import type { ScriptResult } from "app/store/scriptresult/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import scriptResultsSelectors from "@/app/store/scriptresult/selectors";
+import type { ScriptResult } from "@/app/store/scriptresult/types";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceDiscovered,
   getInterfaceFabric,
   getInterfaceIPAddressOrMode,
   getLinkInterface,
-} from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
+} from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 /**
  * Get the text for the failed status.

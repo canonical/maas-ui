@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import NodeLink from "./NodeLink";
 
-import { NodeType } from "app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

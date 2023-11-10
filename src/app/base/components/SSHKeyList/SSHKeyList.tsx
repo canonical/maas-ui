@@ -5,18 +5,18 @@ import { Button, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
-import type { Props as SettingsTableProps } from "app/settings/components/SettingsTable/SettingsTable";
-import { actions as sshkeyActions } from "app/store/sshkey";
-import sshkeySelectors from "app/store/sshkey/selectors";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import type { Props as SettingsTableProps } from "@/app/settings/components/SettingsTable/SettingsTable";
+import { actions as sshkeyActions } from "@/app/store/sshkey";
+import sshkeySelectors from "@/app/store/sshkey/selectors";
 import type {
   KeySource,
   SSHKey,
   SSHKeyMeta,
   SSHKeyState,
-} from "app/store/sshkey/types";
+} from "@/app/store/sshkey/types";
 
 type Props = {
   sidebar?: boolean;

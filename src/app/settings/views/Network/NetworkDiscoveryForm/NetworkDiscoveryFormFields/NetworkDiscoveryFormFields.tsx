@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 
 import type { NetworkDiscoveryValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import configSelectors from "app/store/config/selectors";
-import { NetworkDiscovery } from "app/store/config/types";
+import FormikField from "@/app/base/components/FormikField";
+import configSelectors from "@/app/store/config/selectors";
+import { NetworkDiscovery } from "@/app/store/config/types";
 
 const NetworkDiscoveryFormFields = (): JSX.Element => {
   const { values } = useFormikContext<NetworkDiscoveryValues>();

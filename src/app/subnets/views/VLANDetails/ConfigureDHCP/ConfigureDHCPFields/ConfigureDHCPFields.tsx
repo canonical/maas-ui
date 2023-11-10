@@ -7,15 +7,15 @@ import { useSelector } from "react-redux";
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
 import { DHCPType } from "../ConfigureDHCP";
 
-import FormikField from "app/base/components/FormikField";
-import VLANSelect from "app/base/components/VLANSelect";
-import controllerSelectors from "app/store/controller/selectors";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { RootState } from "app/store/root/types";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
-import { getFullVLANName } from "app/store/vlan/utils";
-import { simpleSortByKey } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import VLANSelect from "@/app/base/components/VLANSelect";
+import controllerSelectors from "@/app/store/controller/selectors";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { RootState } from "@/app/store/root/types";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
+import { getFullVLANName } from "@/app/store/vlan/utils";
+import { simpleSortByKey } from "@/app/utils";
 
 type Props = {
   vlan: VLAN;

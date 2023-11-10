@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterSettings from "./LXDClusterSettings";
 
-import { actions as podActions } from "app/store/pod";
+import { actions as podActions } from "@/app/store/pod";
 import {
   pod as podFactory,
   podState as podStateFactory,

@@ -6,14 +6,14 @@ import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 import type { SubnetsTableRow, GroupByKey } from "./types";
 import { filterSubnetsBySearchText, getTableData } from "./utils";
 
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import { actions as spaceActions } from "app/store/space";
-import spaceSelectors from "app/store/space/selectors";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import { actions as spaceActions } from "@/app/store/space";
+import spaceSelectors from "@/app/store/space/selectors";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 type UseSubnetsTable = {
   data: SubnetsTableRow[];

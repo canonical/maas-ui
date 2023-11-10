@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
 
-import { actions as machineActions } from "app/store/machine";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,

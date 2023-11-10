@@ -1,13 +1,13 @@
 import { useFormikContext } from "formik";
 
-import FormikField from "app/base/components/FormikField";
-import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
-import TagSelector from "app/base/components/TagSelector";
+import FormikField from "@/app/base/components/FormikField";
+import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import TagSelector from "@/app/base/components/TagSelector";
 import type {
   Props as TagSelectorProps,
   Tag as TagSelectorTag,
-} from "app/base/components/TagSelector/TagSelector";
-import type { AnyObject } from "app/base/types";
+} from "@/app/base/components/TagSelector/TagSelector";
+import type { AnyObject } from "@/app/base/types";
 
 export type Props = {
   storedValue?: "name" | "id";

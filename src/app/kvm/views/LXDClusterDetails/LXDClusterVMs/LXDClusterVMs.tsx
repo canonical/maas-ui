@@ -4,14 +4,14 @@ import { Link } from "react-router-dom-v5-compat";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
-import { useWindowTitle } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
-import urls from "app/base/urls";
-import LXDVMsTable from "app/kvm/components/LXDVMsTable";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import type { SetSearchFilter } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import LXDVMsTable from "@/app/kvm/components/LXDVMsTable";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];

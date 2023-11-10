@@ -2,13 +2,13 @@ import { Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { Filesystem } from "app/store/types/node";
-import { usesStorage } from "app/store/utils";
+import FormikField from "@/app/base/components/FormikField";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Filesystem } from "@/app/store/types/node";
+import { usesStorage } from "@/app/store/utils";
 
 type FilesystemValues = {
   fstype: Filesystem["fstype"];

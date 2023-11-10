@@ -4,7 +4,7 @@ import { render } from "@testing-library/react";
 
 import PowerIcon from "./PowerIcon";
 
-import { PowerState } from "app/store/types/enum";
+import { PowerState } from "@/app/store/types/enum";
 
 describe("PowerIcon", () => {
   it("renders", () => {

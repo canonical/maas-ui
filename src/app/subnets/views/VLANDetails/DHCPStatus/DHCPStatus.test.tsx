@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DHCPStatus from "./DHCPStatus";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

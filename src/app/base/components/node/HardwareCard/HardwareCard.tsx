@@ -1,8 +1,8 @@
 import { Card } from "@canonical/react-components";
 
-import LabelledList from "app/base/components/LabelledList";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
+import LabelledList from "@/app/base/components/LabelledList";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
 
 type Props = {
   node: ControllerDetails | MachineDetails;

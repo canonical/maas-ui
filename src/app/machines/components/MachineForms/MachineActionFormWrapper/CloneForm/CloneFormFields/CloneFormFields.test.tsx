@@ -3,8 +3,8 @@ import configureStore from "redux-mock-store";
 
 import CloneFormFields from "./CloneFormFields";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   fabricState as fabricStateFactory,

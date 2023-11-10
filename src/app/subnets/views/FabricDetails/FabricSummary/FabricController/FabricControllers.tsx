@@ -3,14 +3,14 @@ import { useEffect } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import ControllerLink from "app/base/components/ControllerLink";
-import Definition from "app/base/components/Definition";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Fabric, FabricMeta } from "app/store/fabric/types";
-import type { RootState } from "app/store/root/types";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
+import ControllerLink from "@/app/base/components/ControllerLink";
+import Definition from "@/app/base/components/Definition";
+import { actions as controllerActions } from "@/app/store/controller";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
   id: Fabric[FabricMeta.PK];

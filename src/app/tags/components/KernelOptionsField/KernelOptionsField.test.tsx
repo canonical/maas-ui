@@ -5,11 +5,11 @@ import configureStore from "redux-mock-store";
 
 import KernelOptionsField, { Label } from "./KernelOptionsField";
 
-import { actions as machineActions } from "app/store/machine";
-import type { FetchFilters } from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
-import { FetchNodeStatus, NodeStatus } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FetchFilters } from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { FetchNodeStatus, NodeStatus } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

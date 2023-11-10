@@ -1,8 +1,8 @@
 import { StatusColumn } from "./StatusColumn";
 
-import { ControllerVersionIssues } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
-import { ServiceStatus } from "app/store/service/types";
+import { ControllerVersionIssues } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
+import { ServiceStatus } from "@/app/store/service/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

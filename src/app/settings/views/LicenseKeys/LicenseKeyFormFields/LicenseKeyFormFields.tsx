@@ -5,8 +5,8 @@ import { useFormikContext } from "formik";
 
 import type { LicenseKeyFormValues } from "../LicenseKeyForm/types";
 
-import FormikField from "app/base/components/FormikField";
-import type { OSInfoOptions } from "app/store/general/selectors/osInfo";
+import FormikField from "@/app/base/components/FormikField";
+import type { OSInfoOptions } from "@/app/store/general/selectors/osInfo";
 
 type Props = {
   osystems: string[][];

@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { Code, Tabs } from "@canonical/react-components";
 
-import type { ScriptResultData } from "app/store/scriptresult/types";
-import { ScriptResultDataType } from "app/store/scriptresult/types";
+import type { ScriptResultData } from "@/app/store/scriptresult/types";
+import { ScriptResultDataType } from "@/app/store/scriptresult/types";
 
 type Props = {
   log: ScriptResultData;

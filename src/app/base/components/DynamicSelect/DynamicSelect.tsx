@@ -6,8 +6,8 @@ import { Select } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useFormikContext } from "formik";
 
-import FormikField from "app/base/components/FormikField";
-import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
+import FormikField from "@/app/base/components/FormikField";
+import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
 
 type FormValues = Record<
   string,

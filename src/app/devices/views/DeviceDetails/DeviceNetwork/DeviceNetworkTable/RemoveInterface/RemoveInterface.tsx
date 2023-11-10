@@ -9,16 +9,16 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useCycled, useSendAnalyticsWhen } from "app/base/hooks";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
+import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
 import type {
   Device,
   DeviceMeta,
   DeviceNetworkInterface,
-} from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
-import { formatErrors } from "app/utils";
+} from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
+import { formatErrors } from "@/app/utils";
 
 type Props = {
   closeExpanded: () => void;

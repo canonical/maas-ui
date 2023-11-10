@@ -6,10 +6,10 @@ import RamResources from "../RamResources";
 import VfResources from "../VfResources";
 import VmResources from "../VmResources";
 
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { resourceWithOverCommit } from "app/store/pod/utils";
-import type { RootState } from "app/store/root/types";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import { resourceWithOverCommit } from "@/app/store/pod/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = { id: Pod["id"] };
 

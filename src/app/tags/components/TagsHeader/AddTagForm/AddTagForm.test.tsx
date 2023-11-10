@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
 
-import * as analyticsHooks from "app/base/hooks/analytics";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { Label as DefinitionLabel } from "app/tags/components/DefinitionField";
-import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
-import { NewDefinitionMessage } from "app/tags/constants";
+import * as analyticsHooks from "@/app/base/hooks/analytics";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { Label as DefinitionLabel } from "@/app/tags/components/DefinitionField";
+import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
+import { NewDefinitionMessage } from "@/app/tags/constants";
 import {
   tag as tagFactory,
   rootState as rootStateFactory,

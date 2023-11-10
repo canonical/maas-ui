@@ -4,7 +4,7 @@ import StorageCards, {
   LARGE_MIN_WIDTH,
 } from "./StorageCards";
 
-import { COLOURS } from "app/base/constants";
+import { COLOURS } from "@/app/base/constants";
 import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
 import { render, screen } from "testing/utils";
 

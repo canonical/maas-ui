@@ -1,7 +1,7 @@
 import { ControllerStatus } from "./ControllerStatus";
 
-import type { RootState } from "app/store/root/types";
-import { ServiceStatus } from "app/store/service/types";
+import type { RootState } from "@/app/store/root/types";
+import { ServiceStatus } from "@/app/store/service/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

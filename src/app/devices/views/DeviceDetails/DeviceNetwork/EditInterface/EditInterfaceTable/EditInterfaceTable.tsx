@@ -1,31 +1,31 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TableHeader from "app/base/components/TableHeader";
-import DHCPColumn from "app/base/components/node/networking/DHCPColumn";
-import FabricColumn from "app/base/components/node/networking/FabricColumn";
-import NameColumn from "app/base/components/node/networking/NameColumn";
-import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
-import { useFetchActions } from "app/base/hooks";
-import deviceSelectors from "app/store/device/selectors";
+import TableHeader from "@/app/base/components/TableHeader";
+import DHCPColumn from "@/app/base/components/node/networking/DHCPColumn";
+import FabricColumn from "@/app/base/components/node/networking/FabricColumn";
+import NameColumn from "@/app/base/components/node/networking/NameColumn";
+import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
+import { useFetchActions } from "@/app/base/hooks";
+import deviceSelectors from "@/app/store/device/selectors";
 import type {
   Device,
   DeviceMeta,
   DeviceNetworkInterface,
-} from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { RootState } from "app/store/root/types";
-import type { NetworkLink } from "app/store/types/node";
+} from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceIPAddress,
   getInterfaceTypeText,
   getLinkFromNic,
   getLinkModeDisplay,
-} from "app/store/utils";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
+} from "@/app/store/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
   linkId?: NetworkLink["id"] | null;

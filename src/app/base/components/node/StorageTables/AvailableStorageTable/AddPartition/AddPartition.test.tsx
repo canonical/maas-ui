@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import AddPartition from "./AddPartition";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

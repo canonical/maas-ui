@@ -9,10 +9,10 @@ import {
 } from "@canonical/react-components";
 import type { ActionButtonProps, ColSize } from "@canonical/react-components";
 
-import { COL_SIZES } from "app/base/constants";
-import { useCycled } from "app/base/hooks";
-import type { APIError } from "app/base/types";
-import { formatErrors } from "app/utils";
+import { COL_SIZES } from "@/app/base/constants";
+import { useCycled } from "@/app/base/hooks";
+import type { APIError } from "@/app/base/types";
+import { formatErrors } from "@/app/utils";
 
 export type Props = {
   confirmAppearance?: ActionButtonProps["appearance"];

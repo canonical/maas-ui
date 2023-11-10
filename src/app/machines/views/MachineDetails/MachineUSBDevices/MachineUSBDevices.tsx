@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 
-import NodeDevices from "app/base/components/node/NodeDevices";
-import { useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import machineSelectors from "app/store/machine/selectors";
-import { MachineMeta } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import type { RootState } from "app/store/root/types";
+import NodeDevices from "@/app/base/components/node/NodeDevices";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import { MachineMeta } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = { setSidePanelContent: MachineSetSidePanelContent };
 

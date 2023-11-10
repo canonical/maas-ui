@@ -4,19 +4,19 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import { useGetURLId, useWindowTitle } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
-import urls from "app/base/urls";
-import LXDHostVMs from "app/kvm/components/LXDHostVMs";
-import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import podSelectors from "app/store/pod/selectors";
-import { PodMeta } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
-import { isId } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import type { SetSearchFilter } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import LXDHostVMs from "@/app/kvm/components/LXDHostVMs";
+import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import podSelectors from "@/app/store/pod/selectors";
+import { PodMeta } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
+import { isId } from "@/app/utils";
 
 type Props = {
   clusterId: VMCluster["id"];

@@ -5,13 +5,13 @@ import * as Yup from "yup";
 
 import type { FormActionProps } from "../FormActions";
 
-import FabricSelect from "app/base/components/FabricSelect";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import VLANSelect from "app/base/components/VLANSelect";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { toFormikNumber } from "app/utils";
+import FabricSelect from "@/app/base/components/FabricSelect";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import VLANSelect from "@/app/base/components/VLANSelect";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { toFormikNumber } from "@/app/utils";
 
 type AddSubnetValues = {
   vlan: string;

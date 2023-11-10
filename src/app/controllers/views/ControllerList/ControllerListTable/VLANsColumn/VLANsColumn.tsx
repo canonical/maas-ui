@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import urls from "app/base/urls";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import urls from "@/app/base/urls";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

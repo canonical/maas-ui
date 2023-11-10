@@ -1,8 +1,8 @@
 import type { ChipProps, PropsWithSpread } from "@canonical/react-components";
 import { Chip } from "@canonical/react-components";
 
-import type { TagIdCountMap } from "app/store/machine/utils";
-import type { Tag } from "app/store/tag/types";
+import type { TagIdCountMap } from "@/app/store/machine/utils";
+import type { Tag } from "@/app/store/tag/types";
 
 type Props = PropsWithSpread<
   {

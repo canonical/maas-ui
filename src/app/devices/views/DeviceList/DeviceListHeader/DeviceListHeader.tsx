@@ -1,13 +1,13 @@
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import ModelListSubtitle from "app/base/components/ModelListSubtitle";
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import SectionHeader from "app/base/components/SectionHeader";
-import type { SetSearchFilter } from "app/base/types";
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { DeviceSetSidePanelContent } from "app/devices/types";
-import deviceSelectors from "app/store/device/selectors";
+import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import type { SetSearchFilter } from "@/app/base/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { DeviceSetSidePanelContent } from "@/app/devices/types";
+import deviceSelectors from "@/app/store/device/selectors";
 
 type Props = {
   setSidePanelContent: DeviceSetSidePanelContent;

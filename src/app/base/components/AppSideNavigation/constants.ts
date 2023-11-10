@@ -1,6 +1,6 @@
 import type { NavGroup } from "./types";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 
 const navGroups: NavGroup[] = [
   {

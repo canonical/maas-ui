@@ -3,16 +3,16 @@ import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import settingsURLs from "app/settings/urls";
-import authSelectors from "app/store/auth/selectors";
-import { actions as notificationActions } from "app/store/notification";
-import notificationSelectors from "app/store/notification/selectors";
-import type { Notification as NotificationType } from "app/store/notification/types";
+import settingsURLs from "@/app/settings/urls";
+import authSelectors from "@/app/store/auth/selectors";
+import { actions as notificationActions } from "@/app/store/notification";
+import notificationSelectors from "@/app/store/notification/selectors";
+import type { Notification as NotificationType } from "@/app/store/notification/types";
 import {
   isReleaseNotification,
   isUpgradeNotification,
-} from "app/store/notification/utils";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/notification/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   className?: string | null;

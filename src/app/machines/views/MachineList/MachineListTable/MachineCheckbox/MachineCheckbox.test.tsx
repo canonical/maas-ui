@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import MachineCheckbox, { getSelectedMachinesRange } from "./MachineCheckbox";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,

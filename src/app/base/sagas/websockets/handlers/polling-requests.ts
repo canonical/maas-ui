@@ -7,7 +7,7 @@ import {
   fork,
   put,
   take,
-} from "typed-redux-saga/macro";
+} from "typed-redux-saga";
 
 import type { WebSocketAction } from "websocket-client";
 

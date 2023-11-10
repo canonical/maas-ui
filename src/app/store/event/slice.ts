@@ -7,7 +7,7 @@ import type { EventRecord, EventState } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const eventSlice = createSlice({
   name: EventMeta.MODEL,

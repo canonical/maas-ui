@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import InterfaceForm from "./InterfaceForm";
 
-import type { DeviceNetworkInterface } from "app/store/device/types";
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { DeviceNetworkInterface } from "@/app/store/device/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,

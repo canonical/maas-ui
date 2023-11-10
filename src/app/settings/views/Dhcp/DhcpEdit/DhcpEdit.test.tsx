@@ -3,8 +3,8 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
 import { DhcpEdit } from "./DhcpEdit";
 
-import { Labels as DhcpFormFieldsLabels } from "app/base/components/DhcpFormFields/DhcpFormFields";
-import type { RootState } from "app/store/root/types";
+import { Labels as DhcpFormFieldsLabels } from "@/app/base/components/DhcpFormFields/DhcpFormFields";
+import type { RootState } from "@/app/store/root/types";
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,

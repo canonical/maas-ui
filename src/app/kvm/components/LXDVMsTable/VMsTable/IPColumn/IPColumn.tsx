@@ -1,10 +1,10 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { IPV4_REGEX } from "app/base/validation";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { IPV4_REGEX } from "@/app/base/validation";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId: Machine["system_id"];

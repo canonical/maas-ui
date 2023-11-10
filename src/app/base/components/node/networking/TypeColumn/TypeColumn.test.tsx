@@ -1,7 +1,7 @@
 import TypeColumn from "./TypeColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

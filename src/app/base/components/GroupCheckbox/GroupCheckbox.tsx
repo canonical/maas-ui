@@ -6,7 +6,7 @@ import { Input } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import classNames from "classnames";
 
-import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 type Props<S> = PropsWithSpread<
   {

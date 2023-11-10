@@ -3,16 +3,16 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import Switch from "app/base/components/Switch";
-import { useFetchActions, useSendAnalytics } from "app/base/hooks";
-import urls from "app/base/urls";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { RootState } from "app/store/root/types";
-import type { VMCluster } from "app/store/vmcluster/types";
+import Switch from "@/app/base/components/Switch";
+import { useFetchActions, useSendAnalytics } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
+import type { RootState } from "@/app/store/root/types";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId?: VMCluster["id"];

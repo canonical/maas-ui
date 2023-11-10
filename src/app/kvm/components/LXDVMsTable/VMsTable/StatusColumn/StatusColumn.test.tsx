@@ -1,7 +1,7 @@
 import StatusColumn from "./StatusColumn";
 
-import { PowerState } from "app/store/types/enum";
-import { NodeStatusCode } from "app/store/types/node";
+import { PowerState } from "@/app/store/types/enum";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,

@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 
-import { actions as deviceActions } from "app/store/device";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { actions as deviceActions } from "@/app/store/device";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   device as deviceFactory,
   rootState as rootStateFactory,

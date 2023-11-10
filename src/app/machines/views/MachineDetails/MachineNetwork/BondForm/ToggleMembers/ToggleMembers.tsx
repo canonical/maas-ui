@@ -1,8 +1,8 @@
 import { Button, Tooltip } from "@canonical/react-components";
 
-import type { Selected } from "app/base/components/node/networking/types";
-import { useSendAnalytics } from "app/base/hooks";
-import type { NetworkInterface } from "app/store/types/node";
+import type { Selected } from "@/app/base/components/node/networking/types";
+import { useSendAnalytics } from "@/app/base/hooks";
+import type { NetworkInterface } from "@/app/store/types/node";
 
 type Props = {
   editingMembers?: boolean;

@@ -11,8 +11,8 @@ import {
   Labels as LicenseKeyFormLabels,
 } from "./LicenseKeyForm";
 
-import settingsURLs from "app/settings/urls";
-import type { RootState } from "app/store/root/types";
+import settingsURLs from "@/app/settings/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   licenseKeys as licenseKeysFactory,

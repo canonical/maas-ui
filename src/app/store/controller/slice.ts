@@ -20,16 +20,16 @@ import type {
   BaseNodeActionParams,
   SetZoneParams,
   TestParams,
-} from "app/store/types/node";
-import { NodeActions } from "app/store/types/node";
-import type { GenericItemMeta, StatusHandlers } from "app/store/utils/slice";
+} from "@/app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
+import type { GenericItemMeta, StatusHandlers } from "@/app/store/utils/slice";
 import {
   generateCommonReducers,
   generateStatusHandlers,
   genericInitialState,
   updateErrors,
-} from "app/store/utils/slice";
-import { kebabToCamelCase } from "app/utils";
+} from "@/app/store/utils/slice";
+import { kebabToCamelCase } from "@/app/utils";
 
 type CheckImagesItem = {
   [ControllerMeta.PK]: Controller[ControllerMeta.PK];

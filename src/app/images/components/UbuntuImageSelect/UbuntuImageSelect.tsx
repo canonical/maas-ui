@@ -7,15 +7,15 @@ import { useSelector } from "react-redux";
 import ArchSelect from "./ArchSelect";
 import ReleaseSelect from "./ReleaseSelect";
 
-import ImagesTable from "app/images/components/ImagesTable";
-import type { ImageValue } from "app/images/types";
+import ImagesTable from "@/app/images/components/ImagesTable";
+import type { ImageValue } from "@/app/images/types";
 import type {
   BaseImageFields,
   BootResource,
   BootResourceUbuntuArch,
   BootResourceUbuntuRelease,
-} from "app/store/bootresource/types";
-import configSelectors from "app/store/config/selectors";
+} from "@/app/store/bootresource/types";
+import configSelectors from "@/app/store/config/selectors";
 
 type Props = {
   arches: BootResourceUbuntuArch[];

@@ -1,6 +1,6 @@
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import { screen, getTestState, renderWithBrowserRouter } from "testing/utils";
 
 describe("KVMDetailsHeader", () => {

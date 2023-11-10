@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
-import FormCard from "app/base/components/FormCard";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as sslkeyActions } from "app/store/sslkey";
-import sslkeySelectors from "app/store/sslkey/selectors";
+import FormCard from "@/app/base/components/FormCard";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as sslkeyActions } from "@/app/store/sslkey";
+import sslkeySelectors from "@/app/store/sslkey/selectors";
 
 export enum Label {
   Title = "Add SSL key",

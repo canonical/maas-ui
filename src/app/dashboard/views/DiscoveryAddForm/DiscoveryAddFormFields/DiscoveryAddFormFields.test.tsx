@@ -6,9 +6,9 @@ import DiscoveryAddFormFields, {
   Labels as DiscoveryAddFormFieldsLabels,
 } from "./DiscoveryAddFormFields";
 
-import { DeviceMeta } from "app/store/device/types";
-import type { Discovery } from "app/store/discovery/types";
-import type { RootState } from "app/store/root/types";
+import { DeviceMeta } from "@/app/store/device/types";
+import type { Discovery } from "@/app/store/discovery/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,

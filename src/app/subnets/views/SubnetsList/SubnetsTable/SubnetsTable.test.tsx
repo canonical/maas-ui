@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import SubnetsTable from "./SubnetsTable";
 import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 
-import urls from "app/subnets/urls";
+import urls from "@/app/subnets/urls";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

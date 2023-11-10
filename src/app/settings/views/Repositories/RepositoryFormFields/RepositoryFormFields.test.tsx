@@ -4,7 +4,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import RepositoryForm from "../RepositoryForm";
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,

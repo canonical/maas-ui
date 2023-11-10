@@ -5,9 +5,9 @@ import ComposeForm from "../ComposeForm";
 
 import ComposeFormFields from "./ComposeFormFields";
 
-import { DriverType } from "app/store/general/types";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { DriverType } from "@/app/store/general/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,

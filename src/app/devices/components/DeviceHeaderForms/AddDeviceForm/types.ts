@@ -2,9 +2,9 @@ import type {
   CreateParams,
   Device,
   DeviceIpAssignment,
-} from "app/store/device/types";
-import type { Domain } from "app/store/domain/types";
-import type { Zone } from "app/store/zone/types";
+} from "@/app/store/device/types";
+import type { Domain } from "@/app/store/domain/types";
+import type { Zone } from "@/app/store/zone/types";
 
 type CreateParamsInterface = CreateParams["interfaces"][0];
 

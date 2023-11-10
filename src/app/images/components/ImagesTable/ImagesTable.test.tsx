@@ -3,8 +3,8 @@ import timezoneMock from "timezone-mock";
 
 import ImagesTable, { Labels as ImagesTableLabels } from "./ImagesTable";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as resourceFactory,
   bootResourceState as bootResourceStateFactory,

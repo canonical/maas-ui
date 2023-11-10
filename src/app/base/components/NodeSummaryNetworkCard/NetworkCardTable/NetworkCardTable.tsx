@@ -7,22 +7,22 @@ import {
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import MacAddressDisplay from "app/base/components/MacAddressDisplay";
-import TooltipButton from "app/base/components/TooltipButton";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import type { Device } from "app/store/device/types";
-import fabricSelectors from "app/store/fabric/selectors";
-import { getFabricDisplay } from "app/store/fabric/utils";
-import type { MachineDetails } from "app/store/machine/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { NetworkInterface } from "app/store/types/node";
+import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import type { Device } from "@/app/store/device/types";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import { getFabricDisplay } from "@/app/store/fabric/utils";
+import type { MachineDetails } from "@/app/store/machine/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   getInterfaceIPAddressOrMode,
   getInterfaceSubnet,
-} from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
-import { getDHCPStatus } from "app/store/vlan/utils";
-import { formatSpeedUnits } from "app/utils";
+} from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { getDHCPStatus } from "@/app/store/vlan/utils";
+import { formatSpeedUnits } from "@/app/utils";
 
 type Props = {
   interfaces: NetworkInterface[];

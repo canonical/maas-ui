@@ -19,39 +19,39 @@ import {
   networkFieldsInitialValues,
 } from "../NetworkFields/NetworkFields";
 
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
+import FormCard from "@/app/base/components/FormCard";
+import FormikForm from "@/app/base/components/FormikForm";
 import type {
   Selected,
   SetSelected,
-} from "app/base/components/node/networking/types";
-import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
-import { MAC_ADDRESS_REGEX } from "app/base/validation";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
+} from "@/app/base/components/node/networking/types";
+import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
 import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { CreateBondParams, MachineDetails } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+} from "@/app/store/general/types";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { CreateBondParams, MachineDetails } from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   getInterfaceSubnet,
   getLinkFromNic,
   getNextNicName,
-} from "app/store/utils";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
+} from "@/app/store/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {
   close: () => void;

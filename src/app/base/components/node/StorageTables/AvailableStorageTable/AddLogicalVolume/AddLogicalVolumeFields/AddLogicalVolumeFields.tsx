@@ -4,9 +4,9 @@ import { useFormikContext } from "formik";
 import FilesystemFields from "../../FilesystemFields";
 import type { AddLogicalVolumeValues } from "../AddLogicalVolume";
 
-import FormikField from "app/base/components/FormikField";
-import TagNameField from "app/base/components/TagNameField";
-import type { Machine } from "app/store/machine/types";
+import FormikField from "@/app/base/components/FormikField";
+import TagNameField from "@/app/base/components/TagNameField";
+import type { Machine } from "@/app/store/machine/types";
 
 type Props = {
   systemId: Machine["system_id"];

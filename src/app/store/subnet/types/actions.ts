@@ -1,8 +1,8 @@
 import type { Subnet } from "./base";
 import type { SubnetMeta } from "./enum";
 
-import type { Fabric, FabricMeta } from "app/store/fabric/types";
-import type { VLAN } from "app/store/vlan/types";
+import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
+import type { VLAN } from "@/app/store/vlan/types";
 
 export type CreateParams = {
   active_discovery?: Subnet["active_discovery"];

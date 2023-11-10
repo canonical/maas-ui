@@ -7,7 +7,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useInitialPowerParameters } from "./hooks";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   powerField as powerFieldFactory,

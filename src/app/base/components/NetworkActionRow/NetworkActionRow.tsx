@@ -5,8 +5,8 @@ import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
 import type { Expanded, SetExpanded } from "../NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "../NodeNetworkTab/NodeNetworkTab";
 
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import type { Node } from "app/store/types/node";
+import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import type { Node } from "@/app/store/types/node";
 
 type Action = {
   disabled: [boolean, string?][];

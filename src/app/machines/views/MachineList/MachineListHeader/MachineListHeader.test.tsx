@@ -2,9 +2,9 @@ import reduxToolkit from "@reduxjs/toolkit";
 
 import MachineListHeader from "./MachineListHeader";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,

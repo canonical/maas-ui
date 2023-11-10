@@ -6,7 +6,7 @@ import type {
 } from "@canonical/react-components";
 import { Button, Icon, Input } from "@canonical/react-components";
 
-import { useFetchedCount } from "app/store/machine/utils";
+import { useFetchedCount } from "@/app/store/machine/utils";
 
 export enum Label {
   Pagination = "Table pagination",

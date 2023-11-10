@@ -7,8 +7,8 @@ import { ControllerDetailsTabLabels } from "../../constants";
 
 import ControllerDetails from "./ControllerDetails";
 
-import urls from "app/base/urls";
-import { actions as controllerActions } from "app/store/controller";
+import urls from "@/app/base/urls";
+import { actions as controllerActions } from "@/app/store/controller";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

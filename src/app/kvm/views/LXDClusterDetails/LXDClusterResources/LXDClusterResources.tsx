@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
-import { useWindowTitle } from "app/base/hooks";
-import KVMStorageCards from "app/kvm/components/KVMStorageCards";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import KVMStorageCards from "@/app/kvm/components/KVMStorageCards";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];

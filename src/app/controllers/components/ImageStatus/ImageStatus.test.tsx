@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import { ImageStatus } from "./ImageStatus";
 
-import { ImageSyncStatus } from "app/store/controller/types/enum";
-import type { RootState } from "app/store/root/types";
+import { ImageSyncStatus } from "@/app/store/controller/types/enum";
+import type { RootState } from "@/app/store/root/types";
 import {
   controller as controllerFactory,
   controllerImageSyncStatuses as controllerImageSyncStatusesFactory,

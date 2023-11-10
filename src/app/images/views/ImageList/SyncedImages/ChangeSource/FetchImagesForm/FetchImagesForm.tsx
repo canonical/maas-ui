@@ -6,12 +6,12 @@ import * as Yup from "yup";
 
 import FetchImagesFormFields from "./FetchImagesFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { APIError } from "app/base/types";
-import { actions as bootResourceActions } from "app/store/bootresource";
-import bootResourceSelectors from "app/store/bootresource/selectors";
-import { BootResourceSourceType } from "app/store/bootresource/types";
-import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { APIError } from "@/app/base/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
+import type { BootResourceUbuntuSource } from "@/app/store/bootresource/types";
 
 const FetchImagesSchema = Yup.object()
   .shape({

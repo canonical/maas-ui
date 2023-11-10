@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
-import urls from "app/base/urls";
-import authSelectors from "app/store/auth/selectors";
+import urls from "@/app/base/urls";
+import authSelectors from "@/app/store/auth/selectors";
 
 /**
  * Get the URL to redirect to when the intro closes.

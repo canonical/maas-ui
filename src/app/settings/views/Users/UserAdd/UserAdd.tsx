@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import UserForm from "../UserForm";
 
-import statusSelectors from "app/store/status/selectors";
+import statusSelectors from "@/app/store/status/selectors";
 
 export const UserAdd = (): JSX.Element => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);

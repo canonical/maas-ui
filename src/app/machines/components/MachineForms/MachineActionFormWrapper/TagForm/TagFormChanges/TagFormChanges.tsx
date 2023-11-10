@@ -17,14 +17,14 @@ import TagChip from "../TagChip";
 import { useSelectedTags, useUnchangedTags } from "../hooks";
 import type { TagFormValues } from "../types";
 
-import urls from "app/base/urls";
-import type { MachineActionFormProps } from "app/machines/types";
-import type { TagIdCountMap } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import { getTagCounts } from "app/store/tag/utils";
-import { toFormikNumber } from "app/utils";
+import urls from "@/app/base/urls";
+import type { MachineActionFormProps } from "@/app/machines/types";
+import type { TagIdCountMap } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import { getTagCounts } from "@/app/store/tag/utils";
+import { toFormikNumber } from "@/app/utils";
 
 type Props = {
   tags: Tag[];

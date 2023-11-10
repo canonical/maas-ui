@@ -5,34 +5,34 @@ import * as Yup from "yup";
 
 import InterfaceFormFields from "./InterfaceFormFields";
 
-import type { FormikFormProps } from "app/base/components/FormikForm";
-import FormikForm from "app/base/components/FormikForm";
-import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
-import { MAC_ADDRESS_REGEX } from "app/base/validation";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
+import type { FormikFormProps } from "@/app/base/components/FormikForm";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
 import type {
   Device,
   DeviceMeta,
   DeviceNetworkInterface,
-} from "app/store/device/types";
-import { DeviceIpAssignment } from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkLink } from "app/store/types/node";
+} from "@/app/store/device/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceSubnet,
   getLinkFromNic,
   getNextNicName,
-} from "app/store/utils";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
+} from "@/app/store/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = PropsWithSpread<
   {

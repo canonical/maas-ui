@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SSLKeyList, { Label as SSLKeyListLabels } from "./SSLKeyList";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,

@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   rootState as rootStateFactory,

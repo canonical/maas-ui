@@ -1,8 +1,8 @@
 import { UserForm } from "./UserForm";
 
-import type { RootState } from "app/store/root/types";
-import userSelectors from "app/store/user/selectors";
-import type { User } from "app/store/user/types";
+import type { RootState } from "@/app/store/root/types";
+import userSelectors from "@/app/store/user/selectors";
+import type { User } from "@/app/store/user/types";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,

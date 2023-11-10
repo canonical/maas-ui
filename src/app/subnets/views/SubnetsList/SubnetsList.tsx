@@ -7,15 +7,15 @@ import SubnetsTable from "./SubnetsTable";
 import { SubnetsColumns } from "./SubnetsTable/constants";
 import type { GroupByKey } from "./SubnetsTable/types";
 
-import PageContent from "app/base/components/PageContent/PageContent";
-import SectionHeader from "app/base/components/SectionHeader";
-import SegmentedControl from "app/base/components/SegmentedControl";
-import { useWindowTitle } from "app/base/hooks";
-import { useQuery } from "app/base/hooks/urls";
-import { useSidePanel } from "app/base/side-panel-context";
-import { SubnetForms, SubnetsUrlParams } from "app/subnets/constants";
-import { SubnetSidePanelViews } from "app/subnets/types";
-import FormActions from "app/subnets/views/FormActions";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import SegmentedControl from "@/app/base/components/SegmentedControl";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useQuery } from "@/app/base/hooks/urls";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { SubnetForms, SubnetsUrlParams } from "@/app/subnets/constants";
+import { SubnetSidePanelViews } from "@/app/subnets/types";
+import FormActions from "@/app/subnets/views/FormActions";
 
 const SubnetsList = (): JSX.Element => {
   useWindowTitle("Subnets");

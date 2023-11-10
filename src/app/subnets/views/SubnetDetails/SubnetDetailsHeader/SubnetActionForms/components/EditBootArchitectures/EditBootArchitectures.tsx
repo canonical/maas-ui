@@ -6,15 +6,15 @@ import * as Yup from "yup";
 
 import BootArchitecturesTable from "./BootArchitecturesTable";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useFetchActions } from "app/base/hooks";
-import { actions as generalActions } from "app/store/general";
-import { knownBootArchitectures as knownBootArchitecturesSelectors } from "app/store/general/selectors";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import type { SubnetActionProps } from "app/subnets/views/SubnetDetails/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as generalActions } from "@/app/store/general";
+import { knownBootArchitectures as knownBootArchitecturesSelectors } from "@/app/store/general/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types";
 
 export type FormValues = {
   disabled_boot_architectures: Subnet["disabled_boot_architectures"];

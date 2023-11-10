@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import FabricVLANs from "./FabricVLANs";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

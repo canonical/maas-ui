@@ -1,15 +1,15 @@
 import { MachineListTable, Label } from "./MachineListTable";
 
-import { SortDirection } from "app/base/types";
-import { MachineColumns, columnLabels } from "app/machines/constants";
-import type { Machine, MachineStateListGroup } from "app/store/machine/types";
-import { FetchGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { SortDirection } from "@/app/base/types";
+import { MachineColumns, columnLabels } from "@/app/machines/constants";
+import type { Machine, MachineStateListGroup } from "@/app/store/machine/types";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   generalState as generalStateFactory,

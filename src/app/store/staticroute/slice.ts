@@ -6,7 +6,7 @@ import type { CreateParams, StaticRouteState, UpdateParams } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const staticRouteSlice = createSlice({
   name: StaticRouteMeta.MODEL,

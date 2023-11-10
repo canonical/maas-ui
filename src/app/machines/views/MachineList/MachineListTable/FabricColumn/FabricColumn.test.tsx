@@ -1,6 +1,6 @@
 import { FabricColumn } from "./FabricColumn";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

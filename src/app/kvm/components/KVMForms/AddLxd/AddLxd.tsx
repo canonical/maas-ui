@@ -8,11 +8,11 @@ import CredentialsForm from "./CredentialsForm";
 import SelectProjectForm from "./SelectProjectForm";
 import type { AddLxdStepValues, NewPodValues } from "./types";
 
-import Stepper from "app/base/components/Stepper";
-import type { ClearSidePanelContent } from "app/base/types";
-import { actions as podActions } from "app/store/pod";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import zoneSelectors from "app/store/zone/selectors";
+import Stepper from "@/app/base/components/Stepper";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import { actions as podActions } from "@/app/store/pod";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;

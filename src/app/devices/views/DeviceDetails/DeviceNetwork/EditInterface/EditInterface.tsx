@@ -5,19 +5,19 @@ import InterfaceForm from "../InterfaceForm";
 
 import EditInterfaceTable from "./EditInterfaceTable";
 
-import FormCard from "app/base/components/FormCard";
-import { useCycled } from "app/base/hooks";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
+import FormCard from "@/app/base/components/FormCard";
+import { useCycled } from "@/app/base/hooks";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
 import type {
   Device,
   DeviceMeta,
   DeviceNetworkInterface,
-} from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import type { RootState } from "app/store/root/types";
-import type { NetworkLink, UpdateInterfaceParams } from "app/store/types/node";
-import { preparePayload } from "app/utils";
+} from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkLink, UpdateInterfaceParams } from "@/app/store/types/node";
+import { preparePayload } from "@/app/utils";
 
 type Props = {
   closeForm: () => void;

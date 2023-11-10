@@ -8,7 +8,7 @@ import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFo
 
 import { LicenseKeyEdit, Labels as LicenseKeyLabels } from "./LicenseKeyEdit";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   licenseKeys as licenseKeysFactory,

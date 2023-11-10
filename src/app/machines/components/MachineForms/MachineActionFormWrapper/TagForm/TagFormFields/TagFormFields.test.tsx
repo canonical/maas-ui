@@ -9,8 +9,8 @@ import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
 
 import TagFormFields, { Label } from "./TagFormFields";
 
-import type { RootState } from "app/store/root/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

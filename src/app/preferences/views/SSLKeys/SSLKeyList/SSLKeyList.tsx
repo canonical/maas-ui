@@ -4,14 +4,14 @@ import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import SettingsTable from "app/settings/components/SettingsTable";
-import { actions as sslkeyActions } from "app/store/sslkey";
-import sslkeySelectors from "app/store/sslkey/selectors";
-import type { SSLKey, SSLKeyMeta, SSLKeyState } from "app/store/sslkey/types";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import { useFetchActions, useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import { actions as sslkeyActions } from "@/app/store/sslkey";
+import sslkeySelectors from "@/app/store/sslkey/selectors";
+import type { SSLKey, SSLKeyMeta, SSLKeyState } from "@/app/store/sslkey/types";
 
 export enum Label {
   Title = "SSL keys",

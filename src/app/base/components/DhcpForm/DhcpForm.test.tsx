@@ -7,9 +7,9 @@ import { Labels as FieldLabels } from "../DhcpFormFields";
 
 import DhcpForm, { Labels } from "./DhcpForm";
 
-import { actions as dhcpActions } from "app/store/dhcpsnippet";
-import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
-import type { RootState } from "app/store/root/types";
+import { actions as dhcpActions } from "@/app/store/dhcpsnippet";
+import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
+import type { RootState } from "@/app/store/root/types";
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,

@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import ConfigureDHCP from "./ConfigureDHCP";
 
-import type { RootState } from "app/store/root/types";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import { actions as vlanActions } from "app/store/vlan";
+import type { RootState } from "@/app/store/root/types";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

@@ -5,11 +5,11 @@ import MachineForm from "./MachineForm";
 import PowerForm from "./PowerForm";
 import TagForm from "./TagForm";
 
-import { useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import machineSelectors from "app/store/machine/selectors";
-import { MachineMeta } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import machineSelectors from "@/app/store/machine/selectors";
+import { MachineMeta } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 
 const MachineConfiguration = (): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);

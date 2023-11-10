@@ -1,14 +1,14 @@
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
 import { Link } from "react-router-dom-v5-compat";
 
-import { HardwareType } from "app/base/enum";
-import { useSendAnalytics } from "app/base/hooks";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { TestStatus } from "app/store/types/node";
-import { NodeActions } from "app/store/types/node";
-import { capitaliseFirst } from "app/utils";
+import { HardwareType } from "@/app/base/enum";
+import { useSendAnalytics } from "@/app/base/hooks";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { TestStatus } from "@/app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
+import { capitaliseFirst } from "@/app/utils";
 
 type Props = {
   machine: MachineDetails;

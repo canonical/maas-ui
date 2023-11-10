@@ -9,9 +9,9 @@ import FetchImagesForm, {
 } from "./FetchImagesForm";
 import { Labels as FetchImagesFormFieldsLabels } from "./FetchImagesFormFields/FetchImagesFormFields";
 
-import { actions as bootResourceActions } from "app/store/bootresource";
-import { BootResourceSourceType } from "app/store/bootresource/types";
-import type { RootState } from "app/store/root/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,

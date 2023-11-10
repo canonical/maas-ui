@@ -2,9 +2,9 @@ import { Label as EventLogsLabel } from "./EventLogs/EventLogs";
 import { Label as InstallationOutputLabel } from "./InstallationOutput/InstallationOutput";
 import NodeLogs from "./NodeLogs";
 
-import urls from "app/base/urls";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

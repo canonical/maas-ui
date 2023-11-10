@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import SpaceDetails from "./SpaceDetails";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as spaceActions } from "app/store/space";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as spaceActions } from "@/app/store/space";
 import {
   spaceState as spaceStateFactory,
   space as spaceFactory,

@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DeviceLink, { Labels } from "./DeviceLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,

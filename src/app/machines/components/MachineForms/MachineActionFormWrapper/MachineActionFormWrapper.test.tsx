@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machineActionState as machineActionStateFactory,
   machine as machineFactory,

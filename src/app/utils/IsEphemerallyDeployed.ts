@@ -1,5 +1,5 @@
-import type { Machine } from "app/store/machine/types";
-import { NodeStatusCode } from "app/store/types/node";
+import type { Machine } from "@/app/store/machine/types";
+import { NodeStatusCode } from "@/app/store/types/node";
 
 export const isEphemerallyDeployed = (machine: Machine | null) => {
   return (

@@ -7,7 +7,7 @@ import type { CreateParams, Notification, NotificationState } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const notificationSlice = createSlice({
   name: NotificationMeta.MODEL,

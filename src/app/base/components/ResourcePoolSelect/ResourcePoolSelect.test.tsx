@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import ResourcePoolSelect from "./ResourcePoolSelect";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,

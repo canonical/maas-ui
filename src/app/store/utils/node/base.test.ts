@@ -7,8 +7,8 @@ import {
   nodeIsMachine,
 } from "./base";
 
-import { SidePanelViews } from "app/base/side-panel-context";
-import { NodeActions, NodeStatus } from "app/store/types/node";
+import { SidePanelViews } from "@/app/base/side-panel-context";
+import { NodeActions, NodeStatus } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   controllerDetails as controllerDetailsFactory,

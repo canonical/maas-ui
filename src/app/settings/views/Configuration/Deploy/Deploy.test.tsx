@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import Deploy from "./Deploy";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
 import { render } from "testing/utils";
 

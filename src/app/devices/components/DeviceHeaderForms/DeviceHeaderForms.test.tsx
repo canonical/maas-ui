@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import DeviceHeaderForms from "./DeviceHeaderForms";
 
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { RootState } from "app/store/root/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,

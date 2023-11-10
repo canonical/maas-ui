@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Strip } from "@canonical/react-components";
 
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 
 export enum ExpandedState {
   ADD_ALIAS = "addAlias",

@@ -2,14 +2,14 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface, NetworkLink, Node } from "app/store/types/node";
-import { getInterfaceFabric, isBondOrBridgeParent } from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
-import { getVLANDisplay } from "app/store/vlan/utils";
-import subnetURLs from "app/subnets/urls";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkInterface, NetworkLink, Node } from "@/app/store/types/node";
+import { getInterfaceFabric, isBondOrBridgeParent } from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { getVLANDisplay } from "@/app/store/vlan/utils";
+import subnetURLs from "@/app/subnets/urls";
 
 type Props = {
   link?: NetworkLink | null;

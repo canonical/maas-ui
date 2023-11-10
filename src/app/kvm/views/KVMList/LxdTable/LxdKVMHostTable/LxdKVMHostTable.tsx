@@ -2,24 +2,24 @@ import { Icon, MainTable } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
-import { SortDirection } from "app/base/types";
-import CPUColumn from "app/kvm/components/CPUColumn";
-import NameColumn from "app/kvm/components/NameColumn";
-import PoolColumn from "app/kvm/components/PoolColumn";
-import RAMColumn from "app/kvm/components/RAMColumn";
-import type { Props as RAMColumnProps } from "app/kvm/components/RAMColumn/RAMColumn";
-import StorageColumn from "app/kvm/components/StorageColumn";
-import TagsColumn from "app/kvm/components/TagsColumn";
-import VMsColumn from "app/kvm/components/VMsColumn";
-import type { KVMResource, KVMStoragePoolResources } from "app/kvm/types";
-import type { Pod, PodMeta } from "app/store/pod/types";
-import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
-import zoneSelectors from "app/store/zone/selectors";
-import type { Zone } from "app/store/zone/types";
-import { isComparable } from "app/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TableHeader from "@/app/base/components/TableHeader";
+import { useTableSort } from "@/app/base/hooks";
+import { SortDirection } from "@/app/base/types";
+import CPUColumn from "@/app/kvm/components/CPUColumn";
+import NameColumn from "@/app/kvm/components/NameColumn";
+import PoolColumn from "@/app/kvm/components/PoolColumn";
+import RAMColumn from "@/app/kvm/components/RAMColumn";
+import type { Props as RAMColumnProps } from "@/app/kvm/components/RAMColumn/RAMColumn";
+import StorageColumn from "@/app/kvm/components/StorageColumn";
+import TagsColumn from "@/app/kvm/components/TagsColumn";
+import VMsColumn from "@/app/kvm/components/VMsColumn";
+import type { KVMResource, KVMStoragePoolResources } from "@/app/kvm/types";
+import type { Pod, PodMeta } from "@/app/store/pod/types";
+import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
+import zoneSelectors from "@/app/store/zone/selectors";
+import type { Zone } from "@/app/store/zone/types";
+import { isComparable } from "@/app/utils";
 
 export enum LxdKVMHostType {
   Cluster = "cluster",

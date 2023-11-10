@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import VLANLink from "./VLANLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   rootState as rootStateFactory,
   vlan as vlanFactory,

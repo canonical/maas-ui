@@ -4,12 +4,12 @@ import { useFormikContext } from "formik";
 import type { BridgeFormValues } from "../AddBridgeForm/types";
 import NetworkFields from "../NetworkFields";
 
-import FormikField from "app/base/components/FormikField";
-import MacAddressField from "app/base/components/MacAddressField";
-import SwitchField from "app/base/components/SwitchField";
-import TagNameField from "app/base/components/TagNameField";
-import TooltipButton from "app/base/components/TooltipButton";
-import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
+import FormikField from "@/app/base/components/FormikField";
+import MacAddressField from "@/app/base/components/MacAddressField";
+import SwitchField from "@/app/base/components/SwitchField";
+import TagNameField from "@/app/base/components/TagNameField";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { BridgeType, NetworkInterfaceTypes } from "@/app/store/types/enum";
 
 type Props = {
   typeDisabled?: boolean;

@@ -1,9 +1,9 @@
 import DeviceListTable, { Labels } from "./DeviceListTable";
 
-import urls from "app/base/urls";
-import type { Device } from "app/store/device/types";
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { Device } from "@/app/store/device/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,

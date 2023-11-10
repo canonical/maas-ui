@@ -4,14 +4,14 @@ import { LinkMonitoring, MacSource } from "../types";
 
 import BondFormFields from "./BondFormFields";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+} from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

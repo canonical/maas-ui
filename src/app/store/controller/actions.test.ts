@@ -1,6 +1,6 @@
 import { actions } from "./slice";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 
 describe("controller actions", () => {
   it("should handle checking images", () => {

@@ -2,9 +2,9 @@ import { define, extend } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Model } from "app/store/types/model";
-import type { User } from "app/store/user/types";
-import type { UserEventError, UserStatuses } from "app/store/user/types/base";
+import type { Model } from "@/app/store/types/model";
+import type { User } from "@/app/store/user/types";
+import type { UserEventError, UserStatuses } from "@/app/store/user/types/base";
 
 const globalPermissions = () => ["machine_create"];
 

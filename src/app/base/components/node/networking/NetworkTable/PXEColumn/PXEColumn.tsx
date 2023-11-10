@@ -1,9 +1,9 @@
 import { Icon } from "@canonical/react-components";
 
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
-import { isBootInterface } from "app/store/utils";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
+import { isBootInterface } from "@/app/store/utils";
 
 type Props = {
   link?: NetworkLink | null;

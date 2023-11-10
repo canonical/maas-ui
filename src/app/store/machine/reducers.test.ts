@@ -10,13 +10,13 @@ import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
 import { FetchGroupKey } from "./types/actions";
 
-import { actions as statusActions } from "app/store/status/slice";
+import { actions as statusActions } from "@/app/store/status/slice";
 import {
   NodeActions,
   NodeStatus,
   NodeStatusCode,
   FetchNodeStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   filterGroup as filterGroupFactory,

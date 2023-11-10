@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterVMs from "./LXDClusterVMs";
 
-import urls from "app/base/urls";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,

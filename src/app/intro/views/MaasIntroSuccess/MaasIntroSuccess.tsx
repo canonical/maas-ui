@@ -2,12 +2,12 @@ import { Button, List } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import urls from "app/base/urls";
-import IntroCard from "app/intro/components/IntroCard";
-import IntroSection from "app/intro/components/IntroSection";
-import { useExitURL } from "app/intro/hooks";
-import authSelectors from "app/store/auth/selectors";
-import { actions as configActions } from "app/store/config";
+import urls from "@/app/base/urls";
+import IntroCard from "@/app/intro/components/IntroCard";
+import IntroSection from "@/app/intro/components/IntroSection";
+import { useExitURL } from "@/app/intro/hooks";
+import authSelectors from "@/app/store/auth/selectors";
+import { actions as configActions } from "@/app/store/config";
 
 export enum Labels {
   FinishSetup = "Finish setup",

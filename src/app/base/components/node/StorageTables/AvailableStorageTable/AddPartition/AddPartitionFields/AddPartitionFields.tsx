@@ -4,8 +4,8 @@ import { useFormikContext } from "formik";
 import FilesystemFields from "../../FilesystemFields";
 import type { AddPartitionValues } from "../AddPartition";
 
-import FormikField from "app/base/components/FormikField";
-import type { Machine } from "app/store/machine/types";
+import FormikField from "@/app/base/components/FormikField";
+import type { Machine } from "@/app/store/machine/types";
 
 type Props = {
   partitionName: string;

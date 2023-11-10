@@ -4,9 +4,9 @@ import ImageListHeader, {
   Labels as ImageListHeaderLabels,
 } from "./ImageListHeader";
 
-import { actions as configActions } from "app/store/config";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { actions as configActions } from "@/app/store/config";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,

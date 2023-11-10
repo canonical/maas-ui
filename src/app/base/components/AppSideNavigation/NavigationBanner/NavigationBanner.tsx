@@ -4,8 +4,8 @@ import { Link, useLocation } from "react-router-dom-v5-compat";
 
 import { isSelected } from "../utils";
 
-import urls from "app/base/urls";
-import authSelectors from "app/store/auth/selectors";
+import urls from "@/app/base/urls";
+import authSelectors from "@/app/store/auth/selectors";
 
 const NavigationBanner = ({
   children,

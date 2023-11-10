@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import NodeActionWarning from "app/base/components/node/NodeActionWarning";
-import { useCycled, useScrollOnRender } from "app/base/hooks";
-import type { ClearSidePanelContent } from "app/base/types";
-import type { Node, NodeActions } from "app/store/types/node";
-import { canOpenActionForm } from "app/store/utils";
+import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
+import { useCycled, useScrollOnRender } from "@/app/base/hooks";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import type { Node, NodeActions } from "@/app/store/types/node";
+import { canOpenActionForm } from "@/app/store/utils";
 
 type Props = {
   action: NodeActions;

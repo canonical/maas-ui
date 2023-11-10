@@ -1,6 +1,6 @@
 import { FilterControllers, getControllerValue } from "./search";
 
-import type { Filters } from "app/utils/search/filter-handlers";
+import type { Filters } from "@/app/utils/search/filter-handlers";
 import {
   controller as controllerFactory,
   tag as tagFactory,

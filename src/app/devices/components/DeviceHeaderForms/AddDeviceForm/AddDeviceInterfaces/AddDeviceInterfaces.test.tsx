@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 import AddDeviceInterfaces from "../AddDeviceInterfaces";
 import type { AddDeviceInterface } from "../types";
 
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,

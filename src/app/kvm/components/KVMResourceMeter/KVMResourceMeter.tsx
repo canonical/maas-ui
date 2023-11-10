@@ -1,7 +1,7 @@
 import { Meter } from "@canonical/maas-react-components";
 
-import { COLOURS } from "app/base/constants";
-import { formatBytes } from "app/utils";
+import { COLOURS } from "@/app/base/constants";
+import { formatBytes } from "@/app/utils";
 
 type Props = {
   allocated: number;

@@ -13,14 +13,14 @@ import type {
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage } from "app/base/hooks";
-import type { ClearSidePanelContent } from "app/base/types";
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
-import podSelectors from "app/store/pod/selectors";
-import type { RootState } from "app/store/root/types";
-import { formatErrors, preparePayload } from "app/utils";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage } from "@/app/base/hooks";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import { actions as podActions } from "@/app/store/pod";
+import { PodType } from "@/app/store/pod/constants";
+import podSelectors from "@/app/store/pod/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { formatErrors, preparePayload } from "@/app/utils";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;

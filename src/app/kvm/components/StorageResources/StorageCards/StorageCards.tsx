@@ -3,12 +3,12 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { useListener } from "@canonical/react-components/dist/hooks";
 
-import { COLOURS } from "app/base/constants";
-import StoragePopover from "app/kvm/components/StorageColumn/StoragePopover";
-import type { KVMStoragePoolResources } from "app/kvm/types";
-import { calcFreePoolStorage, getSortedPoolsArray } from "app/kvm/utils";
-import type { Pod } from "app/store/pod/types";
-import { formatBytes } from "app/utils";
+import { COLOURS } from "@/app/base/constants";
+import StoragePopover from "@/app/kvm/components/StorageColumn/StoragePopover";
+import type { KVMStoragePoolResources } from "@/app/kvm/types";
+import { calcFreePoolStorage, getSortedPoolsArray } from "@/app/kvm/utils";
+import type { Pod } from "@/app/store/pod/types";
+import { formatBytes } from "@/app/utils";
 
 type Props = {
   defaultPoolId?: Pod["default_storage_pool"];

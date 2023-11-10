@@ -1,7 +1,7 @@
 import notification from "./selectors";
 
-import { ConfigNames } from "app/store/config/types";
-import { NotificationIdent } from "app/store/notification/types";
+import { ConfigNames } from "@/app/store/config/types";
+import { NotificationIdent } from "@/app/store/notification/types";
 import {
   config as configFactory,
   configState as configStateFactory,

@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import DeviceNetwork from "./DeviceNetwork";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceState as deviceStateFactory,

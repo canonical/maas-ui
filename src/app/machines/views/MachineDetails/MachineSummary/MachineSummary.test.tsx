@@ -1,7 +1,7 @@
 import MachineSummary from "./MachineSummary";
 
-import type { RootState } from "app/store/root/types";
-import { NodeStatusCode } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

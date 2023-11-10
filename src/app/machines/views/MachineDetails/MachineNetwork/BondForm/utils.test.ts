@@ -10,8 +10,8 @@ import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+} from "@/app/store/general/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

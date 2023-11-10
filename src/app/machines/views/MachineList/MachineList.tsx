@@ -8,16 +8,16 @@ import MachineListTable from "./MachineListTable";
 import { DEFAULTS } from "./MachineListTable/constants";
 import { usePageSize, type useResponsiveColumns } from "./hooks";
 
-import VaultNotification from "app/base/components/VaultNotification";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import type { SortDirection } from "app/base/types";
-import { actions as controllerActions } from "app/store/controller";
-import { actions as generalActions } from "app/store/general";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { FetchGroupKey } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
+import VaultNotification from "@/app/base/components/VaultNotification";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import type { SortDirection } from "@/app/base/types";
+import { actions as controllerActions } from "@/app/store/controller";
+import { actions as generalActions } from "@/app/store/general";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { FetchGroupKey } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { useFetchMachines } from "@/app/store/machine/utils/hooks";
 
 type Props = {
   grouping: FetchGroupKey | null;

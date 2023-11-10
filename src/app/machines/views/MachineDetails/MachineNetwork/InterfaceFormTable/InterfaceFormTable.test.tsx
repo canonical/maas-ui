@@ -1,6 +1,6 @@
 import InterfaceFormTable from "./InterfaceFormTable";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

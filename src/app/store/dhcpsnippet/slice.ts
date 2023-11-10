@@ -6,7 +6,7 @@ import { DHCPSnippetMeta } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const dhcpSnippetSlice = createSlice({
   name: DHCPSnippetMeta.MODEL,

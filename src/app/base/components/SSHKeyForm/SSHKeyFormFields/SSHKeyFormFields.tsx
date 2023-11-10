@@ -5,10 +5,10 @@ import { useFormikContext } from "formik";
 
 import type { SSHKeyFormValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import TooltipButton from "app/base/components/TooltipButton";
-import { COL_SIZES } from "app/base/constants";
-import docsUrls from "app/base/docsUrls";
+import FormikField from "@/app/base/components/FormikField";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { COL_SIZES } from "@/app/base/constants";
+import docsUrls from "@/app/base/docsUrls";
 
 type Props = {
   cols?: number;

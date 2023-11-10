@@ -1,6 +1,6 @@
 import reducers from "./slice";
 
-import type { UserState } from "app/store/user/types";
+import type { UserState } from "@/app/store/user/types";
 import {
   authState as authStateFactory,
   user as userFactory,

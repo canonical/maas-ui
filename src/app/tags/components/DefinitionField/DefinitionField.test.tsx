@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import DefinitionField, { INVALID_XPATH_ERROR, Label } from "./DefinitionField";
 
-import * as hooks from "app/base/hooks/analytics";
-import type { RootState } from "app/store/root/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import type { RootState } from "@/app/store/root/types";
 import {
   tag as tagFactory,
   rootState as rootStateFactory,

@@ -4,23 +4,23 @@ import { Spinner, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TooltipButton from "app/base/components/TooltipButton";
-import { useMachineActions } from "app/base/hooks";
-import type { MachineMenuAction } from "app/base/hooks/node";
-import { useToggleMenu } from "app/machines/hooks";
-import type { MachineMenuToggleHandler } from "app/machines/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isTransientStatus, useFormattedOS } from "app/store/machine/utils";
-import { isUnconfiguredPowerType } from "app/store/machine/utils/common";
-import type { RootState } from "app/store/root/types";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useMachineActions } from "@/app/base/hooks";
+import type { MachineMenuAction } from "@/app/base/hooks/node";
+import { useToggleMenu } from "@/app/machines/hooks";
+import type { MachineMenuToggleHandler } from "@/app/machines/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { isTransientStatus, useFormattedOS } from "@/app/store/machine/utils";
+import { isUnconfiguredPowerType } from "@/app/store/machine/utils/common";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeActions,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
-import { breakLines, getStatusText, isEphemerallyDeployed } from "app/utils";
+} from "@/app/store/types/node";
+import { breakLines, getStatusText, isEphemerallyDeployed } from "@/app/utils";
 
 // Node statuses for which the failed test warning is not shown.
 const hideFailedTestWarningStatuses = [

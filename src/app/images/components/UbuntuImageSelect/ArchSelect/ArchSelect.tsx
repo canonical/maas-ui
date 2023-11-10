@@ -2,16 +2,16 @@ import { Col, Input } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import TooltipButton from "app/base/components/TooltipButton";
-import type { ImageValue } from "app/images/types";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import type { ImageValue } from "@/app/images/types";
 import type {
   BaseImageFields,
   BootResource,
   BootResourceUbuntuArch,
   BootResourceUbuntuRelease,
-} from "app/store/bootresource/types";
-import { splitResourceName } from "app/store/bootresource/utils";
-import configSelectors from "app/store/config/selectors";
+} from "@/app/store/bootresource/types";
+import { splitResourceName } from "@/app/store/bootresource/utils";
+import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {
   NoReleaseSelected = "Please select a release to view the available architectures.",

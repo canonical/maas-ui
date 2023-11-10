@@ -9,7 +9,7 @@ import { DHCPType } from "../ConfigureDHCP";
 
 import DHCPReservedRanges, { Headers } from "./DHCPReservedRanges";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,

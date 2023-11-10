@@ -1,7 +1,7 @@
 import SubnetColumn from "./SubnetColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceInterface as deviceInterfaceFactory,

@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import TagMachines, { Label } from "./TagMachines";
 
-import urls from "app/base/urls";
-import { columnLabels, MachineColumns } from "app/machines/constants";
-import { actions as machineActions } from "app/store/machine";
-import { FetchGroupKey, FetchSortDirection } from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { NodeStatus, FetchNodeStatus } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import { columnLabels, MachineColumns } from "@/app/machines/constants";
+import { actions as machineActions } from "@/app/store/machine";
+import { FetchGroupKey, FetchSortDirection } from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { NodeStatus, FetchNodeStatus } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,

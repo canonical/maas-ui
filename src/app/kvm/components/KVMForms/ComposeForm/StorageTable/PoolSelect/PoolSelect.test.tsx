@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import ComposeForm from "../../ComposeForm";
 
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,

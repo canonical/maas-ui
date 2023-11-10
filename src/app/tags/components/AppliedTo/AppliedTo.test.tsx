@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import AppliedTo from "./AppliedTo";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

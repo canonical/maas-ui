@@ -6,10 +6,10 @@ import { Icon, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDropzone } from "react-dropzone";
 
-import FormikField from "app/base/components/FormikField";
-import { useId } from "app/base/hooks/base";
-import type { AnyObject } from "app/base/types";
-import { formatBytes } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import { useId } from "@/app/base/hooks/base";
+import type { AnyObject } from "@/app/base/types";
+import { formatBytes } from "@/app/utils";
 
 type Props<V> = {
   label: string;

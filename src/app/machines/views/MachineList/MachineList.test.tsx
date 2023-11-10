@@ -4,16 +4,16 @@ import configureStore from "redux-mock-store";
 import MachineList from "./MachineList";
 import { DEFAULTS } from "./MachineListTable/constants";
 
-import { actions as machineActions } from "app/store/machine";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   FetchNodeStatus,
   NodeStatus,
   NodeStatusCode,
   NodeType,
   TestStatusStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,

@@ -9,20 +9,20 @@ import TitledSection from "../TitledSection";
 
 import EditDHCP from "./EditDHCP";
 
-import DhcpSnippetType from "app/base/components/DhcpSnippetType";
-import TableActions from "app/base/components/TableActions";
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions } from "app/base/hooks";
-import settingsURLs from "app/settings/urls";
-import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
-import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
-import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import type { IPRange } from "app/store/iprange/types";
-import { getIpRangeDisplayName } from "app/store/iprange/utils";
-import type { RootState } from "app/store/root/types";
-import type { Subnet } from "app/store/subnet/types";
-import type { Node } from "app/store/types/node";
-import { generateEmptyStateMsg, getTableStatus, isId } from "app/utils";
+import DhcpSnippetType from "@/app/base/components/DhcpSnippetType";
+import TableActions from "@/app/base/components/TableActions";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions } from "@/app/base/hooks";
+import settingsURLs from "@/app/settings/urls";
+import { actions as dhcpsnippetActions } from "@/app/store/dhcpsnippet";
+import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
+import type { IPRange } from "@/app/store/iprange/types";
+import { getIpRangeDisplayName } from "@/app/store/iprange/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Subnet } from "@/app/store/subnet/types";
+import type { Node } from "@/app/store/types/node";
+import { generateEmptyStateMsg, getTableStatus, isId } from "@/app/utils";
 
 type BaseProps = {
   className?: string;

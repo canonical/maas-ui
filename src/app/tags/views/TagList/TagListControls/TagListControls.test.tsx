@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import TagListControls, { Label } from "./TagListControls";
 
-import type { RootState } from "app/store/root/types";
-import { TagSearchFilter } from "app/store/tag/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { TagSearchFilter } from "@/app/store/tag/selectors";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { RootState } from "app/store/root/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,

@@ -2,8 +2,8 @@ import type { ValueOf } from "@canonical/react-components";
 
 import type { GroupByKey } from "./views/SubnetsList/SubnetsTable/types";
 
-import type { SidePanelContent } from "app/base/types";
-import { SubnetForms } from "app/subnets/constants";
+import type { SidePanelContent } from "@/app/base/types";
+import { SubnetForms } from "@/app/subnets/constants";
 
 export type SubnetForm = keyof typeof SubnetForms;
 

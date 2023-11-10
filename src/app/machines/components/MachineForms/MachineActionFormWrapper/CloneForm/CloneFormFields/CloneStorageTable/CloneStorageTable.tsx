@@ -4,16 +4,16 @@ import { Icon, MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import Placeholder from "app/base/components/Placeholder";
-import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
-import type { MachineDetails } from "app/store/machine/types";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import Placeholder from "@/app/base/components/Placeholder";
+import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
+import type { MachineDetails } from "@/app/store/machine/types";
 import {
   diskAvailable,
   formatSize,
   formatType,
   partitionAvailable,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 type Props = {
   loadingMachineDetails?: boolean;

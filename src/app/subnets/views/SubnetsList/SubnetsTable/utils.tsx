@@ -8,31 +8,31 @@ import type {
   SortData,
 } from "./types";
 
-import type { Fabric } from "app/store/fabric/types";
-import { getFabricById, getFabricDisplay } from "app/store/fabric/utils";
-import type { Space } from "app/store/space/types";
-import { getSpaceDisplay, getSpaceById } from "app/store/space/utils";
-import type { Subnet } from "app/store/subnet/types";
+import type { Fabric } from "@/app/store/fabric/types";
+import { getFabricById, getFabricDisplay } from "@/app/store/fabric/utils";
+import type { Space } from "@/app/store/space/types";
+import { getSpaceDisplay, getSpaceById } from "@/app/store/space/utils";
+import type { Subnet } from "@/app/store/subnet/types";
 import {
   getAvailableIPs,
   getSubnetDisplay,
   getSubnetsInSpace,
   getSubnetsInVLAN,
-} from "app/store/subnet/utils";
-import type { VLAN } from "app/store/vlan/types";
+} from "@/app/store/subnet/utils";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   getDHCPStatus,
   getVlanById,
   getVLANDisplay,
   getVLANsInFabric,
-} from "app/store/vlan/utils";
+} from "@/app/store/vlan/utils";
 import {
   getFabricLink,
   getSpaceLink,
   getSubnetLink,
   getVLANLink,
-} from "app/subnets/urls";
-import { simpleSortByKey } from "app/utils";
+} from "@/app/subnets/urls";
+import { simpleSortByKey } from "@/app/utils";
 
 const getColumn = (label: string | null, href?: string | null) => ({
   label,

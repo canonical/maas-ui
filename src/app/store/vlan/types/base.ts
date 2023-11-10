@@ -1,13 +1,13 @@
 import type { VLANMeta, VlanVid } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { Fabric, FabricMeta } from "app/store/fabric/types";
-import type { Space, SpaceMeta } from "app/store/space/types";
-import type { Subnet } from "app/store/subnet/types";
-import type { TimestampedModel } from "app/store/types/model";
-import type { Node } from "app/store/types/node";
-import type { EventError, GenericState } from "app/store/types/state";
+import type { APIError } from "@/app/base/types";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
+import type { Space, SpaceMeta } from "@/app/store/space/types";
+import type { Subnet } from "@/app/store/subnet/types";
+import type { TimestampedModel } from "@/app/store/types/model";
+import type { Node } from "@/app/store/types/node";
+import type { EventError, GenericState } from "@/app/store/types/state";
 
 export type BaseVLAN = TimestampedModel & {
   description: string;

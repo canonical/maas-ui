@@ -1,14 +1,14 @@
 import { ContextualMenu } from "@canonical/react-components";
 
-import SectionHeader from "app/base/components/SectionHeader";
-import { useSidePanel } from "app/base/side-panel-context";
-import type { Subnet } from "app/store/subnet/types";
-import { isSubnetDetails } from "app/store/subnet/utils";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import type { Subnet } from "@/app/store/subnet/types";
+import { isSubnetDetails } from "@/app/store/subnet/utils";
 import {
   subnetActionLabels,
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
-} from "app/subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/SubnetDetails/constants";
 
 type Props = {
   subnet: Subnet;

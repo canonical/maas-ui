@@ -1,9 +1,9 @@
 import { Select } from "@canonical/react-components";
 
-import FormikField from "app/base/components/FormikField";
-import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
-import { DeviceIpAssignment } from "app/store/device/types";
-import { getIpAssignmentDisplay } from "app/store/device/utils";
+import FormikField from "@/app/base/components/FormikField";
+import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import { getIpAssignmentDisplay } from "@/app/store/device/utils";
 
 type Props = {
   includeStatic?: boolean;

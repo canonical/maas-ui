@@ -1,5 +1,5 @@
-import type { APIError } from "app/base/types";
-import type { EventError } from "app/store/types/state";
+import type { APIError } from "@/app/base/types";
+import type { EventError } from "@/app/store/types/state";
 
 const flattenErrors = <E>(errors: E): string | null => {
   if (Array.isArray(errors)) {

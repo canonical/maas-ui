@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import DomainSummary, { Labels as DomainSummaryLabels } from "./DomainSummary";
 
-import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
-import type { RootState } from "app/store/root/types";
+import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   domain as domainFactory,

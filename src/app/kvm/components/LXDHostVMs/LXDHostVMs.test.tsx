@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import LXDHostVMs from "./LXDHostVMs";
 
-import { KVMSidePanelViews } from "app/kvm/constants";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podNuma as podNumaFactory,

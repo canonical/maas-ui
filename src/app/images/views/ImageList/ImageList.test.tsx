@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import ImageList, { Labels as ImageListLabels } from "./ImageList";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

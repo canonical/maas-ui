@@ -1,8 +1,8 @@
 import { Link } from "@canonical/react-components";
 
-import docsUrls from "app/base/docsUrls";
-import IntroCard from "app/intro/components/IntroCard";
-import IntroSection from "app/intro/components/IntroSection";
+import docsUrls from "@/app/base/docsUrls";
+import IntroCard from "@/app/intro/components/IntroCard";
+import IntroSection from "@/app/intro/components/IntroSection";
 
 export enum Labels {
   Welcome = "Welcome to MAAS",

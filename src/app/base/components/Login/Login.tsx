@@ -11,11 +11,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useWindowTitle } from "app/base/hooks";
-import { actions as statusActions } from "app/store/status";
-import statusSelectors from "app/store/status/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useWindowTitle } from "@/app/base/hooks";
+import { actions as statusActions } from "@/app/store/status";
+import statusSelectors from "@/app/store/status/selectors";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),

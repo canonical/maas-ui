@@ -1,6 +1,6 @@
 import SubnetsList from "./SubnetsList";
 
-import urls from "app/subnets/urls";
+import urls from "@/app/subnets/urls";
 import {
   fabricState as fabricStateFactory,
   vlanState as vlanStateFactory,

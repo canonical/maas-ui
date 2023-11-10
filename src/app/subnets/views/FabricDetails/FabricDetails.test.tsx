@@ -3,10 +3,10 @@ import configureStore from "redux-mock-store";
 
 import FabricDetails from "./FabricDetails";
 
-import urls from "app/base/urls";
-import { actions as fabricActions } from "app/store/fabric";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
+import urls from "@/app/base/urls";
+import { actions as fabricActions } from "@/app/store/fabric";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,

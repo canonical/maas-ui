@@ -9,18 +9,18 @@ import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";
 import VirshTable from "./VirshTable";
 
-import PageContent from "app/base/components/PageContent/PageContent";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import { useSidePanel } from "app/base/side-panel-context";
-import urls from "app/base/urls";
-import KVMForms from "app/kvm/components/KVMForms";
-import { getFormTitle } from "app/kvm/utils";
-import { actions as podActions } from "app/store/pod";
-import podSelectors from "app/store/pod/selectors";
-import { actions as poolActions } from "app/store/resourcepool";
-import { actions as vmclusterActions } from "app/store/vmcluster";
-import vmclusterSelectors from "app/store/vmcluster/selectors";
-import { actions as zoneActions } from "app/store/zone";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
+import KVMForms from "@/app/kvm/components/KVMForms";
+import { getFormTitle } from "@/app/kvm/utils";
+import { actions as podActions } from "@/app/store/pod";
+import podSelectors from "@/app/store/pod/selectors";
+import { actions as poolActions } from "@/app/store/resourcepool";
+import { actions as vmclusterActions } from "@/app/store/vmcluster";
+import vmclusterSelectors from "@/app/store/vmcluster/selectors";
+import { actions as zoneActions } from "@/app/store/zone";
 
 export enum Label {
   Title = "KVM list",

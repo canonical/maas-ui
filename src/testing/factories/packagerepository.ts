@@ -2,8 +2,8 @@ import { extend } from "cooky-cutter";
 
 import { timestampedModel } from "./model";
 
-import type { PackageRepository } from "app/store/packagerepository/types";
-import type { TimestampedModel } from "app/store/types/model";
+import type { PackageRepository } from "@/app/store/packagerepository/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 
 export const packageRepository = extend<TimestampedModel, PackageRepository>(
   timestampedModel,

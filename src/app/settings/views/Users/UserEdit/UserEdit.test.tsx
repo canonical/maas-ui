@@ -3,7 +3,7 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
 import { UserEdit } from "./UserEdit";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,

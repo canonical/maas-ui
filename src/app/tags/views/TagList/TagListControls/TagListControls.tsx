@@ -2,10 +2,10 @@ import { useSelector } from "react-redux";
 
 import { TAGS_PER_PAGE } from "../constants";
 
-import ActionBar from "app/base/components/ActionBar";
-import SegmentedControl from "app/base/components/SegmentedControl";
-import type { SetSearchFilter } from "app/base/types";
-import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
+import ActionBar from "@/app/base/components/ActionBar";
+import SegmentedControl from "@/app/base/components/SegmentedControl";
+import type { SetSearchFilter } from "@/app/base/types";
+import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
 
 type Props = {
   filter: TagSearchFilter;

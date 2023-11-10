@@ -1,9 +1,9 @@
 import ControllerListTable, { Label } from "./ControllerListTable";
 
-import urls from "app/base/urls";
-import type { Controller } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
-import { NodeType } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import type { Controller } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeType } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   controller as controllerFactory,

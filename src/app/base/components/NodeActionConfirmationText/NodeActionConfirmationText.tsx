@@ -1,5 +1,5 @@
-import type { NodeActions } from "app/store/types/node";
-import { getNodeActionLabel } from "app/store/utils";
+import type { NodeActions } from "@/app/store/types/node";
+import { getNodeActionLabel } from "@/app/store/utils";
 
 const NodeActionConfirmationText = ({
   selectedCount,

@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import AddMachineForm from "./AddMachineForm";
 
-import { PowerFieldType } from "app/store/general/types";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { PowerFieldType } from "@/app/store/general/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   architecturesState as architecturesStateFactory,
   defaultMinHweKernelState as defaultMinHweKernelStateFactory,

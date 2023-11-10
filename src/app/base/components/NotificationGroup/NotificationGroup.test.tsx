@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import NotificationGroup from "./NotificationGroup";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   notification as notificationFactory,
   notificationState as notificationStateFactory,

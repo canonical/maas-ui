@@ -5,26 +5,26 @@ import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import TableHeader from "app/base/components/TableHeader";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import TableHeader from "@/app/base/components/TableHeader";
 import {
   useFetchActions,
   useAddMessage,
   useTableSort,
   useWindowTitle,
-} from "app/base/hooks";
-import { SortDirection } from "app/base/types";
-import urls from "app/base/urls";
-import SettingsTable from "app/settings/components/SettingsTable";
-import settingsURLs from "app/settings/urls";
-import authSelectors from "app/store/auth/selectors";
-import type { RootState } from "app/store/root/types";
-import statusSelectors from "app/store/status/selectors";
-import { actions as userActions } from "app/store/user";
-import userSelectors from "app/store/user/selectors";
-import type { User, UserMeta, UserState } from "app/store/user/types";
-import { isComparable } from "app/utils";
+} from "@/app/base/hooks";
+import { SortDirection } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import settingsURLs from "@/app/settings/urls";
+import authSelectors from "@/app/store/auth/selectors";
+import type { RootState } from "@/app/store/root/types";
+import statusSelectors from "@/app/store/status/selectors";
+import { actions as userActions } from "@/app/store/user";
+import userSelectors from "@/app/store/user/selectors";
+import type { User, UserMeta, UserState } from "@/app/store/user/types";
+import { isComparable } from "@/app/utils";
 
 type SortKey = keyof User;
 

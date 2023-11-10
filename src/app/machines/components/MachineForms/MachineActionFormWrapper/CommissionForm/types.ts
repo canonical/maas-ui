@@ -1,5 +1,5 @@
-import type { Script } from "app/store/script/types";
-import type { ScriptInputParam } from "app/store/types/node";
+import type { Script } from "@/app/store/script/types";
+import type { ScriptInputParam } from "@/app/store/types/node";
 
 export type CommissionFormValues = {
   enableSSH: boolean;

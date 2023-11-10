@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import EditDisk from "./EditDisk";
 
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
-import type { Disk } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
+import type { Disk } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

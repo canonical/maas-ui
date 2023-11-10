@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import NameColumn from "./NameColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import { NodeStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,

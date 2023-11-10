@@ -1,7 +1,7 @@
 import AddController from "./AddController";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,

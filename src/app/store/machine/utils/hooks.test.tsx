@@ -26,18 +26,18 @@ import {
 } from "./hooks";
 import { generateCallId } from "./query";
 
-import { actions as machineActions } from "app/store/machine";
+import { actions as machineActions } from "@/app/store/machine";
 import type {
   FetchFilters,
   FetchGroupKey,
   Machine,
   SelectedMachines,
-} from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { FetchNodeStatus, TestParams } from "app/store/types/node";
-import { NodeStatus, NodeStatusCode } from "app/store/types/node";
+} from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { FetchNodeStatus, TestParams } from "@/app/store/types/node";
+import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
   fabric as fabricFactory,

@@ -5,20 +5,20 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
-import UbuntuImageSelect from "app/images/components/UbuntuImageSelect";
-import type { ImageValue } from "app/images/types";
-import { actions as bootResourceActions } from "app/store/bootresource";
-import bootResourceSelectors from "app/store/bootresource/selectors";
+import FormikForm from "@/app/base/components/FormikForm";
+import UbuntuImageSelect from "@/app/images/components/UbuntuImageSelect";
+import type { ImageValue } from "@/app/images/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type {
   BootResourceUbuntuSource,
   OsystemParam,
-} from "app/store/bootresource/types";
+} from "@/app/store/bootresource/types";
 import {
   BootResourceAction,
   BootResourceSourceType,
-} from "app/store/bootresource/types";
-import { splitResourceName } from "app/store/bootresource/utils";
+} from "@/app/store/bootresource/types";
+import { splitResourceName } from "@/app/store/bootresource/utils";
 
 const UbuntuImagesSchema = Yup.object()
   .shape({

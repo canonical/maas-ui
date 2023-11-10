@@ -1,12 +1,12 @@
 import type { Device, DeviceDetails, DeviceNetworkInterface } from "./base";
 import type { DeviceIpAssignment, DeviceMeta } from "./enum";
 
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { Domain } from "app/store/domain/types";
-import type { Machine, MachineMeta } from "app/store/machine/types";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
-import type { Zone } from "app/store/zone/types";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { Domain } from "@/app/store/domain/types";
+import type { Machine, MachineMeta } from "@/app/store/machine/types";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
+import type { Zone } from "@/app/store/zone/types";
 
 export type CreateParams = {
   description?: DeviceDetails["description"];

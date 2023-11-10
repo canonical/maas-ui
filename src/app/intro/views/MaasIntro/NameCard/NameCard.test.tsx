@@ -4,8 +4,8 @@ import { MaasIntroSchema } from "../MaasIntro";
 
 import NameCard, { Labels as NameCardLabels } from "./NameCard";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   config as configFactory,

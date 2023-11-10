@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import ZoneSelect from "./ZoneSelect";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   zone as zoneFactory,

@@ -6,15 +6,15 @@ import { useSelector } from "react-redux";
 
 import DeleteImageConfirm from "./DeleteImageConfirm";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TableActions from "app/base/components/TableActions";
-import TooltipButton from "app/base/components/TooltipButton/TooltipButton";
-import type { ImageValue } from "app/images/types";
-import type { BootResource } from "app/store/bootresource/types";
-import { splitResourceName } from "app/store/bootresource/utils";
-import configSelectors from "app/store/config/selectors";
-import { sizeStringToNumber } from "app/utils/formatBytes";
-import { getTimeDistanceString, parseUtcDatetime } from "app/utils/time";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TableActions from "@/app/base/components/TableActions";
+import TooltipButton from "@/app/base/components/TooltipButton/TooltipButton";
+import type { ImageValue } from "@/app/images/types";
+import type { BootResource } from "@/app/store/bootresource/types";
+import { splitResourceName } from "@/app/store/bootresource/utils";
+import configSelectors from "@/app/store/config/selectors";
+import { sizeStringToNumber } from "@/app/utils/formatBytes";
+import { getTimeDistanceString, parseUtcDatetime } from "@/app/utils/time";
 
 type Props = {
   handleClear?: (image: ImageValue) => void;

@@ -5,7 +5,7 @@ import SpaceTable from "./SpaceTable";
 import { SubnetsColumns } from "./constants";
 import { useSubnetsTable, useSubnetsTableSearch } from "./hooks";
 
-import type { SubnetGroupByProps } from "app/subnets/views/SubnetsList/SubnetsTable/types";
+import type { SubnetGroupByProps } from "@/app/subnets/views/SubnetsList/SubnetsTable/types";
 
 const SubnetsTable = ({
   groupBy,

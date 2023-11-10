@@ -4,9 +4,9 @@ import configureStore from "redux-mock-store";
 
 import EventLogs, { Label } from "./EventLogs";
 
-import { Labels as ArrowPaginationLabels } from "app/base/components/ArrowPagination";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { Labels as ArrowPaginationLabels } from "@/app/base/components/ArrowPagination";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   eventRecord as eventRecordFactory,
   eventType as eventTypeFactory,

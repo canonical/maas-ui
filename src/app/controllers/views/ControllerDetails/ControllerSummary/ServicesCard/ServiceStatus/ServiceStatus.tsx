@@ -1,8 +1,8 @@
 import { Icon } from "@canonical/react-components";
 
-import type { Service } from "app/store/service/types";
-import { ServiceStatus as ServiceStatusType } from "app/store/service/types";
-import { getServiceDisplayName } from "app/store/service/utils";
+import type { Service } from "@/app/store/service/types";
+import { ServiceStatus as ServiceStatusType } from "@/app/store/service/types";
+import { getServiceDisplayName } from "@/app/store/service/utils";
 
 type Props = {
   service: Service;

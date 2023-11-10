@@ -1,15 +1,15 @@
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
-import TitledSection from "app/base/components/TitledSection";
-import { useFetchActions } from "app/base/hooks";
-import type { EmptyObject } from "app/base/types";
-import { actions as subnetActions } from "app/store/subnet";
-import { useCanBeDeleted, useIsDHCPEnabled } from "app/store/subnet/hooks";
-import subnetSelectors from "app/store/subnet/selectors";
-import subnetURLs from "app/subnets/urls";
-import type { SubnetActionProps } from "app/subnets/views/SubnetDetails/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import TitledSection from "@/app/base/components/TitledSection";
+import { useFetchActions } from "@/app/base/hooks";
+import type { EmptyObject } from "@/app/base/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import { useCanBeDeleted, useIsDHCPEnabled } from "@/app/store/subnet/hooks";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import subnetURLs from "@/app/subnets/urls";
+import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types";
 
 export const DeleteSubnet = ({
   id,

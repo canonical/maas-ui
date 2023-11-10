@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import AllDropdown from "./AllDropdown";
 import { generateSelectedAll } from "./utils";
 
-import TableCheckbox from "app/machines/components/TableCheckbox";
-import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
-import machineSelectors from "app/store/machine/selectors";
-import type { FetchFilters } from "app/store/machine/types";
+import TableCheckbox from "@/app/machines/components/TableCheckbox";
+import { Checked } from "@/app/machines/components/TableCheckbox/TableCheckbox";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { FetchFilters } from "@/app/store/machine/types";
 
 export enum Label {
   AllMachines = "All machines",

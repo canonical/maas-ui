@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import MachinesFilterAccordion, { Label } from "./MachinesFilterAccordion";
 
-import { actions as machineActions } from "app/store/machine";
-import { FilterGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,

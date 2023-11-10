@@ -6,11 +6,11 @@ import { useSelector } from "react-redux";
 
 import type { CredentialsFormValues } from "../../types";
 
-import CertificateFields from "app/base/components/CertificateFields";
-import FormikField from "app/base/components/FormikField";
-import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
-import ZoneSelect from "app/base/components/ZoneSelect";
-import podSelectors from "app/store/pod/selectors";
+import CertificateFields from "@/app/base/components/CertificateFields";
+import FormikField from "@/app/base/components/FormikField";
+import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
+import ZoneSelect from "@/app/base/components/ZoneSelect";
+import podSelectors from "@/app/store/pod/selectors";
 
 type Props = {
   setShouldGenerateCert: (generateCert: boolean) => void;

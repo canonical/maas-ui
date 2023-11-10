@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import ZonesList, { TestIds } from "./ZonesListTable/ZonesListTable";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,

@@ -1,22 +1,22 @@
 import {
   SidePanelViews,
   type SidePanelContent,
-} from "app/base/side-panel-context";
-import type { Controller } from "app/store/controller/types";
-import { isControllerDetails } from "app/store/controller/utils";
-import type { Device } from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import type { Machine } from "app/store/machine/types";
+} from "@/app/base/side-panel-context";
+import type { Controller } from "@/app/store/controller/types";
+import { isControllerDetails } from "@/app/store/controller/utils";
+import type { Device } from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import type { Machine } from "@/app/store/machine/types";
 // Import from the common utils to prevent an import loop in machine/utils/index.ts.
-import { isMachineDetails } from "app/store/machine/utils/common";
-import type { Node, NodeDetails } from "app/store/types/node";
+import { isMachineDetails } from "@/app/store/machine/utils/common";
+import type { Node, NodeDetails } from "@/app/store/types/node";
 import {
   NodeActions,
   NodeLinkType,
   NodeStatus,
   NodeType,
   NodeTypeDisplay,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 
 /**
  * Get node type display from node type.

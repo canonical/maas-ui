@@ -5,11 +5,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import CommissioningForm from "../CommissioningForm";
 
-import { useWindowTitle } from "app/base/hooks";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { actions as generalActions } from "app/store/general";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
+import { useWindowTitle } from "@/app/base/hooks";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
+import { actions as generalActions } from "@/app/store/general";
+import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 
 export enum Labels {
   Loading = "Loading...",

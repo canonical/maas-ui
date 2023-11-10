@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerLink, { Labels } from "./ControllerLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

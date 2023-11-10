@@ -6,5 +6,5 @@ enableFetchMocks();
 
 beforeAll(() => {
   // disable act warnings
-  global.IS_REACT_ACT_ENVIRONMENT = false;
+  global.IS_VITE_ACT_ENVIRONMENT = false;
 });

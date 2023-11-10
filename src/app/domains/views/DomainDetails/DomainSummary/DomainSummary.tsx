@@ -4,16 +4,16 @@ import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import Definition from "app/base/components/Definition";
-import EditableSection from "app/base/components/EditableSection";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import authSelectors from "app/store/auth/selectors";
-import { actions as domainActions } from "app/store/domain";
-import { MIN_TTL } from "app/store/domain/constants";
-import domainsSelectors from "app/store/domain/selectors";
-import type { Domain } from "app/store/domain/types";
-import type { RootState } from "app/store/root/types";
+import Definition from "@/app/base/components/Definition";
+import EditableSection from "@/app/base/components/EditableSection";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import authSelectors from "@/app/store/auth/selectors";
+import { actions as domainActions } from "@/app/store/domain";
+import { MIN_TTL } from "@/app/store/domain/constants";
+import domainsSelectors from "@/app/store/domain/selectors";
+import type { Domain } from "@/app/store/domain/types";
+import type { RootState } from "@/app/store/root/types";
 
 const EditDomainSchema = Yup.object().shape({
   authoritative: Yup.boolean(),

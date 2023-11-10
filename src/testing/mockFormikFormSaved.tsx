@@ -1,4 +1,4 @@
-import * as baseHooks from "app/base/hooks/base";
+import * as baseHooks from "@/app/base/hooks/base";
 
 beforeEach(() => {
   jest

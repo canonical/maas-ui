@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import GroupCheckbox from "./GroupCheckbox";
 
-import { actions as machineActions } from "app/store/machine";
-import { FetchGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,

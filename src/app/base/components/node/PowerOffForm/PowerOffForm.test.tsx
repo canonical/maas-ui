@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import PowerOffForm from "./PowerOffForm";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

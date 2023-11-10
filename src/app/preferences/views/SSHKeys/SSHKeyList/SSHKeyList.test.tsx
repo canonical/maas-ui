@@ -3,7 +3,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import SSHKeyList, { Label as SSHKeyListLabels } from "./SSHKeyList";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,

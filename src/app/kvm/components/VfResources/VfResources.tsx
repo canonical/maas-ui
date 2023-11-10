@@ -2,9 +2,9 @@ import type { ReactNode } from "react";
 
 import classNames from "classnames";
 
-import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
-import type { PodNetworkInterface, PodResource } from "app/store/pod/types";
-import { simpleSortByKey } from "app/utils";
+import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
+import type { PodNetworkInterface, PodResource } from "@/app/store/pod/types";
+import { simpleSortByKey } from "@/app/utils";
 
 export type Props = {
   dynamicLayout?: boolean;

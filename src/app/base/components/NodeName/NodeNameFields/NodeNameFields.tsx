@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 
 import type { FormValues } from "../NodeName";
 
-import DomainSelect from "app/base/components/DomainSelect";
-import FormikField from "app/base/components/FormikField";
-import domainSelectors from "app/store/domain/selectors";
-import { DomainMeta } from "app/store/domain/types";
+import DomainSelect from "@/app/base/components/DomainSelect";
+import FormikField from "@/app/base/components/FormikField";
+import domainSelectors from "@/app/store/domain/selectors";
+import { DomainMeta } from "@/app/store/domain/types";
 
 type Props = {
   canEditHostname?: boolean;

@@ -2,7 +2,7 @@ import { BulkAction } from "../AvailableStorageTable";
 
 import BulkActions from "./BulkActions";
 
-import { DiskTypes, StorageLayout } from "app/store/types/enum";
+import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import Settings from "./Settings";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,

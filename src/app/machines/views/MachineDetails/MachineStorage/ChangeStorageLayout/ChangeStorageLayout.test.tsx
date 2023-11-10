@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import ChangeStorageLayout from "./ChangeStorageLayout";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,

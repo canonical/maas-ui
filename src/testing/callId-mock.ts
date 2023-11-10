@@ -1,6 +1,6 @@
 import reduxToolkit from "@reduxjs/toolkit";
 
-import * as query from "app/store/machine/utils/query";
+import * as query from "@/app/store/machine/utils/query";
 
 export const callId = "mocked-call-id";
 

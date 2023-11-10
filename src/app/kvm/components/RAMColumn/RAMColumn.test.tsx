@@ -1,7 +1,7 @@
 import RAMColumn from "./RAMColumn";
 
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podMemoryResource as podMemoryResourceFactory,

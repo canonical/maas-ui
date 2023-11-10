@@ -1,11 +1,11 @@
 import TestActions from "./TestActions";
 
-import * as hooks from "app/base/hooks/analytics";
-import urls from "app/base/urls";
+import * as hooks from "@/app/base/hooks/analytics";
+import urls from "@/app/base/urls";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,

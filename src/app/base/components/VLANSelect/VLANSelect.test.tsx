@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import VLANSelect from "./VLANSelect";
 
-import type { RootState } from "app/store/root/types";
-import { VlanVid } from "app/store/vlan/types";
+import type { RootState } from "@/app/store/root/types";
+import { VlanVid } from "@/app/store/vlan/types";
 import {
   rootState as rootStateFactory,
   vlan as vlanFactory,

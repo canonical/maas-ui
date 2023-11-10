@@ -1,4 +1,4 @@
-import { PowerTypeNames } from "app/store/general/constants";
+import { PowerTypeNames } from "@/app/store/general/constants";
 
 export const PodType = {
   LXD: PowerTypeNames.LXD,

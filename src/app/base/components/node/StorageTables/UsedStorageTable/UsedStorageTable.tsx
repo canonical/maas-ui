@@ -1,24 +1,24 @@
 import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TagLinks from "app/base/components/TagLinks";
-import DiskBootStatus from "app/base/components/node/DiskBootStatus";
-import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
-import DiskTestStatus from "app/base/components/node/DiskTestStatus";
-import urls from "app/base/urls";
-import type { ControllerDetails } from "app/store/controller/types";
-import { FilterControllers } from "app/store/controller/utils";
-import type { MachineDetails } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import type { Disk, Partition } from "app/store/types/node";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TagLinks from "@/app/base/components/TagLinks";
+import DiskBootStatus from "@/app/base/components/node/DiskBootStatus";
+import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
+import DiskTestStatus from "@/app/base/components/node/DiskTestStatus";
+import urls from "@/app/base/urls";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { FilterControllers } from "@/app/store/controller/utils";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import type { Disk, Partition } from "@/app/store/types/node";
 import {
   diskAvailable,
   formatType,
   formatSize,
   partitionAvailable,
   nodeIsMachine,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;

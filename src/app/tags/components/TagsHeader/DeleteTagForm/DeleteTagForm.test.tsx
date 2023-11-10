@@ -7,11 +7,11 @@ import configureStore from "redux-mock-store";
 
 import DeleteTagForm from "./DeleteTagForm";
 
-import * as baseHooks from "app/base/hooks/base";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { NodeStatus } from "app/store/types/node";
+import * as baseHooks from "@/app/base/hooks/base";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { NodeStatus } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machine as machineFactory,

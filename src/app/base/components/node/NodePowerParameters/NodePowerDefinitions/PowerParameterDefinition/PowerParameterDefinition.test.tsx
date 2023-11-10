@@ -1,6 +1,6 @@
 import PowerParameterDefinition from "./PowerParameterDefinition";
 
-import { PowerFieldType } from "app/store/general/types";
+import { PowerFieldType } from "@/app/store/general/types";
 import { powerField as powerFieldFactory } from "testing/factories";
 import { render, screen } from "testing/utils";
 

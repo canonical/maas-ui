@@ -3,9 +3,9 @@ import userEvent from "@testing-library/user-event";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
-import { MachineSidePanelViews } from "app/machines/constants";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import { NodeActions, NodeStatusCode } from "app/store/types/node";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,

@@ -1,4 +1,4 @@
-import type { CertificateMetadata } from "app/store/general/types";
+import type { CertificateMetadata } from "@/app/store/general/types";
 
 /**
  * Split a certificate name in to object and host names, where certificate names

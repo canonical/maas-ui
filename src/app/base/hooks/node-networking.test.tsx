@@ -7,9 +7,9 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useIsAllNetworkingDisabled } from "./node-networking";
 
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   device as deviceFactory,

@@ -1,9 +1,9 @@
 import AddVirsh from "../AddVirsh";
 
-import { ConfigNames } from "app/store/config/types";
-import { PowerTypeNames } from "app/store/general/constants";
-import { PowerFieldScope } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { PowerFieldScope } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,

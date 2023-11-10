@@ -2,11 +2,11 @@ import configureStore from "redux-mock-store";
 
 import NodeDevices from "./NodeDevices";
 
-import { HardwareType } from "app/base/enum";
-import urls from "app/base/urls";
-import { actions as nodeDeviceActions } from "app/store/nodedevice";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import urls from "@/app/base/urls";
+import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,

@@ -36,9 +36,9 @@ import {
   usesStorage,
 } from "./storage";
 
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes, StorageLayout } from "app/store/types/enum";
-import { NodeStatusCode } from "app/store/types/node";
+import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   machineDetails as machineDetailsFactory,

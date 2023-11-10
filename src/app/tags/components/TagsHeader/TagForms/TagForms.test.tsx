@@ -1,6 +1,6 @@
 import TagForms from "./TagForms";
 
-import { TagSidePanelViews } from "app/tags/constants";
+import { TagSidePanelViews } from "@/app/tags/constants";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

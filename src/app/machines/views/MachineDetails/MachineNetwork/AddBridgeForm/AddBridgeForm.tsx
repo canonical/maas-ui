@@ -13,26 +13,26 @@ import {
 
 import type { BridgeFormValues } from "./types";
 
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import type { Selected } from "app/base/components/node/networking/types";
-import { useFetchActions } from "app/base/hooks";
-import { MAC_ADDRESS_REGEX } from "app/base/validation";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+import FormCard from "@/app/base/components/FormCard";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { Selected } from "@/app/base/components/node/networking/types";
+import { useFetchActions } from "@/app/base/hooks";
+import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   CreateBridgeParams,
   MachineDetails,
-} from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
-import { getNextNicName } from "app/store/utils";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import { preparePayload } from "app/utils";
+} from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { BridgeType, NetworkInterfaceTypes } from "@/app/store/types/enum";
+import { getNextNicName } from "@/app/store/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { preparePayload } from "@/app/utils";
 
 const InterfaceSchema = Yup.object().shape({
   ...networkFieldsSchema,

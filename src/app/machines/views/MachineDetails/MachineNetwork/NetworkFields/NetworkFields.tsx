@@ -2,24 +2,24 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FabricSelect from "app/base/components/FabricSelect";
-import FormikField from "app/base/components/FormikField";
-import LinkModeSelect from "app/base/components/LinkModeSelect";
-import SubnetSelect from "app/base/components/SubnetSelect";
-import VLANSelect from "app/base/components/VLANSelect";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric } from "app/store/fabric/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { NetworkLinkMode } from "app/store/types/enum";
-import type { NetworkInterfaceTypes } from "app/store/types/enum";
+import FabricSelect from "@/app/base/components/FabricSelect";
+import FormikField from "@/app/base/components/FormikField";
+import LinkModeSelect from "@/app/base/components/LinkModeSelect";
+import SubnetSelect from "@/app/base/components/SubnetSelect";
+import VLANSelect from "@/app/base/components/VLANSelect";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import { NetworkLinkMode } from "@/app/store/types/enum";
+import type { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type {
   NetworkInterface,
   NetworkLink,
   NodeVlan,
-} from "app/store/types/node";
-import type { VLAN } from "app/store/vlan/types";
-import { toFormikNumber } from "app/utils";
+} from "@/app/store/types/node";
+import type { VLAN } from "@/app/store/vlan/types";
+import { toFormikNumber } from "@/app/utils";
 
 export type NetworkValues = {
   ip_address?: NetworkLink["ip_address"];

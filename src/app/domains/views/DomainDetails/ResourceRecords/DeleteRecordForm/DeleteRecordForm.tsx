@@ -3,13 +3,13 @@ import { useCallback } from "react";
 import { Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { EmptyObject } from "app/base/types";
-import { actions as domainActions } from "app/store/domain";
-import domainSelectors from "app/store/domain/selectors";
-import type { Domain, DomainResource } from "app/store/domain/types";
-import { isDomainDetails } from "app/store/domain/utils";
-import type { RootState } from "app/store/root/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { EmptyObject } from "@/app/base/types";
+import { actions as domainActions } from "@/app/store/domain";
+import domainSelectors from "@/app/store/domain/selectors";
+import type { Domain, DomainResource } from "@/app/store/domain/types";
+import { isDomainDetails } from "@/app/store/domain/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   closeForm: () => void;

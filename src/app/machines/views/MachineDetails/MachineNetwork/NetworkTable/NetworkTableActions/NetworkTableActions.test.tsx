@@ -1,11 +1,11 @@
 import NetworkTableActions from "./NetworkTableActions";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
-import { NodeStatus } from "app/store/types/node";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   fabric as fabricFactory,
   machineDetails as machineDetailsFactory,

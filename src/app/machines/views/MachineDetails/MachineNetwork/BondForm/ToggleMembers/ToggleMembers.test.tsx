@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import ToggleMembers from "./ToggleMembers";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   machineInterface as machineInterfaceFactory,
   rootState as rootStateFactory,

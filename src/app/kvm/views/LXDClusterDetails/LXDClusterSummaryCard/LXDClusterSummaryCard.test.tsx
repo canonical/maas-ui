@@ -1,6 +1,6 @@
 import LXDClusterSummaryCard from "./LXDClusterSummaryCard";
 
-import { PodType } from "app/store/pod/constants";
+import { PodType } from "@/app/store/pod/constants";
 import {
   pod as podFactory,
   podResource as podResourceFactory,

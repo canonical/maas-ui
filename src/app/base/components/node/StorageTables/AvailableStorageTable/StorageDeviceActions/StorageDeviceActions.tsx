@@ -2,13 +2,13 @@ import { useSelector } from "react-redux";
 
 import { StorageDeviceAction } from "../AvailableStorageTable";
 
-import TableActionsDropdown from "app/base/components/TableActionsDropdown";
-import type { TableAction } from "app/base/components/TableActionsDropdown";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { Disk, Partition } from "app/store/types/node";
+import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
+import type { TableAction } from "@/app/base/components/TableActionsDropdown";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Disk, Partition } from "@/app/store/types/node";
 import {
   canBeDeleted,
   canBePartitioned,
@@ -20,7 +20,7 @@ import {
   isDisk,
   isPartition,
   isVolumeGroup,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 type Props = {
   disabled: boolean;

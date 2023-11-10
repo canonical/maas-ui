@@ -6,7 +6,7 @@ import type { CreateParams, TokenState, UpdateParams } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const tokenSlice = createSlice({
   name: TokenMeta.MODEL,

@@ -1,6 +1,6 @@
 import LxdTable from "./LxdTable";
 
-import { PodType } from "app/store/pod/constants";
+import { PodType } from "@/app/store/pod/constants";
 import {
   pod as podFactory,
   podState as podStateFactory,

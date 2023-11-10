@@ -4,9 +4,9 @@ import configureStore from "redux-mock-store";
 
 import ScriptDetails from ".";
 
-import FileContext, { fileContextStore } from "app/base/file-context";
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import FileContext, { fileContextStore } from "@/app/base/file-context";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   script as scriptFactory,
   scriptState as scriptStateFactory,

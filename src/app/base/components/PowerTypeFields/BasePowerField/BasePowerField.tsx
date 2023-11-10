@@ -1,11 +1,11 @@
 import { Input, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import FormikField from "app/base/components/FormikField";
-import type { AnyObject } from "app/base/types";
-import { PowerFieldType } from "app/store/general/types";
-import type { PowerField } from "app/store/general/types";
-import type { PowerParameters } from "app/store/types/node";
+import FormikField from "@/app/base/components/FormikField";
+import type { AnyObject } from "@/app/base/types";
+import { PowerFieldType } from "@/app/store/general/types";
+import type { PowerField } from "@/app/store/general/types";
+import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
   field: PowerField;

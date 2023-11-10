@@ -1,14 +1,14 @@
 import { Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import SectionHeader from "app/base/components/SectionHeader";
-import SwitchField from "app/base/components/SwitchField";
-import TooltipButton from "app/base/components/TooltipButton";
-import { useFetchActions, useCycled } from "app/base/hooks";
-import bootResourceSelectors from "app/store/bootresource/selectors";
-import type { BootResourceState } from "app/store/bootresource/types";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import SwitchField from "@/app/base/components/SwitchField";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useFetchActions, useCycled } from "@/app/base/hooks";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
+import type { BootResourceState } from "@/app/store/bootresource/types";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {
   AutoSyncImages = "Automatically sync images",

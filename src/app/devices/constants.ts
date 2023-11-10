@@ -1,4 +1,4 @@
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 
 export const DeviceActionHeaderViews = {
   DELETE_DEVICE: ["deviceActionForm", NodeActions.DELETE],

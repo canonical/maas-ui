@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SubnetLink from "./SubnetLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,

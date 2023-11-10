@@ -2,18 +2,18 @@ import type { ValueOf } from "@canonical/react-components";
 
 import type { MachineSidePanelViews } from "./constants";
 
-import type { HardwareType } from "app/base/enum";
+import type { HardwareType } from "@/app/base/enum";
 import type {
   CommonActionFormProps,
   SidePanelContent,
   SetSidePanelContent,
-} from "app/base/types";
+} from "@/app/base/types";
 import type {
   Machine,
   MachineEventErrors,
   SelectedMachines,
-} from "app/store/machine/types";
-import type { Script } from "app/store/script/types";
+} from "@/app/store/machine/types";
+import type { Script } from "@/app/store/script/types";
 
 export type MachineSidePanelContent = SidePanelContent<
   ValueOf<typeof MachineSidePanelViews>,

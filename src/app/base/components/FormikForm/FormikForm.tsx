@@ -1,8 +1,8 @@
 import { Formik } from "formik";
 import type { FormikConfig } from "formik";
 
-import FormikFormContent from "app/base/components/FormikFormContent";
-import type { Props as ContentProps } from "app/base/components/FormikFormContent/FormikFormContent";
+import FormikFormContent from "@/app/base/components/FormikFormContent";
+import type { Props as ContentProps } from "@/app/base/components/FormikFormContent/FormikFormContent";
 
 // explicitly disallow null and undefined as they cause Formik to throw an error
 type InputFieldValue = string | string[] | undefined | number | boolean | {};

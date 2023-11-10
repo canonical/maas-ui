@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import VLANDetails from "./VLANDetails";
 
-import urls from "app/base/urls";
-import { actions as vlanActions } from "app/store/vlan";
+import urls from "@/app/base/urls";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,

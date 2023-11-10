@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TooltipButton from "app/base/components/TooltipButton";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

@@ -1,15 +1,15 @@
 import type { Slice, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { PodMeta } from "app/store/pod/types";
-import type { Pod, PodState } from "app/store/pod/types";
-import { TokenMeta } from "app/store/token/types";
-import type { TokenState } from "app/store/token/types";
+import { PodMeta } from "@/app/store/pod/types";
+import type { Pod, PodState } from "@/app/store/pod/types";
+import { TokenMeta } from "@/app/store/token/types";
+import type { TokenState } from "@/app/store/token/types";
 import {
   generateCommonReducers,
   generateStatusHandlers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,

@@ -1,9 +1,9 @@
 import DetailsCard, { Labels as DetailsCardLabels } from "./DetailsCard";
 
-import urls from "app/base/urls";
-import { PowerTypeNames } from "app/store/general/constants";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

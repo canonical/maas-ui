@@ -15,13 +15,13 @@ import { Link } from "react-router-dom-v5-compat";
 import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
 
-import urls from "app/base/urls";
-import authSelectors from "app/store/auth/selectors";
-import domainsSelectors from "app/store/domain/selectors";
-import type { Domain, DomainResource } from "app/store/domain/types";
-import { isDomainDetails } from "app/store/domain/utils";
-import type { RootState } from "app/store/root/types";
-import { NodeType } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import authSelectors from "@/app/store/auth/selectors";
+import domainsSelectors from "@/app/store/domain/selectors";
+import type { Domain, DomainResource } from "@/app/store/domain/types";
+import { isDomainDetails } from "@/app/store/domain/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NodeType } from "@/app/store/types/node";
 
 enum RecordActions {
   DELETE = "delete",

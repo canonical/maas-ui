@@ -1,6 +1,6 @@
 import NodeActionConfirmationText from "./NodeActionConfirmationText";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 import { render, screen } from "testing/utils";
 
 it("displays correct confirmation text for deleting a single node", () => {

@@ -1,5 +1,5 @@
-import { NotificationIdent } from "app/store/notification/types";
-import type { Notification } from "app/store/notification/types";
+import { NotificationIdent } from "@/app/store/notification/types";
+import type { Notification } from "@/app/store/notification/types";
 
 /**
  * Util to check if a notification is a release notification.

@@ -4,11 +4,11 @@ import { useFormikContext } from "formik";
 import NetworkFields from "../../NetworkFields";
 import type { EditPhysicalValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import MacAddressField from "app/base/components/MacAddressField";
-import TagNameField from "app/base/components/TagNameField";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+import FormikField from "@/app/base/components/FormikField";
+import MacAddressField from "@/app/base/components/MacAddressField";
+import TagNameField from "@/app/base/components/TagNameField";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 
 type Props = {
   nic: NetworkInterface | null;

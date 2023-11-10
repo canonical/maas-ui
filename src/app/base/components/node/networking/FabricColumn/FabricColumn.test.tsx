@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import FabricColumn from "./FabricColumn";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

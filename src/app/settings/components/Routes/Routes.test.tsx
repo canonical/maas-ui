@@ -1,7 +1,7 @@
 import Routes from "./Routes";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   userState as userStateFactory,

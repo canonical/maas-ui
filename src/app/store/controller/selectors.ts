@@ -15,12 +15,12 @@ import type {
   ControllerState,
   ControllerStatus,
   ControllerStatuses,
-} from "app/store/controller/types";
-import { ControllerMeta } from "app/store/controller/types";
-import serviceSelectors from "app/store/service/selectors";
-import tagSelectors from "app/store/tag/selectors";
-import { generateBaseSelectors } from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
+} from "@/app/store/controller/types";
+import { ControllerMeta } from "@/app/store/controller/types";
+import serviceSelectors from "@/app/store/service/selectors";
+import tagSelectors from "@/app/store/tag/selectors";
+import { generateBaseSelectors } from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
 
 const defaultSelectors = generateBaseSelectors<
   ControllerState,

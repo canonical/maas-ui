@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import VMsTable, { Label } from "./VMsTable";
 
-import { SortDirection } from "app/base/types";
-import { FetchGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { SortDirection } from "@/app/base/types";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   pod as podFactory,

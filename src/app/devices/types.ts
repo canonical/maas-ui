@@ -1,7 +1,7 @@
 import type { ValueOf } from "@canonical/react-components";
 
-import type { SidePanelContent, SetSidePanelContent } from "app/base/types";
-import type { DeviceSidePanelViews } from "app/devices/constants";
+import type { SidePanelContent, SetSidePanelContent } from "@/app/base/types";
+import type { DeviceSidePanelViews } from "@/app/devices/constants";
 
 export type DeviceSidePanelContent = SidePanelContent<
   ValueOf<typeof DeviceSidePanelViews>

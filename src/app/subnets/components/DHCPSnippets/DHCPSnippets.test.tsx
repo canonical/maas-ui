@@ -4,9 +4,9 @@ import configureStore from "redux-mock-store";
 
 import DHCPSnippets from "./DHCPSnippets";
 
-import type { Props as DHCPTableProps } from "app/base/components/DHCPTable/DHCPTable";
-import urls from "app/base/urls";
-import { actions as subnetActions } from "app/store/subnet";
+import type { Props as DHCPTableProps } from "@/app/base/components/DHCPTable/DHCPTable";
+import urls from "@/app/base/urls";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
@@ -16,7 +16,7 @@ import { render } from "testing/utils";
 
 const mockStore = configureStore();
 const mockDHCPTable = jest.fn();
-jest.mock("app/base/components/DHCPTable", () => (props: DHCPTableProps) => {
+jest.mock("@/app/base/components/DHCPTable", () => (props: DHCPTableProps) => {
   mockDHCPTable(props);
   return null;
 });

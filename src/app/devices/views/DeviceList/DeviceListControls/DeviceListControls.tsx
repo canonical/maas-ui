@@ -4,8 +4,8 @@ import { Col, Row } from "@canonical/react-components";
 
 import DeviceFilterAccordion from "./DeviceFilterAccordion";
 
-import DebounceSearchBox from "app/base/components/DebounceSearchBox";
-import type { SetSearchFilter } from "app/base/types";
+import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
+import type { SetSearchFilter } from "@/app/base/types";
 
 type Props = {
   filter: string;

@@ -3,8 +3,8 @@ import { Col, Input, Row } from "@canonical/react-components";
 import type {
   BaseImageFields,
   BootResourceUbuntuRelease,
-} from "app/store/bootresource/types";
-import { simpleSortByKey } from "app/utils";
+} from "@/app/store/bootresource/types";
+import { simpleSortByKey } from "@/app/utils";
 
 type Props = {
   releases: (BootResourceUbuntuRelease | BaseImageFields)[];

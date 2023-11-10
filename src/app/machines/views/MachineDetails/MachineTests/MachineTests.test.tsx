@@ -6,13 +6,13 @@ import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
 
-import { HardwareType } from "app/base/enum";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultType,
   ScriptResultParamType,
-} from "app/store/scriptresult/types";
-import { TestStatusStatus } from "app/store/types/node";
+} from "@/app/store/scriptresult/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,

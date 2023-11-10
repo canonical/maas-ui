@@ -7,7 +7,7 @@ import DeleteRecordForm, {
   Labels as DeleteRecordFormLabels,
 } from "./DeleteRecordForm";
 
-import { actions as domainActions } from "app/store/domain";
+import { actions as domainActions } from "@/app/store/domain";
 import {
   domainDetails as domainFactory,
   domainState as domainStateFactory,

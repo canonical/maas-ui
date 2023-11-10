@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import MachineSelectBox from "./MachineSelectBox";
 
-import { DEFAULT_DEBOUNCE_INTERVAL } from "app/base/components/DebounceSearchBox/DebounceSearchBox";
-import { actions as machineActions } from "app/store/machine";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import { DEFAULT_DEBOUNCE_INTERVAL } from "@/app/base/components/DebounceSearchBox/DebounceSearchBox";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
 import { userEvent, screen, waitFor, renderWithMockStore } from "testing/utils";
 

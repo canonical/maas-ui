@@ -3,9 +3,9 @@ import classNames from "classnames";
 import StorageCards from "./StorageCards";
 import StorageMeter from "./StorageMeter";
 
-import type { KVMStoragePoolResources } from "app/kvm/types";
-import type { Pod } from "app/store/pod/types";
-import { formatBytes } from "app/utils";
+import type { KVMStoragePoolResources } from "@/app/kvm/types";
+import type { Pod } from "@/app/store/pod/types";
+import { formatBytes } from "@/app/utils";
 
 type Props = {
   allocated: number; // B

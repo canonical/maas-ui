@@ -4,8 +4,8 @@ import { Card, Col, Row } from "@canonical/react-components";
 import type { ClassName, ColSize } from "@canonical/react-components";
 import classNames from "classnames";
 
-import { COL_SIZES } from "app/base/constants";
-import { useId } from "app/base/hooks/base";
+import { COL_SIZES } from "@/app/base/constants";
+import { useId } from "@/app/base/hooks/base";
 
 type Props = {
   children: ReactNode;

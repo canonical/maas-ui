@@ -1,14 +1,14 @@
 import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TooltipButton from "app/base/components/TooltipButton";
-import { useFetchActions } from "app/base/hooks";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
-import { actions as serviceActions } from "app/store/service";
-import { ServiceStatus } from "app/store/service/types";
-import type { Service } from "app/store/service/types";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useFetchActions } from "@/app/base/hooks";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as serviceActions } from "@/app/store/service";
+import { ServiceStatus } from "@/app/store/service/types";
+import type { Service } from "@/app/store/service/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

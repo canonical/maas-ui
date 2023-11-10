@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerListControls from "./ControllerListControls";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
 import { render, screen } from "testing/utils";
 

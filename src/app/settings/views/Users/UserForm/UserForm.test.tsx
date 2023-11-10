@@ -6,10 +6,10 @@ import configureStore from "redux-mock-store";
 
 import { UserForm, Labels as UserFormLabels } from "./UserForm";
 
-import { Labels as BaseUserFormLabels } from "app/base/components/UserForm/UserForm";
-import settingsURLs from "app/settings/urls";
-import type { RootState } from "app/store/root/types";
-import type { User } from "app/store/user/types";
+import { Labels as BaseUserFormLabels } from "@/app/base/components/UserForm/UserForm";
+import settingsURLs from "@/app/settings/urls";
+import type { RootState } from "@/app/store/root/types";
+import type { User } from "@/app/store/user/types";
 import {
   user as userFactory,
   rootState as rootStateFactory,

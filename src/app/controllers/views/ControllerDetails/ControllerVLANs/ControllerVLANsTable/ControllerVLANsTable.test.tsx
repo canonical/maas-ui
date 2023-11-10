@@ -1,8 +1,8 @@
 import ControllerVLANsTable from "./ControllerVLANsTable";
 import { ControllerVLANsColumns } from "./constants";
 
-import urls from "app/base/urls";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

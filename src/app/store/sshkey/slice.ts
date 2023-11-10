@@ -7,7 +7,7 @@ import type { CreateParams, ImportParams, SSHKeyState } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const sshKeySlice = createSlice({
   name: SSHKeyMeta.MODEL,

@@ -7,7 +7,7 @@ import {
   isSubnetDetails,
 } from "./utils";
 
-import { NodeType } from "app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 import {
   subnet as subnetFactory,
   subnetDetails as subnetDetailsFactory,

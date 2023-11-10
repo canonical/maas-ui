@@ -1,11 +1,11 @@
-import { DiscoveryMeta } from "app/store/discovery/types";
-import type { Discovery } from "app/store/discovery/types";
-import type { FilterValue } from "app/utils/search/filter-handlers";
+import { DiscoveryMeta } from "@/app/store/discovery/types";
+import type { Discovery } from "@/app/store/discovery/types";
+import type { FilterValue } from "@/app/utils/search/filter-handlers";
 import {
   isFilterValue,
   isFilterValueArray,
-} from "app/utils/search/filter-handlers";
-import FilterItems from "app/utils/search/filter-items";
+} from "@/app/utils/search/filter-handlers";
+import FilterItems from "@/app/utils/search/filter-items";
 
 export const getDiscoveryValue = (
   dicovery: Discovery,

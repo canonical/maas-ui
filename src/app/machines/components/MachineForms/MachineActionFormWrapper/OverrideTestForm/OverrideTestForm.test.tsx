@@ -3,16 +3,16 @@ import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
 
-import { actions as machineActions } from "app/store/machine";
-import type { FetchFilters } from "app/store/machine/types";
-import { FetchGroupKey } from "app/store/machine/types";
-import { selectedToFilters } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FetchFilters } from "@/app/store/machine/types";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import { selectedToFilters } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
-import { NodeActions } from "app/store/types/node";
+} from "@/app/store/scriptresult/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

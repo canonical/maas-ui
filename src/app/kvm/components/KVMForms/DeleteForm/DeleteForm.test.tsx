@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
 
-import { PodType } from "app/store/pod/constants";
-import podSelectors from "app/store/pod/selectors";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
+import { PodType } from "@/app/store/pod/constants";
+import podSelectors from "@/app/store/pod/selectors";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import {
   pod as podFactory,
   podState as podStateFactory,

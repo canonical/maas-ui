@@ -2,17 +2,17 @@ import * as fileDownload from "js-file-download";
 
 import DownloadMenu, { Label } from "./DownloadMenu";
 
-import FileContext, { fileContextStore } from "app/base/file-context";
-import { api } from "app/base/sagas/http";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import FileContext, { fileContextStore } from "@/app/base/file-context";
+import { api } from "@/app/base/sagas/http";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
   ScriptResultNames,
-} from "app/store/scriptresult/types";
-import { NodeStatus } from "app/store/types/node";
+} from "@/app/store/scriptresult/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   controllerState as controllerStateFactory,
   controllerDetails as controllerDetailsFactory,

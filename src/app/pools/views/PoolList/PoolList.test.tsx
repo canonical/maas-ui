@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import PoolList from "./PoolList";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,

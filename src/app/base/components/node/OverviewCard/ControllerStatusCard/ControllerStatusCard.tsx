@@ -5,20 +5,20 @@ import { Icon, Spinner } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
-import TooltipButton from "app/base/components/TooltipButton";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { actions as controllerActions } from "@/app/store/controller";
+import controllerSelectors from "@/app/store/controller/selectors";
 import {
   ControllerInstallType,
   ImageSyncStatus,
-} from "app/store/controller/types";
+} from "@/app/store/controller/types";
 import type {
   ControllerVersions,
   ControllerDetails,
-} from "app/store/controller/types";
-import { isRack, isRegionAndRack } from "app/store/controller/utils";
-import { useFormattedOS } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/controller/types";
+import { isRack, isRegionAndRack } from "@/app/store/controller/utils";
+import { useFormattedOS } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   controller: ControllerDetails;

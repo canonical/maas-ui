@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 
-import configSelectors from "app/store/config/selectors";
+import configSelectors from "@/app/store/config/selectors";
 
 export type ThemeContextType = {
   theme: string;

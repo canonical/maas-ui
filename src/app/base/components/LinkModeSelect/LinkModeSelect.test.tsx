@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import LinkModeSelect, { Label } from "./LinkModeSelect";
 
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
-import { LINK_MODE_DISPLAY } from "app/store/utils";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
+import { LINK_MODE_DISPLAY } from "@/app/store/utils";
 import { rootState as rootStateFactory } from "testing/factories";
 import { render, screen } from "testing/utils";
 

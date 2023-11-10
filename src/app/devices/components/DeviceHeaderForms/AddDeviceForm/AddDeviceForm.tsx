@@ -7,22 +7,22 @@ import * as Yup from "yup";
 import AddDeviceInterfaces from "./AddDeviceInterfaces";
 import type { AddDeviceValues } from "./types";
 
-import DomainSelect from "app/base/components/DomainSelect";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import ZoneSelect from "app/base/components/ZoneSelect";
-import { useFetchActions, useAddMessage } from "app/base/hooks";
-import type { ClearSidePanelContent } from "app/base/types";
-import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
-import { DeviceIpAssignment } from "app/store/device/types";
-import { actions as domainActions } from "app/store/domain";
-import domainSelectors from "app/store/domain/selectors";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { actions as zoneActions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
+import DomainSelect from "@/app/base/components/DomainSelect";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import ZoneSelect from "@/app/base/components/ZoneSelect";
+import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import { actions as domainActions } from "@/app/store/domain";
+import domainSelectors from "@/app/store/domain/selectors";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { actions as zoneActions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;

@@ -2,20 +2,20 @@ import { actions } from "./slice";
 import { FetchSortDirection, FilterGroupKey } from "./types";
 import { FetchGroupKey } from "./types/actions";
 
-import { PowerTypeNames } from "app/store/general/constants";
+import { PowerTypeNames } from "@/app/store/general/constants";
 import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
-import { ScriptName } from "app/store/script/types";
+} from "@/app/store/general/types";
+import { ScriptName } from "@/app/store/script/types";
 import {
   BridgeType,
   DiskTypes,
   NetworkLinkMode,
   StorageLayout,
-} from "app/store/types/enum";
-import { NodeActions } from "app/store/types/node";
+} from "@/app/store/types/enum";
+import { NodeActions } from "@/app/store/types/node";
 import { scriptResult as scriptResultFactory } from "testing/factories";
 
 describe("machine actions", () => {

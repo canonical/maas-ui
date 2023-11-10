@@ -7,13 +7,13 @@ import ControllerConfiguration from "./ControllerConfiguration";
 import { Label as ConfigurationLabel } from "./ControllerConfigurationForm";
 import { Label as PowerConfigurationLabel } from "./ControllerPowerConfiguration";
 
-import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
-import { Label as NodeConfigurationFieldsLabel } from "app/base/components/NodeConfigurationFields/NodeConfigurationFields";
-import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
-import { Label as ZoneSelectLabel } from "app/base/components/ZoneSelect/ZoneSelect";
-import { actions as controllerActions } from "app/store/controller";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
+import { Label as NodeConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
+import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
+import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneSelect";
+import { actions as controllerActions } from "@/app/store/controller";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

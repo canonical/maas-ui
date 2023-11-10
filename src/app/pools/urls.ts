@@ -1,5 +1,5 @@
-import type { ResourcePool } from "app/store/resourcepool/types";
-import { argPath } from "app/utils";
+import type { ResourcePool } from "@/app/store/resourcepool/types";
+import { argPath } from "@/app/utils";
 
 const urls = {
   add: "/pools/add",

@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddSubnet from "./AddSubnet";
 
-import { actions as subnetActions } from "app/store/subnet";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   fabric as fabricFactory,
   vlan as vlanFactory,

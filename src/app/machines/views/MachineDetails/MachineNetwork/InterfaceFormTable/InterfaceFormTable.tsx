@@ -2,32 +2,32 @@ import { MainTable, Spinner } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useSelector } from "react-redux";
 
-import TableHeader from "app/base/components/TableHeader";
-import DHCPColumn from "app/base/components/node/networking/DHCPColumn";
-import FabricColumn from "app/base/components/node/networking/FabricColumn";
-import NameColumn from "app/base/components/node/networking/NameColumn";
-import IPColumn from "app/base/components/node/networking/NetworkTable/IPColumn";
-import { generateUniqueId } from "app/base/components/node/networking/NetworkTable/NetworkTable";
-import PXEColumn from "app/base/components/node/networking/NetworkTable/PXEColumn";
-import SpeedColumn from "app/base/components/node/networking/NetworkTable/SpeedColumn";
-import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
-import TypeColumn from "app/base/components/node/networking/TypeColumn";
+import TableHeader from "@/app/base/components/TableHeader";
+import DHCPColumn from "@/app/base/components/node/networking/DHCPColumn";
+import FabricColumn from "@/app/base/components/node/networking/FabricColumn";
+import NameColumn from "@/app/base/components/node/networking/NameColumn";
+import IPColumn from "@/app/base/components/node/networking/NetworkTable/IPColumn";
+import { generateUniqueId } from "@/app/base/components/node/networking/NetworkTable/NetworkTable";
+import PXEColumn from "@/app/base/components/node/networking/NetworkTable/PXEColumn";
+import SpeedColumn from "@/app/base/components/node/networking/NetworkTable/SpeedColumn";
+import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
+import TypeColumn from "@/app/base/components/node/networking/TypeColumn";
 import type {
   Selected,
   SetSelected,
-} from "app/base/components/node/networking/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineDetails } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "@/app/base/components/node/networking/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine, MachineDetails } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
-} from "app/store/utils";
-import { generateCheckboxHandlers, simpleSortByKey } from "app/utils";
-import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+} from "@/app/store/utils";
+import { generateCheckboxHandlers, simpleSortByKey } from "@/app/utils";
+import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 export type InterfaceRow = {
   linkId?: NetworkLink["id"] | null;

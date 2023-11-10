@@ -1,8 +1,8 @@
 import Intro from "./Intro";
 
-import urls from "app/base/urls";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   configState as configStateFactory,

@@ -10,7 +10,7 @@ import type {
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const packageRepositorySlice = createSlice({
   name: PackageRepositoryMeta.MODEL,

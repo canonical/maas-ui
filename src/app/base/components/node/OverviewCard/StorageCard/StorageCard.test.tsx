@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import StorageCard from "./StorageCard";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

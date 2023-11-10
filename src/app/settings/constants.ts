@@ -1,5 +1,5 @@
-import type { NavItem } from "app/base/components/SecondaryNavigation/SecondaryNavigation";
-import settingsURLs from "app/settings/urls";
+import type { NavItem } from "@/app/base/components/SecondaryNavigation/SecondaryNavigation";
+import settingsURLs from "@/app/settings/urls";
 
 export const settingsNavItems: NavItem[] = [
   {

@@ -4,18 +4,18 @@ import ZoneDetailsContent from "./ZoneDetailsContent";
 import ZoneDetailsForm from "./ZoneDetailsForm";
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
-import EditableSection from "app/base/components/EditableSection";
-import ModelNotFound from "app/base/components/ModelNotFound";
-import PageContent from "app/base/components/PageContent";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import urls from "app/base/urls";
-import authSelectors from "app/store/auth/selectors";
-import type { RootState } from "app/store/root/types";
-import { actions as zoneActions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
-import { ZoneMeta } from "app/store/zone/types";
-import { isId } from "app/utils";
+import EditableSection from "@/app/base/components/EditableSection";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import PageContent from "@/app/base/components/PageContent";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import urls from "@/app/base/urls";
+import authSelectors from "@/app/store/auth/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { actions as zoneActions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
+import { ZoneMeta } from "@/app/store/zone/types";
+import { isId } from "@/app/utils";
 
 const ZoneDetails = (): JSX.Element => {
   const zoneID = useGetURLId(ZoneMeta.PK);

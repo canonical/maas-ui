@@ -3,12 +3,12 @@ import { useSelector } from "react-redux";
 
 import ZonesListTitle from "./ZonesListTitle";
 
-import SectionHeader from "app/base/components/SectionHeader";
-import { useFetchActions } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import { actions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
-import { ZoneActionSidePanelViews } from "app/zones/constants";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useFetchActions } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { actions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
+import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
 const ZonesListHeader = ({
   setSidePanelContent,

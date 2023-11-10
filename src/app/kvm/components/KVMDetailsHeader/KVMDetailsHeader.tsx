@@ -6,9 +6,9 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import classNames from "classnames";
 import { useLocation } from "react-router-dom";
 
-import type { SectionHeaderProps } from "app/base/components/SectionHeader";
-import SectionHeader from "app/base/components/SectionHeader";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
+import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 
 type TitleBlock = {
   title: ReactNode;

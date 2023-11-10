@@ -1,7 +1,7 @@
 import { Select } from "@canonical/react-components";
 
-import { groupOptions } from "app/machines/constants";
-import type { FetchGroupKey } from "app/store/machine/types/actions";
+import { groupOptions } from "@/app/machines/constants";
+import type { FetchGroupKey } from "@/app/store/machine/types/actions";
 
 type Props = {
   grouping: FetchGroupKey | null;

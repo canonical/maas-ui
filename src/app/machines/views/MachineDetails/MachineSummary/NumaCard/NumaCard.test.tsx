@@ -1,7 +1,7 @@
 import NumaCard, { Labels as NumaCardLabels } from "./NumaCard";
 import { Labels as NumaCardDetailsLabels } from "./NumaCardDetails/NumaCardDetails";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineNumaNode as machineNumaNodeFactory,

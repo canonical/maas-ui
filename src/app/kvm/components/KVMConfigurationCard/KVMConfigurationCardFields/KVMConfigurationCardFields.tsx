@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 
 import type { KVMConfigurationValues } from "../KVMConfigurationCard";
 
-import FormikField from "app/base/components/FormikField";
-import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
-import TagNameField from "app/base/components/TagNameField";
-import ZoneSelect from "app/base/components/ZoneSelect";
-import { PodType } from "app/store/pod/constants";
-import { formatHostType } from "app/store/pod/utils";
-import tagSelectors from "app/store/tag/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
+import TagNameField from "@/app/base/components/TagNameField";
+import ZoneSelect from "@/app/base/components/ZoneSelect";
+import { PodType } from "@/app/store/pod/constants";
+import { formatHostType } from "@/app/store/pod/utils";
+import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {
   zoneDisabled?: boolean;

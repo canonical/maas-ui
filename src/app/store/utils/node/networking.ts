@@ -1,21 +1,21 @@
 import { isNodeDetails } from "./base";
 
-import type { Fabric } from "app/store/fabric/types";
-import type { Subnet } from "app/store/subnet/types";
+import type { Fabric } from "@/app/store/fabric/types";
+import type { Subnet } from "@/app/store/subnet/types";
 import {
   BridgeType,
   NetworkInterfaceTypes,
   NetworkLinkMode,
-} from "app/store/types/enum";
+} from "@/app/store/types/enum";
 import type {
   NetworkInterface,
   NetworkLink,
   DiscoveredIP,
   Node,
   NodeDetails,
-} from "app/store/types/node";
-import type { VLAN } from "app/store/vlan/types";
-import { getNextName } from "app/utils";
+} from "@/app/store/types/node";
+import type { VLAN } from "@/app/store/vlan/types";
+import { getNextName } from "@/app/utils";
 
 export const INTERFACE_TYPE_DISPLAY = {
   [NetworkInterfaceTypes.PHYSICAL]: "Physical",

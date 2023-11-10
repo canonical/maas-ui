@@ -9,18 +9,18 @@ import ConnectivityCard from "./ConnectivityCard";
 import NameCard from "./NameCard";
 import type { MaasIntroValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import TableConfirm from "app/base/components/TableConfirm";
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import { UrlSchema } from "app/base/validation";
-import IntroSection from "app/intro/components/IntroSection";
-import { useExitURL } from "app/intro/hooks";
-import authSelectors from "app/store/auth/selectors";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { actions as repoActions } from "app/store/packagerepository";
-import repoSelectors from "app/store/packagerepository/selectors";
+import FormikForm from "@/app/base/components/FormikForm";
+import TableConfirm from "@/app/base/components/TableConfirm";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { UrlSchema } from "@/app/base/validation";
+import IntroSection from "@/app/intro/components/IntroSection";
+import { useExitURL } from "@/app/intro/hooks";
+import authSelectors from "@/app/store/auth/selectors";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
+import { actions as repoActions } from "@/app/store/packagerepository";
+import repoSelectors from "@/app/store/packagerepository/selectors";
 
 export enum Labels {
   SecondarySubmit = "Skip setup",

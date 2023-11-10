@@ -8,25 +8,25 @@ import SubnetSummary from "./SubnetSummary";
 import SubnetUsedIPs from "./SubnetUsedIPs";
 import Utilisation from "./Utilisation";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import PageContent from "app/base/components/PageContent/PageContent";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useGetURLId, useWindowTitle } from "app/base/hooks";
-import { useSidePanel } from "app/base/side-panel-context";
-import type { RootState } from "app/store/root/types";
-import { actions as staticRouteActions } from "app/store/staticroute";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { SubnetMeta } from "app/store/subnet/types";
-import DHCPSnippets from "app/subnets/components/DHCPSnippets";
-import ReservedRanges from "app/subnets/components/ReservedRanges";
-import subnetURLs from "app/subnets/urls";
-import SubnetActionForms from "app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/SubnetActionForms";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import type { RootState } from "@/app/store/root/types";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { SubnetMeta } from "@/app/store/subnet/types";
+import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
+import ReservedRanges from "@/app/subnets/components/ReservedRanges";
+import subnetURLs from "@/app/subnets/urls";
+import SubnetActionForms from "@/app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/SubnetActionForms";
 import {
   subnetActionLabels,
   SubnetActionTypes,
-} from "app/subnets/views/SubnetDetails/constants";
-import { isId } from "app/utils";
+} from "@/app/subnets/views/SubnetDetails/constants";
+import { isId } from "@/app/utils";
 
 const SubnetDetails = (): JSX.Element => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();

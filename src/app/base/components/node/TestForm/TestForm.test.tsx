@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import TestForm from "./TestForm";
 
-import { HardwareType } from "app/base/enum";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { HardwareType } from "@/app/base/enum";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

@@ -1,6 +1,6 @@
 import type { BootResourceSourceType, BootResourceType } from "./enum";
 
-import type { Model } from "app/store/types/model";
+import type { Model } from "@/app/store/types/model";
 
 export type BaseImageFields = {
   checked: boolean;

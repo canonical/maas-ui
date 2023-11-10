@@ -2,8 +2,8 @@ import { Notification, Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 
-import { actions as machineActions } from "app/store/machine";
-import { FilterMachines } from "app/store/machine/utils";
+import { actions as machineActions } from "@/app/store/machine";
+import { FilterMachines } from "@/app/store/machine/utils";
 
 type Props = {
   filter: string;

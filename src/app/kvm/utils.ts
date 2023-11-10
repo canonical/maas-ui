@@ -1,10 +1,10 @@
 import { KVMSidePanelViews } from "./constants";
 import type { KVMStoragePoolResource, KVMStoragePoolResources } from "./types";
 
-import type { SidePanelContent } from "app/base/side-panel-context";
-import type { Pod } from "app/store/pod/types";
-import { getSidePanelTitle } from "app/store/utils/node/base";
-import { formatBytes } from "app/utils";
+import type { SidePanelContent } from "@/app/base/side-panel-context";
+import type { Pod } from "@/app/store/pod/types";
+import { getSidePanelTitle } from "@/app/store/utils/node/base";
+import { formatBytes } from "@/app/utils";
 
 /**
  * Returns a string with the formatted byte value and unit, e.g 1024 => "1KiB"

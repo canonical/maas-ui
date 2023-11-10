@@ -11,7 +11,7 @@
   "scripts": {
     "analyze": "npx -y source-map-explorer 'build/static/js/*.js'",
     "build-all": "yarn build",
-    "build": "CYPRESS_INSTALL_BINARY=0 yarn install && react-scripts build",
+    "build": "CYPRESS_INSTALL_BINARY=0 yarn install && vite build",
     "clean-all": "yarn clean",
     "clean": "rm -rf node_modules build",
     "cleanbuild": "yarn clean-all && yarn build",
@@ -24,16 +24,16 @@
     "percy": "./cypress/percy.sh",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "serve-proxy": "nodemon ./scripts/proxy.js",
-    "serve-react": "BROWSER=none PORT=8401 react-scripts start",
+    "serve-react": "vite",
     "serve-static-demo": "STATIC_DEMO=true PROXY_PORT=80 nodemon ./scripts/proxy.js",
-    "serve": "yarn start",
+    "serve": "vite preview",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
     "sitespeed:ci": "docker run -v \"$(pwd)/sitespeed.io:/sitespeed.io\" --network=host sitespeedio/sitespeed.io:25.2.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa",
     "sitespeed": "docker run -v \"$(pwd)/sitespeed.io:/sitespeed.io\" --add-host=host.docker.internal:host-gateway sitespeedio/sitespeed.io:25.2.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa --browsertime.domain=host.docker.internal --browsertime.port=8400 --browsertime.iterations=1",
     "start": "concurrently \"yarn serve-proxy\" \"yarn serve-react\" \"yarn show-ready\"",
     "test-cypress": "start-server-and-test start '8401' serve-base 'tcp:8400' cypress-run",
-    "test-ui": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/r --watchAll=false",
-    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache  --testTimeout=100000000",
+    "test-ui": "TZ=UTC jest --testEnvironmentOptions={url: 'http://example.com/MAAS/r'} --watchAll=false",
+    "test:debug": "jest --inspect-brk test --runInBand --no-cache  --testTimeout=100000000",
     "test": "yarn test-ui",
     "test:ci": "yarn test-ui --runInBand",
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\"",
@@ -47,6 +47,7 @@
     "@canonical/react-components": "0.46.0",
     "@reduxjs/toolkit": "1.9.3",
     "@sentry/browser": "5.30.0",
+    "@vitejs/plugin-react-swc": "^3.4.1",
     "classnames": "2.3.2",
     "clone-deep": "4.0.1",
     "date-fns": "2.29.3",
@@ -65,7 +66,6 @@
     "react-redux": "8.0.5",
     "react-router-dom": "5.3.4",
     "react-router-dom-v5-compat": "6.8.1",
-    "react-scripts": "5.0.1",
     "react-storage-hooks": "4.0.1",
     "react-useportal": "1.0.18",
     "reconnecting-websocket": "4.4.0",
@@ -77,6 +77,9 @@
     "typed-redux-saga": "1.5.0",
     "typescript": "5.1.3",
     "vanilla-framework": "4.0.0",
+    "vite": "^4.5.0",
+    "vite-plugin-svgr": "^4.1.0",
+    "vite-tsconfig-paths": "^4.2.1",
     "yup": "0.32.11"
   },
   "devDependencies": {
@@ -99,7 +102,7 @@
     "@testing-library/user-event": "14.4.3",
     "@types/classnames": "2.3.0",
     "@types/clone-deep": "4.0.1",
-    "@types/jest": "27.5.2",
+    "@types/jest": "^29.5.8",
     "@types/node": "18.14.2",
     "@types/path-parse": "1.0.19",
     "@types/pluralize": "0.0.29",
@@ -130,6 +133,8 @@
     "formik-devtools-extension": "0.1.8",
     "http-proxy-middleware": "2.0.6",
     "immer": "10.0.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "3.0.3",
     "mock-socket": "9.2.1",
     "mockdate": "3.0.5",
@@ -144,6 +149,7 @@
     "start-server-and-test": "2.0.0",
     "storybook": "7.4.1",
     "timezone-mock": "1.3.6",
+    "ts-jest": "^29.1.1",
     "wait-on": "7.0.1",
     "webpack": "5.88.2"
   },
@@ -173,6 +179,16 @@
     }
   },
   "jest": {
+    "preset": "ts-jest/presets/js-with-ts",
+    "testEnvironment": "jest-environment-jsdom",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
+      "@/(.*)": "<rootDir>/src/$1"
+    },
+    "modulePaths": [
+      "<rootDir>/src"
+    ],
     "resetMocks": false
   },
   "npmpackagejsonlint": {

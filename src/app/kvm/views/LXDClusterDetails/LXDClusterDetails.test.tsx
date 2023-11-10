@@ -1,14 +1,14 @@
 import LXDClusterDetails from "./LXDClusterDetails";
 
-import urls from "app/base/urls";
-import { Label as LXDClusterHostSettingsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHostSettings/LXDClusterHostSettings";
-import { Label as LXDClusterHostVMsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHostVMs/LXDClusterHostVMs";
-import { Label as LXDClusterHostsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHosts";
-import { Label as LXDClusterResourcesLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterResources/LXDClusterResources";
-import { Label as LXDClusterSettingsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterSettings/LXDClusterSettings";
-import { Label as LXDClusterVMsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterVMs/LXDClusterVMs";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as LXDClusterHostSettingsLabel } from "@/app/kvm/views/LXDClusterDetails/LXDClusterHostSettings/LXDClusterHostSettings";
+import { Label as LXDClusterHostVMsLabel } from "@/app/kvm/views/LXDClusterDetails/LXDClusterHostVMs/LXDClusterHostVMs";
+import { Label as LXDClusterHostsLabel } from "@/app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHosts";
+import { Label as LXDClusterResourcesLabel } from "@/app/kvm/views/LXDClusterDetails/LXDClusterResources/LXDClusterResources";
+import { Label as LXDClusterSettingsLabel } from "@/app/kvm/views/LXDClusterDetails/LXDClusterSettings/LXDClusterSettings";
+import { Label as LXDClusterVMsLabel } from "@/app/kvm/views/LXDClusterDetails/LXDClusterVMs/LXDClusterVMs";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,

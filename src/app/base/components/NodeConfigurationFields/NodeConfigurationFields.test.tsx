@@ -6,11 +6,11 @@ import configureStore from "redux-mock-store";
 
 import NodeConfigurationFields, { Label } from "./NodeConfigurationFields";
 
-import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
-import * as baseHooks from "app/base/hooks/base";
-import type { RootState } from "app/store/root/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import { Label as AddTagFormLabel } from "app/tags/components/AddTagForm/AddTagForm";
+import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
+import * as baseHooks from "@/app/base/hooks/base";
+import type { RootState } from "@/app/store/root/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

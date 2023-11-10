@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import NumaResourcesCard from "./NumaResourcesCard";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

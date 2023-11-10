@@ -1,7 +1,7 @@
 import { DisksColumn } from "./DisksColumn";
 
-import type { RootState } from "app/store/root/types";
-import { TestStatusStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

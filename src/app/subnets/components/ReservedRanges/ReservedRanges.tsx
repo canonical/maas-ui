@@ -14,26 +14,26 @@ import type { Dispatch } from "redux";
 
 import ReservedRangeForm from "../ReservedRangeForm";
 
-import FormCard from "app/base/components/FormCard";
-import SubnetLink from "app/base/components/SubnetLink";
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import TitledSection from "app/base/components/TitledSection";
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions } from "app/base/hooks";
-import { actions as ipRangeActions } from "app/store/iprange";
-import ipRangeSelectors from "app/store/iprange/selectors";
-import type { IPRange, IPRangeMeta } from "app/store/iprange/types";
-import { IPRangeType } from "app/store/iprange/types";
+import FormCard from "@/app/base/components/FormCard";
+import SubnetLink from "@/app/base/components/SubnetLink";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import TitledSection from "@/app/base/components/TitledSection";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as ipRangeActions } from "@/app/store/iprange";
+import ipRangeSelectors from "@/app/store/iprange/selectors";
+import type { IPRange, IPRangeMeta } from "@/app/store/iprange/types";
+import { IPRangeType } from "@/app/store/iprange/types";
 import {
   getCommentDisplay,
   getOwnerDisplay,
   getTypeDisplay,
-} from "app/store/iprange/utils";
-import type { RootState } from "app/store/root/types";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import { generateEmptyStateMsg, getTableStatus, isId } from "app/utils";
+} from "@/app/store/iprange/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
+import { generateEmptyStateMsg, getTableStatus, isId } from "@/app/utils";
 
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;

@@ -1,7 +1,7 @@
 import NodeNameFields from "./NodeNameFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { RootState } from "app/store/root/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainState as domainStateFactory,
   machineDetails as machineDetailsFactory,

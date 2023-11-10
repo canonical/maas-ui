@@ -7,7 +7,7 @@ import type { CreateParams, Fabric, FabricState, UpdateParams } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const fabricSlice = createSlice({
   name: FabricMeta.MODEL,

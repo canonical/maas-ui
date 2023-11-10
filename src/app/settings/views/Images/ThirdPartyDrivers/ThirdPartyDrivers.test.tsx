@@ -7,8 +7,8 @@ import { Labels as TPDFormLabels } from "../ThirdPartyDriversForm/ThirdPartyDriv
 
 import ThirdPartyDrivers, { Labels as TPDLabels } from "./ThirdPartyDrivers";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

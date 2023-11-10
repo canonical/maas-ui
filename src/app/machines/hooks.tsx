@@ -3,13 +3,13 @@ import { useCallback, useEffect } from "react";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useSelector } from "react-redux";
 
-import machineSelectors from "app/store/machine/selectors";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   Machine,
   MachineState,
   MachineStatus,
-} from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 
 /**
  * Create a callback for toggling the menu

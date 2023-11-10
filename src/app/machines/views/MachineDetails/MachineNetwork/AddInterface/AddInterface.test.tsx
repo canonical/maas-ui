@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NetworkLinkMode } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkLinkMode } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

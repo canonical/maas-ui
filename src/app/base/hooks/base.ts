@@ -8,8 +8,8 @@ import { useLocation } from "react-router-dom";
 
 import type { KeyboardShortcut } from "../constants";
 
-import configSelectors from "app/store/config/selectors";
-import { actions as messageActions } from "app/store/message";
+import configSelectors from "@/app/store/config/selectors";
+import { actions as messageActions } from "@/app/store/message";
 
 /**
  * Add a message in response to a state change e.g. when something is created.

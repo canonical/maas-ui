@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import MarkBrokenForm from "./MarkBrokenForm";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   rootState as rootStateFactory,
   machine as machineFactory,

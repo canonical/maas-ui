@@ -1,14 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { Fabric, FabricMeta } from "app/store/fabric/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, Node } from "app/store/types/node";
-import { generateBaseSelectors, nodeIsMachine } from "app/store/utils";
-import { VLANMeta, VlanVid } from "app/store/vlan/types";
-import type { VLAN, VLANState, VLANStatus } from "app/store/vlan/types";
-import { isId } from "app/utils";
+import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface, Node } from "@/app/store/types/node";
+import { generateBaseSelectors, nodeIsMachine } from "@/app/store/utils";
+import { VLANMeta, VlanVid } from "@/app/store/vlan/types";
+import type { VLAN, VLANState, VLANStatus } from "@/app/store/vlan/types";
+import { isId } from "@/app/utils";
 
 const searchFunction = (vlan: VLAN, term: string) => vlan.name.includes(term);
 

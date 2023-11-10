@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import KVMList from "./KVMList";
 
-import urls from "app/base/urls";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,

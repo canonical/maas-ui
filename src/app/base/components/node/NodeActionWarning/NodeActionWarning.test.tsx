@@ -1,6 +1,6 @@
 import NodeActionWarning from "./NodeActionWarning";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 import { render, screen } from "testing/utils";
 
 it("displays a warning for selectedCount of 0", () => {

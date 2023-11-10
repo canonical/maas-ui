@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import AvailableStorageTable from "./AvailableStorageTable";
 
-import { actions as machineActions } from "app/store/machine";
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { DiskTypes, StorageLayout } from "app/store/types/enum";
+import { actions as machineActions } from "@/app/store/machine";
+import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

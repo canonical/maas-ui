@@ -1,5 +1,5 @@
-import type { Host } from "app/store/types/host";
-import { NodeStatusCode } from "app/store/types/node";
+import type { Host } from "@/app/store/types/host";
+import { NodeStatusCode } from "@/app/store/types/node";
 
 // Node statuses for which the OS + release is made human-readable.
 const formattedReleaseStatuses = [

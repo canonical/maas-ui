@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MapSubnet from "./MapSubnet";
 
-import { actions as subnetActions } from "app/store/subnet";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,

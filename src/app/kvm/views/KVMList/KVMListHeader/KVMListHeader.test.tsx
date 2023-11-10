@@ -7,9 +7,9 @@ import configureStore from "redux-mock-store";
 
 import KVMListHeader from "./KVMListHeader";
 
-import urls from "app/base/urls";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,

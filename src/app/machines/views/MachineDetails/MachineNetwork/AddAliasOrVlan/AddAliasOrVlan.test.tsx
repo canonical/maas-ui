@@ -4,15 +4,15 @@ import AddAliasOrVlan, {
   Labels as AddAliasOrVlanLabels,
 } from "./AddAliasOrVlan";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
-import type { NetworkInterface } from "app/store/types/node";
+} from "@/app/store/types/node";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import AddRecordForm, { Labels as AddRecordFormLabels } from "./AddRecordForm";
 
-import { Labels as RecordFieldsLabels } from "app/domains/components/RecordFields/RecordFields";
-import { RecordType } from "app/store/domain/types";
+import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
+import { RecordType } from "@/app/store/domain/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,

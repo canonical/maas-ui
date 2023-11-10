@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 
 import UserForm from "../UserForm";
 
-import { useFetchActions } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import { PodMeta } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import statusSelectors from "app/store/status/selectors";
-import { actions as userActions } from "app/store/user";
-import userSelectors from "app/store/user/selectors";
+import { useFetchActions } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import { PodMeta } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import statusSelectors from "@/app/store/status/selectors";
+import { actions as userActions } from "@/app/store/user";
+import userSelectors from "@/app/store/user/selectors";
 
 export const UserEdit = (): JSX.Element => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);

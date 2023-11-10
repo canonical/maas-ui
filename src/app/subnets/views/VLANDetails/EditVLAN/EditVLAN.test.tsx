@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import EditVLAN from "./EditVLAN";
 
-import type { RootState } from "app/store/root/types";
-import { actions as vlanActions } from "app/store/vlan";
-import type { VLAN } from "app/store/vlan/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as vlanActions } from "@/app/store/vlan";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

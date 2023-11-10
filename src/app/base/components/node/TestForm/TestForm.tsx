@@ -7,15 +7,15 @@ import type { NodeActionFormProps } from "../types";
 
 import TestFormFields from "./TestFormFields";
 
-import ActionForm from "app/base/components/ActionForm";
-import type { HardwareType } from "app/base/enum";
-import { actions as scriptActions } from "app/store/script";
-import scriptSelectors from "app/store/script/selectors";
-import type { Script } from "app/store/script/types";
-import { getObjectString } from "app/store/script/utils";
-import type { Node } from "app/store/types/node";
-import { NodeActions } from "app/store/types/node";
-import { capitaliseFirst } from "app/utils";
+import ActionForm from "@/app/base/components/ActionForm";
+import type { HardwareType } from "@/app/base/enum";
+import { actions as scriptActions } from "@/app/store/script";
+import scriptSelectors from "@/app/store/script/selectors";
+import type { Script } from "@/app/store/script/types";
+import { getObjectString } from "@/app/store/script/utils";
+import type { Node } from "@/app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
+import { capitaliseFirst } from "@/app/utils";
 
 const TestFormSchema = Yup.object().shape({
   enableSSH: Yup.boolean(),

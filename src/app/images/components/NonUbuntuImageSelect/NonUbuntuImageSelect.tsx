@@ -1,16 +1,16 @@
 import { Col, Input, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import ImagesTable from "app/images/components/ImagesTable";
-import type { ImageValue } from "app/images/types";
+import ImagesTable from "@/app/images/components/ImagesTable";
+import type { ImageValue } from "@/app/images/types";
 import type {
   BaseImageFields,
   BootResource,
-} from "app/store/bootresource/types";
+} from "@/app/store/bootresource/types";
 import {
   splitImageName,
   splitResourceName,
-} from "app/store/bootresource/utils";
+} from "@/app/store/bootresource/utils";
 
 type Props = {
   images: BaseImageFields[];

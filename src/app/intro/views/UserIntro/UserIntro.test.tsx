@@ -4,10 +4,10 @@ import configureStore from "redux-mock-store";
 
 import UserIntro, { Labels as UserIntroLabels } from "./UserIntro";
 
-import * as baseHooks from "app/base/hooks/base";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as userActions } from "app/store/user";
+import * as baseHooks from "@/app/base/hooks/base";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as userActions } from "@/app/store/user";
 import {
   authState as authStateFactory,
   sshKey as sshKeyFactory,

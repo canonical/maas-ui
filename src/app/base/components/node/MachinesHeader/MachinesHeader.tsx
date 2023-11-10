@@ -1,8 +1,8 @@
-import type { SectionHeaderProps } from "app/base/components/SectionHeader";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useFetchActions } from "app/base/hooks";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import { actions as tagActions } from "app/store/tag";
+import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { actions as tagActions } from "@/app/store/tag";
 type Props = SectionHeaderProps & { machineCount: number };
 
 export const MachinesHeader = ({

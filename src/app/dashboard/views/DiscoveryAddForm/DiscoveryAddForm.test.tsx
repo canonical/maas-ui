@@ -6,15 +6,15 @@ import DiscoveryAddForm, {
 import { Labels as FormFieldLabels } from "./DiscoveryAddFormFields/DiscoveryAddFormFields";
 import { DeviceType } from "./types";
 
-import { actions as deviceActions } from "app/store/device";
-import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
-import type { Discovery } from "app/store/discovery/types";
-import type { RootState } from "app/store/root/types";
+import { actions as deviceActions } from "@/app/store/device";
+import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
+import type { Discovery } from "@/app/store/discovery/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   discovery as discoveryFactory,

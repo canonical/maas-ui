@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 
 import ServicesCard from "./ServicesCard";
 
-import HardwareCard from "app/base/components/node/HardwareCard";
-import OverviewCard from "app/base/components/node/OverviewCard";
-import { useWindowTitle } from "app/base/hooks";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import { isControllerDetails } from "app/store/controller/utils";
-import type { RootState } from "app/store/root/types";
+import HardwareCard from "@/app/base/components/node/HardwareCard";
+import OverviewCard from "@/app/base/components/node/OverviewCard";
+import { useWindowTitle } from "@/app/base/hooks";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import { isControllerDetails } from "@/app/store/controller/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

@@ -2,18 +2,18 @@ import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import configSelectors from "app/store/config/selectors";
-import { NetworkDiscovery } from "app/store/config/types";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { simpleSortByKey } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import configSelectors from "@/app/store/config/selectors";
+import { NetworkDiscovery } from "@/app/store/config/types";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import { simpleSortByKey } from "@/app/utils";
 
 type SubnetDiscoveryValues = {
   [x: number]: Subnet["active_discovery"];

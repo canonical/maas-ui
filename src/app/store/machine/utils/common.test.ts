@@ -10,11 +10,11 @@ import {
   getNodeStatusKey,
 } from "./common";
 
-import { SortDirection } from "app/base/types";
-import { PowerFieldScope } from "app/store/general/types";
-import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
-import { PowerState } from "app/store/types/enum";
-import { NodeStatus, NodeStatusCode } from "app/store/types/node";
+import { SortDirection } from "@/app/base/types";
+import { PowerFieldScope } from "@/app/store/general/types";
+import { FetchSortDirection, FetchGroupKey } from "@/app/store/machine/types";
+import { PowerState } from "@/app/store/types/enum";
+import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,

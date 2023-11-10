@@ -5,10 +5,10 @@ import { Label } from "../TagUpdate/TagUpdate";
 
 import TagDetails from "./TagDetails";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { TagViewState } from "app/tags/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { TagViewState } from "@/app/tags/types";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

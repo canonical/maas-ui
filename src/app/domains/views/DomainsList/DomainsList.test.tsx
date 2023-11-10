@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 import DomainsList from "./DomainsList";
 import { Labels as DomainsTableLabels } from "./DomainsTable/DomainsTable";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,

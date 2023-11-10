@@ -8,17 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { TagFormValues } from "./types";
 
-import type { APIError } from "app/base/types";
-import type { FetchFilters } from "app/store/machine/types";
-import type { SelectedMachines } from "app/store/machine/types/base";
-import { FilterMachines, selectedToFilters } from "app/store/machine/utils";
-import type { UseFetchQueryOptions } from "app/store/machine/utils/hooks";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import type { TagStateList } from "app/store/tag/types/base";
-import { toFormikNumber } from "app/utils";
+import type { APIError } from "@/app/base/types";
+import type { FetchFilters } from "@/app/store/machine/types";
+import type { SelectedMachines } from "@/app/store/machine/types/base";
+import { FilterMachines, selectedToFilters } from "@/app/store/machine/utils";
+import type { UseFetchQueryOptions } from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import type { TagStateList } from "@/app/store/tag/types/base";
+import { toFormikNumber } from "@/app/utils";
 
 /**
  * Get the tag objects for the tag ids that have been selected in the form.

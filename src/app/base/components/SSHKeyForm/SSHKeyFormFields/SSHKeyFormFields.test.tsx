@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import SSHKeyFormFields from "./SSHKeyFormFields";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,

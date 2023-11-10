@@ -2,7 +2,7 @@ import classNames from "classnames";
 import type { Location } from "react-router-dom-v5-compat";
 import { Link, matchPath, useLocation } from "react-router-dom-v5-compat";
 
-import { useThemeContext } from "app/base/theme-context";
+import { useThemeContext } from "@/app/base/theme-context";
 
 export type NavItem = {
   label: string;

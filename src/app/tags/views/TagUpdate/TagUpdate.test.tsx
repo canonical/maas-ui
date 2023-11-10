@@ -6,12 +6,12 @@ import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
-import { NewDefinitionMessage } from "app/tags/constants";
-import { Label } from "app/tags/views/TagDetails";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
+import { NewDefinitionMessage } from "@/app/tags/constants";
+import { Label } from "@/app/tags/views/TagDetails";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

@@ -9,18 +9,18 @@ import { useSelector } from "react-redux";
 
 import MachineSelect from "./MachineSelect/MachineSelect";
 
-import type { DHCPFormValues } from "app/base/components/DhcpForm/types";
-import FormikField from "app/base/components/FormikField";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller } from "app/store/controller/types";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device } from "app/store/device/types";
-import ipRangeSelectors from "app/store/iprange/selectors";
-import type { IPRange } from "app/store/iprange/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
+import type { DHCPFormValues } from "@/app/base/components/DhcpForm/types";
+import FormikField from "@/app/base/components/FormikField";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller } from "@/app/store/controller/types";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device } from "@/app/store/device/types";
+import ipRangeSelectors from "@/app/store/iprange/selectors";
+import type { IPRange } from "@/app/store/iprange/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
 
 type Option = { label: string; value: string };
 

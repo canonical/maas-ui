@@ -8,7 +8,7 @@
 
 import type { ValueOf } from "@canonical/react-components";
 
-import type { AnyObject } from "app/base/types";
+import type { AnyObject } from "@/app/base/types";
 
 export const groupAsMap = <I extends AnyObject>(
   arr: I[],

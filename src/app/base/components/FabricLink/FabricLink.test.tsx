@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import FabricLink, { Labels } from "./FabricLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

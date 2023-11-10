@@ -2,13 +2,13 @@ import configureStore from "redux-mock-store";
 
 import AddChassisForm from "./AddChassisForm";
 
-import { PowerTypeNames } from "app/store/general/constants";
+import { PowerTypeNames } from "@/app/store/general/constants";
 import {
   DriverType,
   PowerFieldScope,
   PowerFieldType,
-} from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,

@@ -3,18 +3,18 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import { useMachineActions } from "app/base/hooks";
-import type { MachineMenuAction } from "app/base/hooks/node";
-import { useToggleMenu } from "app/machines/hooks";
-import type { MachineMenuToggleHandler } from "app/machines/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import { getTagsDisplay } from "app/store/tag/utils";
-import { NodeActions } from "app/store/types/node";
-import userSelectors from "app/store/user/selectors";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import { useMachineActions } from "@/app/base/hooks";
+import type { MachineMenuAction } from "@/app/base/hooks/node";
+import { useToggleMenu } from "@/app/machines/hooks";
+import type { MachineMenuToggleHandler } from "@/app/machines/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine, MachineMeta } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import { getTagsDisplay } from "@/app/store/tag/utils";
+import { NodeActions } from "@/app/store/types/node";
+import userSelectors from "@/app/store/user/selectors";
 
 type Props = {
   onToggleMenu?: MachineMenuToggleHandler;

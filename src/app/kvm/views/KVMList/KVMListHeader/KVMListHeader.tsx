@@ -3,14 +3,14 @@ import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-import type { SectionHeaderProps } from "app/base/components/SectionHeader";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import { actions as podActions } from "app/store/pod";
-import podSelectors from "app/store/pod/selectors";
+import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { actions as podActions } from "@/app/store/pod";
+import podSelectors from "@/app/store/pod/selectors";
 
 type Props = Required<Pick<SectionHeaderProps, "title">> & {
   setSidePanelContent: KVMSetSidePanelContent;

@@ -1,6 +1,6 @@
 import reducers from "./slice";
 
-import { ConfigNames } from "app/store/config/types";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,

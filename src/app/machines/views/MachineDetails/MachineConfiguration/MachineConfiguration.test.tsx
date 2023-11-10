@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineConfiguration from "./MachineConfiguration";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

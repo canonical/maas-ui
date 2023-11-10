@@ -1,4 +1,4 @@
-import type { Fabric } from "app/store/fabric/types";
+import type { Fabric } from "@/app/store/fabric/types";
 
 /**
  * Get the Fabric display text.

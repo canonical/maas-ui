@@ -3,12 +3,12 @@ import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import urls from "app/base/urls";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import { FetchNodeStatus } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import { FetchNodeStatus } from "@/app/store/types/node";
 
 type Props = {
   id: Tag[TagMeta.PK];

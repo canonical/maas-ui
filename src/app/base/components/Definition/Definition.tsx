@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useId } from "app/base/hooks/base";
+import { useId } from "@/app/base/hooks/base";
 
 type CommonProps = {
   label: React.ReactNode;

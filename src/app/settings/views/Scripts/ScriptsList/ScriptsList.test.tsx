@@ -7,9 +7,9 @@ import { Labels as ScriptsListLabels } from "./ScriptsList";
 
 import ScriptsList from ".";
 
-import { fileContextStore } from "app/base/file-context";
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { fileContextStore } from "@/app/base/file-context";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   script as scriptFactory,
   scriptState as scriptStateFactory,

@@ -1,7 +1,7 @@
 import GeneratedImages from "./GeneratedImages";
 
-import { Labels as ImagesTableLabels } from "app/images/components/ImagesTable/ImagesTable";
-import { BootResourceType } from "app/store/bootresource/types";
+import { Labels as ImagesTableLabels } from "@/app/images/components/ImagesTable/ImagesTable";
+import { BootResourceType } from "@/app/store/bootresource/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,

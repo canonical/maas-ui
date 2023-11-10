@@ -5,7 +5,7 @@ import {
   isVLANDetails,
 } from "./utils";
 
-import { VlanVid } from "app/store/vlan/types";
+import { VlanVid } from "@/app/store/vlan/types";
 import {
   fabric as fabricFactory,
   vlan as vlanFactory,

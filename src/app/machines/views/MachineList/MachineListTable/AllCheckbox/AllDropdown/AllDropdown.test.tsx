@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import AllDropdown, { AllDropdownLabel } from "./AllDropdown";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { FetchNodeStatus } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { FetchNodeStatus } from "@/app/store/types/node";
 import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,

@@ -5,11 +5,11 @@ import { Link } from "react-router-dom-v5-compat";
 
 import MachineTestStatus from "../MachineTestStatus";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import urls from "app/base/urls";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import urls from "@/app/base/urls";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = { systemId: Machine["system_id"] };
 

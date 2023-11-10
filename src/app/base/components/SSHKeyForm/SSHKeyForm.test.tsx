@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import { SSHKeyForm } from "./SSHKeyForm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,

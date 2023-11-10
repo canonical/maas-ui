@@ -1,7 +1,7 @@
 import NumaResources, { TRUNCATION_POINT } from "./NumaResources";
 
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,

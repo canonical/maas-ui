@@ -2,7 +2,7 @@ import IncompleteCard, {
   Labels as IncompleteCardLabels,
 } from "./IncompleteCard";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
 import { screen, renderWithBrowserRouter } from "testing/utils";
 

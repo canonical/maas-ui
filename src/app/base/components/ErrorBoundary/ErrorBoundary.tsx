@@ -5,9 +5,9 @@ import { Notification } from "@canonical/react-components";
 import * as Sentry from "@sentry/browser";
 import { connect } from "react-redux";
 
-import configSelectors from "app/store/config/selectors";
-import { version as versionSelectors } from "app/store/general/selectors";
-import type { RootState } from "app/store/root/types";
+import configSelectors from "@/app/store/config/selectors";
+import { version as versionSelectors } from "@/app/store/general/selectors";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   analyticsEnabled?: boolean | null;

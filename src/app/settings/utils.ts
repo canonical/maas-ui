@@ -1,4 +1,4 @@
-import type { AnyObject } from "app/base/types";
+import type { AnyObject } from "@/app/base/types";
 
 /**
  * Returns whether two objects are equal when JSON.stringified. Note this

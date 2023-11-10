@@ -13,10 +13,10 @@ import { Link } from "react-router-dom-v5-compat";
 
 import type { NewPodValues } from "../../types";
 
-import FormikField from "app/base/components/FormikField";
-import urls from "app/base/urls";
-import podSelectors from "app/store/pod/selectors";
-import type { RootState } from "app/store/root/types";
+import FormikField from "@/app/base/components/FormikField";
+import urls from "@/app/base/urls";
+import podSelectors from "@/app/store/pod/selectors";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   newPodValues: NewPodValues;

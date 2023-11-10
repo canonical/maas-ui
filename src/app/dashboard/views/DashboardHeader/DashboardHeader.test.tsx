@@ -4,8 +4,8 @@ import DashboardHeader, {
   Labels as DashboardHeaderLabels,
 } from "./DashboardHeader";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,

@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
-import type { RootState } from "app/store/root/types";
-import { Label as DefinitionLabel } from "app/tags/components/DefinitionField";
+import type { RootState } from "@/app/store/root/types";
+import { Label as DefinitionLabel } from "@/app/tags/components/DefinitionField";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

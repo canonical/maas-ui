@@ -1,9 +1,9 @@
 import KVMForms from "./KVMForms";
 
-import { KVMSidePanelViews } from "app/kvm/constants";
-import { MachineSidePanelViews } from "app/machines/constants";
-import { PodType } from "app/store/pod/constants";
-import zoneSelectors from "app/store/zone/selectors";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import { PodType } from "@/app/store/pod/constants";
+import zoneSelectors from "@/app/store/zone/selectors";
 import {
   generalState as generalStateFactory,
   podState as podStateFactory,

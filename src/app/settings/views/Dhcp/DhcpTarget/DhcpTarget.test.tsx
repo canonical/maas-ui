@@ -3,7 +3,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import DhcpTarget from "./DhcpTarget";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerState as controllerStateFactory,
   deviceState as deviceStateFactory,

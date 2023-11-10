@@ -4,20 +4,20 @@ import { useSelector } from "react-redux";
 import AuthenticationCard from "./AuthenticationCard";
 import DangerZoneCard from "./DangerZoneCard";
 
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
-import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { isPodDetails } from "app/store/pod/utils";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
-import { actions as zoneActions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import KVMConfigurationCard from "@/app/kvm/components/KVMConfigurationCard";
+import LXDHostToolbar from "@/app/kvm/components/LXDHostToolbar";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import { isPodDetails } from "@/app/store/pod/utils";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import tagSelectors from "@/app/store/tag/selectors";
+import { actions as zoneActions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];

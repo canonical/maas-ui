@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import MachinesFilterOptions from "./MachinesFilterOptions";
 
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import { FilterGroupKey } from "app/store/machine/types";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import { FilterGroupKey } from "@/app/store/machine/types";
 
 export enum Label {
   Toggle = "Filters",

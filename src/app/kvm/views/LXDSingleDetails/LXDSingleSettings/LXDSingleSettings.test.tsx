@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleSettings from "./LXDSingleSettings";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,

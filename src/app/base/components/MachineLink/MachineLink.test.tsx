@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MachineLink, { Labels } from "./MachineLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,

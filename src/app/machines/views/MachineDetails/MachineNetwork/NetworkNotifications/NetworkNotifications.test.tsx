@@ -1,7 +1,7 @@
 import NetworkNotifications from "./NetworkNotifications";
 
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,

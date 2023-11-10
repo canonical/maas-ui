@@ -1,7 +1,7 @@
 import type { ConfigNames } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { GenericState } from "app/store/types/state";
+import type { APIError } from "@/app/base/types";
+import type { GenericState } from "@/app/store/types/state";
 
 export type ConfigChoice = [string | number, string];
 

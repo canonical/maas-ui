@@ -1,11 +1,11 @@
 import LXDSingleDetails from "./LXDSingleDetails";
 
-import urls from "app/base/urls";
-import { Label as LXDSingleResourcesLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleResources/LXDSingleResources";
-import { Label as LXDSingleSettingsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/LXDSingleSettings";
-import { Label as LXDSingleVMsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleVMs/LXDSingleVMs";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as LXDSingleResourcesLabel } from "@/app/kvm/views/LXDSingleDetails/LXDSingleResources/LXDSingleResources";
+import { Label as LXDSingleSettingsLabel } from "@/app/kvm/views/LXDSingleDetails/LXDSingleSettings/LXDSingleSettings";
+import { Label as LXDSingleVMsLabel } from "@/app/kvm/views/LXDSingleDetails/LXDSingleVMs/LXDSingleVMs";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,

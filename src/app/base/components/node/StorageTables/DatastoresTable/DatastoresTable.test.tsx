@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import DatastoresTable from "./DatastoresTable";
 
-import { actions as machineActions } from "app/store/machine";
+import { actions as machineActions } from "@/app/store/machine";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

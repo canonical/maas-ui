@@ -5,16 +5,16 @@ import { Link } from "react-router-dom-v5-compat";
 import type { SetExpanded } from "../NodeTestsTable";
 import { ScriptResultAction } from "../NodeTestsTable";
 
-import TableMenu from "app/base/components/TableMenu";
-import { useSendAnalytics } from "app/base/hooks";
-import type { DataTestElement } from "app/base/types";
-import urls from "app/base/urls";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { ScriptResult } from "app/store/scriptresult/types";
-import { ScriptResultType } from "app/store/scriptresult/types";
-import { scriptResultInProgress } from "app/store/scriptresult/utils";
-import { nodeIsMachine } from "app/store/utils";
+import TableMenu from "@/app/base/components/TableMenu";
+import { useSendAnalytics } from "@/app/base/hooks";
+import type { DataTestElement } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { ScriptResult } from "@/app/store/scriptresult/types";
+import { ScriptResultType } from "@/app/store/scriptresult/types";
+import { scriptResultInProgress } from "@/app/store/scriptresult/utils";
+import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;

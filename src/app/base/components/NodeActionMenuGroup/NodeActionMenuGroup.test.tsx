@@ -1,7 +1,7 @@
 import NodeActionMenuGroup, { Labels } from "./NodeActionMenuGroup";
 
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
 import { machine as machineFactory } from "testing/factories";
 import { userEvent, render, screen, within } from "testing/utils";
 

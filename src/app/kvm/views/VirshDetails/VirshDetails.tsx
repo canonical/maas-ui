@@ -8,18 +8,18 @@ import VirshDetailsHeader from "./VirshDetailsHeader";
 import VirshResources from "./VirshResources";
 import VirshSettings from "./VirshSettings";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import PageContent from "app/base/components/PageContent/PageContent";
-import { useGetURLId } from "app/base/hooks/urls";
-import { useSidePanel } from "app/base/side-panel-context";
-import urls from "app/base/urls";
-import KVMForms from "app/kvm/components/KVMForms";
-import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import { getFormTitle } from "app/kvm/utils";
-import podSelectors from "app/store/pod/selectors";
-import { PodMeta } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import { isId, getRelativeRoute } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
+import KVMForms from "@/app/kvm/components/KVMForms";
+import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
+import { getFormTitle } from "@/app/kvm/utils";
+import podSelectors from "@/app/store/pod/selectors";
+import { PodMeta } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import { isId, getRelativeRoute } from "@/app/utils";
 
 export enum Label {
   Title = "Virsh details",

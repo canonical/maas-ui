@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 
 import { DomainListSidePanelViews } from "../constants";
 
-import SectionHeader from "app/base/components/SectionHeader";
-import { useFetchActions } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import { actions as domainActions } from "app/store/domain";
-import domainSelectors from "app/store/domain/selectors";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useFetchActions } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { actions as domainActions } from "@/app/store/domain";
+import domainSelectors from "@/app/store/domain/selectors";
 
 export enum Labels {
   AddDomains = "Add domains",

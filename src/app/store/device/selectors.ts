@@ -3,19 +3,19 @@ import { createSelector } from "reselect";
 import type { RootState } from "../root/types";
 import type { NetworkInterface } from "../types/node";
 
-import { DeviceMeta } from "app/store/device/types";
+import { DeviceMeta } from "@/app/store/device/types";
 import type {
   Device,
   DeviceState,
   DeviceStatus,
   DeviceNetworkInterface,
-} from "app/store/device/types";
-import { FilterDevices, isDeviceDetails } from "app/store/device/utils";
-import tagSelectors from "app/store/tag/selectors";
+} from "@/app/store/device/types";
+import { FilterDevices, isDeviceDetails } from "@/app/store/device/utils";
+import tagSelectors from "@/app/store/tag/selectors";
 import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
   DeviceState,

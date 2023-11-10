@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { Config, ConfigState, ConfigValues } from "./types";
 
-import { genericInitialState } from "app/store/utils/slice";
+import { genericInitialState } from "@/app/store/utils/slice";
 
 const statusSlice = createSlice({
   name: "config",

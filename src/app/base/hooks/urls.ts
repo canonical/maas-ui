@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useLocation, useParams } from "react-router-dom-v5-compat";
 
-import { parseNumberId } from "app/utils";
+import { parseNumberId } from "@/app/utils";
 
 type RouteParams = Record<string, string>;
 

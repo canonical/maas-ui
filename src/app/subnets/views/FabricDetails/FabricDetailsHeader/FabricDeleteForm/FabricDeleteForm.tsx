@@ -4,15 +4,15 @@ import { useCallback } from "react";
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { EmptyObject } from "app/base/types";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric, FabricMeta } from "app/store/fabric/types";
-import type { RootState } from "app/store/root/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import subnetURLs from "app/subnets/urls";
-import { isId } from "app/utils";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { EmptyObject } from "@/app/base/types";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
+import type { RootState } from "@/app/store/root/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import subnetURLs from "@/app/subnets/urls";
+import { isId } from "@/app/utils";
 
 type Props = {
   closeForm: () => void;

@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import DeleteForm from "app/base/components/node/DeleteForm";
-import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
-import SetZoneForm from "app/base/components/node/SetZoneForm";
-import type { ClearSidePanelContent } from "app/base/types";
-import urls from "app/base/urls";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device, DeviceActions } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
-import { kebabToCamelCase } from "app/utils";
+import DeleteForm from "@/app/base/components/node/DeleteForm";
+import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
+import SetZoneForm from "@/app/base/components/node/SetZoneForm";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device, DeviceActions } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
+import { kebabToCamelCase } from "@/app/utils";
 
 type Props = {
   action: DeviceActions;

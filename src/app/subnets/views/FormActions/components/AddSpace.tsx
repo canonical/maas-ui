@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { FormActionProps } from "../FormActions";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { actions as spaceActions } from "app/store/space";
-import spaceSelectors from "app/store/space/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { actions as spaceActions } from "@/app/store/space";
+import spaceSelectors from "@/app/store/space/selectors";
 
 type AddSpaceValues = {
   name: string;

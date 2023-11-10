@@ -1,6 +1,6 @@
 import NetworkCardTable from "./NetworkCardTable";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   deviceState as deviceStateFactory,
   fabric as fabricFactory,

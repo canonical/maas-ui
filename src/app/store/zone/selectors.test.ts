@@ -1,7 +1,7 @@
 import { ZONE_ACTIONS } from "./constants";
 import zone from "./selectors";
 
-import { ACTION_STATUS } from "app/base/constants";
+import { ACTION_STATUS } from "@/app/base/constants";
 import {
   rootState as rootStateFactory,
   zone as zoneFactory,

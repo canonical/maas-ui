@@ -5,11 +5,11 @@ import { useSelector } from "react-redux";
 import TagListControls from "./TagListControls";
 import TagTable from "./TagTable";
 
-import { useWindowTitle } from "app/base/hooks";
-import { useId } from "app/base/hooks/base";
-import type { RootState } from "app/store/root/types";
-import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useId } from "@/app/base/hooks/base";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 type Props = {
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;

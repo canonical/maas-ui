@@ -14,43 +14,43 @@ import { selectedToFilters, selectedToSeparateFilters } from "./common";
 import { generateCallId, transformToFetchParams } from "./query";
 import { FilterMachines } from "./search";
 
-import { ACTION_STATUS } from "app/base/constants";
-import { useFetchActions, useCanEdit } from "app/base/hooks";
+import { ACTION_STATUS } from "@/app/base/constants";
+import { useFetchActions, useCanEdit } from "@/app/base/hooks";
 import type {
   ActionStatuses,
   ActionState,
   APIError,
   SortDirection,
-} from "app/base/types";
-import ErrorDetails from "app/machines/components/ErrorDetails";
-import type { MachineActionFormProps } from "app/machines/types";
-import { actions as generalActions } from "app/store/general";
+} from "@/app/base/types";
+import ErrorDetails from "@/app/machines/components/ErrorDetails";
+import type { MachineActionFormProps } from "@/app/machines/types";
+import { actions as generalActions } from "@/app/store/general";
 import {
   architectures as architecturesSelectors,
   osInfo as osInfoSelectors,
-} from "app/store/general/selectors";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+} from "@/app/store/general/selectors";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   FetchFilters,
   Machine,
   MachineMeta,
   MachineStateListGroup,
   SelectedMachines,
-} from "app/store/machine/types";
-import type { actions as resourcePoolActions } from "app/store/resourcepool";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { Host } from "app/store/types/host";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
-import { FetchNodeStatus, NodeStatus } from "app/store/types/node";
+} from "@/app/store/machine/types";
+import type { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { Host } from "@/app/store/types/host";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
+import { FetchNodeStatus, NodeStatus } from "@/app/store/types/node";
 import {
   getLinkInterface,
   hasInterfaceType,
   isNodeStorageConfigurable,
-} from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
-import { isId } from "app/utils";
+} from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { isId } from "@/app/utils";
 
 export const useDispatchWithCallId = <A extends AnyAction>(): {
   callId: string | null;

@@ -1,7 +1,7 @@
 import { NameColumn } from "./NameColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   modelRef as modelRefFactory,
   machine as machineFactory,

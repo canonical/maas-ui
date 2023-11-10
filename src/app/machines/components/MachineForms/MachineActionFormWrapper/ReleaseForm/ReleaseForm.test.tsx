@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import ReleaseForm from "./ReleaseForm";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,

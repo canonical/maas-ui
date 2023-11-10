@@ -1,6 +1,6 @@
 import SyncedImages, { Labels as SyncedImagesLabels } from "./SyncedImages";
 
-import { BootResourceSourceType } from "app/store/bootresource/types";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,

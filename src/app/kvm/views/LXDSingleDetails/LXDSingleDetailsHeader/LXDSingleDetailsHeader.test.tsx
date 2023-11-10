@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import { KVMSidePanelViews } from "app/kvm/constants";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podPowerParameters as powerParametersFactory,

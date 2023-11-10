@@ -2,8 +2,8 @@ import { useMemo } from "react";
 
 import { useSelector } from "react-redux";
 
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import type { PowerParameters } from "app/store/types/node";
+import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
+import type { PowerParameters } from "@/app/store/types/node";
 
 /**
  * Returns a memoized object of the initial power parameters from given power

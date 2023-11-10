@@ -8,7 +8,7 @@ import {
 } from "./types";
 import { splitResourceName } from "./utils";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 
 /**
  * Get the boot resources state object.

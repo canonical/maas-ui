@@ -1,6 +1,6 @@
 import TooltipButton from "./TooltipButton";
 
-import { breakLines, unindentString } from "app/utils";
+import { breakLines, unindentString } from "@/app/utils";
 import { userEvent, render, screen, within } from "testing/utils";
 
 it("renders with default options correctly", async () => {

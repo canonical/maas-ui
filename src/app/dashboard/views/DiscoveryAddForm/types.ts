@@ -2,8 +2,8 @@ import type {
   Device,
   DeviceIpAssignment,
   DeviceMeta,
-} from "app/store/device/types";
-import type { Domain } from "app/store/domain/types";
+} from "@/app/store/device/types";
+import type { Domain } from "@/app/store/domain/types";
 
 export enum DeviceType {
   DEVICE = "device",

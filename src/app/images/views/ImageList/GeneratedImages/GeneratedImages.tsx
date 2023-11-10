@@ -1,10 +1,10 @@
 import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import ImagesTable from "app/images/components/ImagesTable";
-import type { ImageValue } from "app/images/types";
-import bootResourceSelectors from "app/store/bootresource/selectors";
-import { splitResourceName } from "app/store/bootresource/utils";
+import ImagesTable from "@/app/images/components/ImagesTable";
+import type { ImageValue } from "@/app/images/types";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
+import { splitResourceName } from "@/app/store/bootresource/utils";
 
 const GeneratedImages = (): JSX.Element | null => {
   const generatedResources = useSelector(

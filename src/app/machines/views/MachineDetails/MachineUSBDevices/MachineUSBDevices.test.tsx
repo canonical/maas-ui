@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import MachineUSBDevices from "./MachineUSBDevices";
 
-import { actions as nodeDeviceActions } from "app/store/nodedevice";
-import type { RootState } from "app/store/root/types";
+import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

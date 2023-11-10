@@ -9,8 +9,8 @@ import type {
   ModelAction,
   PayloadActionWithIdentifier,
   StateError,
-} from "app/base/types";
-import type { TimestampedModel } from "app/store/types/model";
+} from "@/app/base/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 
 export type ZonePK = Zone[ZoneMeta.PK];
 

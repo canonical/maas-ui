@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import SubnetDetails from "./SubnetDetails";
 
-import urls from "app/base/urls";
-import { actions as staticRouteActions } from "app/store/staticroute";
-import { actions as subnetActions } from "app/store/subnet";
+import urls from "@/app/base/urls";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,

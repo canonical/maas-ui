@@ -1,10 +1,10 @@
 import { Button } from "@canonical/react-components";
 
-import MachinesHeader from "app/base/components/node/MachinesHeader";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
-import { TagSidePanelViews } from "app/tags/constants";
-import { TagViewState } from "app/tags/types";
+import MachinesHeader from "@/app/base/components/node/MachinesHeader";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import { TagSidePanelViews } from "@/app/tags/constants";
+import { TagViewState } from "@/app/tags/types";
 
 export type Props = {
   setSidePanelContent: SetSidePanelContent;

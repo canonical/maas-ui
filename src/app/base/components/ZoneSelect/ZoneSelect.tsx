@@ -3,11 +3,11 @@ import type { HTMLProps } from "react";
 import { Select } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
-import { useFetchActions } from "app/base/hooks";
-import { actions as zoneActions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
-import type { Zone } from "app/store/zone/types";
+import FormikField from "@/app/base/components/FormikField";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as zoneActions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
+import type { Zone } from "@/app/store/zone/types";
 
 type Props = {
   disabled?: boolean;

@@ -5,10 +5,10 @@ import configureStore from "redux-mock-store";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 
-import { HardwareType } from "app/base/enum";
-import { actions as scriptResultActions } from "app/store/scriptresult";
-import { ScriptResultType } from "app/store/scriptresult/types";
-import { TestStatusStatus } from "app/store/types/node";
+import { HardwareType } from "@/app/base/enum";
+import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { ScriptResultType } from "@/app/store/scriptresult/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import { Headers } from "./BootArchitecturesTable";
 import EditBootArchitectures from "./EditBootArchitectures";
 
-import { actions as subnetActions } from "app/store/subnet";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   knownBootArchitecture as knownBootArchitectureFactory,
   knownBootArchitecturesState as knownBootArchitecturesStateFactory,

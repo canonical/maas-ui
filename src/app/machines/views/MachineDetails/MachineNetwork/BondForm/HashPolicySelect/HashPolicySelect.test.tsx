@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import HashPolicySelect from "./HashPolicySelect";
 
-import { BondXmitHashPolicy } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { BondXmitHashPolicy } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   bondOptions as bondOptionsFactory,

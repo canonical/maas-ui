@@ -1,9 +1,9 @@
-import { StaticRouteMeta } from "app/store/staticroute/types";
+import { StaticRouteMeta } from "@/app/store/staticroute/types";
 import type {
   StaticRoute,
   StaticRouteState,
-} from "app/store/staticroute/types";
-import { generateBaseSelectors } from "app/store/utils";
+} from "@/app/store/staticroute/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const selectors = generateBaseSelectors<
   StaticRouteState,

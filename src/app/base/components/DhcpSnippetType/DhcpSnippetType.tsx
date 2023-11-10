@@ -1,7 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 
-import { useDhcpTarget } from "app/settings/hooks";
-import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import { useDhcpTarget } from "@/app/settings/hooks";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
   nodeId?: DHCPSnippet["node"];

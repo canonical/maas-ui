@@ -1,7 +1,7 @@
 import MachineSelectTable, { Label } from "./MachineSelectTable";
 
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   rootState as rootStateFactory,

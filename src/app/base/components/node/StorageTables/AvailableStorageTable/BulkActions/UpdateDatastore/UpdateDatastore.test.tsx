@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import UpdateDatastore from "./UpdateDatastore";
 
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
+import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,

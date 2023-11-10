@@ -5,10 +5,10 @@ import { ExternalLink } from "@canonical/maas-react-components";
 import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import docsUrls from "app/base/docsUrls";
-import type { ClearSidePanelContent } from "app/base/types";
-import configSelectors from "app/store/config/selectors";
-import { version as versionSelectors } from "app/store/general/selectors";
+import docsUrls from "@/app/base/docsUrls";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import configSelectors from "@/app/store/config/selectors";
+import { version as versionSelectors } from "@/app/store/general/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;

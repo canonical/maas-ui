@@ -1,5 +1,5 @@
-import { SortDirection } from "app/base/types";
-import { FetchGroupKey } from "app/store/machine/types";
+import { SortDirection } from "@/app/base/types";
+import { FetchGroupKey } from "@/app/store/machine/types";
 export const DEFAULTS = {
   pageSize: 50,
   sortDirection: SortDirection.ASCENDING,

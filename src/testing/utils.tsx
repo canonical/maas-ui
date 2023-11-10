@@ -13,10 +13,10 @@ import configureStore from "redux-mock-store";
 import type {
   SidePanelContent,
   SidePanelSize,
-} from "app/base/side-panel-context";
-import SidePanelContextProvider from "app/base/side-panel-context";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/base/side-panel-context";
+import SidePanelContextProvider from "@/app/base/side-panel-context";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

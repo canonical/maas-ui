@@ -6,18 +6,18 @@ import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
-import docsUrls from "app/base/docsUrls";
-import { useSendAnalytics } from "app/base/hooks";
-import { useId } from "app/base/hooks/base";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import docsUrls from "@/app/base/docsUrls";
+import { useSendAnalytics } from "@/app/base/hooks";
+import { useId } from "@/app/base/hooks/base";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
 import type {
   CreateParams,
   Tag,
   TagMeta,
   UpdateParams,
-} from "app/store/tag/types";
+} from "@/app/store/tag/types";
 
 export const INVALID_XPATH_ERROR = "Invalid xpath expression";
 

@@ -1,15 +1,15 @@
 import type { NodeDeviceBus } from "./enum";
 
-import type { HardwareType } from "app/base/enum";
-import type { APIError } from "app/base/types";
-import type { Machine } from "app/store/machine/types";
-import type { TimestampedModel } from "app/store/types/model";
+import type { HardwareType } from "@/app/base/enum";
+import type { APIError } from "@/app/base/types";
+import type { Machine } from "@/app/store/machine/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 import type {
   Disk,
   NetworkInterface,
   NodeNumaNode,
-} from "app/store/types/node";
-import type { GenericState } from "app/store/types/state";
+} from "@/app/store/types/node";
+import type { GenericState } from "@/app/store/types/state";
 
 export type NodeDevice = TimestampedModel & {
   bus_number: number;

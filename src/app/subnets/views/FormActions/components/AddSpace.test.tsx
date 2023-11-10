@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddSpace from "./AddSpace";
 
-import { actions as spaceActions } from "app/store/space";
+import { actions as spaceActions } from "@/app/store/space";
 import { rootState as rootStateFactory } from "testing/factories";
 import { userEvent, render, screen, waitFor } from "testing/utils";
 

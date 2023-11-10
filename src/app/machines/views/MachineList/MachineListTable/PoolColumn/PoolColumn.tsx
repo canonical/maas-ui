@@ -4,20 +4,20 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import urls from "app/base/urls";
-import { useToggleMenu } from "app/machines/hooks";
-import type { MachineMenuToggleHandler } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import urls from "@/app/base/urls";
+import { useToggleMenu } from "@/app/machines/hooks";
+import type { MachineMenuToggleHandler } from "@/app/machines/types";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine, MachineMeta } from "@/app/store/machine/types";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type {
   ResourcePool,
   ResourcePoolMeta,
-} from "app/store/resourcepool/types";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+} from "@/app/store/resourcepool/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 
 type Props = {
   onToggleMenu?: MachineMenuToggleHandler;

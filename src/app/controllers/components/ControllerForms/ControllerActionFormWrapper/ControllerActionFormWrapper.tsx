@@ -1,22 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import DeleteForm from "app/base/components/node/DeleteForm";
-import FieldlessForm from "app/base/components/node/FieldlessForm";
-import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
-import SetZoneForm from "app/base/components/node/SetZoneForm";
-import TestForm from "app/base/components/node/TestForm";
-import type { HardwareType } from "app/base/enum";
-import type { ClearSidePanelContent } from "app/base/types";
-import urls from "app/base/urls";
-import { actions as controllerActions } from "app/store/controller";
+import DeleteForm from "@/app/base/components/node/DeleteForm";
+import FieldlessForm from "@/app/base/components/node/FieldlessForm";
+import NodeActionFormWrapper from "@/app/base/components/node/NodeActionFormWrapper";
+import SetZoneForm from "@/app/base/components/node/SetZoneForm";
+import TestForm from "@/app/base/components/node/TestForm";
+import type { HardwareType } from "@/app/base/enum";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import { actions as controllerActions } from "@/app/store/controller";
 import controllerSelectors, {
   statusSelectors,
-} from "app/store/controller/selectors";
-import { ACTIONS } from "app/store/controller/slice";
-import type { Controller, ControllerActions } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
-import { kebabToCamelCase } from "app/utils";
+} from "@/app/store/controller/selectors";
+import { ACTIONS } from "@/app/store/controller/slice";
+import type { Controller, ControllerActions } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
+import { kebabToCamelCase } from "@/app/utils";
 
 type Props = {
   action: ControllerActions;

@@ -5,8 +5,8 @@ import type { InterfaceFormValues } from "../InterfaceForm";
 
 import InterfaceFormFields from "./InterfaceFormFields";
 
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,

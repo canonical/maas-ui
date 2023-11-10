@@ -7,10 +7,10 @@ import EditRecordForm, {
   Labels as EditRecordFormLabels,
 } from "./EditRecordForm";
 
-import { Labels as RecordFieldsLabels } from "app/domains/components/RecordFields/RecordFields";
-import { actions as domainActions } from "app/store/domain";
-import { RecordType } from "app/store/domain/types";
-import type { RootState } from "app/store/root/types";
+import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
+import { actions as domainActions } from "@/app/store/domain";
+import { RecordType } from "@/app/store/domain/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainDetails as domainFactory,
   domainState as domainStateFactory,

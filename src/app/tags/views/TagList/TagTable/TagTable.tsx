@@ -12,19 +12,19 @@ import { useNavigate, Link } from "react-router-dom-v5-compat";
 
 import { TAGS_PER_PAGE } from "../constants";
 
-import TableActions from "app/base/components/TableActions";
-import TableHeader from "app/base/components/TableHeader";
-import TooltipButton from "app/base/components/TooltipButton";
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions, useTableSort } from "app/base/hooks";
-import { SortDirection } from "app/base/types";
-import urls from "app/base/urls";
-import { actions as tagActions } from "app/store/tag";
-import { TagSearchFilter } from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
-import { TagMeta } from "app/store/tag/types";
-import AppliedTo from "app/tags/components/AppliedTo";
-import { isComparable } from "app/utils";
+import TableActions from "@/app/base/components/TableActions";
+import TableHeader from "@/app/base/components/TableHeader";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions, useTableSort } from "@/app/base/hooks";
+import { SortDirection } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import { actions as tagActions } from "@/app/store/tag";
+import { TagSearchFilter } from "@/app/store/tag/selectors";
+import type { Tag } from "@/app/store/tag/types";
+import { TagMeta } from "@/app/store/tag/types";
+import AppliedTo from "@/app/tags/components/AppliedTo";
+import { isComparable } from "@/app/utils";
 
 type Props = PropsWithSpread<
   {

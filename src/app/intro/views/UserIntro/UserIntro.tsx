@@ -3,18 +3,18 @@ import { useState } from "react";
 import { ActionButton, Button, Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import SSHKeyForm from "app/base/components/SSHKeyForm";
-import SSHKeyList from "app/base/components/SSHKeyList";
-import TableConfirm from "app/base/components/TableConfirm";
-import { useFetchActions, useCycled } from "app/base/hooks";
-import IntroCard from "app/intro/components/IntroCard";
-import IntroSection from "app/intro/components/IntroSection";
-import authSelectors from "app/store/auth/selectors";
-import { actions as sshkeyActions } from "app/store/sshkey";
-import sshkeySelectors from "app/store/sshkey/selectors";
-import { actions as userActions } from "app/store/user";
-import userSelectors from "app/store/user/selectors";
-import { formatErrors } from "app/utils";
+import SSHKeyForm from "@/app/base/components/SSHKeyForm";
+import SSHKeyList from "@/app/base/components/SSHKeyList";
+import TableConfirm from "@/app/base/components/TableConfirm";
+import { useFetchActions, useCycled } from "@/app/base/hooks";
+import IntroCard from "@/app/intro/components/IntroCard";
+import IntroSection from "@/app/intro/components/IntroSection";
+import authSelectors from "@/app/store/auth/selectors";
+import { actions as sshkeyActions } from "@/app/store/sshkey";
+import sshkeySelectors from "@/app/store/sshkey/selectors";
+import { actions as userActions } from "@/app/store/user";
+import userSelectors from "@/app/store/user/selectors";
+import { formatErrors } from "@/app/utils";
 
 export enum Labels {
   Continue = "Finish setup",

@@ -6,10 +6,10 @@ import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+} from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   bondOptions as bondOptionsFactory,
   fabric as fabricFactory,

@@ -8,7 +8,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useDhcpTarget } from "./hooks";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,

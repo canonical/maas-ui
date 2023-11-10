@@ -6,12 +6,12 @@ import { columnLabels, ControllerVLANsColumns } from "./constants";
 import { useControllerVLANsTable } from "./hooks";
 import type { ControllerTableData } from "./types";
 
-import ControllerLink from "app/base/components/ControllerLink";
-import FabricLink from "app/base/components/FabricLink";
-import SubnetLink from "app/base/components/SubnetLink";
-import VLANLink from "app/base/components/VLANLink";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { Subnet } from "app/store/subnet/types";
+import ControllerLink from "@/app/base/components/ControllerLink";
+import FabricLink from "@/app/base/components/FabricLink";
+import SubnetLink from "@/app/base/components/SubnetLink";
+import VLANLink from "@/app/base/components/VLANLink";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { Subnet } from "@/app/store/subnet/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

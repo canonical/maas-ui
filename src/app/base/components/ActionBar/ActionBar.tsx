@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import type { SearchBoxProps } from "@canonical/react-components";
 
-import ArrowPagination from "app/base/components/ArrowPagination";
-import SearchBox from "app/base/components/SearchBox";
+import ArrowPagination from "@/app/base/components/ArrowPagination";
+import SearchBox from "@/app/base/components/SearchBox";
 
 type Props = {
   actions?: ReactNode;

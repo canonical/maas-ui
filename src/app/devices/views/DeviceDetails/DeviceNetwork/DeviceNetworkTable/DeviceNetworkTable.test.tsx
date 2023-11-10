@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceInterface as deviceInterfaceFactory,

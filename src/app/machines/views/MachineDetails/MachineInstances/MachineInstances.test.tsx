@@ -1,6 +1,6 @@
 import MachineInstances from "./MachineInstances";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDevice as machineDeviceFactory,

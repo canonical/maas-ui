@@ -1,12 +1,12 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device, DeviceMeta } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import { getTagsDisplay } from "app/store/tag/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device, DeviceMeta } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import { getTagsDisplay } from "@/app/store/tag/utils";
 
 type Props = {
   systemId: Device[DeviceMeta.PK];

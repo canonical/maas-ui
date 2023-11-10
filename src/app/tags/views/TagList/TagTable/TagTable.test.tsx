@@ -6,10 +6,10 @@ import configureStore from "redux-mock-store";
 
 import TagTable, { Label, TestId } from "./TagTable";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { TagSearchFilter } from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { TagSearchFilter } from "@/app/store/tag/selectors";
+import type { Tag } from "@/app/store/tag/types";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

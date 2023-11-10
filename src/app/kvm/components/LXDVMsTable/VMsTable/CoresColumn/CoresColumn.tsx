@@ -1,5 +1,5 @@
-import DoubleRow from "app/base/components/DoubleRow";
-import { getRanges } from "app/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import { getRanges } from "@/app/utils";
 
 type Props = {
   pinnedCores: number[];

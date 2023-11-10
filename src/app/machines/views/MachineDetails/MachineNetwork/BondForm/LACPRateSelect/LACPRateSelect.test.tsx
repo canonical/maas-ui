@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import LACPRateSelect from "./LACPRateSelect";
 
-import { BondLacpRate } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { BondLacpRate } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   bondOptions as bondOptionsFactory,

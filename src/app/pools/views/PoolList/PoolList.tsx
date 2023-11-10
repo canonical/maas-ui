@@ -11,18 +11,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 import type { Dispatch } from "redux";
 
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import { FilterMachines } from "app/store/machine/utils";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import { useFetchActions, useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type {
   ResourcePool,
   ResourcePoolState,
-} from "app/store/resourcepool/types";
-import { formatErrors } from "app/utils";
+} from "@/app/store/resourcepool/types";
+import { formatErrors } from "@/app/utils";
 
 export enum Label {
   Title = "Pool list",

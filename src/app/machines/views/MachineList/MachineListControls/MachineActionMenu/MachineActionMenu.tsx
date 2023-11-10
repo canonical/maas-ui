@@ -2,14 +2,14 @@ import { useCallback } from "react";
 
 import { useStorageState } from "react-storage-hooks";
 
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
-import { useSendAnalytics } from "app/base/hooks";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import type { useHasSelection } from "app/store/machine/utils/hooks";
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import NodeActionMenuGroup from "@/app/base/components/NodeActionMenuGroup";
+import { useSendAnalytics } from "@/app/base/hooks";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import type { useHasSelection } from "@/app/store/machine/utils/hooks";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
 
 const MachineActionMenu = ({
   hasSelection,

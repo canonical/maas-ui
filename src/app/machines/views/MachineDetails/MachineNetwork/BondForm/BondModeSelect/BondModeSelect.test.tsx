@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import BondModeSelect from "./BondModeSelect";
 
-import { BondMode } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { BondMode } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   bondOptions as bondOptionsFactory,

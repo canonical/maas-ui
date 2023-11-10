@@ -5,9 +5,9 @@ import { Label as TagListLabel } from "./TagList/TagList";
 import { Label as TagUpdateLabel } from "./TagUpdate/TagUpdate";
 import Tags from "./Tags";
 
-import urls from "app/base/urls";
-import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,

@@ -1,6 +1,6 @@
 import RamResources from "./RamResources";
 
-import { COLOURS } from "app/base/constants";
+import { COLOURS } from "@/app/base/constants";
 import { render, screen } from "testing/utils";
 
 describe("RamResources", () => {

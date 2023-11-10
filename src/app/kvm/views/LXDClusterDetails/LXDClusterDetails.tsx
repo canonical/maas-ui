@@ -18,21 +18,21 @@ import LXDClusterResources from "./LXDClusterResources";
 import LXDClusterSettings from "./LXDClusterSettings";
 import LXDClusterVMs from "./LXDClusterVMs";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import PageContent from "app/base/components/PageContent/PageContent";
-import { useGetURLId } from "app/base/hooks/urls";
-import { useSidePanel } from "app/base/side-panel-context";
-import type { SetSearchFilter } from "app/base/types";
-import urls from "app/base/urls";
-import KVMForms from "app/kvm/components/KVMForms/KVMForms";
-import { getFormTitle } from "app/kvm/utils";
-import { FilterMachines } from "app/store/machine/utils";
-import { actions as podActions } from "app/store/pod";
-import type { RootState } from "app/store/root/types";
-import { actions as vmClusterActions } from "app/store/vmcluster";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import { VMClusterMeta } from "app/store/vmcluster/types";
-import { getRelativeRoute, isId } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import type { SetSearchFilter } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import KVMForms from "@/app/kvm/components/KVMForms/KVMForms";
+import { getFormTitle } from "@/app/kvm/utils";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { actions as podActions } from "@/app/store/pod";
+import type { RootState } from "@/app/store/root/types";
+import { actions as vmClusterActions } from "@/app/store/vmcluster";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import { VMClusterMeta } from "@/app/store/vmcluster/types";
+import { getRelativeRoute, isId } from "@/app/utils";
 
 export enum Label {
   Title = "LXD cluster details",

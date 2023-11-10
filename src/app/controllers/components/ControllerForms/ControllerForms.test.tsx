@@ -1,6 +1,6 @@
 import ControllerForms from "./ControllerForms";
 
-import { ControllerSidePanelViews } from "app/controllers/constants";
+import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import {
   controller as controllerFactory,
   rootState as rootStateFactory,

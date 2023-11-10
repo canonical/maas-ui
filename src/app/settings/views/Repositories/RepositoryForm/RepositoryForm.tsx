@@ -9,23 +9,23 @@ import RepositoryFormFields from "../RepositoryFormFields";
 
 import type { RepositoryFormValues } from "./types";
 
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import settingsURLs from "app/settings/urls";
-import { actions as generalActions } from "app/store/general";
+import FormCard from "@/app/base/components/FormCard";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import settingsURLs from "@/app/settings/urls";
+import { actions as generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
-} from "app/store/general/selectors";
-import { actions as repositoryActions } from "app/store/packagerepository";
-import repositorySelectors from "app/store/packagerepository/selectors";
+} from "@/app/store/general/selectors";
+import { actions as repositoryActions } from "@/app/store/packagerepository";
+import repositorySelectors from "@/app/store/packagerepository/selectors";
 import type {
   CreateParams,
   PackageRepository,
-} from "app/store/packagerepository/types";
-import { getRepoDisplayName } from "app/store/packagerepository/utils";
+} from "@/app/store/packagerepository/types";
+import { getRepoDisplayName } from "@/app/store/packagerepository/utils";
 
 type Props = {
   repository?: PackageRepository | null;

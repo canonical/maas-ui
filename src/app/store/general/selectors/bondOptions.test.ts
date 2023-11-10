@@ -4,12 +4,12 @@ import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 import type {
   BondLacpRateOptions,
   BondModeOptions,
   BondXmitHashPolicyOptions,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 import {
   generalState as generalStateFactory,
   bondOptions as bondOptionsFactory,

@@ -2,7 +2,7 @@ import DiscoveriesFilterAccordion, {
   Labels as DiscoveriesFilterAccordionLabels,
 } from "./DiscoveriesFilterAccordion";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,

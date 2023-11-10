@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import UbuntuImageSelect from "./UbuntuImageSelect";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,

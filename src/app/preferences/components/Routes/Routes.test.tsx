@@ -1,15 +1,15 @@
 import Routes from "./Routes";
 
-import urls from "app/base/urls";
-import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
-import { Label as APIKeyFormLabel } from "app/preferences/views/APIKeys/APIKeyForm/APIKeyForm";
-import { Label as APIKeyListLabel } from "app/preferences/views/APIKeys/APIKeyList/APIKeyList";
-import { Label as DetailsLabel } from "app/preferences/views/Details/Details";
-import { Label as AddSSHKeyLabel } from "app/preferences/views/SSHKeys/AddSSHKey/AddSSHKey";
-import { Label as SSHKeyListLabel } from "app/preferences/views/SSHKeys/SSHKeyList/SSHKeyList";
-import { Label as AddSSLKeyLabel } from "app/preferences/views/SSLKeys/AddSSLKey/AddSSLKey";
-import { Label as SSLKeyListLabel } from "app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
+import { Label as APIKeyFormLabel } from "@/app/preferences/views/APIKeys/APIKeyForm/APIKeyForm";
+import { Label as APIKeyListLabel } from "@/app/preferences/views/APIKeys/APIKeyList/APIKeyList";
+import { Label as DetailsLabel } from "@/app/preferences/views/Details/Details";
+import { Label as AddSSHKeyLabel } from "@/app/preferences/views/SSHKeys/AddSSHKey/AddSSHKey";
+import { Label as SSHKeyListLabel } from "@/app/preferences/views/SSHKeys/SSHKeyList/SSHKeyList";
+import { Label as AddSSLKeyLabel } from "@/app/preferences/views/SSLKeys/AddSSLKey/AddSSLKey";
+import { Label as SSLKeyListLabel } from "@/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
+import type { RootState } from "@/app/store/root/types";
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,

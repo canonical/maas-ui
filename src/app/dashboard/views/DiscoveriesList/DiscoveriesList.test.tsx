@@ -4,13 +4,13 @@ import DiscoveriesList, {
   Labels as DiscoveriesListLabels,
 } from "./DiscoveriesList";
 
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   discovery as discoveryFactory,
   domain as domainFactory,

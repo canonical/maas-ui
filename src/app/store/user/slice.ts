@@ -7,7 +7,7 @@ import type { CreateParams, UpdateParams, UserState, User } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 export const initialState = {
   ...genericInitialState,

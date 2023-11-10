@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 
 import NumaResourcesCard from "./NumaResourcesCard";
 
-import { useSendAnalytics } from "app/base/hooks";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { useSendAnalytics } from "@/app/base/hooks";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 
 export const TRUNCATION_POINT = 4;
 

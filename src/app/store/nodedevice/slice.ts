@@ -6,11 +6,11 @@ import type { GenericItemMeta } from "../utils";
 import { NodeDeviceMeta } from "./types";
 import type { NodeDevice, NodeDeviceState } from "./types";
 
-import type { Node } from "app/store/types/node";
+import type { Node } from "@/app/store/types/node";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 type ItemMeta = {
   system_id: Node["system_id"];

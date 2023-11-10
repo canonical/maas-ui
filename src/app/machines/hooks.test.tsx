@@ -8,7 +8,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useMachineDetailsForm } from "./hooks";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineEventError as machineEventErrorFactory,

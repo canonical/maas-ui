@@ -5,17 +5,17 @@ import { useFormikContext } from "formik";
 
 import type { AddMachineValues } from "../types";
 
-import ArchitectureSelect from "app/base/components/ArchitectureSelect";
-import DomainSelect from "app/base/components/DomainSelect";
-import FormikField from "app/base/components/FormikField";
-import MacAddressField from "app/base/components/MacAddressField";
-import MinimumKernelSelect from "app/base/components/MinimumKernelSelect";
-import PowerTypeFields from "app/base/components/PowerTypeFields";
-import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
-import ZoneSelect from "app/base/components/ZoneSelect";
-import { PowerTypeNames } from "app/store/general/constants";
-import type { MachineState } from "app/store/machine/types";
-import { formatMacAddress } from "app/utils";
+import ArchitectureSelect from "@/app/base/components/ArchitectureSelect";
+import DomainSelect from "@/app/base/components/DomainSelect";
+import FormikField from "@/app/base/components/FormikField";
+import MacAddressField from "@/app/base/components/MacAddressField";
+import MinimumKernelSelect from "@/app/base/components/MinimumKernelSelect";
+import PowerTypeFields from "@/app/base/components/PowerTypeFields";
+import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
+import ZoneSelect from "@/app/base/components/ZoneSelect";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import type { MachineState } from "@/app/store/machine/types";
+import { formatMacAddress } from "@/app/utils";
 
 type Props = {
   saved: MachineState["saved"];

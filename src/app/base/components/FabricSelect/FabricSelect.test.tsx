@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import FabricSelect, { Label } from "./FabricSelect";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,

@@ -3,7 +3,7 @@ import ScriptRunTime from "./ScriptRunTime";
 import {
   ScriptResultStatus,
   ScriptResultEstimated,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import { scriptResult as scriptResultFactory } from "testing/factories";
 import { render, screen, waitFor } from "testing/utils";
 

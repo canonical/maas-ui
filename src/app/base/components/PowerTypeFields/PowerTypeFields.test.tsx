@@ -2,9 +2,9 @@ import { Formik } from "formik";
 
 import PowerTypeFields from "./PowerTypeFields";
 
-import { PowerTypeNames } from "app/store/general/constants";
-import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   powerField as powerFieldFactory,

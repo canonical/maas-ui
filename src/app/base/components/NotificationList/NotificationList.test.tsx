@@ -2,13 +2,13 @@ import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
 
-import { ConfigNames } from "app/store/config/types";
-import type { Notification } from "app/store/notification/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { Notification } from "@/app/store/notification/types";
 import {
   NotificationCategory,
   NotificationIdent,
-} from "app/store/notification/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/notification/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,

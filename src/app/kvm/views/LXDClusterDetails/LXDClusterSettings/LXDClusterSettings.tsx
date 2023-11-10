@@ -1,14 +1,14 @@
 import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useWindowTitle } from "app/base/hooks";
-import { useActivePod } from "app/kvm/hooks";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import AuthenticationCard from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/AuthenticationCard";
-import DangerZoneCard from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/DangerZoneCard";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useActivePod } from "@/app/kvm/hooks";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import AuthenticationCard from "@/app/kvm/views/LXDSingleDetails/LXDSingleSettings/AuthenticationCard";
+import DangerZoneCard from "@/app/kvm/views/LXDSingleDetails/LXDSingleSettings/DangerZoneCard";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];

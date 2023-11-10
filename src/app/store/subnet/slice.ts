@@ -15,9 +15,9 @@ import {
   genericInitialState,
   generateStatusHandlers,
   updateErrors,
-} from "app/store/utils/slice";
-import type { GenericItemMeta } from "app/store/utils/slice";
-import { isId } from "app/utils";
+} from "@/app/store/utils/slice";
+import type { GenericItemMeta } from "@/app/store/utils/slice";
+import { isId } from "@/app/utils";
 
 export const DEFAULT_STATUSES = {
   scanning: false,

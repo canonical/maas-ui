@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom-v5-compat";
 
-import DoubleRow from "app/base/components/DoubleRow";
+import DoubleRow from "@/app/base/components/DoubleRow";
 
 type Props = {
   name: string;

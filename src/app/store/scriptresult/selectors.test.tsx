@@ -1,10 +1,10 @@
 import selectors from "./selectors";
 
-import { HardwareType } from "app/base/enum";
+import { HardwareType } from "@/app/base/enum";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import {
   nodeScriptResultState as nodeScriptResultStateFactory,
   partialScriptResult as partialScriptResultFactory,

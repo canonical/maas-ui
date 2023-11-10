@@ -2,9 +2,9 @@ import { extend, random } from "cooky-cutter";
 
 import { timestampedModel } from "./model";
 
-import type { IPRange } from "app/store/iprange/types";
-import { IPRangeType } from "app/store/iprange/types";
-import type { TimestampedModel } from "app/store/types/model";
+import type { IPRange } from "@/app/store/iprange/types";
+import { IPRangeType } from "@/app/store/iprange/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 
 export const ipRange = extend<TimestampedModel, IPRange>(timestampedModel, {
   comment: "",

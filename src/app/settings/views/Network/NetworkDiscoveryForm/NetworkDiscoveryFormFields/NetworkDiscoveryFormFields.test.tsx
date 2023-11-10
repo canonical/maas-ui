@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,

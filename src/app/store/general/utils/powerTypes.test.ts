@@ -5,7 +5,7 @@ import {
   getPowerTypeFromName,
 } from "./powerTypes";
 
-import { PowerFieldScope } from "app/store/general/types";
+import { PowerFieldScope } from "@/app/store/general/types";
 import {
   powerField as powerFieldFactory,
   powerType as powerTypeFactory,

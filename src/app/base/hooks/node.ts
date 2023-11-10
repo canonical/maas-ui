@@ -3,18 +3,18 @@ import { useMemo } from "react";
 import type { ButtonProps, MenuLink } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useFetchActions } from "app/base/hooks";
-import { actions as generalActions } from "app/store/general";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as generalActions } from "@/app/store/general";
 import {
   machineActions as machineActionsSelectors,
   powerTypes as powerTypesSelectors,
-} from "app/store/general/selectors";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineActions, MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import type { Node, NodeActions } from "app/store/types/node";
-import { kebabToCamelCase } from "app/utils";
+} from "@/app/store/general/selectors";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineActions, MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Node, NodeActions } from "@/app/store/types/node";
+import { kebabToCamelCase } from "@/app/utils";
 
 // These actions can be performed from menus using just the machine id and
 // without needing the user to provide any additional information.

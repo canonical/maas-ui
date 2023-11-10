@@ -4,14 +4,14 @@ import { Notification, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useCycled } from "app/base/hooks";
-import type { EmptyObject } from "app/base/types";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { SubnetActionProps } from "app/subnets/views/SubnetDetails/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useCycled } from "@/app/base/hooks";
+import type { EmptyObject } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types";
 
 export const MapSubnet = ({
   id,

@@ -4,11 +4,11 @@ import { Col, Spinner, Row, Select } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useWindowTitle } from "app/base/hooks";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useWindowTitle } from "@/app/base/hooks";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
 
 const DnsSchema = Yup.object().shape({
   // TODO: Client-side IP validation, or display error from server

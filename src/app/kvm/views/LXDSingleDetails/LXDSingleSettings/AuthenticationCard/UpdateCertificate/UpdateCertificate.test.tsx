@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import UpdateCertificate from "./UpdateCertificate";
 
-import { actions as generalActions } from "app/store/general";
-import { actions as podActions } from "app/store/pod";
-import type { PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { actions as generalActions } from "@/app/store/general";
+import { actions as podActions } from "@/app/store/pod";
+import type { PodDetails } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   generatedCertificate as generatedCertificateFactory,

@@ -2,11 +2,11 @@ import { ExternalLink } from "@canonical/maas-react-components";
 import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TooltipButton from "app/base/components/TooltipButton";
-import ControllerStatus from "app/controllers/components/ControllerStatus";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import ControllerStatus from "@/app/controllers/components/ControllerStatus";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

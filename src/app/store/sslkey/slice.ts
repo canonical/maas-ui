@@ -6,7 +6,7 @@ import type { CreateParams, SSLKeyState } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const sslKeySlice = createSlice({
   name: SSLKeyMeta.MODEL,
