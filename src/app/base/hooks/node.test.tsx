@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { Button } from "@canonical/react-components";
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -162,7 +163,9 @@ describe("node hooks", () => {
       return (
         <>
           {actions.map((buttonProps, i) => (
-            <button {...buttonProps} key={i} />
+            <Button {...buttonProps} key={i}>
+              action
+            </Button>
           ))}
         </>
       );
