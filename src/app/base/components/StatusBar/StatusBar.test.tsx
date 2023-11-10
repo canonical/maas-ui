@@ -17,10 +17,10 @@ import {
 import { screen, renderWithMockStore } from "testing/utils";
 
 let state: RootState;
-const originalEnv = import.meta.env;
+const originalEnv = process.env;
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
   // Thu, 31 Dec. 2020 23:00:00 UTC
   jest.setSystemTime(new Date(Date.UTC(2020, 11, 31, 23, 0, 0)));
   state = rootStateFactory({
@@ -42,7 +42,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.useRealTimers();
-  import.meta.env = originalEnv;
+  process.env = originalEnv;
 });
 
 it("can show if a machine is currently commissioning", () => {
@@ -213,7 +213,7 @@ it("displays last image sync timestamp for a rack or region+rack controller", ()
 });
 
 it("displays the feedback link when analytics enabled and not in development environment", () => {
-  import.meta.env = { ...originalEnv, NODE_ENV: "production" };
+  process.env = { ...originalEnv, NODE_ENV: "production" };
 
   state.config = configStateFactory({
     items: [
@@ -230,7 +230,7 @@ it("displays the feedback link when analytics enabled and not in development env
 });
 
 it("hides the feedback link when analytics disabled", () => {
-  import.meta.env = { ...originalEnv, NODE_ENV: "production" };
+  process.env = { ...originalEnv, NODE_ENV: "production" };
   state.config = configStateFactory({
     items: [
       ...state.config.items,
@@ -245,7 +245,7 @@ it("hides the feedback link when analytics disabled", () => {
 });
 
 it("hides the feedback link in development environment", () => {
-  import.meta.env = { ...originalEnv, NODE_ENV: "development" };
+  process.env = { ...originalEnv, NODE_ENV: "development" };
   state.config = configStateFactory({
     items: [
       ...state.config.items,

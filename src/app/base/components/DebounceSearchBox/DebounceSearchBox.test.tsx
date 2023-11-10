@@ -9,7 +9,7 @@ import { userEvent, render, screen, waitFor } from "testing/utils";
 
 describe("DebounceSearchBox", () => {
   beforeEach(() => {
-    jest.useFakeTimers("modern");
+    jest.useFakeTimers();
   });
 
   afterEach(() => {

@@ -10,7 +10,7 @@ import { render, screen, waitFor } from "testing/utils";
 describe("ScriptRunTime", () => {
   beforeEach(() => {
     jest
-      .useFakeTimers("modern")
+      .useFakeTimers()
       .setSystemTime(new Date("Thu Apr 01 2021 05:21:58 GMT+0000").getTime());
   });
   afterEach(() => {

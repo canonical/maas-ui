@@ -106,7 +106,7 @@
     "@types/node": "18.14.2",
     "@types/path-parse": "1.0.19",
     "@types/pluralize": "0.0.29",
-    "@types/react-dom": "18.2.6",
+    "@types/react-dom": "18.2.15",
     "@types/react-portal": "4.0.4",
     "@types/react-redux": "7.1.25",
     "@types/react-router": "5.1.20",

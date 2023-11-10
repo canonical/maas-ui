@@ -35,9 +35,7 @@ describe("DownloadMenu", () => {
   let controller: ControllerDetails;
 
   beforeEach(() => {
-    jest
-      .useFakeTimers("modern")
-      .setSystemTime(new Date("2021-03-25").getTime());
+    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     // Work around for RTL async events with fake timers.
     userEvt = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     machine = machineDetailsFactory({
@@ -123,9 +121,7 @@ describe("DownloadMenu", () => {
 
   it("generates a download when the installation item is clicked", async () => {
     jest.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
-    jest
-      .useFakeTimers("modern")
-      .setSystemTime(new Date("2021-03-25").getTime());
+    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = jest.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
@@ -171,9 +167,7 @@ describe("DownloadMenu", () => {
 
   it("generates a download when the installation item is clicked for a machine", async () => {
     jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
-    jest
-      .useFakeTimers("modern")
-      .setSystemTime(new Date("2021-03-25").getTime());
+    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = jest.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
@@ -191,9 +185,7 @@ describe("DownloadMenu", () => {
 
   it("generates a download when the installation item is clicked for a controller", async () => {
     jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
-    jest
-      .useFakeTimers("modern")
-      .setSystemTime(new Date("2021-03-25").getTime());
+    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = jest.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
