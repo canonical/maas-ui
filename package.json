@@ -35,7 +35,7 @@
     "test-ui": "TZ=UTC vitest",
     "test:debug": "vitest --inspect-brk test --runInBand --no-cache  --testTimeout=100000000",
     "test": "yarn test-ui",
-    "test:ci": "yarn test-ui --runInBand",
+    "test:ci": "yarn test-ui",
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\"",
     "wait-on-ui": "wait-on http-get://0.0.0.0:8400/MAAS/r",
     "storybook": "storybook dev -p 6006",
