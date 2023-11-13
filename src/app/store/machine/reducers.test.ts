@@ -1,4 +1,5 @@
 import { produce } from "immer";
+import { vi } from "vitest";
 
 import { DEFAULT_STATUSES } from "./constants";
 import reducers, {
@@ -36,10 +37,10 @@ enableCallIdMocks();
 describe("machine reducer", () => {
   const NOW = 1000;
   beforeEach(() => {
-    jest.spyOn(Date, "now").mockImplementation(() => NOW);
+    vi.spyOn(Date, "now").mockImplementation(() => NOW);
   });
   afterEach(() => {
-    jest.spyOn(Date, "now").mockRestore();
+    vi.spyOn(Date, "now").mockRestore();
   });
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
@@ -121,7 +122,7 @@ describe("machine reducer", () => {
         },
       });
 
-      jest.spyOn(Date, "now").mockImplementation(() => NOW + 1);
+      vi.spyOn(Date, "now").mockImplementation(() => NOW + 1);
 
       const updatedState = reducers(initialState, actions.countStart(callId));
 
@@ -198,7 +199,7 @@ describe("machine reducer", () => {
     });
 
     it("reduces fetchStart for subsequent fetch for the same callId", () => {
-      jest.spyOn(Date, "now").mockImplementation(() => NOW + 1);
+      vi.spyOn(Date, "now").mockImplementation(() => NOW + 1);
 
       const initialState = machineStateFactory({
         lists: {

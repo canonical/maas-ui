@@ -1,3 +1,5 @@
+import { vi } from "vitest";
+
 import { FetchGroupKey } from "../types/actions";
 
 import { mapSortDirection } from "./common";
@@ -11,11 +13,11 @@ import type { Sort } from "@/app/base/types";
 
 describe("machine utilities", () => {
   beforeEach(() => {
-    jest.spyOn(Date, "now").mockImplementation(() => 1000);
+    vi.spyOn(Date, "now").mockImplementation(() => 1000);
   });
 
   afterEach(() => {
-    jest.spyOn(Date, "now").mockRestore();
+    vi.spyOn(Date, "now").mockRestore();
   });
 
   describe("timeUntilStale", () => {
@@ -36,7 +38,7 @@ describe("machine utilities", () => {
       pagination: {
         currentPage: 1,
         pageSize: 10,
-        setCurrentPage: jest.fn(),
+        setCurrentPage: vi.fn(),
       },
       sortDirection: "asc" as Sort["direction"],
       sortKey: FetchGroupKey.Status,

@@ -1,5 +1,6 @@
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
+import { vi } from "vitest";
 
 import WebSocketClient from "../../../websocket-client";
 
@@ -18,13 +19,13 @@ import { RecordType } from "@/app/store/domain/types";
 import { actions as resourcePoolActions } from "@/app/store/resourcepool";
 import { domainResource as resourceFactory } from "testing/factories";
 
-jest.mock("../../../websocket-client");
+vi.mock("../../../websocket-client");
 
 describe("websocket sagas", () => {
   it("can send a message to create a pool then attach machines", () => {
     const socketClient = new WebSocketClient();
-    const sendMessage = jest.fn();
-    const actionCreators = [jest.fn()];
+    const sendMessage = vi.fn();
+    const actionCreators = [vi.fn()];
     const pool = { name: "pool1", description: "a pool" };
     const action = {
       type: "resourcepoo/createWithMachines",
@@ -46,8 +47,8 @@ describe("websocket sagas", () => {
 
   it("can send a message to create a pool then attach machines using filter", () => {
     const socketClient = new WebSocketClient();
-    const sendMessage = jest.fn();
-    const actionCreators = [jest.fn()];
+    const sendMessage = vi.fn();
+    const actionCreators = [vi.fn()];
     const pool = { name: "pool1", description: "a pool" };
     const action = {
       type: "resourcepoo/createWithMachines",
@@ -72,8 +73,8 @@ describe("websocket sagas", () => {
 
   it("can send a message to update an address record then update the DNS resource", () => {
     const socketClient = new WebSocketClient();
-    const sendMessage = jest.fn();
-    const actionCreators = [jest.fn()];
+    const sendMessage = vi.fn();
+    const actionCreators = [vi.fn()];
     const resource = resourceFactory({
       dnsdata_id: 1,
       dnsresource_id: 2,
@@ -111,8 +112,8 @@ describe("websocket sagas", () => {
 
   it("can send a message to update a DNS resource for 'A record' when rrdata is unchanged", () => {
     const socketClient = new WebSocketClient();
-    const sendMessage = jest.fn();
-    const actionCreators = [jest.fn()];
+    const sendMessage = vi.fn();
+    const actionCreators = [vi.fn()];
     const resource = resourceFactory({
       dnsdata_id: 1,
       dnsresource_id: 2,
@@ -147,8 +148,8 @@ describe("websocket sagas", () => {
 
   it("can send a message to update a non-address record then update the DNS resource", () => {
     const socketClient = new WebSocketClient();
-    const sendMessage = jest.fn();
-    const actionCreators = [jest.fn()];
+    const sendMessage = vi.fn();
+    const actionCreators = [vi.fn()];
     const resource = resourceFactory({
       dnsdata_id: 1,
       dnsresource_id: 2,
@@ -185,8 +186,8 @@ describe("websocket sagas", () => {
 
   it("can send a message to delete an address record then delete the DNS resource", () => {
     const socketClient = new WebSocketClient();
-    const sendMessage = jest.fn();
-    const actionCreators = [jest.fn()];
+    const sendMessage = vi.fn();
+    const actionCreators = [vi.fn()];
     const resource = resourceFactory({
       dnsdata_id: 1,
       dnsresource_id: 2,
@@ -219,8 +220,8 @@ describe("websocket sagas", () => {
 
   it("can send a message to delete a non-address record then delete the DNS resource", () => {
     const socketClient = new WebSocketClient();
-    const sendMessage = jest.fn();
-    const actionCreators = [jest.fn()];
+    const sendMessage = vi.fn();
+    const actionCreators = [vi.fn()];
     const resource = resourceFactory({
       dnsdata_id: 1,
       dnsresource_id: 2,

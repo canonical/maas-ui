@@ -1,14 +1,17 @@
+import { vi } from "vitest";
+import type { Mock } from "vitest";
+
 import { generateCheckboxHandlers } from "./generateCheckboxHandlers";
 import type { CheckboxHandlers } from "./generateCheckboxHandlers";
 
 describe("generateCheckboxHandlers", () => {
-  let onChange: jest.Mock;
+  let onChange: Mock;
   let handlers: CheckboxHandlers<number>;
   type Selected = { system_id: number };
   let uniqueIdHandlers: CheckboxHandlers<Selected>;
 
   beforeEach(() => {
-    onChange = jest.fn();
+    onChange = vi.fn();
     handlers = generateCheckboxHandlers<number>((newIDs) => onChange(newIDs));
     uniqueIdHandlers = generateCheckboxHandlers<Selected>(
       (newIDs) => onChange(newIDs),

@@ -1,3 +1,5 @@
+import { vi } from "vitest";
+
 import createRootReducer from "./root-reducer";
 
 import {
@@ -18,7 +20,7 @@ describe("rootReducer", () => {
       status: statusStateFactory({ authenticating: true }),
     });
     const newState = createRootReducer(
-      jest.fn().mockReturnValue(routerStateFactory())
+      vi.fn().mockReturnValue(routerStateFactory())
     )(initialState, {
       type: "status/logoutSuccess",
     });
@@ -42,7 +44,7 @@ describe("rootReducer", () => {
       }),
     });
     const newState = createRootReducer(
-      jest.fn().mockReturnValue(routerStateFactory())
+      vi.fn().mockReturnValue(routerStateFactory())
     )(initialState, {
       type: "status/checkAuthenticatedError",
     });

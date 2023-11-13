@@ -1,3 +1,5 @@
+import { vi } from "vitest";
+
 import { getCookie } from "@/app/utils";
 
 describe("getCookie", () => {
@@ -7,7 +9,7 @@ describe("getCookie", () => {
 
   it("returns the value of a cookie by name", () => {
     Object.defineProperty(document, "cookie", {
-      get: jest.fn().mockImplementation(() => {
+      get: vi.fn().mockImplementation(() => {
         return "a=foo; b=bar; c=baz";
       }),
     });

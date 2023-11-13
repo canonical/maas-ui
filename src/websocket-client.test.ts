@@ -1,8 +1,11 @@
+import { vi } from "vitest";
+import type { Mock } from "vitest";
+
 import WebSocketClient, { WebSocketMessageType } from "./websocket-client";
 
 import { getCookie } from "@/app/utils";
 
-jest.mock("@/app/utils");
+vi.mock("@/app/utils");
 
 const testAction = {
   meta: { model: "test", method: "test" },
@@ -14,14 +17,14 @@ const testAction = {
 
 describe("websocket client", () => {
   let client: WebSocketClient;
-  const getCookieMock = getCookie as jest.Mock;
+  const getCookieMock = getCookie as Mock;
 
   beforeEach(() => {
     getCookieMock.mockImplementation(() => "abc123");
     client = new WebSocketClient();
     client.connect();
     if (client.rws) {
-      jest.spyOn(client.rws, "send");
+      vi.spyOn(client.rws, "send");
     }
   });
 
@@ -30,7 +33,7 @@ describe("websocket client", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("throws an error if the csrftoken does not exist", () => {
@@ -45,7 +48,7 @@ describe("websocket client", () => {
       method: "packagerepository.list",
     });
     expect(
-      JSON.parse((client.rws?.send as jest.Mock).mock.calls[0][0])
+      JSON.parse((client.rws?.send as Mock).mock.calls[0][0])
     ).toStrictEqual({
       method: "packagerepository.list",
       request_id: 0,

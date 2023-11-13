@@ -1,8 +1,10 @@
 import "@testing-library/react";
 import "@testing-library/jest-dom";
-import { enableFetchMocks } from "jest-fetch-mock";
+import { vi, beforeAll } from "vitest";
+import createFetchMock from "vitest-fetch-mock";
+const fetchMocker = createFetchMock(vi);
 
-enableFetchMocks();
+fetchMocker.enableMocks();
 
 beforeAll(() => {
   // disable act warnings

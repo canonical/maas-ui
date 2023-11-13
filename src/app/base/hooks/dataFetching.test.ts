@@ -1,20 +1,22 @@
+import { vi } from "vitest";
+
 import { useFetchActions } from "./dataFetching";
 
 import { renderHookWithMockStore } from "testing/utils";
 
-const mockDispatch = jest.fn();
-const mockAction = jest.fn(() => ({
+const mockDispatch = vi.fn();
+const mockAction = vi.fn(() => ({
   type: "MOCK_ACTION",
 }));
 
-jest.mock("react-redux", () => ({
-  ...jest.requireActual("react-redux"),
+vi.mock("react-redux", () => ({
+  ...vi.importActual("react-redux"),
   useDispatch: () => mockDispatch,
   useSelector: () => 0,
 }));
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 it("runs the actions once on mount and doesn't run again on rerender", async () => {
