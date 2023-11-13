@@ -73,7 +73,7 @@ describe("AddVirshFields", () => {
     ];
     state.general.powerTypes.data = powerTypes;
 
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
       route: "/machines/chassis/add",
     });

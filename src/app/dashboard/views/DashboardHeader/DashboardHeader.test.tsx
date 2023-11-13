@@ -35,13 +35,10 @@ describe("DashboardHeader", () => {
   });
 
   it("displays the discovery count in the header", () => {
-    renderWithBrowserRouter(
-      <DashboardHeader setSidePanelContent={jest.fn()} />,
-      {
-        route: "/dashboard",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<DashboardHeader setSidePanelContent={vi.fn()} />, {
+      route: "/dashboard",
+      state,
+    });
 
     const indexLink = screen.getByText("2 discoveries");
     expect(indexLink).toBeInTheDocument();
@@ -52,13 +49,10 @@ describe("DashboardHeader", () => {
   });
 
   it("has a button to clear discoveries", () => {
-    renderWithBrowserRouter(
-      <DashboardHeader setSidePanelContent={jest.fn()} />,
-      {
-        route: "/dashboard",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<DashboardHeader setSidePanelContent={vi.fn()} />, {
+      route: "/dashboard",
+      state,
+    });
     expect(
       screen.getByRole("button", { name: DashboardHeaderLabels.ClearAll })
     ).toBeInTheDocument();
@@ -66,7 +60,7 @@ describe("DashboardHeader", () => {
 
   it("opens the side panel when the 'Clear all discoveries' button is clicked", async () => {
     const store = mockStore(state);
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <DashboardHeader setSidePanelContent={setSidePanelContent} />,
       {

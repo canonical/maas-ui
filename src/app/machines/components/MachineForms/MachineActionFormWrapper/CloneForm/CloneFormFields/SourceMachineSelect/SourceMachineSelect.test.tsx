@@ -21,7 +21,7 @@ describe("SourceMachineSelect", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
+    vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     machines = [
       machineFactory({
         system_id: "abc123",
@@ -61,7 +61,7 @@ describe("SourceMachineSelect", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("shows an error if no machines are available to select", () => {
@@ -70,14 +70,14 @@ describe("SourceMachineSelect", () => {
       loading: false,
       count: 0,
     });
-    renderWithMockStore(<SourceMachineSelect onMachineClick={jest.fn()} />, {
+    renderWithMockStore(<SourceMachineSelect onMachineClick={vi.fn()} />, {
       state,
     });
     expect(screen.getByText(Label.NoSourceMachines)).toBeInTheDocument();
   });
 
   it("does not show an error if machines are available to select", () => {
-    renderWithMockStore(<SourceMachineSelect onMachineClick={jest.fn()} />, {
+    renderWithMockStore(<SourceMachineSelect onMachineClick={vi.fn()} />, {
       state,
     });
     expect(
@@ -90,7 +90,7 @@ describe("SourceMachineSelect", () => {
 
     renderWithMockStore(
       <SourceMachineSelect
-        onMachineClick={jest.fn()}
+        onMachineClick={vi.fn()}
         selectedMachine={selectedMachine}
       />,
       { state }
@@ -103,7 +103,7 @@ describe("SourceMachineSelect", () => {
 
   it("clears the selected machine on search input change", async () => {
     const selectedMachine = machineDetailsFactory();
-    const onMachineClick = jest.fn();
+    const onMachineClick = vi.fn();
 
     renderWithMockStore(
       <SourceMachineSelect

@@ -31,7 +31,7 @@ it("shows a spinner if data is loading", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={1} openForm={jest.fn()} />
+          <DHCPStatus id={1} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -52,7 +52,7 @@ it(`shows a warning and disables Configure DHCP button if there are no subnets
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={jest.fn()} />
+          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -82,7 +82,7 @@ it("does not show a warning if there are subnets attached to the VLAN", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={jest.fn()} />
+          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -110,7 +110,7 @@ it("renders correctly when a VLAN does not have DHCP enabled", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={jest.fn()} />
+          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -136,7 +136,7 @@ it("renders correctly when a VLAN has external DHCP", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={jest.fn()} />
+          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -170,7 +170,7 @@ it("renders correctly when a VLAN has relayed DHCP", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={jest.fn()} />
+          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -202,7 +202,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP without high availabi
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={jest.fn()} />
+          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -249,7 +249,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP with high availabilit
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={jest.fn()} />
+          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

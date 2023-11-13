@@ -30,8 +30,8 @@ describe("LXDHostVMs", () => {
       <LXDHostVMs
         hostId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/kvm/1/project", store }
     );
@@ -55,8 +55,8 @@ describe("LXDHostVMs", () => {
       <LXDHostVMs
         hostId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/kvm/1", state }
     );
@@ -80,8 +80,8 @@ describe("LXDHostVMs", () => {
         clusterId={2}
         hostId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/kvm/1", state }
     );
@@ -101,8 +101,8 @@ describe("LXDHostVMs", () => {
       <LXDHostVMs
         hostId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/kvm/1", state }
     );
@@ -118,13 +118,13 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     renderWithBrowserRouter(
       <LXDHostVMs
         hostId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
+        setSearchFilter={vi.fn()}
         setSidePanelContent={setSidePanelContent}
       />,
       { route: "/kvm/1", store }
@@ -153,8 +153,8 @@ describe("LXDHostVMs", () => {
       <LXDHostVMs
         hostId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { store }
     );

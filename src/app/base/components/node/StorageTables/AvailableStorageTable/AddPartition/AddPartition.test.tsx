@@ -32,7 +32,7 @@ describe("AddPartition", () => {
       }),
     });
     renderWithBrowserRouter(
-      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { route: "/", state }
     );
 
@@ -57,7 +57,7 @@ describe("AddPartition", () => {
       }),
     });
     renderWithBrowserRouter(
-      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { route: "/", state }
     );
     expect(screen.getByRole("spinbutton", { name: /Size/i })).toHaveValue(8);
@@ -76,7 +76,7 @@ describe("AddPartition", () => {
       }),
     });
     renderWithBrowserRouter(
-      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { route: "/", state }
     );
 
@@ -108,7 +108,7 @@ describe("AddPartition", () => {
       }),
     });
     renderWithBrowserRouter(
-      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { route: "/", state }
     );
 
@@ -141,7 +141,7 @@ describe("AddPartition", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <AddPartition closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { route: "/", store }
     );
 

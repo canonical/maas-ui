@@ -19,11 +19,11 @@ import { userEvent, render, screen } from "testing/utils";
 const mockStore = configureStore();
 
 beforeEach(() => {
-  global.scrollTo = jest.fn();
+  global.scrollTo = vi.fn();
 });
 
 afterAll(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("gets and sets the controller as active", () => {

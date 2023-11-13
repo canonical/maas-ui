@@ -22,9 +22,9 @@ import {
 } from "testing/factories";
 import { userEvent, screen, render, waitFor } from "testing/utils";
 
-jest.mock("@canonical/react-components/dist/hooks", () => ({
-  ...jest.requireActual("@canonical/react-components/dist/hooks"),
-  usePrevious: jest.fn(),
+vi.mock("@canonical/react-components/dist/hooks", () => ({
+  ...vi.importActual("@canonical/react-components/dist/hooks"),
+  usePrevious: vi.fn(),
 }));
 
 const mockStore = configureStore<RootState, {}>();
@@ -46,11 +46,11 @@ describe("FetchedImages", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("can dispatch an action to save fetched ubuntu images", async () => {
@@ -79,7 +79,7 @@ describe("FetchedImages", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <FetchedImages closeForm={jest.fn()} source={source} />
+            <FetchedImages closeForm={vi.fn()} source={source} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -111,12 +111,11 @@ describe("FetchedImages", () => {
 
   it("closes the fetched images form when successfully saved", async () => {
     // Mock the transition from "saving" to "saved"
-    jest
-      .spyOn(reactComponentHooks, "usePrevious")
+    vi.spyOn(reactComponentHooks, "usePrevious")
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
     const source = sourceFactory();
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     state.bootresource = bootResourceStateFactory({
       fetchedImages: fetchedImagesFactory({
         arches: [fetchedArchFactory()],

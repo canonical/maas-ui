@@ -50,7 +50,7 @@ describe("NetworkTableConfirmation", () => {
       <NetworkTableConfirmation
         expanded={null}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -75,7 +75,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.REMOVE,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -99,7 +99,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.REMOVE,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -148,7 +148,7 @@ describe("NetworkTableConfirmation", () => {
           }}
           link={link}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -181,7 +181,7 @@ describe("NetworkTableConfirmation", () => {
           }}
           link={link}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -217,7 +217,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_CONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -238,7 +238,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_DISCONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -260,7 +260,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.DISCONNECTED_WARNING,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -284,7 +284,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_CONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -320,7 +320,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_DISCONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -357,7 +357,7 @@ describe("NetworkTableConfirmation", () => {
           content: ExpandedState.ADD_ALIAS,
         }}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -376,7 +376,7 @@ describe("NetworkTableConfirmation", () => {
           content: ExpandedState.ADD_VLAN,
         }}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }

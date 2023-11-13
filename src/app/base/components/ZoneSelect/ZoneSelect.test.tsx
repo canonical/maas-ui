@@ -27,7 +27,7 @@ describe("ZoneSelect", () => {
     });
 
     renderWithMockStore(
-      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>,
       { state }
@@ -41,7 +41,7 @@ describe("ZoneSelect", () => {
     const store = mockStore(state);
 
     renderWithMockStore(
-      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>,
       { store }
@@ -60,7 +60,7 @@ describe("ZoneSelect", () => {
     const store = mockStore(state);
 
     renderWithMockStore(
-      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>,
       { store }

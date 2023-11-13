@@ -20,7 +20,7 @@ describe("TableActions ", () => {
   });
 
   it("renders an edit button if edit on-click provided", async () => {
-    const onEdit = jest.fn();
+    const onEdit = vi.fn();
     renderWithBrowserRouter(<TableActions onEdit={onEdit} />);
     await userEvent.click(screen.getByText(/edit/i));
     expect(onEdit).toHaveBeenCalled();
@@ -28,7 +28,7 @@ describe("TableActions ", () => {
   });
 
   it("renders a delete button if delete function provided", async () => {
-    const onDelete = jest.fn();
+    const onDelete = vi.fn();
     renderWithBrowserRouter(<TableActions onDelete={onDelete} />);
     expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: /delete/i }));
@@ -41,7 +41,7 @@ describe("TableActions ", () => {
         deleteTooltip="delete tooltip"
         editPath="/bar"
         editTooltip="edit tooltip"
-        onDelete={jest.fn()}
+        onDelete={vi.fn()}
       />
     );
     await expectTooltipOnHover(
@@ -60,7 +60,7 @@ describe("TableActions ", () => {
         deleteDisabled
         editDisabled
         editPath="/bar"
-        onDelete={jest.fn()}
+        onDelete={vi.fn()}
       />
     );
     expect(screen.getByRole("link", { name: /edit/i })).toHaveAttribute(

@@ -24,7 +24,7 @@ describe("ControllerActionFormWrapper", () => {
     renderWithBrowserRouter(
       <ControllerActionFormWrapper
         action={NodeActions.DELETE}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         controllers={controllers}
         viewingDetails={false}
       />,

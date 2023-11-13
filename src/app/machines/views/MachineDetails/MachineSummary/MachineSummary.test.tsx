@@ -22,7 +22,7 @@ describe("MachineSummary", () => {
   it("displays a spinner if machines are loading", () => {
     state.machine.items = [];
     renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
+      <MachineSummary setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/summary",
         routePattern: "/machine/:id/summary",
@@ -34,7 +34,7 @@ describe("MachineSummary", () => {
 
   it("renders", () => {
     renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
+      <MachineSummary setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/summary",
         routePattern: "/machine/:id/summary",
@@ -68,7 +68,7 @@ describe("MachineSummary", () => {
       }),
     ];
     renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
+      <MachineSummary setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/summary",
         routePattern: "/machine/:id/summary",
@@ -86,7 +86,7 @@ describe("MachineSummary", () => {
       }),
     ];
     renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
+      <MachineSummary setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/summary",
         routePattern: "/machine/:id/summary",
@@ -104,7 +104,7 @@ describe("MachineSummary", () => {
       }),
     ];
     renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
+      <MachineSummary setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/summary",
         routePattern: "/machine/:id/summary",

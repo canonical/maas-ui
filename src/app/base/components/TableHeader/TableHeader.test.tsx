@@ -14,7 +14,7 @@ describe("TableHeader ", () => {
   });
 
   it("renders a Button if onClick prop is present", async () => {
-    const mockFn = jest.fn();
+    const mockFn = vi.fn();
     render(<TableHeader onClick={mockFn}>Text</TableHeader>);
     expect(screen.getByRole("button")).toBeInTheDocument();
 
@@ -30,7 +30,7 @@ describe("TableHeader ", () => {
     const { container } = render(
       <TableHeader
         currentSort={currentSort}
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         sortKey={"key"}
       >
         Text
@@ -50,7 +50,7 @@ describe("TableHeader ", () => {
     const { container } = render(
       <TableHeader
         currentSort={currentSort}
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         sortKey={"key"}
       >
         Text

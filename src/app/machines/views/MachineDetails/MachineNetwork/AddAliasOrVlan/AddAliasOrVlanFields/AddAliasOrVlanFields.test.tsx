@@ -18,7 +18,7 @@ describe("AddAliasOrVlanFields", () => {
 
   it("displays a tag field for a VLAN", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <AddAliasOrVlanFields
           interfaceType={NetworkInterfaceTypes.VLAN}
           systemId="abc123"
@@ -31,7 +31,7 @@ describe("AddAliasOrVlanFields", () => {
 
   it("does not display a tag field for an ALIAS", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <AddAliasOrVlanFields
           interfaceType={NetworkInterfaceTypes.ALIAS}
           systemId="abc123"

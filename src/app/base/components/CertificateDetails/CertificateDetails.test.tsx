@@ -18,8 +18,8 @@ const mockStore = configureStore();
 describe("CertificateDetails", () => {
   it(`sends an analytics event when clicking the 'read more' link if analytics
     is enabled`, async () => {
-    const mockSendAnalytics = jest.fn();
-    const mockUseSendAnalytics = jest
+    const mockSendAnalytics = vi.fn();
+    const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
     const state = rootStateFactory({

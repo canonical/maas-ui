@@ -62,7 +62,7 @@ it("can update a controller with the new domain", async () => {
           <ControllerName
             id={controller.system_id}
             isEditing={true}
-            setIsEditing={jest.fn()}
+            setIsEditing={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>

@@ -57,8 +57,8 @@ describe("LXDClusterVMs", () => {
       <LXDClusterVMs
         clusterId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );
@@ -88,8 +88,8 @@ describe("LXDClusterVMs", () => {
       <LXDClusterVMs
         clusterId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );

@@ -39,20 +39,20 @@ const getFileUploadInput = (container: HTMLElement) => {
 
 describe("UploadTextArea", () => {
   beforeEach(async () => {
-    const mockedFileReader = jest.spyOn(window, "FileReader");
-    (mockedFileReader as jest.Mock).mockImplementation(
+    const mockedFileReader = vi.spyOn(window, "FileReader");
+    (mockedFileReader as vi.Mock).mockImplementation(
       () => new MockFileReader()
     );
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("accepts files of any mimetype", async () => {
     const files = [createFile("foo.sh", 2000, "")];
     const { container } = render(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ key: "" }} onSubmit={vi.fn()}>
         <UploadTextArea label="Upload" name="key" />
       </Formik>
     );
@@ -63,7 +63,7 @@ describe("UploadTextArea", () => {
   it("displays an error if a file is larger than max size", async () => {
     const files = [createFile("foo.sh", 2000000, "")];
     const { container } = render(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ key: "" }} onSubmit={vi.fn()}>
         <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );
@@ -78,7 +78,7 @@ describe("UploadTextArea", () => {
   it("can populate the textarea from the file", async () => {
     const files = [createFile("foo.sh", 2000, "text/script")];
     const { container } = render(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ key: "" }} onSubmit={vi.fn()}>
         <UploadTextArea label="Upload" name="key" />
       </Formik>
     );
@@ -91,7 +91,7 @@ describe("UploadTextArea", () => {
   it("clears errors on textarea change", async () => {
     const files = [createFile("foo.sh", 2000000, "text/script")];
     const { container } = render(
-      <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ key: "" }} onSubmit={vi.fn()}>
         <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );

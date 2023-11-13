@@ -38,7 +38,7 @@ it("dispatches an update action on submit", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <SpaceSummaryForm handleDismiss={jest.fn()} space={space} />
+          <SpaceSummaryForm handleDismiss={vi.fn()} space={space} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

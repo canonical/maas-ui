@@ -16,7 +16,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -34,7 +34,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -48,7 +48,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={[
           { ...tags[0], description: "description one" },
@@ -74,7 +74,7 @@ describe("TagSelector", () => {
       <TagSelector
         initialSelected={[tags[0]]}
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -86,7 +86,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -100,7 +100,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -114,7 +114,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         showSelectedTags={false}
         tags={tags}
@@ -130,7 +130,7 @@ describe("TagSelector", () => {
       <TagSelector
         initialSelected={tags}
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -147,7 +147,7 @@ describe("TagSelector", () => {
       <TagSelector
         allowNewTags
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -163,13 +163,13 @@ describe("TagSelector", () => {
   });
 
   it("can call a provide function to create a new tag", async () => {
-    const onAddNewTag = jest.fn();
+    const onAddNewTag = vi.fn();
     render(
       <TagSelector
         allowNewTags
         label="Tags"
         onAddNewTag={onAddNewTag}
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -189,7 +189,7 @@ describe("TagSelector", () => {
       <TagSelector
         allowNewTags
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={tags}
       />
@@ -208,7 +208,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={[...tags, { displayName: "other", name: "other" }]}
       />
@@ -223,7 +223,7 @@ describe("TagSelector", () => {
     render(
       <TagSelector
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         tags={[
           { displayName: "there", name: "there" },
@@ -267,7 +267,7 @@ describe("TagSelector", () => {
       <TagSelector
         header={<span data-testid="dropdown-header">A header</span>}
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         showSelectedTags={false}
         tags={tags}
@@ -287,7 +287,7 @@ describe("TagSelector", () => {
           <span data-testid="dropdown-item">An item</span>
         )}
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         placeholder="Select or create tags"
         showSelectedTags={false}
         tags={tags}
@@ -304,7 +304,7 @@ describe("TagSelector", () => {
       <TagSelector
         externalSelectedTags={[tags[0]]}
         label="Tags"
-        onTagsUpdate={jest.fn()}
+        onTagsUpdate={vi.fn()}
         tags={tags}
       />
     );
@@ -312,7 +312,7 @@ describe("TagSelector", () => {
   });
 
   it("handles selecting external tags", async () => {
-    const onTagsUpdate = jest.fn();
+    const onTagsUpdate = vi.fn();
     render(
       <TagSelector
         externalSelectedTags={[tags[0]]}

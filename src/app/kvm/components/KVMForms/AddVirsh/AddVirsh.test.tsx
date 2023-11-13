@@ -64,7 +64,7 @@ describe("AddVirsh", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       store,
     });
@@ -86,7 +86,7 @@ describe("AddVirsh", () => {
   it("displays a spinner if data hasn't loaded yet", () => {
     state.general.powerTypes.loaded = false;
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       store,
     });
@@ -97,7 +97,7 @@ describe("AddVirsh", () => {
     state.general.powerTypes.data = [];
     state.general.powerTypes.loaded = true;
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       store,
     });
@@ -106,7 +106,7 @@ describe("AddVirsh", () => {
 
   it("can handle saving a virsh KVM", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       store,
     });

@@ -15,14 +15,14 @@ import {
 import { render } from "testing/utils";
 
 const mockStore = configureStore();
-const mockDHCPTable = jest.fn();
-jest.mock("@/app/base/components/DHCPTable", () => (props: DHCPTableProps) => {
+const mockDHCPTable = vi.fn();
+vi.mock("@/app/base/components/DHCPTable", () => (props: DHCPTableProps) => {
   mockDHCPTable(props);
   return null;
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("dispatches an action to fetch the subnets on mount", () => {

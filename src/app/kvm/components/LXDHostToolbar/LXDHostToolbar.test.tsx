@@ -58,8 +58,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -84,8 +84,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -115,8 +115,8 @@ describe("LXDHostToolbar", () => {
             <LXDHostToolbar
               clusterId={2}
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -143,8 +143,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -167,8 +167,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -190,8 +190,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -222,7 +222,7 @@ describe("LXDHostToolbar", () => {
         ],
       }),
     });
-    const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
+    const useSendMock = vi.spyOn(hooks, "useSendAnalytics");
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -230,8 +230,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>

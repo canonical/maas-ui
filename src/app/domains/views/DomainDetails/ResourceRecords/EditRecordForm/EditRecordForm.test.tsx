@@ -58,7 +58,7 @@ describe("EditRecordForm", () => {
   });
 
   it("closes the form when Cancel button is clicked", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
 
     renderWithBrowserRouter(
       <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />,
@@ -76,7 +76,7 @@ describe("EditRecordForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
+            <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

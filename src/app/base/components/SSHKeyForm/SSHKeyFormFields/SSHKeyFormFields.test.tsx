@@ -24,7 +24,7 @@ describe("SSHKeyFormFields", () => {
 
   it("can render", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
       </Formik>,
       { route: "/", state }
@@ -42,7 +42,7 @@ describe("SSHKeyFormFields", () => {
 
   it("can show id field", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
       </Formik>,
       { route: "/", state }
@@ -58,7 +58,7 @@ describe("SSHKeyFormFields", () => {
 
   it("can show key field", async () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <SSHKeyFormFields />
       </Formik>,
       { route: "/", state }

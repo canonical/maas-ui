@@ -48,10 +48,10 @@ describe("MachineSelectTable", () => {
     renderWithMockStore(
       <MachineSelectTable
         machines={machines}
-        onMachineClick={jest.fn()}
+        onMachineClick={vi.fn()}
         pageSize={machines.length}
         searchText=""
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -62,10 +62,10 @@ describe("MachineSelectTable", () => {
     renderWithMockStore(
       <MachineSelectTable
         machines={[machines[0]]}
-        onMachineClick={jest.fn()}
+        onMachineClick={vi.fn()}
         pageSize={machines.length}
         searchText="fir"
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -78,7 +78,7 @@ describe("MachineSelectTable", () => {
   });
 
   it("runs onMachineClick function on row click", async () => {
-    const onMachineClick = jest.fn();
+    const onMachineClick = vi.fn();
 
     renderWithMockStore(
       <MachineSelectTable
@@ -86,7 +86,7 @@ describe("MachineSelectTable", () => {
         onMachineClick={onMachineClick}
         pageSize={machines.length}
         searchText=""
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -99,10 +99,10 @@ describe("MachineSelectTable", () => {
     renderWithMockStore(
       <MachineSelectTable
         machines={machines}
-        onMachineClick={jest.fn()}
+        onMachineClick={vi.fn()}
         pageSize={machines.length}
         searchText=""
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -113,7 +113,7 @@ describe("MachineSelectTable", () => {
   });
 
   it("can select machine by pressing Enter key", async () => {
-    const onMachineClick = jest.fn();
+    const onMachineClick = vi.fn();
     const machine = machines[0];
     renderWithMockStore(
       <MachineSelectTable
@@ -121,7 +121,7 @@ describe("MachineSelectTable", () => {
         onMachineClick={onMachineClick}
         pageSize={machines.length}
         searchText=""
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -135,14 +135,14 @@ describe("MachineSelectTable", () => {
   });
 
   it("renders with partial search string", async () => {
-    const onMachineClick = jest.fn();
+    const onMachineClick = vi.fn();
     renderWithMockStore(
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
         pageSize={machines.length}
         searchText="id:("
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );

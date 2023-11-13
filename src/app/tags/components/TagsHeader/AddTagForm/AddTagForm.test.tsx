@@ -42,7 +42,7 @@ it("dispatches an action to create a tag", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <AddTagForm onClose={jest.fn()} />
+          <AddTagForm onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -78,7 +78,7 @@ it("dispatches an action to create a tag", async () => {
 });
 
 it("redirects to the newly created tag on save", async () => {
-  const onClose = jest.fn();
+  const onClose = vi.fn();
   renderWithBrowserRouter(<AddTagForm onClose={onClose} />, {
     route: urls.tags.index,
     state,
@@ -100,11 +100,11 @@ it("redirects to the newly created tag on save", async () => {
 });
 
 it("sends analytics when there is a definition", async () => {
-  const mockSendAnalytics = jest.fn();
-  jest
-    .spyOn(analyticsHooks, "useSendAnalytics")
-    .mockImplementation(() => mockSendAnalytics);
-  const onClose = jest.fn();
+  const mockSendAnalytics = vi.fn();
+  vi.spyOn(analyticsHooks, "useSendAnalytics").mockImplementation(
+    () => mockSendAnalytics
+  );
+  const onClose = vi.fn();
   const store = mockStore(state);
   const TagForm = () => (
     <Provider store={store}>
@@ -138,11 +138,11 @@ it("sends analytics when there is a definition", async () => {
 });
 
 it("sends analytics when there is no definition", async () => {
-  const mockSendAnalytics = jest.fn();
-  jest
-    .spyOn(analyticsHooks, "useSendAnalytics")
-    .mockImplementation(() => mockSendAnalytics);
-  const onClose = jest.fn();
+  const mockSendAnalytics = vi.fn();
+  vi.spyOn(analyticsHooks, "useSendAnalytics").mockImplementation(
+    () => mockSendAnalytics
+  );
+  const onClose = vi.fn();
   const store = mockStore(state);
   const TagForm = () => (
     <Provider store={store}>
@@ -181,7 +181,7 @@ it("shows a confirmation when an automatic tag is added", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <AddTagForm onClose={jest.fn()} />
+          <AddTagForm onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -216,7 +216,7 @@ it("shows an error if tag name is invalid", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <AddTagForm onClose={jest.fn()} />
+          <AddTagForm onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

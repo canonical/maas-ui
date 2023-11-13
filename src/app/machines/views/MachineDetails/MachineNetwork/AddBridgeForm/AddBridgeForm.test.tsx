@@ -80,7 +80,7 @@ describe("AddBridgeForm", () => {
     ];
     const selected = [{ nicId: nic.id }];
     renderWithBrowserRouter(
-      <AddBridgeForm close={jest.fn()} selected={selected} systemId="abc123" />,
+      <AddBridgeForm close={vi.fn()} selected={selected} systemId="abc123" />,
       { route, state }
     );
     const table = screen.getByRole("grid");
@@ -92,7 +92,7 @@ describe("AddBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,
@@ -106,7 +106,7 @@ describe("AddBridgeForm", () => {
     state.machine.loaded = false;
     renderWithBrowserRouter(
       <AddBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,
@@ -122,7 +122,7 @@ describe("AddBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,

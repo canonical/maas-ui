@@ -5,7 +5,7 @@ import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
 it("calls setHiddenColumns correctly on click of a checkbox", async () => {
   const hiddenColumns: Array<""> = [];
-  const setHiddenColumns = jest.fn();
+  const setHiddenColumns = vi.fn();
   renderWithMockStore(
     <HiddenColumnsSelect
       hiddenColumns={hiddenColumns}
@@ -22,7 +22,7 @@ it("calls setHiddenColumns correctly on click of a checkbox", async () => {
 
 it("displays a correct number of selected columns", async () => {
   const hiddenColumns = ["memory"];
-  const setHiddenColumns = jest.fn();
+  const setHiddenColumns = vi.fn();
   renderWithMockStore(
     <HiddenColumnsSelect
       hiddenColumns={hiddenColumns}
@@ -39,7 +39,7 @@ it("displays a correct number of selected columns", async () => {
 
 it("group checkbox selects all columns on press", async () => {
   const hiddenColumns: string[] = [];
-  const setHiddenColumns = jest.fn();
+  const setHiddenColumns = vi.fn();
   renderWithMockStore(
     <HiddenColumnsSelect
       hiddenColumns={hiddenColumns}

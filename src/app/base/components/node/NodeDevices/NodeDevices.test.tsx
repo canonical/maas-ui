@@ -36,7 +36,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { store }
     );
@@ -59,7 +59,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { store }
     );
@@ -81,7 +81,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -100,7 +100,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -115,7 +115,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.USB}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -149,7 +149,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machine/abc123/pci-devices", state }
     );
@@ -182,7 +182,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machine/abc123/pci-devices", state }
     );
@@ -250,7 +250,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machine/abc123/pci-devices", state }
     );

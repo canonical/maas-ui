@@ -19,7 +19,7 @@ describe("ArchitectureSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ architecture: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ architecture: "" }} onSubmit={vi.fn()}>
           <ArchitectureSelect name="architecture" />
         </Formik>
       </Provider>
@@ -43,7 +43,7 @@ describe("ArchitectureSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ architecture: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ architecture: "" }} onSubmit={vi.fn()}>
           <ArchitectureSelect name="architecture" />
         </Formik>
       </Provider>

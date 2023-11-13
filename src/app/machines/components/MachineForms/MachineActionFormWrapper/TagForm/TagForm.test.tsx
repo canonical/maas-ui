@@ -33,7 +33,7 @@ const mockStore = configureStore();
 
 let state: RootState;
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   const tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),
@@ -56,7 +56,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("dispatches action to fetch tags on load", async () => {
@@ -68,7 +68,7 @@ it("dispatches action to fetch tags on load", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={[]}
             processingCount={0}
             selectedMachines={{ items: ["abc123"] }}
@@ -97,7 +97,7 @@ it("correctly dispatches actions to tag machines", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={machines}
             processingCount={0}
             selectedMachines={{
@@ -155,7 +155,7 @@ it("correctly dispatches actions to untag machines", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={machines}
             processingCount={0}
             selectedMachines={{
@@ -204,7 +204,7 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={machines}
             processingCount={0}
             selectedMachines={{ items: machines.map((item) => item.system_id) }}
@@ -249,7 +249,7 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
 });
 
 it("shows saving label if not viewing from machine config page", () => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   const machines = [
     machineFactory({ system_id: "abc123", tags: [] }),
     machineFactory({ system_id: "def456", tags: [] }),
@@ -265,7 +265,7 @@ it("shows saving label if not viewing from machine config page", () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={machines}
             processingCount={1}
             viewingDetails={false}
@@ -277,7 +277,7 @@ it("shows saving label if not viewing from machine config page", () => {
   );
 
   expect(screen.getByTestId("saving-label")).toBeInTheDocument();
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("does not show saving label if viewing from machine config page", () => {
@@ -293,7 +293,7 @@ it("does not show saving label if viewing from machine config page", () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={machines}
             processingCount={1}
             viewingDetails
@@ -317,7 +317,7 @@ it("shows a notification on success", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={machines}
             processingCount={0}
             selectedCount={machines.length}
@@ -353,7 +353,7 @@ it("can open a create tag form", async () => {
   const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
   renderWithBrowserRouter(
     <TagForm
-      clearSidePanelContent={jest.fn()}
+      clearSidePanelContent={vi.fn()}
       machines={state.machine.items}
       processingCount={0}
       selectedCount={state.machine.items.length}
@@ -384,7 +384,7 @@ it("updates the new tags after creating a tag", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             machines={state.machine.items}
             processingCount={0}
             selectedCount={state.machine.items.length}

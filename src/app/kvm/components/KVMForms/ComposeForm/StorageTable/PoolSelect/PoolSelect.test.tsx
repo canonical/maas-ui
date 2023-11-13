@@ -37,7 +37,7 @@ const mockStore = configureStore();
 
 const renderComposeForm = (store: MockStore, pod: Pod) =>
   renderWithBrowserRouter(
-    <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+    <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { route: `/kvm/${pod.id}`, store }
   );
 

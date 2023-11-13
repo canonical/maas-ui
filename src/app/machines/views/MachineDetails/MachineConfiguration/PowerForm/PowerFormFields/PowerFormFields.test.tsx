@@ -62,7 +62,7 @@ describe("PowerFormFields", () => {
           powerParameters: {},
           powerType: "manual",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerFormFields machine={machine} />
       </Formik>,

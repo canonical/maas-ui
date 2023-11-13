@@ -19,12 +19,12 @@ const openMenu = async () => {
 };
 
 describe("TestActions", () => {
-  let mockSendAnalytics: jest.Mock;
-  let mockUseSendAnalytics: jest.SpyInstance;
+  let mockSendAnalytics: vi.Mock;
+  let mockUseSendAnalytics: vi.SpyInstance;
 
   beforeEach(() => {
-    mockSendAnalytics = jest.fn();
-    mockUseSendAnalytics = jest
+    mockSendAnalytics = vi.fn();
+    mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
   });
@@ -44,7 +44,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.COMMISSIONING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -69,7 +69,7 @@ describe("TestActions", () => {
         node={controller}
         resultType={ScriptResultType.COMMISSIONING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -93,7 +93,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -118,7 +118,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -136,7 +136,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -161,7 +161,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 

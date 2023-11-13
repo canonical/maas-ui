@@ -43,13 +43,13 @@ beforeEach(() => {
       items: tags,
     }),
   });
-  jest
+  vi
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [false, () => null]);
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("can open a create tag form", async () => {
@@ -58,7 +58,7 @@ it("can open a create tag form", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
             <NodeConfigurationFields />
           </Formik>
         </CompatRouter>
@@ -89,7 +89,7 @@ it("does not display automatic tags on the list", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
             <NodeConfigurationFields />
           </Formik>
         </CompatRouter>
@@ -115,7 +115,7 @@ it("updates the new tags after creating a tag", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik initialValues={{ tags: tags }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
             <NodeConfigurationFields />
           </Formik>
         </CompatRouter>

@@ -13,7 +13,7 @@ describe("ReleaseFormFields", () => {
           quickErase: false,
           secureErase: false,
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <ReleaseFormFields />
       </Formik>
@@ -31,7 +31,7 @@ describe("ReleaseFormFields", () => {
           quickErase: false,
           secureErase: false,
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <ReleaseFormFields />
       </Formik>

@@ -24,7 +24,7 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       counts: machineStateCountsFactory({
@@ -46,7 +46,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("does not display a deployed machines message if a tag is not supplied", () => {
@@ -54,7 +54,7 @@ it("does not display a deployed machines message if a tag is not supplied", () =
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <KernelOptionsField />
         </Formik>
       </MemoryRouter>
@@ -90,7 +90,7 @@ it("displays a deployed machines message when updating a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <KernelOptionsField id={1} />
         </Formik>
       </MemoryRouter>
@@ -114,7 +114,7 @@ it("displays a deployed machines message when passed deployedMachinesCount", asy
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <KernelOptionsField deployedMachinesCount={1} />
         </Formik>
       </MemoryRouter>
@@ -134,7 +134,7 @@ it("fetches deployed machine count for selected tag when not passed deployedMach
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <KernelOptionsField id={state.tag.items[0].id} />
         </Formik>
       </MemoryRouter>
@@ -162,7 +162,7 @@ it("can display a provided deployed machines message", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <KernelOptionsField
             deployedMachinesCount={1}
             generateDeployedMessage={(count) => `${count} deployed machine`}

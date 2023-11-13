@@ -30,7 +30,7 @@ it("is disabled if spaces haven't loaded", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <Formik initialValues={{ space: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ space: "" }} onSubmit={vi.fn()}>
         <SpaceSelect name="space" />
       </Formik>
     </Provider>
@@ -48,7 +48,7 @@ it("renders options correctly", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <Formik initialValues={{ space: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ space: "" }} onSubmit={vi.fn()}>
         <SpaceSelect name="space" />
       </Formik>
     </Provider>
@@ -77,7 +77,7 @@ it("renders options correctly", async () => {
 it("maintains selected option after new options are added", async () => {
   const SpaceWithProvider = ({ state }: { state: RootState }) => (
     <Provider store={mockStore(state)}>
-      <Formik initialValues={{ space: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ space: "" }} onSubmit={vi.fn()}>
         <SpaceSelect name="space" />
       </Formik>
     </Provider>
@@ -122,7 +122,7 @@ it("can hide the default option", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <Formik initialValues={{ space: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ space: "" }} onSubmit={vi.fn()}>
         <SpaceSelect defaultOption={null} name="space" />
       </Formik>
     </Provider>
@@ -138,7 +138,7 @@ it("orders the spaces by name", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <Formik initialValues={{ space: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ space: "" }} onSubmit={vi.fn()}>
         <SpaceSelect name="space" />
       </Formik>
     </Provider>

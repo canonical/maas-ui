@@ -29,7 +29,7 @@ describe("DeviceDetailsHeader", () => {
     state.device.items = [];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -42,7 +42,7 @@ describe("DeviceDetailsHeader", () => {
     state.device.items = [deviceFactory({ system_id: "abc123" })];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -60,7 +60,7 @@ describe("DeviceDetailsHeader", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store, sidePanelContent: { view: DeviceSidePanelViews.DELETE_DEVICE } }
     );
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
@@ -74,7 +74,7 @@ describe("DeviceDetailsHeader", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store }
     );
 

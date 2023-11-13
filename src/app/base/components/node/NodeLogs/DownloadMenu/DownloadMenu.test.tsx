@@ -26,7 +26,7 @@ import {
 } from "testing/factories";
 import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
-jest.mock("js-file-download", () => jest.fn());
+vi.mock("js-file-download", () => vi.fn());
 
 describe("DownloadMenu", () => {
   let state: RootState;
@@ -35,9 +35,9 @@ describe("DownloadMenu", () => {
   let controller: ControllerDetails;
 
   beforeEach(() => {
-    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
+    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     // Work around for RTL async events with fake timers.
-    userEvt = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    userEvt = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     machine = machineDetailsFactory({
       fqdn: "hungry-wombat.aus",
       system_id: "abc123",
@@ -75,12 +75,12 @@ describe("DownloadMenu", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
-    jest.useRealTimers();
+    vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   afterAll(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("is disabled if there are no downloads", () => {
@@ -103,7 +103,7 @@ describe("DownloadMenu", () => {
   });
 
   it("can display a YAML output item", async () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
     renderWithMockStore(
       <FileContext.Provider value={fileContextStore}>
         <DownloadMenu node={machine} />
@@ -120,9 +120,9 @@ describe("DownloadMenu", () => {
   });
 
   it("generates a download when the installation item is clicked", async () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
-    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
-    const downloadSpy = jest.spyOn(fileDownload, "default");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
+    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
+    const downloadSpy = vi.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
@@ -149,7 +149,7 @@ describe("DownloadMenu", () => {
   });
 
   it("can display a XML output item", async () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
     renderWithMockStore(
       <FileContext.Provider value={fileContextStore}>
         <DownloadMenu node={machine} />
@@ -166,9 +166,9 @@ describe("DownloadMenu", () => {
   });
 
   it("generates a download when the installation item is clicked for a machine", async () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
-    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
-    const downloadSpy = jest.spyOn(fileDownload, "default");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
+    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
+    const downloadSpy = vi.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
@@ -184,9 +184,9 @@ describe("DownloadMenu", () => {
   });
 
   it("generates a download when the installation item is clicked for a controller", async () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
-    jest.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
-    const downloadSpy = jest.spyOn(fileDownload, "default");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
+    vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
+    const downloadSpy = vi.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
@@ -225,7 +225,7 @@ describe("DownloadMenu", () => {
   });
 
   it("generates a download when the installation item is clicked", async () => {
-    const downloadSpy = jest.spyOn(fileDownload, "default");
+    const downloadSpy = vi.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
@@ -304,10 +304,10 @@ describe("DownloadMenu", () => {
         status: ScriptResultStatus.PASSED,
       })
     );
-    jest
+    vi
       .spyOn(api.scriptresults, "getCurtinLogsTar")
       .mockResolvedValue("curtin-logs-blob");
-    const downloadSpy = jest.spyOn(fileDownload, "default");
+    const downloadSpy = vi.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });

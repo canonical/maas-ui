@@ -16,7 +16,7 @@ import {
 import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("Tags", () => {
-  let scrollToSpy: jest.Mock;
+  let scrollToSpy: vi.Mock;
   let state: RootState;
 
   beforeEach(() => {
@@ -27,12 +27,12 @@ describe("Tags", () => {
       }),
     });
     // Mock the scrollTo method as jsdom doesn't support this and will error.
-    scrollToSpy = jest.fn();
+    scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   [

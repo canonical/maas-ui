@@ -23,7 +23,7 @@ const mockStore = configureStore<RootState>();
 
 describe("NumaResourcesCard", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("fetches machines on load", () => {

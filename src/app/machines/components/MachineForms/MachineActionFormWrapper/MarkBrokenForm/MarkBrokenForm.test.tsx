@@ -36,7 +36,7 @@ describe("MarkBrokenForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MarkBrokenForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}
@@ -98,7 +98,7 @@ describe("MarkBrokenForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MarkBrokenForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}

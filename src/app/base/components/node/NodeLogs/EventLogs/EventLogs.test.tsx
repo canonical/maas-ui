@@ -27,11 +27,11 @@ const mockStore = configureStore();
 
 describe("EventLogs", () => {
   let state: RootState;
-  let scrollToSpy: jest.Mock;
+  let scrollToSpy: vi.Mock;
   let machine: MachineDetails;
 
   beforeEach(() => {
-    scrollToSpy = jest.fn();
+    scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
     machine = machineDetailsFactory({ id: 1, system_id: "abc123" });
     state = rootStateFactory({

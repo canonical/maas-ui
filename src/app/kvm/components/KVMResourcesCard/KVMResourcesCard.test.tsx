@@ -16,7 +16,7 @@ const mockStore = configureStore<RootState>();
 
 describe("KVMResourcesCard", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("fetches machines on load", () => {

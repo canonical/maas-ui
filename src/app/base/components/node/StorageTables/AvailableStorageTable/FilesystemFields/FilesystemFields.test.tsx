@@ -27,7 +27,7 @@ describe("FilesystemFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FilesystemFields systemId="abc123" />
       </Formik>,
@@ -54,7 +54,7 @@ describe("FilesystemFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FilesystemFields systemId="abc123" />
       </Formik>,
@@ -79,7 +79,7 @@ describe("FilesystemFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FilesystemFields systemId="abc123" />
       </Formik>,

@@ -9,16 +9,16 @@ import { userEvent, render, screen, waitFor } from "testing/utils";
 
 describe("DebounceSearchBox", () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it(`runs onDebounced fn when the search text changes via the input, after the
       debounce interval`, async () => {
-    const onDebounced = jest.fn();
+    const onDebounced = vi.fn();
     const Proxy = () => {
       const [searchText, setSearchText] = useState("old-value");
       return (
@@ -31,7 +31,7 @@ describe("DebounceSearchBox", () => {
     };
     render(<Proxy />);
     const searchBox = screen.getByRole("searchbox");
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 
     await user.clear(searchBox);
     await user.type(searchBox, "new-value");
@@ -39,19 +39,19 @@ describe("DebounceSearchBox", () => {
     expect(onDebounced).not.toHaveBeenCalled();
 
     await waitFor(() => {
-      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+      vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
     });
     expect(onDebounced).toHaveBeenCalledWith("new-value");
   });
 
   it(`does not run onDebounced fn when the search text changes via props, even
       after the debounce interval`, async () => {
-    const onDebounced = jest.fn();
+    const onDebounced = vi.fn();
     const Proxy = ({ searchText }: { searchText: string }) => (
       <DebounceSearchBox
         onDebounced={onDebounced}
         searchText={searchText}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />
     );
     const { rerender } = render(<Proxy searchText="old-value" />);
@@ -60,7 +60,7 @@ describe("DebounceSearchBox", () => {
 
     rerender(<Proxy searchText="new-value" />);
     await waitFor(() => {
-      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+      vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
     });
     expect(onDebounced).not.toHaveBeenCalled();
   });
@@ -68,13 +68,13 @@ describe("DebounceSearchBox", () => {
   it("displays a spinner while debouncing search box input", async () => {
     render(
       <DebounceSearchBox
-        onDebounced={jest.fn()}
+        onDebounced={vi.fn()}
         searchText="old-value"
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />
     );
     const searchBox = screen.getByRole("searchbox");
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     expect(
       screen.queryByRole("alert", { name: Labels.Loading })
     ).not.toBeInTheDocument();
@@ -83,7 +83,7 @@ describe("DebounceSearchBox", () => {
     expect(
       screen.getByRole("alert", { name: Labels.Loading })
     ).toBeInTheDocument();
-    jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+    vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
     await waitFor(() => {
       expect(
         screen.queryByRole("alert", { name: Labels.Loading })

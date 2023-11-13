@@ -46,7 +46,7 @@ describe("NameColumn", () => {
     render(
       <Provider store={store}>
         <NameColumn
-          handleRowCheckbox={jest.fn()}
+          handleRowCheckbox={vi.fn()}
           nic={nic}
           node={state.machine.items[0]}
           selected={[]}
@@ -73,7 +73,7 @@ describe("NameColumn", () => {
     render(
       <Provider store={store}>
         <NameColumn
-          handleRowCheckbox={jest.fn()}
+          handleRowCheckbox={vi.fn()}
           nic={nic}
           node={state.machine.items[0]}
           selected={[]}

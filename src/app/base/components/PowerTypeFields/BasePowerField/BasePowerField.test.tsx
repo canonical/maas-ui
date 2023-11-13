@@ -10,7 +10,7 @@ describe("BasePowerField", () => {
   it("can be given a custom power parameters name", () => {
     const field = powerFieldFactory({ name: "field-name" });
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField
           field={field}
           powerParametersValueName="custom-power-parameters"
@@ -25,7 +25,7 @@ describe("BasePowerField", () => {
   it("correctly renders a string field type", () => {
     const field = powerFieldFactory({ field_type: PowerFieldType.STRING });
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
@@ -40,7 +40,7 @@ describe("BasePowerField", () => {
       label: "Password",
     });
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
@@ -55,7 +55,7 @@ describe("BasePowerField", () => {
   it("correctly renders a choice field type", () => {
     const field = powerFieldFactory({ field_type: PowerFieldType.CHOICE });
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
       </Formik>
     );
@@ -76,7 +76,7 @@ describe("BasePowerField", () => {
     render(
       <Formik
         initialValues={{ power_parameters: { field: ["value1"] } }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <BasePowerField field={field} />
       </Formik>

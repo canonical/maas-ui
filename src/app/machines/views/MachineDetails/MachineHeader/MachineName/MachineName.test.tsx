@@ -47,7 +47,7 @@ describe("MachineName", () => {
   it("can update a machine with the new name and domain", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineName editingName={true} id="abc123" setEditingName={jest.fn()} />,
+      <MachineName editingName={true} id="abc123" setEditingName={vi.fn()} />,
       { route: "/machine/abc123", store }
     );
 

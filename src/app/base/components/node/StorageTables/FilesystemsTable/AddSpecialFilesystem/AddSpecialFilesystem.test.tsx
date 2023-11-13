@@ -39,7 +39,7 @@ it("only shows filesystems that do not require a storage device", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <AddSpecialFilesystem closeForm={jest.fn()} machine={machine} />
+          <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -73,7 +73,7 @@ it("can show errors", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <AddSpecialFilesystem closeForm={jest.fn()} machine={machine} />
+          <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -100,7 +100,7 @@ it("correctly dispatches an action to mount a special filesystem", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <AddSpecialFilesystem closeForm={jest.fn()} machine={machine} />
+          <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

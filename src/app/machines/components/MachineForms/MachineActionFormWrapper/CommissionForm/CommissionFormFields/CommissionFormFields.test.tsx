@@ -63,7 +63,7 @@ describe("CommissionForm", () => {
   it("displays a field for URL if a selected script has url parameter", async () => {
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}

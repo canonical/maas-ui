@@ -24,7 +24,7 @@ describe("DiscoveriesFilterAccordion", () => {
   it("button is disabled when loading discoveries", () => {
     state.discovery.loaded = false;
     renderWithBrowserRouter(
-      <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <DiscoveriesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { route, state }
     );
     expect(screen.getByRole("button", { name: "Filters" })).toBeDisabled();
@@ -32,7 +32,7 @@ describe("DiscoveriesFilterAccordion", () => {
 
   it("displays a filter accordion", () => {
     renderWithBrowserRouter(
-      <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <DiscoveriesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { route, state }
     );
     expect(

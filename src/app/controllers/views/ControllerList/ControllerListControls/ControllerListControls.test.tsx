@@ -26,7 +26,7 @@ describe("ControllerListControls", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <ControllerListControls filter={""} setFilter={jest.fn()} />
+          <ControllerListControls filter={""} setFilter={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -39,7 +39,7 @@ describe("ControllerListControls", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <ControllerListControls filter={"free-text"} setFilter={jest.fn()} />
+          <ControllerListControls filter={"free-text"} setFilter={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

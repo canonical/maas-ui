@@ -4,20 +4,20 @@ import { TagSidePanelViews } from "@/app/tags/constants";
 import { rootState as rootStateFactory } from "testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-let scrollToSpy: jest.Mock;
+let scrollToSpy: vi.Mock;
 
 beforeEach(() => {
   // Mock the scrollTo method as jsdom doesn't support this and will error.
-  scrollToSpy = jest.fn();
+  scrollToSpy = vi.fn();
   global.scrollTo = scrollToSpy;
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("can call a function to display the add tag form", async () => {
-  const setSidePanelContent = jest.fn();
+  const setSidePanelContent = vi.fn();
   renderWithBrowserRouter(
     <TagsHeader setSidePanelContent={setSidePanelContent} />,
     {
@@ -33,7 +33,7 @@ it("can call a function to display the add tag form", async () => {
 });
 
 it("displays the default title", () => {
-  renderWithBrowserRouter(<TagsHeader setSidePanelContent={jest.fn()} />, {
+  renderWithBrowserRouter(<TagsHeader setSidePanelContent={vi.fn()} />, {
     route: "/tags",
     state: rootStateFactory(),
   });

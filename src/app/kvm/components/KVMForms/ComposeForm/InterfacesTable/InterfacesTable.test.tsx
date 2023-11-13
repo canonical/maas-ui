@@ -81,7 +81,7 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
 
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
 
@@ -107,7 +107,7 @@ describe("InterfacesTable", () => {
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
     expect(screen.getByRole("button", { name: /define/i })).toBeDisabled();
@@ -132,7 +132,7 @@ describe("InterfacesTable", () => {
     state.subnet.items = [subnet];
 
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
     expect(screen.queryByRole("button", { name: /define/i })).toBeDisabled();
@@ -150,7 +150,7 @@ describe("InterfacesTable", () => {
     state.subnet.items = [subnet];
 
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
     // Undefined interface row displays by default
@@ -190,7 +190,7 @@ describe("InterfacesTable", () => {
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
 
@@ -226,7 +226,7 @@ describe("InterfacesTable", () => {
     state.subnet.items = [nonBootSubnet, bootSubnet];
     state.vlan.items = [nonBootVlan, bootVlan];
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
 

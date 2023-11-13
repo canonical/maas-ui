@@ -30,8 +30,8 @@ describe("DeleteConfirm", () => {
   });
 
   it("runs onConfirm function when Delete AZ is clicked", async () => {
-    const closeExpanded = jest.fn();
-    const onConfirm = jest.fn();
+    const closeExpanded = vi.fn();
+    const onConfirm = vi.fn();
     const store = mockStore(initialState);
     render(
       <Provider store={store}>
@@ -49,8 +49,8 @@ describe("DeleteConfirm", () => {
   });
 
   it("runs closeExpanded function when cancel is clicked", async () => {
-    const closeExpanded = jest.fn();
-    const onConfirm = jest.fn();
+    const closeExpanded = vi.fn();
+    const onConfirm = vi.fn();
     const store = mockStore(initialState);
     render(
       <Provider store={store}>

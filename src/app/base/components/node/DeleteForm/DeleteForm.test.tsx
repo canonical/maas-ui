@@ -19,7 +19,7 @@ describe("DeleteForm", () => {
   });
 
   it("correctly runs function to delete given nodes", async () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     const nodes = [
       machineFactory({ system_id: "abc123" }),
       machineFactory({ system_id: "def456" }),
@@ -27,7 +27,7 @@ describe("DeleteForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeleteForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={nodes}
         onSubmit={onSubmit}
@@ -52,10 +52,10 @@ describe("DeleteForm", () => {
     const store = mockStore(state);
     const Proxy = ({ processingCount }: { processingCount: number }) => (
       <DeleteForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={nodes}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={processingCount}
         redirectURL="/redirect"
         viewingDetails
@@ -82,11 +82,11 @@ describe("DeleteForm", () => {
       processingCount: number;
     }) => (
       <DeleteForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         errors={errors}
         modelName="machine"
         nodes={nodes}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={processingCount}
         redirectURL="/redirect"
         viewingDetails

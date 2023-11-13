@@ -48,7 +48,7 @@ it("renders a single table variant at a time", () => {
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -70,7 +70,7 @@ it("renders Subnets by Fabric table when grouping by Fabric", () => {
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -93,7 +93,7 @@ it("renders Subnets by Space table when grouping by Space", () => {
           <SubnetsTable
             groupBy="space"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -116,7 +116,7 @@ it("displays a correct number of pages", () => {
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -154,7 +154,7 @@ it("updates the list of items correctly when navigating to another page", async 
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -213,7 +213,7 @@ it("doesn't display pagination if rows are within items per page limit", () => {
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -248,7 +248,7 @@ it("displays correctly paginated rows", async () => {
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -311,7 +311,7 @@ it("displays the last available page once the currently active has no items", as
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -349,7 +349,7 @@ it("displays the last available page once the currently active has no items", as
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -384,7 +384,7 @@ it("remains on the same page once the data is updated and page is still availabl
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -419,7 +419,7 @@ it("remains on the same page once the data is updated and page is still availabl
           <SubnetsTable
             groupBy="fabric"
             searchText=""
-            setSearchText={jest.fn()}
+            setSearchText={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>

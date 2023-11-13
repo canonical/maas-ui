@@ -59,15 +59,15 @@ describe("CredentialsForm", () => {
   });
 
   it("dispatches an action to generate certificate if not providing certificate and key", async () => {
-    const setNewPodValues = jest.fn();
+    const setNewPodValues = vi.fn();
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
-        setStep={jest.fn()}
-        setSubmissionErrors={jest.fn()}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -100,7 +100,7 @@ describe("CredentialsForm", () => {
   });
 
   it("dispatches an action to fetch projects if providing certificate and key", async () => {
-    const setNewPodValues = jest.fn();
+    const setNewPodValues = vi.fn();
     const store = mockStore(state);
     newPodValues.certificate = "certificate";
     newPodValues.key = "key";
@@ -108,11 +108,11 @@ describe("CredentialsForm", () => {
     newPodValues.pool = "3";
     renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
-        setStep={jest.fn()}
-        setSubmissionErrors={jest.fn()}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -159,14 +159,14 @@ describe("CredentialsForm", () => {
   });
 
   it("moves to the authentication step if certificate successfully generated", () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.general.generatedCertificate.data = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "",
           key: "",
@@ -176,9 +176,9 @@ describe("CredentialsForm", () => {
           power_address: "192.168.1.1",
           zone: "0",
         }}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
-        setSubmissionErrors={jest.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -188,7 +188,7 @@ describe("CredentialsForm", () => {
 
   it(`does not move to the authentication step if certificate successfully
       generated but errors are present`, () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.general.generatedCertificate.data = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
@@ -196,7 +196,7 @@ describe("CredentialsForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "",
           key: "",
@@ -206,9 +206,9 @@ describe("CredentialsForm", () => {
           power_address: "192.168.1.1",
           zone: "0",
         }}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
-        setSubmissionErrors={jest.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -217,14 +217,14 @@ describe("CredentialsForm", () => {
   });
 
   it("moves to the project select step if projects exist for given LXD address", () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -234,9 +234,9 @@ describe("CredentialsForm", () => {
           power_address: "192.168.1.1",
           zone: "0",
         }}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
-        setSubmissionErrors={jest.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -246,7 +246,7 @@ describe("CredentialsForm", () => {
 
   it(`does not move to the project select step if projects exist for given LXD
       address but pod errors are present`, () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
@@ -254,7 +254,7 @@ describe("CredentialsForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -264,9 +264,9 @@ describe("CredentialsForm", () => {
           power_address: "192.168.1.1",
           zone: "0",
         }}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
-        setSubmissionErrors={jest.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -279,7 +279,7 @@ describe("CredentialsForm", () => {
   });
 
   it("displays errors if generating a cert failed", () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
@@ -291,7 +291,7 @@ describe("CredentialsForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -301,9 +301,9 @@ describe("CredentialsForm", () => {
           power_address: "192.168.1.1",
           zone: "0",
         }}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
-        setSubmissionErrors={jest.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -315,7 +315,7 @@ describe("CredentialsForm", () => {
   });
 
   it("clears the submission errors when unmounting", () => {
-    const setSubmissionErrors = jest.fn();
+    const setSubmissionErrors = vi.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
@@ -323,7 +323,7 @@ describe("CredentialsForm", () => {
     const store = mockStore(state);
     const { unmount } = renderWithBrowserRouter(
       <CredentialsForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={{
           certificate: "certificate",
           key: "key",
@@ -333,8 +333,8 @@ describe("CredentialsForm", () => {
           power_address: "192.168.1.1",
           zone: "0",
         }}
-        setNewPodValues={jest.fn()}
-        setStep={jest.fn()}
+        setNewPodValues={vi.fn()}
+        setStep={vi.fn()}
         setSubmissionErrors={setSubmissionErrors}
       />,
       { route: "/kvm/add", store }

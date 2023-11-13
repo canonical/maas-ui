@@ -52,7 +52,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -65,7 +65,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -101,7 +101,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -138,7 +138,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -167,7 +167,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -196,7 +196,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -216,7 +216,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }

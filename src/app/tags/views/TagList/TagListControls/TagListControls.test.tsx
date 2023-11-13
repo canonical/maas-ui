@@ -32,7 +32,7 @@ beforeEach(() => {
 });
 
 it("can update the filter", async () => {
-  const setFilter = jest.fn();
+  const setFilter = vi.fn();
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -41,9 +41,9 @@ it("can update the filter", async () => {
           currentPage={0}
           filter={TagSearchFilter.All}
           searchText={""}
-          setCurrentPage={jest.fn()}
+          setCurrentPage={vi.fn()}
           setFilter={setFilter}
-          setSearchText={jest.fn()}
+          setSearchText={vi.fn()}
           tagCount={0}
         />
       </MemoryRouter>

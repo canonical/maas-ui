@@ -57,7 +57,7 @@ describe("CreateBcache", () => {
 
     renderWithBrowserRouter(
       <CreateBcache
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         storageDevice={diskFactory()}
         systemId="abc123"
       />,
@@ -94,7 +94,7 @@ describe("CreateBcache", () => {
 
     renderWithBrowserRouter(
       <CreateBcache
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         storageDevice={backingDevice}
         systemId="abc123"
       />,

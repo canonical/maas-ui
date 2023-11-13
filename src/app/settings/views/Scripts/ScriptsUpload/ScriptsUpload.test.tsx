@@ -27,7 +27,7 @@ import {
 
 const mockStore = configureStore();
 
-jest.mock("./readScript");
+vi.mock("./readScript");
 
 const createFile = (
   name: string,
@@ -130,7 +130,7 @@ describe("ScriptsUpload", () => {
   it("dispatches uploadScript without a name if script has metadata", async () => {
     const store = mockStore(state);
     const contents = "# --- Start MAAS 1.0 script metadata ---";
-    jest
+    vi
       .spyOn(readScript, "readScript")
       .mockImplementation(
         (
@@ -176,7 +176,7 @@ describe("ScriptsUpload", () => {
   it("dispatches uploadScript with a name if script has no metadata", async () => {
     const store = mockStore(state);
     const contents = "#!/bin/bash\necho 'foo';\n";
-    jest
+    vi
       .spyOn(readScript, "readScript")
       .mockImplementation(
         (

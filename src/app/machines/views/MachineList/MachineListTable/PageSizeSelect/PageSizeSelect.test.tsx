@@ -11,8 +11,8 @@ describe("PageSizeSelect", () => {
     render(
       <PageSizeSelect
         pageSize={DEFAULT_PAGE_SIZE}
-        paginate={jest.fn()}
-        setPageSize={jest.fn()}
+        paginate={vi.fn()}
+        setPageSize={vi.fn()}
       />
     );
     expect(
@@ -21,8 +21,8 @@ describe("PageSizeSelect", () => {
   });
 
   it("calls a function to update the page size and reset to the first page", async () => {
-    const setPageSize = jest.fn();
-    const setCurrentPage = jest.fn();
+    const setPageSize = vi.fn();
+    const setCurrentPage = vi.fn();
 
     render(
       <PageSizeSelect

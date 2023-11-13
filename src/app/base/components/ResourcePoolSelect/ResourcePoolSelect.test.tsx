@@ -25,7 +25,7 @@ describe("ResourcePoolSelect", () => {
       }),
     });
     renderWithMockStore(
-      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>,
       { state }
@@ -41,7 +41,7 @@ describe("ResourcePoolSelect", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>,
       { store }
@@ -59,7 +59,7 @@ describe("ResourcePoolSelect", () => {
       }),
     });
     renderWithMockStore(
-      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>,
       { state }

@@ -10,11 +10,11 @@ describe("UpdateCertificateFields", () => {
     render(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <UpdateCertificateFields
           generatedCertificate={null}
-          setShouldGenerateCert={jest.fn()}
+          setShouldGenerateCert={vi.fn()}
           shouldGenerateCert
         />
       </Formik>
@@ -30,11 +30,11 @@ describe("UpdateCertificateFields", () => {
     render(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <UpdateCertificateFields
           generatedCertificate={generatedCertificate}
-          setShouldGenerateCert={jest.fn()}
+          setShouldGenerateCert={vi.fn()}
           shouldGenerateCert
         />
       </Formik>

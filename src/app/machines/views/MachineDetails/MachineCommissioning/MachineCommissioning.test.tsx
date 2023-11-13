@@ -20,11 +20,11 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 
-jest.mock("@canonical/react-components/dist/hooks", () => {
-  const hooks = jest.requireActual("@canonical/react-components/dist/hooks");
+vi.mock("@canonical/react-components/dist/hooks", () => {
+  const hooks = vi.importActual("@canonical/react-components/dist/hooks");
   return {
     ...hooks,
-    usePrevious: jest.fn(),
+    usePrevious: vi.fn(),
   };
 });
 const mockStore = configureStore();
@@ -126,7 +126,7 @@ describe("MachineCommissioning", () => {
     ).toBe(1);
   });
   it("refetchs script results when the machine commissioning status changes", () => {
-    jest
+    vi
       .spyOn(reactComponentHooks, "usePrevious")
       .mockImplementation(() => TestStatusStatus.PASSED);
     state.machine.items = [

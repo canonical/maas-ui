@@ -45,7 +45,7 @@ describe("UbuntuImageSelect", () => {
     ];
     const arches = [bootResourceUbuntuArchFactory()];
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <UbuntuImageSelect
           arches={arches}
           releases={[available, deleted]}
@@ -77,7 +77,7 @@ describe("UbuntuImageSelect", () => {
     ];
 
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <UbuntuImageSelect
           arches={[available, deleted]}
           releases={releases}

@@ -49,7 +49,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].zone.name = "zone-one";
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     expect(screen.getByTestId("zone")).toHaveTextContent("zone-one");
@@ -59,7 +59,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].spaces = ["space1"];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("space1");
@@ -69,7 +69,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].spaces = ["space1", "space2"];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("2 spaces");
@@ -79,7 +79,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].spaces = ["space2", "space1", "space3"];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -93,7 +93,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].actions = [];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
@@ -107,7 +107,7 @@ describe("ZoneColumn", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", store }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
@@ -135,7 +135,7 @@ describe("ZoneColumn", () => {
 
   it("shows a spinner when changing zones", async () => {
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));

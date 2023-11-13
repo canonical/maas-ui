@@ -78,7 +78,7 @@ describe("AddMachineFormFields", () => {
   it("correctly sets minimum kernel to default", () => {
     state.general.defaultMinHweKernel.data = "ga-18.04";
     renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      <AddMachineForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/add", state }
     );
 
@@ -104,7 +104,7 @@ describe("AddMachineFormFields", () => {
 
   it("can add extra mac address fields", async () => {
     renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      <AddMachineForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/add", state }
     );
 
@@ -140,7 +140,7 @@ describe("AddMachineFormFields", () => {
 
   it("can remove extra mac address fields", async () => {
     renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      <AddMachineForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/add", state }
     );
 
@@ -159,7 +159,7 @@ describe("AddMachineFormFields", () => {
 
   it("does not require MAC address field if power_type is 'ipmi'", async () => {
     renderWithBrowserRouter(
-      <AddMachineForm clearSidePanelContent={jest.fn()} />,
+      <AddMachineForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/add", state }
     );
 

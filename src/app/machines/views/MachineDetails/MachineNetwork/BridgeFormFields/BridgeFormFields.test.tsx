@@ -13,7 +13,7 @@ describe("BridgeFormFields", () => {
   it("does not display the fd field if stp isn't on", async () => {
     const store = mockStore(rootStateFactory());
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BridgeFormFields />
       </Formik>,
       { route: "/machines", store }
@@ -26,7 +26,7 @@ describe("BridgeFormFields", () => {
   it("displays the fd field if stp is on", async () => {
     const store = mockStore(rootStateFactory());
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BridgeFormFields />
       </Formik>,
       { route: "/machines", store }

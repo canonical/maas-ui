@@ -60,7 +60,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={volumeGroup}
         systemId="abc123"
       />,
@@ -113,7 +113,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={volumeGroup}
         systemId="abc123"
       />,
@@ -141,7 +141,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         systemId="abc123"
       />,
@@ -177,7 +177,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         systemId="abc123"
       />,
@@ -215,7 +215,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         systemId="abc123"
       />,

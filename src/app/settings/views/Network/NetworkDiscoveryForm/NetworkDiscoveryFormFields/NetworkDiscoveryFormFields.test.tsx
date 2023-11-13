@@ -56,7 +56,7 @@ describe("NetworkDiscoveryFormFields", () => {
 
     render(
       <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <NetworkDiscoveryFormFields />
         </Formik>
       </Provider>

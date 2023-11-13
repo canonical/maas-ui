@@ -61,7 +61,7 @@ it("renders test info if node is a machine", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+          <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -87,7 +87,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -112,7 +112,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -136,7 +136,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -160,7 +160,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -184,7 +184,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

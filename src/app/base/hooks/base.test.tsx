@@ -15,22 +15,22 @@ const mockUseLocationValue = {
   hash: "",
   state: null,
 };
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+vi.mock("react-router-dom", () => ({
+  ...vi.importActual("react-router-dom"),
   useLocation: () => mockUseLocationValue,
 }));
 
 describe("hooks", () => {
   describe("useScrollOnRender", () => {
     let html: HTMLHtmlElement | null;
-    let scrollToSpy: jest.Mock;
+    let scrollToSpy: vi.Mock;
     let targetNode: HTMLElement;
 
     beforeEach(() => {
       global.innerHeight = 500;
       // eslint-disable-next-line testing-library/no-node-access
       html = document.querySelector("html");
-      scrollToSpy = jest.fn();
+      scrollToSpy = vi.fn();
       global.scrollTo = scrollToSpy;
       targetNode = document.createElement("div");
     });
@@ -97,7 +97,7 @@ describe("hooks", () => {
 
   describe("useCycled", () => {
     it("can handle the initial state", () => {
-      const onCycled = jest.fn();
+      const onCycled = vi.fn();
       const { result } = renderHook(() => useCycled(false, onCycled));
       const [hasCycled] = result.current;
       expect(hasCycled).toBe(false);
@@ -105,7 +105,7 @@ describe("hooks", () => {
     });
 
     it("can handle rerenders when the value has not cycled", () => {
-      const onCycled = jest.fn();
+      const onCycled = vi.fn();
       const { result, rerender } = renderHook(
         ({ state }) => useCycled(state, onCycled),
         {
@@ -119,7 +119,7 @@ describe("hooks", () => {
     });
 
     it("can handle rerenders when the value has cycled", () => {
-      const onCycled = jest.fn();
+      const onCycled = vi.fn();
       const { result, rerender } = renderHook(
         ({ state }) => useCycled(state, onCycled),
         {
@@ -133,7 +133,7 @@ describe("hooks", () => {
     });
 
     it("can reset the cycle", async () => {
-      const onCycled = jest.fn();
+      const onCycled = vi.fn();
       const { result, rerender } = renderHook(
         ({ state }) => useCycled(state, onCycled),
         {
@@ -154,7 +154,7 @@ describe("hooks", () => {
     });
 
     it("can handle values that have cycled after a reset", async () => {
-      const onCycled = jest.fn();
+      const onCycled = vi.fn();
       const { result, rerender } = renderHook(
         ({ state }) => useCycled(state, onCycled),
         {
@@ -182,8 +182,8 @@ describe("hooks", () => {
 
   describe("useProcessing", () => {
     it("handles whether processing has completed", () => {
-      const onComplete = jest.fn();
-      const onError = jest.fn();
+      const onComplete = vi.fn();
+      const onError = vi.fn();
       // Start with a count of 0
       const { rerender, result } = renderHook(
         ({ processingCount }) =>
@@ -208,8 +208,8 @@ describe("hooks", () => {
     });
 
     it("handles errors occurring while processing", () => {
-      const onComplete = jest.fn();
-      const onError = jest.fn();
+      const onComplete = vi.fn();
+      const onError = vi.fn();
       // Start with a count of 0
       const { rerender, result } = renderHook(
         ({ hasErrors, processingCount }) =>
@@ -247,7 +247,7 @@ describe("hooks", () => {
 
   describe("useScrollToTop", () => {
     it("scrolls to the top of the page on pathname change", () => {
-      const scrollToSpy = jest.fn();
+      const scrollToSpy = vi.fn();
       global.scrollTo = scrollToSpy;
       const { rerender } = renderHook(() => useScrollToTop());
 
@@ -261,7 +261,7 @@ describe("hooks", () => {
     });
 
     it("does not scroll to the top of the page if pathname stays the same", () => {
-      const scrollToSpy = jest.fn();
+      const scrollToSpy = vi.fn();
       global.scrollTo = scrollToSpy;
       const { rerender } = renderHook(() => useScrollToTop());
 

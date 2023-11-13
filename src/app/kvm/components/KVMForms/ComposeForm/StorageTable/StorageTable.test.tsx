@@ -30,7 +30,7 @@ import {
 
 const generateWrapper = (state: RootState, pod: Pod) =>
   renderWithBrowserRouter(
-    <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+    <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { state, route: `/kvm/${pod.id}` }
   );
 

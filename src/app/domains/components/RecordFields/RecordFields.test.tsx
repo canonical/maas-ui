@@ -8,7 +8,7 @@ import { screen, render } from "testing/utils";
 describe("RecordFields", () => {
   it("disables record type field if in editing state", () => {
     render(
-      <Formik initialValues={{ rrtype: RecordType.TXT }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ rrtype: RecordType.TXT }} onSubmit={vi.fn()}>
         <RecordFields editing />
       </Formik>
     );

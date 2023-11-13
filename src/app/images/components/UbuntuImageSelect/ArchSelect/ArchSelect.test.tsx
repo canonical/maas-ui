@@ -36,7 +36,7 @@ describe("ArchSelect", () => {
 
   it("shows a message if no release is selected", () => {
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <ArchSelect
           arches={[bootResourceUbuntuArchFactory()]}
           release={null}
@@ -69,7 +69,7 @@ describe("ArchSelect", () => {
             },
           ],
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <ArchSelect arches={arches} release={release} resources={[]} />
       </Formik>,
@@ -92,7 +92,7 @@ describe("ArchSelect", () => {
     ];
 
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <ArchSelect arches={arches} release={release} resources={[]} />
       </Formik>,
       { state }
@@ -138,7 +138,7 @@ describe("ArchSelect", () => {
         initialValues={{
           images: [{ arch: "amd64", os: "ubuntu", release: "focal" }],
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <ArchSelect arches={arches} release={release} resources={[]} />
       </Formik>,

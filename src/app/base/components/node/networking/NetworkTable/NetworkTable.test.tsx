@@ -80,8 +80,8 @@ describe("NetworkTable", () => {
         expanded={null}
         node={machine}
         selected={[]}
-        setExpanded={jest.fn()}
-        setSelected={jest.fn()}
+        setExpanded={vi.fn()}
+        setSelected={vi.fn()}
       />,
       { state }
     );
@@ -122,8 +122,8 @@ describe("NetworkTable", () => {
         expanded={null}
         node={machine}
         selected={[]}
-        setExpanded={jest.fn()}
-        setSelected={jest.fn()}
+        setExpanded={vi.fn()}
+        setSelected={vi.fn()}
       />,
       { state }
     );
@@ -147,8 +147,8 @@ describe("NetworkTable", () => {
         expanded={null}
         node={machine}
         selected={[]}
-        setExpanded={jest.fn()}
-        setSelected={jest.fn()}
+        setExpanded={vi.fn()}
+        setSelected={vi.fn()}
       />,
       { state }
     );
@@ -193,8 +193,8 @@ describe("NetworkTable", () => {
         expanded={null}
         node={machine}
         selected={[]}
-        setExpanded={jest.fn()}
-        setSelected={jest.fn()}
+        setExpanded={vi.fn()}
+        setSelected={vi.fn()}
       />,
       { state }
     );
@@ -229,8 +229,8 @@ describe("NetworkTable", () => {
         expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
         node={machine}
         selected={[]}
-        setExpanded={jest.fn()}
-        setSelected={jest.fn()}
+        setExpanded={vi.fn()}
+        setSelected={vi.fn()}
       />,
       { state }
     );
@@ -257,8 +257,8 @@ describe("NetworkTable", () => {
         expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
         node={machine}
         selected={[]}
-        setExpanded={jest.fn()}
-        setSelected={jest.fn()}
+        setExpanded={vi.fn()}
+        setSelected={vi.fn()}
       />,
       { state }
     );
@@ -297,8 +297,8 @@ describe("NetworkTable", () => {
         expanded={null}
         node={machine}
         selected={[]}
-        setExpanded={jest.fn()}
-        setSelected={jest.fn()}
+        setExpanded={vi.fn()}
+        setSelected={vi.fn()}
       />,
       { state }
     );
@@ -401,8 +401,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -415,13 +415,13 @@ describe("NetworkTable", () => {
     });
 
     it("does not include parent interfaces in the GroupCheckbox", async () => {
-      const setSelected = jest.fn();
+      const setSelected = vi.fn();
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           setSelected={setSelected}
         />,
         { state }
@@ -442,8 +442,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -459,8 +459,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -478,8 +478,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -497,8 +497,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -516,8 +516,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -535,8 +535,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -600,8 +600,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );
@@ -631,8 +631,8 @@ describe("NetworkTable", () => {
           expanded={null}
           node={machine}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSelected={jest.fn()}
+          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
         />,
         { state }
       );

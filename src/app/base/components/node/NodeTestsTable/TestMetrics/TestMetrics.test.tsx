@@ -12,7 +12,7 @@ describe("TestMetrics", () => {
     const scriptResult = scriptResultFactory({
       results: [scriptResultResultFactory()],
     });
-    const closeFunc = jest.fn();
+    const closeFunc = vi.fn();
     render(<TestMetrics close={closeFunc} scriptResult={scriptResult} />);
     expect(screen.getByTestId("metrics-table")).toBeInTheDocument();
   });

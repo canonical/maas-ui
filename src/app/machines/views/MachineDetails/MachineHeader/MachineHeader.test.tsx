@@ -26,7 +26,7 @@ const mockStore = configureStore<RootState>();
 describe("MachineHeader", () => {
   let state: RootState;
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
@@ -41,14 +41,14 @@ describe("MachineHeader", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("displays a spinner when loading", () => {
     state.machine.items = [];
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -61,7 +61,7 @@ describe("MachineHeader", () => {
     state.machine.items = [machineFactory({ system_id: "abc123" })];
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -74,7 +74,7 @@ describe("MachineHeader", () => {
     state.machine.items[0].locked = true;
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -88,7 +88,7 @@ describe("MachineHeader", () => {
     state.machine.items[0].power_state = PowerState.ON;
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -101,7 +101,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -114,7 +114,7 @@ describe("MachineHeader", () => {
       const store = mockStore(state);
 
       renderWithBrowserRouter(
-        <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+        <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
         { store, route: "/machine/abc123" }
       );
 
@@ -138,7 +138,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -167,7 +167,7 @@ describe("MachineHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
@@ -187,7 +187,7 @@ describe("MachineHeader", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store, route: "/machine/abc123" }
     );
 
@@ -216,7 +216,7 @@ describe("MachineHeader", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store, route: "/machine/abc123" }
     );
 

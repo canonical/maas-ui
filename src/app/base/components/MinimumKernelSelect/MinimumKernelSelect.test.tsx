@@ -19,7 +19,7 @@ describe("MinimumKernelSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ minKernel: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
           <MinimumKernelSelect name="minKernel" />
         </Formik>
       </Provider>
@@ -43,7 +43,7 @@ describe("MinimumKernelSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ minKernel: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
           <MinimumKernelSelect name="minKernel" />
         </Formik>
       </Provider>

@@ -59,7 +59,7 @@ describe("PowerTypeFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerTypeFields />
       </Formik>,
@@ -107,7 +107,7 @@ describe("PowerTypeFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerTypeFields showSelect={false} />
       </Formik>,
@@ -139,7 +139,7 @@ describe("PowerTypeFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ power_type: PowerTypeNames.MANUAL }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerTypeFields fieldScopes={[PowerFieldScope.NODE]} />
       </Formik>,
@@ -171,7 +171,7 @@ describe("PowerTypeFields", () => {
     ];
     state.general.powerTypes.data = powerTypes;
     renderWithMockStore(
-      <Formik initialValues={{ power_type: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ power_type: "" }} onSubmit={vi.fn()}>
         <PowerTypeFields forChassis />
       </Formik>,
       { state }
@@ -199,7 +199,7 @@ describe("PowerTypeFields", () => {
           powerParameters: {},
           powerType: PowerTypeNames.MANUAL,
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerTypeFields
           powerParametersValueName="powerParameters"
@@ -228,7 +228,7 @@ describe("PowerTypeFields", () => {
           power_parameters: {},
           power_type: PowerTypeNames.MANUAL,
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerTypeFields disableSelect />
       </Formik>,
@@ -285,7 +285,7 @@ describe("PowerTypeFields", () => {
           },
           power_type: PowerTypeNames.MANUAL,
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerTypeFields />
       </Formik>,
@@ -336,7 +336,7 @@ describe("PowerTypeFields", () => {
           power_parameters: {},
           power_type: PowerTypeNames.LXD,
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerTypeFields
           customFieldProps={{ lxd: { initialShouldGenerateCert: false } }}

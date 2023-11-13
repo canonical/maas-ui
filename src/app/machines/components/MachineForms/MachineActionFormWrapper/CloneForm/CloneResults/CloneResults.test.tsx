@@ -40,7 +40,7 @@ describe("CloneResults", () => {
         >
           <CompatRouter>
             <CloneResults
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               selectedCount={2}
               sourceMachine={machine}
             />
@@ -70,7 +70,7 @@ describe("CloneResults", () => {
         >
           <CompatRouter>
             <CloneResults
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               selectedCount={2}
               sourceMachine={machine}
             />
@@ -110,7 +110,7 @@ describe("CloneResults", () => {
         >
           <CompatRouter>
             <CloneResults
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               selectedCount={2}
               sourceMachine={machine}
             />
@@ -151,7 +151,7 @@ describe("CloneResults", () => {
         >
           <CompatRouter>
             <CloneResults
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               selectedCount={2}
               sourceMachine={machine}
             />
@@ -202,7 +202,7 @@ describe("CloneResults", () => {
         >
           <CompatRouter>
             <CloneResults
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               selectedCount={2}
               sourceMachine={machine}
             />
@@ -215,7 +215,7 @@ describe("CloneResults", () => {
   });
 
   it("can filter machines by error type", async () => {
-    const setSearchFilter = jest.fn();
+    const setSearchFilter = vi.fn();
     state.machine.eventErrors = [
       eventErrorFactory({
         error: {
@@ -244,7 +244,7 @@ describe("CloneResults", () => {
         >
           <CompatRouter>
             <CloneResults
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               setSearchFilter={setSearchFilter}
               sourceMachine={machine}
             />
@@ -257,7 +257,7 @@ describe("CloneResults", () => {
   });
 
   it("does not show filter links if viewing from machine details", () => {
-    const setSearchFilter = jest.fn();
+    const setSearchFilter = vi.fn();
     state.machine.eventErrors = [
       eventErrorFactory({
         error: {
@@ -286,7 +286,7 @@ describe("CloneResults", () => {
         >
           <CompatRouter>
             <CloneResults
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               setSearchFilter={setSearchFilter}
               sourceMachine={machine}
               viewingDetails

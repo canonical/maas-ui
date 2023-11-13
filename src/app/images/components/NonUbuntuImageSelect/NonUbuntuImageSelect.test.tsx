@@ -58,7 +58,7 @@ describe("NonUbuntuImageSelect", () => {
             },
           ],
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <NonUbuntuImageSelect images={otherImages} resources={resources} />
       </Formik>,

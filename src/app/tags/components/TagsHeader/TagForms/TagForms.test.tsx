@@ -8,22 +8,22 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter, screen } from "testing/utils";
 
-let scrollToSpy: jest.Mock;
+let scrollToSpy: vi.Mock;
 
 beforeEach(() => {
   // Mock the scrollTo method as jsdom doesn't support this and will error.
-  scrollToSpy = jest.fn();
+  scrollToSpy = vi.fn();
   global.scrollTo = scrollToSpy;
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("can display the add tag form", () => {
   renderWithBrowserRouter(
     <TagForms
-      setSidePanelContent={jest.fn()}
+      setSidePanelContent={vi.fn()}
       sidePanelContent={{ view: TagSidePanelViews.AddTag }}
     />,
     { route: "/tags", state: rootStateFactory() }
@@ -43,7 +43,7 @@ it("can display the delete tag form", () => {
   });
   renderWithBrowserRouter(
     <TagForms
-      setSidePanelContent={jest.fn()}
+      setSidePanelContent={vi.fn()}
       sidePanelContent={{
         view: TagSidePanelViews.DeleteTag,
         extras: { id: 1 },

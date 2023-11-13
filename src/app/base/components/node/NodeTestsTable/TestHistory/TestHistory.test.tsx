@@ -41,7 +41,7 @@ describe("TestHistory", () => {
     state.scriptresult.items = [scriptResult];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
       { route: "/machine/abc123", store }
     );
     const actions = store.getActions();
@@ -69,7 +69,7 @@ describe("TestHistory", () => {
     state.scriptresult.history = {};
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
       { route: "/machine/abc123", store }
     );
 
@@ -84,7 +84,7 @@ describe("TestHistory", () => {
     };
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
       { route: "/machine/abc123", store }
     );
 
@@ -99,7 +99,7 @@ describe("TestHistory", () => {
     };
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
       { route: "/machine/abc123", store }
     );
 
@@ -114,7 +114,7 @@ describe("TestHistory", () => {
     };
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <TestHistory close={jest.fn()} scriptResult={scriptResult} />,
+      <TestHistory close={vi.fn()} scriptResult={scriptResult} />,
       { route: "/machine/abc123", store }
     );
 

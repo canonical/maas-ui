@@ -9,12 +9,12 @@ describe("DeviceListControls", () => {
 
   it("changes the search text when the filters change", () => {
     const { rerender } = renderWithBrowserRouter(
-      <DeviceListControls filter={""} setFilter={jest.fn()} />,
+      <DeviceListControls filter={""} setFilter={vi.fn()} />,
       { route: "/machines?q=test+search", state }
     );
     expect(screen.getByRole("searchbox")).toHaveValue("");
 
-    rerender(<DeviceListControls filter={"free-text"} setFilter={jest.fn()} />);
+    rerender(<DeviceListControls filter={"free-text"} setFilter={vi.fn()} />);
 
     expect(screen.getByRole("searchbox")).toHaveValue("free-text");
   });

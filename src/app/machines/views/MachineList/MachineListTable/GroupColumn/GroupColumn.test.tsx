@@ -5,9 +5,9 @@ import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
 import { machineStateListGroup as machineStateListGroupFactory } from "testing/factories";
 import { renderWithMockStore, screen, waitFor } from "testing/utils";
 
-jest.mock("@/app/store/machine/utils/hooks");
+vi.mock("@/app/store/machine/utils/hooks");
 
-const mockedUseFetchMachineCount = useFetchMachineCount as jest.MockedFunction<
+const mockedUseFetchMachineCount = useFetchMachineCount as vi.MockedFunction<
   typeof useFetchMachineCount
 >;
 mockedUseFetchMachineCount.mockReturnValue({
@@ -30,7 +30,7 @@ it("displays the correct column name and machines count", () => {
       group={group}
       grouping={FetchGroupKey.Status}
       hiddenGroups={[null]}
-      setHiddenGroups={jest.fn()}
+      setHiddenGroups={vi.fn()}
       showActions={false}
     />
   );
@@ -54,7 +54,7 @@ it("displays correct fetched machines count when initial count is null", async (
       group={group}
       grouping={FetchGroupKey.Status}
       hiddenGroups={[null]}
-      setHiddenGroups={jest.fn()}
+      setHiddenGroups={vi.fn()}
       showActions={false}
     />
   );

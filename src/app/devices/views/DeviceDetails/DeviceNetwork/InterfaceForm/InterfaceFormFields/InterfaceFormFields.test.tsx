@@ -40,7 +40,7 @@ describe("InterfaceFormFields", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
       { store }
@@ -55,7 +55,7 @@ describe("InterfaceFormFields", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields showTitles />
       </Formik>,
       { store }
@@ -70,7 +70,7 @@ describe("InterfaceFormFields", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
       { store }
@@ -84,7 +84,7 @@ describe("InterfaceFormFields", () => {
     initialValues.ip_assignment = DeviceIpAssignment.EXTERNAL;
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
       { store }
@@ -98,7 +98,7 @@ describe("InterfaceFormFields", () => {
     initialValues.ip_assignment = DeviceIpAssignment.STATIC;
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
       { store }
@@ -114,7 +114,7 @@ describe("InterfaceFormFields", () => {
     initialValues.ip_address = "192.168.1.1";
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <InterfaceFormFields />
       </Formik>,
       { store }

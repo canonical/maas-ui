@@ -31,7 +31,7 @@ it("shows a spinner while data is loading", () => {
     fabric: fabricStateFactory({ items: [], loading: true }),
     vlan: vlanStateFactory({ items: [] }),
   });
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
@@ -54,7 +54,7 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", asyn
     }),
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
@@ -94,7 +94,7 @@ it("correctly initialises data if the VLAN has relayed DHCP", async () => {
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [relay, vlan] }),
   });
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
@@ -133,7 +133,7 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
@@ -173,7 +173,7 @@ it(`shows an error if the subnet selected for reserving a dynamic range has no
     subnet: subnetStateFactory({ items: [subnet], loaded: true }),
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
@@ -202,7 +202,7 @@ it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
@@ -240,7 +240,7 @@ it("can configure DHCP with rack controllers", async () => {
     vlan: vlanStateFactory({ items: [vlan] }),
   });
   const store = mockStore(state);
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     store,
   });
 
@@ -329,7 +329,7 @@ it("displays an error when no subnet is selected", async () => {
     }),
     vlan: vlanStateFactory({ items: [vlan] }),
   });
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
@@ -355,7 +355,7 @@ it("can configure relayed DHCP", async () => {
     vlan: vlanStateFactory({ items: [relay, vlan] }),
   });
   const store = mockStore(state);
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     store,
   });
 
@@ -401,7 +401,7 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
     vlan: vlanStateFactory({ items: [relay, vlan] }),
   });
   const store = mockStore(state);
-  renderWithBrowserRouter(<ConfigureDHCP closeForm={jest.fn()} id={1} />, {
+  renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     store,
   });
 

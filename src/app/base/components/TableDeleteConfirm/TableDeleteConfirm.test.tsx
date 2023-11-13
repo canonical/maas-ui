@@ -10,8 +10,8 @@ describe("TableDeleteConfirm", () => {
         deleting={false}
         modelName="Cobba"
         modelType="user"
-        onClose={jest.fn()}
-        onConfirm={jest.fn()}
+        onClose={vi.fn()}
+        onConfirm={vi.fn()}
       />
     );
     expect(

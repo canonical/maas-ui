@@ -29,12 +29,12 @@ const mockStore = configureStore<RootState>();
 
 describe("CloneForm", () => {
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("should be submittable only when a machine and cloning config are selected", async () => {
@@ -73,7 +73,7 @@ describe("CloneForm", () => {
     state.vlan.loaded = true;
     renderWithBrowserRouter(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -154,7 +154,7 @@ describe("CloneForm", () => {
 
     const { rerender } = renderWithBrowserRouter(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         processingCount={0}
         selectedMachines={{ items: [machines[1].system_id] }}
         viewingDetails={false}
@@ -177,7 +177,7 @@ describe("CloneForm", () => {
     mockFormikFormSaved();
     rerender(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         processingCount={0}
         selectedMachines={{ items: [machines[1].system_id] }}
         viewingDetails={false}
@@ -230,7 +230,7 @@ describe("CloneForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         selectedMachines={{
           items: [machines[0].system_id, machines[1].system_id],

@@ -28,7 +28,7 @@ describe("MachinesFilterAccordion", () => {
   it("filter is disabled when filter have not loaded", async () => {
     state.machine.filtersLoaded = false;
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { state }
     );
     expect(screen.getByRole("button", { name: Label.Toggle })).toBeDisabled();
@@ -38,7 +38,7 @@ describe("MachinesFilterAccordion", () => {
     state.machine.filtersLoaded = true;
     const store = mockStore(state);
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { store }
     );
     expect(store.getActions()).toEqual(
@@ -50,7 +50,7 @@ describe("MachinesFilterAccordion", () => {
     state.machine.filtersLoaded = false;
     const store = mockStore(state);
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { store }
     );
     await waitFor(() =>
@@ -67,7 +67,7 @@ describe("MachinesFilterAccordion", () => {
       }),
     ];
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { state }
     );
     // Open the menu:

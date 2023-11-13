@@ -3,8 +3,8 @@ import NavigationBanner from "./NavigationBanner";
 import { screen, renderWithBrowserRouter } from "testing/utils";
 
 afterEach(() => {
-  jest.resetModules();
-  jest.resetAllMocks();
+  vi.resetModules();
+  vi.resetAllMocks();
 });
 
 it("displays a link to the homepage", () => {

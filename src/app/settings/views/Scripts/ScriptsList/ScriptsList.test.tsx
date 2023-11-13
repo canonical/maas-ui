@@ -28,11 +28,11 @@ const mockStore = configureStore();
 
 describe("ScriptsList", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   let state: RootState;
@@ -293,7 +293,7 @@ describe("ScriptsList", () => {
   });
 
   it("can show script source", async () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>

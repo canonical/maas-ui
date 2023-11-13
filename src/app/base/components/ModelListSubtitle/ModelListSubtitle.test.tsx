@@ -48,7 +48,7 @@ describe("ModelListSubtitle", () => {
   });
 
   it("can render a filter button when some models are selected", async () => {
-    const filterSelected = jest.fn();
+    const filterSelected = vi.fn();
     render(
       <ModelListSubtitle
         available={2}

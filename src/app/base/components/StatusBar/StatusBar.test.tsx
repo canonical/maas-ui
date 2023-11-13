@@ -20,9 +20,9 @@ let state: RootState;
 const originalEnv = process.env;
 
 beforeEach(() => {
-  jest.useFakeTimers();
+  vi.useFakeTimers();
   // Thu, 31 Dec. 2020 23:00:00 UTC
-  jest.setSystemTime(new Date(Date.UTC(2020, 11, 31, 23, 0, 0)));
+  vi.setSystemTime(new Date(Date.UTC(2020, 11, 31, 23, 0, 0)));
   state = rootStateFactory({
     config: configStateFactory({
       items: [configFactory({ name: ConfigNames.MAAS_NAME, value: "bolla" })],
@@ -41,7 +41,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.useRealTimers();
+  vi.useRealTimers();
   process.env = originalEnv;
 });
 

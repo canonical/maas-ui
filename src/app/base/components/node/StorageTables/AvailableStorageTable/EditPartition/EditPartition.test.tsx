@@ -37,7 +37,7 @@ describe("EditPartition", () => {
     });
     renderWithBrowserRouter(
       <EditPartition
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         partition={partition}
         systemId="abc123"
@@ -68,7 +68,7 @@ describe("EditPartition", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditPartition
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         partition={partition}
         systemId="abc123"

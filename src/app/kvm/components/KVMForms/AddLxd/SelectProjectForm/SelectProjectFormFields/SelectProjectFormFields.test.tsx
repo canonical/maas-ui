@@ -50,7 +50,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
@@ -91,7 +91,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
@@ -137,7 +137,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
@@ -170,7 +170,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,

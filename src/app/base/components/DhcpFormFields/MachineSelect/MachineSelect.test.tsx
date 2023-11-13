@@ -6,7 +6,7 @@ import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
 it("can open select box on click", async () => {
   renderWithMockStore(
-    <Formik initialValues={{ machine: "" }} onSubmit={jest.fn()}>
+    <Formik initialValues={{ machine: "" }} onSubmit={vi.fn()}>
       <MachineSelect name="machine" />
     </Formik>
   );
@@ -20,7 +20,7 @@ it("can open select box on click", async () => {
 
 it("sets focus on the input field on open", async () => {
   renderWithMockStore(
-    <Formik initialValues={{ machine: "" }} onSubmit={jest.fn()}>
+    <Formik initialValues={{ machine: "" }} onSubmit={vi.fn()}>
       <MachineSelect name="machine" />
     </Formik>
   );

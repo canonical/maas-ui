@@ -33,7 +33,7 @@ describe("AddChassisFormFields", () => {
 
   it("can render", () => {
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", state }
     );
 
@@ -88,7 +88,7 @@ describe("AddChassisFormFields", () => {
     );
 
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", state }
     );
 

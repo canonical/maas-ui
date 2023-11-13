@@ -32,7 +32,7 @@ describe("DeleteRecordForm", () => {
         items: [domain],
       }),
     });
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
 
     renderWithBrowserRouter(
       <DeleteRecordForm
@@ -65,7 +65,7 @@ describe("DeleteRecordForm", () => {
         <MemoryRouter>
           <CompatRouter>
             <DeleteRecordForm
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               id={1}
               resource={resource}
             />
@@ -102,7 +102,7 @@ describe("DeleteRecordForm", () => {
         <MemoryRouter>
           <CompatRouter>
             <DeleteRecordForm
-              closeForm={jest.fn()}
+              closeForm={vi.fn()}
               id={1}
               resource={resource}
             />

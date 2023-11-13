@@ -33,12 +33,9 @@ describe("AddController", () => {
   });
 
   it("includes the config in the instructions", () => {
-    renderWithBrowserRouter(
-      <AddController clearSidePanelContent={jest.fn()} />,
-      {
-        state,
-      }
-    );
+    renderWithBrowserRouter(<AddController clearSidePanelContent={vi.fn()} />, {
+      state,
+    });
     const instructions = screen.getByTestId("register-snippet");
     expect(
       within(instructions).getByText(new RegExp("http://1.2.3.4/MAAS"))
@@ -49,7 +46,7 @@ describe("AddController", () => {
   });
 
   it("can close the instructions", async () => {
-    const clearSidePanelContent = jest.fn();
+    const clearSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <AddController clearSidePanelContent={clearSidePanelContent} />,
       {
@@ -61,12 +58,9 @@ describe("AddController", () => {
   });
 
   it("uses a fixed version in both snap and packages instructions", async () => {
-    renderWithBrowserRouter(
-      <AddController clearSidePanelContent={jest.fn()} />,
-      {
-        state,
-      }
-    );
+    renderWithBrowserRouter(<AddController clearSidePanelContent={vi.fn()} />, {
+      state,
+    });
     expect(
       screen.getByText(/sudo snap install maas --channel=3.2/)
     ).toBeInTheDocument();

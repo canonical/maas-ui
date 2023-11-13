@@ -15,7 +15,7 @@ describe("SettingsTable", () => {
         ]}
         loaded={true}
         loading={false}
-        searchOnChange={jest.fn()}
+        searchOnChange={vi.fn()}
         searchPlaceholder="Search"
         searchText=""
       />,

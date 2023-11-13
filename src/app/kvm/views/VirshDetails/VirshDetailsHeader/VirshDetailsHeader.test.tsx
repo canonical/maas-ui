@@ -44,7 +44,7 @@ describe("VirshDetailsHeader", () => {
   it("displays a spinner if pod has not loaded", () => {
     state.pod.items = [];
     renderWithBrowserRouter(
-      <VirshDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       { route: "/kvm/1", state }
     );
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe("VirshDetailsHeader", () => {
       power_address: "qemu+ssh://ubuntu@192.168.1.1/system",
     });
     renderWithBrowserRouter(
-      <VirshDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       { route: "/kvm/1/resources", state }
     );
     expect(screen.getAllByTestId("block-subtitle")[0]).toHaveTextContent(
@@ -68,7 +68,7 @@ describe("VirshDetailsHeader", () => {
       vm_count: podVmCountFactory({ tracked: 5 }),
     });
     renderWithBrowserRouter(
-      <VirshDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       { route: "/kvm/1/resources", state }
     );
     expect(screen.getAllByTestId("block-subtitle")[1]).toHaveTextContent(
@@ -80,7 +80,7 @@ describe("VirshDetailsHeader", () => {
     state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
     renderWithBrowserRouter(
-      <VirshDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       { route: "/kvm/1/resources", state }
     );
     expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(

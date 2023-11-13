@@ -58,7 +58,7 @@ describe("LicenseKeyFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
             <LicenseKeyFormFields osystems={osystems} releases={releases} />
           </Formik>
         </MemoryRouter>

@@ -49,7 +49,7 @@ describe("CreateRaid", () => {
 
     renderWithBrowserRouter(
       <CreateRaid
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[physicalDisk]}
         systemId="abc123"
       />,
@@ -85,7 +85,7 @@ describe("CreateRaid", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateRaid
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,

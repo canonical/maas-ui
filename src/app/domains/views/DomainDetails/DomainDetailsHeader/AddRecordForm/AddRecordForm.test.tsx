@@ -23,7 +23,7 @@ const mockStore = configureStore();
 
 describe("AddRecordForm", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
         items: [domainFactory({ id: 1, name: "domain-in-the-brain" })],
@@ -38,7 +38,7 @@ describe("AddRecordForm", () => {
   });
 
   it("Dispatches the correct action on submit", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
         items: [

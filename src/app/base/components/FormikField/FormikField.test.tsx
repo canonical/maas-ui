@@ -8,7 +8,7 @@ describe("FormikField", () => {
   it("can set a different component", () => {
     const Component = () => <select />;
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikField component={Component} name="username" />
       </Formik>
     );
@@ -23,7 +23,7 @@ describe("FormikField", () => {
         initialErrors={{ username: "Uh oh!" }}
         initialTouched={{ username: true }}
         initialValues={{ username: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FormikField name="username" />
       </Formik>
@@ -40,7 +40,7 @@ describe("FormikField", () => {
         initialErrors={{ username: "Uh oh!" }}
         initialTouched={{ username: true }}
         initialValues={{ username: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FormikField displayError={false} name="username" />
       </Formik>

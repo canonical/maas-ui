@@ -93,7 +93,7 @@ describe("ComposeFormFields", () => {
     pod.cpu_over_commit_ratio = 3;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
     // Allocated = 1 + 2 = 3
@@ -126,7 +126,7 @@ describe("ComposeFormFields", () => {
     pod.memory_over_commit_ratio = 2;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
     // Allocated = (1000 + 2000) + (4000 + 5000) = 12000
@@ -176,7 +176,7 @@ describe("ComposeFormFields", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
     expect(
@@ -195,7 +195,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -233,7 +233,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -272,7 +272,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -309,7 +309,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -352,7 +352,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -395,7 +395,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 
@@ -423,7 +423,7 @@ describe("ComposeFormFields", () => {
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 
@@ -445,7 +445,7 @@ describe("ComposeFormFields", () => {
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 
@@ -487,7 +487,7 @@ describe("ComposeFormFields", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 

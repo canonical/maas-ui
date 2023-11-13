@@ -46,7 +46,7 @@ describe("DhcpForm", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("cleans up when unmounting", async () => {
@@ -145,7 +145,7 @@ describe("DhcpForm", () => {
 
   it("can call the onSave on success", async () => {
     state.dhcpsnippet.saved = false;
-    const onSave = jest.fn();
+    const onSave = vi.fn();
     const store = mockStore(state);
     const Proxy = ({ analyticsCategory }: { analyticsCategory: string }) => (
       <Provider store={store}>
@@ -163,7 +163,7 @@ describe("DhcpForm", () => {
       "new-lease"
     );
     await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
-    jest.spyOn(dhcpsnippetSelectors, "saved").mockReturnValue(true);
+    vi.spyOn(dhcpsnippetSelectors, "saved").mockReturnValue(true);
     rerender(<Proxy analyticsCategory="new-value" />);
 
     expect(onSave).toHaveBeenCalled();
@@ -171,7 +171,7 @@ describe("DhcpForm", () => {
 
   it("does not call onSave if there is an error", async () => {
     state.dhcpsnippet.errors = "Uh oh!";
-    const onSave = jest.fn();
+    const onSave = vi.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>

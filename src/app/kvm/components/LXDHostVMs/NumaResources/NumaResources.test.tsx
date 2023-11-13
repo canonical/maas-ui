@@ -81,7 +81,7 @@ describe("NumaResources", () => {
       }),
       pod: podStateFactory({ items: [pod] }),
     });
-    const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
+    const useSendMock = vi.spyOn(hooks, "useSendAnalytics");
     renderWithBrowserRouter(<NumaResources id={pod.id} />, {
       state,
       route: "/kvm/1",

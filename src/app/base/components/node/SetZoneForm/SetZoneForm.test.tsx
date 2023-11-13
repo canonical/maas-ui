@@ -39,10 +39,10 @@ it("initialises zone value if exactly one node provided", () => {
       <MemoryRouter>
         <CompatRouter>
           <SetZoneForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             modelName="machine"
             nodes={nodes}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -65,10 +65,10 @@ it("does not initialise zone value if more than one node provided", () => {
       <MemoryRouter>
         <CompatRouter>
           <SetZoneForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             modelName="machine"
             nodes={nodes}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
             processingCount={0}
             viewingDetails={false}
           />
@@ -81,7 +81,7 @@ it("does not initialise zone value if more than one node provided", () => {
 });
 
 it("correctly runs function to set zones of given nodes", async () => {
-  const onSubmit = jest.fn();
+  const onSubmit = vi.fn();
   const nodes = [
     machineFactory({ system_id: "abc123" }),
     machineFactory({ system_id: "def456" }),
@@ -92,7 +92,7 @@ it("correctly runs function to set zones of given nodes", async () => {
       <MemoryRouter>
         <CompatRouter>
           <SetZoneForm
-            clearSidePanelContent={jest.fn()}
+            clearSidePanelContent={vi.fn()}
             modelName="machine"
             nodes={nodes}
             onSubmit={onSubmit}

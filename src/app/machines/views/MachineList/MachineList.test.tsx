@@ -37,8 +37,8 @@ describe("MachineList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.spyOn(query, "generateCallId").mockReturnValue("123456");
+    vi.useFakeTimers();
+    vi.spyOn(query, "generateCallId").mockReturnValue("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -213,8 +213,8 @@ describe("MachineList", () => {
 
   afterEach(() => {
     localStorage.clear();
-    jest.restoreAllMocks();
-    jest.useRealTimers();
+    vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("can display an error", () => {
@@ -225,7 +225,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", state }
     );
@@ -241,7 +241,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", state }
     );
@@ -265,7 +265,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", state }
     );
@@ -280,7 +280,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", state }
     );
@@ -298,7 +298,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", store }
     );
@@ -327,7 +327,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter="no matches here mate"
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", state }
     );
@@ -344,7 +344,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", store }
     );
@@ -370,7 +370,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter="free text workload-service:prod"
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { store }
     );
@@ -390,7 +390,7 @@ describe("MachineList", () => {
   });
 
   it("can change pages", async () => {
-    jest
+    vi
       .spyOn(query, "generateCallId")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
@@ -416,7 +416,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { route: "/machines", store }
     );
@@ -455,7 +455,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { state }
     );
@@ -486,7 +486,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { state }
     );
@@ -517,7 +517,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { state }
     );
@@ -552,7 +552,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { state }
     );
@@ -562,7 +562,7 @@ describe("MachineList", () => {
 
   it("uses the stored machineListPageSize", () => {
     localStorage.setItem("machineListPageSize", "20");
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList
@@ -570,7 +570,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { store }
     );
@@ -586,7 +586,7 @@ describe("MachineList", () => {
 
   it("falls back to default for invalid stored machineListPageSize", () => {
     localStorage.setItem("machineListPageSize", '"invalid_value"');
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList
@@ -594,7 +594,7 @@ describe("MachineList", () => {
         hiddenColumns={[]}
         hiddenGroups={[]}
         searchFilter=""
-        setHiddenGroups={jest.fn()}
+        setHiddenGroups={vi.fn()}
       />,
       { store }
     );

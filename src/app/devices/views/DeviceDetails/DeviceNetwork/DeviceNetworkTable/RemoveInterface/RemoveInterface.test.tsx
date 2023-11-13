@@ -33,14 +33,14 @@ describe("RemoveInterface", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("sends an analytics event and closes the form when saved", () => {
-    const closeExpanded = jest.fn();
-    const useSendMock = jest.spyOn(analyticsHooks, "useSendAnalyticsWhen");
+    const closeExpanded = vi.fn();
+    const useSendMock = vi.spyOn(analyticsHooks, "useSendAnalyticsWhen");
     // Mock interface successfully being deleted.
-    jest.spyOn(baseHooks, "useCycled").mockReturnValue([true, () => null]);
+    vi.spyOn(baseHooks, "useCycled").mockReturnValue([true, () => null]);
     const store = mockStore(state);
     renderWithMockStore(
       <RemoveInterface
@@ -85,7 +85,7 @@ describe("RemoveInterface", () => {
     ];
     const store = mockStore(state);
     renderWithMockStore(
-      <RemoveInterface closeExpanded={jest.fn()} nicId={1} systemId="abc123" />,
+      <RemoveInterface closeExpanded={vi.fn()} nicId={1} systemId="abc123" />,
       { store }
     );
 
@@ -97,7 +97,7 @@ describe("RemoveInterface", () => {
   it("correctly dispatches an action to delete an interface", async () => {
     const store = mockStore(state);
     renderWithMockStore(
-      <RemoveInterface closeExpanded={jest.fn()} nicId={1} systemId="abc123" />,
+      <RemoveInterface closeExpanded={vi.fn()} nicId={1} systemId="abc123" />,
       { store }
     );
 

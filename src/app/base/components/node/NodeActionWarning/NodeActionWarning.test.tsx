@@ -8,7 +8,7 @@ it("displays a warning for selectedCount of 0", () => {
     <NodeActionWarning
       action={NodeActions.ABORT}
       nodeType="machine"
-      onUpdateSelected={jest.fn()}
+      onUpdateSelected={vi.fn()}
       selectedCount={0}
     />
   );
@@ -22,7 +22,7 @@ it("displays a warning for an action with a selected count", () => {
     <NodeActionWarning
       action={NodeActions.COMMISSION}
       nodeType="node"
-      onUpdateSelected={jest.fn()}
+      onUpdateSelected={vi.fn()}
       selectedCount={2}
     />
   );

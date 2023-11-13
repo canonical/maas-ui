@@ -55,7 +55,7 @@ describe("CreateDatastore", () => {
     });
     renderWithBrowserRouter(
       <CreateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[newDatastore]}
         systemId="abc123"
       />,
@@ -97,7 +97,7 @@ describe("CreateDatastore", () => {
 
     renderWithBrowserRouter(
       <CreateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -132,7 +132,7 @@ describe("CreateDatastore", () => {
 
     renderWithBrowserRouter(
       <CreateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -170,7 +170,7 @@ describe("CreateDatastore", () => {
 
     renderWithBrowserRouter(
       <CreateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,

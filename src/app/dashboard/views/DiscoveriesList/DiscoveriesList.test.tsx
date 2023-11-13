@@ -42,7 +42,7 @@ describe("DiscoveriesList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
+    vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -126,7 +126,7 @@ describe("DiscoveriesList", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("displays the discoveries", () => {

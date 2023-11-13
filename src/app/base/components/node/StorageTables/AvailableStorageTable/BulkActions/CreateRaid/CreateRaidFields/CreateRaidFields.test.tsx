@@ -39,7 +39,7 @@ describe("CreateRaidFields", () => {
       system_id: "abc123",
     });
     renderWithBrowserRouter(
-      <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />,
+      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
       { state }
     );
 
@@ -65,7 +65,7 @@ describe("CreateRaidFields", () => {
       system_id: "abc123",
     });
     renderWithBrowserRouter(
-      <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />,
+      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
       { state }
     );
 
@@ -91,7 +91,7 @@ describe("CreateRaidFields", () => {
       system_id: "abc123",
     });
     renderWithBrowserRouter(
-      <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />,
+      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
       { state }
     );
 
@@ -119,7 +119,7 @@ describe("CreateRaidFields", () => {
       system_id: "abc123",
     });
     renderWithBrowserRouter(
-      <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />,
+      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
       { state }
     );
 
@@ -149,7 +149,7 @@ describe("CreateRaidFields", () => {
       system_id: "abc123",
     });
     renderWithBrowserRouter(
-      <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />,
+      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
       { state }
     );
 
@@ -178,7 +178,7 @@ describe("CreateRaidFields", () => {
       system_id: "abc123",
     });
     renderWithBrowserRouter(
-      <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />,
+      <CreateRaid closeForm={vi.fn()} selected={disks} systemId="abc123" />,
       { state }
     );
 
@@ -211,7 +211,7 @@ describe("CreateRaidFields", () => {
     });
     renderWithBrowserRouter(
       <CreateRaid
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[disks[0], disks[1], ...partitions]}
         systemId="abc123"
       />,
@@ -277,7 +277,7 @@ describe("CreateRaidFields", () => {
     });
     renderWithBrowserRouter(
       <CreateRaid
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[disks[0], disks[1], ...partitions]}
         systemId="abc123"
       />,

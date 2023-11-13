@@ -85,7 +85,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -120,7 +120,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -179,7 +179,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -231,7 +231,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -283,7 +283,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -315,7 +315,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -341,7 +341,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -374,7 +374,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields
               editing
@@ -403,7 +403,7 @@ describe("NetworkFields", () => {
 
   it("reset the mode field to 'unconfigured' when editing and removed subnet", async () => {
     const store = mockStore(state);
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     render(
       <Provider store={store}>
         <MemoryRouter
@@ -452,7 +452,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -475,7 +475,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
@@ -506,7 +506,7 @@ describe("NetworkFields", () => {
         >
           <Formik
             initialValues={networkFieldsInitialValues}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>

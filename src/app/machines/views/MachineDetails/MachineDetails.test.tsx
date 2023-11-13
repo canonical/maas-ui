@@ -17,10 +17,10 @@ const mockStore = configureStore<RootState>();
 
 describe("MachineDetails", () => {
   let state: RootState;
-  let scrollToSpy: jest.Mock;
+  let scrollToSpy: vi.Mock;
 
   beforeEach(() => {
-    scrollToSpy = jest.fn();
+    scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -37,7 +37,7 @@ describe("MachineDetails", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   [

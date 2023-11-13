@@ -54,7 +54,7 @@ describe("MachineListHeader", () => {
 
   afterEach(() => {
     localStorage.clear();
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("displays a machine count if machines have loaded", () => {
@@ -66,11 +66,11 @@ describe("MachineListHeader", () => {
       <MachineListHeader
         grouping={null}
         searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state, route: urls.machines.index }
     );
@@ -85,11 +85,11 @@ describe("MachineListHeader", () => {
       <MachineListHeader
         grouping={null}
         searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state, route: urls.machines.index }
     );
@@ -101,11 +101,11 @@ describe("MachineListHeader", () => {
       <MachineListHeader
         grouping={null}
         searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state, route: urls.machines.index }
     );
@@ -123,11 +123,11 @@ describe("MachineListHeader", () => {
       <MachineListHeader
         grouping={null}
         searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state, route: urls.machines.index }
     );
@@ -141,7 +141,7 @@ describe("MachineListHeader", () => {
   });
 
   it("hides the tag action's new label after it has been clicked", async () => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     // Set a selected machine so the take action menu becomes enabled.
     state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
@@ -164,11 +164,11 @@ describe("MachineListHeader", () => {
       <MachineListHeader
         grouping={null}
         searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state, route: urls.machines.index }
     );
@@ -187,11 +187,11 @@ describe("MachineListHeader", () => {
       <MachineListHeader
         grouping={null}
         searchFilter=""
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
     // Open the take action menu.

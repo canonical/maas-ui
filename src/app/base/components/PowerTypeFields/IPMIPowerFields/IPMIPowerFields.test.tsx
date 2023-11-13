@@ -29,7 +29,7 @@ it("does not render the 'None' choice for the workaround flags field", async () 
       initialValues={{
         power_parameters: { [WORKAROUNDS_FIELD_NAME]: [] },
       }}
-      onSubmit={jest.fn()}
+      onSubmit={vi.fn()}
     >
       <IPMIPowerFields fields={[workaroundsField]} />
     </Formik>

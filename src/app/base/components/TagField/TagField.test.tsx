@@ -8,7 +8,7 @@ describe("TagField", () => {
   it("sorts the tags by name", async () => {
     const initialValues = { tags: null };
     render(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <TagField
           name="wombatTags"
           tags={[

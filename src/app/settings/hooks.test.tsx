@@ -32,7 +32,7 @@ const generateWrapper =
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   state = rootStateFactory({
     controller: controllerStateFactory({
       items: [
@@ -65,7 +65,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("handles loading for a subnet", () => {

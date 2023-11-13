@@ -18,7 +18,7 @@ describe("DomainSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ domain: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ domain: "" }} onSubmit={vi.fn()}>
           <DomainSelect name="domain" />
         </Formik>
       </Provider>
@@ -38,7 +38,7 @@ describe("DomainSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ domain: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ domain: "" }} onSubmit={vi.fn()}>
           <DomainSelect name="domain" />
         </Formik>
       </Provider>

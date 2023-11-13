@@ -23,7 +23,7 @@ const mockStore = configureStore<RootState, {}>();
 
 describe("DeleteImageConfirm", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const resource = bootResourceFactory();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
@@ -31,7 +31,7 @@ describe("DeleteImageConfirm", () => {
       }),
     });
     renderWithBrowserRouter(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <DeleteImageConfirm closeForm={closeForm} resource={resource} />
       </Formik>,
       { state }
@@ -51,8 +51,8 @@ describe("DeleteImageConfirm", () => {
     const store = mockStore(state);
     const { unmount } = render(
       <Provider store={store}>
-        <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-          <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
+        <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+          <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
         </Formik>
       </Provider>
     );
@@ -75,8 +75,8 @@ describe("DeleteImageConfirm", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-          <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
+        <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+          <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
         </Formik>
       </Provider>
     );

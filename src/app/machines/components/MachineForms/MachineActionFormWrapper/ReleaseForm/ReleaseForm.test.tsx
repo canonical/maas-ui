@@ -70,7 +70,7 @@ describe("ReleaseForm", () => {
     ];
     renderWithBrowserRouter(
       <ReleaseForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -95,7 +95,7 @@ describe("ReleaseForm", () => {
     renderWithBrowserRouter(
       <Provider store={store}>
         <ReleaseForm
-          clearSidePanelContent={jest.fn()}
+          clearSidePanelContent={vi.fn()}
           machines={state.machine.items}
           processingCount={0}
           viewingDetails={false}

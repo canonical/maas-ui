@@ -43,7 +43,7 @@ describe("EditDisk", () => {
 
   it("shows filesystem fields if the disk is not the boot disk", () => {
     renderWithBrowserRouter(
-      <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <EditDisk closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { state }
     );
 
@@ -72,7 +72,7 @@ describe("EditDisk", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <EditDisk closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { store }
     );
 

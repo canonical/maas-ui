@@ -71,11 +71,11 @@ describe("TestForm", () => {
     const script = state.script.items[1];
     state.script.items = [state.script.items[1]];
     const store = mockStore(state);
-    const onTest = jest.fn();
+    const onTest = vi.fn();
     renderWithBrowserRouter(
       <TestForm
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={state.machine.items}
         onTest={onTest}
@@ -153,11 +153,11 @@ describe("TestForm", () => {
     renderWithBrowserRouter(
       <TestForm
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         hardwareType={HardwareType.Network}
         modelName="machine"
         nodes={state.machine.items}
-        onTest={jest.fn()}
+        onTest={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,
@@ -194,10 +194,10 @@ describe("TestForm", () => {
       <TestForm
         applyConfiguredNetworking={true}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={state.machine.items}
-        onTest={jest.fn()}
+        onTest={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,

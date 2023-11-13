@@ -26,7 +26,7 @@ describe("MachinePCIDevices", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachinePCIDevices setSidePanelContent={jest.fn()} />,
+      <MachinePCIDevices setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/pci-devices",
         routePattern: "/machine/:id/pci-devices",

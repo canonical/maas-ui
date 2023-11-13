@@ -48,7 +48,7 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateVolumeGroup
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[physicalDisk]}
         systemId="abc123"
       />,
@@ -83,7 +83,7 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateVolumeGroup
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -121,7 +121,7 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateVolumeGroup
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,

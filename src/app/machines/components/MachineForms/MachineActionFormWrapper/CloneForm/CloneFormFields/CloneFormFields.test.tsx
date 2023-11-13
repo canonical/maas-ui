@@ -51,7 +51,7 @@ describe("CloneFormFields", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("dispatches action to fetch data on load", async () => {
@@ -59,11 +59,11 @@ describe("CloneFormFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <CloneFormFields
           selectedMachine={null}
-          setSelectedMachine={jest.fn()}
+          setSelectedMachine={vi.fn()}
         />
       </Formik>,
       { store }
@@ -93,11 +93,11 @@ describe("CloneFormFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <CloneFormFields
           selectedMachine={null}
-          setSelectedMachine={jest.fn()}
+          setSelectedMachine={vi.fn()}
         />
       </Formik>,
       { store }
@@ -119,11 +119,11 @@ describe("CloneFormFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <CloneFormFields
           selectedMachine={machine}
-          setSelectedMachine={jest.fn()}
+          setSelectedMachine={vi.fn()}
         />
       </Formik>,
       { state }

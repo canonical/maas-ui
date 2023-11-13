@@ -25,7 +25,7 @@ describe("DomainListHeaderForm", () => {
   });
 
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     renderWithBrowserRouter(<DomainListHeaderForm closeForm={closeForm} />, {
       state,
     });
@@ -40,7 +40,7 @@ describe("DomainListHeaderForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <DomainListHeaderForm closeForm={jest.fn()} />
+            <DomainListHeaderForm closeForm={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

@@ -8,7 +8,7 @@ import { userEvent, fireEvent, render, screen, waitFor } from "testing/utils";
 describe("DynamicSelect", () => {
   it("resets to the first option if the options change and the value no longer exists", async () => {
     const MockComponent = (props: DynamicSelectProps) => (
-      <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
         <DynamicSelect {...props} />
       </Formik>
     );
@@ -40,7 +40,7 @@ describe("DynamicSelect", () => {
 
   it("doesn't change the value if the options change and the value still exists", async () => {
     const MockComponent = (props: DynamicSelectProps) => (
-      <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
         <DynamicSelect {...props} />
       </Formik>
     );
@@ -72,7 +72,7 @@ describe("DynamicSelect", () => {
 
   it("accepts changing to a value that is a number", async () => {
     render(
-      <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
         <DynamicSelect
           name="fabric"
           options={[
@@ -92,7 +92,7 @@ describe("DynamicSelect", () => {
 
   it("accepts updated values that are numbers", async () => {
     const MockComponent = (props: DynamicSelectProps) => (
-      <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
         <DynamicSelect {...props} />
       </Formik>
     );
@@ -124,7 +124,7 @@ describe("DynamicSelect", () => {
 
   it("doesn't change the value on first render", async () => {
     render(
-      <Formik initialValues={{ fabric: "2" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ fabric: "2" }} onSubmit={vi.fn()}>
         <DynamicSelect
           name="fabric"
           options={[

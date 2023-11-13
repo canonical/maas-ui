@@ -11,7 +11,7 @@ import { userEvent, render, screen, waitFor } from "testing/utils";
 
 const renderTestCase = () => {
   const store = configureStore()(rootStateFactory());
-  const setActiveForm = jest.fn();
+  const setActiveForm = vi.fn();
 
   const view = render(
     <Provider store={store}>

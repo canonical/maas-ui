@@ -80,7 +80,7 @@ describe("InterfaceFormTable", () => {
       <InterfaceFormTable
         interfaces={[{ nicId: nic.id }]}
         selectedEditable
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -104,7 +104,7 @@ describe("InterfaceFormTable", () => {
         interfaces={[{ nicId: nic.id }]}
         selected={[]}
         selectedEditable
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { state }

@@ -13,7 +13,7 @@ describe("KVMDetailsHeader", () => {
   it("renders extra title blocks", () => {
     renderWithBrowserRouter(
       <KVMDetailsHeader
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         tabLinks={[]}
         title="Title"
         titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}

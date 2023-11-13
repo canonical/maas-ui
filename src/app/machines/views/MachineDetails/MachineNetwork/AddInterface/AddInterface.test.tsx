@@ -64,7 +64,7 @@ describe("AddInterface", () => {
   it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddInterface close={jest.fn()} systemId="abc123" />,
+      <AddInterface close={vi.fn()} systemId="abc123" />,
       { route, store }
     );
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
@@ -79,7 +79,7 @@ describe("AddInterface", () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
     renderWithBrowserRouter(
-      <AddInterface close={jest.fn()} systemId="abc123" />,
+      <AddInterface close={vi.fn()} systemId="abc123" />,
       { route, state }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe("AddInterface", () => {
     state.machine.selected = { items: ["abc123", "def456"] };
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddInterface close={jest.fn()} systemId="abc123" />,
+      <AddInterface close={vi.fn()} systemId="abc123" />,
       { route, store }
     );
     await userEvent.type(

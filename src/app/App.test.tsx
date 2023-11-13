@@ -14,9 +14,9 @@ import { screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
-jest.mock("@canonical/react-components/dist/hooks", () => ({
-  ...jest.requireActual("@canonical/react-components/dist/hooks"),
-  usePrevious: jest.fn(),
+vi.mock("@canonical/react-components/dist/hooks", () => ({
+  ...vi.importActual("@canonical/react-components/dist/hooks"),
+  usePrevious: vi.fn(),
 }));
 
 describe("App", () => {
@@ -146,7 +146,7 @@ describe("App", () => {
   it("fetches the auth details again when logging out", () => {
     // Mock the user being previously authenticated, and currently unauthenticated
     // i.e. they've logged out.
-    jest.spyOn(reactComponentHooks, "usePrevious").mockReturnValue(true);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockReturnValue(true);
     state.status.authenticated = false;
     const store = mockStore(state);
     renderWithBrowserRouter(<App />, { route: "/settings", store });

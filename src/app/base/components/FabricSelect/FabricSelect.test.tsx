@@ -30,7 +30,7 @@ describe("FabricSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
           <FabricSelect name="fabric" />
         </Formik>
       </Provider>
@@ -48,7 +48,7 @@ describe("FabricSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
           <FabricSelect name="fabric" />
         </Formik>
       </Provider>
@@ -74,7 +74,7 @@ describe("FabricSelect", () => {
     };
     render(
       <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
           <FabricSelect defaultOption={defaultOption} name="fabric" />
         </Formik>
       </Provider>
@@ -92,7 +92,7 @@ describe("FabricSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
           <FabricSelect defaultOption={null} name="fabric" />
         </Formik>
       </Provider>
@@ -111,7 +111,7 @@ describe("FabricSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={vi.fn()}>
           <FabricSelect name="fabric" />
         </Formik>
       </Provider>

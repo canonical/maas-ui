@@ -53,7 +53,7 @@ describe("UpdateDatastore", () => {
     });
     renderWithBrowserRouter(
       <UpdateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -85,7 +85,7 @@ describe("UpdateDatastore", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <UpdateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,

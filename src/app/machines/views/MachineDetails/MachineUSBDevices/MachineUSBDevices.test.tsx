@@ -26,7 +26,7 @@ describe("MachineUSBDevices", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineUSBDevices setSidePanelContent={jest.fn()} />,
+      <MachineUSBDevices setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/usb-devices",
         routePattern: "/machine/:id/usb-devices",

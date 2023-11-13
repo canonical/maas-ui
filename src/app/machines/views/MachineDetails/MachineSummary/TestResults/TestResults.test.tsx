@@ -31,7 +31,7 @@ describe("TestResults", () => {
       <TestResults
         hardwareType={HardwareType.CPU}
         machine={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: "/machine/abc123",
@@ -55,7 +55,7 @@ describe("TestResults", () => {
       <TestResults
         hardwareType={HardwareType.Memory}
         machine={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: "/machine/abc123",
@@ -78,7 +78,7 @@ describe("TestResults", () => {
       <TestResults
         hardwareType={HardwareType.Storage}
         machine={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: "/machine/abc123",
@@ -100,7 +100,7 @@ describe("TestResults", () => {
       <TestResults
         hardwareType={HardwareType.CPU}
         machine={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: "/machine/abc123",
@@ -120,7 +120,7 @@ describe("TestResults", () => {
       <TestResults
         hardwareType={HardwareType.Network}
         machine={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: "/machine/abc123",

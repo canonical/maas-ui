@@ -41,7 +41,7 @@ describe("SetPoolFormFields", () => {
   it("shows a select if select pool radio chosen", async () => {
     renderWithBrowserRouter(
       <SetPoolForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -62,7 +62,7 @@ describe("SetPoolFormFields", () => {
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
     renderWithBrowserRouter(
       <SetPoolForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}

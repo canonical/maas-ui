@@ -20,7 +20,7 @@ const options = [
 it("renders a segment for each option", () => {
   render(
     <SegmentedControl
-      onSelect={jest.fn()}
+      onSelect={vi.fn()}
       options={options}
       selected="#00FF00"
     />
@@ -33,7 +33,7 @@ it("renders a segment for each option", () => {
 it("selects the active option", () => {
   render(
     <SegmentedControl
-      onSelect={jest.fn()}
+      onSelect={vi.fn()}
       options={options}
       selected="#00FF00"
     />
@@ -45,7 +45,7 @@ it("selects the active option", () => {
 });
 
 it("calls the callback when clicking a button", async () => {
-  const onSelect = jest.fn();
+  const onSelect = vi.fn();
   render(
     <SegmentedControl
       onSelect={onSelect}

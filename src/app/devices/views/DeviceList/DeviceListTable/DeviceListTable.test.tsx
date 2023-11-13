@@ -38,7 +38,7 @@ describe("DeviceListTable", () => {
     renderWithBrowserRouter(
       <DeviceListTable
         devices={[device]}
-        onSelectedChange={jest.fn()}
+        onSelectedChange={vi.fn()}
         selectedIDs={[]}
       />,
       { state }
@@ -56,7 +56,7 @@ describe("DeviceListTable", () => {
     renderWithBrowserRouter(
       <DeviceListTable
         devices={[device]}
-        onSelectedChange={jest.fn()}
+        onSelectedChange={vi.fn()}
         selectedIDs={[]}
       />,
       { state }
@@ -72,7 +72,7 @@ describe("DeviceListTable", () => {
     renderWithBrowserRouter(
       <DeviceListTable
         devices={[device]}
-        onSelectedChange={jest.fn()}
+        onSelectedChange={vi.fn()}
         selectedIDs={[]}
       />,
       { state }
@@ -97,7 +97,7 @@ describe("DeviceListTable", () => {
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -135,7 +135,7 @@ describe("DeviceListTable", () => {
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -167,7 +167,7 @@ describe("DeviceListTable", () => {
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -197,7 +197,7 @@ describe("DeviceListTable", () => {
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -222,7 +222,7 @@ describe("DeviceListTable", () => {
   describe("device selection", () => {
     it("handles selecting a single device", async () => {
       const devices = [deviceFactory({ system_id: "abc123" })];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
@@ -239,7 +239,7 @@ describe("DeviceListTable", () => {
 
     it("handles unselecting a single device", async () => {
       const devices = [deviceFactory({ system_id: "abc123" })];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
@@ -259,7 +259,7 @@ describe("DeviceListTable", () => {
         deviceFactory({ system_id: "abc123" }),
         deviceFactory({ system_id: "def456" }),
       ];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
@@ -279,7 +279,7 @@ describe("DeviceListTable", () => {
         deviceFactory({ system_id: "abc123" }),
         deviceFactory({ system_id: "def456" }),
       ];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <DeviceListTable
           devices={devices}
@@ -296,7 +296,7 @@ describe("DeviceListTable", () => {
   });
 
   it("displays a message when empty", () => {
-    const onSelectedChange = jest.fn();
+    const onSelectedChange = vi.fn();
     renderWithBrowserRouter(
       <DeviceListTable
         devices={[]}

@@ -76,7 +76,7 @@ describe("EditBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         link={link}
         nic={nic}
         systemId="abc123"
@@ -93,7 +93,7 @@ describe("EditBridgeForm", () => {
     state.vlan.loading = true;
     renderWithBrowserRouter(
       <EditBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         link={link}
         nic={nic}
         systemId="abc123"
@@ -108,7 +108,7 @@ describe("EditBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         link={link}
         nic={nic}
         systemId="abc123"

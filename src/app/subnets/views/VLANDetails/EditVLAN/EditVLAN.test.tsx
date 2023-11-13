@@ -52,7 +52,7 @@ describe("EditVLAN", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <EditVLAN close={jest.fn()} id={vlan.id} />
+            <EditVLAN close={vi.fn()} id={vlan.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -68,7 +68,7 @@ describe("EditVLAN", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <EditVLAN close={jest.fn()} id={vlan.id} />
+            <EditVLAN close={vi.fn()} id={vlan.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -110,7 +110,7 @@ describe("EditVLAN", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <EditVLAN close={jest.fn()} id={vlan.id} />
+            <EditVLAN close={vi.fn()} id={vlan.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -143,7 +143,7 @@ describe("EditVLAN", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <EditVLAN close={jest.fn()} id={vlan.id} />
+            <EditVLAN close={vi.fn()} id={vlan.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

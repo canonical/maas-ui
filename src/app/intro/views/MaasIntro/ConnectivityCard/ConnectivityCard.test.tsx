@@ -17,7 +17,7 @@ const renderTestCase = () =>
         portsArchiveUrl: "http://www.portsarchive.com",
         upstreamDns: "8.8.8.8",
       }}
-      onSubmit={jest.fn()}
+      onSubmit={vi.fn()}
       validationSchema={MaasIntroSchema}
     >
       <ConnectivityCard />

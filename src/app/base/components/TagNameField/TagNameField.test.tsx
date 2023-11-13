@@ -9,7 +9,7 @@ describe("FormikField", () => {
     render(
       <Formik
         initialValues={{ tags: ["koala", "wallaby"] }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <TagNameField />
       </Formik>
@@ -20,7 +20,7 @@ describe("FormikField", () => {
 
   it("can override the field name", () => {
     render(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagNameField name="wombatTags" />
       </Formik>
     );
@@ -33,7 +33,7 @@ describe("FormikField", () => {
 
   it("can populate the list of tags", async () => {
     render(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagNameField tagList={["koala", "wallaby"]} />
       </Formik>
     );

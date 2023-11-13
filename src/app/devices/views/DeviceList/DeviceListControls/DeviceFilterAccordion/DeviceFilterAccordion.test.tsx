@@ -29,7 +29,7 @@ describe("DeviceFilterAccordion", () => {
     state.device.loaded = false;
 
     renderWithBrowserRouter(
-      <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <DeviceFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { route: "/devices", state }
     );
 
@@ -38,7 +38,7 @@ describe("DeviceFilterAccordion", () => {
 
   it("displays tags", async () => {
     renderWithBrowserRouter(
-      <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <DeviceFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { route: "/devices", state }
     );
     // Open the menu:

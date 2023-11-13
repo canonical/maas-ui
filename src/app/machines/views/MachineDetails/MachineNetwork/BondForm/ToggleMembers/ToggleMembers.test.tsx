@@ -29,7 +29,7 @@ describe("ToggleMembers", () => {
     renderWithBrowserRouter(
       <ToggleMembers
         selected={selected}
-        setEditingMembers={jest.fn()}
+        setEditingMembers={vi.fn()}
         validNics={interfaces}
       />,
       { route: "/machines", store }
@@ -58,7 +58,7 @@ describe("ToggleMembers", () => {
       <ToggleMembers
         editingMembers
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setEditingMembers={jest.fn()}
+        setEditingMembers={vi.fn()}
         validNics={interfaces}
       />,
       { route: "/machines", store }
@@ -72,7 +72,7 @@ describe("ToggleMembers", () => {
       <ToggleMembers
         editingMembers
         selected={[]}
-        setEditingMembers={jest.fn()}
+        setEditingMembers={vi.fn()}
         validNics={interfaces}
       />,
       { route: "/machines", store }

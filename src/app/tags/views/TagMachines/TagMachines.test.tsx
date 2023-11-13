@@ -31,7 +31,7 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(query, "generateCallId").mockReturnValue(callId);
+  vi.spyOn(query, "generateCallId").mockReturnValue(callId);
   const machines = [
     machineFactory({
       domain: modelRefFactory({ id: 1, name: "test" }),
@@ -68,7 +68,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("dispatches actions to fetch necessary data", () => {

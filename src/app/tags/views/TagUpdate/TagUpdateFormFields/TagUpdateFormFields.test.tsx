@@ -36,7 +36,7 @@ it("hides the definition field if it is a manual tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <TagUpdateFormFields id={1} />
         </Formik>
       </MemoryRouter>
@@ -56,7 +56,7 @@ it("displays the definition field if it is an automatic tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <TagUpdateFormFields id={1} />
         </Formik>
       </MemoryRouter>

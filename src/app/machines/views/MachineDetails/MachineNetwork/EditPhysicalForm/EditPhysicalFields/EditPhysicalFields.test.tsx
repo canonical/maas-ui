@@ -64,7 +64,7 @@ describe("EditPhysicalFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ interface_speed: 0, link_speed: 0 }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <EditPhysicalFields nic={nic} />
       </Formik>,

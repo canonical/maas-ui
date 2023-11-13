@@ -104,7 +104,7 @@ describe("AddAliasOrVlan", () => {
     state.machine.items = [];
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         systemId="abc123"
       />,
@@ -116,7 +116,7 @@ describe("AddAliasOrVlan", () => {
   it("displays a save-another button for aliases", () => {
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"
@@ -146,7 +146,7 @@ describe("AddAliasOrVlan", () => {
     ];
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -164,7 +164,7 @@ describe("AddAliasOrVlan", () => {
     state.vlan.items = [];
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -209,7 +209,7 @@ describe("AddAliasOrVlan", () => {
     });
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"
@@ -230,7 +230,7 @@ describe("AddAliasOrVlan", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -295,7 +295,7 @@ describe("AddAliasOrVlan", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"

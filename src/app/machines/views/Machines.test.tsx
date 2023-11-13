@@ -47,7 +47,7 @@ import {
 } from "testing/utils";
 const mockStore = configureStore<RootState>();
 const userEvent = userEventCore.setup({
-  advanceTimers: jest.runAllTimers,
+  advanceTimers: vi.runAllTimers,
 });
 
 describe("Machines", () => {
@@ -194,8 +194,8 @@ describe("Machines", () => {
   });
 
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.useFakeTimers();
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       general: generalStateFactory({
         machineActions: {
@@ -249,8 +249,8 @@ describe("Machines", () => {
 
   afterEach(() => {
     localStorage.clear();
-    jest.restoreAllMocks();
-    jest.useRealTimers();
+    vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("can set the search from the URL", () => {
@@ -288,7 +288,7 @@ describe("Machines", () => {
   });
 
   it("can hide groups", async () => {
-    jest
+    vi
       .spyOn(query, "generateCallId")
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
@@ -315,7 +315,7 @@ describe("Machines", () => {
   });
 
   it("can change groups", async () => {
-    jest
+    vi
       .spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
@@ -378,7 +378,7 @@ describe("Machines", () => {
 
   it("uses the default fallback value for invalid stored grouping values", async () => {
     localStorage.setItem("grouping", '"invalid_value"');
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(<Machines />, { store });
     expect(screen.getByRole("combobox", { name: /Group by/ })).toHaveValue(
@@ -395,7 +395,7 @@ describe("Machines", () => {
   });
 
   it("can store hidden groups in local storage", async () => {
-    jest
+    vi
       .spyOn(query, "generateCallId")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");

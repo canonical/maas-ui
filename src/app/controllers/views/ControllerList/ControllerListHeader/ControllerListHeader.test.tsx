@@ -28,8 +28,8 @@ describe("ControllerListHeader", () => {
     state.controller.loaded = false;
     renderWithBrowserRouter(
       <ControllerListHeader
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -43,8 +43,8 @@ describe("ControllerListHeader", () => {
     state.controller.loaded = true;
     renderWithBrowserRouter(
       <ControllerListHeader
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -57,8 +57,8 @@ describe("ControllerListHeader", () => {
     state.controller.selected = ["abc123"];
     renderWithBrowserRouter(
       <ControllerListHeader
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -68,10 +68,10 @@ describe("ControllerListHeader", () => {
   });
 
   it("can open the add controller form", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <ControllerListHeader
-        setSearchFilter={jest.fn()}
+        setSearchFilter={vi.fn()}
         setSidePanelContent={setSidePanelContent}
       />,
       { state }

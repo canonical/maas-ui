@@ -39,11 +39,11 @@ describe("DiscoveryAddFormFields", () => {
 
   it("shows fields for a device", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{ type: DeviceType.DEVICE }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ type: DeviceType.DEVICE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
-          setDevice={jest.fn()}
-          setDeviceType={jest.fn()}
+          setDevice={vi.fn()}
+          setDeviceType={vi.fn()}
         />
       </Formik>,
       { route: "/dashboard", state }
@@ -78,14 +78,11 @@ describe("DiscoveryAddFormFields", () => {
 
   it("shows fields for an interface", () => {
     renderWithBrowserRouter(
-      <Formik
-        initialValues={{ type: DeviceType.INTERFACE }}
-        onSubmit={jest.fn()}
-      >
+      <Formik initialValues={{ type: DeviceType.INTERFACE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
-          setDevice={jest.fn()}
-          setDeviceType={jest.fn()}
+          setDevice={vi.fn()}
+          setDeviceType={vi.fn()}
         />
       </Formik>,
       { route: "/dashboard", state }
@@ -121,11 +118,11 @@ describe("DiscoveryAddFormFields", () => {
   it("includes static ip if there is a subnet", () => {
     discovery.subnet = 0;
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
-          setDevice={jest.fn()}
-          setDeviceType={jest.fn()}
+          setDevice={vi.fn()}
+          setDeviceType={vi.fn()}
         />
       </Formik>,
       { route: "/dashboard", state }
@@ -145,11 +142,11 @@ describe("DiscoveryAddFormFields", () => {
   it("does not includes static ip if there is no subnet", () => {
     discovery.subnet = null;
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
-          setDevice={jest.fn()}
-          setDeviceType={jest.fn()}
+          setDevice={vi.fn()}
+          setDeviceType={vi.fn()}
         />
       </Formik>,
       { route: "/dashboard", state }
@@ -167,8 +164,8 @@ describe("DiscoveryAddFormFields", () => {
   });
 
   it("calls the callback with the selected device type", async () => {
-    const setDeviceType = jest.fn();
-    const setDevice = jest.fn();
+    const setDeviceType = vi.fn();
+    const setDevice = vi.fn();
     state.device = deviceStateFactory({
       items: [
         deviceFactory({ [DeviceMeta.PK]: "abc123" }),
@@ -176,10 +173,7 @@ describe("DiscoveryAddFormFields", () => {
       ],
     });
     renderWithBrowserRouter(
-      <Formik
-        initialValues={{ type: DeviceType.INTERFACE }}
-        onSubmit={jest.fn()}
-      >
+      <Formik initialValues={{ type: DeviceType.INTERFACE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
           setDevice={setDevice}
@@ -205,7 +199,7 @@ describe("DiscoveryAddFormFields", () => {
   });
 
   it("calls the callback with the device id when selecting a device", async () => {
-    const setDevice = jest.fn();
+    const setDevice = vi.fn();
     state.device = deviceStateFactory({
       items: [
         deviceFactory({ [DeviceMeta.PK]: "abc123" }),
@@ -213,14 +207,11 @@ describe("DiscoveryAddFormFields", () => {
       ],
     });
     renderWithBrowserRouter(
-      <Formik
-        initialValues={{ type: DeviceType.INTERFACE }}
-        onSubmit={jest.fn()}
-      >
+      <Formik initialValues={{ type: DeviceType.INTERFACE }} onSubmit={vi.fn()}>
         <DiscoveryAddFormFields
           discovery={discovery}
           setDevice={setDevice}
-          setDeviceType={jest.fn()}
+          setDeviceType={vi.fn()}
         />
       </Formik>,
       { route: "/dashboard", state }

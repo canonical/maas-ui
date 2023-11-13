@@ -31,17 +31,17 @@ import {
   renderWithBrowserRouter,
 } from "testing/utils";
 
-const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom-v5-compat", () => ({
-  ...jest.requireActual("react-router-dom-v5-compat"),
+const mockUseNavigate = vi.fn();
+vi.mock("react-router-dom-v5-compat", () => ({
+  ...vi.importActual("react-router-dom-v5-compat"),
   useNavigate: () => mockUseNavigate,
 }));
 
 const mockStore = configureStore<RootState>();
 
 afterEach(() => {
-  jest.resetModules();
-  jest.resetAllMocks();
+  vi.resetModules();
+  vi.resetAllMocks();
 });
 
 describe("GlobalSideNav", () => {

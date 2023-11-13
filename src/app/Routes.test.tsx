@@ -166,11 +166,11 @@ describe("Routes", () => {
         ],
       }),
     });
-    global.scrollTo = jest.fn();
+    global.scrollTo = vi.fn();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   routes.forEach(({ title, path }) => {

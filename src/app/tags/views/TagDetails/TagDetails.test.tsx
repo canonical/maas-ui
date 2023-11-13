@@ -41,7 +41,7 @@ it("dispatches actions to fetch necessary data", () => {
   renderWithBrowserRouter(
     <Routes>
       <Route
-        element={<TagDetails onDelete={jest.fn()} />}
+        element={<TagDetails onDelete={vi.fn()} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,
@@ -69,7 +69,7 @@ it("displays a message if the tag does not exist", () => {
   renderWithBrowserRouter(
     <Routes>
       <Route
-        element={<TagDetails onDelete={jest.fn()} />}
+        element={<TagDetails onDelete={vi.fn()} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,
@@ -89,7 +89,7 @@ it("shows a spinner if the tag has not loaded yet", () => {
   renderWithBrowserRouter(
     <Routes>
       <Route
-        element={<TagDetails onDelete={jest.fn()} />}
+        element={<TagDetails onDelete={vi.fn()} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,
@@ -104,10 +104,7 @@ it("can display the edit form", () => {
     <Routes>
       <Route
         element={
-          <TagDetails
-            onDelete={jest.fn()}
-            tagViewState={TagViewState.Updating}
-          />
+          <TagDetails onDelete={vi.fn()} tagViewState={TagViewState.Updating} />
         }
         path={urls.tags.tag.update(null)}
       />
@@ -121,7 +118,7 @@ it("can go to the tag edit page", async () => {
   renderWithBrowserRouter(
     <Routes>
       <Route
-        element={<TagDetails onDelete={jest.fn()} />}
+        element={<TagDetails onDelete={vi.fn()} />}
         path={urls.tags.tag.index(null)}
       />
     </Routes>,

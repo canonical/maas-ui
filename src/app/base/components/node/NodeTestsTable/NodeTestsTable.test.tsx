@@ -32,8 +32,8 @@ describe("NodeTestsTable", () => {
   let controller: ControllerDetails;
   let machine: MachineDetails;
   let state: RootState;
-  let mockSendAnalytics: jest.Mock;
-  let mockUseSendAnalytics: jest.SpyInstance;
+  let mockSendAnalytics: vi.Mock;
+  let mockUseSendAnalytics: vi.SpyInstance;
 
   beforeEach(() => {
     machine = machineDetailsFactory({
@@ -56,8 +56,8 @@ describe("NodeTestsTable", () => {
         loaded: true,
       }),
     });
-    mockSendAnalytics = jest.fn();
-    mockUseSendAnalytics = jest
+    mockSendAnalytics = vi.fn();
+    mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
   });

@@ -19,8 +19,8 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-const mockBaseAddTagForm = jest.fn();
-jest.mock("@/app/tags/components/AddTagForm", () => (props: Props) => {
+const mockBaseAddTagForm = vi.fn();
+vi.mock("@/app/tags/components/AddTagForm", () => (props: Props) => {
   mockBaseAddTagForm(props);
   return null;
 });
@@ -30,7 +30,7 @@ const mockStore = configureStore<RootState, {}>();
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       counts: machineStateCountsFactory({
@@ -60,13 +60,13 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("set the analytics category for the machine list", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
+    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
@@ -86,7 +86,7 @@ it("set the analytics category for the machine details", async () => {
     <AddTagForm
       machines={[]}
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       viewingDetails
     />,
     { route: "/tags", store }
@@ -108,7 +108,7 @@ it("set the analytics category for the machine config", async () => {
     <AddTagForm
       machines={[]}
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       viewingMachineConfig
     />,
     { route: "/tags", store }
@@ -127,7 +127,7 @@ it("set the analytics category for the machine config", async () => {
 it("generates a deployed message for a single machine", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
+    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(
@@ -140,7 +140,7 @@ it("generates a deployed message for a single machine", async () => {
 it("generates a deployed message for multiple machines", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
+    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(
@@ -156,7 +156,7 @@ it("fetches deployed machine count for selected machines", async () => {
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }
@@ -172,8 +172,8 @@ it("fetches deployed machine count for selected machines", async () => {
 });
 
 it("fetches deployed machine count separately for deployed group when selected", async () => {
-  jest.spyOn(query, "generateCallId").mockRestore();
-  jest
+  vi.spyOn(query, "generateCallId").mockRestore();
+  vi
     .spyOn(query, "generateCallId")
     .mockReturnValueOnce("mocked-nanoid-1")
     .mockReturnValueOnce("mocked-nanoid-2");
@@ -186,7 +186,7 @@ it("fetches deployed machine count separately for deployed group when selected",
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }
@@ -217,7 +217,7 @@ it("fetches deployed machine count when all machines are selected", async () => 
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }
@@ -243,7 +243,7 @@ it(`fetches deployed machine count only for selected items
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }

@@ -75,8 +75,8 @@ describe("KVMStorageCards", () => {
       d: podStoragePoolFactory(),
       e: podStoragePoolFactory(),
     };
-    const mockSendAnalytics = jest.fn();
-    const mockUseSendAnalytics = jest
+    const mockSendAnalytics = vi.fn();
+    const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
 

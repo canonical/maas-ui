@@ -30,8 +30,8 @@ describe("DeviceListHeader", () => {
     state.device.loaded = false;
     renderWithBrowserRouter(
       <DeviceListHeader
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -42,8 +42,8 @@ describe("DeviceListHeader", () => {
     state.device.loaded = true;
     renderWithBrowserRouter(
       <DeviceListHeader
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -56,8 +56,8 @@ describe("DeviceListHeader", () => {
     state.device.selected = ["abc123"];
     renderWithBrowserRouter(
       <DeviceListHeader
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -65,11 +65,11 @@ describe("DeviceListHeader", () => {
   });
 
   it("can open the add device form", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <MemoryRouter>
         <DeviceListHeader
-          setSearchFilter={jest.fn()}
+          setSearchFilter={vi.fn()}
           setSidePanelContent={setSidePanelContent}
         />
       </MemoryRouter>,

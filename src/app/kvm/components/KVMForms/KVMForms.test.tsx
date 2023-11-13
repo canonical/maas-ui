@@ -34,7 +34,7 @@ describe("KVMForms", () => {
 
   beforeEach(() => {
     // "loaded" doesn't exist on ZoneState type, so we have to mock the return value here
-    jest.spyOn(zoneSelectors, "loaded").mockReturnValue(true);
+    vi.spyOn(zoneSelectors, "loaded").mockReturnValue(true);
 
     state = rootStateFactory({
       domain: domainStateFactory({
@@ -83,7 +83,7 @@ describe("KVMForms", () => {
 
   it("does not render if sidePanelContent is not defined", () => {
     renderWithBrowserRouter(
-      <KVMForms setSidePanelContent={jest.fn()} sidePanelContent={null} />,
+      <KVMForms setSidePanelContent={vi.fn()} sidePanelContent={null} />,
       { state }
     );
     expect(
@@ -94,7 +94,7 @@ describe("KVMForms", () => {
   it("renders AddLxd if Add LXD host side panel content provided", () => {
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_LXD_HOST }}
       />,
       { state }
@@ -119,7 +119,7 @@ describe("KVMForms", () => {
   it("renders AddVirsh if Add Virsh host side panel content provided", () => {
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_VIRSH_HOST }}
       />,
       { state }
@@ -142,7 +142,7 @@ describe("KVMForms", () => {
   it("renders ComposeForm if Compose side panel content and host id provided", () => {
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{
           view: KVMSidePanelViews.COMPOSE_VM,
           extras: { hostId: 1 },
@@ -172,7 +172,7 @@ describe("KVMForms", () => {
   it("renders DeleteForm if delete side panel content and host id provided", () => {
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{
           view: KVMSidePanelViews.DELETE_KVM,
           extras: { hostId: 1 },
@@ -201,7 +201,7 @@ describe("KVMForms", () => {
   it("renders DeleteForm if delete side panel content and cluster id provided", () => {
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{
           view: KVMSidePanelViews.DELETE_KVM,
           extras: { clusterId: 1 },
@@ -229,7 +229,7 @@ describe("KVMForms", () => {
   it("renders RefreshForm if refresh side panel content and host ids provided", () => {
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{
           view: KVMSidePanelViews.REFRESH_KVM,
           extras: { hostIds: [1] },
@@ -252,7 +252,7 @@ describe("KVMForms", () => {
     state.machine.selected = { items: ["abc123"] };
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: MachineSidePanelViews.DELETE_MACHINE }}
       />,
       { state }
@@ -269,7 +269,7 @@ describe("KVMForms", () => {
     state.machine.selected = { items: ["abc123", "def456"] };
     renderWithBrowserRouter(
       <KVMForms
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: MachineSidePanelViews.DELETE_MACHINE }}
       />,
       { state, route: "/kvm" }

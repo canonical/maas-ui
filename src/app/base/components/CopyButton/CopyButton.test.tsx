@@ -11,7 +11,7 @@ describe("CopyButton", () => {
 
   beforeEach(() => {
     execCommand = document.execCommand;
-    document.execCommand = jest.fn();
+    document.execCommand = vi.fn();
   });
 
   afterEach(() => {

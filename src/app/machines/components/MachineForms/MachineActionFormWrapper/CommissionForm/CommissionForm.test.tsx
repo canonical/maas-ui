@@ -76,7 +76,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -93,7 +93,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}
@@ -194,7 +194,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -254,7 +254,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,

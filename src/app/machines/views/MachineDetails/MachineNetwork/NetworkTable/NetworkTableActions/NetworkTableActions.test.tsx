@@ -48,7 +48,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -66,7 +66,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -81,7 +81,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -101,7 +101,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -124,7 +124,7 @@ describe("NetworkTableActions", () => {
       <NetworkTableActions
         link={link}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -146,7 +146,7 @@ describe("NetworkTableActions", () => {
       <NetworkTableActions
         link={link}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -164,7 +164,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -178,7 +178,7 @@ describe("NetworkTableActions", () => {
 
   it("can display an item to edit the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
-    const setExpanded = jest.fn();
+    const setExpanded = vi.fn();
 
     renderWithMockStore(
       <NetworkTableActions
@@ -204,7 +204,7 @@ describe("NetworkTableActions", () => {
   it("can display a warning when trying to edit a disconnected interface", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
-    const setExpanded = jest.fn();
+    const setExpanded = vi.fn();
 
     renderWithMockStore(
       <NetworkTableActions
@@ -234,7 +234,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -261,7 +261,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -292,7 +292,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -316,7 +316,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -339,7 +339,7 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { state }

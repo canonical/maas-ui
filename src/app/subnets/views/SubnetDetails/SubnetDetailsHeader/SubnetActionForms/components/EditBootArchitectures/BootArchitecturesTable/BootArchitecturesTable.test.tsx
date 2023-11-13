@@ -35,7 +35,7 @@ it("renders a table of known boot architectures", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BootArchitecturesTable />
       </Formik>
     </Provider>

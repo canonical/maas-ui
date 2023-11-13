@@ -14,7 +14,7 @@ describe("MacAddressField", () => {
     const store = mockStore(rootStateFactory());
     render(
       <Provider store={store}>
-        <Formik initialValues={{ mac_address: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ mac_address: "" }} onSubmit={vi.fn()}>
           <MacAddressField label="MAC address" name="mac_address" />
         </Formik>
       </Provider>

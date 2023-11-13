@@ -29,9 +29,9 @@ const mockStore = configureStore<RootState, {}>();
 
 describe("UserIntro", () => {
   let state: RootState;
-  let markedIntroCompleteMock: jest.SpyInstance;
+  let markedIntroCompleteMock: vi.SpyInstance;
   beforeEach(() => {
-    markedIntroCompleteMock = jest
+    markedIntroCompleteMock = vi
       .spyOn(baseHooks, "useCycled")
       .mockImplementation(() => [false, () => null]);
     state = rootStateFactory({

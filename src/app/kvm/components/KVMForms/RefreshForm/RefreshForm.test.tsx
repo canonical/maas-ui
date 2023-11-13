@@ -27,7 +27,7 @@ describe("RefreshForm", () => {
     });
 
     renderWithBrowserRouter(
-      <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1]} />,
+      <RefreshForm clearSidePanelContent={vi.fn()} hostIds={[1]} />,
       { state, route: "/kvm" }
     );
 
@@ -49,7 +49,7 @@ describe("RefreshForm", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1, 2]} />,
+      <RefreshForm clearSidePanelContent={vi.fn()} hostIds={[1, 2]} />,
       { store, route: "/kvm" }
     );
 

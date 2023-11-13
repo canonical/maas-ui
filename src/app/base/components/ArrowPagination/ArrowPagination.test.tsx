@@ -77,7 +77,7 @@ describe("ArrowPagination", () => {
         currentPage={1}
         itemCount={0}
         pageSize={25}
-        setCurrentPage={jest.fn()}
+        setCurrentPage={vi.fn()}
         showPageBounds
       />
     );
@@ -93,7 +93,7 @@ describe("ArrowPagination", () => {
         currentPage={1}
         itemCount={26}
         pageSize={25}
-        setCurrentPage={jest.fn()}
+        setCurrentPage={vi.fn()}
         showPageBounds
       />
     );
@@ -109,7 +109,7 @@ describe("ArrowPagination", () => {
         currentPage={1}
         itemCount={24}
         pageSize={25}
-        setCurrentPage={jest.fn()}
+        setCurrentPage={vi.fn()}
         showPageBounds
       />
     );
@@ -126,7 +126,7 @@ describe("ArrowPagination", () => {
         itemCount={24}
         loading
         pageSize={25}
-        setCurrentPage={jest.fn()}
+        setCurrentPage={vi.fn()}
         showPageBounds
       />
     );

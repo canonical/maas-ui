@@ -18,9 +18,9 @@ describe("ActionBar", () => {
           actions={<span data-testid="actions">Actions</span>}
           currentPage={1}
           itemCount={10}
-          onSearchChange={jest.fn()}
+          onSearchChange={vi.fn()}
           searchFilter=""
-          setCurrentPage={jest.fn()}
+          setCurrentPage={vi.fn()}
         />
       </Provider>
     );

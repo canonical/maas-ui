@@ -65,10 +65,10 @@ describe("TestForm", () => {
     renderWithBrowserRouter(
       <TestForm
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={state.machine.items}
-        onTest={jest.fn()}
+        onTest={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,

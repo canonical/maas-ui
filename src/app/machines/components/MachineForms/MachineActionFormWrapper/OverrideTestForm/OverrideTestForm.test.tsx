@@ -34,7 +34,7 @@ describe("OverrideTestForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
@@ -88,7 +88,7 @@ describe("OverrideTestForm", () => {
 
     renderWithBrowserRouter(
       <OverrideTestForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         selectedCount={1}
         selectedMachines={{
           items: state.machine.items.map((item) => item.system_id),
@@ -131,7 +131,7 @@ describe("OverrideTestForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <OverrideTestForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         selectedCount={1}
         selectedMachines={{
           items: [state.machine.items[0].system_id],
@@ -164,7 +164,7 @@ describe("OverrideTestForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <OverrideTestForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         selectedCount={1}
         selectedMachines={{
           items: ["abc123"],

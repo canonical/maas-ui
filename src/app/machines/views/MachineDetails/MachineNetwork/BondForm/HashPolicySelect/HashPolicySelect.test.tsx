@@ -36,7 +36,7 @@ describe("HashPolicySelect", () => {
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect name="xmitHashPolicy" />
       </Formik>,
       { state }
@@ -46,7 +46,7 @@ describe("HashPolicySelect", () => {
 
   it("displays the options", () => {
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect name="xmitHashPolicy" />
       </Formik>,
       { state }
@@ -91,7 +91,7 @@ describe("HashPolicySelect", () => {
       value: "99",
     };
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect defaultOption={defaultOption} name="xmitHashPolicy" />
       </Formik>,
       { state }
@@ -111,7 +111,7 @@ describe("HashPolicySelect", () => {
       loaded: true,
     });
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <HashPolicySelect defaultOption={null} name="xmitHashPolicy" />
       </Formik>,
       { state }

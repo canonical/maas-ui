@@ -84,7 +84,7 @@ describe("FilterAccordion", () => {
   });
 
   it("can set a filter", async () => {
-    const onUpdateFilterString = jest.fn();
+    const onUpdateFilterString = vi.fn();
     render(
       <FilterAccordion
         filterNames={filterNames}

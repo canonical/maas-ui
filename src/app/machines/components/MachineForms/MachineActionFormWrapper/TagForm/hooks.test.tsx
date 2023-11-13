@@ -33,7 +33,7 @@ describe("useSelectedTags", () => {
         <Provider store={store}>
           <Formik
             initialValues={{ added: [tags[0].id, tags[2].id] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             {children}
           </Formik>
@@ -57,7 +57,7 @@ describe("useSelectedTags", () => {
         <Provider store={store}>
           <Formik
             initialValues={{ removed: [tags[0].id, tags[2].id] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             {children}
           </Formik>
@@ -79,7 +79,7 @@ describe("useUnchangedTags", () => {
       wrapper: ({ children }: { children: ReactNode }) => (
         <Formik
           initialValues={{ added: [tags[0].id], removed: [tags[1].id] }}
-          onSubmit={jest.fn()}
+          onSubmit={vi.fn()}
         >
           {children}
         </Formik>
@@ -91,7 +91,7 @@ describe("useUnchangedTags", () => {
 
 describe("useFetchTags", () => {
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
   });
   it("cleans up request on unmount", async () => {
     const tags = [tagFactory(), tagFactory(), tagFactory()];
@@ -105,7 +105,7 @@ describe("useFetchTags", () => {
     const { result, unmount } = renderHook(() => useFetchTags(), {
       wrapper: ({ children }: { children: ReactNode }) => (
         <Provider store={store}>
-          <Formik initialValues={{ added: [] }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ added: [] }} onSubmit={vi.fn()}>
             {children}
           </Formik>
         </Provider>

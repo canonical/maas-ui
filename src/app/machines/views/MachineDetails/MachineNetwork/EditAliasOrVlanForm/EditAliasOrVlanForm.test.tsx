@@ -63,7 +63,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -85,7 +85,7 @@ describe("EditAliasOrVlanForm", () => {
     state.machine.items = [];
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -99,7 +99,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -115,7 +115,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         link={link}
         nic={nic}
@@ -154,7 +154,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         link={link}
         nic={nic}

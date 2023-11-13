@@ -17,7 +17,7 @@ describe("FetchImagesFormFields", () => {
           source_type: BootResourceSourceType.MAAS_IO,
           url: "",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FetchImagesFormFields />
       </Formik>
@@ -46,7 +46,7 @@ describe("FetchImagesFormFields", () => {
           source_type: BootResourceSourceType.CUSTOM,
           url: "",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FetchImagesFormFields />
       </Formik>
@@ -75,7 +75,7 @@ describe("FetchImagesFormFields", () => {
           source_type: BootResourceSourceType.CUSTOM,
           url: "http://www.example.com",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FetchImagesFormFields />
       </Formik>
@@ -103,7 +103,7 @@ describe("FetchImagesFormFields", () => {
           source_type: BootResourceSourceType.CUSTOM,
           url: "",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FetchImagesFormFields />
       </Formik>
@@ -147,7 +147,7 @@ describe("FetchImagesFormFields", () => {
           source_type: BootResourceSourceType.CUSTOM,
           url: "http://example.com",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FetchImagesFormFields />
       </Formik>

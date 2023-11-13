@@ -83,8 +83,8 @@ it("sends an analytics event when clicking on the MAAS docs footer link", async 
       loaded: true,
     }),
   });
-  const mockSendAnalytics = jest.fn();
-  const mockUseSendAnalytics = jest
+  const mockSendAnalytics = vi.fn();
+  const mockUseSendAnalytics = vi
     .spyOn(hooks, "useSendAnalytics")
     .mockImplementation(() => mockSendAnalytics);
   renderWithBrowserRouter(

@@ -6,17 +6,17 @@ import { userEvent, render, screen } from "testing/utils";
 
 it("can display a cancel button", () => {
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
-      <FormikFormButtons onCancel={jest.fn()} submitLabel="Save user" />
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <FormikFormButtons onCancel={vi.fn()} submitLabel="Save user" />
     </Formik>
   );
   expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
 });
 
 it("can perform a secondary submit action if function and label provided", async () => {
-  const secondarySubmit = jest.fn();
+  const secondarySubmit = vi.fn();
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons
         secondarySubmit={secondarySubmit}
         secondarySubmitLabel="Save and add another"
@@ -34,9 +34,9 @@ it("can perform a secondary submit action if function and label provided", async
 });
 
 it("can generate a secondary submit label via a function", async () => {
-  const secondarySubmit = jest.fn();
+  const secondarySubmit = vi.fn();
   render(
-    <Formik initialValues={{ name: "Koala" }} onSubmit={jest.fn()}>
+    <Formik initialValues={{ name: "Koala" }} onSubmit={vi.fn()}>
       <FormikFormButtons
         secondarySubmit={secondarySubmit}
         secondarySubmitLabel={({ name }) => `Kool ${name}`}
@@ -53,9 +53,9 @@ it("can generate a secondary submit label via a function", async () => {
 
 it("can display a tooltip for the secondary submit action", async () => {
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons
-        secondarySubmit={jest.fn()}
+        secondarySubmit={vi.fn()}
         secondarySubmitLabel="Save and add another"
         secondarySubmitTooltip="Will add another"
         submitLabel="Save user"
@@ -75,7 +75,7 @@ it("can display a tooltip for the secondary submit action", async () => {
 
 it("displays a border if bordered is true", () => {
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons buttonsBordered submitLabel="Save" />
     </Formik>
   );
@@ -85,7 +85,7 @@ it("displays a border if bordered is true", () => {
 
 it("displays inline if inline is true", () => {
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons inline submitLabel="Save" />
     </Formik>
   );
@@ -95,7 +95,7 @@ it("displays inline if inline is true", () => {
 it("displays help text if provided", () => {
   const buttonsHelp = <p>Help!</p>;
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons buttonsHelp={buttonsHelp} submitLabel="Save" />
     </Formik>
   );
@@ -104,9 +104,9 @@ it("displays help text if provided", () => {
 });
 
 it("can fire custom onCancel function", async () => {
-  const onCancel = jest.fn();
+  const onCancel = vi.fn();
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons onCancel={onCancel} submitLabel="Save" />
     </Formik>
   );
@@ -116,7 +116,7 @@ it("can fire custom onCancel function", async () => {
 
 it("can display a saving label", () => {
   render(
-    <Formik initialValues={{}} onSubmit={jest.fn()}>
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
       <FormikFormButtons saving savingLabel="Be patient!" submitLabel="Save" />
     </Formik>
   );

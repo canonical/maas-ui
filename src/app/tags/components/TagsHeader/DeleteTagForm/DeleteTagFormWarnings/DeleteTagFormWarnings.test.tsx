@@ -27,7 +27,7 @@ let state: RootState;
 enableCallIdMocks();
 
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("{}");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("{}");
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [

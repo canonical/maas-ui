@@ -35,7 +35,7 @@ describe("ReleaseSelect", () => {
       <ReleaseSelect
         releases={releases}
         selectedRelease="focal"
-        setSelectedRelease={jest.fn()}
+        setSelectedRelease={vi.fn()}
       />
     );
 
@@ -56,7 +56,7 @@ describe("ReleaseSelect", () => {
   });
 
   it("can set the selected release", async () => {
-    const setSelectedRelease = jest.fn();
+    const setSelectedRelease = vi.fn();
     const releases = [
       bootResourceUbuntuReleaseFactory({
         name: "focal",

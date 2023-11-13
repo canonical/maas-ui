@@ -139,7 +139,7 @@ describe("ImagesTable", () => {
   });
 
   it("can clear an image that has been selected", async () => {
-    const handleClear = jest.fn();
+    const handleClear = vi.fn();
     const image = {
       arch: "arch",
       os: "os",
@@ -159,7 +159,7 @@ describe("ImagesTable", () => {
 
   it(`can not clear a selected image if it is the last image that uses the
     default commissioning release`, () => {
-    const handleClear = jest.fn();
+    const handleClear = vi.fn();
     const image = {
       arch: "amd64",
       os: "ubuntu",
@@ -482,7 +482,7 @@ describe("ImagesTable", () => {
     const unsupported_resource = resourceFactory({ canDeployToMemory: false });
     renderWithMockStore(
       <ImagesTable
-        handleClear={jest.fn()}
+        handleClear={vi.fn()}
         images={[]}
         resources={[supported_resource, unsupported_resource]}
       />,

@@ -37,7 +37,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_state = PowerState.OFF;
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -48,7 +48,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_type = "manual";
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -60,7 +60,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_state = PowerState.OFF;
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     // Open the menu so the elements get rendered.
@@ -73,7 +73,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].actions = [NodeActions.OFF];
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -85,7 +85,7 @@ describe("PowerColumn", () => {
 
   it("can show a menu item to check power", async () => {
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -99,7 +99,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_state = PowerState.UNKNOWN;
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -125,7 +125,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].status_message = "It's not working";
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 

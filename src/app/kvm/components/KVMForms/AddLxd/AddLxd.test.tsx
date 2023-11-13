@@ -70,7 +70,7 @@ describe("AddLxd", () => {
   });
 
   it("shows the credentials form by default", () => {
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -88,7 +88,7 @@ describe("AddLxd", () => {
 
     state.general.generatedCertificate.data = certificate;
 
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -140,7 +140,7 @@ describe("AddLxd", () => {
       "192.168.1.1": [podProjectFactory()],
     };
 
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -181,7 +181,7 @@ describe("AddLxd", () => {
     const store = mockStore(state);
 
     const { unmount } = renderWithBrowserRouter(
-      <AddLxd clearSidePanelContent={jest.fn()} />,
+      <AddLxd clearSidePanelContent={vi.fn()} />,
       { route: "/kvm/add", store }
     );
 
@@ -204,7 +204,7 @@ describe("AddLxd", () => {
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });

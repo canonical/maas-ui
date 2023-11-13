@@ -21,18 +21,18 @@ import { userEvent, screen, render, waitFor } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
-jest.mock("@canonical/react-components/dist/hooks", () => ({
-  useId: jest.fn(),
-  usePrevious: jest.fn(),
+vi.mock("@canonical/react-components/dist/hooks", () => ({
+  useId: vi.fn(),
+  usePrevious: vi.fn(),
 }));
 
 describe("FetchImagesForm", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("can dispatch an action to fetch images", async () => {
@@ -42,7 +42,7 @@ describe("FetchImagesForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <FetchImagesForm closeForm={jest.fn()} setSource={jest.fn()} />
+            <FetchImagesForm closeForm={vi.fn()} setSource={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -95,11 +95,10 @@ describe("FetchImagesForm", () => {
 
   it("sets source if images successfuly fetched", async () => {
     // Mock the transition from "saving" to "saved"
-    jest
-      .spyOn(reactComponentHooks, "usePrevious")
+    vi.spyOn(reactComponentHooks, "usePrevious")
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
-    const setSource = jest.fn();
+    const setSource = vi.fn();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         eventErrors: [],
@@ -111,7 +110,7 @@ describe("FetchImagesForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <FetchImagesForm closeForm={jest.fn()} setSource={setSource} />
+            <FetchImagesForm closeForm={vi.fn()} setSource={setSource} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

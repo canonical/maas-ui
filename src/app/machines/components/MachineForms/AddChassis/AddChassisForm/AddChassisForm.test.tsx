@@ -144,7 +144,7 @@ describe("AddChassisForm", () => {
     state.domain.loaded = false;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", store }
     );
     const expectedActions = ["FETCH_DOMAIN", "general/fetchPowerTypes"];
@@ -158,7 +158,7 @@ describe("AddChassisForm", () => {
     state.domain.loaded = false;
     state.general.powerTypes.loaded = false;
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", state }
     );
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -167,7 +167,7 @@ describe("AddChassisForm", () => {
   it("correctly dispatches action to add chassis", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/add", store }
     );
 

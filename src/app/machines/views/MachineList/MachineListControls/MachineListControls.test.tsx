@@ -42,7 +42,7 @@ describe("MachineListControls", () => {
   });
 
   it("changes the filter when the filter accordion changes", async () => {
-    const setFilter = jest.fn();
+    const setFilter = vi.fn();
     renderWithBrowserRouter(
       <MachineListControls
         filter=""
@@ -51,10 +51,10 @@ describe("MachineListControls", () => {
         machineCount={1}
         resourcePoolsCount={1}
         setFilter={setFilter}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines?q=test+search", state: initialState }
     );
@@ -74,11 +74,11 @@ describe("MachineListControls", () => {
         hiddenColumns={[]}
         machineCount={1}
         resourcePoolsCount={1}
-        setFilter={jest.fn()}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", state: initialState }
     );
@@ -120,11 +120,11 @@ describe("MachineListControls", () => {
         hiddenColumns={[]}
         machineCount={1}
         resourcePoolsCount={1}
-        setFilter={jest.fn()}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", state: initialState }
     );
@@ -161,11 +161,11 @@ describe("MachineListControls", () => {
         hiddenColumns={[]}
         machineCount={1}
         resourcePoolsCount={1}
-        setFilter={jest.fn()}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", store }
     );

@@ -29,7 +29,7 @@ describe("ZoneDetailsForm", () => {
   });
 
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const store = mockStore(initialState);
     render(
       <Provider store={store}>
@@ -51,7 +51,7 @@ describe("ZoneDetailsForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <ZoneDetailsForm closeForm={jest.fn()} id={testZone.id} />
+            <ZoneDetailsForm closeForm={vi.fn()} id={testZone.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

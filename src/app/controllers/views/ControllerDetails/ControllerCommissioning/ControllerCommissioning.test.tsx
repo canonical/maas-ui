@@ -20,11 +20,11 @@ import {
 } from "testing/factories";
 import { render, screen } from "testing/utils";
 
-jest.mock("@canonical/react-components/dist/hooks", () => {
-  const hooks = jest.requireActual("@canonical/react-components/dist/hooks");
+vi.mock("@canonical/react-components/dist/hooks", () => {
+  const hooks = vi.importActual("@canonical/react-components/dist/hooks");
   return {
     ...hooks,
-    usePrevious: jest.fn(),
+    usePrevious: vi.fn(),
   };
 });
 
@@ -81,7 +81,7 @@ it("fetches script results if they haven't been fetched", () => {
 
 it("fetches script results if the commissioning status changes to pending", () => {
   // Mock the previous commissioning status being different to pending.
-  jest
+  vi
     .spyOn(reactComponentHooks, "usePrevious")
     .mockImplementation(() => TestStatusStatus.PASSED);
   const controller = controllerDetailsFactory({

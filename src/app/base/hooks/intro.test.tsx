@@ -17,9 +17,9 @@ import {
 
 const mockStore = configureStore();
 
-jest.mock("@/app/utils", () => ({
-  ...jest.requireActual("@/app/utils"),
-  getCookie: jest.fn(),
+vi.mock("@/app/utils", () => ({
+  ...vi.importActual("@/app/utils"),
+  getCookie: vi.fn(),
 }));
 
 describe("intro hooks", () => {
@@ -42,7 +42,7 @@ describe("intro hooks", () => {
     });
 
     it("gets whether the intro has been skipped", () => {
-      const getCookieMock = getCookie as jest.Mock;
+      const getCookieMock = getCookie as vi.Mock;
       getCookieMock.mockImplementation(() => "true");
       const state = rootStateFactory({
         config: configStateFactory({
@@ -81,7 +81,7 @@ describe("intro hooks", () => {
     });
 
     it("gets whether the user intro has been skipped", () => {
-      const getCookieMock = getCookie as jest.Mock;
+      const getCookieMock = getCookie as vi.Mock;
       getCookieMock.mockImplementation(() => "true");
       const state = rootStateFactory({
         user: userStateFactory({

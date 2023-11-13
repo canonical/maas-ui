@@ -11,7 +11,7 @@ const staticDisplay = getIpAssignmentDisplay(DeviceIpAssignment.STATIC);
 describe("IpAssignmentSelect", () => {
   it("includes static IP assignment as an option by default", () => {
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <IpAssignmentSelect name="ipAssignment" />
       </Formik>
     );
@@ -23,7 +23,7 @@ describe("IpAssignmentSelect", () => {
 
   it("can omit static IP assignment as an option", () => {
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <IpAssignmentSelect includeStatic={false} name="ipAssignment" />
       </Formik>
     );

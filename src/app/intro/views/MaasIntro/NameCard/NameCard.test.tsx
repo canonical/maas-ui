@@ -34,7 +34,7 @@ describe("NameCard", () => {
 
   it("displays a tick when there are no name errors", () => {
     renderWithMockStore(
-      <Formik initialValues={{ name: "my new maas" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ name: "my new maas" }} onSubmit={vi.fn()}>
         <NameCard />
       </Formik>,
       { state }
@@ -48,7 +48,7 @@ describe("NameCard", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ name: "my new maas" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         validationSchema={MaasIntroSchema}
       >
         <NameCard />

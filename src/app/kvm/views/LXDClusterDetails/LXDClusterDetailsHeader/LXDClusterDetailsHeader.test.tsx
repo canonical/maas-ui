@@ -58,7 +58,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -83,7 +83,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -115,7 +115,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -142,7 +142,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -169,7 +169,7 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -184,7 +184,7 @@ describe("LXDClusterDetailsHeader", () => {
   it("can open the refresh cluster form if it has hosts", async () => {
     const hosts = [vmHostFactory(), vmHostFactory()];
     state.vmcluster.items[0].hosts = hosts;
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>

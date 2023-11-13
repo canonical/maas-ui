@@ -32,7 +32,7 @@ const renderTestCase = (
       loading: false,
     }),
   });
-  const setSidePanelContent = jest.fn();
+  const setSidePanelContent = vi.fn();
   const store = configureStore()(state);
   return {
     history,

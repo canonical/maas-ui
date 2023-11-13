@@ -37,7 +37,7 @@ describe("ControllerListTable", () => {
     renderWithBrowserRouter(
       <ControllerListTable
         controllers={[controller]}
-        onSelectedChange={jest.fn()}
+        onSelectedChange={vi.fn()}
         selectedIDs={[]}
       />,
       { state }
@@ -61,7 +61,7 @@ describe("ControllerListTable", () => {
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -102,7 +102,7 @@ describe("ControllerListTable", () => {
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -131,7 +131,7 @@ describe("ControllerListTable", () => {
   describe("controller selection", () => {
     it("handles selecting a single controller", async () => {
       const controllers = [controllerFactory({ system_id: "abc123" })];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
@@ -148,7 +148,7 @@ describe("ControllerListTable", () => {
 
     it("handles unselecting a single controller", async () => {
       const controllers = [controllerFactory({ system_id: "abc123" })];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
@@ -168,7 +168,7 @@ describe("ControllerListTable", () => {
         controllerFactory({ system_id: "abc123" }),
         controllerFactory({ system_id: "def456" }),
       ];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
@@ -188,7 +188,7 @@ describe("ControllerListTable", () => {
         controllerFactory({ system_id: "abc123" }),
         controllerFactory({ system_id: "def456" }),
       ];
-      const onSelectedChange = jest.fn();
+      const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
@@ -214,7 +214,7 @@ describe("ControllerListTable", () => {
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -241,7 +241,7 @@ describe("ControllerListTable", () => {
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -306,7 +306,7 @@ describe("ControllerListTable", () => {
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -358,7 +358,7 @@ describe("ControllerListTable", () => {
       renderWithBrowserRouter(
         <ControllerListTable
           controllers={controllers}
-          onSelectedChange={jest.fn()}
+          onSelectedChange={vi.fn()}
           selectedIDs={[]}
         />,
         { state }
@@ -383,7 +383,7 @@ describe("ControllerListTable", () => {
     renderWithBrowserRouter(
       <ControllerListTable
         controllers={[]}
-        onSelectedChange={jest.fn()}
+        onSelectedChange={vi.fn()}
         selectedIDs={[]}
       />,
       { state }

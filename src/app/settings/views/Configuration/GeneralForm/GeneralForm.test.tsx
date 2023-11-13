@@ -154,7 +154,7 @@ describe("GeneralForm", () => {
 
   it("can trigger usabilla when the notifications are turned off", async () => {
     const store = mockStore(state);
-    window.usabilla_live = jest.fn();
+    window.usabilla_live = vi.fn();
     render(
       <Provider store={store}>
         <MemoryRouter>

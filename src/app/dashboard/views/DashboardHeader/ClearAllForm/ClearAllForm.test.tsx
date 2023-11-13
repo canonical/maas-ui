@@ -56,7 +56,7 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/dashboard",
       state,
     });
@@ -72,7 +72,7 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/dashboard",
       state,
     });
@@ -81,7 +81,7 @@ describe("ClearAllForm", () => {
 
   it("dispatches an action to clear the discoveries", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/dashboard",
       store,
     });
@@ -97,7 +97,7 @@ describe("ClearAllForm", () => {
     mockFormikFormSaved();
 
     const store = mockStore(state);
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/dashboard",
       store,
     });

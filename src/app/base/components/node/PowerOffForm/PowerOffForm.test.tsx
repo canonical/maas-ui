@@ -36,11 +36,11 @@ describe("PowerOffForm", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("can dispatch a soft power off action on machines", async () => {
@@ -51,7 +51,7 @@ describe("PowerOffForm", () => {
         action={NodeActions.SOFT_OFF}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}

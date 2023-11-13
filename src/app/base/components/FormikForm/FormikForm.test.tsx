@@ -36,7 +36,7 @@ describe("FormikForm", () => {
             <FormikForm
               aria-label="example"
               initialValues={{}}
-              onSubmit={jest.fn()}
+              onSubmit={vi.fn()}
             >
               Content
             </FormikForm>

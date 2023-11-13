@@ -37,7 +37,7 @@ it("renders", () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <TagList onDelete={jest.fn()} />
+          <TagList onDelete={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

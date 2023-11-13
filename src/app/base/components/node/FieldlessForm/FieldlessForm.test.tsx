@@ -13,8 +13,8 @@ import {
 } from "testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
-jest.mock("@canonical/react-components/dist/hooks", () => ({
-  usePrevious: jest.fn(),
+vi.mock("@canonical/react-components/dist/hooks", () => ({
+  usePrevious: vi.fn(),
 }));
 
 const mockStore = configureStore<RootState>();
@@ -40,16 +40,16 @@ describe("FieldlessForm", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("can unset the selected action", async () => {
     const store = mockStore(state);
-    const clearSidePanelContent = jest.fn();
+    const clearSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <FieldlessForm
         action={NodeActions.ON}
@@ -75,7 +75,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.ABORT}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
@@ -114,7 +114,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.ACQUIRE}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
@@ -153,7 +153,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.EXIT_RESCUE_MODE}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
@@ -192,7 +192,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.LOCK}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
@@ -229,7 +229,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.MARK_FIXED}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
@@ -268,7 +268,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.OFF}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
@@ -307,7 +307,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.ON}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}
@@ -346,7 +346,7 @@ describe("FieldlessForm", () => {
         action={NodeActions.UNLOCK}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}

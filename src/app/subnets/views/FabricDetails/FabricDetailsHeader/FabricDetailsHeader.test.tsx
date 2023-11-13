@@ -33,7 +33,7 @@ describe("FabricDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <FabricDetailsHeader fabric={fabric} setSidePanelContent={jest.fn()} />,
+      <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
       {
         route: "/fabric/1",
         state,
@@ -52,7 +52,7 @@ describe("FabricDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <FabricDetailsHeader fabric={fabric} setSidePanelContent={jest.fn()} />,
+      <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
       {
         route: "/fabric/1",
         state,
@@ -63,7 +63,7 @@ describe("FabricDetailsHeader", () => {
   });
 
   it("calls a function to open the Delete form when the button is clicked", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     state.user = userStateFactory({
       auth: authStateFactory({
         user: userFactory({ is_superuser: true }),

@@ -31,7 +31,7 @@ it("can be unchecked", () => {
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Unchecked}
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );
@@ -43,7 +43,7 @@ it("can be checked", () => {
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Checked}
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );
@@ -55,7 +55,7 @@ it("can be partially checked", () => {
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Mixed}
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );
@@ -68,7 +68,7 @@ it("can show a label", () => {
       callId={callId}
       inputLabel="Check all"
       isChecked={Checked.Checked}
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );
@@ -83,7 +83,7 @@ it("is disabled if there are no machines", () => {
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Checked}
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );
@@ -96,7 +96,7 @@ it("is not disabled if there are machines", () => {
     <TableCheckbox
       callId={callId}
       isChecked={Checked.Checked}
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );
@@ -109,7 +109,7 @@ it("can be manually disabled", () => {
       callId={callId}
       isChecked={Checked.Checked}
       isDisabled
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );
@@ -122,7 +122,7 @@ it("can add additional classes to the wrapping element", () => {
       callId={callId}
       extraClasses="extra-class"
       isChecked={Checked.Checked}
-      onGenerateSelected={jest.fn()}
+      onGenerateSelected={vi.fn()}
     />,
     { state }
   );

@@ -10,7 +10,7 @@ import { render, screen, waitFor } from "testing/utils";
 
 describe("NodeActionFormWrapper", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("renders children if all selected nodes can perform selected action", () => {
@@ -21,10 +21,10 @@ describe("NodeActionFormWrapper", () => {
     render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         nodeType="node"
         nodes={nodes}
-        onUpdateSelected={jest.fn()}
+        onUpdateSelected={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       >
@@ -44,10 +44,10 @@ describe("NodeActionFormWrapper", () => {
     render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         nodeType="node"
         nodes={nodes}
-        onUpdateSelected={jest.fn()}
+        onUpdateSelected={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       >
@@ -70,10 +70,10 @@ describe("NodeActionFormWrapper", () => {
     render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         nodeType="node"
         nodes={nodes}
-        onUpdateSelected={jest.fn()}
+        onUpdateSelected={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       >
@@ -86,7 +86,7 @@ describe("NodeActionFormWrapper", () => {
   });
 
   it("can run a function on actionable nodes if warning is shown", async () => {
-    const onUpdateSelected = jest.fn();
+    const onUpdateSelected = vi.fn();
     const nodes = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       machineFactory({ system_id: "def456", actions: [] }),
@@ -94,7 +94,7 @@ describe("NodeActionFormWrapper", () => {
     render(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         nodeType="node"
         nodes={nodes}
         onUpdateSelected={onUpdateSelected}
@@ -111,14 +111,14 @@ describe("NodeActionFormWrapper", () => {
   });
 
   it("clears header content if no nodes are provided", async () => {
-    const clearSidePanelContent = jest.fn();
+    const clearSidePanelContent = vi.fn();
     const Proxy = ({ nodes }: { nodes: Node[] }) => (
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearSidePanelContent={clearSidePanelContent}
         nodeType="node"
         nodes={nodes}
-        onUpdateSelected={jest.fn()}
+        onUpdateSelected={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       >

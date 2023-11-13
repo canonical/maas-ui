@@ -9,12 +9,12 @@ import { render, screen, waitFor } from "testing/utils";
 
 describe("ScriptRunTime", () => {
   beforeEach(() => {
-    jest
+    vi
       .useFakeTimers()
       .setSystemTime(new Date("Thu Apr 01 2021 05:21:58 GMT+0000").getTime());
   });
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it("displays the elapsed time when running and runtime is not known", () => {
@@ -76,7 +76,7 @@ describe("ScriptRunTime", () => {
     });
     render(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
-    jest.advanceTimersByTime(1000);
+    vi.advanceTimersByTime(1000);
     await waitFor(() =>
       expect(screen.getByText(/0:05:01/i)).toBeInTheDocument()
     );
