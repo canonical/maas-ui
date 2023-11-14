@@ -9576,7 +9576,7 @@ jscodeshift@^0.14.0:
     temp "^0.8.4"
     write-file-atomic "^2.3.0"
 
-jsdom@^22.1.0:
+jsdom@22.1.0:
   version "22.1.0"
   resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-22.1.0.tgz#0fca6d1a37fbeb7f4aac93d1090d782c56b611c8"
   integrity sha512-/9AVW7xNbsBv6GfWho4TTNjEo9fe6Zhf9O7s0Fhhr3u+awPwAJMKwAMXnkk5vBxflqLW9hTHX/0cs+P3gW+cQw==
