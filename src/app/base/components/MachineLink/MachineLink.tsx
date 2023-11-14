@@ -3,7 +3,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import urls from "@/app/base/urls";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
-import { useFetchMachine } from "@/app/store/machine/utils/hooks";
+import { useFetchMachine } from "@/app/store/machine/utils";
 
 type Props = {
   systemId?: Machine[MachineMeta.PK] | null;

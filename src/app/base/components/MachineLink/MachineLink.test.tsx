@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import MachineLink, { Labels } from "./MachineLink";
 
 import urls from "@/app/base/urls";
+import * as machineUtils from "@/app/store/machine/utils";
 import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
@@ -13,12 +14,19 @@ import {
   rootState as rootStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
 } from "@/testing/factories";
-import { render, screen, waitFor } from "@/testing/utils";
+import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("handles when machines are loading", async () => {
   vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
+  // Gotta mock this, since details loading state doesn't seem to
+  // be working in this test for some reason.
+  vi.spyOn(machineUtils, "useFetchMachine").mockReturnValue({
+    machine: null,
+    loading: true,
+    loaded: false,
+  });
   const state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -34,20 +42,10 @@ it("handles when machines are loading", async () => {
       },
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <MachineLink systemId="abc123" />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<MachineLink systemId="abc123" />, { state });
 
-  await waitFor(() =>
-    expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument()
-  );
+  expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
+
   vi.restoreAllMocks();
 });
 

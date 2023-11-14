@@ -16,6 +16,7 @@ export {
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsLimitedEditingAllowed,
+  useFetchMachine,
 } from "./hooks";
 
 export { FilterMachines, WORKLOAD_FILTER_PREFIX } from "./search";
