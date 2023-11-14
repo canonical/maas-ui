@@ -105,15 +105,9 @@ describe("ArchSelect", () => {
       screen.getByRole("button", { name: "information" }),
       "i386 is not available on 20.04 LTS."
     );
-    expect(screen.getByRole("tooltip")).toMatchInlineSnapshot(`
-      <span
-        class="p-tooltip__message"
-        id="mock-nanoid-7"
-        role="tooltip"
-      >
-        i386 is not available on 20.04 LTS.
-      </span>
-    `);
+    expect(screen.getByRole("tooltip")).toHaveTextContent(
+      "i386 is not available on 20.04 LTS."
+    );
   });
 
   it(`disables a checkbox if it's the last checked arch for the default
