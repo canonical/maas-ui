@@ -5,7 +5,7 @@ import DebounceSearchBox, {
   Labels,
 } from "./DebounceSearchBox";
 
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("DebounceSearchBox", () => {
   beforeEach(() => {
@@ -38,9 +38,7 @@ describe("DebounceSearchBox", () => {
 
     expect(onDebounced).not.toHaveBeenCalled();
 
-    await waitFor(() => {
-      vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
-    });
+    vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
     expect(onDebounced).toHaveBeenCalledWith("new-value");
   });
 
@@ -59,9 +57,7 @@ describe("DebounceSearchBox", () => {
     expect(onDebounced).not.toHaveBeenCalled();
 
     rerender(<Proxy searchText="new-value" />);
-    await waitFor(() => {
-      vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
-    });
+    vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
     expect(onDebounced).not.toHaveBeenCalled();
   });
 
@@ -80,11 +76,14 @@ describe("DebounceSearchBox", () => {
     ).not.toBeInTheDocument();
 
     await user.clear(searchBox);
+
     expect(
       screen.getByRole("alert", { name: Labels.Loading })
     ).toBeInTheDocument();
+
     vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
-    await waitFor(() => {
+
+    await vi.waitFor(() => {
       expect(
         screen.queryByRole("alert", { name: Labels.Loading })
       ).not.toBeInTheDocument();
