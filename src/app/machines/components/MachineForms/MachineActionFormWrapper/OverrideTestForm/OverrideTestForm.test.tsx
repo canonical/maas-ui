@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
@@ -13,6 +12,7 @@ import {
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
 import { NodeActions } from "@/app/store/types/node";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -34,7 +34,7 @@ describe("OverrideTestForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,

@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import reduxToolkit from "@reduxjs/toolkit";
 import { renderHook } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -9,6 +8,7 @@ import configureStore from "redux-mock-store";
 import { useFetchTags, useSelectedTags, useUnchangedTags } from "./hooks";
 
 import { actions as tagActions } from "@/app/store/tag";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   tag as tagFactory,
   tagState as tagStateFactory,
@@ -91,7 +91,7 @@ describe("useUnchangedTags", () => {
 
 describe("useFetchTags", () => {
   beforeEach(() => {
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
+    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mock-call-id");
   });
   it("cleans up request on unmount", async () => {
     const tags = [tagFactory(), tagFactory(), tagFactory()];

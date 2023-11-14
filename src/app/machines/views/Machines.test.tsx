@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -20,6 +19,7 @@ import {
   TestStatusStatus,
   FetchNodeStatus,
 } from "@/app/store/types/node";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -195,7 +195,7 @@ describe("Machines", () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       general: generalStateFactory({
         machineActions: {
@@ -314,7 +314,7 @@ describe("Machines", () => {
   });
 
   it("can change groups", async () => {
-    vi.spyOn(reduxToolkit, "nanoid")
+    vi.spyOn(mockedReduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.
@@ -376,7 +376,7 @@ describe("Machines", () => {
 
   it("uses the default fallback value for invalid stored grouping values", async () => {
     localStorage.setItem("grouping", '"invalid_value"');
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(<Machines />, { store });
     expect(screen.getByRole("combobox", { name: /Group by/ })).toHaveValue(

@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -9,7 +8,11 @@ import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "@/testing/callId-mock";
+import {
+  callId,
+  enableCallIdMocks,
+  mockedReduxToolkit,
+} from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -27,7 +30,7 @@ let state: RootState;
 enableCallIdMocks();
 
 beforeEach(() => {
-  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("{}");
+  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("{}");
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [

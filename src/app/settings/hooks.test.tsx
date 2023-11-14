@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import reduxToolkit from "@reduxjs/toolkit";
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -9,6 +8,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { useDhcpTarget } from "./hooks";
 
 import type { RootState } from "@/app/store/root/types";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -32,7 +32,7 @@ const generateWrapper =
 let state: RootState;
 
 beforeEach(() => {
-  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
   state = rootStateFactory({
     controller: controllerStateFactory({
       items: [

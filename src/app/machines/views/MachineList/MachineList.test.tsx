@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
@@ -14,6 +13,7 @@ import {
   NodeType,
   TestStatusStatus,
 } from "@/app/store/types/node";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -561,7 +561,7 @@ describe("MachineList", () => {
 
   it("uses the stored machineListPageSize", () => {
     localStorage.setItem("machineListPageSize", "20");
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList
@@ -585,7 +585,7 @@ describe("MachineList", () => {
 
   it("falls back to default for invalid stored machineListPageSize", () => {
     localStorage.setItem("machineListPageSize", '"invalid_value"');
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList

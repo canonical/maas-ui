@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,6 +8,7 @@ import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 
 import type { RootState } from "@/app/store/root/types";
 import type { Tag } from "@/app/store/tag/types";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -29,7 +29,7 @@ const commonProps = {
 };
 
 beforeEach(() => {
-  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),

@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
@@ -6,6 +5,7 @@ import CloneForm from "./CloneForm";
 import { actions as machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -29,7 +29,7 @@ const mockStore = configureStore<RootState>();
 
 describe("CloneForm", () => {
   beforeEach(() => {
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
     vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
   });
 

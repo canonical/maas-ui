@@ -1,4 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -7,6 +6,7 @@ import configureStore from "redux-mock-store";
 import MachineLink, { Labels } from "./MachineLink";
 
 import urls from "@/app/base/urls";
+import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -18,7 +18,7 @@ import { render, screen, waitFor } from "@/testing/utils";
 const mockStore = configureStore();
 
 it("handles when machines are loading", async () => {
-  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
   const state = rootStateFactory({
     machine: machineStateFactory({
       items: [
