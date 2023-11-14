@@ -7,12 +7,7 @@ import { actions as machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { rootState as rootStateFactory } from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  waitFor,
-  renderWithMockStore,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -81,10 +76,10 @@ it("requests machines filtered by the free text input value", async () => {
     filter: { free_text: "test-machine" },
     ...expectedActionParams,
   });
-  await waitFor(() => {
-    vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
-  });
-  await waitFor(() =>
+
+  vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+
+  await vi.waitFor(() =>
     expect(
       store.getActions().filter((action) => action.type === expectedAction.type)
         .length

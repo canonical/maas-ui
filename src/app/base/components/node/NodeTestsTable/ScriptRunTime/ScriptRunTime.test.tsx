@@ -5,7 +5,7 @@ import {
   ScriptResultEstimated,
 } from "@/app/store/scriptresult/types";
 import { scriptResult as scriptResultFactory } from "@/testing/factories";
-import { render, screen, waitFor } from "@/testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("ScriptRunTime", () => {
   beforeEach(() => {
@@ -77,7 +77,7 @@ describe("ScriptRunTime", () => {
     render(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
     vi.advanceTimersByTime(1000);
-    await waitFor(() =>
+    await vi.waitFor(() =>
       expect(screen.getByText(/0:05:01/i)).toBeInTheDocument()
     );
   });
