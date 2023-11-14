@@ -192,9 +192,9 @@ describe("node is a machine", () => {
     });
 
     expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "lxd-pod ›" })).toHaveProperty(
+    expect(screen.getByRole("link", { name: "lxd-pod ›" })).toHaveAttribute(
       "href",
-      `http://example.com${urls.kvm.lxd.single.index({ id: pod.id })}`
+      urls.kvm.lxd.single.index({ id: pod.id })
     );
   });
 
@@ -218,9 +218,9 @@ describe("node is a machine", () => {
     });
 
     expect(screen.getByText(DetailsCardLabels.Host)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "virsh-pod ›" })).toHaveProperty(
+    expect(screen.getByRole("link", { name: "virsh-pod ›" })).toHaveAttribute(
       "href",
-      `http://example.com${urls.kvm.virsh.details.index({ id: pod.id })}`
+      urls.kvm.virsh.details.index({ id: pod.id })
     );
   });
 
