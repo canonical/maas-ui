@@ -5,8 +5,8 @@ import SubnetDetailsHeader from "./SubnetDetailsHeader";
 import {
   subnet as subnetFactory,
   subnetDetails as subnetDetailsFactory,
-} from "testing/factories";
-import { userEvent, renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("shows the subnet name as the section title", () => {
   const subnet = subnetFactory({ id: 1, name: "subnet-1" });

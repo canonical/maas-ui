@@ -10,8 +10,8 @@ import {
   podResources as podResourcesFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("NumaResources", () => {
   it("can expand truncated NUMA nodes if above truncation point", async () => {

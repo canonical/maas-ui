@@ -13,8 +13,8 @@ import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, userEvent } from "@/testing/utils";
 
 const renderTestCase = (
   space = spaceFactory({

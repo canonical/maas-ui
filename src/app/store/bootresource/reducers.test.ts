@@ -12,7 +12,7 @@ import {
   bootResourceStatuses as bootResourceStatusesFactory,
   bootResourceUbuntu as bootResourceUbuntuFactory,
   bootResourceUbuntuCoreImage as bootResourceUbuntuCoreImageFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("bootresource reducers", () => {
   it("returns the initial state", () => {

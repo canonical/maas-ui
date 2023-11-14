@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within } from "@/testing/utils";
 
 vi.mock("../constants", () => ({
   __esModule: true,

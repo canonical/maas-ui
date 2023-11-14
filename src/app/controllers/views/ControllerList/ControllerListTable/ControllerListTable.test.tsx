@@ -11,13 +11,13 @@ import {
   controllerVersions as controllerVersionsFactory,
   rootState as rootStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("ControllerListTable", () => {
   let controller: Controller;

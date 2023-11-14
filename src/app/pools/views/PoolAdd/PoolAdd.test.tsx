@@ -4,8 +4,8 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import { PoolAdd, Label as PoolAddLabel } from "./PoolAdd";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("PoolAdd", () => {
   let state: RootState;

@@ -15,13 +15,13 @@ import {
   rootState as rootStateFactory,
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   render,
   screen,
   waitFor,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 let state: RootState;
 

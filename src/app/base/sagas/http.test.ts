@@ -20,7 +20,7 @@ import {
 import { ScriptType } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import { getCookie } from "@/app/utils";
-import { zone as zoneFactory } from "testing/factories";
+import { zone as zoneFactory } from "@/testing/factories";
 
 vi.mock("../../../bakery", () => {
   // Mock the bakery module.

@@ -16,8 +16,8 @@ import {
   vmClusterEventError as vmClusterEventErrorFactory,
   vmClusterState as vmClusterStateFactory,
   vmClusterStatuses as vmClusterStatusesFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

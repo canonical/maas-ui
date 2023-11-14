@@ -3,7 +3,7 @@ import reducers from "./slice";
 import {
   licenseKeys as licenseKeysFactory,
   licenseKeysState as licenseKeysStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("licenseKeys reducer", () => {
   it("should return the initial state", () => {

@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { screen, render, within } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 

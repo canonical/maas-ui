@@ -4,7 +4,7 @@ import { ServiceName } from "./types";
 import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("service reducer", () => {
   it("should return the initial state", () => {

@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import { useCompletedIntro, useCompletedUserIntro } from "./intro";
 
@@ -13,7 +14,7 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -42,7 +43,7 @@ describe("intro hooks", () => {
     });
 
     it("gets whether the intro has been skipped", () => {
-      const getCookieMock = getCookie as vi.Mock;
+      const getCookieMock = getCookie as Mock;
       getCookieMock.mockImplementation(() => "true");
       const state = rootStateFactory({
         config: configStateFactory({
@@ -81,7 +82,7 @@ describe("intro hooks", () => {
     });
 
     it("gets whether the user intro has been skipped", () => {
-      const getCookieMock = getCookie as vi.Mock;
+      const getCookieMock = getCookie as Mock;
       getCookieMock.mockImplementation(() => "true");
       const state = rootStateFactory({
         user: userStateFactory({

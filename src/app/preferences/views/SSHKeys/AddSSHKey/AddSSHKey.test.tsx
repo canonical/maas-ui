@@ -9,8 +9,8 @@ import type { RootState } from "@/app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("AddSSHKey", () => {
   let state: RootState;

@@ -15,13 +15,13 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   render,
   screen,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const mockUseNavigate = vi.fn();

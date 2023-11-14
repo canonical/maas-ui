@@ -23,8 +23,8 @@ import {
   scriptResultData as scriptResultDataFactory,
   scriptResultState as scriptResultStateFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 vi.mock("js-file-download", () => vi.fn());
 
@@ -304,9 +304,9 @@ describe("DownloadMenu", () => {
         status: ScriptResultStatus.PASSED,
       })
     );
-    vi
-      .spyOn(api.scriptresults, "getCurtinLogsTar")
-      .mockResolvedValue("curtin-logs-blob");
+    vi.spyOn(api.scriptresults, "getCurtinLogsTar").mockResolvedValue(
+      "curtin-logs-blob"
+    );
     const downloadSpy = vi.spyOn(fileDownload, "default");
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,

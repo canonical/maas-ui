@@ -13,13 +13,13 @@ import {
   podProject as podProjectFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("SelectProjectFormFields", () => {
   let state: RootState;

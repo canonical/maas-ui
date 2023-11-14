@@ -1,6 +1,6 @@
 import TableMenu from "./TableMenu";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("TableMenu ", () => {
   it("expands the menu on click", async () => {

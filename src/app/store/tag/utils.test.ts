@@ -1,6 +1,6 @@
 import { getTagNamesForIds, getTagsDisplay } from "./utils";
 
-import { tag as tagFactory } from "testing/factories";
+import { tag as tagFactory } from "@/testing/factories";
 
 describe("tag utils", () => {
   describe("getTagsDisplay", () => {

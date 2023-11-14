@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 import AddSpace from "./AddSpace";
 
 import { actions as spaceActions } from "@/app/store/space";
-import { rootState as rootStateFactory } from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 test("correctly dispatches space cleanup and create actions on form submit", async () => {
   const store = configureStore()(rootStateFactory());

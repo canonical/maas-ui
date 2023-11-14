@@ -13,8 +13,8 @@ import {
   tagState as tagStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("VirshDetails", () => {
   let state: RootState;

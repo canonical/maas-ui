@@ -2,7 +2,7 @@ import userEvent from "@testing-library/user-event";
 
 import TableConfirm from "./TableConfirm";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("TableConfirm", () => {
   it("renders", () => {

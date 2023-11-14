@@ -20,13 +20,13 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const generateWrapper = (state: RootState, pod: Pod) =>
   renderWithBrowserRouter(

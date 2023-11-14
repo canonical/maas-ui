@@ -11,8 +11,8 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("NonUbuntuImageSelect", () => {
   let state: RootState;

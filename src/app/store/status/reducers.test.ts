@@ -1,6 +1,6 @@
 import reducers from "./slice";
 
-import { statusState as statusStateFactory } from "testing/factories";
+import { statusState as statusStateFactory } from "@/testing/factories";
 
 describe("status", () => {
   it("should return the initial state", () => {

@@ -11,8 +11,13 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, userEvent, within } from "testing/utils";
+} from "@/testing/factories";
+import {
+  renderWithMockStore,
+  screen,
+  userEvent,
+  within,
+} from "@/testing/utils";
 
 describe("PowerTypeFields", () => {
   let state: RootState;

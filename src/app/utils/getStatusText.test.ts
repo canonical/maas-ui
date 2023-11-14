@@ -1,7 +1,7 @@
 import { getStatusText } from "./getStatusText";
 
 import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
-import { machine as machineFactory } from "testing/factories";
+import { machine as machineFactory } from "@/testing/factories";
 
 describe("getStatusText", () => {
   it("displays the machine's status if not deploying or deployed", () => {

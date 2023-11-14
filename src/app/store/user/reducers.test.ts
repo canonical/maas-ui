@@ -6,7 +6,7 @@ import {
   authState as authStateFactory,
   userState as userStateFactory,
   userStatuses as userStatusesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("users reducer", () => {
   it("should return the initial state", () => {

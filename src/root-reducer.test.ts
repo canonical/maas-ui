@@ -9,7 +9,7 @@ import {
   statusState as statusStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("rootReducer", () => {
   it(`should reset app to initial state on LOGOUT_SUCCESS, except status which

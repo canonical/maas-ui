@@ -8,7 +8,7 @@ import configureStore from "redux-mock-store";
 
 import { useGetURLId } from "./urls";
 
-import { rootState as rootStateFactory } from "testing/factories";
+import { rootState as rootStateFactory } from "@/testing/factories";
 
 const mockStore = configureStore();
 

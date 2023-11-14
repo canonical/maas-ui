@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 
 import TableActions from "./TableActions";
 
-import { expectTooltipOnHover, renderWithBrowserRouter } from "testing/utils";
+import { expectTooltipOnHover, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("TableActions ", () => {
   it("renders a copy button if copy value provided", () => {

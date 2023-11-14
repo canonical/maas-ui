@@ -1,6 +1,6 @@
 import ZonesListHeader from "./ZonesListHeader";
 
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ZonesListHeader", () => {
   it("displays the form when Add AZ is clicked", async () => {

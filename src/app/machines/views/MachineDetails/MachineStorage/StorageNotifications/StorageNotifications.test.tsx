@@ -8,8 +8,8 @@ import {
   machineState as machineStateFactory,
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("StorageNotifications", () => {
   let state: RootState;

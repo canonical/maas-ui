@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import ModelNotFound from "./ModelNotFound";
 
-import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

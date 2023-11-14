@@ -12,8 +12,8 @@ import {
   user as userFactory,
   userState as userStateFactory,
   tag as tagFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("OwnerColumn", () => {
   let state: RootState;

@@ -7,8 +7,8 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("RamColumn", () => {
   let state: RootState;

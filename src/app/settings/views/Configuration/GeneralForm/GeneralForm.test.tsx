@@ -11,8 +11,8 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 

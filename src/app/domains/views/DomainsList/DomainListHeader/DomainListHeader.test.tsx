@@ -9,8 +9,8 @@ import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("DomainListHeader", () => {
   let initialState: RootState;

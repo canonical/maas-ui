@@ -14,7 +14,7 @@ import {
   zoneModelAction as zoneModelActionFactory,
   zoneModelActions as zoneModelActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 it("returns the initial state", () => {
   expect(reducers(undefined, { type: "" })).toEqual({

@@ -14,7 +14,7 @@ import {
   rootState as rootStateFactory,
   tagState as tagStateFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

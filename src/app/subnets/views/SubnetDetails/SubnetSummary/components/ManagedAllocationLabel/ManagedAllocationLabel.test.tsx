@@ -1,6 +1,6 @@
 import ManagedAllocationLabel from "./ManagedAllocationLabel";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 it("shows a tooltip", async () => {
   render(<ManagedAllocationLabel />);

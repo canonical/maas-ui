@@ -3,8 +3,8 @@ import type { Props as FilterAccordionProps } from "./FilterAccordion";
 
 import type { MachineDetails, MachineMeta } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { machineDetails as machineDetailsFactory } from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+import { machineDetails as machineDetailsFactory } from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("FilterAccordion", () => {
   let items: MachineDetails[];

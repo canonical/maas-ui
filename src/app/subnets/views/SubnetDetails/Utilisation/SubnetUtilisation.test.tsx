@@ -1,7 +1,7 @@
 import SubnetUtilisation from "./SubnetUtilisation";
 
-import { subnetStatistics as subnetStatisticsFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { subnetStatistics as subnetStatisticsFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 it("renders subnet utilisation statistics", () => {
   const subnetStatistics = subnetStatisticsFactory({

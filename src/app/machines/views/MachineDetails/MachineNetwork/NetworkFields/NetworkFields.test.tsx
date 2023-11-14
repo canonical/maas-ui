@@ -27,8 +27,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -83,10 +83,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -118,10 +115,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -177,10 +171,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -229,10 +220,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -281,10 +269,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -313,10 +298,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -339,10 +321,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -372,10 +351,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields
               editing
               interfaceType={NetworkInterfaceTypes.PHYSICAL}
@@ -450,10 +426,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -473,10 +446,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
@@ -504,10 +474,7 @@ describe("NetworkFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik
-            initialValues={networkFieldsInitialValues}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={networkFieldsInitialValues} onSubmit={vi.fn()}>
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>

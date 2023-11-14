@@ -8,8 +8,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("SetPoolFormFields", () => {
   let state: RootState;

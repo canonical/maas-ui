@@ -6,7 +6,7 @@ import {
   osInfoState as osInfoStateFactory,
   osInfo as osInfoFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("osInfo selectors", () => {
   describe("get", () => {

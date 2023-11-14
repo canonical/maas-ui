@@ -4,7 +4,7 @@ import type { Filters } from "@/app/utils/search/filter-handlers";
 import {
   controller as controllerFactory,
   tag as tagFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("search", () => {
   describe("getControllerValue", () => {

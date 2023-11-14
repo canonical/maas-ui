@@ -7,13 +7,13 @@ import {
   machineInterface as machineInterfaceFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 describe("NetworkCardInterface", () => {
   let state: RootState;
   beforeEach(() => {

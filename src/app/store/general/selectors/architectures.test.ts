@@ -4,7 +4,7 @@ import {
   generalState as generalStateFactory,
   architecturesState as architecturesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("architectures selectors", () => {
   describe("get", () => {

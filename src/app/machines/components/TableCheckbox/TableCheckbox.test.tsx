@@ -8,8 +8,13 @@ import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineState as machineStateFactory,
-} from "testing/factories";
-import { userEvent, screen, waitFor, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 let state: RootState;
 const callId = "123456";

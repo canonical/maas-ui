@@ -7,8 +7,8 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;

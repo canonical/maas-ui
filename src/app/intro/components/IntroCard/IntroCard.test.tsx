@@ -1,6 +1,6 @@
 import IntroCard from "./IntroCard";
 
-import { screen, render } from "testing/utils";
+import { screen, render } from "@/testing/utils";
 
 describe("IntroCard", () => {
   it("displays a title link if supplied", () => {

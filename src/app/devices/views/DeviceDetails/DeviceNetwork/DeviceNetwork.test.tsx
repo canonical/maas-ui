@@ -7,8 +7,8 @@ import {
   deviceDetails as deviceDetailsFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

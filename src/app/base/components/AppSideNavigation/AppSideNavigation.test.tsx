@@ -21,7 +21,7 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -29,7 +29,7 @@ import {
   waitFor,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockUseNavigate = vi.fn();
 vi.mock("react-router-dom-v5-compat", () => ({

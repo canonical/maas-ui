@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import MachineListGroupCount from "./MachineListGroupCount";
 
@@ -8,7 +9,7 @@ import { FetchNodeStatus } from "@/app/store/types/node";
 
 vi.mock("@/app/store/machine/utils/hooks");
 
-const mockedUseFetchMachineCount = useFetchMachineCount as vi.MockedFunction<
+const mockedUseFetchMachineCount = useFetchMachineCount as MockedFunction<
   typeof useFetchMachineCount
 >;
 

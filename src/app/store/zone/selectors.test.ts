@@ -10,7 +10,7 @@ import {
   zoneModelAction as zoneModelActionFactory,
   zoneModelActions as zoneModelActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 it("can get all zones", () => {
   const items = [zoneFactory(), zoneFactory()];

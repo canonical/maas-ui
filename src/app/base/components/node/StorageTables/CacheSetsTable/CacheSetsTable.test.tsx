@@ -14,8 +14,8 @@ import {
   machineStatuses as machineStatusesFactory,
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

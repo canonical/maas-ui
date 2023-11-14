@@ -1,7 +1,10 @@
 import { FilterDevices, getDeviceValue } from "./search";
 
 import type { Filters } from "@/app/utils/search/filter-handlers";
-import { device as deviceFactory, tag as tagFactory } from "testing/factories";
+import {
+  device as deviceFactory,
+  tag as tagFactory,
+} from "@/testing/factories";
 
 describe("search", () => {
   describe("getDeviceValue", () => {

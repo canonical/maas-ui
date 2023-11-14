@@ -7,8 +7,8 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
   vmClusterResource as vmClusterResourceFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("StorageColumn", () => {
   it("displays correct storage information for a pod", () => {

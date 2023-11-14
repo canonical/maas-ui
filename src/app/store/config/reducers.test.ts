@@ -4,7 +4,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("config reducer", () => {
   it("should return the initial state", () => {

@@ -6,7 +6,7 @@ import {
   machineActionsState as machineActionsStateFactory,
   machineAction as machineActionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("machineActions selectors", () => {
   describe("get", () => {

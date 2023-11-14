@@ -17,8 +17,8 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = vi.importActual("@canonical/react-components/dist/hooks");
@@ -81,9 +81,9 @@ it("fetches script results if they haven't been fetched", () => {
 
 it("fetches script results if the commissioning status changes to pending", () => {
   // Mock the previous commissioning status being different to pending.
-  vi
-    .spyOn(reactComponentHooks, "usePrevious")
-    .mockImplementation(() => TestStatusStatus.PASSED);
+  vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+    () => TestStatusStatus.PASSED
+  );
   const controller = controllerDetailsFactory({
     commissioning_status: testStatusFactory({
       status: TestStatusStatus.PENDING, // "new" status is pending

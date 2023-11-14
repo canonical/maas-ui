@@ -1,6 +1,6 @@
 import SegmentedControl from "./SegmentedControl";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 const options = [
   {
@@ -19,11 +19,7 @@ const options = [
 
 it("renders a segment for each option", () => {
   render(
-    <SegmentedControl
-      onSelect={vi.fn()}
-      options={options}
-      selected="#00FF00"
-    />
+    <SegmentedControl onSelect={vi.fn()} options={options} selected="#00FF00" />
   );
   expect(screen.getByRole("tab", { name: "Red" })).toBeInTheDocument();
   expect(screen.getByRole("tab", { name: "Green" })).toBeInTheDocument();
@@ -32,11 +28,7 @@ it("renders a segment for each option", () => {
 
 it("selects the active option", () => {
   render(
-    <SegmentedControl
-      onSelect={vi.fn()}
-      options={options}
-      selected="#00FF00"
-    />
+    <SegmentedControl onSelect={vi.fn()} options={options} selected="#00FF00" />
   );
   expect(screen.getByRole("tab", { name: "Green" })).toHaveAttribute(
     "aria-selected",

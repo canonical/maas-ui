@@ -1,6 +1,6 @@
 import Definition from "./Definition";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 it("renders term and description correctly", () => {
   render(<Definition description="description text" label="Term" />);

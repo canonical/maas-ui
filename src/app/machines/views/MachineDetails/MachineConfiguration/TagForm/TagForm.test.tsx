@@ -18,8 +18,8 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

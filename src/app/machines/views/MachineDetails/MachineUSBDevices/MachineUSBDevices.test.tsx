@@ -8,8 +8,8 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

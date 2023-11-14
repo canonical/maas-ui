@@ -10,7 +10,7 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

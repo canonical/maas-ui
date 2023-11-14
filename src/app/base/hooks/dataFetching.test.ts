@@ -1,6 +1,6 @@
 import { useFetchActions } from "./dataFetching";
 
-import { renderHookWithMockStore } from "testing/utils";
+import { renderHookWithMockStore } from "@/testing/utils";
 
 const mockDispatch = vi.fn();
 const mockAction = vi.fn(() => ({

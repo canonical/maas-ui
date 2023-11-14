@@ -16,13 +16,13 @@ import {
   subnetStatistics as subnetStatisticsFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   waitFor,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

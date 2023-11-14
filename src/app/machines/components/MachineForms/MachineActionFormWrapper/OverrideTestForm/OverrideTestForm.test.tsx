@@ -25,8 +25,8 @@ import {
   machineStateDetails as machineStateDetailsFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
   scriptResultState as scriptResultStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

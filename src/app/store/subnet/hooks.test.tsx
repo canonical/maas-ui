@@ -14,7 +14,7 @@ import {
   vlanState as vlanStateFactory,
   vlan as vlanFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

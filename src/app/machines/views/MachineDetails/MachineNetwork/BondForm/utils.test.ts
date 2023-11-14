@@ -16,7 +16,7 @@ import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   networkLink as networkLinkFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("BondForm utils", () => {
   describe("getFirstSelected", () => {

@@ -14,13 +14,13 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithMockStore,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -46,11 +46,7 @@ describe("NetworkTableActions", () => {
 
   it("can display the menu", () => {
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     expect(
@@ -64,11 +60,7 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.VLAN;
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     expect(screen.getByRole("button", { name: "Take action:" })).toBeDisabled();
@@ -79,11 +71,7 @@ describe("NetworkTableActions", () => {
     nic.link_connected = false;
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -99,11 +87,7 @@ describe("NetworkTableActions", () => {
     nic.link_connected = true;
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -162,11 +146,7 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.BOND;
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -232,11 +212,7 @@ describe("NetworkTableActions", () => {
     nic.links = [networkLinkFactory()];
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -259,11 +235,7 @@ describe("NetworkTableActions", () => {
     nic.links = [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })];
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -290,11 +262,7 @@ describe("NetworkTableActions", () => {
     nic.vlan_id = vlan.id;
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -314,11 +282,7 @@ describe("NetworkTableActions", () => {
     state.vlan.items = [];
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -337,11 +301,7 @@ describe("NetworkTableActions", () => {
     state.machine.items[0].status = NodeStatus.NEW;
 
     renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
       { state }
     );
     // Open the menu:

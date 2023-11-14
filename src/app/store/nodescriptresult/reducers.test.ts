@@ -5,7 +5,7 @@ import reducers from "./slice";
 import {
   scriptResult as scriptResultFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("nodescriptresult reducer", () => {
   it("reduces getByNodeIdSuccess", () => {

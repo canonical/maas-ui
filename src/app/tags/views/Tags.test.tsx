@@ -1,3 +1,5 @@
+import type { Mock } from "vitest";
+
 import { Label as TagsHeaderLabel } from "../components/TagsHeader/TagsHeader";
 
 import { Label as TagDetailsLabel } from "./TagDetails/TagDetails";
@@ -12,11 +14,11 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("Tags", () => {
-  let scrollToSpy: vi.Mock;
+  let scrollToSpy: Mock;
   let state: RootState;
 
   beforeEach(() => {

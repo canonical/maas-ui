@@ -10,8 +10,13 @@ import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

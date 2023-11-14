@@ -18,7 +18,7 @@ import {
   scriptResultState as scriptResultStateFactory,
   testStatus as testStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 vi.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = vi.importActual("@canonical/react-components/dist/hooks");
@@ -126,9 +126,9 @@ describe("MachineCommissioning", () => {
     ).toBe(1);
   });
   it("refetchs script results when the machine commissioning status changes", () => {
-    vi
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => TestStatusStatus.PASSED);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+      () => TestStatusStatus.PASSED
+    );
     state.machine.items = [
       machineDetailsFactory({
         commissioning_status: testStatusFactory({

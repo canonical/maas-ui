@@ -4,7 +4,7 @@ import {
   licenseKeys as licenseKeysFactory,
   licenseKeysState as licenseKeysStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("licensekeys selectors", () => {
   describe("all", () => {

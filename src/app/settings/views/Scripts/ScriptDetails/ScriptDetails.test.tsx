@@ -11,8 +11,8 @@ import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, render, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore();
 

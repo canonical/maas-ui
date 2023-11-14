@@ -10,8 +10,13 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   machineFilterGroup as machineFilterGroupFactory,
-} from "testing/factories";
-import { userEvent, screen, waitFor, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

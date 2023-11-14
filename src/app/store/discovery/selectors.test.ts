@@ -4,7 +4,7 @@ import {
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("discovery selectors", () => {
   it("can get all items", () => {

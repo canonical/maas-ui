@@ -2,7 +2,7 @@ import type { ActionFormProps } from "./ActionForm";
 import ActionForm, { Labels } from "./ActionForm";
 
 import { TestIds } from "@/app/base/components/FormikFormButtons";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ActionForm", () => {
   it("shows a spinner if form has not fully loaded", () => {

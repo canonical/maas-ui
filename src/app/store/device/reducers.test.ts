@@ -7,7 +7,7 @@ import {
   deviceEventError as deviceEventErrorFactory,
   deviceStatus as deviceStatusFactory,
   deviceState as deviceStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("device reducers", () => {
   it("should return the initial state", () => {

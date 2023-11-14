@@ -10,7 +10,7 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -18,7 +18,7 @@ import {
   within,
   renderWithMockStore,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

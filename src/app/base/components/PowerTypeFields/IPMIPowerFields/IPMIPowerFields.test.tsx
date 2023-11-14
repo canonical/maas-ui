@@ -7,8 +7,8 @@ import IPMIPowerFields, {
 
 import type { PowerField } from "@/app/store/general/types";
 import { PowerFieldType } from "@/app/store/general/types";
-import { powerField as powerFieldFactory } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import { powerField as powerFieldFactory } from "@/testing/factories";
+import { render, screen, waitFor } from "@/testing/utils";
 
 let workaroundsField: PowerField;
 beforeEach(() => {

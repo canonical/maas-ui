@@ -8,12 +8,12 @@ import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithMockStore,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("APIKeyList", () => {
   let state: RootState;

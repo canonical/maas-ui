@@ -13,8 +13,8 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

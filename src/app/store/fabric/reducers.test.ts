@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("fabric reducer", () => {
   it("should return the initial state", () => {

@@ -13,8 +13,8 @@ import {
   pocketsToDisableState as pocketsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("RepositoryFormFields", () => {
   let state: RootState;

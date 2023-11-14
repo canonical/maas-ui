@@ -3,8 +3,8 @@ import { Formik } from "formik";
 import BasePowerField from "./BasePowerField";
 
 import { PowerFieldType } from "@/app/store/general/types";
-import { powerField as powerFieldFactory } from "testing/factories";
-import { screen, render, userEvent } from "testing/utils";
+import { powerField as powerFieldFactory } from "@/testing/factories";
+import { screen, render, userEvent } from "@/testing/utils";
 
 describe("BasePowerField", () => {
   it("can be given a custom power parameters name", () => {

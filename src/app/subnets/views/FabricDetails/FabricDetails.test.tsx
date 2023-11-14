@@ -10,8 +10,8 @@ import { actions as subnetActions } from "@/app/store/subnet";
 import {
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

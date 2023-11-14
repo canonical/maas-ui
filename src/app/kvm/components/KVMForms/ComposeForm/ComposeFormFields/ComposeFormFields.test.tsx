@@ -29,14 +29,14 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,
   userEvent,
   fireEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

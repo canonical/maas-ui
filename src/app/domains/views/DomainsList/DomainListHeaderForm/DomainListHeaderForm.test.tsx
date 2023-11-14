@@ -8,13 +8,13 @@ import DomainListHeaderForm, {
 } from "./DomainListHeaderForm";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
+import { rootState as rootStateFactory } from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -14,8 +14,8 @@ import {
   subnet as subnetFactory,
   staticRoute as staticRouteFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 it("displays loading text on load", async () => {
   const mockStore = configureStore();

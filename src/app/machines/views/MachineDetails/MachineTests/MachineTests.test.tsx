@@ -19,8 +19,8 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = vi.importActual("@canonical/react-components/dist/hooks");
@@ -278,9 +278,9 @@ describe("MachineTests", () => {
 
   it("refetchs script results when the machine testing status changes", () => {
     // Mock the previous value to something different to the current machine.
-    vi
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => TestStatusStatus.PASSED);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+      () => TestStatusStatus.PASSED
+    );
     state.machine.items = [
       machineDetailsFactory({
         locked: false,

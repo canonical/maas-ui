@@ -14,8 +14,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 it("displays a spinner if machine is loading", () => {
   const state = rootStateFactory({

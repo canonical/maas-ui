@@ -13,8 +13,8 @@ import {
   vlan as vlanFactory,
   vlanDetails as vlanDetailsFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("VLANDetailsHeader", () => {
   let state: RootState;

@@ -10,8 +10,8 @@ import {
   podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("AuthenticationCard", () => {
   let state: RootState;

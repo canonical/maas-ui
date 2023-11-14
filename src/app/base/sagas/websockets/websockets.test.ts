@@ -30,7 +30,7 @@ import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import WebSocketClient, {
   WebSocketMessageType,
   WebSocketResponseType,

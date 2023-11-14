@@ -8,8 +8,13 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
   machineState as machineStateFactory,
-} from "testing/factories";
-import { userEvent, screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 describe("MachineSelectTable", () => {
   let machines: Machine[];

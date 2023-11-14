@@ -12,8 +12,8 @@ import {
   spaceState as spaceStateFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("displays validation messages for VID", async () => {
   const store = configureStore()(rootStateFactory());

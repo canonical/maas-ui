@@ -10,8 +10,8 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 

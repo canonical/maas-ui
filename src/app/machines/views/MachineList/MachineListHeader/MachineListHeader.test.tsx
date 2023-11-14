@@ -5,7 +5,7 @@ import MachineListHeader from "./MachineListHeader";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineStateCount as machineStateCountFactory,
@@ -17,8 +17,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 enableCallIdMocks();
 

@@ -7,8 +7,8 @@ import {
   configState as configStateFactory,
   podStoragePoolResource as podStoragePoolFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("KVMStorageCards", () => {
   it("shows sort label as sorting by default then id if default pool id provided", () => {

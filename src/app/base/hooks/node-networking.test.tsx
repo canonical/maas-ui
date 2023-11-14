@@ -19,7 +19,7 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

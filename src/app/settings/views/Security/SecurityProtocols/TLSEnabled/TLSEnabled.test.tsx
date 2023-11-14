@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   tlsCertificate as tlsCertificateFactory,
   tlsCertificateState as tlsCertificateStateFactory,
-} from "testing/factories";
-import { userEvent, fireEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

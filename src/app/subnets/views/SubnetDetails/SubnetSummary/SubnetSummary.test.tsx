@@ -18,8 +18,8 @@ import {
   vlanState as vlanStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -4,7 +4,7 @@ import {
   rootState as rootStateFactory,
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("sslkey selectors", () => {
   describe("all", () => {

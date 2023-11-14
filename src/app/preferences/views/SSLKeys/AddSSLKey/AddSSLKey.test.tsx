@@ -11,8 +11,13 @@ import type { RootState } from "@/app/store/root/types";
 import {
   sslKeyState as sslKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

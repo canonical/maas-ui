@@ -17,8 +17,8 @@ import {
   vlanState as vlanStateFactory,
   vlan as vlanFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, within, waitFor, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, within, waitFor, userEvent } from "@/testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {

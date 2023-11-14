@@ -11,13 +11,13 @@ import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

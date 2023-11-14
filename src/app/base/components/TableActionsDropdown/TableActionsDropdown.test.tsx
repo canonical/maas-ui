@@ -1,6 +1,6 @@
 import TableActionsDropdown from "./TableActionsDropdown";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("TableActionsDropdown", () => {
   it("can be explicitly disabled", () => {

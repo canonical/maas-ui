@@ -6,8 +6,8 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen, userEvent } from "@/testing/utils";
 
 describe("FilesystemFields", () => {
   it("only shows filesystem types that require a storage device", () => {

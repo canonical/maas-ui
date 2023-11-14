@@ -1,6 +1,6 @@
 import ProxyAccessLabel from "./ProxyAccessLabel";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 it("shows a tooltip when proxy access is allowed", async () => {
   render(<ProxyAccessLabel allowProxy />);

@@ -9,8 +9,8 @@ import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

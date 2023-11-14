@@ -9,8 +9,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   it("shows a spinner if the machine is still loading", () => {

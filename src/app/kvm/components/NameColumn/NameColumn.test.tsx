@@ -7,8 +7,8 @@ import {
   pod as podFactory,
   podPowerParameters as powerParametersFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;

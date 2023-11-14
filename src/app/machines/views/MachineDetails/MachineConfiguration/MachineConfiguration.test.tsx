@@ -10,7 +10,7 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

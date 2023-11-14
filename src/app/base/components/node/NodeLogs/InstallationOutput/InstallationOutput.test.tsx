@@ -17,8 +17,8 @@ import {
   scriptResultData as scriptResultDataFactory,
   scriptResultState as scriptResultStateFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("InstallationOutput", () => {
   let state: RootState;

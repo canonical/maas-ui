@@ -14,8 +14,8 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("LXDClusterHostsTable", () => {
   let state: RootState;

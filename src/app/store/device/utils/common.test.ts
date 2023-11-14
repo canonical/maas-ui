@@ -4,7 +4,7 @@ import { DeviceIpAssignment } from "@/app/store/device/types";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("device utils", () => {
   describe("isDeviceDetails", () => {

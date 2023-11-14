@@ -15,7 +15,7 @@ import {
   machineEventError as eventErrorFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

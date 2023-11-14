@@ -15,7 +15,7 @@ import {
   bondOptions as bondOptionsFactory,
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const lacpRates: BondLacpRateOptions = [
   [BondLacpRate.FAST, BondLacpRate.FAST],

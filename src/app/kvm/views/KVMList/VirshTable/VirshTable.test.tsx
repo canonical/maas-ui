@@ -9,8 +9,8 @@ import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("VirshTable", () => {
   let state: RootState;

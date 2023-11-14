@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   nodeDevice as nodeDeviceFactory,
   nodeDeviceState as nodeDeviceStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("node device reducer", () => {
   it("returns the initial state", () => {

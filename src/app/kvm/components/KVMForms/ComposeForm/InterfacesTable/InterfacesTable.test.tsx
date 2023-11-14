@@ -21,13 +21,13 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("InterfacesTable", () => {
   let initialState: RootState;

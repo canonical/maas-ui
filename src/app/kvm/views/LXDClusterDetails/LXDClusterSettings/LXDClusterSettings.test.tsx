@@ -11,8 +11,8 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { render } from "testing/utils";
+} from "@/testing/factories";
+import { render } from "@/testing/utils";
 
 const mockStore = configureStore();
 

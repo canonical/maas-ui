@@ -2,15 +2,12 @@ import { Formik } from "formik";
 
 import TagNameField from "./TagNameField";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("FormikField", () => {
   it("maps the initial value to the tag format", () => {
     render(
-      <Formik
-        initialValues={{ tags: ["koala", "wallaby"] }}
-        onSubmit={vi.fn()}
-      >
+      <Formik initialValues={{ tags: ["koala", "wallaby"] }} onSubmit={vi.fn()}>
         <TagNameField />
       </Formik>
     );

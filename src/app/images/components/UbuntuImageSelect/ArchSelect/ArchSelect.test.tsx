@@ -10,12 +10,12 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithMockStore,
   expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("ArchSelect", () => {
   let state: RootState;

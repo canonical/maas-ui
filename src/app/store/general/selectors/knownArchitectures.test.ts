@@ -5,7 +5,7 @@ import {
   knownArchitecture as knownArchitectureFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("knownArchitectures selectors", () => {
   describe("get", () => {

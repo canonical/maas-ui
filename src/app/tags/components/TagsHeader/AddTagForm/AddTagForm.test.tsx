@@ -16,15 +16,15 @@ import {
   tag as tagFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   userEvent,
   render,
   screen,
   waitFor,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -8,8 +8,8 @@ import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

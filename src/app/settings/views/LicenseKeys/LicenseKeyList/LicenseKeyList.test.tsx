@@ -13,8 +13,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

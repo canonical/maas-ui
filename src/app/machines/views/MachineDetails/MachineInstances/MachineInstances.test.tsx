@@ -8,8 +8,8 @@ import {
   networkLink as networkLinkFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("MachineInstances", () => {
   let state: RootState;

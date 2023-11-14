@@ -8,13 +8,13 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithBrowserRouter,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("PowerColumn", () => {
   let state: RootState;

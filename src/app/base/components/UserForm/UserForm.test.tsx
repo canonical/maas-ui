@@ -7,8 +7,8 @@ import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
   user as userFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("UserForm", () => {
   let state: RootState;

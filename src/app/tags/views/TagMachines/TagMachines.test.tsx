@@ -13,7 +13,7 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { actions as tagActions } from "@/app/store/tag";
 import { NodeStatus, FetchNodeStatus } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -23,8 +23,8 @@ import {
   tagState as tagStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 enableCallIdMocks();
 const mockStore = configureStore();

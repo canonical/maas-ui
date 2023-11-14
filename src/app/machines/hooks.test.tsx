@@ -15,7 +15,7 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -112,9 +112,9 @@ describe("machine utils", () => {
 
     it("can return saved state for a machine performing an action", () => {
       // Mock previous saving value to be true
-      vi
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
+      vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+        () => true
+      );
       state.machine.statuses.abc123.deletingFilesystem = false;
       const store = mockStore(state);
       const { result } = renderHook(
@@ -134,9 +134,9 @@ describe("machine utils", () => {
 
     it("runs the onSaved function if successfully saved", () => {
       // Mock previous saving value to be true
-      vi
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
+      vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+        () => true
+      );
       state.machine.statuses.abc123.deletingFilesystem = false;
       const onSaved = vi.fn();
       const store = mockStore(state);
@@ -157,9 +157,9 @@ describe("machine utils", () => {
 
     it("does not run the onSaved function if errors are present", () => {
       // Mock previous saving value to be true
-      vi
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
+      vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+        () => true
+      );
       state.machine.eventErrors = [
         machineEventErrorFactory({
           error: "front fell off",

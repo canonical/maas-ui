@@ -1,7 +1,7 @@
 import HiddenColumnsSelect from "./HiddenColumnsSelect";
 
 import { columnToggles } from "@/app/machines/constants";
-import { userEvent, screen, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 it("calls setHiddenColumns correctly on click of a checkbox", async () => {
   const hiddenColumns: Array<""> = [];

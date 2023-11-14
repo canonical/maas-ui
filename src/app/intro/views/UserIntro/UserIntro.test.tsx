@@ -1,6 +1,7 @@
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+import type { SpyInstance } from "vitest";
 
 import UserIntro, { Labels as UserIntroLabels } from "./UserIntro";
 
@@ -16,24 +17,26 @@ import {
   user as userFactory,
   userEventError as userEventErrorFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
 describe("UserIntro", () => {
   let state: RootState;
-  let markedIntroCompleteMock: vi.SpyInstance;
+  let markedIntroCompleteMock: SpyInstance;
   beforeEach(() => {
     markedIntroCompleteMock = vi
       .spyOn(baseHooks, "useCycled")
-      .mockImplementation(() => [false, () => null]);
+      .mockImplementation(
+        () => [false, () => null] as ReturnType<typeof baseHooks.useCycled>
+      );
     state = rootStateFactory({
       sshkey: sshKeyStateFactory({
         items: [sshKeyFactory()],

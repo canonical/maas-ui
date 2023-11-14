@@ -1,7 +1,7 @@
 import DangerZoneCard from "./DangerZoneCard";
 
 import { KVMSidePanelViews } from "@/app/kvm/constants";
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("DangerZoneCard", () => {
   it("can open the delete KVM form", async () => {

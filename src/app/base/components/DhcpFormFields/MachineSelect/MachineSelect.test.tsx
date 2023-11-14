@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import MachineSelect, { Labels } from "./MachineSelect";
 
-import { userEvent, screen, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 it("can open select box on click", async () => {
   renderWithMockStore(

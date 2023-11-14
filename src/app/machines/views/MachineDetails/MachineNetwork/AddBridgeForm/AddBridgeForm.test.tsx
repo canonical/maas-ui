@@ -17,13 +17,13 @@ import {
   vlanState as vlanStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;

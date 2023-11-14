@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 import BridgeFormFields from "./BridgeFormFields";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

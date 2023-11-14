@@ -11,7 +11,7 @@ import {
 import {
   machine as machineFactory,
   modelRef as modelRefFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("createMachineListGroup", () => {
   it("creates a group from architecture", () => {

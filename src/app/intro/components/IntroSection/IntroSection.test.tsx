@@ -12,12 +12,12 @@ import {
   user as userFactory,
   userEventError as userEventErrorFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("IntroSection", () => {
   let state: RootState;

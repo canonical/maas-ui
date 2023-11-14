@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import {
   useCycled,
@@ -23,7 +24,7 @@ vi.mock("react-router-dom", () => ({
 describe("hooks", () => {
   describe("useScrollOnRender", () => {
     let html: HTMLHtmlElement | null;
-    let scrollToSpy: vi.Mock;
+    let scrollToSpy: Mock;
     let targetNode: HTMLElement;
 
     beforeEach(() => {

@@ -14,13 +14,13 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

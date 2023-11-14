@@ -8,8 +8,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

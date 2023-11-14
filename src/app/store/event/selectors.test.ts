@@ -4,7 +4,7 @@ import {
   eventRecord as eventRecordFactory,
   eventState as eventStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("eventSelectors selectors", () => {
   it("can get all items", () => {

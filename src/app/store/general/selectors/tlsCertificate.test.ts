@@ -5,7 +5,7 @@ import {
   tlsCertificate as tlsCertificateFactory,
   tlsCertificateState as tlsCertificateStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("get", () => {
   it("returns tlsCertificate", () => {

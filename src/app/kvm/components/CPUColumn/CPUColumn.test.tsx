@@ -9,8 +9,8 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
   vmClusterResource as vmClusterResourceFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("CPUColumn", () => {
   let state: RootState;

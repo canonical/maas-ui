@@ -8,7 +8,7 @@ import VirshResources from "./VirshResources";
 import {
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

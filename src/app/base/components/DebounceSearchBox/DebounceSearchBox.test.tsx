@@ -5,7 +5,7 @@ import DebounceSearchBox, {
   Labels,
 } from "./DebounceSearchBox";
 
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 describe("DebounceSearchBox", () => {
   beforeEach(() => {

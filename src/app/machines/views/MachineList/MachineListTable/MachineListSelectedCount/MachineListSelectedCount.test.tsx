@@ -9,7 +9,7 @@ import {
   renderWithMockStore,
   getTestState,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

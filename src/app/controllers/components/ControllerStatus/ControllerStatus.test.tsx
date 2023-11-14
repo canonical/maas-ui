@@ -8,13 +8,13 @@ import {
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
   userEvent,
   expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const getIcon = () => screen.getByTestId("controller-status-icon");
 

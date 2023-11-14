@@ -17,8 +17,8 @@ import {
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

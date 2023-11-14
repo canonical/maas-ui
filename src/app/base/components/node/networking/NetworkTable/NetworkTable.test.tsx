@@ -20,13 +20,13 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("NetworkTable", () => {
   let state: RootState;

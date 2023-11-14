@@ -11,8 +11,13 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 beforeEach(() => {
   MockDate.set("Fri, 18 Nov. 2022 10:55:00");

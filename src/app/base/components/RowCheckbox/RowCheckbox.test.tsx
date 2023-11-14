@@ -1,6 +1,6 @@
 import RowCheckbox from "./RowCheckbox";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("RowCheckbox", () => {
   it("can show a label", () => {

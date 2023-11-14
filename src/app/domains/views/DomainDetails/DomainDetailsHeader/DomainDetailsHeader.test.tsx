@@ -9,8 +9,8 @@ import {
   domainDetails as domainDetailsFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {

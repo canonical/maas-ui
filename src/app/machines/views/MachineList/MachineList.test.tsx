@@ -28,8 +28,8 @@ import {
   vaultEnabledState as vaultEnabledStateFactory,
   controllerState as controllerStateFactory,
   controller as controllerFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, fireEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, fireEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -390,8 +390,7 @@ describe("MachineList", () => {
   });
 
   it("can change pages", async () => {
-    vi
-      .spyOn(query, "generateCallId")
+    vi.spyOn(query, "generateCallId")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.

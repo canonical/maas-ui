@@ -4,7 +4,7 @@ import {
   defaultMinHweKernelState as defaultMinHweKernelStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("defaultMinHweKernel selectors", () => {
   describe("get", () => {

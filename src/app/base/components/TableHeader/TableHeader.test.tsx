@@ -4,7 +4,7 @@
 import TableHeader from "./TableHeader";
 
 import { SortDirection } from "@/app/base/types";
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("TableHeader ", () => {
   it("renders a div if no onClick prop is present", () => {
@@ -28,11 +28,7 @@ describe("TableHeader ", () => {
       direction: SortDirection.DESCENDING,
     };
     const { container } = render(
-      <TableHeader
-        currentSort={currentSort}
-        onClick={vi.fn()}
-        sortKey={"key"}
-      >
+      <TableHeader currentSort={currentSort} onClick={vi.fn()} sortKey={"key"}>
         Text
       </TableHeader>
     );
@@ -48,11 +44,7 @@ describe("TableHeader ", () => {
       direction: SortDirection.ASCENDING,
     };
     const { container } = render(
-      <TableHeader
-        currentSort={currentSort}
-        onClick={vi.fn()}
-        sortKey={"key"}
-      >
+      <TableHeader currentSort={currentSort} onClick={vi.fn()} sortKey={"key"}>
         Text
       </TableHeader>
     );

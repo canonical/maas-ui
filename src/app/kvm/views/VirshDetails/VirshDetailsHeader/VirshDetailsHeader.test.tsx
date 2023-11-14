@@ -12,8 +12,8 @@ import {
   podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("VirshDetailsHeader", () => {
   let state: RootState;

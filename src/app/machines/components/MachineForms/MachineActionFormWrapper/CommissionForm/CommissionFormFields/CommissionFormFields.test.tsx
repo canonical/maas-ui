@@ -9,8 +9,8 @@ import {
   rootState as rootStateFactory,
   scriptState as scriptStateFactory,
   script as scriptFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("CommissionForm", () => {
   let state: RootState;

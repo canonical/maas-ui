@@ -1,4 +1,5 @@
 import configureStore from "redux-mock-store";
+import type { Mock, SpyInstance } from "vitest";
 
 import NodeTestsTable from "./NodeTestsTable";
 
@@ -18,13 +19,13 @@ import {
   rootState as rootStateFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithBrowserRouter,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -32,8 +33,8 @@ describe("NodeTestsTable", () => {
   let controller: ControllerDetails;
   let machine: MachineDetails;
   let state: RootState;
-  let mockSendAnalytics: vi.Mock;
-  let mockUseSendAnalytics: vi.SpyInstance;
+  let mockSendAnalytics: Mock;
+  let mockUseSendAnalytics: SpyInstance;
 
   beforeEach(() => {
     machine = machineDetailsFactory({

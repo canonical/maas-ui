@@ -13,7 +13,7 @@ import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

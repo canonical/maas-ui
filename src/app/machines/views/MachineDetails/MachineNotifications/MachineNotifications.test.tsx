@@ -1,6 +1,6 @@
 import MachineNotifications from "./MachineNotifications";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 it("ignores inactive notifications", () => {
   render(

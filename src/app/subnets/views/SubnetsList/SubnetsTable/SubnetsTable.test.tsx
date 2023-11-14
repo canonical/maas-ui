@@ -14,8 +14,8 @@ import {
   subnetState as subnetStateFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
   const fabrics = [
@@ -90,11 +90,7 @@ it("renders Subnets by Space table when grouping by Space", () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
         <CompatRouter>
-          <SubnetsTable
-            groupBy="space"
-            searchText=""
-            setSearchText={vi.fn()}
-          />
+          <SubnetsTable groupBy="space" searchText="" setSearchText={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

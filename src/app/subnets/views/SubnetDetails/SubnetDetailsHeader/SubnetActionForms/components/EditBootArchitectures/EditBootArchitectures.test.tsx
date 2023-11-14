@@ -14,8 +14,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 

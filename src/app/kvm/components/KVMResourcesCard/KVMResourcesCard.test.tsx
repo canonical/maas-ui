@@ -9,8 +9,8 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
   pod as podFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

@@ -12,8 +12,8 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -137,9 +137,7 @@ describe("ActionConfirm", () => {
     };
     const useSendMock = vi.spyOn(maasUiHooks, "useSendAnalyticsWhen");
     // Mock saved state by simulating "deletingFilesystem" changing from true to false
-    vi
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => true);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(() => true);
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -176,9 +174,7 @@ describe("ActionConfirm", () => {
 
   it("closes the form when saved", () => {
     // Mock saved state by simulating "deletingFilesystem" changing from true to false
-    vi
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => true);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(() => true);
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],

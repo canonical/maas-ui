@@ -20,7 +20,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

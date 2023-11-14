@@ -14,8 +14,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("SubnetColumn", () => {
   let state: RootState;

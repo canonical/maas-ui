@@ -14,7 +14,7 @@ import {
   networkLink as networkLinkFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("device selectors", () => {
   it("can get all items", () => {

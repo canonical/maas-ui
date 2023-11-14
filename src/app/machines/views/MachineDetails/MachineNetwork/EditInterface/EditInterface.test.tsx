@@ -10,8 +10,8 @@ import {
   machineStatuses as machineStatusesFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("EditInterface", () => {
   let state: RootState;

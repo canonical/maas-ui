@@ -17,7 +17,7 @@ import {
   NodeStatusCode,
   FetchNodeStatus,
 } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   filterGroup as filterGroupFactory,
   machine as machineFactory,
@@ -29,7 +29,7 @@ import {
   machineStateCount as machineStateCountFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStatus as machineStatusFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 enableCallIdMocks();
 

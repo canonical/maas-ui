@@ -1,8 +1,8 @@
 /* eslint-disable testing-library/no-container */
 import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 
-import { scriptResultData as scriptResultDataFactory } from "testing/factories";
-import { render, screen, userEvent } from "testing/utils";
+import { scriptResultData as scriptResultDataFactory } from "@/testing/factories";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("NodeTestDetailsLogs", () => {
   it("displays combined content by default", () => {

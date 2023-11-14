@@ -5,8 +5,8 @@ import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("LxdTable", () => {
   it("displays a spinner while loading", () => {

@@ -9,8 +9,8 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

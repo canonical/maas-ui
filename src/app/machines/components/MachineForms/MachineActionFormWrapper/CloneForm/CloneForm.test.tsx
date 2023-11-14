@@ -17,14 +17,14 @@ import {
   machineStatuses as machineStatusesFactory,
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 const mockStore = configureStore<RootState>();
 
 describe("CloneForm", () => {

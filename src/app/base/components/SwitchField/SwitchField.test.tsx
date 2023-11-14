@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-container */
 import SwitchField from "./SwitchField";
 
-import { render } from "testing/utils";
+import { render } from "@/testing/utils";
 
 describe("SwitchField", () => {
   it("can add additional classes", () => {

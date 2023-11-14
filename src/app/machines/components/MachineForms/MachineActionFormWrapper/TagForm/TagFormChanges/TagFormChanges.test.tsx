@@ -15,9 +15,9 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { tagStateListFactory } from "testing/factories/state";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { tagStateListFactory } from "@/testing/factories/state";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -62,10 +62,7 @@ it("displays manual tags", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
@@ -93,10 +90,7 @@ it("displays automatic tags", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
@@ -187,10 +181,7 @@ it("displays a tag details modal when chips are clicked", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges
               newTags={[]}
               selectedCount={2}
@@ -214,10 +205,7 @@ it("can remove manual tags", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
@@ -316,10 +304,7 @@ it("shows a message if no tags are assigned to the selected machines", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={vi.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>

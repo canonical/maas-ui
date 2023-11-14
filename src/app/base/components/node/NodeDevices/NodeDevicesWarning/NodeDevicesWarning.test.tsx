@@ -10,7 +10,7 @@ import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   nodeDevice as nodeDeviceFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("node is machine", () => {
   it(`prompts user to commission machine if no devices found and machine can be

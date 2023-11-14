@@ -8,13 +8,13 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

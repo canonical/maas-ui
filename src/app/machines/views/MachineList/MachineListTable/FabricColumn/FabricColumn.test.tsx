@@ -6,8 +6,8 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("FabricColumn", () => {
   let state: RootState;

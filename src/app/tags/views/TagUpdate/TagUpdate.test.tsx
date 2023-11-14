@@ -16,9 +16,9 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;

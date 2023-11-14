@@ -14,7 +14,7 @@ import {
   serviceState as serviceStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("controller selectors", () => {
   it("can get all items", () => {

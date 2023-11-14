@@ -10,14 +10,14 @@ import {
   spaceState as spaceStateFactory,
   space as spaceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

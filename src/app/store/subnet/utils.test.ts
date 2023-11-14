@@ -15,7 +15,7 @@ import {
   subnetBMC as subnetBMCFactory,
   subnetDNSRecord as subnetDNSRecordFactory,
   subnetIPNodeSummary as nodeSummaryFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("subnet utils", () => {
   describe("getSubnetDisplay", function () {

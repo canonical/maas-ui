@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import DeleteTagForm from "./DeleteTagForm";
 
@@ -12,7 +13,7 @@ import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { actions as tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -20,14 +21,14 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 enableCallIdMocks();
 const mockStore = configureStore();
 
 let state: RootState;
-let scrollToSpy: vi.Mock;
+let scrollToSpy: Mock;
 
 beforeEach(() => {
   state = rootStateFactory({

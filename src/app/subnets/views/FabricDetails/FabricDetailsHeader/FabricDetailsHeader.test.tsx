@@ -10,8 +10,8 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
 let fabric: Fabric;

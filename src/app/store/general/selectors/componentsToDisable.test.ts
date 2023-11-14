@@ -5,7 +5,7 @@ import {
   componentsToDisableState as componentsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("componentsToDisable selectors", () => {
   describe("get", () => {

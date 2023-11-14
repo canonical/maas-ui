@@ -5,7 +5,7 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("config selectors", () => {
   describe("all", () => {

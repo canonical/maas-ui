@@ -1,6 +1,6 @@
 import SettingsTable from "./SettingsTable";
 
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("SettingsTable", () => {
   it("can render", () => {

@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 import AddFabric from "./AddFabric";
 
 import { actions as fabricActions } from "@/app/store/fabric";
-import { rootState as rootStateFactory } from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const renderTestCase = () => {
   const store = configureStore()(rootStateFactory());

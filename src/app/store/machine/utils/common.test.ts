@@ -19,7 +19,7 @@ import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
   modelRef as modelRefFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("common machine utils", () => {
   describe("isMachineDetails", () => {

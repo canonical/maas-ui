@@ -11,7 +11,7 @@ import {
   machineIpAddress as ipAddressFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

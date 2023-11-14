@@ -11,7 +11,7 @@ import {
   podState as podStateFactory,
   podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

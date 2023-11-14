@@ -9,7 +9,7 @@ import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -17,8 +17,8 @@ import {
   rootState as rootStateFactory,
   machineStateCount as machineStateCountFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

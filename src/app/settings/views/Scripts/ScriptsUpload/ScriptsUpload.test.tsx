@@ -15,7 +15,7 @@ import { ScriptType } from "@/app/store/script/types";
 import {
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -23,7 +23,7 @@ import {
   waitFor,
   fireEvent,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -130,21 +130,19 @@ describe("ScriptsUpload", () => {
   it("dispatches uploadScript without a name if script has metadata", async () => {
     const store = mockStore(state);
     const contents = "# --- Start MAAS 1.0 script metadata ---";
-    vi
-      .spyOn(readScript, "readScript")
-      .mockImplementation(
-        (
-          _name: FileWithPath,
-          _script: Dispatch,
-          callback: (script: ReadScriptResponse | null) => void
-        ) => {
-          callback({
-            name: "foo",
-            script: contents,
-            hasMetadata: true,
-          });
-        }
-      );
+    vi.spyOn(readScript, "readScript").mockImplementation(
+      (
+        _name: FileWithPath,
+        _script: Dispatch,
+        callback: (script: ReadScriptResponse | null) => void
+      ) => {
+        callback({
+          name: "foo",
+          script: contents,
+          hasMetadata: true,
+        });
+      }
+    );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
     render(
@@ -176,21 +174,19 @@ describe("ScriptsUpload", () => {
   it("dispatches uploadScript with a name if script has no metadata", async () => {
     const store = mockStore(state);
     const contents = "#!/bin/bash\necho 'foo';\n";
-    vi
-      .spyOn(readScript, "readScript")
-      .mockImplementation(
-        (
-          _name: FileWithPath,
-          _script: Dispatch,
-          callback: (script: ReadScriptResponse | null) => void
-        ) => {
-          callback({
-            name: "foo",
-            script: contents,
-            hasMetadata: false,
-          });
-        }
-      );
+    vi.spyOn(readScript, "readScript").mockImplementation(
+      (
+        _name: FileWithPath,
+        _script: Dispatch,
+        callback: (script: ReadScriptResponse | null) => void
+      ) => {
+        callback({
+          name: "foo",
+          script: contents,
+          hasMetadata: false,
+        });
+      }
+    );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
     render(

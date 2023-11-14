@@ -7,7 +7,7 @@ import {
   renderWithBrowserRouter,
   screen,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const state = getTestState();
 

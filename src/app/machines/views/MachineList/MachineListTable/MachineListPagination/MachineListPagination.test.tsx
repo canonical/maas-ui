@@ -1,7 +1,7 @@
 import MachineListPagination, { Label } from "./MachineListPagination";
 import type { Props as MachineListPaginationProps } from "./MachineListPagination";
 
-import { fireEvent, render, screen, userEvent, waitFor } from "testing/utils";
+import { fireEvent, render, screen, userEvent, waitFor } from "@/testing/utils";
 
 describe("MachineListPagination", () => {
   let props: MachineListPaginationProps;

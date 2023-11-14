@@ -11,8 +11,8 @@ import {
   machineState as machineStateFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const expectDisabledButtonWithTooltip = async (
   buttonLabel: string | RegExp,

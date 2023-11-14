@@ -5,7 +5,7 @@ import FetchImagesFormFields, {
 } from "./FetchImagesFormFields";
 
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("FetchImagesFormFields", () => {
   it("does not show extra fields if maas.io source is selected", async () => {

@@ -3,7 +3,7 @@ import type { Meta } from "@storybook/react";
 import { AppSideNavigation } from "./AppSideNavigation";
 import { navGroups } from "./constants";
 
-import { user as userFactory } from "testing/factories";
+import { user as userFactory } from "@/testing/factories";
 
 const meta: Meta<typeof AppSideNavigation> = {
   title: "Layout/AppSideNavigation",

@@ -1,6 +1,6 @@
 import { getFabricDisplay } from "./utils";
 
-import { fabric as fabricFactory } from "testing/factories";
+import { fabric as fabricFactory } from "@/testing/factories";
 
 describe("fabric utils", () => {
   describe("getFabricDisplay", function () {

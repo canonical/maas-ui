@@ -1,6 +1,6 @@
 import AddHardwareMenu from "./AddHardwareMenu";
 
-import { screen, render } from "testing/utils";
+import { screen, render } from "@/testing/utils";
 
 describe("AddHardwareMenu", () => {
   it("can be enabled", () => {

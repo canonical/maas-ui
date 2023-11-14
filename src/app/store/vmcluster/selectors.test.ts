@@ -6,7 +6,7 @@ import {
   vmClusterEventError as vmClusterEventErrorFactory,
   vmClusterState as vmClusterStateFactory,
   vmClusterStatuses as vmClusterStatusesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("vmcluster selectors", () => {
   it("can get the items", () => {

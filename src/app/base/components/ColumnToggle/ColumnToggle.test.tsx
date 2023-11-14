@@ -1,6 +1,6 @@
 import ColumnToggle from "./ColumnToggle";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const DOM_RECT = {
   height: 0,
@@ -52,12 +52,12 @@ describe("ColumnToggle ", () => {
 
   describe("scroll", () => {
     beforeEach(() => {
-      vi
-        .spyOn(window, "requestAnimationFrame")
-        .mockImplementation((cb: FrameRequestCallback) => {
+      vi.spyOn(window, "requestAnimationFrame").mockImplementation(
+        (cb: FrameRequestCallback) => {
           cb(0);
           return 0;
-        });
+        }
+      );
       Object.defineProperty(window, "scrollY", { value: 100 });
     });
 

@@ -8,8 +8,8 @@ import {
   device as deviceFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceListTable", () => {
   let device: Device;

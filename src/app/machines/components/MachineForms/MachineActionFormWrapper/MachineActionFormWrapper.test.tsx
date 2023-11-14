@@ -1,5 +1,6 @@
 import reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
@@ -12,9 +13,9 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -26,7 +27,8 @@ beforeEach(() => {
   global.innerHeight = 500;
   // eslint-disable-next-line testing-library/no-node-access
   html = document.querySelector("html");
-  global.scrollTo = vi.fn();
+  const scrollToSpy: Mock = vi.fn();
+  global.scrollTo = scrollToSpy;
 });
 
 afterEach(() => {

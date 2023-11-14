@@ -10,8 +10,8 @@ import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("APIKeyEdit", () => {
   let state: RootState;

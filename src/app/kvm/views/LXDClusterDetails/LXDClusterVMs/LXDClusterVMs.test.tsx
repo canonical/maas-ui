@@ -5,7 +5,7 @@ import LXDClusterVMs from "./LXDClusterVMs";
 import urls from "@/app/base/urls";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -16,8 +16,8 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 enableCallIdMocks();
 const mockStore = configureStore<RootState, {}>();

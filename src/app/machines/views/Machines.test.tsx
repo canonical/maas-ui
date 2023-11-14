@@ -36,7 +36,7 @@ import {
   routerState as routerStateFactory,
   modelRef as modelRefFactory,
   vaultEnabledState as vaultEnabledStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   userEvent as userEventCore,
@@ -44,7 +44,7 @@ import {
   screen,
   render,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 const mockStore = configureStore<RootState>();
 const userEvent = userEventCore.setup({
   advanceTimers: vi.runAllTimers,
@@ -288,8 +288,7 @@ describe("Machines", () => {
   });
 
   it("can hide groups", async () => {
-    vi
-      .spyOn(query, "generateCallId")
+    vi.spyOn(query, "generateCallId")
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
@@ -315,8 +314,7 @@ describe("Machines", () => {
   });
 
   it("can change groups", async () => {
-    vi
-      .spyOn(reduxToolkit, "nanoid")
+    vi.spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.
@@ -395,8 +393,7 @@ describe("Machines", () => {
   });
 
   it("can store hidden groups in local storage", async () => {
-    vi
-      .spyOn(query, "generateCallId")
+    vi.spyOn(query, "generateCallId")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     state.machine.lists = {

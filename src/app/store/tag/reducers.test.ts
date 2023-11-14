@@ -3,8 +3,8 @@ import reducers, { actions } from "./slice";
 import {
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { tagStateListFactory } from "testing/factories/state";
+} from "@/testing/factories";
+import { tagStateListFactory } from "@/testing/factories/state";
 
 describe("tag reducer", () => {
   it("returns the initial state", () => {

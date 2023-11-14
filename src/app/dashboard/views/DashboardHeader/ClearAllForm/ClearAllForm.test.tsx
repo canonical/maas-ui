@@ -9,14 +9,14 @@ import {
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   userEvent,
   screen,
   waitFor,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

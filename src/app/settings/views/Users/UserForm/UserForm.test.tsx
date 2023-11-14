@@ -14,8 +14,13 @@ import {
   user as userFactory,
   rootState as rootStateFactory,
   statusState as statusStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

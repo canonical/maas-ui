@@ -1,7 +1,7 @@
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
 import urls from "@/app/base/urls";
-import { screen, getTestState, renderWithBrowserRouter } from "testing/utils";
+import { screen, getTestState, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("KVMDetailsHeader", () => {
   let state: ReturnType<typeof getTestState>;

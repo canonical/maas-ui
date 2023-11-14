@@ -7,13 +7,13 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("AddController", () => {
   let state: RootState;

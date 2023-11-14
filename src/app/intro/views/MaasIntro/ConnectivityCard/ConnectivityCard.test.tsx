@@ -6,7 +6,7 @@ import ConnectivityCard, {
   Labels as ConnectivityCardLabels,
 } from "./ConnectivityCard";
 
-import { userEvent, screen, render } from "testing/utils";
+import { userEvent, screen, render } from "@/testing/utils";
 
 const renderTestCase = () =>
   render(

@@ -20,8 +20,8 @@ import {
   bondOptions as bondOptionsFactory,
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const route = urls.machines.index;
 

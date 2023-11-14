@@ -16,8 +16,8 @@ import {
   machineStateCounts as machineStateCountsFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter } from "@/testing/utils";
 
 const mockBaseAddTagForm = vi.fn();
 vi.mock("@/app/tags/components/AddTagForm", () => (props: Props) => {
@@ -173,8 +173,7 @@ it("fetches deployed machine count for selected machines", async () => {
 
 it("fetches deployed machine count separately for deployed group when selected", async () => {
   vi.spyOn(query, "generateCallId").mockRestore();
-  vi
-    .spyOn(query, "generateCallId")
+  vi.spyOn(query, "generateCallId")
     .mockReturnValueOnce("mocked-nanoid-1")
     .mockReturnValueOnce("mocked-nanoid-2");
   const store = mockStore(state);

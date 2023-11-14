@@ -5,7 +5,7 @@ import CloneFormFields from "./CloneFormFields";
 
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
@@ -15,8 +15,13 @@ import {
   rootState as rootStateFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, userEvent, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import {
+  renderWithMockStore,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -61,10 +66,7 @@ describe("CloneFormFields", () => {
         initialValues={{ interfaces: false, source: "", storage: false }}
         onSubmit={vi.fn()}
       >
-        <CloneFormFields
-          selectedMachine={null}
-          setSelectedMachine={vi.fn()}
-        />
+        <CloneFormFields selectedMachine={null} setSelectedMachine={vi.fn()} />
       </Formik>,
       { store }
     );
@@ -95,10 +97,7 @@ describe("CloneFormFields", () => {
         initialValues={{ interfaces: false, source: "", storage: false }}
         onSubmit={vi.fn()}
       >
-        <CloneFormFields
-          selectedMachine={null}
-          setSelectedMachine={vi.fn()}
-        />
+        <CloneFormFields selectedMachine={null} setSelectedMachine={vi.fn()} />
       </Formik>,
       { store }
     );

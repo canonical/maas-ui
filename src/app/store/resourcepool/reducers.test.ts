@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("resourcePool reducer", () => {
   it("should return the initial state", () => {

@@ -3,7 +3,7 @@ import { FilterGroupKey } from "./types";
 
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -20,7 +20,7 @@ import {
   machineStatuses as machineStatusesFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 enableCallIdMocks();
 

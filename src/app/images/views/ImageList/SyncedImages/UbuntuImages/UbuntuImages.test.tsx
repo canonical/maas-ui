@@ -16,14 +16,14 @@ import {
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
   bootResourceUbuntuSource as sourceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

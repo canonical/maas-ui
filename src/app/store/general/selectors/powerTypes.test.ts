@@ -5,7 +5,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   powerType as powerTypeFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("powerTypes selectors", () => {
   describe("get", () => {

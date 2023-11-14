@@ -1,8 +1,8 @@
 import DeviceListControls from "./DeviceListControls";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("DeviceListControls", () => {
   let state: RootState = rootStateFactory();

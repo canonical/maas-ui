@@ -45,7 +45,7 @@ import {
   nodeDisk as diskFactory,
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("canBeDeleted", () => {
   it("handles null case", () => {

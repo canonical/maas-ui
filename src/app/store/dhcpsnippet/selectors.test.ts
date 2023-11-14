@@ -4,7 +4,7 @@ import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("dhcpsnippet selectors", () => {
   it("can get all items", () => {

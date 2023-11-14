@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import FormikField from "./FormikField";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("FormikField", () => {
   it("can set a different component", () => {

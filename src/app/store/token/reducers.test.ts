@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("token reducer", () => {
   it("should return the initial state", () => {

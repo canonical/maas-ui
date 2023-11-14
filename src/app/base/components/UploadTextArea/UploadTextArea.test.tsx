@@ -1,9 +1,10 @@
 /* eslint-disable testing-library/no-container */
 import { Formik } from "formik";
+import type { Mock } from "vitest";
 
 import UploadTextArea from "./UploadTextArea";
 
-import { render, screen, userEvent, waitFor } from "testing/utils";
+import { render, screen, userEvent, waitFor } from "@/testing/utils";
 
 class MockFileReader {
   result: string;
@@ -40,9 +41,7 @@ const getFileUploadInput = (container: HTMLElement) => {
 describe("UploadTextArea", () => {
   beforeEach(async () => {
     const mockedFileReader = vi.spyOn(window, "FileReader");
-    (mockedFileReader as vi.Mock).mockImplementation(
-      () => new MockFileReader()
-    );
+    (mockedFileReader as Mock).mockImplementation(() => new MockFileReader());
   });
 
   afterEach(() => {

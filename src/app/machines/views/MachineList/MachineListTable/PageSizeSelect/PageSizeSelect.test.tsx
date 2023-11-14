@@ -2,7 +2,7 @@ import { DEFAULTS } from "../constants";
 
 import PageSizeSelect from "./PageSizeSelect";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 const DEFAULT_PAGE_SIZE = DEFAULTS.pageSize;
 

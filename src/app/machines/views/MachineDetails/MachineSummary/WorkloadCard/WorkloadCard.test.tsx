@@ -4,8 +4,8 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 describe("WorkloadCard", () => {
   it("displays a message if the machine has no workload annotations", () => {

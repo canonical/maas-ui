@@ -6,7 +6,7 @@ import { Label as MachineListLabel } from "@/app/machines/views/MachineList/Mach
 import { actions as machineActions } from "@/app/store/machine";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   rootState as rootStateFactory,
   machineState as machineStateFactory,
@@ -15,13 +15,13 @@ import {
   machine as machineFactory,
   pod as podFactory,
   podState as podStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
 enableCallIdMocks();
 const mockStore = configureStore<RootState, {}>();

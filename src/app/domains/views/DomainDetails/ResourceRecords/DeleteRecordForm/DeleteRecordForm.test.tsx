@@ -13,13 +13,13 @@ import {
   domainState as domainStateFactory,
   domainResource as resourceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -64,11 +64,7 @@ describe("DeleteRecordForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <DeleteRecordForm
-              closeForm={vi.fn()}
-              id={1}
-              resource={resource}
-            />
+            <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -101,11 +97,7 @@ describe("DeleteRecordForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <DeleteRecordForm
-              closeForm={vi.fn()}
-              id={1}
-              resource={resource}
-            />
+            <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

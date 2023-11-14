@@ -16,7 +16,7 @@ import {
   StorageLayout,
 } from "@/app/store/types/enum";
 import { NodeActions } from "@/app/store/types/node";
-import { scriptResult as scriptResultFactory } from "testing/factories";
+import { scriptResult as scriptResultFactory } from "@/testing/factories";
 
 describe("machine actions", () => {
   it("should handle fetching machines", () => {

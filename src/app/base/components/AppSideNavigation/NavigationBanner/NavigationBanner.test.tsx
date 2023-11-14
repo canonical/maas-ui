@@ -1,6 +1,6 @@
 import NavigationBanner from "./NavigationBanner";
 
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 afterEach(() => {
   vi.resetModules();

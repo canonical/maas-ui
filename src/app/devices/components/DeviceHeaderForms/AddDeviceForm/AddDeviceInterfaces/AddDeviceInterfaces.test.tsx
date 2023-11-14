@@ -10,13 +10,13 @@ import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

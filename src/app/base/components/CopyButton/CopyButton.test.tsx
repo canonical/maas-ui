@@ -1,6 +1,6 @@
 import CopyButton from "./CopyButton";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("CopyButton", () => {
   let execCommand: (

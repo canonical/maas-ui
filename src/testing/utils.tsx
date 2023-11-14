@@ -38,7 +38,7 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 /**
  * Replace objects in an array with objects that have new values, given a match

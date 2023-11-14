@@ -1,6 +1,6 @@
 import ShowAdvanced, { Labels } from "./ShowAdvanced";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 it("displays additional content on press", async () => {
   render(<ShowAdvanced>additional content</ShowAdvanced>);

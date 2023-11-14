@@ -20,8 +20,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { waitFor, render, screen, within, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { waitFor, render, screen, within, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore();
 

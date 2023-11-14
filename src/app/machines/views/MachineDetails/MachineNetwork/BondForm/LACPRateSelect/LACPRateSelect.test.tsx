@@ -9,8 +9,8 @@ import {
   bondOptions as bondOptionsFactory,
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("LACPRateSelect", () => {
   let state: RootState;

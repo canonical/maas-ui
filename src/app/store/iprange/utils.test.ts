@@ -6,7 +6,7 @@ import {
   isDynamic,
 } from "./utils";
 
-import { ipRange as ipRangeFactory } from "testing/factories";
+import { ipRange as ipRangeFactory } from "@/testing/factories";
 
 describe("isDynamic", () => {
   it("returns whether an IP range is dynamic", () => {

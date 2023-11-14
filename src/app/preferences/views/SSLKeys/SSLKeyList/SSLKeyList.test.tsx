@@ -10,7 +10,7 @@ import {
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -18,7 +18,7 @@ import {
   within,
   renderWithMockStore,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

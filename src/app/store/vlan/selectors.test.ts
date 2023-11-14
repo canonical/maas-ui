@@ -13,7 +13,7 @@ import {
   vlanState as vlanStateFactory,
   vlanStatus as vlanStatusFactory,
   vlanStatuses as vlanStatusesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("vlan selectors", () => {
   it("can get all items", () => {

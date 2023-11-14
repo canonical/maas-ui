@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   eventRecord as eventRecordFactory,
   eventState as eventStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("eventRecord reducer", () => {
   it("should return the initial state", () => {

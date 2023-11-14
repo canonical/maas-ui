@@ -17,8 +17,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 

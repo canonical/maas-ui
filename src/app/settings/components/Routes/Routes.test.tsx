@@ -14,8 +14,8 @@ import {
   packageRepository as packageRepositoryFactory,
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 

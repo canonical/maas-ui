@@ -27,14 +27,14 @@ import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   waitFor,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = "/dashboard";

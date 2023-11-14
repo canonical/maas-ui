@@ -19,8 +19,8 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => ({
   ...vi.importActual("@canonical/react-components/dist/hooks"),

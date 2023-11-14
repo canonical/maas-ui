@@ -11,8 +11,8 @@ import {
   knownBootArchitecture as knownBootArchitectureFactory,
   knownBootArchitecturesState as knownBootArchitecturesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 let initialValues: FormValues;

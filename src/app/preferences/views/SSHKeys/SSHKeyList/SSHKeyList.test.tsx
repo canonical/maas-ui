@@ -8,8 +8,8 @@ import {
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("SSHKeyList", () => {
   let state: RootState;

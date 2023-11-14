@@ -9,13 +9,13 @@ import {
   nodeDisk as diskFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("CreateRaidFields", () => {
   let state: RootState;

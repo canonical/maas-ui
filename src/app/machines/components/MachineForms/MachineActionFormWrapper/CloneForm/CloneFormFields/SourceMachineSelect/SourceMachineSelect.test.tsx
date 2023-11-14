@@ -13,8 +13,8 @@ import {
   machineState as machineStateFactory,
   machineStateList,
   machineStateListGroup,
-} from "testing/factories";
-import { userEvent, screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 describe("SourceMachineSelect", () => {
   let machines: Machine[];

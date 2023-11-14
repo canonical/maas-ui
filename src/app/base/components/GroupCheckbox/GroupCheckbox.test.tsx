@@ -1,6 +1,6 @@
 import GroupCheckbox from "./GroupCheckbox";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("GroupCheckbox", () => {
   it("shows as mixed when some items are checked", () => {

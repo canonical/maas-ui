@@ -13,13 +13,13 @@ import {
   machineStatus as machineStatusFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

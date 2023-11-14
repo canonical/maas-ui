@@ -14,12 +14,12 @@ import {
   nodeDevice as nodeDeviceFactory,
   nodeDeviceState as nodeDeviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   renderWithMockStore,
   screen,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

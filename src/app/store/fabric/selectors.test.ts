@@ -4,7 +4,7 @@ import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("fabric selectors", () => {
   it("can get all items", () => {

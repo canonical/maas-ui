@@ -10,8 +10,8 @@ import { actions as statusActions } from "@/app/store/status";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

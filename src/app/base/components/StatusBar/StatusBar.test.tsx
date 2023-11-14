@@ -13,8 +13,8 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 let state: RootState;
 const originalEnv = process.env;

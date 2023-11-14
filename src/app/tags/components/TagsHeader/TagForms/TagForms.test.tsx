@@ -1,3 +1,5 @@
+import type { Mock } from "vitest";
+
 import TagForms from "./TagForms";
 
 import { TagSidePanelViews } from "@/app/tags/constants";
@@ -5,10 +7,10 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
-let scrollToSpy: vi.Mock;
+let scrollToSpy: Mock;
 
 beforeEach(() => {
   // Mock the scrollTo method as jsdom doesn't support this and will error.

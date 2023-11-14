@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("dhcpSnippet reducer", () => {
   it("should return the initial state", () => {

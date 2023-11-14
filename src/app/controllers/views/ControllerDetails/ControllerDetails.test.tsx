@@ -2,6 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import { ControllerDetailsTabLabels } from "../../constants";
 
@@ -13,13 +14,14 @@ import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 beforeEach(() => {
-  global.scrollTo = vi.fn();
+  const scrollToSpy: Mock = vi.fn();
+  global.scrollTo = scrollToSpy;
 });
 
 afterAll(() => {

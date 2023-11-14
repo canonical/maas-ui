@@ -14,8 +14,8 @@ import {
   vlanState as vlanStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("can dispatch an action to update the subnet", async () => {
   const fabrics = [

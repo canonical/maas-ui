@@ -10,8 +10,8 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: vi.fn(),

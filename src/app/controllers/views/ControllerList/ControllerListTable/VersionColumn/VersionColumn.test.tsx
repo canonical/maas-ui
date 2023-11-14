@@ -8,8 +8,8 @@ import {
   controllerVersions as controllerVersionsFactory,
   controllerVersionInfo as controllerVersionInfoFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("VersionColumn", () => {
   let state: RootState;

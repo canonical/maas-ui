@@ -12,12 +12,12 @@ import {
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithBrowserRouter,
   screen,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("BulkActions", () => {
   it("disables create volume group button with tooltip if selected devices are not eligible", async () => {

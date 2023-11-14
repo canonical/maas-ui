@@ -13,7 +13,7 @@ import {
   podState as podStateFactory,
   podVM as podVMFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("pod selectors", () => {
   it("can get all items", () => {

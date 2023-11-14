@@ -28,13 +28,13 @@ import {
   testStatus as testStatusFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;

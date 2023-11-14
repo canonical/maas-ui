@@ -16,7 +16,7 @@ import {
   pod as podFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("slice", () => {
   describe("base reducers", () => {

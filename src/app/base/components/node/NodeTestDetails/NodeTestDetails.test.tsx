@@ -10,8 +10,8 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
   scriptResultState as scriptResultStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const getReturnPath = (id: string) => `/some/url/${id}`;

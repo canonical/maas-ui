@@ -12,8 +12,8 @@ import {
   vlanState as vlanStateFactory,
   fabricState as fabricSpaceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("correctly dispatches subnet cleanup and create actions on form submit", async () => {
   const vlan1 = vlanFactory({ id: 111, fabric: 5 });

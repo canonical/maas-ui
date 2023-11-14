@@ -15,13 +15,13 @@ import {
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("DiscoveryAddFormFields", () => {
   let state: RootState;

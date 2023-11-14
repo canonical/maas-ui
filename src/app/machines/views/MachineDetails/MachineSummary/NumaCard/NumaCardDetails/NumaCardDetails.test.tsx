@@ -9,8 +9,8 @@ import {
   machineNumaNode as machineNumaNodeFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NumaCardDetails", () => {
   let state: RootState;

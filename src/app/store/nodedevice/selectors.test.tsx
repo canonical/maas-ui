@@ -5,7 +5,7 @@ import {
   nodeDevice as nodeDeviceFactory,
   nodeDeviceState as nodeDeviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("nodeDevice selectors", () => {
   it("can get all items", () => {

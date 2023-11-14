@@ -16,8 +16,8 @@ import {
   podState as podStateFactory,
   podVM as podVmFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

@@ -10,8 +10,8 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

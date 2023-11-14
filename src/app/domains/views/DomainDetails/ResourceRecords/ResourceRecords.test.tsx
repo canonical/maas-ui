@@ -6,8 +6,8 @@ import {
   domainDetails as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ResourceRecords", () => {
   it("shows a message if domain has no records", () => {

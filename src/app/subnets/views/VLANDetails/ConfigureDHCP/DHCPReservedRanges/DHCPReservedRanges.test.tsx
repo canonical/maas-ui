@@ -20,8 +20,8 @@ import {
   subnetStatisticsRange as subnetStatisticsRangeFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 let initialValues: ConfigureDHCPValues;

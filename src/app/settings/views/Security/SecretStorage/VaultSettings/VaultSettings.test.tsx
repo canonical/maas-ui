@@ -9,8 +9,8 @@ import {
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("VaultSettings", () => {
   let controllers: Controller[];

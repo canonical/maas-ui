@@ -13,8 +13,8 @@ import {
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

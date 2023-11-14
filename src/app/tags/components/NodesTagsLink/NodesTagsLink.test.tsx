@@ -7,7 +7,7 @@ import urls from "@/app/base/urls";
 import { ControllerMeta } from "@/app/store/controller/types";
 import { DeviceMeta } from "@/app/store/device/types";
 import { MachineMeta } from "@/app/store/machine/types";
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 it("create a link to machines", () => {
   render(

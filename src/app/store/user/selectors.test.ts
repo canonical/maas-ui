@@ -6,7 +6,7 @@ import {
   userEventError as userEventErrorFactory,
   userStatuses as userStatusesFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("users selectors", () => {
   it("can get items", () => {

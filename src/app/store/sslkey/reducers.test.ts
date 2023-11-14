@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   sslKey as sslKeyFactory,
   sslKeyState as sslKeyStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("sslkey reducer", () => {
   it("should return the initial state", () => {

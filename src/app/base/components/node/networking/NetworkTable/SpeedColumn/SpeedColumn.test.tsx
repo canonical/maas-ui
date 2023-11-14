@@ -8,8 +8,8 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore } from "@/testing/utils";
 
 describe("SpeedColumn", () => {
   let state: RootState;

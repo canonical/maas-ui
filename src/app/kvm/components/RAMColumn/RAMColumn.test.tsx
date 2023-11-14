@@ -11,8 +11,8 @@ import {
   rootState as rootStateFactory,
   vmClusterResource as vmClusterResourceFactory,
   vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("RAMColumn", () => {
   let state: RootState;

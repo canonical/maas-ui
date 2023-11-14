@@ -15,7 +15,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   discovery as discoveryFactory,
   domain as domainFactory,
@@ -32,15 +32,15 @@ import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   userEvent,
   screen,
   waitFor,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 const mockStore = configureStore<RootState, {}>();
 
 enableCallIdMocks();

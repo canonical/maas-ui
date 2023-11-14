@@ -15,8 +15,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 describe("CloneNetworkTable", () => {
   let state: RootState;

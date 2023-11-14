@@ -17,13 +17,13 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("EditPhysicalFields", () => {
   let nic: NetworkInterface;

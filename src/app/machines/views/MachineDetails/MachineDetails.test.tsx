@@ -1,5 +1,6 @@
 import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import MachineDetails from "./MachineDetails";
 
@@ -10,14 +11,14 @@ import {
   machineDevice as machineDeviceFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("MachineDetails", () => {
   let state: RootState;
-  let scrollToSpy: vi.Mock;
+  let scrollToSpy: Mock;
 
   beforeEach(() => {
     scrollToSpy = vi.fn();

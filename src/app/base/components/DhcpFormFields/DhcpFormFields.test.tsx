@@ -8,7 +8,7 @@ import { Labels } from "./DhcpFormFields";
 import DhcpForm from "@/app/base/components/DhcpForm";
 import { getIpRangeDisplayName } from "@/app/store/iprange/utils";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,
@@ -23,8 +23,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 enableCallIdMocks();
 const mockStore = configureStore();

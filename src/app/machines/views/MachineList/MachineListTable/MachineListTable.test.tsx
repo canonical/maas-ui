@@ -10,7 +10,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -29,14 +29,14 @@ import {
   userState as userStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
 enableCallIdMocks();
 

@@ -4,14 +4,14 @@ import {
   ScriptResultStatus,
   ScriptResultEstimated,
 } from "@/app/store/scriptresult/types";
-import { scriptResult as scriptResultFactory } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import { scriptResult as scriptResultFactory } from "@/testing/factories";
+import { render, screen, waitFor } from "@/testing/utils";
 
 describe("ScriptRunTime", () => {
   beforeEach(() => {
-    vi
-      .useFakeTimers()
-      .setSystemTime(new Date("Thu Apr 01 2021 05:21:58 GMT+0000").getTime());
+    vi.useFakeTimers().setSystemTime(
+      new Date("Thu Apr 01 2021 05:21:58 GMT+0000").getTime()
+    );
   });
   afterEach(() => {
     vi.useRealTimers();

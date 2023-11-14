@@ -1,7 +1,7 @@
 import { isReleaseNotification, isUpgradeNotification } from "./utils";
 
 import { NotificationIdent } from "@/app/store/notification/types";
-import { notification as notificationFactory } from "testing/factories";
+import { notification as notificationFactory } from "@/testing/factories";
 
 describe("utils", () => {
   describe("isReleaseNotification", () => {

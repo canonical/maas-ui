@@ -1,6 +1,6 @@
 import SubnetsControls from "./SubnetsControls";
 
-import { userEvent, render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("calls handleSearch with a correct value on user input", async () => {
   // As of v14 userEvent always returns a Promise and by default it waits for a

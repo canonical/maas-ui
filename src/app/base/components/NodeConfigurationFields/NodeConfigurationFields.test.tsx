@@ -17,9 +17,9 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -43,9 +43,9 @@ beforeEach(() => {
       items: tags,
     }),
   });
-  vi
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
+  vi.spyOn(baseHooks, "useCycled").mockImplementation(
+    () => [false, () => {}] as ReturnType<typeof baseHooks.useCycled>
+  );
 });
 
 afterEach(() => {

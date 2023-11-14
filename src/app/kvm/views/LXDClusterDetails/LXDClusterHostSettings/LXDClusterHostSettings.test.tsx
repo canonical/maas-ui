@@ -7,8 +7,8 @@ import {
   podDetails as podDetailsFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("LXDClusterHostSettings", () => {
   let state: RootState;

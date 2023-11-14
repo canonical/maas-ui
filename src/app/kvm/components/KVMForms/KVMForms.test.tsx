@@ -22,12 +22,12 @@ import {
   podDetails as podDetailsFactory,
   vmClusterState as vmClusterStateFactory,
   vmCluster as vmClusterFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
   screen,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("KVMForms", () => {
   let state = rootStateFactory();

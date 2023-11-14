@@ -14,13 +14,13 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   render,
   screen,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

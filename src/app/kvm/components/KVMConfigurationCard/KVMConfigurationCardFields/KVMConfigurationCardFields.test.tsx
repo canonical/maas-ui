@@ -11,8 +11,8 @@ import {
   zone as zoneFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 describe("KVMConfigurationCardFields", () => {
   let state: RootState;

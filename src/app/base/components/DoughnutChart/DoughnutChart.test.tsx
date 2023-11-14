@@ -1,6 +1,6 @@
 import DoughnutChart, { TestIds } from "./DoughnutChart";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("DoughnutChart", () => {
   it("can render with a label", () => {

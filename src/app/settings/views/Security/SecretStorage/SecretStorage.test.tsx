@@ -6,8 +6,8 @@ import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("displays loading text if Vault Status has not loaded", () => {
   const state = rootStateFactory({

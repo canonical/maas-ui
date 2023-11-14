@@ -4,7 +4,7 @@ import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("packagerepository selectors", () => {
   it("can get repository items", () => {

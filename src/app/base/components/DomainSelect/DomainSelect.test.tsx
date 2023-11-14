@@ -7,8 +7,8 @@ import DomainSelect, { Labels } from "./DomainSelect";
 import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

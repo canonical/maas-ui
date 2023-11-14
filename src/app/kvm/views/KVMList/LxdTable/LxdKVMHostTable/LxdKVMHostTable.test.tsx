@@ -12,8 +12,8 @@ import {
   vmCluster as vmClusterFactory,
   vmHost as vmHostFactory,
   vmClusterState as vmClusterStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("LxdKVMHostTable", () => {
   it("can update the LXD hosts sort order", async () => {

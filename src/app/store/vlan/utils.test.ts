@@ -10,7 +10,7 @@ import {
   fabric as fabricFactory,
   vlan as vlanFactory,
   vlanDetails as vlanDetailsFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("vlan utils", () => {
   describe("getVLANDisplay", () => {

@@ -9,8 +9,8 @@ import {
   networkInterface as networkInterfaceFactory,
   rootState as rootStateFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

@@ -1,6 +1,6 @@
 import { getDiscoveryValue } from "./search";
 
-import { discovery as discoveryFactory } from "testing/factories";
+import { discovery as discoveryFactory } from "@/testing/factories";
 
 describe("search", () => {
   describe("getDiscoveryValue", () => {

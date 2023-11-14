@@ -6,13 +6,13 @@ import type { RootState } from "@/app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   renderWithBrowserRouter,
   screen,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

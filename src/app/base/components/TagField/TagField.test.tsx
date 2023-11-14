@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import TagField from "./TagField";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("TagField", () => {
   it("sorts the tags by name", async () => {

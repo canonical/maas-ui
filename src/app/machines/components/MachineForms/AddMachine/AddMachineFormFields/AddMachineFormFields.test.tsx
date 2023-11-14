@@ -16,13 +16,13 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("AddMachineFormFields", () => {
   let state: RootState;

@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("domain reducer", () => {
   it("should return the initial state", () => {

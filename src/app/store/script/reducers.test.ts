@@ -3,7 +3,7 @@ import reducers from "./slice";
 import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("scripts reducer", () => {
   it("should return the initial state", () => {

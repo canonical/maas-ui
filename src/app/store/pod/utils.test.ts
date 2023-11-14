@@ -6,7 +6,7 @@ import {
   podNumaCores as podNumaCoresFactory,
   podResource as podResourceFactory,
   podResources as podResourcesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("pod utils", () => {
   describe("getCoreIndices", () => {

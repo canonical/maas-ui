@@ -1,6 +1,6 @@
 import SidePanelContextProvider, { useSidePanel } from "./side-panel-context";
 
-import { renderHook, act } from "testing/utils";
+import { renderHook, act } from "@/testing/utils";
 
 it("resets side panel size on close", () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (

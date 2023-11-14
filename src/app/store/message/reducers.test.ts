@@ -3,7 +3,7 @@ import reducers from "./slice";
 import {
   message as messageFactory,
   messageState as messageStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("reducers", () => {
   it("should return the initial state", () => {

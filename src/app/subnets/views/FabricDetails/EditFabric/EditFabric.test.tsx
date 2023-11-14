@@ -10,8 +10,8 @@ import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const getRootState = () =>
   rootStateFactory({

@@ -1,7 +1,7 @@
 import type { Tag } from "./TagSelector";
 import TagSelector from "./TagSelector";
 
-import { render, screen, userEvent, within } from "testing/utils";
+import { render, screen, userEvent, within } from "@/testing/utils";
 
 describe("TagSelector", () => {
   let tags: Tag[];

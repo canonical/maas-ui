@@ -13,7 +13,7 @@ import {
   userState as userStateFactory,
   rootState as rootStateFactory,
   statusState as statusStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -21,7 +21,7 @@ import {
   within,
   renderWithMockStore,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithBrowserRouter } from "@/testing/utils";
 
 const createNetwork = () => {
   const systemId = "abc123";

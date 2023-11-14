@@ -21,7 +21,7 @@ import {
   scriptResultData as scriptResultDataFactory,
   scriptResultState as scriptResultStateFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

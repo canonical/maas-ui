@@ -6,12 +6,12 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithBrowserRouter,
   screen,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("CoresColumn", () => {
   let state: RootState;

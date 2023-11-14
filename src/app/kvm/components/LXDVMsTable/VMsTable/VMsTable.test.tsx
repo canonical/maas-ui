@@ -1,11 +1,12 @@
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import VMsTable, { Label } from "./VMsTable";
 
 import { SortDirection } from "@/app/base/types";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -16,20 +17,20 @@ import {
   tagState as tagStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   within,
   renderWithMockStore,
   userEvent,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 enableCallIdMocks();
 const mockStore = configureStore<RootState>();
 
 describe("VMsTable", () => {
-  let getResources: vi.Mock;
+  let getResources: Mock;
 
   beforeEach(() => {
     getResources = vi.fn().mockReturnValue({

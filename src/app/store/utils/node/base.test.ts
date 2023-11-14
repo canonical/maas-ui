@@ -16,7 +16,7 @@ import {
   deviceDetails as deviceDetailsFactory,
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("node utils", () => {
   describe("nodeIsController", () => {

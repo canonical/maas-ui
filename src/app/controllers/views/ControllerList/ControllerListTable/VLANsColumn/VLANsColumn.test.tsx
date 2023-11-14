@@ -6,8 +6,8 @@ import {
   controllerState as controllerStateFactory,
   controllerVlansHA as controllerVlansHAFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("VLANsColumn", () => {
   let state: RootState;

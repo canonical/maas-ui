@@ -10,7 +10,7 @@ import {
   notificationState as notificationStateFactory,
   rootState as rootStateFactory,
   routerState as routerStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("notification selectors", () => {
   it("can get all items", () => {

@@ -8,8 +8,8 @@ import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ControllerLogs", () => {
   let state: RootState;

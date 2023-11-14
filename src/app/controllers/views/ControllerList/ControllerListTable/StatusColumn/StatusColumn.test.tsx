@@ -10,8 +10,8 @@ import {
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   let state: RootState;

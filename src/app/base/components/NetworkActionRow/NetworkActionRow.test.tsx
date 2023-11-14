@@ -9,13 +9,13 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

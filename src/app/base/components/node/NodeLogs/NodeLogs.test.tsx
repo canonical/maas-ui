@@ -9,8 +9,8 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NodeLogs", () => {
   let state: RootState;

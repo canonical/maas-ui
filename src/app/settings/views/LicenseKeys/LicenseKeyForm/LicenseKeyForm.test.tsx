@@ -20,8 +20,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

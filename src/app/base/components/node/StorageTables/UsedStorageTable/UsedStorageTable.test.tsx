@@ -12,8 +12,8 @@ import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   nodeDisk as diskFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 it("can show an empty message", () => {
   const node = machineDetailsFactory({

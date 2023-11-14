@@ -8,8 +8,8 @@ import {
   hweKernelsState as hweKernelsStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

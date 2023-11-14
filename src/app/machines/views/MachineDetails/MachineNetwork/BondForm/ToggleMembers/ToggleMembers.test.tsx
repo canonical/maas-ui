@@ -7,8 +7,8 @@ import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   machineInterface as machineInterfaceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

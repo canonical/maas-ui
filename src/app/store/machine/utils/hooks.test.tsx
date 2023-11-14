@@ -58,8 +58,8 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
   machineActionState,
-} from "testing/factories";
-import { renderHook, cleanup, waitFor, screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { renderHook, cleanup, waitFor, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import CertificateFields, { Labels } from "./CertificateFields";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("CertificateFields", () => {
   it("does not render certificate and key fields if generating a certificate", () => {
@@ -11,10 +11,7 @@ describe("CertificateFields", () => {
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={vi.fn()}
       >
-        <CertificateFields
-          onShouldGenerateCert={vi.fn()}
-          shouldGenerateCert
-        />
+        <CertificateFields onShouldGenerateCert={vi.fn()} shouldGenerateCert />
       </Formik>
     );
 

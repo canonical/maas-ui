@@ -7,8 +7,8 @@ import LXDVMsTable from "./LXDVMsTable";
 import { actions as machineActions } from "@/app/store/machine";
 import { FetchSortDirection, FetchGroupKey } from "@/app/store/machine/types";
 import { generateCallId } from "@/app/store/machine/utils/query";
-import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

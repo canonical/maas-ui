@@ -1,3 +1,5 @@
+import type { Mock, SpyInstance } from "vitest";
+
 import TestActions from "./TestActions";
 
 import * as hooks from "@/app/base/hooks/analytics";
@@ -11,16 +13,16 @@ import {
   machineDetails as machineDetailsFactory,
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 };
 
 describe("TestActions", () => {
-  let mockSendAnalytics: vi.Mock;
-  let mockUseSendAnalytics: vi.SpyInstance;
+  let mockSendAnalytics: Mock;
+  let mockUseSendAnalytics: SpyInstance;
 
   beforeEach(() => {
     mockSendAnalytics = vi.fn();

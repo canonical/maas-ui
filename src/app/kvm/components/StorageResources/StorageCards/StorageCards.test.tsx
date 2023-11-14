@@ -5,8 +5,8 @@ import StorageCards, {
 } from "./StorageCards";
 
 import { COLOURS } from "@/app/base/constants";
-import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { podStoragePoolResource as storagePoolResourceFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 describe("StorageCards", () => {
   it("correctly calculates meter width", () => {
