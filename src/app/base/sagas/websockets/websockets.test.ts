@@ -2,7 +2,6 @@ import { eventChannel } from "redux-saga";
 import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
-import { vi } from "vitest";
 import type { Mock } from "vitest";
 
 import {

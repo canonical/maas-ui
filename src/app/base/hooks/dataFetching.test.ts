@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import { useFetchActions } from "./dataFetching";
 
 import { renderHookWithMockStore } from "testing/utils";

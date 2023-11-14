@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 import { getCookie } from "@/app/utils";
 
 describe("getCookie", () => {

@@ -1,4 +1,3 @@
-import { vi } from "vitest";
 import type { Mock } from "vitest";
 
 import { generateCheckboxHandlers } from "./generateCheckboxHandlers";
