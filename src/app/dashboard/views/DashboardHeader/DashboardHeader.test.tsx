@@ -42,10 +42,7 @@ describe("DashboardHeader", () => {
 
     const indexLink = screen.getByText("2 discoveries");
     expect(indexLink).toBeInTheDocument();
-    expect(indexLink).toHaveProperty(
-      "href",
-      `http://example.com${urls.dashboard.index}`
-    );
+    expect(indexLink).toHaveAttribute("href", urls.dashboard.index);
   });
 
   it("has a button to clear discoveries", () => {

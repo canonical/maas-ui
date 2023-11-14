@@ -91,13 +91,13 @@ describe("DashboardConfigurationSubnetForm", () => {
       state,
     });
 
-    expect(screen.getByRole("link", { name: "172.16.1.0/24" })).toHaveProperty(
+    expect(screen.getByRole("link", { name: "172.16.1.0/24" })).toHaveAttribute(
       "href",
-      "http://example.com/subnet/1"
+      "/subnet/1"
     );
-    expect(screen.getByRole("link", { name: "test-fabric-1" })).toHaveProperty(
+    expect(screen.getByRole("link", { name: "test-fabric-1" })).toHaveAttribute(
       "href",
-      "http://example.com/fabric/3"
+      "/fabric/3"
     );
   });
 
