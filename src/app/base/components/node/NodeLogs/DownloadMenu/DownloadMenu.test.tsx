@@ -26,7 +26,11 @@ import {
 } from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
-vi.mock("js-file-download", () => vi.fn());
+vi.mock("js-file-download", () => {
+  return {
+    default: vi.fn(),
+  };
+});
 
 describe("DownloadMenu", () => {
   let state: RootState;

@@ -6,7 +6,11 @@ import type { GeneratedCertificate } from "@/app/store/general/types";
 import { generatedCertificate as certFactory } from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
-vi.mock("js-file-download", () => vi.fn());
+vi.mock("js-file-download", () => {
+  return {
+    default: vi.fn(),
+  };
+});
 
 describe("CertificateDownload", () => {
   let certificate: GeneratedCertificate;
