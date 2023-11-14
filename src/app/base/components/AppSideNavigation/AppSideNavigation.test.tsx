@@ -32,10 +32,13 @@ import {
 } from "@/testing/utils";
 
 const mockUseNavigate = vi.fn();
-vi.mock("react-router-dom-v5-compat", () => ({
-  ...vi.importActual("react-router-dom-v5-compat"),
-  useNavigate: () => mockUseNavigate,
-}));
+vi.mock("react-router-dom-v5-compat", async () => {
+  const actual: object = await vi.importActual("react-router-dom-v5-compat");
+  return {
+    ...actual,
+    useNavigate: () => mockUseNavigate,
+  };
+});
 
 const mockStore = configureStore<RootState>();
 
