@@ -1,4 +1,4 @@
-import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
+import * as reactComponents from "@canonical/react-components";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -20,10 +20,12 @@ import {
 } from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
-vi.mock("@canonical/react-components/dist/hooks", () => {
-  const hooks = vi.importActual("@canonical/react-components/dist/hooks");
+vi.mock("@canonical/react-components", async () => {
+  const components: typeof reactComponents = await vi.importActual(
+    "@canonical/react-components"
+  );
   return {
-    ...hooks,
+    ...components,
     usePrevious: vi.fn(),
   };
 });
@@ -81,7 +83,7 @@ it("fetches script results if they haven't been fetched", () => {
 
 it("fetches script results if the commissioning status changes to pending", () => {
   // Mock the previous commissioning status being different to pending.
-  vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+  vi.spyOn(reactComponents, "usePrevious").mockImplementation(
     () => TestStatusStatus.PASSED
   );
   const controller = controllerDetailsFactory({

@@ -43,11 +43,11 @@ describe("ControllerListTable", () => {
       { state }
     );
 
-    expect(screen.getAllByRole("link")[0]).toHaveProperty(
+    expect(screen.getAllByRole("link")[0]).toHaveAttribute(
       "href",
-      `http://example.com${urls.controllers.controller.index({
+      urls.controllers.controller.index({
         id: controller.system_id,
-      })}`
+      })
     );
   });
 
