@@ -27,7 +27,13 @@ import {
 
 const mockStore = configureStore();
 
-vi.mock("./readScript");
+vi.mock("./readScript", async () => {
+  const actual: typeof readScript = await vi.importActual("./readScript");
+  return {
+    ...actual,
+    readScript: vi.fn(),
+  };
+});
 
 const createFile = (
   name: string,
@@ -207,9 +213,9 @@ describe("ScriptsUpload", () => {
     );
 
     expect(store.getActions()).toEqual([
-      { type: "script/cleanup" },
+      { type: "script/cleanup", payload: undefined },
       {
-        payload: { contents, type: ScriptType.TESTING, name: "foo" },
+        payload: { contents, type: ScriptType.TESTING, name: "foo.sh" },
         type: "script/upload",
       },
     ]);

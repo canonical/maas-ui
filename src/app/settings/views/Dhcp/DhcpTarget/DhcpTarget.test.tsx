@@ -96,7 +96,7 @@ describe("DhcpTarget", () => {
     const link = screen.getByRole("link", { name: "10.0.0.99" });
 
     expect(link).toBeInTheDocument();
-    expect(link).toHaveProperty("href", "http://example.com/subnet/1");
+    expect(link).toHaveAttribute("href", "/subnet/1");
   });
 
   it("can display a node link", () => {
@@ -110,6 +110,6 @@ describe("DhcpTarget", () => {
     );
     const link = screen.getByRole("link", { name: "machine1 .test" });
     expect(link).toBeInTheDocument();
-    expect(link).toHaveProperty("href", "http://example.com/machine/xyz");
+    expect(link).toHaveAttribute("href", "/machine/xyz");
   });
 });
