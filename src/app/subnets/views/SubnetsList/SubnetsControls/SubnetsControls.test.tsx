@@ -1,6 +1,6 @@
 import SubnetsControls from "./SubnetsControls";
 
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 it("calls handleSearch with a correct value on user input", async () => {
   // As of v14 userEvent always returns a Promise and by default it waits for a
@@ -13,7 +13,7 @@ it("calls handleSearch with a correct value on user input", async () => {
   render(<SubnetsControls groupBy="fabric" handleSearch={handleSearch} />);
   await user.type(screen.getByRole("searchbox", { name: "Search" }), "test");
 
-  await waitFor(() => expect(handleSearch).toHaveBeenCalledTimes(1));
+  await vi.waitFor(() => expect(handleSearch).toHaveBeenCalledTimes(1));
   expect(handleSearch).toHaveBeenCalledWith("test");
   vi.useRealTimers();
 });

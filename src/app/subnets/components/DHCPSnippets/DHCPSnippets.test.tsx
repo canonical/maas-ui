@@ -16,10 +16,9 @@ import { render } from "@/testing/utils";
 
 const mockStore = configureStore();
 const mockDHCPTable = vi.fn();
-vi.mock("@/app/base/components/DHCPTable", () => (props: DHCPTableProps) => {
-  mockDHCPTable(props);
-  return null;
-});
+vi.mock("@/app/base/components/DHCPTable", () => ({
+  default: (props: DHCPTableProps) => mockDHCPTable(props),
+}));
 
 afterEach(() => {
   vi.restoreAllMocks();
