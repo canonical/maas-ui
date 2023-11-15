@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -8,9 +9,9 @@ import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
 
 import TagFormFields, { Label } from "./TagFormFields";
 
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -37,8 +38,17 @@ const commonProps = {
   toggleTagDetails: vi.fn(),
 };
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 beforeEach(() => {
-  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),
@@ -48,7 +58,8 @@ beforeEach(() => {
     machine: machineStateFactory({
       items: [
         machineFactory({
-          tags: [],
+          system_id: "abc123",
+          tags: [3],
         }),
       ],
     }),
@@ -84,6 +95,7 @@ it("displays available tags in the dropdown", async () => {
     </Formik>,
     { state }
   );
+  // console.log(state.machine.items[0]);
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
   });
@@ -179,7 +191,7 @@ it("updates the new tags after creating a tag", async () => {
   ).not.toBeInTheDocument();
   rerender(<Form tags={[newTag.id]} />);
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(changes).getByRole("button", { name: /new-tag/i })
     ).toBeInTheDocument()
