@@ -1,11 +1,12 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
 import CloneFormFields from "./CloneFormFields";
 
 import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
@@ -24,8 +25,15 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const callId = "mocked-nanoid";
 
-enableCallIdMocks();
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 describe("CloneFormFields", () => {
   let state: RootState;
@@ -34,6 +42,8 @@ describe("CloneFormFields", () => {
     system_id: "abc123",
   });
   beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
     state = rootStateFactory({
       fabric: fabricStateFactory({ loaded: true }),
 
