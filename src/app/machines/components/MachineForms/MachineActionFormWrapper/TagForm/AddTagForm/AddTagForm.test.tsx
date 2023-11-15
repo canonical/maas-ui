@@ -20,10 +20,9 @@ import {
 import { renderWithBrowserRouter } from "@/testing/utils";
 
 const mockBaseAddTagForm = vi.fn();
-vi.mock("@/app/tags/components/AddTagForm", () => (props: Props) => {
-  mockBaseAddTagForm(props);
-  return null;
-});
+vi.mock("@/app/tags/components/AddTagForm", () => ({
+  default: (props: Props) => mockBaseAddTagForm(props),
+}));
 
 const mockStore = configureStore<RootState, {}>();
 
