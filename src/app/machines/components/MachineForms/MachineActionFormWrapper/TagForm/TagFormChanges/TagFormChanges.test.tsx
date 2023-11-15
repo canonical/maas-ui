@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -6,9 +7,9 @@ import configureStore from "redux-mock-store";
 
 import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import type { Tag } from "@/app/store/tag/types";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -28,8 +29,17 @@ const commonProps = {
   toggleTagDetails: vi.fn(),
 };
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 beforeEach(() => {
-  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),

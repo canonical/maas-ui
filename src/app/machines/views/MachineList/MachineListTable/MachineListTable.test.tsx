@@ -10,7 +10,6 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -38,7 +37,7 @@ import {
   renderWithMockStore,
 } from "@/testing/utils";
 
-enableCallIdMocks();
+const callId = "mocked-nanoid";
 
 describe("MachineListTable", () => {
   let state: RootState;

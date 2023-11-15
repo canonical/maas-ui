@@ -1,5 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -23,7 +24,6 @@ import {
   useFetchMachineCount,
   useFetchedCount,
 } from "./hooks";
-import { generateCallId } from "./query";
 
 import { actions as machineActions } from "@/app/store/machine";
 import type {
@@ -37,7 +37,6 @@ import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { FetchNodeStatus, TestParams } from "@/app/store/types/node";
 import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   architecturesState as architecturesStateFactory,
   fabric as fabricFactory,
@@ -62,6 +61,14 @@ import {
 import { renderHook, cleanup, waitFor, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
+
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 describe("machine hook utils", () => {
   let state: RootState;
@@ -252,7 +259,7 @@ describe("machine hook utils", () => {
 
   describe("useFetchMachines", () => {
     beforeEach(() => {
-      vi.spyOn(mockedReduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2")
         .mockReturnValueOnce("mocked-nanoid-3");
@@ -481,11 +488,12 @@ describe("machine hook utils", () => {
 
     it("cleans up list request on unmount", async () => {
       const store = mockStore(state);
+      vi.spyOn(query, "generateCallId").mockReturnValue(mockCallId);
       renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
       cleanup();
-      const expected = machineActions.cleanupRequest(generateCallId());
+      const expected = machineActions.cleanupRequest(mockCallId);
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -527,7 +535,7 @@ describe("machine hook utils", () => {
 
   describe("useDispatchWithCallId", () => {
     beforeEach(() => {
-      vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
@@ -567,7 +575,7 @@ describe("machine hook utils", () => {
 
   describe("useMachineActionDispatch", () => {
     beforeEach(() => {
-      vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
@@ -634,7 +642,7 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("dispatches separate calls when there are selected both groups and items", async () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
@@ -680,7 +688,7 @@ describe("machine hook utils", () => {
     });
 
     it("dispatches a single call when there are only items selected", async () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
@@ -717,7 +725,7 @@ describe("machine hook utils", () => {
     });
 
     it("dispatches a single call when there are only groups selected", async () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
@@ -785,9 +793,7 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("can get a machine", () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValueOnce(
-        "mocked-nanoid"
-      );
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
       const store = mockStore(state);
       renderHook(() => useFetchMachine("def456"), {
         wrapper: generateWrapper(store),
@@ -800,6 +806,7 @@ describe("machine hook utils", () => {
 
     it("does not fetch again if the id hasn't changed", () => {
       const store = mockStore(state);
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
       const { rerender } = renderHook(
         ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
@@ -818,7 +825,7 @@ describe("machine hook utils", () => {
     });
 
     it("gets a machine if the id changes", () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);
@@ -841,7 +848,7 @@ describe("machine hook utils", () => {
     });
 
     it("returns the machine and loading states", () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue(mockCallId);
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(mockCallId);
       const machine = machineFactory({
         system_id: "abc123",
       });
@@ -871,7 +878,7 @@ describe("machine hook utils", () => {
     });
 
     it("cleans up machine request on unmount", async () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValueOnce(mockCallId);
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce(mockCallId);
       const store = mockStore(state);
       renderHook(
         ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
@@ -890,7 +897,7 @@ describe("machine hook utils", () => {
     });
 
     it("cleans up machine requests when the id changes", async () => {
-      vi.spyOn(mockedReduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);

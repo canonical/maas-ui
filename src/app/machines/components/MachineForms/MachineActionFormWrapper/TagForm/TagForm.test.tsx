@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -8,9 +9,9 @@ import { Label as TagFormChangesLabel } from "./TagFormChanges";
 import { Label as TagFormFieldsLabel } from "./TagFormFields";
 
 import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineActionState,
@@ -30,10 +31,18 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 let state: RootState;
 beforeEach(() => {
-  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   const tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),
@@ -249,7 +258,6 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
 });
 
 it("shows saving label if not viewing from machine config page", () => {
-  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   const machines = [
     machineFactory({ system_id: "abc123", tags: [] }),
     machineFactory({ system_id: "def456", tags: [] }),

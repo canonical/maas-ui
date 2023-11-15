@@ -1,4 +1,5 @@
 import { NotificationSeverity } from "@canonical/react-components";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
@@ -10,10 +11,10 @@ import DeleteTagForm from "./DeleteTagForm";
 
 import * as baseHooks from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { actions as tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -24,13 +25,22 @@ import {
 } from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
-enableCallIdMocks();
+const callId = "mocked-nanoid";
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 const mockStore = configureStore();
 
 let state: RootState;
 let scrollToSpy: Mock;
 
 beforeEach(() => {
+  vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [

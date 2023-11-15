@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import DiscoveryAddForm, {
@@ -9,13 +10,13 @@ import { DeviceType } from "./types";
 import { actions as deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
 import type { Discovery } from "@/app/store/discovery/types";
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   discovery as discoveryFactory,
   domain as domainFactory,
@@ -41,15 +42,25 @@ import {
   within,
   renderWithBrowserRouter,
 } from "@/testing/utils";
+
 const mockStore = configureStore<RootState, {}>();
 
-enableCallIdMocks();
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+const callId = "mocked-nanoid";
 
 describe("DiscoveryAddForm", () => {
   let state: RootState;
   let discovery: Discovery;
 
   beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
     const machines = [
       machineFactory({
         actions: [],

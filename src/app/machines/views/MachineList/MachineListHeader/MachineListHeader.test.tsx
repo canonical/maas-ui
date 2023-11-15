@@ -1,13 +1,11 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
+
 import MachineListHeader from "./MachineListHeader";
 
 import urls from "@/app/base/urls";
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  callId,
-  enableCallIdMocks,
-  mockedReduxToolkit,
-} from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineStateCount as machineStateCountFactory,
@@ -22,12 +20,20 @@ import {
 } from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
-enableCallIdMocks();
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+const callId = "mocked-nanoid";
 
 describe("MachineListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
     const machines = [
       machineFactory({ system_id: "abc123" }),
       machineFactory({ system_id: "def456" }),
@@ -143,7 +149,7 @@ describe("MachineListHeader", () => {
   });
 
   it("hides the tag action's new label after it has been clicked", async () => {
-    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     // Set a selected machine so the take action menu becomes enabled.
     state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.

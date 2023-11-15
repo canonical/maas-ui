@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { renderHook } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -7,8 +8,8 @@ import configureStore from "redux-mock-store";
 
 import { useFetchTags, useSelectedTags, useUnchangedTags } from "./hooks";
 
+import * as query from "@/app/store/machine/utils/query";
 import { actions as tagActions } from "@/app/store/tag";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   tag as tagFactory,
   tagState as tagStateFactory,
@@ -90,9 +91,23 @@ describe("useUnchangedTags", () => {
 });
 
 describe("useFetchTags", () => {
-  beforeEach(() => {
-    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mock-call-id");
+  vi.mock("@reduxjs/toolkit", async () => {
+    const actual: object = await vi.importActual("@reduxjs/toolkit");
+    return {
+      ...actual,
+      nanoid: vi.fn(),
+    };
   });
+
+  beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue("mock-call-id");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("cleans up request on unmount", async () => {
     const tags = [tagFactory(), tagFactory(), tagFactory()];
     const state = rootStateFactory({

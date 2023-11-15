@@ -1,12 +1,13 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import VmResources, { Label } from "./VmResources";
 
 import { Label as MachineListLabel } from "@/app/machines/views/MachineList/MachineListTable/MachineListTable";
 import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   rootState as rootStateFactory,
   machineState as machineStateFactory,
@@ -23,13 +24,22 @@ import {
   renderWithMockStore,
 } from "@/testing/utils";
 
-enableCallIdMocks();
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+const callId = "mocked-nanoid";
 const mockStore = configureStore<RootState, {}>();
 
 describe("VmResources", () => {
   let state: RootState;
 
   beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
     const machines = [machineFactory(), machineFactory()];
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -51,6 +61,10 @@ describe("VmResources", () => {
         items: [podFactory({ id: 1, name: "pod1", type: PodType.LXD })],
       }),
     });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("disables the dropdown if no VMs are provided", () => {

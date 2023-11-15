@@ -6,7 +6,6 @@ import VMsTable, { Label } from "./VMsTable";
 import { SortDirection } from "@/app/base/types";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -26,7 +25,6 @@ import {
   renderWithBrowserRouter,
 } from "@/testing/utils";
 
-enableCallIdMocks();
 const mockStore = configureStore<RootState>();
 
 describe("VMsTable", () => {
@@ -76,7 +74,7 @@ describe("VMsTable", () => {
       machine: machineStateFactory({
         items: vms,
         lists: {
-          [callId]: machineStateListFactory({
+          "mocked-nanoid": machineStateListFactory({
             loaded: true,
             groups: [
               machineStateListGroupFactory({

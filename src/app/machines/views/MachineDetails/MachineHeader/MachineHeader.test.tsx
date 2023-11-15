@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
@@ -6,7 +7,6 @@ import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -23,10 +23,18 @@ import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 describe("MachineHeader", () => {
   let state: RootState;
   beforeEach(() => {
-    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,

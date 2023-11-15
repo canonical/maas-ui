@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -19,7 +20,6 @@ import {
   TestStatusStatus,
   FetchNodeStatus,
 } from "@/app/store/types/node";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -43,11 +43,17 @@ import {
   within,
   screen,
   render,
-  waitFor,
 } from "@/testing/utils";
 const mockStore = configureStore<RootState>();
 const userEvent = userEventCore.setup({
   advanceTimers: vi.runAllTimers,
+});
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
 });
 
 describe("Machines", () => {
@@ -195,7 +201,7 @@ describe("Machines", () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
-    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       general: generalStateFactory({
         machineActions: {
@@ -284,7 +290,7 @@ describe("Machines", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await waitFor(() => expect(window.location.search).toBe("?status=new"));
+    await vi.waitFor(() => expect(window.location.search).toBe("?status=new"));
   });
 
   it("can hide groups", async () => {
@@ -299,14 +305,14 @@ describe("Machines", () => {
     const getFetchActions = () =>
       store.getActions().filter((action) => action.type === expected.type);
     const initialFetchActions = getFetchActions();
-    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await vi.waitFor(() => expect(initialFetchActions).toHaveLength(1));
     // Click the button to toggle the group.
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
       ).getByRole("button", { name: Label.HideGroup })
     );
-    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await vi.waitFor(() => expect(getFetchActions()).toHaveLength(2));
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_collapsed).toStrictEqual([
       "failed_testing",
@@ -314,7 +320,7 @@ describe("Machines", () => {
   });
 
   it("can change groups", async () => {
-    vi.spyOn(mockedReduxToolkit, "nanoid")
+    vi.spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.
@@ -341,13 +347,13 @@ describe("Machines", () => {
     renderWithBrowserRouter(<Machines />, { route: "/machines", store });
 
     const initialFetchActions = getFetchActions();
-    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await vi.waitFor(() => expect(initialFetchActions).toHaveLength(1));
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Group by/i }),
       screen.getByRole("option", { name: "Group by owner" })
     );
-    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await vi.waitFor(() => expect(getFetchActions()).toHaveLength(2));
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_key).toBe(FetchGroupKey.Owner);
   });
@@ -376,7 +382,7 @@ describe("Machines", () => {
 
   it("uses the default fallback value for invalid stored grouping values", async () => {
     localStorage.setItem("grouping", '"invalid_value"');
-    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(<Machines />, { store });
     expect(screen.getByRole("combobox", { name: /Group by/ })).toHaveValue(
@@ -465,7 +471,7 @@ describe("Machines", () => {
 
     await userEvent.click(screen.getByRole("checkbox", { name: "animal (1)" }));
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByRole("searchbox")).toHaveValue("workload-animal:()");
     });
 

@@ -1,12 +1,13 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
 import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machineActionState as machineActionStateFactory,
   machine as machineFactory,
@@ -22,8 +23,17 @@ const mockStore = configureStore<RootState>();
 let html: HTMLHtmlElement | null;
 const originalScrollTo = global.scrollTo;
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 beforeEach(() => {
-  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
+  vi.spyOn(query, "generateCallId").mockReturnValue("123456");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   global.innerHeight = 500;
   // eslint-disable-next-line testing-library/no-node-access
   html = document.querySelector("html");

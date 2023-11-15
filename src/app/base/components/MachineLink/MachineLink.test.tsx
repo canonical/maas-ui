@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -6,8 +7,6 @@ import configureStore from "redux-mock-store";
 import MachineLink, { Labels } from "./MachineLink";
 
 import urls from "@/app/base/urls";
-import * as machineUtils from "@/app/store/machine/utils";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -18,15 +17,16 @@ import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 it("handles when machines are loading", async () => {
-  vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
-  // Gotta mock this, since details loading state doesn't seem to
-  // be working in this test for some reason.
-  vi.spyOn(machineUtils, "useFetchMachine").mockReturnValue({
-    machine: null,
-    loading: true,
-    loaded: false,
-  });
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   const state = rootStateFactory({
     machine: machineStateFactory({
       items: [

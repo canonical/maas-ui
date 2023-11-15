@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
@@ -5,7 +6,6 @@ import CloneForm from "./CloneForm";
 import { actions as machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -25,12 +25,21 @@ import {
   userEvent,
   waitFor,
 } from "@/testing/utils";
+
 const mockStore = configureStore<RootState>();
+
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 describe("CloneForm", () => {
   beforeEach(() => {
-    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
-    vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
+    vi.spyOn(query, "generateCallId").mockReturnValue("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   });
 
   afterEach(() => {
@@ -264,6 +273,6 @@ describe("CloneForm", () => {
     const actualAction = store
       .getActions()
       .find((action) => action.type === expectedAction.type);
-    expect(expectedAction).toStrictEqual(actualAction);
+    expect(actualAction).toStrictEqual(expectedAction);
   });
 });

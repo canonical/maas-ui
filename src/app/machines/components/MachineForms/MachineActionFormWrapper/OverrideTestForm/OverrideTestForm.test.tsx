@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
@@ -6,13 +7,13 @@ import { actions as machineActions } from "@/app/store/machine";
 import type { FetchFilters } from "@/app/store/machine/types";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { selectedToFilters } from "@/app/store/machine/utils";
+import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
 import { NodeActions } from "@/app/store/types/node";
-import { mockedReduxToolkit } from "@/testing/callId-mock";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -30,11 +31,20 @@ import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 describe("OverrideTestForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    vi.spyOn(mockedReduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.spyOn(query, "generateCallId").mockReturnValue("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
@@ -81,6 +91,10 @@ describe("OverrideTestForm", () => {
         ],
       }),
     });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("dispatches actions to override tests for given machines", async () => {
