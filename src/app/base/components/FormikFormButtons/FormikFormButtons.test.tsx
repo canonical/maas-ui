@@ -68,9 +68,11 @@ it("can display a tooltip for the secondary submit action", async () => {
   expect(
     screen.getByRole("button", { name: "Save and add another" })
   ).toHaveAccessibleDescription("Will add another");
-  expect(
-    screen.getByRole("tooltip", { name: "Will add another" })
-  ).toBeInTheDocument();
+  await vi.waitFor(() => {
+    expect(
+      screen.getByRole("tooltip", { name: "Will add another" })
+    ).toBeInTheDocument();
+  });
 });
 
 it("displays a border if bordered is true", () => {

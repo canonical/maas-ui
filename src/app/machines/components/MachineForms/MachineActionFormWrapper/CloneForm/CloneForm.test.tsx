@@ -106,9 +106,12 @@ describe("CloneForm", () => {
     expect(
       screen.getByRole("button", { name: "Clone to machine" })
     ).toBeDisabled();
-    expect(
-      screen.getByRole("checkbox", { name: "Clone network configuration" })
-    ).toBeEnabled();
+
+    await vi.waitFor(() => {
+      expect(
+        screen.getByRole("checkbox", { name: "Clone network configuration" })
+      ).toBeEnabled();
+    });
 
     // Select config to clone - submit should be re-disabled.
     await userEvent.click(

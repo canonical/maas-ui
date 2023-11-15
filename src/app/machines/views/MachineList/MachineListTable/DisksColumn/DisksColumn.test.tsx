@@ -52,8 +52,12 @@ describe("DisksColumn", () => {
     expect(screen.getByLabelText("error")).toHaveClass("p-icon--error");
 
     await userEvent.hover(screen.getByRole("button"));
-    expect(screen.getByRole("tooltip")).toHaveTextContent(
-      "Machine has failed tests."
-    );
+    // eslint-disable-next-line testing-library/no-debugging-utils
+    screen.debug();
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        "Machine has failed tests."
+      );
+    });
   });
 });

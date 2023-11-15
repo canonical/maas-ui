@@ -7,11 +7,7 @@ import {
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
 } from "@/testing/factories";
-import {
-  expectTooltipOnHover,
-  renderWithBrowserRouter,
-  screen,
-} from "@/testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("CoresColumn", () => {
   let state: RootState;
@@ -62,6 +58,9 @@ describe("CoresColumn", () => {
       state,
     });
 
-    await expectTooltipOnHover(screen.getByTestId("arch"), "amd64/generic");
+    await userEvent.hover(screen.getByTestId("arch"));
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("amd64/generic");
+    });
   });
 });
