@@ -5,9 +5,9 @@ on:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
-- name: Read .nvmrc
-  run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
 jobs:
+  - name: Read .nvmrc
+    run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
   lint:
     name: Lint
     runs-on: ubuntu-22.04
