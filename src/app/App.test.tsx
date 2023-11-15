@@ -14,10 +14,15 @@ import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
-vi.mock("@canonical/react-components/dist/hooks", () => ({
-  ...vi.importActual("@canonical/react-components/dist/hooks"),
-  usePrevious: vi.fn(),
-}));
+vi.mock("@canonical/react-components/dist/hooks", async () => {
+  const actual: object = await vi.importActual(
+    "@canonical/react-components/dist/hooks"
+  );
+  return {
+    ...actual,
+    usePrevious: vi.fn(),
+  };
+});
 
 describe("App", () => {
   let state: RootState;
