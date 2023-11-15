@@ -20,6 +20,7 @@ import {
   renderWithMockStore,
   screen,
   userEvent,
+  within,
 } from "@/testing/utils";
 
 const openMenu = async () => {
@@ -294,6 +295,12 @@ describe("NetworkTableActions", () => {
       addVLAN,
       "There are no unused VLANS for this interface."
     );
+    await userEvent.hover(within(addVLAN).getByLabelText("help"));
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        "There are no unused VLANS for this interface."
+      );
+    });
   });
 
   it("can not display an action to add an alias or vlan", async () => {

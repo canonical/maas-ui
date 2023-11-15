@@ -20,12 +20,7 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
 } from "@/testing/factories";
-import {
-  expectTooltipOnHover,
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-} from "@/testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -147,10 +142,12 @@ describe("NodeTestsTable", () => {
 
     const checkbox = screen.getByTestId("suppress-script-results");
     expect(checkbox).toBeDisabled();
-    await expectTooltipOnHover(
-      checkbox,
-      "Only failed testing scripts can be suppressed."
-    );
+    await userEvent.hover(checkbox);
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        "Only failed testing scripts can be suppressed."
+      );
+    });
   });
 
   it("dispatches suppress for an unsuppressed script result", async () => {

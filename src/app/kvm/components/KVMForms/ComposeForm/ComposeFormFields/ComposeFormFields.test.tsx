@@ -222,11 +222,13 @@ describe("ComposeFormFields", () => {
     const enableHugepages = screen.getByLabelText("Enable hugepages");
     expect(enableHugepages).toBeDisabled();
     await userEvent.hover(enableHugepages);
-    expect(
-      screen.getByRole("tooltip", {
-        name: "Hugepages are only supported on LXD KVMs.",
-      })
-    ).toBeInTheDocument();
+    await vi.waitFor(() => {
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Hugepages are only supported on LXD KVMs.",
+        })
+      ).toBeInTheDocument();
+    });
   });
 
   it("disables hugepage backing checkbox if no hugepages are free", async () => {
