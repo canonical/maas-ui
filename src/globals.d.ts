@@ -1,3 +1,3 @@
 declare module globalThis {
-  var IS_VITE_ACT_ENVIRONMENT: boolean;
+  var IS_REACT_ACT_ENVIRONMENT: boolean;
 }
