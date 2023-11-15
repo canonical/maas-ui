@@ -94,7 +94,9 @@ describe("ControllerStatus", () => {
     });
     expect(getIcon()).toHaveClass("p-icon--success");
     await userEvent.hover(getIcon());
-    expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
+    });
   });
 
   it("handles a powered off controller", async () => {
