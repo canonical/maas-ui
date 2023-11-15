@@ -93,7 +93,8 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--success");
-    await expectTooltipOnHover(getIcon(), "2 running");
+    await userEvent.hover(getIcon());
+    expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
   });
 
   it("handles a powered off controller", async () => {
