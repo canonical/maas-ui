@@ -34,17 +34,20 @@ import {
 import WebSocketClient, {
   WebSocketMessageType,
   WebSocketResponseType,
-} from "websocket-client";
+} from "@/websocket-client";
 import type {
   WebSocketResponseNotify,
   WebSocketResponsePing,
   WebSocketResponseResult,
-} from "websocket-client";
+} from "@/websocket-client";
 
-vi.mock("@/app/utils", () => ({
-  ...vi.importActual("@/app/utils"),
-  getCookie: vi.fn(),
-}));
+vi.mock("@/app/utils", async () => {
+  const actual: object = await vi.importActual("@/app/utils");
+  return {
+    ...actual,
+    getCookie: vi.fn(),
+  };
+});
 
 describe("websocket sagas", () => {
   let socketChannel: WebSocketChannel;

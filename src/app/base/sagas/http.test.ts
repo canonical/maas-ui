@@ -22,9 +22,7 @@ import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import { getCookie } from "@/app/utils";
 import { zone as zoneFactory } from "@/testing/factories";
 
-vi.mock("../../../bakery", () => {
-  // Mock the bakery module.
-});
+vi.mock("@/bakery");
 
 describe("Auth API", () => {
   beforeEach(() => {

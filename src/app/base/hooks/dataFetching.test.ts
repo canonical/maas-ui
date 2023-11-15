@@ -7,11 +7,10 @@ const mockAction = vi.fn(() => ({
   type: "MOCK_ACTION",
 }));
 
-vi.mock("react-redux", () => ({
-  ...vi.importActual("react-redux"),
-  useDispatch: () => mockDispatch,
-  useSelector: () => 0,
-}));
+vi.mock("react-redux", async () => {
+  const actual: object = await vi.importActual("react-redux");
+  return { ...actual, useDispatch: () => mockDispatch, useSelector: () => 0 };
+});
 
 afterEach(() => {
   vi.clearAllMocks();

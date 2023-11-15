@@ -18,10 +18,10 @@ import {
 
 const mockStore = configureStore();
 
-vi.mock("@/app/utils", () => ({
-  ...vi.importActual("@/app/utils"),
-  getCookie: vi.fn(),
-}));
+vi.mock("@/app/utils", async () => {
+  const actual: object = await vi.importActual("@/app/utils");
+  return { ...actual, getCookie: vi.fn() };
+});
 
 describe("intro hooks", () => {
   describe("useCompletedIntro", () => {
