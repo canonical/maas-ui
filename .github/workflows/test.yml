@@ -6,16 +6,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  read-node-version:
-    name: "Read NodeJS version"
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: "Read .nvmrc"
-        run: "echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV"
   lint:
     name: Lint
-    needs: read-node-version
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -25,10 +17,10 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Use Node.js ${{ env.NVMRC }}
+      - name: Use Node.js from .nvrmc
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NVMRC }}
+          node-version-file: '.nvrmc'
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
@@ -36,7 +28,6 @@ jobs:
 
   test:
     name: Test
-    needs: read-node-version
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -46,10 +37,10 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Use Node.js ${{ env.NVMRC }}
+      - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NVMRC }}
+          node-version-file: '.nvmrc'
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
