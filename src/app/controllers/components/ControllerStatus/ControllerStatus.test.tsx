@@ -120,7 +120,7 @@ describe("ControllerStatus", () => {
     expect(getIcon()).toHaveClass("p-icon--power-off");
     await userEvent.hover(getIcon());
     await vi.waitFor(() => {
-      expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
+      expect(screen.getByRole("tooltip")).toHaveTextContent("2 off");
     });
   });
 
