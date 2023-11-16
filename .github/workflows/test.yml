@@ -16,9 +16,6 @@ jobs:
     name: Lint
     needs: read-node-version
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
       - name: Restore node_modules
@@ -40,9 +37,6 @@ jobs:
     name: Test
     needs: read-node-version
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
       - name: Restore node_modules
