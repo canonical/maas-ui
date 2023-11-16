@@ -6,10 +6,15 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  - name: Read .nvmrc
-    run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
+  read-node-version:
+    name: "Read NodeJS version"
+    runs-on: ubuntu-22.04
+    steps:
+      - name: "Read .nvmrc"
+        run: "echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV"
   lint:
     name: Lint
+    needs: read-node-version
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -33,6 +38,7 @@ jobs:
 
   test:
     name: Test
+    needs: read-node-version
     runs-on: ubuntu-22.04
     strategy:
       matrix:
