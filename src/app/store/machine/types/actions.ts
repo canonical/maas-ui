@@ -7,6 +7,7 @@ import type {
 } from "./base";
 import type { MachineMeta } from "./enum";
 
+import type { Prettify } from "app/base/types";
 import type { Domain } from "app/store/domain/types";
 import type { Fabric } from "app/store/fabric/types";
 import type { LicenseKeys } from "app/store/licensekeys/types";
@@ -52,13 +53,14 @@ export type ApplyStorageLayoutParams = {
   storageLayout: StorageLayout;
 };
 
-export type BaseMachineActionParams =
+export type BaseMachineActionParams = Prettify<
   | BaseNodeActionParams
   | {
       system_id?: never;
       filter: FetchFilters;
       callId?: string;
-    };
+    }
+>;
 
 export type CloneParams = BaseMachineActionParams & {
   system_id: Node["system_id"];

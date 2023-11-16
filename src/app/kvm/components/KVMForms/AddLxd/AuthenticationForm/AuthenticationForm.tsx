@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { Link, Spinner } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -146,13 +147,9 @@ export const AuthenticationForm = ({
         </div>
         <div>
           <p>
-            <Link
-              href="https://discourse.maas.io/t/lxd-authentication/4856"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <ExternalLink to="https://discourse.maas.io/t/lxd-authentication/4856">
               How to trust a certificate in LXD
-            </Link>
+            </ExternalLink>
           </p>
         </div>
       </div>

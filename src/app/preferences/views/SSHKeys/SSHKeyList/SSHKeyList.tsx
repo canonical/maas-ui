@@ -1,4 +1,4 @@
-import { Link } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
 
 import BaseSSHKeyList from "app/base/components/SSHKeyList";
 import docsUrls from "app/base/docsUrls";
@@ -19,9 +19,7 @@ const SSHKeyList = (): JSX.Element => {
           { label: "Import SSH key", url: urls.preferences.sshKeys.add },
         ]}
       />
-      <Link href={docsUrls.sshKeys} rel="noreferrer noopener" target="_blank">
-        About SSH keys
-      </Link>
+      <ExternalLink to={docsUrls.sshKeys}>About SSH keys</ExternalLink>
     </>
   );
 };

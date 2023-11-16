@@ -14,17 +14,22 @@ context("Footer", () => {
   });
 
   it("navigates to the local documentation", () => {
-    cy.get(".p-footer__link:contains(Local documentation)").click();
-    cy.location("pathname").should("eq", "/MAAS/docs/");
+    cy.findByRole("link", { name: /local documentation/i })
+      .should("have.attr", "href")
+      .and("include", "/MAAS/docs/");
   });
 
   it("has a link to legal", () => {
-    cy.get(".p-footer__link:contains(Legal information)")
+    cy.findByRole("link", {
+      name: /legal information/i,
+    })
       .should("have.attr", "href")
       .and("include", "https://www.ubuntu.com/legal");
   });
 
   it("displays the feedback link", () => {
-    cy.get(".p-footer__nav button:contains(Give feedback)").should("exist");
+    cy.findByRole("button", {
+      name: /give feedback/i,
+    }).should("exist");
   });
 });

@@ -1,4 +1,5 @@
-import Meter from "app/base/components/Meter";
+import { Meter } from "@canonical/maas-react-components";
+
 import { COLOURS } from "app/base/constants";
 import { formatBytes } from "app/utils";
 
@@ -94,8 +95,12 @@ const KVMResourceMeter = ({
             value: free > 0 ? free : 0,
           },
         ]}
-        label={
-          detailed ? (
+        max={total}
+        size="small"
+        variant={segmented ? "segmented" : "regular"}
+      >
+        <Meter.Label className="u-align--right">
+          {detailed ? (
             <div>
               <div className="p-text--x-small-capitalised u-text--muted u-sv-1">
                 Total
@@ -109,13 +114,9 @@ const KVMResourceMeter = ({
             >
               {`${formattedAllocated} of ${formattedTotal}${formattedUnit} allocated`}
             </small>
-          )
-        }
-        labelClassName="u-align--right"
-        max={total}
-        segmented={segmented}
-        small
-      />
+          )}
+        </Meter.Label>
+      </Meter>
     </div>
   );
 };

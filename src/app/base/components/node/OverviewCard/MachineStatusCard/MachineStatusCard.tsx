@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Tooltip } from "@canonical/react-components";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
@@ -115,14 +116,12 @@ const MachineStatusCard = ({ machine }: Props): JSX.Element => {
                     {formatSyncInterval(machine.sync_interval)}.{"\n"}
                     You can check it at the bottom, in the status bar.{"\n"}
                     More about this in the{" "}
-                    <a
+                    <ExternalLink
                       className="is-on-dark"
-                      href={docsUrls.customisingDeployedMachines}
-                      rel="noopener noreferrer"
-                      target="_blank"
+                      to={docsUrls.customisingDeployedMachines}
                     >
                       Hardware sync docs
-                    </a>
+                    </ExternalLink>
                     .
                   </>
                 }

@@ -17,6 +17,8 @@ import {
 import { screen, renderWithMockStore } from "testing/utils";
 
 let state: RootState;
+const originalEnv = process.env;
+
 beforeEach(() => {
   jest.useFakeTimers("modern");
   // Thu, 31 Dec. 2020 23:00:00 UTC
@@ -40,6 +42,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.useRealTimers();
+  process.env = originalEnv;
 });
 
 it("can show if a machine is currently commissioning", () => {
@@ -207,4 +210,51 @@ it("displays last image sync timestamp for a rack or region+rack controller", ()
   expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
     `Last image sync: ${controller.last_image_sync}`
   );
+});
+
+it("displays the feedback link when analytics enabled and not in development environment", () => {
+  process.env = { ...originalEnv, NODE_ENV: "production" };
+
+  state.config = configStateFactory({
+    items: [
+      ...state.config.items,
+      configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+    ],
+  });
+
+  renderWithMockStore(<StatusBar />, { state });
+
+  expect(
+    screen.getByRole("button", { name: "Give feedback" })
+  ).toBeInTheDocument();
+});
+
+it("hides the feedback link when analytics disabled", () => {
+  process.env = { ...originalEnv, NODE_ENV: "production" };
+  state.config = configStateFactory({
+    items: [
+      ...state.config.items,
+      configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
+    ],
+  });
+  renderWithMockStore(<StatusBar />, { state });
+
+  expect(
+    screen.queryByRole("button", { name: "Give feedback" })
+  ).not.toBeInTheDocument();
+});
+
+it("hides the feedback link in development environment", () => {
+  process.env = { ...originalEnv, NODE_ENV: "development" };
+  state.config = configStateFactory({
+    items: [
+      ...state.config.items,
+      configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+    ],
+  });
+  renderWithMockStore(<StatusBar />, { state });
+
+  expect(
+    screen.queryByRole("button", { name: "Give feedback" })
+  ).not.toBeInTheDocument();
 });

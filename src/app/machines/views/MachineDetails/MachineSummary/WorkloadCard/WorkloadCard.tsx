@@ -1,4 +1,5 @@
-import { Card, Link, Spinner } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
+import { Card, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -81,8 +82,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
               />
             </span>
           </div>
-          <Link
-            href="https://discourse.maas.io/t/machine-workload-annotations/4237"
+          <ExternalLink
             onClick={() =>
               sendAnalytics(
                 "Machine summary",
@@ -90,11 +90,10 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
                 "Read more"
               )
             }
-            rel="noopener noreferrer"
-            target="_blank"
+            to="https://discourse.maas.io/t/machine-workload-annotations/4237"
           >
             Read more
-          </Link>
+          </ExternalLink>
         </div>
         <hr />
         {content}

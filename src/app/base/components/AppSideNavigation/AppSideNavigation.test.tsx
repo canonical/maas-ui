@@ -93,7 +93,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    const primaryNavigation = screen.getByRole("navigation");
+    const primaryNavigation = screen.getByRole("banner", {
+      name: "main navigation",
+    });
     expect(within(primaryNavigation).getAllByRole("link")).toHaveLength(1);
     expect(
       within(primaryNavigation).getAllByRole("link")[0]
@@ -135,7 +137,7 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    const mainNav = screen.getByRole("navigation");
+    const mainNav = screen.getByRole("banner", { name: "main navigation" });
     expect(within(mainNav).getAllByRole("link")[0]).toHaveAccessibleName(
       "Homepage"
     );
@@ -270,14 +272,20 @@ describe("GlobalSideNav", () => {
       state,
     });
     expect(
-      within(screen.getByRole("navigation")).getByRole("link", {
-        name: "Homepage",
-      })
+      within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
+        "link",
+        {
+          name: "Homepage",
+        }
+      )
     ).toHaveAttribute("href", "/dashboard");
     expect(
-      within(screen.getByRole("banner")).getByRole("link", {
-        name: "Homepage",
-      })
+      within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
+        "link",
+        {
+          name: "Homepage",
+        }
+      )
     ).toHaveAttribute("href", "/dashboard");
   });
 
@@ -289,14 +297,20 @@ describe("GlobalSideNav", () => {
     });
 
     expect(
-      within(screen.getByRole("navigation")).getByRole("link", {
-        name: "Homepage",
-      })
+      within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
+        "link",
+        {
+          name: "Homepage",
+        }
+      )
     ).toHaveAttribute("href", "/machines");
     expect(
-      within(screen.getByRole("banner")).getByRole("link", {
-        name: "Homepage",
-      })
+      within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
+        "link",
+        {
+          name: "Homepage",
+        }
+      )
     ).toHaveAttribute("href", "/machines");
   });
 
@@ -374,7 +388,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    expect(screen.getByRole("navigation")).toHaveClass("is-collapsed");
+    expect(screen.getByRole("banner", { name: "main navigation" })).toHaveClass(
+      "is-collapsed"
+    );
   });
 
   it("persists collapsed state", async () => {
@@ -384,7 +400,9 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    const primaryNavigation = screen.getByRole("navigation");
+    const primaryNavigation = screen.getByRole("banner", {
+      name: "main navigation",
+    });
     await userEvent.click(
       screen.getByRole("button", { name: "expand main navigation" })
     );

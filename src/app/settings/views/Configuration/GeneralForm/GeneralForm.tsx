@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
-import { Col, Link, Row } from "@canonical/react-components";
+import { ExternalLink } from "@canonical/maas-react-components";
+import { Col, Row } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -166,20 +167,15 @@ const GeneralForm = (): JSX.Element => {
           </Col>
         ))}
       </Row>
-
       <h5>Data analytics</h5>
       <FormikField
         help={
           <>
             The analytics used in MAAS are Google Analytics, Usabilla and Sentry
             Error Tracking.{" "}
-            <Link
-              href="https://ubuntu.com/legal/data-privacy"
-              rel="noreferrer noopener"
-              target="_blank"
-            >
+            <ExternalLink to="https://ubuntu.com/legal/data-privacy">
               Data privacy
-            </Link>
+            </ExternalLink>
           </>
         }
         label="Enable analytics to shape improvements to user experience"

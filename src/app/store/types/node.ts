@@ -158,6 +158,7 @@ export enum FetchNodeStatus {
 export enum NodeActions {
   ABORT = "abort",
   ACQUIRE = "acquire",
+  CHECK_POWER = "check-power",
   CLONE = "clone",
   COMMISSION = "commission",
   DELETE = "delete",

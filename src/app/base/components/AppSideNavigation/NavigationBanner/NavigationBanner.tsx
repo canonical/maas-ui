@@ -1,3 +1,4 @@
+import { Navigation } from "@canonical/maas-react-components";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom-v5-compat";
 
@@ -18,19 +19,18 @@ const NavigationBanner = ({
     ? { url: urls.dashboard.index, label: "Homepage" }
     : { url: urls.machines.index, label: "Homepage" };
   return (
-    <>
-      <Link
+    <Navigation.Banner>
+      <Navigation.Logo
         aria-current={
           isSelected(location.pathname, homepageLink) ? "page" : undefined
         }
         aria-label={homepageLink.label}
-        className="p-panel__logo"
+        as={Link}
         to={homepageLink.url}
       >
-        <div className="p-navigation__tagged-logo">
-          <div className="p-navigation__logo-tag">
+        <Navigation.LogoTag>
+          <Navigation.LogoIcon>
             <svg
-              className="p-panel__logo-icon p-navigation__logo-icon"
               fill="#fff"
               viewBox="0 0 165.5 174.3"
               xmlns="http://www.w3.org/2000/svg"
@@ -44,14 +44,15 @@ const NavigationBanner = ({
               <ellipse cx="15.57" cy="158.94" rx="13.44" ry="13.3" />
               <path d="M156.94 149H31.88a18.88 18.88 0 0 1 .27 19.5c-.09.16-.19.31-.29.46h125.08A6 6 0 0 0 163 163v-8.06a6 6 0 0 0-6-6Z" />
             </svg>
-          </div>
-          <div className="p-panel__logo-name is-fading-when-collapsed ">
-            MAAS
-          </div>
-        </div>
-      </Link>
+          </Navigation.LogoIcon>
+        </Navigation.LogoTag>
+        <Navigation.LogoText>
+          <Navigation.LogoName variant="small">Canonical</Navigation.LogoName>
+          <Navigation.LogoName>MAAS</Navigation.LogoName>
+        </Navigation.LogoText>
+      </Navigation.Logo>
       {children}
-    </>
+    </Navigation.Banner>
   );
 };
 

@@ -40,7 +40,7 @@ type Props = {
 
 export enum Labels {
   Actions = "Actions",
-  PowerCycle = "Power cycle",
+  Power = "Power",
   Troubleshoot = "Troubleshoot",
   Categorise = "Categorise",
   Lock = "Lock",
@@ -62,8 +62,13 @@ const actionGroups: ActionGroup[] = [
   },
   {
     name: "power",
-    actions: [NodeActions.ON, NodeActions.OFF, NodeActions.SOFT_OFF],
-    title: Labels.PowerCycle,
+    actions: [
+      NodeActions.ON,
+      NodeActions.OFF,
+      NodeActions.SOFT_OFF,
+      NodeActions.CHECK_POWER,
+    ],
+    title: Labels.Power,
   },
   {
     name: "testing",

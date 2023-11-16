@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -95,16 +96,11 @@ export const AddController = ({
           data-testid="register-snippet"
         />
       )}
-
       <Row>
         <Col size={6}>
-          <a
-            href={docsUrls.rackController}
-            rel="noreferrer noopener"
-            target="_blank"
-          >
+          <ExternalLink to={docsUrls.rackController}>
             Help with adding a rack controller
-          </a>
+          </ExternalLink>
         </Col>
         <Col className="u-align--right" size={6}>
           <Button

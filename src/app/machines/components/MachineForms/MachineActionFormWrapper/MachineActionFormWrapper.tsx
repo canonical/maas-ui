@@ -184,6 +184,11 @@ export const MachineActionForm = ({
             {...commonNodeFormProps}
           />
         );
+      // No form should be opened for this, as it should only
+      // be available for machine details, and will be dispatched
+      // immediately on click.
+      case NodeActions.CHECK_POWER:
+        return null;
     }
   };
 

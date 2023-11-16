@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import {
   CodeSnippet,
   CodeSnippetBlockAppearance,
@@ -26,13 +27,9 @@ const TLSDisabled = (): JSX.Element => {
         ]}
       />
       <p>
-        <a
-          href={docsUrls.aboutNativeTLS}
-          rel="noreferrer noopener"
-          target="_blank"
-        >
+        <ExternalLink to={docsUrls.aboutNativeTLS}>
           More about MAAS native TLS
-        </a>
+        </ExternalLink>
       </p>
     </>
   );

@@ -1,10 +1,10 @@
+import { Meter } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { ComposeFormValues, DiskField } from "../../ComposeForm";
 
-import Meter from "app/base/components/Meter";
 import { COLOURS } from "app/base/constants";
 import { getSortedPoolsArray } from "app/kvm/utils";
 import podSelectors from "app/store/pod/selectors";
@@ -131,8 +131,10 @@ const generateDropdownContent = (
                     value: free >= 0 ? free : 0,
                   },
                 ]}
-                label={
-                  free >= 0 ? (
+                max={pool.total}
+              >
+                <Meter.Label>
+                  {free >= 0 ? (
                     <ul className="p-inline-list u-no-margin--bottom">
                       <li
                         className="p-inline-list__item"
@@ -163,10 +165,9 @@ const generateDropdownContent = (
                       Only {byteDisplay(freeBytes, true)} GB available in {name}
                       .
                     </div>
-                  )
-                }
-                max={pool.total}
-              />
+                  )}
+                </Meter.Label>
+              </Meter>
             </div>
           </button>
         );

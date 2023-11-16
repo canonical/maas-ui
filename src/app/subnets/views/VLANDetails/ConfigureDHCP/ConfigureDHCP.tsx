@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Card, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -163,9 +164,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
           <FormikForm<ConfigureDHCPValues>
             allowUnchanged
             buttonsHelp={
-              <a href={docsUrls.dhcp} rel="noreferrer noopener" target="_blank">
-                About DHCP
-              </a>
+              <ExternalLink to={docsUrls.dhcp}>About DHCP</ExternalLink>
             }
             cleanup={cleanup}
             errors={configureDHCPError}

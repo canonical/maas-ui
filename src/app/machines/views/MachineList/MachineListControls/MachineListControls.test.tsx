@@ -95,7 +95,7 @@ describe("MachineListControls", () => {
       screen.queryByRole("button", { name: "Actions" })
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Power cycle" })
+      screen.queryByRole("button", { name: "Power" })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Troubleshoot" })
@@ -130,9 +130,7 @@ describe("MachineListControls", () => {
     );
 
     expect(screen.getByRole("button", { name: "Actions" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Power cycle" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Power" })).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Troubleshoot" })
     ).toBeInTheDocument();

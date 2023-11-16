@@ -6,7 +6,6 @@ import { matchPath, useLocation } from "react-router-dom-v5-compat";
 
 import AppSidePanel from "../AppSidePanel";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import Footer from "../Footer";
 import MainContentSection from "../MainContentSection";
 import SecondaryNavigation from "../SecondaryNavigation";
 
@@ -78,8 +77,6 @@ const PageContent = ({
           >
             <ErrorBoundary>{children}</ErrorBoundary>
           </MainContentSection>
-          <hr />
-          <Footer />
         </div>
       </main>
       <AppSidePanel content={sidePanelContent} title={sidePanelTitle} />

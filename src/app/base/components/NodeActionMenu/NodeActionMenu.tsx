@@ -56,7 +56,12 @@ const actionGroups: ActionGroup[] = [
   },
   {
     name: "power",
-    actions: [NodeActions.ON, NodeActions.OFF],
+    actions: [
+      NodeActions.ON,
+      NodeActions.OFF,
+      NodeActions.SOFT_OFF,
+      NodeActions.CHECK_POWER,
+    ],
   },
   {
     name: "testing",

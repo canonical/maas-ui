@@ -1,3 +1,4 @@
+import { ExternalLink } from "@canonical/maas-react-components";
 import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -35,14 +36,12 @@ export const StatusColumn = ({ systemId }: Props): JSX.Element | null => {
           <>
             {issue}
             <br />
-            <a
+            <ExternalLink
               className="is-on-dark"
-              href="https://discourse.maas.io/t/4555"
-              rel="noreferrer noopener"
-              target="_blank"
+              to="https://discourse.maas.io/t/4555"
             >
               More info
-            </a>
+            </ExternalLink>
           </>
         }
         position="top-center"

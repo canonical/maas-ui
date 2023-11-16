@@ -4,6 +4,7 @@ import { NodeActions } from "app/store/types/node";
 export const MachineActionSidePanelViews = {
   ABORT_MACHINE: ["machineActionForm", NodeActions.ABORT],
   ACQUIRE_MACHINE: ["machineActionForm", NodeActions.ACQUIRE],
+  CHECK_MACHINE_POEWR: ["machineActionForm", NodeActions.CHECK_POWER],
   CLONE_MACHINE: ["machineActionForm", NodeActions.CLONE],
   COMMISSION_MACHINE: ["machineActionForm", NodeActions.COMMISSION],
   DELETE_MACHINE: ["machineActionForm", NodeActions.DELETE],

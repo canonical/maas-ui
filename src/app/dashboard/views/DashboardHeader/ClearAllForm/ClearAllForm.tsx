@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
+import { ExternalLink } from "@canonical/maas-react-components";
 import {
-  Link,
   Notification,
   NotificationSeverity,
 } from "@canonical/react-components";
@@ -46,13 +46,9 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
         </p>
         <p>
           Learn more about{" "}
-          <Link
-            href={docsUrls.networkDiscovery}
-            rel="noreferrer noopener"
-            target="_blank"
-          >
+          <ExternalLink to={docsUrls.networkDiscovery}>
             network discovery
-          </Link>
+          </ExternalLink>
           .
         </p>
       </>
