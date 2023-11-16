@@ -33,6 +33,9 @@ export default defineConfig(({ mode }) => {
     define: {
       "process.env": env,
     },
+    build: {
+      outDir: "build",
+    },
     plugins: [react(), eslint(), fixAcceptHeader404()],
     server: { port: 8401, hmr: { port: 8402 } },
     resolve: {
