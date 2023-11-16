@@ -10,6 +10,7 @@ jobs:
     name: "Read NodeJS version"
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v4
       - name: "Read .nvmrc"
         run: "echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV"
   lint:
