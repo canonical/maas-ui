@@ -95,7 +95,6 @@ it("displays available tags in the dropdown", async () => {
     </Formik>,
     { state }
   );
-  // console.log(state.machine.items[0]);
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
   });
