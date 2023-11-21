@@ -84,9 +84,11 @@ describe("ZoneColumn", () => {
     );
 
     await userEvent.hover(screen.getByTestId("spaces"));
-    expect(screen.getByRole("tooltip")).toHaveTextContent(
-      /space1 space2 space3/i
-    );
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        /space1 space2 space3/i
+      );
+    });
   });
 
   it("displays a message if the machine cannot have its zone changed", async () => {
