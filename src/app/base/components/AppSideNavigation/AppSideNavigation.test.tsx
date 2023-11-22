@@ -162,8 +162,11 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    // In this case the second link is taken because the logo also points to the machine list page
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[1];
+    // Ensure that machine link is selected from within the nav
+    const sideNavigation = screen.getAllByRole("navigation")[0];
+    const currentMenuItem = within(sideNavigation).getAllByRole("link", {
+      current: "page",
+    })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
