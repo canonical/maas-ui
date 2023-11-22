@@ -9,12 +9,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "@/testing/factories";
-import {
-  expectTooltipOnHover,
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-} from "@/testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("PowerColumn", () => {
   let state: RootState;
@@ -129,9 +124,10 @@ describe("PowerColumn", () => {
       { route: "/machines", state }
     );
 
-    await expectTooltipOnHover(
-      screen.getByLabelText("error"),
-      "It's not working"
-    );
+    await userEvent.hover(screen.getByLabelText("error"));
+
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("It's not working");
+    });
   });
 });
