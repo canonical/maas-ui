@@ -162,7 +162,11 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+    // Ensure that machine link is selected from within the nav
+    const sideNavigation = screen.getAllByRole("navigation")[0];
+    const currentMenuItem = within(sideNavigation).getAllByRole("link", {
+      current: "page",
+    })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
@@ -265,7 +269,7 @@ describe("GlobalSideNav", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("links from the logo to the dashboard for admins", () => {
+  it("links from the logo to machine list page for admins", () => {
     state.user.auth.user = userFactory({ is_superuser: true });
     renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machine/abc123",
@@ -278,15 +282,7 @@ describe("GlobalSideNav", () => {
           name: "Homepage",
         }
       )
-    ).toHaveAttribute("href", "/dashboard");
-    expect(
-      within(screen.getByRole("banner", { name: "main navigation" })).getByRole(
-        "link",
-        {
-          name: "Homepage",
-        }
-      )
-    ).toHaveAttribute("href", "/dashboard");
+    ).toHaveAttribute("href", "/machines");
   });
 
   it("links from the logo to the machine list for non admins", () => {
