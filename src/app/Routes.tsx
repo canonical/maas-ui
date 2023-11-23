@@ -64,6 +64,14 @@ const Routes = (): JSX.Element => (
       path={`${urls.dashboard.index}/*`}
     />
     <Route
+      element={<Redirect to={urls.dashboard.index} />}
+      path={urls.dashboard.legacyIndex}
+    />
+    <Route
+      element={<Redirect to={urls.dashboard.configuration} />}
+      path={urls.dashboard.legacyConfiguration}
+    />
+    <Route
       element={
         <ErrorBoundary>
           <DeviceList />
