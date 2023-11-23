@@ -1,18 +1,13 @@
-import configureStore from "redux-mock-store";
-
 import KVMResourcesCard from "./KVMResourcesCard";
 
 import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
 import {
   podState as podStateFactory,
   rootState as rootStateFactory,
   pod as podFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter, screen } from "testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("KVMResourcesCard", () => {
   afterEach(() => {
