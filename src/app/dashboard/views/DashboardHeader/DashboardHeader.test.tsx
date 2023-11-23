@@ -38,7 +38,7 @@ describe("DashboardHeader", () => {
     renderWithBrowserRouter(
       <DashboardHeader setSidePanelContent={jest.fn()} />,
       {
-        route: "/dashboard",
+        route: "/network-discovery",
         state,
       }
     );
@@ -55,7 +55,7 @@ describe("DashboardHeader", () => {
     renderWithBrowserRouter(
       <DashboardHeader setSidePanelContent={jest.fn()} />,
       {
-        route: "/dashboard",
+        route: "/network-discovery",
         state,
       }
     );
@@ -70,7 +70,7 @@ describe("DashboardHeader", () => {
     renderWithBrowserRouter(
       <DashboardHeader setSidePanelContent={setSidePanelContent} />,
       {
-        route: "/dashboard",
+        route: "/network-discovery",
         store,
       }
     );
