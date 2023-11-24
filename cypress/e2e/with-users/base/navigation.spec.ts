@@ -119,12 +119,12 @@ context("Navigation - admin", () => {
     { destinationUrl: "/zones", linkLabel: "AZs" },
   ];
 
-  it("navigates to /dashboard when clicking on the logo", () => {
+  it("navigates to machines when clicking on the logo", () => {
     cy.waitForPageToLoad();
     cy.getMainNavigation().within(() =>
       cy.findByRole("link", { name: "Homepage" }).click()
     );
-    cy.location("pathname").should("eq", generateMAASURL("/dashboard"));
+    cy.location("pathname").should("eq", generateMAASURL("/machines"));
   });
 
   expected.forEach(({ destinationUrl, linkLabel }) => {
