@@ -157,4 +157,23 @@ describe("FilterAccordion", () => {
       screen.queryByRole("tab", { name: filterNames.get("link_speeds") })
     ).not.toBeInTheDocument();
   });
+
+  it("is disabled if there are no items to display", async () => {
+    render(
+      <FilterAccordion
+        filterNames={filterNames}
+        filterOrder={filterOrder}
+        filterString=""
+        filtersToString={FilterMachines.filtersToString}
+        getCurrentFilters={FilterMachines.getCurrentFilters}
+        getValue={getValue}
+        isFilterActive={FilterMachines.isFilterActive}
+        items={[]}
+        onUpdateFilterString={() => null}
+        toggleFilter={FilterMachines.toggleFilter}
+      />
+    );
+
+    expect(screen.getByRole("button", { name: Labels.Toggle })).toBeDisabled();
+  });
 });
