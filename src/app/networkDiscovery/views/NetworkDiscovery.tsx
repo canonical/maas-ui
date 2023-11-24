@@ -6,7 +6,7 @@ import DiscoveriesList from "./DiscoveriesList";
 import NetworkDiscoveryConfigurationForm from "./NetworkDiscoveryConfigurationForm";
 import NetworkDiscoveryHeader from "./NetworkDiscoveryHeader";
 import ClearAllForm from "./NetworkDiscoveryHeader/ClearAllForm";
-import { DiscoverySidePanelViews } from "./constants";
+import { NetworkDiscoverySidePanelViews } from "./constants";
 
 import PageContent from "app/base/components/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -40,7 +40,8 @@ const NetworkDiscovery = (): JSX.Element => {
   let content: JSX.Element | null = null;
 
   if (
-    sidePanelContent?.view === DiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES
+    sidePanelContent?.view ===
+    NetworkDiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES
   ) {
     content = (
       <ClearAllForm

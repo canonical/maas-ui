@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import { DiscoverySidePanelViews } from "../constants";
+import { NetworkDiscoverySidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import { useFetchActions } from "app/base/hooks";
@@ -35,7 +35,7 @@ const NetworkDiscoveryHeader = ({
       key="clear-all"
       onClick={() =>
         setSidePanelContent({
-          view: DiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES,
+          view: NetworkDiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES,
         })
       }
     >

@@ -18,8 +18,8 @@ import type { KVMSidePanelContent } from "app/kvm/types";
 import { MachineSidePanelViews } from "app/machines/constants";
 import type { MachineSidePanelContent } from "app/machines/types";
 import {
-  DiscoverySidePanelViews,
-  type DiscoverySidePanelContent,
+  NetworkDiscoverySidePanelViews,
+  type NetworkDiscoverySidePanelContent,
 } from "app/networkDiscovery/views/constants";
 import {
   SubnetSidePanelViews,
@@ -58,7 +58,7 @@ export type SidePanelContent =
   | SubnetSidePanelContent
   | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
-  | DiscoverySidePanelContent
+  | NetworkDiscoverySidePanelContent
   | VLANDetailsSidePanelContent
   | FabricDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
@@ -86,7 +86,7 @@ export const SidePanelViews = {
   ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
-  ...DiscoverySidePanelViews,
+  ...NetworkDiscoverySidePanelViews,
   ...VLANDetailsSidePanelViews,
   ...FabricDetailsSidePanelViews,
   ...SubnetDetailsSidePanelViews,
