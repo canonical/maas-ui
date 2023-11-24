@@ -105,7 +105,7 @@ const MachineHeader = ({
       subtitle={
         editingName ? null : (
           <div className="u-flex--wrap u-flex--align-center">
-            <div className="u-nudge-left">
+            <div className="u-nudge-left u-nudge-right">
               {machine.locked ? (
                 <TooltipButton
                   aria-label="locked"
@@ -115,6 +115,7 @@ const MachineHeader = ({
                   position="btm-left"
                 />
               ) : null}
+              {machine.status}
             </div>
             <div>
               <PowerIcon

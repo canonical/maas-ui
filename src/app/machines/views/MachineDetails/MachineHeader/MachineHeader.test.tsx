@@ -7,7 +7,7 @@ import { MachineHeaderViews } from "app/machines/constants";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
-import { NodeActions } from "app/store/types/node";
+import { NodeActions, NodeStatus } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -125,6 +125,21 @@ describe("MachineHeader", () => {
     );
 
     expect(screen.getByText(/power on/i)).toBeInTheDocument();
+  });
+
+  it("displays machine status", () => {
+    state.machine.items[0].status = NodeStatus.DEPLOYED;
+
+    renderWithBrowserRouter(
+      <MachineHeader
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+        systemId="abc123"
+      />,
+      { state, route: "/machine/abc123" }
+    );
+
+    expect(screen.getByText(/deployed/i)).toBeInTheDocument();
   });
 
   it("displays power status when checking power", () => {
