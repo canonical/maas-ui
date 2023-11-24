@@ -57,7 +57,7 @@ describe("MaasIntroSuccess", () => {
     ).toHaveProperty("href", `http://example.com${urls.intro.user}`);
   });
 
-  it("links to the dashboard if an admin that has completed the user intro", () => {
+  it("links to the machine list if an admin that has completed the user intro", () => {
     state.user.auth = authStateFactory({
       user: userFactory({ completed_intro: true, is_superuser: true }),
     });
@@ -67,7 +67,7 @@ describe("MaasIntroSuccess", () => {
     });
     expect(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-    ).toHaveProperty("href", `http://example.com${urls.dashboard.index}`);
+    ).toHaveProperty("href", `http://example.com${urls.machines.index}`);
   });
 
   it("links to the machine list if a non-admin that has completed the user intro", () => {

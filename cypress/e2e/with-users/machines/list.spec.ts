@@ -64,8 +64,8 @@ context("Machine listing", () => {
   });
 
   it("replaces the URL when selecting filters", () => {
-    // visit the dashboard first to have a page to go back to
-    const intialPage = generateMAASURL("/dashboard");
+    // visit network discovery first to have a page to go back to
+    const intialPage = generateMAASURL("/network-discovery");
     cy.visit(intialPage);
     cy.visit(generateMAASURL("/machines"));
 

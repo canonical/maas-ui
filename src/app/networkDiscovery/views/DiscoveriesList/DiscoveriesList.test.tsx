@@ -37,7 +37,7 @@ import {
 } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
-const route = "/dashboard";
+const route = "/network-discovery";
 describe("DiscoveriesList", () => {
   let state: RootState;
 

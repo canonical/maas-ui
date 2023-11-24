@@ -233,8 +233,8 @@
 @include SettingsBackLink;
 @include VMsTable;
 
-// Dashboard
-@import "~app/dashboard/views/DiscoveriesList";
+// Network Discovery
+@import "~app/networkDiscovery/views/DiscoveriesList";
 @include DiscoveriesList;
 
 // machines
