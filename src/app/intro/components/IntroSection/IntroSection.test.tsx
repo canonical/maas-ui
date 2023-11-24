@@ -56,10 +56,10 @@ describe("IntroSection", () => {
       </Router>,
       { state }
     );
-    expect(history.location.pathname).toBe(urls.dashboard.index);
+    expect(history.location.pathname).toBe(urls.machines.index);
   });
 
-  it("redirects to the dashboard for admins", () => {
+  it("redirects to the machine list for admins", () => {
     state.user = userStateFactory({
       auth: authStateFactory({
         user: userFactory({ completed_intro: true, is_superuser: true }),
@@ -69,7 +69,7 @@ describe("IntroSection", () => {
       <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
       { route: "/intro/user", state }
     );
-    expect(window.location.pathname).toBe(urls.dashboard.index);
+    expect(window.location.pathname).toBe(urls.machines.index);
   });
 
   it("redirects to the machine list for non-admins", () => {

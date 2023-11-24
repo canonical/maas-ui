@@ -1,9 +1,9 @@
 import { generateMAASURL } from "../../utils";
 
-context("Dashboard", () => {
+context("Network Discovery", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateMAASURL("/dashboard"));
+    cy.visit(generateMAASURL("/network-discovery"));
   });
 
   it("renders the correct heading", () => {

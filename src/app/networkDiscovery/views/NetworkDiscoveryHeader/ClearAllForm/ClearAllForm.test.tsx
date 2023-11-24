@@ -57,7 +57,7 @@ describe("ClearAllForm", () => {
       ],
     });
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       state,
     });
     expect(screen.getByTestId("enabled-message")).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe("ClearAllForm", () => {
       ],
     });
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       state,
     });
     expect(screen.getByTestId("disabled-message")).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe("ClearAllForm", () => {
   it("dispatches an action to clear the discoveries", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       store,
     });
     await userEvent.click(
@@ -98,7 +98,7 @@ describe("ClearAllForm", () => {
 
     const store = mockStore(state);
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       store,
     });
 

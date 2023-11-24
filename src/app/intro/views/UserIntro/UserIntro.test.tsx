@@ -77,7 +77,7 @@ describe("UserIntro", () => {
       route: "/intro/user",
       state,
     });
-    expect(window.location.pathname).toBe(urls.dashboard.index);
+    expect(window.location.pathname).toBe(urls.machines.index);
   });
 
   it("disables the continue button if there are no ssh keys", () => {
@@ -153,7 +153,7 @@ describe("UserIntro", () => {
       route: "/intro/user",
       state,
     });
-    expect(window.location.pathname).toBe(urls.dashboard.index);
+    expect(window.location.pathname).toBe(urls.machines.index);
   });
 
   it("can skip the user setup", async () => {
