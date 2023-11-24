@@ -56,7 +56,7 @@ describe("IntroSection", () => {
       </Router>,
       { state }
     );
-    expect(history.location.pathname).toBe(urls.networkDiscovery.index);
+    expect(history.location.pathname).toBe(urls.machines.index);
   });
 
   it("redirects to the machine list for admins", () => {

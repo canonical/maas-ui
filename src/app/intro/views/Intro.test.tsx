@@ -67,7 +67,7 @@ describe("Intro", () => {
       route: "/intro",
       state,
     });
-    expect(window.location.pathname).toBe(urls.networkDiscovery.index);
+    expect(window.location.pathname).toBe(urls.machines.index);
   });
 
   it("returns to the start when loading the user intro and the main intro is incomplete", () => {
