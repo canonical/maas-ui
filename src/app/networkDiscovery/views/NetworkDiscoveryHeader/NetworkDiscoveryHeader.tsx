@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import { DashboardSidePanelViews } from "../constants";
+import { DiscoverySidePanelViews } from "../constants";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import { useFetchActions } from "app/base/hooks";
@@ -17,7 +17,7 @@ export enum Labels {
   ClearAll = "Clear all discoveries",
 }
 
-const DashboardHeader = ({
+const NetworkDiscoveryHeader = ({
   setSidePanelContent,
 }: {
   setSidePanelContent: SetSidePanelContent;
@@ -35,7 +35,7 @@ const DashboardHeader = ({
       key="clear-all"
       onClick={() =>
         setSidePanelContent({
-          view: DashboardSidePanelViews.CLEAR_ALL_DISCOVERIES,
+          view: DiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES,
         })
       }
     >
@@ -48,16 +48,16 @@ const DashboardHeader = ({
       buttons={buttons}
       tabLinks={[
         {
-          active: location.pathname === urls.dashboard.index,
+          active: location.pathname === urls.networkDiscovery.index,
           component: Link,
           label: pluralize("discovery", discoveries.length, true),
-          to: urls.dashboard.index,
+          to: urls.networkDiscovery.index,
         },
         {
-          active: location.pathname === urls.dashboard.configuration,
+          active: location.pathname === urls.networkDiscovery.configuration,
           component: Link,
           label: "Configuration",
-          to: urls.dashboard.configuration,
+          to: urls.networkDiscovery.configuration,
         },
       ]}
       title="Network discovery"
@@ -65,4 +65,4 @@ const DashboardHeader = ({
   );
 };
 
-export default DashboardHeader;
+export default NetworkDiscoveryHeader;

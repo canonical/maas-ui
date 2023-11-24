@@ -2,11 +2,11 @@ import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom-v5-compat";
 
-import DashboardConfigurationForm from "./DashboardConfigurationForm";
-import DashboardHeader from "./DashboardHeader";
-import ClearAllForm from "./DashboardHeader/ClearAllForm";
 import DiscoveriesList from "./DiscoveriesList";
-import { DashboardSidePanelViews } from "./constants";
+import NetworkDiscoveryConfigurationForm from "./NetworkDiscoveryConfigurationForm";
+import NetworkDiscoveryHeader from "./NetworkDiscoveryHeader";
+import ClearAllForm from "./NetworkDiscoveryHeader/ClearAllForm";
+import { DiscoverySidePanelViews } from "./constants";
 
 import PageContent from "app/base/components/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -22,7 +22,7 @@ export enum Label {
   Permissions = "You do not have permission to view this page.",
 }
 
-const Dashboard = (): JSX.Element => {
+const NetworkDiscovery = (): JSX.Element => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
@@ -40,7 +40,7 @@ const Dashboard = (): JSX.Element => {
   let content: JSX.Element | null = null;
 
   if (
-    sidePanelContent?.view === DashboardSidePanelViews.CLEAR_ALL_DISCOVERIES
+    sidePanelContent?.view === DiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES
   ) {
     content = (
       <ClearAllForm
@@ -51,10 +51,12 @@ const Dashboard = (): JSX.Element => {
     );
   }
 
-  const base = urls.dashboard.index;
+  const base = urls.networkDiscovery.index;
   return (
     <PageContent
-      header={<DashboardHeader setSidePanelContent={setSidePanelContent} />}
+      header={
+        <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />
+      }
       sidePanelContent={content}
       sidePanelTitle="Clear all discoveries"
     >
@@ -64,8 +66,8 @@ const Dashboard = (): JSX.Element => {
       <Routes>
         <Route element={<DiscoveriesList />} path="/" />
         <Route
-          element={<DashboardConfigurationForm />}
-          path={getRelativeRoute(urls.dashboard.configuration, base)}
+          element={<NetworkDiscoveryConfigurationForm />}
+          path={getRelativeRoute(urls.networkDiscovery.configuration, base)}
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
@@ -73,4 +75,4 @@ const Dashboard = (): JSX.Element => {
   );
 };
 
-export default Dashboard;
+export default NetworkDiscovery;

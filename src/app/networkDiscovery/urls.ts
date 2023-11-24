@@ -5,9 +5,4 @@ const urls = {
   legacyConfiguration: "/dashboard/configuration",
 };
 
-// const urls = {
-//   configuration: "/dashboard/configuration",
-//   index: "/dashboard",
-// };
-
 export default urls;

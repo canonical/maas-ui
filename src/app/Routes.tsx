@@ -6,7 +6,6 @@ import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import ControllerDetails from "app/controllers/views/ControllerDetails";
 import ControllerList from "app/controllers/views/ControllerList";
-import Dashboard from "app/dashboard/views/Dashboard";
 import DeviceDetails from "app/devices/views/DeviceDetails";
 import DeviceList from "app/devices/views/DeviceList";
 import DomainDetails from "app/domains/views/DomainDetails";
@@ -16,6 +15,7 @@ import Intro from "app/intro/views/Intro";
 import KVM from "app/kvm/views/KVM";
 import MachineDetails from "app/machines/views/MachineDetails";
 import Machines from "app/machines/views/Machines";
+import NetworkDiscovery from "app/networkDiscovery/views/NetworkDiscovery";
 import Pools from "app/pools/views/Pools";
 import Preferences from "app/preferences/views/Preferences";
 import Settings from "app/settings/views/Settings";
@@ -58,18 +58,18 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <Dashboard />
+          <NetworkDiscovery />
         </ErrorBoundary>
       }
-      path={`${urls.dashboard.index}/*`}
+      path={`${urls.networkDiscovery.index}/*`}
     />
     <Route
-      element={<Redirect to={urls.dashboard.index} />}
-      path={urls.dashboard.legacyIndex}
+      element={<Redirect to={urls.networkDiscovery.index} />}
+      path={urls.networkDiscovery.legacyIndex}
     />
     <Route
-      element={<Redirect to={urls.dashboard.configuration} />}
-      path={urls.dashboard.legacyConfiguration}
+      element={<Redirect to={urls.networkDiscovery.configuration} />}
+      path={urls.networkDiscovery.legacyConfiguration}
     />
     <Route
       element={

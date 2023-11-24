@@ -62,8 +62,8 @@ export const MapSubnet = ({
       {isIPv4 ? (
         <>
           You will start mapping your subnet. Go to the{" "}
-          <Link to={urls.dashboard.index}>dashboard</Link> to see the discovered
-          items.
+          <Link to={urls.networkDiscovery.index}>dashboard</Link> to see the
+          discovered items.
         </>
       ) : (
         <Notification borderless inline severity="negative" title="Error:">

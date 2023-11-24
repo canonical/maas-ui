@@ -1,8 +1,8 @@
 import configureStore from "redux-mock-store";
 
-import DashboardConfigurationSubnetForm, {
+import NetworkDiscoveryConfigurationSubnetForm, {
   Labels as SubnetFormLabels,
-} from "./DashboardConfigurationSubnetForm";
+} from "./NetworkDiscoveryConfigurationSubnetForm";
 
 import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -19,12 +19,12 @@ import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
-describe("DashboardConfigurationSubnetForm", () => {
+describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   it("displays a spinner if subnets have not loaded", () => {
     const state = rootStateFactory({
       subnet: subnetStateFactory({ loaded: false }),
     });
-    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+    renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
     });
 
@@ -35,7 +35,7 @@ describe("DashboardConfigurationSubnetForm", () => {
     const state = rootStateFactory({
       fabric: fabricStateFactory({ loaded: false }),
     });
-    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+    renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
     });
 
@@ -47,7 +47,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       fabric: fabricStateFactory({ loaded: true }),
       subnet: subnetStateFactory({ loaded: true }),
     });
-    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+    renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
     });
 
@@ -69,7 +69,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       fabric: fabricStateFactory({ loaded: true }),
       subnet: subnetStateFactory({ items: [subnetFactory()], loaded: true }),
     });
-    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+    renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
     });
 
@@ -87,7 +87,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       fabric: fabricStateFactory({ items: [fabric], loaded: true }),
       subnet: subnetStateFactory({ items: [subnet], loaded: true }),
     });
-    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+    renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
     });
 
@@ -113,7 +113,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       subnet: subnetStateFactory({ items: subnets, loaded: true }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+    renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       store,
     });
 
