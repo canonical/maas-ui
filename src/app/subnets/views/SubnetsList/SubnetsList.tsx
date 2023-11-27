@@ -15,7 +15,7 @@ import { useSidePanel } from "app/base/side-panel-context";
 import {
   SubnetForms,
   SubnetsUrlParams,
-  subnetOptions,
+  subnetGroupingOptions,
 } from "app/subnets/constants";
 import { SubnetSidePanelViews } from "app/subnets/types";
 import FormActions from "app/subnets/views/FormActions";
@@ -92,7 +92,7 @@ const SubnetsList = (): JSX.Element => {
             <div className="u-flex--wrap u-flex--align-center">
               <GroupSelect
                 className="u-no-margin--bottom subnet-group__select"
-                groupOptions={subnetOptions}
+                groupOptions={subnetGroupingOptions}
                 grouping={groupBy as GroupByKey}
                 name="network-groupings"
                 setGrouping={setGroupBy}

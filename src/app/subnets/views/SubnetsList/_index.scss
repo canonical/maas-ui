@@ -44,6 +44,8 @@
     }
   }
 
+  /* TODO: Remove select width when consistent layout has been implemented */
+  /* https://warthogs.atlassian.net/browse/MAASENG-2431 */
   .subnet-group__select {
     width: 9.375rem;
   }

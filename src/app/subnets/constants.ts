@@ -12,7 +12,7 @@ export const SubnetsUrlParams = {
   Q: "q",
 };
 
-export const subnetOptions = [
+export const subnetGroupingOptions = [
   {
     label: "Group by fabric",
     value: SubnetsColumns.FABRIC,
