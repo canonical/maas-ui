@@ -4,16 +4,19 @@ import { ContextualMenu } from "@canonical/react-components";
 import { useNavigate } from "react-router-dom-v5-compat";
 
 import SubnetsTable from "./SubnetsTable";
-import { SubnetsColumns } from "./SubnetsTable/constants";
 import type { GroupByKey } from "./SubnetsTable/types";
 
+import GroupSelect from "app/base/components/GroupSelect";
 import PageContent from "app/base/components/PageContent/PageContent";
 import SectionHeader from "app/base/components/SectionHeader";
-import SegmentedControl from "app/base/components/SegmentedControl";
 import { useWindowTitle } from "app/base/hooks";
 import { useQuery } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
-import { SubnetForms, SubnetsUrlParams } from "app/subnets/constants";
+import {
+  SubnetForms,
+  SubnetsUrlParams,
+  subnetOptions,
+} from "app/subnets/constants";
 import { SubnetSidePanelViews } from "app/subnets/types";
 import FormActions from "app/subnets/views/FormActions";
 
@@ -25,7 +28,7 @@ const SubnetsList = (): JSX.Element => {
   const groupBy = query.get(SubnetsUrlParams.By);
   const searchText = query.get(SubnetsUrlParams.Q) || "";
   const setGroupBy = useCallback(
-    (group: GroupByKey) =>
+    (group: GroupByKey | null) =>
       navigate(
         {
           pathname: "/networks",
@@ -87,21 +90,12 @@ const SubnetsList = (): JSX.Element => {
           ]}
           subtitle={
             <div className="u-flex--wrap u-flex--align-center">
-              <SegmentedControl
-                aria-label="Group by"
-                buttonClassName="u-no-margin--bottom u-upper-case--first"
-                onSelect={setGroupBy}
-                options={[
-                  {
-                    label: "Fabric",
-                    value: SubnetsColumns.FABRIC,
-                  },
-                  {
-                    label: "Space",
-                    value: SubnetsColumns.SPACE,
-                  },
-                ]}
-                selected={groupBy as GroupByKey}
+              <GroupSelect
+                className="u-no-margin--bottom subnet-group__select"
+                groupOptions={subnetOptions}
+                grouping={groupBy as GroupByKey}
+                name="network-groupings"
+                setGrouping={setGroupBy}
               />
             </div>
           }
