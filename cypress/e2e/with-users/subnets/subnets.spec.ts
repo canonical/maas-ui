@@ -13,7 +13,6 @@ context("Subnets", () => {
 
   it("displays the main networking view correctly", () => {
     const expectedHeaders = [
-      "Fabric",
       "VLAN",
       "DHCP",
       "Subnet",
@@ -21,7 +20,7 @@ context("Subnets", () => {
       "Space",
     ];
 
-    cy.findByRole("table", { name: "Subnets by Fabric" }).within(() => {
+    cy.findByRole("grid", { name: "Subnets by Fabric" }).within(() => {
       expectedHeaders.forEach((name) => {
         cy.findByRole("columnheader", { name }).should("exist");
       });
@@ -31,35 +30,33 @@ context("Subnets", () => {
   it("updates the URL to default grouping if no group paramater has been set", () => {
     cy.visit(generateMAASURL("/networks"));
 
-    cy.findByRole("tab", { name: /fabric/i }).should(
-      "have.attr",
-      "aria-selected",
-      "true"
+    cy.findByRole("combobox", { name: /group by/i }).should(
+      "have.value",
+      "fabric"
     );
 
     cy.url().should("include", generateMAASURL("/networks?by=fabric"));
   });
 
   it("allows grouping by fabric and space", () => {
-    cy.findByRole("table", { name: "Subnets by Fabric" }).within(() => {
-      cy.findAllByRole("columnheader").first().should("have.text", "Fabric");
+    cy.findByRole("grid", { name: "Subnets by Fabric" }).within(() => {
+      cy.findAllByRole("columnheader").first().should("have.text", "VLAN");
     });
 
-    cy.findByRole("tab", { name: /fabric/i }).should(
-      "have.attr",
-      "aria-selected",
-      "true"
-    );
-    cy.findByRole("tab", { name: /space/i }).should(
-      "have.attr",
-      "aria-selected",
-      "false"
+    cy.findByRole("combobox", { name: /group by/i }).should(
+      "have.value",
+      "fabric"
     );
 
-    cy.findByRole("tab", { name: /space/i }).click();
+    cy.findByRole("combobox", { name: /group by/i }).should(
+      "not.have.value",
+      "space"
+    );
 
-    cy.findByRole("table", { name: "Subnets by Space" }).within(() => {
-      cy.findAllByRole("columnheader").first().should("have.text", "Space");
+    cy.findByRole("combobox", { name: /group by/i }).select("space");
+
+    cy.findByRole("grid", { name: "Subnets by Space" }).within(() => {
+      cy.findAllByRole("columnheader").first().should("have.text", "VLAN");
     });
 
     cy.url().should("include", generateMAASURL("/networks?by=space"));
