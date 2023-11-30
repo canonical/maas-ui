@@ -55,7 +55,7 @@ it("renders a single table variant at a time", () => {
     </Provider>
   );
 
-  expect(screen.getAllByRole("table")).toHaveLength(1);
+  expect(screen.getAllByRole("grid")).toHaveLength(1);
 });
 
 it("renders Subnets by Fabric table when grouping by Fabric", () => {
@@ -77,7 +77,7 @@ it("renders Subnets by Fabric table when grouping by Fabric", () => {
     </Provider>
   );
   expect(
-    screen.getByRole("table", { name: "Subnets by Fabric" })
+    screen.getByRole("grid", { name: "Subnets by Fabric" })
   ).toBeInTheDocument();
 });
 
@@ -100,7 +100,7 @@ it("renders Subnets by Space table when grouping by Space", () => {
     </Provider>
   );
   expect(
-    screen.getByRole("table", { name: "Subnets by Space" })
+    screen.getByRole("grid", { name: "Subnets by Space" })
   ).toBeInTheDocument();
 });
 
@@ -123,7 +123,7 @@ it("displays a correct number of pages", () => {
     </Provider>
   );
   expect(
-    screen.getByRole("table", { name: "Subnets by Fabric" })
+    screen.getByRole("grid", { name: "Subnets by Fabric" })
   ).toBeInTheDocument();
 
   const numberOfPages =
@@ -162,19 +162,7 @@ it("updates the list of items correctly when navigating to another page", async 
   );
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
-  expect(
-    within(tableBody).getByRole("link", {
-      name: "fabric-1",
-    })
-  ).toBeInTheDocument();
-  expect(
-    within(tableBody).getByRole("link", {
-      name: "fabric-25",
-    })
-  ).toBeInTheDocument();
-  await waitFor(() =>
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(25)
-  );
+  expect(within(tableBody).getByText("fabric-1")).toBeInTheDocument();
 
   await userEvent.click(
     within(screen.getByRole("navigation")).getByRole("button", {
@@ -182,20 +170,14 @@ it("updates the list of items correctly when navigating to another page", async 
     })
   );
   await waitFor(() =>
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(25)
+    expect(
+      within(tableBody).getAllByRole("row", { name: /fabric/i })
+    ).toHaveLength(25)
   );
   await waitFor(() =>
-    expect(
-      within(tableBody).getByRole("link", {
-        name: "fabric-26",
-      })
-    ).toBeInTheDocument()
+    expect(within(tableBody).getByText("fabric-26")).toBeInTheDocument()
   );
-  expect(
-    within(tableBody).getByRole("link", {
-      name: "fabric-50",
-    })
-  ).toBeInTheDocument();
+  expect(within(tableBody).getByText("fabric-50")).toBeInTheDocument();
 });
 
 it("doesn't display pagination if rows are within items per page limit", () => {
@@ -232,14 +214,6 @@ it("displays correctly paginated rows", async () => {
   });
   const mockStore = configureStore();
   const store = mockStore(state);
-  const firstPageFabrics = state.fabric.items.slice(
-    0,
-    SUBNETS_TABLE_ITEMS_PER_PAGE
-  );
-  const secondPageFabrics = state.fabric.items.slice(
-    SUBNETS_TABLE_ITEMS_PER_PAGE,
-    SUBNETS_TABLE_ITEMS_PER_PAGE * 2
-  );
 
   render(
     <Provider store={store}>
@@ -256,17 +230,11 @@ it("displays correctly paginated rows", async () => {
   );
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
+  // Get grouped rows
+  const groupRows = screen.getAllByRole("row", { name: /fabric*/i });
   expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE
+    SUBNETS_TABLE_ITEMS_PER_PAGE + groupRows.length
   );
-
-  within(tableBody)
-    .getAllByRole("row")
-    .forEach((row, index) => {
-      expect(row.textContent).toEqual(
-        expect.stringContaining(firstPageFabrics[index].name)
-      );
-    });
 
   await userEvent.click(
     screen.getByRole("button", {
@@ -284,16 +252,8 @@ it("displays correctly paginated rows", async () => {
   );
 
   expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE
+    SUBNETS_TABLE_ITEMS_PER_PAGE + groupRows.length
   );
-
-  within(tableBody)
-    .getAllByRole("row")
-    .forEach((row, index) => {
-      expect(row.textContent).toEqual(
-        expect.stringContaining(secondPageFabrics[index].name)
-      );
-    });
 });
 
 it("displays the last available page once the currently active has no items", async () => {
@@ -329,12 +289,10 @@ it("displays the last available page once the currently active has no items", as
   );
 
   await waitFor(() =>
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(1)
+    expect(within(tableBody).getAllByRole("row")).toHaveLength(2)
   );
   expect(
-    within(tableBody).getByRole("link", {
-      name: `fabric-${numberOfFabrics}`,
-    })
+    within(tableBody).getByText(`fabric-${numberOfFabrics}`)
   ).toBeInTheDocument();
 
   const updatedState = getMockState({
@@ -364,9 +322,8 @@ it("displays the last available page once the currently active has no items", as
         .querySelector(".is-active")
     ).toHaveTextContent("2")
   );
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE
-  );
+
+  expect(within(tableBody).getAllByRole("row")).toHaveLength(2);
 });
 
 it("remains on the same page once the data is updated and page is still available", async () => {

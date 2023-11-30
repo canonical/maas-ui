@@ -2,9 +2,20 @@ import type { PropsWithChildren } from "react";
 import { useState } from "react";
 
 import { Button } from "@canonical/react-components";
+import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
+import classNames from "classnames";
 import { Link } from "react-router-dom-v5-compat";
 
-import type { SubnetsTableColumn } from "./types";
+import { SubnetsColumns } from "./constants";
+import type {
+  FabricRowContent,
+  FabricTableRow,
+  SpaceTableRow,
+  SubnetsTableColumn,
+  SubnetsTableRow,
+} from "./types";
+
+import GroupColumn from "app/base/components/GroupColumn";
 
 export const SpaceCellContents = ({
   value,
@@ -59,3 +70,128 @@ export const CellContents = ({
     </span>
   </>
 );
+
+const generateSubnetRow = ({
+  content,
+  classes,
+  key,
+}: {
+  content: FabricRowContent;
+  key: string | number;
+  classes?: string;
+}) => {
+  const columns = [
+    {
+      "aria-label": SubnetsColumns.VLAN,
+      key: SubnetsColumns.VLAN,
+      content: content[SubnetsColumns.VLAN],
+    },
+    {
+      "aria-label": SubnetsColumns.DHCP,
+      key: SubnetsColumns.DHCP,
+      content: content[SubnetsColumns.DHCP],
+    },
+    {
+      "aria-label": SubnetsColumns.SUBNET,
+      key: SubnetsColumns.SUBNET,
+      content: content[SubnetsColumns.SUBNET],
+    },
+    {
+      "aria-label": SubnetsColumns.IPS,
+      key: SubnetsColumns.IPS,
+      content: content[SubnetsColumns.IPS],
+    },
+    {
+      "aria-label": SubnetsColumns.SPACE,
+      key: SubnetsColumns.SPACE,
+      content: content[SubnetsColumns.SPACE],
+      className: "u-align--right",
+    },
+  ];
+
+  return {
+    key,
+    className: classNames(classes),
+    columns,
+  };
+};
+
+export const generateSubnetRows = (subnets: SubnetsTableRow[]) => {
+  return subnets.map((subnet, index) => {
+    const content = {
+      [SubnetsColumns.VLAN]: (
+        <CellContents value={subnet[SubnetsColumns.VLAN]} />
+      ),
+      [SubnetsColumns.DHCP]: (
+        <CellContents value={subnet[SubnetsColumns.DHCP]} />
+      ),
+      [SubnetsColumns.SUBNET]: (
+        <CellContents value={subnet[SubnetsColumns.SUBNET]} />
+      ),
+      [SubnetsColumns.IPS]: <CellContents value={subnet[SubnetsColumns.IPS]} />,
+      [SubnetsColumns.SPACE]: (
+        <CellContents value={subnet[SubnetsColumns.SPACE]} />
+      ),
+    };
+    return generateSubnetRow({
+      key: `${subnet.sortData.vlanId}-${subnet.sortData.fabricId}-${index}`,
+      content,
+    });
+  });
+};
+
+export const generateSubnetGroupRows = ({
+  itemName,
+  groups,
+  columnLength,
+}: {
+  itemName: string;
+  groups: FabricTableRow[] | SpaceTableRow[];
+  columnLength: number;
+  groupCount: number;
+}) => {
+  let rows: MainTableRow[] = [];
+  groups.forEach((group) => {
+    const { networks } = group;
+    if ("fabricName" in group) {
+      const { fabricName } = group;
+      rows.push({
+        "aria-label": `${fabricName} group`,
+        className: "",
+        columns: [
+          {
+            colSpan: columnLength,
+            content: (
+              <GroupColumn
+                count={networks.length}
+                groupName={`${fabricName}`}
+                itemName={itemName}
+              />
+            ),
+          },
+        ],
+      });
+    } else {
+      const { spaceName } = group;
+      rows.push({
+        "aria-label": `${spaceName} group`,
+        className: "",
+        columns: [
+          {
+            colSpan: columnLength,
+            content: (
+              <GroupColumn
+                count={networks.length}
+                groupName={`${spaceName}`}
+                itemName={itemName}
+              />
+            ),
+          },
+        ],
+      });
+    }
+
+    rows = rows.concat(generateSubnetRows(networks));
+  });
+  return rows;
+};

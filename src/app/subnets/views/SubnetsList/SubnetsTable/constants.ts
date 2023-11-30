@@ -7,6 +7,22 @@ export enum SubnetsColumns {
   SPACE = "space",
 }
 
+export const fabricTableColumns = [
+  "vlan",
+  "dhcp",
+  "subnet",
+  "ips",
+  "space",
+] as const;
+
+export const spaceTableColumns = [
+  "vlan",
+  "dhcp",
+  "fabric",
+  "subnet",
+  "ips",
+] as const;
+
 export const subnetColumnLabels = {
   [SubnetsColumns.FABRIC]: "Fabric",
   [SubnetsColumns.VLAN]: "VLAN",
