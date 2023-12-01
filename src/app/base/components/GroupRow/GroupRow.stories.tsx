@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/react";
 
-import GroupColumn from "./GroupColumn";
+import GroupRow from "./GroupRow";
 
-const meta: Meta<typeof GroupColumn> = {
-  title: "Components/GroupColumn",
-  component: GroupColumn,
+const meta: Meta<typeof GroupRow> = {
+  title: "Components/GroupRow",
+  component: GroupRow,
   tags: ["autodocs"],
 };
 

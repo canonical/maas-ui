@@ -7,13 +7,13 @@ export enum Label {
   ShowGroup = "Show",
 }
 
-type GroupColumnProps = {
+type GroupRowProps = {
   itemName: string;
   groupName: string;
   count: number;
 };
 
-const GroupColumn = ({ itemName, groupName, count }: GroupColumnProps) => {
+const GroupRow = ({ itemName, groupName, count }: GroupRowProps) => {
   return (
     <>
       <DoubleRow
@@ -24,4 +24,4 @@ const GroupColumn = ({ itemName, groupName, count }: GroupColumnProps) => {
   );
 };
 
-export default GroupColumn;
+export default GroupRow;
