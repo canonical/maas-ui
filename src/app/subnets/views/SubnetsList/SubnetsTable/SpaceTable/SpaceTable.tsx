@@ -24,6 +24,13 @@ const SpaceTable = ({
   const headers = useMemo(
     () => [
       {
+        "aria-label": subnetColumnLabels[SubnetsColumns.FABRIC],
+        key: SubnetsColumns.FABRIC,
+        content: (
+          <TableHeader>{subnetColumnLabels[SubnetsColumns.FABRIC]}</TableHeader>
+        ),
+      },
+      {
         "aria-label": subnetColumnLabels[SubnetsColumns.VLAN],
         key: SubnetsColumns.VLAN,
         content: (
@@ -38,13 +45,6 @@ const SpaceTable = ({
         ),
       },
       {
-        "aria-label": subnetColumnLabels[SubnetsColumns.FABRIC],
-        key: SubnetsColumns.FABRIC,
-        content: (
-          <TableHeader>{subnetColumnLabels[SubnetsColumns.FABRIC]}</TableHeader>
-        ),
-      },
-      {
         "aria-label": subnetColumnLabels[SubnetsColumns.SUBNET],
         key: SubnetsColumns.SUBNET,
         content: (
@@ -54,16 +54,23 @@ const SpaceTable = ({
       {
         "aria-label": subnetColumnLabels[SubnetsColumns.IPS],
         key: SubnetsColumns.IPS,
-        className: "u-align--right",
         content: (
           <TableHeader>{subnetColumnLabels[SubnetsColumns.IPS]}</TableHeader>
+        ),
+      },
+      {
+        "aria-label": subnetColumnLabels[SubnetsColumns.SPACE],
+        className: "u-align--right",
+        key: SubnetsColumns.SPACE,
+        content: (
+          <TableHeader>{subnetColumnLabels[SubnetsColumns.SPACE]}</TableHeader>
         ),
       },
     ],
     []
   );
 
-  const rowData = useMemo(() => groupRowsBySpace(pageData), [pageData]);
+  const rowData = useMemo(() => groupRowsBySpace(data), [data]);
 
   const rows = generateSubnetGroupRows({
     groups: rowData,
@@ -76,6 +83,7 @@ const SpaceTable = ({
     <>
       <MainTable
         aria-label="Subnets by Space"
+        className="space-table"
         emptyStateMsg={emptyMsg}
         headers={headers}
         rows={rows}

@@ -15,7 +15,7 @@ import type {
   SubnetsTableRow,
 } from "./types";
 
-import GroupColumn from "app/base/components/GroupColumn";
+import GroupRow from "app/base/components/GroupRow";
 
 export const SpaceCellContents = ({
   value,
@@ -82,6 +82,11 @@ const generateSubnetRow = ({
 }) => {
   const columns = [
     {
+      "aria-label": SubnetsColumns.FABRIC,
+      key: SubnetsColumns.FABRIC,
+      content: content[SubnetsColumns.FABRIC],
+    },
+    {
       "aria-label": SubnetsColumns.VLAN,
       key: SubnetsColumns.VLAN,
       content: content[SubnetsColumns.VLAN],
@@ -119,6 +124,9 @@ const generateSubnetRow = ({
 export const generateSubnetRows = (subnets: SubnetsTableRow[]) => {
   return subnets.map((subnet, index) => {
     const content = {
+      [SubnetsColumns.FABRIC]: (
+        <CellContents value={subnet[SubnetsColumns.FABRIC]} />
+      ),
       [SubnetsColumns.VLAN]: (
         <CellContents value={subnet[SubnetsColumns.VLAN]} />
       ),
@@ -136,6 +144,7 @@ export const generateSubnetRows = (subnets: SubnetsTableRow[]) => {
     return generateSubnetRow({
       key: `${subnet.sortData.vlanId}-${subnet.sortData.fabricId}-${index}`,
       content,
+      classes: "subnet-row",
     });
   });
 };
@@ -162,7 +171,7 @@ export const generateSubnetGroupRows = ({
           {
             colSpan: columnLength,
             content: (
-              <GroupColumn
+              <GroupRow
                 count={networks.length}
                 groupName={`${fabricName}`}
                 itemName={itemName}
@@ -180,7 +189,7 @@ export const generateSubnetGroupRows = ({
           {
             colSpan: columnLength,
             content: (
-              <GroupColumn
+              <GroupRow
                 count={networks.length}
                 groupName={`${spaceName}`}
                 itemName={itemName}

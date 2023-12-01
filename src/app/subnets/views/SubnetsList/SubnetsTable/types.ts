@@ -62,6 +62,7 @@ export type SubnetsTableRow = Record<SubnetsColumns, SubnetsTableColumn> & {
 };
 
 export type FabricRowContent = {
+  [SubnetsColumns.FABRIC]: ReactNode;
   [SubnetsColumns.VLAN]: ReactNode;
   [SubnetsColumns.DHCP]: ReactNode;
   [SubnetsColumns.SUBNET]: ReactNode;

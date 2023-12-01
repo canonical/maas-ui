@@ -25,6 +25,13 @@ const FabricTable = ({
   const headers = useMemo(
     () => [
       {
+        "aria-label": subnetColumnLabels[SubnetsColumns.FABRIC],
+        key: SubnetsColumns.FABRIC,
+        content: (
+          <TableHeader>{subnetColumnLabels[SubnetsColumns.FABRIC]}</TableHeader>
+        ),
+      },
+      {
         "aria-label": subnetColumnLabels[SubnetsColumns.VLAN],
         key: SubnetsColumns.VLAN,
         content: (
@@ -76,6 +83,7 @@ const FabricTable = ({
     <>
       <MainTable
         aria-label="Subnets by Fabric"
+        className="fabric-table"
         emptyStateMsg={emptyMsg}
         headers={headers}
         rows={rows}
