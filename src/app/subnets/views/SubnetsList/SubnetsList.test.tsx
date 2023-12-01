@@ -36,7 +36,7 @@ it("displays loading text", async () => {
     route: urls.index,
   });
 
-  expect(screen.getAllByRole("table")).toHaveLength(1);
+  expect(screen.getAllByRole("grid")).toHaveLength(1);
   await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
   await waitFor(() =>
     expect(screen.getByText(/Loading.../)).toBeInTheDocument()
@@ -50,7 +50,7 @@ it("displays correct text when there are no results for the search criteria", as
     route: urls.index,
   });
 
-  expect(screen.getAllByRole("table")).toHaveLength(1);
+  expect(screen.getAllByRole("grid")).toHaveLength(1);
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
   await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
