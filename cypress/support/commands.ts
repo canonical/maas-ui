@@ -155,7 +155,7 @@ Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
 });
 
 Cypress.Commands.add("getMainNavigation", () => {
-  return cy.findByRole("navigation", { name: /main navigation/i });
+  return cy.findByRole("banner", { name: /main navigation/i });
 });
 
 Cypress.Commands.add("expandMainNavigation", () => {
