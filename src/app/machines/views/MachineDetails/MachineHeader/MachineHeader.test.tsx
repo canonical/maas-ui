@@ -100,7 +100,7 @@ describe("MachineHeader", () => {
     state.machine.items[0].locked = true;
 
     renderWithBrowserRouter(
-      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
