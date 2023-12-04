@@ -3,10 +3,6 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import type { ControllerSidePanelContent } from "@/app/controllers/types";
-import {
-  DashboardSidePanelViews,
-  type DashboardSidePanelContent,
-} from "@/app/dashboard/views/constants";
 import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { DeviceSidePanelContent } from "@/app/devices/types";
 import {
@@ -21,6 +17,10 @@ import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSidePanelContent } from "@/app/kvm/types";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSidePanelContent } from "@/app/machines/types";
+import {
+  NetworkDiscoverySidePanelViews,
+  type NetworkDiscoverySidePanelContent,
+} from "app/networkDiscovery/views/constants";
 import {
   SubnetSidePanelViews,
   type SubnetSidePanelContent,
@@ -58,7 +58,7 @@ export type SidePanelContent =
   | SubnetSidePanelContent
   | DomainDetailsSidePanelContent
   | DomainListSidePanelContent
-  | DashboardSidePanelContent
+  | NetworkDiscoverySidePanelContent
   | VLANDetailsSidePanelContent
   | FabricDetailsSidePanelContent
   | SubnetDetailsSidePanelContent
@@ -86,7 +86,7 @@ export const SidePanelViews = {
   ...SubnetSidePanelViews,
   ...DomainDetailsSidePanelViews,
   ...DomainListSidePanelViews,
-  ...DashboardSidePanelViews,
+  ...NetworkDiscoverySidePanelViews,
   ...VLANDetailsSidePanelViews,
   ...FabricDetailsSidePanelViews,
   ...SubnetDetailsSidePanelViews,

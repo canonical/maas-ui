@@ -6,9 +6,10 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
+import GroupSelect from "@/app/base/components/GroupSelect";
 import urls from "@/app/base/urls";
+import { groupOptions } from "@/app/machines/constants";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
-import GroupSelect from "@/app/machines/views/MachineList/MachineListControls/GroupSelect";
 import HiddenColumnsSelect from "@/app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
 import MachineActionMenu from "@/app/machines/views/MachineList/MachineListControls/MachineActionMenu";
 import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
@@ -82,7 +83,8 @@ const MachineListControls = ({
               />
             </div>
             <div className="machine-list-controls__item u-hide--small u-hide--medium u-flex--align-baseline">
-              <GroupSelect
+              <GroupSelect<FetchGroupKey>
+                groupOptions={groupOptions}
                 grouping={grouping}
                 setGrouping={setGrouping}
                 setHiddenGroups={setHiddenGroups}

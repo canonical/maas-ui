@@ -1,12 +1,14 @@
 import GroupSelect from "./GroupSelect";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { groupOptions } from "app/machines/constants";
+import { userEvent, render, screen } from "testing/utils";
 
 it("executes setGrouping and setHiddenGroups functions on change", async () => {
-  const setGrouping = vi.fn();
-  const setHiddenGroups = vi.fn();
+  const setGrouping = jest.fn();
+  const setHiddenGroups = jest.fn();
   render(
     <GroupSelect
+      groupOptions={groupOptions}
       grouping={null}
       setGrouping={setGrouping}
       setHiddenGroups={setHiddenGroups}

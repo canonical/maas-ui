@@ -94,7 +94,7 @@ const navGroups: NavGroup[] = [
       },
       {
         label: "Network discovery",
-        url: urls.dashboard.index,
+        url: urls.networkDiscovery.index,
       },
     ],
   },

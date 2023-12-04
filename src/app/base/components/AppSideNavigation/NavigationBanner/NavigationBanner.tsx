@@ -1,23 +1,18 @@
 import { Navigation } from "@canonical/maas-react-components";
-import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom-v5-compat";
 
 import { isSelected } from "../utils";
 
 import urls from "@/app/base/urls";
-import authSelectors from "@/app/store/auth/selectors";
 
 const NavigationBanner = ({
   children,
 }: {
   children?: React.ReactNode;
 }): JSX.Element => {
-  const isAdmin = useSelector(authSelectors.isAdmin);
   const location = useLocation();
 
-  const homepageLink = isAdmin
-    ? { url: urls.dashboard.index, label: "Homepage" }
-    : { url: urls.machines.index, label: "Homepage" };
+  const homepageLink = { url: urls.machines.index, label: "Homepage" };
   return (
     <Navigation.Banner>
       <Navigation.Logo

@@ -47,7 +47,7 @@ describe("hooks", () => {
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),
       });
-      expect(result.current).toBe(urls.dashboard.index);
+      expect(result.current).toBe(urls.machines.index);
     });
 
     it("gets the exit URL for a non-admin", () => {

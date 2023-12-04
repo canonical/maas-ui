@@ -31,13 +31,12 @@ import {
 import {
   userEvent,
   screen,
-  waitFor,
   within,
   renderWithBrowserRouter,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
-const route = "/dashboard";
+const route = "/network-discovery";
 describe("DiscoveriesList", () => {
   let state: RootState;
 
@@ -187,7 +186,7 @@ describe("DiscoveriesList", () => {
       screen.getByRole("button", { name: DiscoveriesListLabels.AddDiscovery })
     );
 
-    await waitFor(() =>
+    await vi.waitFor(() =>
       expect(
         screen.getByRole("form", { name: /Add discovery/ })
       ).toBeInTheDocument()

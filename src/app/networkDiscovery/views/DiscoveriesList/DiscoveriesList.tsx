@@ -192,7 +192,7 @@ const DiscoveriesList = (): JSX.Element => {
   const saving = useSelector(discoverySelectors.saving);
   const saved = useSelector(discoverySelectors.saved);
 
-  useWindowTitle("Dashboard");
+  useWindowTitle("Network Discovery");
 
   useFetchActions([discoveryActions.fetch]);
 

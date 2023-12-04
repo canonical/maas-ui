@@ -1,11 +1,16 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import CoreResources from "../CoreResources";
 import RamResources from "../RamResources";
 import VfResources from "../VfResources";
 import VmResources from "../VmResources";
 
+import urls from "@/app/base/urls";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import { resourceWithOverCommit } from "@/app/store/pod/utils";
@@ -17,6 +22,10 @@ const KVMResourcesCard = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
+
+  const { machineCount } = useFetchMachineCount({
+    [FilterGroupKey.Pod]: pod ? [pod.name] : [],
+  });
 
   if (pod) {
     const {
@@ -33,6 +42,7 @@ const KVMResourcesCard = ({ id }: Props): JSX.Element => {
       general,
       memory_over_commit_ratio
     );
+
     return (
       <>
         <div className="kvm-resources-card">
@@ -53,7 +63,15 @@ const KVMResourcesCard = ({ id }: Props): JSX.Element => {
           />
           <VfResources dynamicLayout interfaces={interfaces} />
         </div>
-        <VmResources podId={id} />
+        {pod.type === PodType.LXD ? (
+          <div className="vms-link">
+            <Link to={urls.kvm.lxd.single.vms({ id })}>
+              Total VMs: {machineCount ?? 0}
+            </Link>
+          </div>
+        ) : (
+          <VmResources podId={id} />
+        )}
       </>
     );
   }

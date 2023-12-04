@@ -6,7 +6,7 @@ import MachineHeader from "./MachineHeader";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
-import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
+import { NodeActions, NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -92,15 +92,29 @@ describe("MachineHeader", () => {
     );
   });
 
-  it("displays power status", () => {
-    state.machine.items[0].power_state = PowerState.ON;
+  it("displays an icon when locked", () => {
+    state.machine.items[0].locked = true;
+
+    renderWithBrowserRouter(
+      <MachineHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      { state, route: "/machine/abc123" }
+    );
+
+    expect(screen.getByRole("button", { name: /locked/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /locked/i })).toHaveClass(
+      "has-icon"
+    );
+  });
+
+  it("displays machine status", () => {
+    state.machine.items[0].status = NodeStatus.DEPLOYED;
 
     renderWithBrowserRouter(
       <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { state, route: "/machine/abc123" }
     );
 
-    expect(screen.getByText(/power on/i)).toBeInTheDocument();
+    expect(screen.getByText(/deployed/i)).toBeInTheDocument();
   });
 
   it("displays power status when checking power", () => {

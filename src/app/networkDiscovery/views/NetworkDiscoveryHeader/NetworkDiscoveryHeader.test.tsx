@@ -1,8 +1,8 @@
 import configureStore from "redux-mock-store";
 
-import DashboardHeader, {
-  Labels as DashboardHeaderLabels,
-} from "./DashboardHeader";
+import NetworkDiscoveryHeader, {
+  Labels as NetworkDiscoveryHeaderLabels,
+} from "./NetworkDiscoveryHeader";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
@@ -15,7 +15,7 @@ import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
-describe("DashboardHeader", () => {
+describe("NetworkDiscoveryHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
@@ -35,23 +35,31 @@ describe("DashboardHeader", () => {
   });
 
   it("displays the discovery count in the header", () => {
-    renderWithBrowserRouter(<DashboardHeader setSidePanelContent={vi.fn()} />, {
-      route: "/dashboard",
-      state,
-    });
+    renderWithBrowserRouter(
+      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />,
+      {
+        route: "/network-discovery",
+        state,
+      }
+    );
 
     const indexLink = screen.getByText("2 discoveries");
     expect(indexLink).toBeInTheDocument();
-    expect(indexLink).toHaveAttribute("href", urls.dashboard.index);
+    expect(indexLink).toHaveAttribute("href", urls.networkDiscovery.index);
   });
 
   it("has a button to clear discoveries", () => {
-    renderWithBrowserRouter(<DashboardHeader setSidePanelContent={vi.fn()} />, {
-      route: "/dashboard",
-      state,
-    });
+    renderWithBrowserRouter(
+      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />,
+      {
+        route: "/network-discovery",
+        state,
+      }
+    );
     expect(
-      screen.getByRole("button", { name: DashboardHeaderLabels.ClearAll })
+      screen.getByRole("button", {
+        name: NetworkDiscoveryHeaderLabels.ClearAll,
+      })
     ).toBeInTheDocument();
   });
 
@@ -59,15 +67,17 @@ describe("DashboardHeader", () => {
     const store = mockStore(state);
     const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
-      <DashboardHeader setSidePanelContent={setSidePanelContent} />,
+      <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />,
       {
-        route: "/dashboard",
+        route: "/network-discovery",
         store,
       }
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: DashboardHeaderLabels.ClearAll })
+      screen.getByRole("button", {
+        name: NetworkDiscoveryHeaderLabels.ClearAll,
+      })
     );
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: ["", "clearAllDiscoveries"],

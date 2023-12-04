@@ -69,15 +69,13 @@ it("sets the options from the URL on load", async () => {
   });
 
   await waitFor(() =>
-    expect(screen.getByRole("tab", { name: /space/i })).toHaveAttribute(
-      "aria-selected",
-      "true"
-    )
+    expect(
+      screen.getByRole("combobox", {
+        name: /group by/i,
+      })
+    ).toHaveValue("space")
   );
-  expect(screen.getByRole("tab", { name: /fabric/i })).toHaveAttribute(
-    "aria-selected",
-    "false"
-  );
+
   await waitFor(() =>
     expect(screen.getByRole<HTMLInputElement>("searchbox").value).toBe(
       "fabric-1"
@@ -108,7 +106,11 @@ it("updates the URL 'by' param once a new group by option is selected", async ()
 
   expect(getUrlParam("by")).toEqual("fabric");
 
-  await userEvent.click(screen.getByRole("tab", { name: /space/i }));
+  const selectBox = screen.getByRole("combobox", {
+    name: /group by/i,
+  });
+
+  await userEvent.selectOptions(selectBox, "space");
 
   await waitFor(() => expect(getUrlParam("by")).toEqual("space"));
 });

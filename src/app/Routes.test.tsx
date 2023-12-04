@@ -115,8 +115,8 @@ const routes: { title: string; path: string }[] = [
     path: urls.zones.details({ id: 1 }),
   },
   {
-    title: "Dashboard",
-    path: urls.dashboard.index,
+    title: "Network Discovery",
+    path: urls.networkDiscovery.index,
   },
 ];
 

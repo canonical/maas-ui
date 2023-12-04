@@ -1,6 +1,6 @@
-import Dashboard, { Label } from "./Dashboard";
-import { Label as DashboardConfigurationFormLabel } from "./DashboardConfigurationForm/DashboardConfigurationForm";
 import { Labels as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesList";
+import NetworkDiscovery, { Label } from "./NetworkDiscovery";
+import { Label as NetworkDiscoveryConfigurationFormLabel } from "./NetworkDiscoveryConfigurationForm/NetworkDiscoveryConfigurationForm";
 
 import urls from "@/app/base/urls";
 import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
@@ -15,7 +15,7 @@ import {
 } from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
-describe("Dashboard", () => {
+describe("NetworkDiscovery", () => {
   let state: RootState;
 
   beforeEach(() => {
@@ -32,22 +32,22 @@ describe("Dashboard", () => {
   [
     {
       label: DiscoveriesListLabel.DiscoveriesList,
-      path: urls.dashboard.index,
+      path: urls.networkDiscovery.index,
     },
     {
-      label: DashboardConfigurationFormLabel.Title,
-      path: urls.dashboard.configuration,
+      label: NetworkDiscoveryConfigurationFormLabel.Title,
+      path: urls.networkDiscovery.configuration,
     },
     {
       label: NotFoundLabel.Title,
-      path: `${urls.dashboard.index}/not/a/path`,
+      path: `${urls.networkDiscovery.index}/not/a/path`,
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<Dashboard />, {
+      renderWithBrowserRouter(<NetworkDiscovery />, {
         route: path,
         state,
-        routePattern: `${urls.dashboard.index}/*`,
+        routePattern: `${urls.networkDiscovery.index}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
@@ -57,8 +57,8 @@ describe("Dashboard", () => {
     state.config = configStateFactory({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "disabled" }],
     });
-    renderWithBrowserRouter(<Dashboard />, {
-      route: urls.dashboard.index,
+    renderWithBrowserRouter(<NetworkDiscovery />, {
+      route: urls.networkDiscovery.index,
       state,
     });
     expect(screen.getByText(Label.Disabled)).toBeInTheDocument();
@@ -68,8 +68,8 @@ describe("Dashboard", () => {
     state.config = configStateFactory({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
     });
-    renderWithBrowserRouter(<Dashboard />, {
-      route: urls.dashboard.index,
+    renderWithBrowserRouter(<NetworkDiscovery />, {
+      route: urls.networkDiscovery.index,
       state,
     });
     expect(screen.queryByText(Label.Disabled)).not.toBeInTheDocument();
@@ -79,8 +79,8 @@ describe("Dashboard", () => {
     state.user.auth = authStateFactory({
       user: userFactory({ is_superuser: false }),
     });
-    renderWithBrowserRouter(<Dashboard />, {
-      route: urls.dashboard.index,
+    renderWithBrowserRouter(<NetworkDiscovery />, {
+      route: urls.networkDiscovery.index,
       state,
     });
     expect(screen.getByText(Label.Permissions)).toBeInTheDocument();

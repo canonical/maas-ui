@@ -127,12 +127,7 @@ const SectionHeader = <P,>({
       {actionMenuGroup ? <>{actionMenuGroup}</> : null}
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">
-          <hr className="u-no-margin--bottom" />
-          <Tabs
-            className="no-border"
-            links={tabLinks}
-            listClassName="u-no-margin--bottom"
-          />
+          <Tabs links={tabLinks} listClassName="u-no-margin--bottom" />
         </div>
       ) : null}
     </div>

@@ -11,12 +11,7 @@ import {
   rootState as rootStateFactory,
 } from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
-import {
-  userEvent,
-  screen,
-  waitFor,
-  renderWithBrowserRouter,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -57,7 +52,7 @@ describe("ClearAllForm", () => {
       ],
     });
     renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       state,
     });
     expect(screen.getByTestId("enabled-message")).toBeInTheDocument();
@@ -73,7 +68,7 @@ describe("ClearAllForm", () => {
       ],
     });
     renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       state,
     });
     expect(screen.getByTestId("disabled-message")).toBeInTheDocument();
@@ -82,7 +77,7 @@ describe("ClearAllForm", () => {
   it("dispatches an action to clear the discoveries", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       store,
     });
     await userEvent.click(
@@ -98,14 +93,14 @@ describe("ClearAllForm", () => {
 
     const store = mockStore(state);
     renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
-      route: "/dashboard",
+      route: "/network-discovery",
       store,
     });
 
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(
         store.getActions().some(({ type }) => type === "message/add")
       ).toBe(true);

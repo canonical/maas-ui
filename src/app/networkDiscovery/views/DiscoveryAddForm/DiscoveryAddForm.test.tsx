@@ -1,4 +1,3 @@
-import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import DiscoveryAddForm, {
@@ -10,13 +9,13 @@ import { DeviceType } from "./types";
 import { actions as deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
 import type { Discovery } from "@/app/store/discovery/types";
-import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   discovery as discoveryFactory,
   domain as domainFactory,
@@ -42,25 +41,15 @@ import {
   within,
   renderWithBrowserRouter,
 } from "@/testing/utils";
-
 const mockStore = configureStore<RootState, {}>();
 
-vi.mock("@reduxjs/toolkit", async () => {
-  const actual: object = await vi.importActual("@reduxjs/toolkit");
-  return {
-    ...actual,
-    nanoid: vi.fn(),
-  };
-});
-const callId = "mocked-nanoid";
+enableCallIdMocks();
 
 describe("DiscoveryAddForm", () => {
   let state: RootState;
   let discovery: Discovery;
 
   beforeEach(() => {
-    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
-    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
     const machines = [
       machineFactory({
         actions: [],
@@ -150,7 +139,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", store }
+      { route: "/network-discovery", store }
     );
     const expectedActions = [
       "device/fetch",
@@ -175,7 +164,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", store }
+      { route: "/network-discovery", store }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
@@ -184,7 +173,7 @@ describe("DiscoveryAddForm", () => {
     // Render the form with default state.
     const { rerender } = renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", state }
+      { route: "/network-discovery", state }
     );
     const error = "Name is invalid";
     // Change the device state to included the errors (as if it has changed via an API response).
@@ -203,7 +192,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", store }
+      { route: "/network-discovery", store }
     );
 
     await userEvent.selectOptions(
@@ -262,7 +251,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", store }
+      { route: "/network-discovery", store }
     );
 
     await userEvent.selectOptions(
@@ -321,7 +310,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", store }
+      { route: "/network-discovery", store }
     );
 
     await userEvent.click(
@@ -340,7 +329,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", store }
+      { route: "/network-discovery", store }
     );
 
     await userEvent.clear(
@@ -364,7 +353,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     const { rerender } = renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
-      { route: "/dashboard", store }
+      { route: "/network-discovery", store }
     );
 
     await userEvent.selectOptions(

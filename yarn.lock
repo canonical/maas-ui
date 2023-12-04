@@ -2130,10 +2130,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@canonical/maas-react-components@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-1.5.0.tgz#3cda970c9f95a1379f22fddd37e9c94eb7e345b2"
-  integrity sha512-pef2X+mf/W+/3q3kkIBrD9gHjb0z0S+JghDkd0mlmYuCbGxb+PqXk0vzlyEfzbIsltI0H/UEJLtNhM6kVTtD9A==
+"@canonical/maas-react-components@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-1.6.1.tgz#b4db2fb7635294baabde9d25d8cf30285a9a6552"
+  integrity sha512-2kZ8W0zoggV6j6zmPWN8hRFwiVeFAQq42R3driPDmGD8K+c6ViXj3RapvDL0ZY4EdB+YKtn08akqCk+a/kwaCg==
 
 "@canonical/macaroon-bakery@1.3.2":
   version "1.3.2"
