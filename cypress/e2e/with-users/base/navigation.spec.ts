@@ -1,18 +1,14 @@
 import { generateMAASURL } from "../../utils";
 
 const expectCollapsedNavigation = () => {
-  cy.findByRole("navigation", { name: /main navigation/i })
-    .invoke("width")
-    .should("equal", 64);
-  cy.findByRole("navigation", { name: /main navigation/i }).within(() =>
+  cy.getMainNavigation().invoke("width").should("equal", 64);
+  cy.getMainNavigation().within(() =>
     cy.findByRole("link", { name: /machines/i }).should("not.exist")
   );
 };
 const expectExpandedNavigation = () => {
-  cy.findByRole("navigation", { name: /main navigation/i })
-    .invoke("width")
-    .should("equal", 240);
-  cy.findByRole("navigation", { name: /main navigation/i }).within(() =>
+  cy.getMainNavigation().invoke("width").should("equal", 240);
+  cy.getMainNavigation().within(() =>
     cy.findByRole("link", { name: /machines/i }).should("exist")
   );
 };
@@ -72,20 +68,14 @@ context("Navigation - admin - collapse", () => {
 
   it("opens and closes the menu on mobile", () => {
     cy.viewport("iphone-8");
-    const getMainNavigation = () =>
-      cy.findByRole("navigation", {
-        name: /main navigation/i,
-      });
-    getMainNavigation().should("not.be.visible");
-    cy.findByRole("banner", { name: /navigation/i }).within(() =>
+    cy.getMainNavigation().should("not.be.visible");
+    cy.findByRole("banner", { name: "navigation" }).within(() =>
       cy.findByRole("button", { name: "Menu" }).click()
     );
-    getMainNavigation()
+    cy.getMainNavigation()
       .should("be.visible")
-      .within(() =>
-        cy.findByRole("button", { name: /collapse main navigation/ }).click()
-      );
-    getMainNavigation().should("not.be.visible");
+      .within(() => cy.findByRole("button", { name: /close menu/i }).click());
+    cy.getMainNavigation().should("not.be.visible");
   });
 });
 
