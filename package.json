@@ -101,7 +101,7 @@
     "@types/classnames": "2.3.0",
     "@types/clone-deep": "4.0.1",
     "@types/jest": "27.5.2",
-    "@types/node": "18.14.2",
+    "@types/node": "20.10.3",
     "@types/path-parse": "1.0.19",
     "@types/pluralize": "0.0.29",
     "@types/react-dom": "18.2.6",
