@@ -13,7 +13,7 @@ const MACHINE_ACTIONS_GROUPS = [
     ],
   },
   {
-    label: "Power cycle",
+    label: "Power",
     actions: ["Power on", "Power off", "Soft power off"],
   },
   {
