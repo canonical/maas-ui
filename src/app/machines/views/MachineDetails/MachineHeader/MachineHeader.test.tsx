@@ -6,7 +6,11 @@ import MachineHeader from "./MachineHeader";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
-import { NodeActions, NodeStatus, NodeStatusCode } from "@/app/store/types/node";
+import {
+  NodeActions,
+  NodeStatus,
+  NodeStatusCode,
+} from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
