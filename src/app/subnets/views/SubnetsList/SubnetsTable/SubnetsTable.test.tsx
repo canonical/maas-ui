@@ -15,7 +15,13 @@ import {
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "@/testing/factories";
-import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  within,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
   const fabrics = [
@@ -55,7 +61,7 @@ it("renders a single table variant at a time", () => {
     </Provider>
   );
 
-  expect(screen.getAllByRole("table")).toHaveLength(1);
+  expect(screen.getAllByRole("grid")).toHaveLength(1);
 });
 
 it("renders Subnets by Fabric table when grouping by Fabric", () => {
@@ -77,7 +83,7 @@ it("renders Subnets by Fabric table when grouping by Fabric", () => {
     </Provider>
   );
   expect(
-    screen.getByRole("table", { name: "Subnets by Fabric" })
+    screen.getByRole("grid", { name: "Subnets by Fabric" })
   ).toBeInTheDocument();
 });
 
@@ -96,7 +102,7 @@ it("renders Subnets by Space table when grouping by Space", () => {
     </Provider>
   );
   expect(
-    screen.getByRole("table", { name: "Subnets by Space" })
+    screen.getByRole("grid", { name: "Subnets by Space" })
   ).toBeInTheDocument();
 });
 
@@ -119,7 +125,7 @@ it("displays a correct number of pages", () => {
     </Provider>
   );
   expect(
-    screen.getByRole("table", { name: "Subnets by Fabric" })
+    screen.getByRole("grid", { name: "Subnets by Fabric" })
   ).toBeInTheDocument();
 
   const numberOfPages =
@@ -159,38 +165,26 @@ it("updates the list of items correctly when navigating to another page", async 
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
   expect(
-    within(tableBody).getByRole("link", {
-      name: "fabric-1",
-    })
+    within(tableBody).getByRole("link", { name: "fabric-1" })
   ).toBeInTheDocument();
-  expect(
-    within(tableBody).getByRole("link", {
-      name: "fabric-25",
-    })
-  ).toBeInTheDocument();
-  await waitFor(() =>
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(25)
-  );
 
   await userEvent.click(
     within(screen.getByRole("navigation")).getByRole("button", {
       name: "2",
     })
   );
-  await waitFor(() =>
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(25)
-  );
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
-      within(tableBody).getByRole("link", {
-        name: "fabric-26",
-      })
+      within(tableBody).getAllByRole("link", { name: /fabric/i })
+    ).toHaveLength(25)
+  );
+  await vi.waitFor(() =>
+    expect(
+      within(tableBody).getByRole("link", { name: "fabric-26" })
     ).toBeInTheDocument()
   );
   expect(
-    within(tableBody).getByRole("link", {
-      name: "fabric-50",
-    })
+    within(tableBody).getByRole("link", { name: "fabric-50" })
   ).toBeInTheDocument();
 });
 
@@ -228,14 +222,6 @@ it("displays correctly paginated rows", async () => {
   });
   const mockStore = configureStore();
   const store = mockStore(state);
-  const firstPageFabrics = state.fabric.items.slice(
-    0,
-    SUBNETS_TABLE_ITEMS_PER_PAGE
-  );
-  const secondPageFabrics = state.fabric.items.slice(
-    SUBNETS_TABLE_ITEMS_PER_PAGE,
-    SUBNETS_TABLE_ITEMS_PER_PAGE * 2
-  );
 
   render(
     <Provider store={store}>
@@ -252,17 +238,11 @@ it("displays correctly paginated rows", async () => {
   );
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
+  // Get grouped rows
+  const groupRows = screen.getAllByRole("row", { name: /group/i });
   expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE
+    SUBNETS_TABLE_ITEMS_PER_PAGE + groupRows.length
   );
-
-  within(tableBody)
-    .getAllByRole("row")
-    .forEach((row, index) => {
-      expect(row.textContent).toEqual(
-        expect.stringContaining(firstPageFabrics[index].name)
-      );
-    });
 
   await userEvent.click(
     screen.getByRole("button", {
@@ -270,7 +250,7 @@ it("displays correctly paginated rows", async () => {
     })
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
         "button",
@@ -279,17 +259,9 @@ it("displays correctly paginated rows", async () => {
     ).toHaveTextContent("2")
   );
 
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE
-  );
-
-  within(tableBody)
-    .getAllByRole("row")
-    .forEach((row, index) => {
-      expect(row.textContent).toEqual(
-        expect.stringContaining(secondPageFabrics[index].name)
-      );
-    });
+  expect(
+    within(tableBody).getAllByRole("link", { name: /fabric/i })
+  ).toHaveLength(SUBNETS_TABLE_ITEMS_PER_PAGE);
 });
 
 it("displays the last available page once the currently active has no items", async () => {
@@ -324,13 +296,11 @@ it("displays the last available page once the currently active has no items", as
     )
   );
 
-  await waitFor(() =>
-    expect(within(tableBody).getAllByRole("row")).toHaveLength(1)
+  await vi.waitFor(() =>
+    expect(within(tableBody).getAllByRole("row")).toHaveLength(2)
   );
   expect(
-    within(tableBody).getByRole("link", {
-      name: `fabric-${numberOfFabrics}`,
-    })
+    within(tableBody).getByRole("link", { name: `fabric-${numberOfFabrics}` })
   ).toBeInTheDocument();
 
   const updatedState = getMockState({
@@ -352,17 +322,14 @@ it("displays the last available page once the currently active has no items", as
     </Provider>
   );
 
-  await waitFor(() =>
+  const pagination = screen.getByRole("navigation", { name: "pagination" });
+  await vi.waitFor(() =>
     expect(
-      screen
-        .getByRole("navigation", { name: "pagination" })
-        // eslint-disable-next-line testing-library/no-node-access
-        .querySelector(".is-active")
-    ).toHaveTextContent("2")
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
   );
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE
-  );
+
+  expect(within(tableBody).getAllByRole("row")).toHaveLength(2);
 });
 
 it("remains on the same page once the data is updated and page is still available", async () => {
@@ -394,13 +361,10 @@ it("remains on the same page once the data is updated and page is still availabl
     })
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
-      screen
-        .getByRole("navigation")
-        // eslint-disable-next-line testing-library/no-node-access
-        .querySelector(".is-active")
-    ).toHaveTextContent("2")
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
   );
 
   const updatedState = getMockState({
@@ -422,12 +386,42 @@ it("remains on the same page once the data is updated and page is still availabl
     </Provider>
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
-      screen
-        .getByRole("navigation")
-        // eslint-disable-next-line testing-library/no-node-access
-        .querySelector(".is-active")
-    ).toHaveTextContent("2")
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
+  );
+});
+
+it("displays the table group summary at the top of every page", async () => {
+  const numberOfFabrics = SUBNETS_TABLE_ITEMS_PER_PAGE * 2;
+  const state = getMockState({
+    numberOfFabrics,
+  });
+
+  renderWithBrowserRouter(
+    <SubnetsTable groupBy="fabric" searchText="" setSearchText={vi.fn()} />,
+    { route: urls.index, state }
+  );
+
+  const tableBody = screen.getAllByRole("rowgroup")[1];
+  expect(within(tableBody).getAllByRole("row")[0]).toHaveTextContent("network");
+
+  const pagination = screen.getByRole("navigation", { name: "pagination" });
+  await userEvent.click(
+    within(pagination).getByRole("button", {
+      name: "2",
+    })
+  );
+
+  await vi.waitFor(() =>
+    expect(
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
+  );
+
+  const tableBody2 = screen.getAllByRole("rowgroup")[1];
+  expect(within(tableBody2).getAllByRole("row")[0]).toHaveTextContent(
+    "network"
   );
 });
