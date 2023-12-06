@@ -2,7 +2,6 @@ import type { PropsWithChildren } from "react";
 import { useState } from "react";
 
 import { Button } from "@canonical/react-components";
-import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
 import { Link } from "react-router-dom-v5-compat";
 
@@ -144,7 +143,7 @@ export const generateSubnetRows = (subnets: SubnetsTableRow[]) => {
     return generateSubnetRow({
       key: `${subnet.sortData.vlanId}-${subnet.sortData.fabricId}-${index}`,
       content,
-      classes: "subnet-row",
+      classes: "subnet-row truncated-border",
     });
   });
 };
@@ -153,54 +152,40 @@ export const generateSubnetGroupRows = ({
   itemName,
   groups,
   columnLength,
+  groupMap,
 }: {
   itemName: string;
   groups: FabricTableRow[] | SpaceTableRow[];
   columnLength: number;
-  groupCount: number;
-}) => {
-  let rows: MainTableRow[] = [];
-  groups.forEach((group) => {
-    const { networks } = group;
-    if ("fabricName" in group) {
-      const { fabricName } = group;
-      rows.push({
-        "aria-label": `${fabricName} group`,
-        className: "",
-        columns: [
-          {
-            colSpan: columnLength,
-            content: (
-              <GroupRow
-                count={networks.length}
-                groupName={`${fabricName}`}
-                itemName={itemName}
-              />
-            ),
-          },
-        ],
-      });
-    } else {
-      const { spaceName } = group;
-      rows.push({
-        "aria-label": `${spaceName} group`,
-        className: "",
-        columns: [
-          {
-            colSpan: columnLength,
-            content: (
-              <GroupRow
-                count={networks.length}
-                groupName={`${spaceName}`}
-                itemName={itemName}
-              />
-            ),
-          },
-        ],
-      });
+  groupMap: Record<
+    string | number,
+    {
+      count: number;
     }
+  >;
+}) => {
+  const generateGroupRow = (name: string) => {
+    return {
+      "aria-label": `${name} group`,
+      className: "",
+      columns: [
+        {
+          colSpan: columnLength,
+          content: (
+            <GroupRow
+              count={groupMap[name].count}
+              groupName={name}
+              itemName={itemName}
+            />
+          ),
+        },
+      ],
+    };
+  };
 
-    rows = rows.concat(generateSubnetRows(networks));
+  return groups.flatMap((group) => {
+    const { networks } = group;
+    const name = "fabricName" in group ? group.fabricName : group.spaceName;
+    return [generateGroupRow(name as string), ...generateSubnetRows(networks)];
   });
-  return rows;
 };

@@ -3,6 +3,7 @@ import {
   getTableData,
   groupRowsByFabric,
   groupRowsBySpace,
+  groupSubnetData,
 } from "./utils";
 
 import {
@@ -121,4 +122,23 @@ test("groupRowsByFabric returns grouped rows in a correct format", () => {
   expect(groupRowsByFabric(tableData)[0].networks[0]).toStrictEqual(
     tableData[0]
   );
+});
+
+test("groupSubnetData returns grouped data in a correct format", () => {
+  const fabrics = [
+    fabricFactory({ id: 1, vlan_ids: [1] }),
+    fabricFactory({ id: 2 }),
+  ];
+  const vlans = [vlanFactory({ fabric: 1 }), vlanFactory({ fabric: 1 })];
+  const subnets = [subnetFactory(), subnetFactory()];
+  const spaces = [spaceFactory()];
+  const tableData = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
+
+  expect(groupSubnetData(tableData)).toStrictEqual({
+    "test-fabric-11": { count: 2 },
+    "test-fabric-12": { count: 1 },
+  });
+  expect(groupSubnetData(tableData, "space")).toStrictEqual({
+    "no space": { count: 3 },
+  });
 });

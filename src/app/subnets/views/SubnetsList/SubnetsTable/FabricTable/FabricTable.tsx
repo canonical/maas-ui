@@ -11,7 +11,10 @@ import {
 } from "app/subnets/views/SubnetsList/SubnetsTable/constants";
 import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
-import { groupRowsByFabric } from "app/subnets/views/SubnetsList/SubnetsTable/utils";
+import {
+  groupSubnetData,
+  groupRowsByFabric,
+} from "app/subnets/views/SubnetsList/SubnetsTable/utils";
 
 const FabricTable = ({
   data,
@@ -21,7 +24,6 @@ const FabricTable = ({
   emptyMsg: string;
 }): JSX.Element => {
   const { pageData, ...paginationProps } = usePagination(data);
-
   const headers = useMemo(
     () => [
       {
@@ -70,13 +72,15 @@ const FabricTable = ({
     ],
     []
   );
+
+  const groupedData = useMemo(() => groupSubnetData(data, "fabric"), [data]);
   const rowData = useMemo(() => groupRowsByFabric(pageData), [pageData]);
 
   const rows = generateSubnetGroupRows({
     groups: rowData,
     itemName: "network",
     columnLength: fabricTableColumns.length,
-    groupCount: data.length,
+    groupMap: groupedData,
   });
 
   return (

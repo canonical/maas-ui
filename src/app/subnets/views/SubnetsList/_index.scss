@@ -1,4 +1,6 @@
 @mixin SubnetsList {
+  $grouped-subnet-indentation: $sph--x-large;
+
   .subnets-table {
     tr:not(:first-child) {
       border-top: 0 !important;
@@ -62,9 +64,11 @@
     }
   }
 
-  .fabric-table, .space-table {
+  .fabric-table,
+  .space-table {
+    @include truncated-border($width: $grouped-subnet-indentation);
     .subnet-row td:first-child {
-      padding-left: 1.8125rem;
+      padding-left: $grouped-subnet-indentation;
     }
   }
 }

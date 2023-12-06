@@ -11,7 +11,10 @@ import {
 } from "app/subnets/views/SubnetsList/SubnetsTable/constants";
 import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
-import { groupRowsBySpace } from "app/subnets/views/SubnetsList/SubnetsTable/utils";
+import {
+  groupRowsBySpace,
+  groupSubnetData,
+} from "app/subnets/views/SubnetsList/SubnetsTable/utils";
 
 const SpaceTable = ({
   data,
@@ -70,13 +73,14 @@ const SpaceTable = ({
     []
   );
 
-  const rowData = useMemo(() => groupRowsBySpace(data), [data]);
+  const groupedData = useMemo(() => groupSubnetData(data, "space"), [data]);
+  const rowData = useMemo(() => groupRowsBySpace(pageData), [pageData]);
 
   const rows = generateSubnetGroupRows({
     groups: rowData,
     itemName: "network",
     columnLength: spaceTableColumns.length,
-    groupCount: data.length,
+    groupMap: groupedData,
   });
 
   return (

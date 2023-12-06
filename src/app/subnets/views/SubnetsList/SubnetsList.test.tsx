@@ -51,14 +51,14 @@ it("displays correct text when there are no results for the search criteria", as
   });
 
   expect(screen.getAllByRole("grid")).toHaveLength(1);
-  const tableBody = screen.getAllByRole("rowgroup")[1];
 
   await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
 
   await waitFor(() =>
-    expect(within(tableBody).getByText(/No results/)).toBeInTheDocument()
+    expect(
+      within(screen.getByRole("grid")).getByText(/No results/)
+    ).toBeInTheDocument()
   );
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(1);
 });
 
 it("sets the options from the URL on load", async () => {

@@ -15,7 +15,14 @@ import {
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { userEvent, render, screen, within, waitFor } from "testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  within,
+  waitFor,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
   const fabrics = [
@@ -162,7 +169,9 @@ it("updates the list of items correctly when navigating to another page", async 
   );
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
-  expect(within(tableBody).getByText("fabric-1")).toBeInTheDocument();
+  expect(
+    within(tableBody).getByRole("link", { name: "fabric-1" })
+  ).toBeInTheDocument();
 
   await userEvent.click(
     within(screen.getByRole("navigation")).getByRole("button", {
@@ -171,13 +180,17 @@ it("updates the list of items correctly when navigating to another page", async 
   );
   await waitFor(() =>
     expect(
-      within(tableBody).getAllByRole("row", { name: /fabric/i })
+      within(tableBody).getAllByRole("link", { name: /fabric/i })
     ).toHaveLength(25)
   );
   await waitFor(() =>
-    expect(within(tableBody).getByText("fabric-26")).toBeInTheDocument()
+    expect(
+      within(tableBody).getByRole("link", { name: "fabric-26" })
+    ).toBeInTheDocument()
   );
-  expect(within(tableBody).getByText("fabric-50")).toBeInTheDocument();
+  expect(
+    within(tableBody).getByRole("link", { name: "fabric-50" })
+  ).toBeInTheDocument();
 });
 
 it("doesn't display pagination if rows are within items per page limit", () => {
@@ -231,7 +244,7 @@ it("displays correctly paginated rows", async () => {
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
   // Get grouped rows
-  const groupRows = screen.getAllByRole("row", { name: /fabric*/i });
+  const groupRows = screen.getAllByRole("row", { name: /group/i });
   expect(within(tableBody).getAllByRole("row")).toHaveLength(
     SUBNETS_TABLE_ITEMS_PER_PAGE + groupRows.length
   );
@@ -251,9 +264,9 @@ it("displays correctly paginated rows", async () => {
     ).toHaveTextContent("2")
   );
 
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(
-    SUBNETS_TABLE_ITEMS_PER_PAGE + groupRows.length
-  );
+  expect(
+    within(tableBody).getAllByRole("link", { name: /fabric/i })
+  ).toHaveLength(SUBNETS_TABLE_ITEMS_PER_PAGE);
 });
 
 it("displays the last available page once the currently active has no items", async () => {
@@ -292,7 +305,7 @@ it("displays the last available page once the currently active has no items", as
     expect(within(tableBody).getAllByRole("row")).toHaveLength(2)
   );
   expect(
-    within(tableBody).getByText(`fabric-${numberOfFabrics}`)
+    within(tableBody).getByRole("link", { name: `fabric-${numberOfFabrics}` })
   ).toBeInTheDocument();
 
   const updatedState = getMockState({
@@ -314,13 +327,11 @@ it("displays the last available page once the currently active has no items", as
     </Provider>
   );
 
+  const pagination = screen.getByRole("navigation", { name: "pagination" });
   await waitFor(() =>
     expect(
-      screen
-        .getByRole("navigation", { name: "pagination" })
-        // eslint-disable-next-line testing-library/no-node-access
-        .querySelector(".is-active")
-    ).toHaveTextContent("2")
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
   );
 
   expect(within(tableBody).getAllByRole("row")).toHaveLength(2);
@@ -357,11 +368,8 @@ it("remains on the same page once the data is updated and page is still availabl
 
   await waitFor(() =>
     expect(
-      screen
-        .getByRole("navigation")
-        // eslint-disable-next-line testing-library/no-node-access
-        .querySelector(".is-active")
-    ).toHaveTextContent("2")
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
   );
 
   const updatedState = getMockState({
@@ -385,10 +393,40 @@ it("remains on the same page once the data is updated and page is still availabl
 
   await waitFor(() =>
     expect(
-      screen
-        .getByRole("navigation")
-        // eslint-disable-next-line testing-library/no-node-access
-        .querySelector(".is-active")
-    ).toHaveTextContent("2")
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
+  );
+});
+
+it("displays the table group summary at the top of every page", async () => {
+  const numberOfFabrics = SUBNETS_TABLE_ITEMS_PER_PAGE * 2;
+  const state = getMockState({
+    numberOfFabrics,
+  });
+
+  renderWithBrowserRouter(
+    <SubnetsTable groupBy="fabric" searchText="" setSearchText={jest.fn()} />,
+    { route: urls.index, state }
+  );
+
+  const tableBody = screen.getAllByRole("rowgroup")[1];
+  expect(within(tableBody).getAllByRole("row")[0]).toHaveTextContent("network");
+
+  const pagination = screen.getByRole("navigation", { name: "pagination" });
+  await userEvent.click(
+    within(pagination).getByRole("button", {
+      name: "2",
+    })
+  );
+
+  await waitFor(() =>
+    expect(
+      within(pagination).getByRole("button", { name: "2" })
+    ).toHaveAttribute("aria-current", "page")
+  );
+
+  const tableBody2 = screen.getAllByRole("rowgroup")[1];
+  expect(within(tableBody2).getAllByRole("row")[0]).toHaveTextContent(
+    "network"
   );
 });

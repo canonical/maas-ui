@@ -96,6 +96,23 @@ export const groupRowsBySpace = (sourceRows: SubnetsTableRow[]) => {
   return rows;
 };
 
+export const groupSubnetData = (
+  data: SubnetsTableRow[],
+  groupBy: GroupByKey = "fabric"
+) => {
+  return data.reduce<Record<number | string, { count: number }>>((acc, cur) => {
+    const name =
+      groupBy === "fabric" ? cur.sortData?.fabricName : cur.sortData?.spaceName;
+    if (acc[name]) {
+      acc[name].count += 1;
+    } else {
+      acc[name] = { count: 1 };
+    }
+
+    return acc;
+  }, {});
+};
+
 const getRowData = ({
   fabric,
   vlan,
