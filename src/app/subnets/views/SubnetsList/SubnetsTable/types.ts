@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import type { SubnetsColumns } from "./constants";
 
 import type { Fabric } from "app/store/fabric/types";
@@ -30,6 +32,19 @@ export type SortData = {
   cidr: SortKey;
 };
 
+export type FabricTableRow = {
+  fabricId: SortKey;
+  fabricName: SortKey;
+  isCollapsed: boolean;
+  networks: SubnetsTableRow[];
+};
+
+export type SpaceTableRow = {
+  spaceName: SortKey;
+  isCollapsed: boolean;
+  networks: SubnetsTableRow[];
+};
+
 export type SubnetGroupByProps = {
   groupBy: GroupByKey;
   setGroupBy: (group: GroupByKey) => void;
@@ -44,4 +59,13 @@ export type SortDataKey =
 
 export type SubnetsTableRow = Record<SubnetsColumns, SubnetsTableColumn> & {
   sortData: SortData;
+};
+
+export type FabricRowContent = {
+  [SubnetsColumns.FABRIC]: ReactNode;
+  [SubnetsColumns.VLAN]: ReactNode;
+  [SubnetsColumns.DHCP]: ReactNode;
+  [SubnetsColumns.SUBNET]: ReactNode;
+  [SubnetsColumns.IPS]: ReactNode;
+  [SubnetsColumns.SPACE]: ReactNode;
 };

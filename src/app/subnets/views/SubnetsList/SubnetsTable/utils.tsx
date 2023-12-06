@@ -1,11 +1,11 @@
-import cloneDeep from "clone-deep";
-
 import { SubnetsColumns } from "./constants";
 import type {
   SubnetsTableRow,
   SubnetsTableData,
   GroupByKey,
   SortData,
+  FabricTableRow,
+  SpaceTableRow,
 } from "./types";
 
 import type { Fabric } from "app/store/fabric/types";
@@ -40,48 +40,77 @@ const getColumn = (label: string | null, href?: string | null) => ({
   isVisuallyHidden: false,
 });
 
-export const groupRowsByFabricAndVlan = (
-  sourceRows: SubnetsTableRow[]
-): SubnetsTableRow[] => {
-  const rows: SubnetsTableRow[] = [];
-
+export const groupRowsByFabric = (sourceRows: SubnetsTableRow[]) => {
+  const rows: FabricTableRow[] = [];
   sourceRows.forEach((sourceRow, index) => {
-    const row = cloneDeep(sourceRow);
-    const previousRow = rows[index - 1];
+    const previousRow = rows[rows.length - 1];
 
-    if (row && index > 0) {
-      if (row.sortData?.fabricId === previousRow?.sortData?.fabricId) {
-        row.fabric = { ...row.fabric, isVisuallyHidden: true };
-      }
-      if (row.sortData?.vlanId === previousRow?.sortData?.vlanId) {
-        row.vlan = { ...row.vlan, isVisuallyHidden: true };
+    if (sourceRow && index > 0) {
+      if (sourceRow.sortData?.fabricId === previousRow?.fabricId) {
+        rows[rows.length - 1].networks.push(sourceRow);
+      } else {
+        rows.push({
+          fabricId: sourceRow.sortData?.fabricId,
+          fabricName: sourceRow.sortData?.fabricName,
+          isCollapsed: false,
+          networks: [sourceRow],
+        });
       }
     }
-
-    rows.push(row);
+    if (index === 0) {
+      rows.push({
+        fabricId: sourceRow.sortData?.fabricId,
+        fabricName: sourceRow.sortData?.fabricName,
+        isCollapsed: false,
+        networks: [sourceRow],
+      });
+    }
   });
-
   return rows;
 };
 
-export const groupRowsBySpace = (
-  sourceRows: SubnetsTableRow[]
-): SubnetsTableRow[] => {
-  const rows: SubnetsTableRow[] = [];
-
+export const groupRowsBySpace = (sourceRows: SubnetsTableRow[]) => {
+  const rows: SpaceTableRow[] = [];
   sourceRows.forEach((sourceRow, index) => {
-    const row = cloneDeep(sourceRow);
-    const previousRow = rows[index - 1];
+    const previousRow = rows[rows.length - 1];
 
-    if (row && index > 0) {
-      if (row.space?.label === previousRow?.space?.label) {
-        row.space = { ...row.space, isVisuallyHidden: true };
+    if (sourceRow && index > 0) {
+      if (sourceRow.sortData?.spaceName === previousRow?.spaceName) {
+        rows[rows.length - 1].networks.push(sourceRow);
+      } else {
+        rows.push({
+          spaceName: sourceRow.sortData?.spaceName,
+          isCollapsed: false,
+          networks: [sourceRow],
+        });
       }
     }
-    rows.push(row);
+    if (index === 0) {
+      rows.push({
+        spaceName: sourceRow.sortData?.spaceName,
+        isCollapsed: false,
+        networks: [sourceRow],
+      });
+    }
   });
-
   return rows;
+};
+
+export const groupSubnetData = (
+  data: SubnetsTableRow[],
+  groupBy: GroupByKey = "fabric"
+) => {
+  return data.reduce<Record<number | string, { count: number }>>((acc, cur) => {
+    const name =
+      groupBy === "fabric" ? cur.sortData?.fabricName : cur.sortData?.spaceName;
+    if (acc[name]) {
+      acc[name].count += 1;
+    } else {
+      acc[name] = { count: 1 };
+    }
+
+    return acc;
+  }, {});
 };
 
 const getRowData = ({
