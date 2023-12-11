@@ -12,9 +12,6 @@ jobs:
     env:
       PACKAGE_NAME: maas-ui-${{ github.sha }}.tar.gz
       REACT_APP_GIT_SHA: ${{ github.sha }}
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       - uses: actions/checkout@v4
       - name: Get branch name
@@ -25,10 +22,10 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.nvmrc'
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
