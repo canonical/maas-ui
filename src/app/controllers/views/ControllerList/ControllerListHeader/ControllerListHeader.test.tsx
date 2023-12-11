@@ -34,9 +34,7 @@ describe("ControllerListHeader", () => {
       { state }
     );
 
-    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
-      /Loading/
-    );
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("displays a controllers count if controllers have loaded", () => {
@@ -48,7 +46,7 @@ describe("ControllerListHeader", () => {
       />,
       { state }
     );
-    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
+    expect(screen.getByTestId("subtitle-string")).toHaveTextContent(
       /2 controllers available/
     );
   });

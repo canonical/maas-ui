@@ -7,6 +7,6 @@ context("Controller listing", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains("Controllers");
+    cy.findByRole("heading", { level: 1 }).contains("Controllers");
   });
 });
