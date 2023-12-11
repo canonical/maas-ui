@@ -76,7 +76,6 @@ const MaasIntro = (): JSX.Element => {
       <>
         <FormikForm<MaasIntroValues>
           allowUnchanged
-          buttonsBordered={false}
           cleanup={configActions.cleanup}
           editable={!showSkip}
           errors={errors}

@@ -67,8 +67,6 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
   return (
     <FormikForm<CreateParams>
       aria-label="Create tag"
-      buttonsAlign="right"
-      buttonsBordered={true}
       cleanup={tagActions.cleanup}
       errors={errors}
       initialValues={{

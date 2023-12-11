@@ -50,8 +50,6 @@ const NetworkDiscoveryConfigurationSubnetForm = (): JSX.Element => {
     content = (
       <FormikForm<SubnetDiscoveryValues>
         aria-label={Labels.FormLabel}
-        buttonsAlign="left"
-        buttonsBordered={false}
         initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
           subnets.forEach((subnet) => {

@@ -34,8 +34,6 @@ const KernelParametersForm = (): JSX.Element => {
   return (
     <FormikForm<KernelParametersValues>
       aria-label={Labels.FormLabel}
-      buttonsAlign="left"
-      buttonsBordered={false}
       cleanup={configActions.cleanup}
       errors={errors}
       initialValues={{

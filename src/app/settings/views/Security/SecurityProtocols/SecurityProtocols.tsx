@@ -1,4 +1,5 @@
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import TLSDisabled from "./TLSDisabled";
@@ -19,19 +20,20 @@ const SecurityProtocols = (): JSX.Element => {
   }
 
   return (
-    <>
-      <Row>
-        <Col size={6}>
-          {!tlsCertificateLoaded ? (
-            <Spinner text="Loading..." />
-          ) : tlsCertificate ? (
-            <TLSEnabled />
-          ) : (
-            <TLSDisabled />
-          )}
-        </Col>
-      </Row>
-    </>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        Security protocols
+      </ContentSection.Title>
+      <ContentSection.Content>
+        {!tlsCertificateLoaded ? (
+          <Spinner text="Loading..." />
+        ) : tlsCertificate ? (
+          <TLSEnabled />
+        ) : (
+          <TLSDisabled />
+        )}
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

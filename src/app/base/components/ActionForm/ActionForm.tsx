@@ -33,7 +33,7 @@ const getLabel = (
 
 export type ActionFormProps<V extends object, E = null> = Omit<
   FormikFormProps<V, E>,
-  "buttonsAlign" | "saved" | "saving" | "savingLabel" | "submitLabel"
+  "saved" | "saving" | "savingLabel" | "submitLabel"
 > & {
   actionName: string;
   loaded?: boolean;
@@ -53,7 +53,6 @@ export enum Labels {
 const ActionForm = <V extends object, E = null>({
   actionErrors,
   actionName,
-  buttonsBordered = false,
   children,
   errors,
   loaded = true,
@@ -90,8 +89,6 @@ const ActionForm = <V extends object, E = null>({
 
   return (
     <FormikForm<V, E>
-      buttonsAlign="right"
-      buttonsBordered={buttonsBordered}
       onSubmit={(values?, formikHelpers?) => {
         onSubmit(values, formikHelpers);
         // Set selected count in component state once form is submitted, so

@@ -39,7 +39,6 @@ const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
   const isDefaultVLAN = vlan.id === fabric.default_vlan_id;
   return (
     <FormikForm<EmptyObject>
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}

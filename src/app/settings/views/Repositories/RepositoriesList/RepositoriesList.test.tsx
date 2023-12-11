@@ -207,9 +207,9 @@ describe("RepositoriesList", () => {
     expect(rows.length).toBe(state.packagerepository.items.length);
 
     await userEvent.type(
-      screen.getByRole("searchbox", {
-        name: RepositoriesListLabels.SearchboxPlaceholder,
-      }),
+      screen.getAllByPlaceholderText(
+        RepositoriesListLabels.SearchboxPlaceholder
+      )[0],
       "secret"
     );
 

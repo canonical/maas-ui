@@ -89,7 +89,6 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
       <hr />
       <FormikForm<FetchedImagesValues>
         allowUnchanged
-        buttonsBordered={false}
         cleanup={cleanup}
         enableReinitialize
         errors={error}
