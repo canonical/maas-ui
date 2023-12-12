@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import ControllerListControls from "./ControllerListControls";
 import ControllerListHeader from "./ControllerListHeader";
 import ControllerListTable from "./ControllerListTable";
 
@@ -64,6 +63,7 @@ const ControllerList = (): JSX.Element => {
     <PageContent
       header={
         <ControllerListHeader
+          searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
           setSidePanelContent={setSidePanelContent}
         />
@@ -80,10 +80,6 @@ const ControllerList = (): JSX.Element => {
       sidePanelTitle={getSidePanelTitle("Controllers", sidePanelContent)}
     >
       <VaultNotification />
-      <ControllerListControls
-        filter={searchFilter}
-        setFilter={setSearchFilter}
-      />
       <ControllerListTable
         controllers={filteredControllers}
         hasFilter={!!searchFilter}
