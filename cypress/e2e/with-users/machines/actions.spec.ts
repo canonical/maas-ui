@@ -44,8 +44,12 @@ const selectFirstMachine = () =>
       .within(() => cy.findByRole("checkbox").click({ force: true }));
   });
 
+const openMachineActionDropdown = (groupLabel: string) => {
+  cy.findAllByRole("button", { name: groupLabel }).first().click();
+};
+
 const openMachineActionForm = (groupLabel: string, action: string) => {
-  cy.findByRole("button", { name: groupLabel }).click();
+  openMachineActionDropdown(groupLabel);
   cy.findByLabelText("submenu").within(() => {
     cy.findAllByRole("button", {
       name: new RegExp(`${action}...`),
@@ -70,7 +74,7 @@ context("Machine listing - actions", () => {
   it("displays the correct actions in the action menu", () => {
     selectFirstMachine();
     MACHINE_ACTIONS_GROUPS.forEach((actionGroup) => {
-      cy.findByRole("button", { name: actionGroup.label }).click();
+      openMachineActionDropdown(actionGroup.label);
       cy.findByLabelText("submenu").within(() => {
         cy.findAllByRole("button").should(
           "have.length",
@@ -166,7 +170,7 @@ context("Machine listing - actions", () => {
 
   it("can open a soft power off form", () => {
     selectFirstMachine();
-    cy.findByRole("button", { name: /power cycle/i }).click();
+    cy.findAllByRole("button", { name: "Power" }).first().click();
     cy.findByRole("button", { name: /soft power off\.\.\./i }).click();
     cy.findByRole("complementary", { name: /soft power off/i }).should("exist");
     cy.findByRole("heading", { name: /soft power off/i }).should("exist");
