@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -133,47 +134,52 @@ const LicenseKeyList = (): JSX.Element => {
     : null;
 
   return (
-    <SettingsTable
-      buttons={[
-        {
-          label: "Add license key",
-          url: settingsURLs.licenseKeys.add,
-          disabled: addBtnDisabled,
-          tooltip,
-        },
-      ]}
-      emptyStateMsg="No license keys available."
-      headers={[
-        {
-          content: "Operating System",
-          sortKey: "osystem",
-        },
-        {
-          content: "Distro Series",
-          sortKey: "distro_series",
-        },
-        {
-          content: "Actions",
-          className: "u-align--right",
-        },
-      ]}
-      loaded={licenseKeysLoaded}
-      loading={licenseKeysLoading}
-      rows={generateRows(
-        licenseKeys,
-        expandedId,
-        setExpandedId,
-        hideExpanded,
-        dispatch,
-        setDeleting,
-        saved,
-        saving
-      )}
-      searchOnChange={setSearchText}
-      searchPlaceholder="Search license keys"
-      searchText={searchText}
-      tableClassName="license-key-list"
-    />
+    <ContentSection>
+      <ContentSection.Content>
+        <SettingsTable
+          buttons={[
+            {
+              label: "Add license key",
+              url: settingsURLs.licenseKeys.add,
+              disabled: addBtnDisabled,
+              tooltip,
+            },
+          ]}
+          emptyStateMsg="No license keys available."
+          headers={[
+            {
+              content: "Operating System",
+              sortKey: "osystem",
+            },
+            {
+              content: "Distro Series",
+              sortKey: "distro_series",
+            },
+            {
+              content: "Actions",
+              className: "u-align--right",
+            },
+          ]}
+          loaded={licenseKeysLoaded}
+          loading={licenseKeysLoading}
+          rows={generateRows(
+            licenseKeys,
+            expandedId,
+            setExpandedId,
+            hideExpanded,
+            dispatch,
+            setDeleting,
+            saved,
+            saving
+          )}
+          searchOnChange={setSearchText}
+          searchPlaceholder="Search license keys"
+          searchText={searchText}
+          tableClassName="license-key-list"
+          title="License keys"
+        />
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

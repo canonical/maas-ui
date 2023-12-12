@@ -43,8 +43,6 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
     <FormCard title={title}>
       <BaseUserForm
         aria-label={title}
-        buttonsAlign="right"
-        buttonsBordered
         cleanup={userActions.cleanup}
         includeUserType
         onCancel={() => navigate(-1)}

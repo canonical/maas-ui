@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
@@ -182,52 +183,59 @@ const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
   });
 
   return (
-    <SettingsTable
-      buttons={[
-        { label: "Upload script", url: `/settings/scripts/${type}/upload` },
-      ]}
-      defaultSort="name"
-      emptyStateMsg={generateEmptyStateMsg(tableStatus, {
-        default: Labels.EmptyList,
-        filtered: Labels.NoResults,
-      })}
-      headers={[
-        {
-          content: "Script name",
-          sortKey: "name",
-        },
-        {
-          content: "Description",
-          sortKey: "description",
-        },
-        {
-          content: "Uploaded on",
-          sortKey: "uploaded_on",
-        },
-        {
-          content: "Actions",
-          className: "u-align--right",
-        },
-      ]}
-      loaded={scriptsLoaded}
-      loading={scriptsLoading}
-      rows={generateRows(
-        userScripts,
-        expandedId,
-        setExpandedId,
-        expandedType,
-        setExpandedType,
-        hideExpanded,
-        dispatch,
-        setDeleting,
-        saved,
-        saving
-      )}
-      searchOnChange={setSearchText}
-      searchPlaceholder={`Search ${type} scripts`}
-      searchText={searchText}
-      tableClassName="scripts-list"
-    />
+    <ContentSection>
+      <ContentSection.Content>
+        <SettingsTable
+          buttons={[
+            { label: "Upload script", url: `/settings/scripts/${type}/upload` },
+          ]}
+          defaultSort="name"
+          emptyStateMsg={generateEmptyStateMsg(tableStatus, {
+            default: Labels.EmptyList,
+            filtered: Labels.NoResults,
+          })}
+          headers={[
+            {
+              content: "Script name",
+              sortKey: "name",
+            },
+            {
+              content: "Description",
+              sortKey: "description",
+            },
+            {
+              content: "Uploaded on",
+              sortKey: "uploaded_on",
+            },
+            {
+              content: "Actions",
+              className: "u-align--right",
+            },
+          ]}
+          loaded={scriptsLoaded}
+          loading={scriptsLoading}
+          rows={generateRows(
+            userScripts,
+            expandedId,
+            setExpandedId,
+            expandedType,
+            setExpandedType,
+            hideExpanded,
+            dispatch,
+            setDeleting,
+            saved,
+            saving
+          )}
+          searchOnChange={setSearchText}
+          searchPlaceholder={`Search ${type} scripts`}
+          searchText={searchText}
+          tableClassName="scripts-list"
+          title={`${
+            type === "commissioning" ? "Commissioning" : "Testing"
+          } scripts`}
+        />
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

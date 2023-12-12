@@ -26,7 +26,6 @@ export const SpaceDelete = ({
 
   return (
     <FormikForm<EmptyObject>
-      buttonsBordered={false}
       cleanup={spaceActions.cleanup}
       errors={errors}
       initialValues={{}}

@@ -1,6 +1,6 @@
 import type { HTMLProps, ReactNode } from "react";
 
-import { Col, Strip } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import type { ColSize } from "@canonical/react-components";
 
 import NotificationList from "@/app/base/components/NotificationList";
@@ -29,7 +29,7 @@ const MainContentSection = ({
             <Col size={12}>{header}</Col>
           </header>
         ) : null}
-        <Strip element="section" includeCol={false} shallow>
+        <Row>
           {sidebar && (
             <Col className="section__sidebar" element="aside" size={SIDEBAR}>
               {sidebar}
@@ -39,7 +39,7 @@ const MainContentSection = ({
             {!isNotificationListHidden && <NotificationList />}
             {children}
           </Col>
-        </Strip>
+        </Row>
       </div>
     </div>
   );

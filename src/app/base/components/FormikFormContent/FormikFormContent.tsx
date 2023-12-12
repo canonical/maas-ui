@@ -1,6 +1,7 @@
 import type { ReactNode, AriaAttributes } from "react";
 import React, { useEffect, useRef } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { Form, Notification } from "@canonical/react-components";
 import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
@@ -172,25 +173,33 @@ const FormikFormContent = <V extends object, E = null>({
       inline={inline}
       onSubmit={handleSubmit}
     >
-      {!!nonFieldError && (
-        <Notification severity="negative" title="Error:">
-          {nonFieldError}
-        </Notification>
-      )}
-      {typeof children === "function"
-        ? children({ ...formikContext })
-        : children}
-      {editable && (
-        <FormikFormButtons
-          {...buttonsProps}
-          cancelDisabled={cancelDisabled === false ? false : saving}
-          inline={inline}
-          saved={saved}
-          saving={saving}
-          submitDisabled={loading || saving || formDisabled || submitDisabled}
-        />
-      )}
-      {footer}
+      <ContentSection>
+        <ContentSection.Content>
+          {!!nonFieldError && (
+            <Notification severity="negative" title="Error:">
+              {nonFieldError}
+            </Notification>
+          )}
+          {typeof children === "function"
+            ? children({ ...formikContext })
+            : children}
+        </ContentSection.Content>
+        <ContentSection.Footer>
+          {editable && (
+            <FormikFormButtons
+              {...buttonsProps}
+              cancelDisabled={cancelDisabled === false ? false : saving}
+              inline={inline}
+              saved={saved}
+              saving={saving}
+              submitDisabled={
+                loading || saving || formDisabled || submitDisabled
+              }
+            />
+          )}
+          {footer}
+        </ContentSection.Footer>
+      </ContentSection>
     </Form>
   );
 };

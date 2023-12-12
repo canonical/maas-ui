@@ -66,8 +66,6 @@ export const AddTagForm = ({
     <FormikForm<CreateParams>
       allowUnchanged
       aria-label={Label.Form}
-      buttonsAlign="left"
-      buttonsBordered={false}
       cleanup={tagActions.cleanup}
       errors={errors}
       initialValues={{

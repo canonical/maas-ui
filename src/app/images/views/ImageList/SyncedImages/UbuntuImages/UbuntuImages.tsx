@@ -102,7 +102,6 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
       <Strip shallow>
         <FormikForm<UbuntuImagesValues>
           allowUnchanged
-          buttonsBordered={false}
           cleanup={cleanup}
           editable={!tooManySources}
           enableReinitialize

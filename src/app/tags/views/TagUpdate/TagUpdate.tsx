@@ -73,8 +73,6 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
   return (
     <FormikForm<UpdateParams>
       aria-label="Update tag"
-      buttonsAlign="right"
-      buttonsBordered={true}
       cleanup={tagActions.cleanup}
       errors={errors}
       initialValues={{

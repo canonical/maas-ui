@@ -85,7 +85,6 @@ export const CloneForm = ({
   ) : (
     <ActionForm<CloneFormValues>
       actionName={NodeActions.CLONE}
-      buttonsBordered
       buttonsHelp={
         <p>
           The clone function allows you to apply storage and/or network

@@ -36,8 +36,6 @@ const CommissioningForm = (): JSX.Element => {
   return (
     <FormikForm<CommissioningFormValues>
       aria-label={Labels.FormLabel}
-      buttonsAlign="left"
-      buttonsBordered={false}
       cleanup={configActions.cleanup}
       errors={errors}
       initialValues={{

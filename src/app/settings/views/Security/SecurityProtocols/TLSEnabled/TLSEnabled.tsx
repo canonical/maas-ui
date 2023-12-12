@@ -82,8 +82,6 @@ const TLSEnabled = (): JSX.Element | null => {
       />
       <FormikForm<TLSEnabledValues>
         allowUnchanged
-        buttonsAlign="left"
-        buttonsBordered={false}
         cleanup={configActions.cleanup}
         initialValues={{
           notificationEnabled: notificationEnabled || false,

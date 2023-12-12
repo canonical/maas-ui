@@ -36,8 +36,6 @@ const DeployForm = (): JSX.Element => {
   return (
     <FormikForm<DeployFormValues>
       aria-label="deploy configuration"
-      buttonsAlign="left"
-      buttonsBordered={false}
       cleanup={configActions.cleanup}
       errors={errors}
       initialValues={{

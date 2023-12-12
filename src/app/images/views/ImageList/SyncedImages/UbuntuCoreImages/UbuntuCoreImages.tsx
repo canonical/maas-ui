@@ -94,7 +94,6 @@ const UbuntuCoreImages = (): JSX.Element | null => {
         <h4>{Labels.CoreImages}</h4>
         <FormikForm<UbuntuCoreImagesValues>
           allowUnchanged
-          buttonsBordered={false}
           cleanup={cleanup}
           enableReinitialize
           errors={error}

@@ -61,7 +61,6 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
   return (
     <FormikForm<CreateDomainValues>
       aria-label={Labels.FormLabel}
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{

@@ -28,8 +28,6 @@ const WindowsForm = (): JSX.Element => {
   return (
     <FormikForm
       aria-label={Labels.FormLabel}
-      buttonsAlign="left"
-      buttonsBordered={false}
       cleanup={configActions.cleanup}
       errors={errors}
       initialValues={{

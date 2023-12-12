@@ -94,7 +94,6 @@ const OtherImages = (): JSX.Element | null => {
         <h4>{Labels.OtherImages}</h4>
         <FormikForm<OtherImagesValues>
           allowUnchanged
-          buttonsBordered={false}
           cleanup={cleanup}
           enableReinitialize
           errors={error}

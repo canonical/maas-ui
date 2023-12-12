@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-import { Col, Spinner, Row } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import GeneralForm from "../GeneralForm";
@@ -27,12 +28,15 @@ const General = (): JSX.Element => {
   }, [dispatch, loaded]);
 
   return (
-    <Row>
-      <Col size={12}>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        General
+      </ContentSection.Title>
+      <ContentSection.Content>
         {loading && <Spinner text={Labels.Loading} />}
         {loaded && <GeneralForm />}
-      </Col>
-    </Row>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

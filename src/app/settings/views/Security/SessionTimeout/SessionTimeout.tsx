@@ -1,3 +1,4 @@
+import { ContentSection } from "@canonical/maas-react-components";
 import { Icon, Spinner } from "@canonical/react-components";
 import { formatDuration } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,57 +68,60 @@ const SessionTimeout = (): JSX.Element => {
   }
 
   return (
-    <>
-      <FormikForm<SessionTimeoutFormValues>
-        aria-label={Labels.ConfigureSessionTimeout}
-        buttonsAlign="left"
-        buttonsBordered={false}
-        cleanup={configActions.cleanup}
-        errors={errors}
-        initialValues={{
-          session_length: formatDuration(secondsToDuration(sessionLength)),
-        }}
-        onSaveAnalytics={{
-          action: "Saved",
-          category: "Security settings",
-          label: "Session timeout form",
-        }}
-        onSubmit={(values, { resetForm }) => {
-          const sessionLengthInSeconds = humanReadableToSeconds(
-            values.session_length
-          );
-          sessionLengthInSeconds &&
-            dispatch(
-              configActions.update({
-                session_length: sessionLengthInSeconds,
-              })
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        Session timeout
+      </ContentSection.Title>
+      <ContentSection.Content>
+        <FormikForm<SessionTimeoutFormValues>
+          aria-label={Labels.ConfigureSessionTimeout}
+          cleanup={configActions.cleanup}
+          errors={errors}
+          initialValues={{
+            session_length: formatDuration(secondsToDuration(sessionLength)),
+          }}
+          onSaveAnalytics={{
+            action: "Saved",
+            category: "Security settings",
+            label: "Session timeout form",
+          }}
+          onSubmit={(values, { resetForm }) => {
+            const sessionLengthInSeconds = humanReadableToSeconds(
+              values.session_length
             );
-          resetForm({ values });
-        }}
-        resetOnSave
-        saved={saved}
-        saving={saving}
-        validationSchema={SessionTimeoutSchema}
-      >
-        <FormikField
-          help={
-            <span>
-              Maximum session length is 14 days / 2 weeks. Format options are
-              weeks, days, hours, and/or minutes.
-              <br />
-              <br />
-              <Icon name="warning" /> MAAS will automatically log out all users
-              after changing the session expiration time. New session timeout
-              applies after login.
-            </span>
-          }
-          label={Labels.Expiration}
-          name="session_length"
-          required={true}
-          type="text"
-        />
-      </FormikForm>
-    </>
+            sessionLengthInSeconds &&
+              dispatch(
+                configActions.update({
+                  session_length: sessionLengthInSeconds,
+                })
+              );
+            resetForm({ values });
+          }}
+          resetOnSave
+          saved={saved}
+          saving={saving}
+          validationSchema={SessionTimeoutSchema}
+        >
+          <FormikField
+            help={
+              <span>
+                Maximum session length is 14 days / 2 weeks. Format options are
+                weeks, days, hours, and/or minutes.
+                <br />
+                <br />
+                <Icon name="warning" /> MAAS will automatically log out all
+                users after changing the session expiration time. New session
+                timeout applies after login.
+              </span>
+            }
+            label={Labels.Expiration}
+            name="session_length"
+            required={true}
+            type="text"
+          />
+        </FormikForm>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

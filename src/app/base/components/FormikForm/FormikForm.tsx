@@ -16,8 +16,6 @@ export type Props<V extends object, E = null> = ContentProps<V, E> &
 const FormikForm = <V extends object, E = null>({
   allowAllEmpty,
   allowUnchanged,
-  buttonsAlign,
-  buttonsBordered,
   buttonsClassName,
   buttonsHelpClassName,
   buttonsHelp,
@@ -55,8 +53,6 @@ const FormikForm = <V extends object, E = null>({
         allowAllEmpty={allowAllEmpty}
         allowUnchanged={allowUnchanged}
         aria-label={ariaLabel}
-        buttonsAlign={buttonsAlign}
-        buttonsBordered={buttonsBordered}
         buttonsClassName={buttonsClassName}
         buttonsHelp={buttonsHelp}
         buttonsHelpClassName={buttonsHelpClassName}

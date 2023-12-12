@@ -50,7 +50,6 @@
 @import "./patterns_navigation";
 @import "./patterns_status-bar";
 @import "./patterns_switches";
-@import "./patterns_table-actions";
 @import "./patterns_tables";
 @import "./patterns_tabs";
 @import "./patterns_typography";
@@ -69,7 +68,6 @@
 @include maas-navigation;
 @include maas-status-bar;
 @include maas-switches;
-@include maas-table-actions;
 @include maas-tables;
 @include maas-tabs;
 @include maas-typography;
@@ -90,7 +88,6 @@
 @import "@/app/base/components/DoughnutChart";
 @import "@/app/base/components/FilterAccordion";
 @import "@/app/base/components/FormCard";
-@import "@/app/base/components/FormikFormButtons";
 @import "@/app/base/components/LabelledList";
 @import "@/app/base/components/Login";
 @import "@/app/base/components/MachineSelectTable";
@@ -128,7 +125,6 @@
 @include EventLogsTable;
 @include FilterAccordion;
 @include FormCard;
-@include FormikFormButtons;
 @include HardwareCard;
 @include LabelledList;
 @include Login;

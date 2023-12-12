@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { Code, Col, Row } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
@@ -230,64 +231,69 @@ const DhcpList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <SettingsTable
-      buttons={[{ label: "Add snippet", url: settingsURLs.dhcp.add }]}
-      emptyStateMsg="No DHCP snippets available."
-      headers={[
-        {
-          content: "Snippet name",
-          sortKey: "name",
-        },
-        {
-          content: "Type",
-          sortKey: "type",
-        },
-        {
-          content: "Applies to",
-          sortKey: "target",
-        },
-        {
-          content: "Description",
-          sortKey: "description",
-        },
-        {
-          content: "Enabled",
-          sortKey: "enabled",
-        },
-        {
-          content: "Last edited",
-          sortKey: "updated",
-        },
-        {
-          content: "Actions",
-          className: "u-align--right",
-        },
-      ]}
-      helpLabel="About DHCP"
-      helpLink={docsUrls.dhcp}
-      loaded={dhcpsnippetLoaded}
-      loading={dhcpsnippetLoading}
-      rows={generateRows(
-        dhcpsnippets,
-        expandedId,
-        setExpandedId,
-        expandedType,
-        setExpandedType,
-        controllers,
-        devices,
-        machines,
-        subnets,
-        hideExpanded,
-        dispatch,
-        setDeleting,
-        saved,
-        saving
-      )}
-      searchOnChange={setSearchText}
-      searchPlaceholder="Search DHCP snippets"
-      searchText={searchText}
-      tableClassName="dhcp-list"
-    />
+    <ContentSection>
+      <ContentSection.Content>
+        <SettingsTable
+          buttons={[{ label: "Add snippet", url: settingsURLs.dhcp.add }]}
+          emptyStateMsg="No DHCP snippets available."
+          headers={[
+            {
+              content: "Snippet name",
+              sortKey: "name",
+            },
+            {
+              content: "Type",
+              sortKey: "type",
+            },
+            {
+              content: "Applies to",
+              sortKey: "target",
+            },
+            {
+              content: "Description",
+              sortKey: "description",
+            },
+            {
+              content: "Enabled",
+              sortKey: "enabled",
+            },
+            {
+              content: "Last edited",
+              sortKey: "updated",
+            },
+            {
+              content: "Actions",
+              className: "u-align--right",
+            },
+          ]}
+          helpLabel="About DHCP"
+          helpLink={docsUrls.dhcp}
+          loaded={dhcpsnippetLoaded}
+          loading={dhcpsnippetLoading}
+          rows={generateRows(
+            dhcpsnippets,
+            expandedId,
+            setExpandedId,
+            expandedType,
+            setExpandedType,
+            controllers,
+            devices,
+            machines,
+            subnets,
+            hideExpanded,
+            dispatch,
+            setDeleting,
+            saved,
+            saving
+          )}
+          searchOnChange={setSearchText}
+          searchPlaceholder="Search DHCP snippets"
+          searchText={searchText}
+          tableClassName="dhcp-list"
+          title="DHCP snippets"
+        />
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

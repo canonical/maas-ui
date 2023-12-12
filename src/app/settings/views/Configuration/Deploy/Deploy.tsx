@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-import { Col, Spinner, Row } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useWindowTitle } from "@/app/base/hooks";
@@ -29,12 +30,15 @@ const Deploy = (): JSX.Element => {
   }, [dispatch, loaded]);
 
   return (
-    <Row>
-      <Col size={6}>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        Deploy
+      </ContentSection.Title>
+      <ContentSection.Content>
         {loading && <Spinner text="Loading..." />}
         {loaded && <DeployForm />}
-      </Col>
-    </Row>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

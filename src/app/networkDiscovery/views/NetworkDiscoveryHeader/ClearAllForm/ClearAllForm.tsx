@@ -63,7 +63,6 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
   }
   return (
     <FormikForm<EmptyObject>
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}

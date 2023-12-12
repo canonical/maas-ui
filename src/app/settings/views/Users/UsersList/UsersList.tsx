@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
@@ -173,100 +174,105 @@ const UsersList = (): JSX.Element => {
   }
 
   return (
-    <SettingsTable
-      buttons={[{ label: "Add user", url: settingsURLs.users.add }]}
-      emptyStateMsg="No users available."
-      headers={[
-        {
-          content: (
-            <>
-              <TableHeader
-                currentSort={currentSort}
-                data-testid="username-header"
-                onClick={() => {
-                  setDisplayUsername(true);
-                  updateSort("username");
-                }}
-                sortKey="username"
-              >
-                Username
-              </TableHeader>
-              &nbsp;<strong>|</strong>&nbsp;
-              <TableHeader
-                currentSort={currentSort}
-                data-testid="real-name-header"
-                onClick={() => {
-                  setDisplayUsername(false);
-                  updateSort("last_name");
-                }}
-                sortKey="last_name"
-              >
-                Real name
-              </TableHeader>
-            </>
-          ),
-        },
-        {
-          content: (
-            <TableHeader
-              currentSort={currentSort}
-              data-testid="email-header"
-              onClick={() => updateSort("email")}
-              sortKey="email"
-            >
-              Email
-            </TableHeader>
-          ),
-        },
-        {
-          content: (
-            <TableHeader
-              currentSort={currentSort}
-              data-testid="machines-count-header"
-              onClick={() => updateSort("machines_count")}
-              sortKey="machines_count"
-            >
-              Machines
-            </TableHeader>
-          ),
-          className: "u-align--right u-no-wrap",
-        },
-        {
-          content: "Type",
-        },
-        {
-          content: "Last seen",
-        },
-        {
-          content: "Role",
-        },
-        {
-          content: "MAAS keys",
-          className: "u-align--right u-no-wrap",
-        },
-        {
-          content: "Actions",
-          className: "u-align--right",
-        },
-      ]}
-      loaded={loaded}
-      loading={loading}
-      rows={generateUserRows(
-        sortedUsers,
-        authUser,
-        expandedId,
-        setExpandedId,
-        dispatch,
-        displayUsername,
-        setDeleting,
-        saved,
-        saving
-      )}
-      searchOnChange={setSearchText}
-      searchPlaceholder="Search users"
-      searchText={searchText}
-      tableClassName="user-list"
-    />
+    <ContentSection>
+      <ContentSection.Content>
+        <SettingsTable
+          buttons={[{ label: "Add user", url: settingsURLs.users.add }]}
+          emptyStateMsg="No users available."
+          headers={[
+            {
+              content: (
+                <>
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-testid="username-header"
+                    onClick={() => {
+                      setDisplayUsername(true);
+                      updateSort("username");
+                    }}
+                    sortKey="username"
+                  >
+                    Username
+                  </TableHeader>
+                  &nbsp;<strong>|</strong>&nbsp;
+                  <TableHeader
+                    currentSort={currentSort}
+                    data-testid="real-name-header"
+                    onClick={() => {
+                      setDisplayUsername(false);
+                      updateSort("last_name");
+                    }}
+                    sortKey="last_name"
+                  >
+                    Real name
+                  </TableHeader>
+                </>
+              ),
+            },
+            {
+              content: (
+                <TableHeader
+                  currentSort={currentSort}
+                  data-testid="email-header"
+                  onClick={() => updateSort("email")}
+                  sortKey="email"
+                >
+                  Email
+                </TableHeader>
+              ),
+            },
+            {
+              content: (
+                <TableHeader
+                  currentSort={currentSort}
+                  data-testid="machines-count-header"
+                  onClick={() => updateSort("machines_count")}
+                  sortKey="machines_count"
+                >
+                  Machines
+                </TableHeader>
+              ),
+              className: "u-align--right u-no-wrap",
+            },
+            {
+              content: "Type",
+            },
+            {
+              content: "Last seen",
+            },
+            {
+              content: "Role",
+            },
+            {
+              content: "MAAS keys",
+              className: "u-align--right u-no-wrap",
+            },
+            {
+              content: "Actions",
+              className: "u-align--right",
+            },
+          ]}
+          loaded={loaded}
+          loading={loading}
+          rows={generateUserRows(
+            sortedUsers,
+            authUser,
+            expandedId,
+            setExpandedId,
+            dispatch,
+            displayUsername,
+            setDeleting,
+            saved,
+            saving
+          )}
+          searchOnChange={setSearchText}
+          searchPlaceholder="Search users"
+          searchText={searchText}
+          tableClassName="user-list"
+          title="Users"
+        />
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

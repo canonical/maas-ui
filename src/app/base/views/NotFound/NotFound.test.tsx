@@ -13,10 +13,10 @@ describe("NotFound ", () => {
     expect(container.querySelector("section")).not.toBeInTheDocument();
   });
 
-  it("can render in a section", () => {
+  it("can render in a row", () => {
     const { container } = renderWithBrowserRouter(<NotFound includeSection />, {
       route: "/404",
     });
-    expect(container.querySelector("section")).toBeInTheDocument();
+    expect(container.querySelector(".row")).toBeInTheDocument();
   });
 });

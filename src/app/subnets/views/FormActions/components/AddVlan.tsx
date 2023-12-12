@@ -60,7 +60,6 @@ const AddVlan = ({
   return (
     <FormikForm<AddVlanValues>
       aria-label="Add VLAN"
-      buttonsBordered={false}
       cleanup={vlanActions.cleanup}
       errors={errors}
       initialValues={{

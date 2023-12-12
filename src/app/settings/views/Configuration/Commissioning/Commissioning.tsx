@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-import { Col, Spinner, Row } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
 import CommissioningForm from "../CommissioningForm";
@@ -34,12 +35,15 @@ const Commissioning = (): JSX.Element => {
   }, [dispatch, loaded]);
 
   return (
-    <Row>
-      <Col size={6}>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        Commissioning
+      </ContentSection.Title>
+      <ContentSection.Content>
         {loading && <Spinner text={Labels.Loading} />}
         {loaded && <CommissioningForm />}
-      </Col>
-    </Row>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

@@ -75,16 +75,6 @@ it("can display a tooltip for the secondary submit action", async () => {
   });
 });
 
-it("displays a border if bordered is true", () => {
-  render(
-    <Formik initialValues={{}} onSubmit={vi.fn()}>
-      <FormikFormButtons buttonsBordered submitLabel="Save" />
-    </Formik>
-  );
-
-  expect(screen.getByTestId("buttons-wrapper")).toHaveClass("is-bordered");
-});
-
 it("displays inline if inline is true", () => {
   render(
     <Formik initialValues={{}} onSubmit={vi.fn()}>

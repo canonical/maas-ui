@@ -1,9 +1,9 @@
-import { Button } from "@canonical/react-components";
+import { MainToolbar } from "@canonical/maas-react-components";
+import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
-import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSendAnalytics } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
@@ -26,8 +26,19 @@ const ControllerListHeader = ({
   const sendAnalytics = useSendAnalytics();
 
   return (
-    <SectionHeader
-      buttons={[
+    <MainToolbar>
+      <MainToolbar.Title>Controllers</MainToolbar.Title>
+      {controllersLoaded ? (
+        <ModelListSubtitle
+          available={controllers.length}
+          filterSelected={() => setSearchFilter("in:(Selected)")}
+          modelName="controller"
+          selected={selectedControllers.length}
+        />
+      ) : (
+        <Spinner text="Loading" />
+      )}
+      <MainToolbar.Controls>
         <Button
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}
@@ -38,7 +49,7 @@ const ControllerListHeader = ({
           }
         >
           Add rack controller
-        </Button>,
+        </Button>
         <NodeActionMenu
           filterActions
           hasSelection={selectedControllers.length > 0}
@@ -58,19 +69,9 @@ const ControllerListHeader = ({
             }
           }}
           showCount
-        />,
-      ]}
-      subtitle={
-        <ModelListSubtitle
-          available={controllers.length}
-          filterSelected={() => setSearchFilter("in:(Selected)")}
-          modelName="controller"
-          selected={selectedControllers.length}
         />
-      }
-      subtitleLoading={!controllersLoaded}
-      title="Controllers"
-    />
+      </MainToolbar.Controls>
+    </MainToolbar>
   );
 };
 

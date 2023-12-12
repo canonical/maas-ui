@@ -61,8 +61,6 @@ export const DeleteTagForm = ({
   return (
     <FormikForm<EmptyObject>
       aria-label="Delete tag"
-      buttonsAlign="right"
-      buttonsBordered={true}
       cleanup={tagActions.cleanup}
       errors={errors}
       initialValues={{}}

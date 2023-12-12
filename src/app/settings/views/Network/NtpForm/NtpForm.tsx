@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-import { Col, Spinner, Row } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -37,13 +38,14 @@ const NtpForm = (): JSX.Element => {
   }, [dispatch, loaded]);
 
   return (
-    <Row>
-      <Col size={6}>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        NTP
+      </ContentSection.Title>
+      <ContentSection.Content>
         {loading && <Spinner text="Loading..." />}
         {loaded && (
           <FormikForm
-            buttonsAlign="left"
-            buttonsBordered={false}
             cleanup={configActions.cleanup}
             errors={errors}
             initialValues={{
@@ -77,8 +79,8 @@ const NtpForm = (): JSX.Element => {
             />
           </FormikForm>
         )}
-      </Col>
-    </Row>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

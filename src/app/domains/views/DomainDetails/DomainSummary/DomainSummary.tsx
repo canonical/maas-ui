@@ -64,8 +64,6 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
         editing ? (
           <FormikForm<EditDomainValues>
             aria-label={Labels.FormLabel}
-            buttonsAlign="right"
-            buttonsBordered={false}
             cleanup={cleanup}
             data-testid="domain-summary-form"
             errors={errors}

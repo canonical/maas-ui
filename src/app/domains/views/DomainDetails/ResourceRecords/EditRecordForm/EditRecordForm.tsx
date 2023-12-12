@@ -48,7 +48,6 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
   return (
     <FormikForm<EditRecordValues>
       aria-label={Labels.FormLabel}
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
