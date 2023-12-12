@@ -78,8 +78,6 @@ const GeneralForm = (): JSX.Element => {
   return (
     <FormikForm<GeneralFormValues>
       aria-label="Configuration - General"
-      buttonsAlign="right"
-      buttonsBordered={true}
       cleanup={configActions.cleanup}
       errors={errors}
       initialValues={{
@@ -156,7 +154,7 @@ const GeneralForm = (): JSX.Element => {
           { value: ColorValues.Magenta, label: "Magenta" },
           { value: ColorValues.Red, label: "Red" },
         ].map((color, i) => (
-          <Col key={i} medium={1} size={1} small={2}>
+          <Col key={i} medium={1} size={2} small={2}>
             <FormikField
               color={color.value}
               component={ThemedRadioButton}

@@ -46,8 +46,6 @@ export const Details = (): JSX.Element => {
       <Row>
         <Col size={6}>
           <UserForm
-            buttonsAlign="left"
-            buttonsBordered={false}
             cleanup={cleanup}
             includeCurrentPassword
             includeUserType={false}

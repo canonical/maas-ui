@@ -62,7 +62,6 @@ const FabricDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
   }
   return (
     <FormikForm<EmptyObject>
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}

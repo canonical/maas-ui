@@ -12,8 +12,6 @@ export type FormikContextFunc<V, R = void> = (
 ) => R;
 
 export type Props<V> = {
-  buttonsAlign?: "left" | "right";
-  buttonsBordered?: boolean;
   buttonsClassName?: string;
   buttonsHelp?: ReactNode;
   buttonsHelpClassName?: string;
@@ -47,8 +45,6 @@ export enum Labels {
 }
 
 export const FormikFormButtons = <V,>({
-  buttonsAlign = "right",
-  buttonsBordered = true,
   buttonsClassName,
   buttonsHelp,
   buttonsHelpClassName,
@@ -111,7 +107,6 @@ export const FormikFormButtons = <V,>({
     <>
       <div
         className={classNames("formik-form-buttons", buttonsClassName, {
-          "is-bordered": buttonsBordered,
           "is-inline": inline,
         })}
         data-testid={TestIds.ButtonsWrapper}
@@ -127,37 +122,31 @@ export const FormikFormButtons = <V,>({
             {buttonsHelp}
           </div>
         )}
-        <div
-          className={classNames("formik-form-buttons__container", {
-            "u-align--right": buttonsAlign === "right",
-          })}
-        >
-          {onCancel && (
-            <Button
-              appearance="base"
-              className="formik-form-buttons__button"
-              data-testid={TestIds.CancelButton}
-              disabled={cancelDisabled}
-              onClick={
-                onCancel ? () => onCancel(values, formikContext) : undefined
-              }
-              type="button"
-            >
-              {cancelLabel}
-            </Button>
-          )}
-          {secondaryButton}
-          <ActionButton
-            appearance={submitAppearance}
+        {onCancel && (
+          <Button
+            appearance="base"
             className="formik-form-buttons__button"
-            disabled={submitDisabled}
-            loading={saving}
-            success={saved}
-            type="submit"
+            data-testid={TestIds.CancelButton}
+            disabled={cancelDisabled}
+            onClick={
+              onCancel ? () => onCancel(values, formikContext) : undefined
+            }
+            type="button"
           >
-            {submitLabel}
-          </ActionButton>
-        </div>
+            {cancelLabel}
+          </Button>
+        )}
+        {secondaryButton}
+        <ActionButton
+          appearance={submitAppearance}
+          className="formik-form-buttons__button"
+          disabled={submitDisabled}
+          loading={saving}
+          success={saved}
+          type="submit"
+        >
+          {submitLabel}
+        </ActionButton>
       </div>
       {saving && savingLabel && (
         <p

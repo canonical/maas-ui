@@ -34,8 +34,6 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
   return (
     <FormikForm<CreateZoneValues>
       aria-label="Add AZ"
-      buttonsAlign="right"
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{

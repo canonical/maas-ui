@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -58,14 +59,15 @@ const IpmiSettings = (): JSX.Element => {
   }, [dispatch, configLoaded]);
 
   return (
-    <Row>
-      <Col size={6}>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        IPMI settings
+      </ContentSection.Title>
+      <ContentSection.Content>
         {configLoading && <Spinner text={Labels.Loading} />}
         {configLoaded && (
           <FormikForm<IpmiFormValues>
             aria-label={Labels.FormLabel}
-            buttonsAlign="left"
-            buttonsBordered={false}
             cleanup={configActions.cleanup}
             errors={errors}
             initialValues={{
@@ -90,8 +92,8 @@ const IpmiSettings = (): JSX.Element => {
             <Fields />
           </FormikForm>
         )}
-      </Col>
-    </Row>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

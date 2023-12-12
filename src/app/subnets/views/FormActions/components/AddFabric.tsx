@@ -26,7 +26,6 @@ const AddFabric = ({
     <FormikForm<AddFabricValues>
       allowAllEmpty
       aria-label="Add fabric"
-      buttonsBordered={false}
       cleanup={fabricActions.cleanup}
       errors={errors}
       initialValues={{ name: "", description: "" }}

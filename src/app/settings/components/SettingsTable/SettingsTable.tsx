@@ -1,3 +1,4 @@
+import { MainToolbar } from "@canonical/maas-react-components";
 import {
   Button,
   Link as VanillaLink,
@@ -32,6 +33,7 @@ export type Props = {
   searchPlaceholder?: string;
   searchText?: string;
   tableClassName?: string;
+  title?: string;
 };
 
 export const SettingsTable = ({
@@ -48,43 +50,49 @@ export const SettingsTable = ({
   searchPlaceholder,
   searchText,
   tableClassName,
+  title,
   ...tableProps
 }: Props): JSX.Element => {
   return (
     <div className="settings-table">
-      <div className="p-table-actions">
-        {searchOnChange ? (
-          <SearchBox
-            onChange={searchOnChange}
-            placeholder={searchPlaceholder}
-            value={searchText}
-          />
-        ) : (
-          <div className="p-table-actions__space-left"></div>
-        )}
-        {buttons?.map(({ label, url, disabled = false, tooltip }) =>
-          tooltip ? (
-            <Tooltip key={url} message={tooltip} position="left">
-              <Button disabled={disabled} element={Link} to={url}>
+      <MainToolbar>
+        {title && <MainToolbar.Title>{title}</MainToolbar.Title>}
+        <MainToolbar.Controls>
+          {searchOnChange ? (
+            <SearchBox
+              onChange={searchOnChange}
+              placeholder={searchPlaceholder}
+              value={searchText}
+            />
+          ) : null}
+          {buttons?.map(({ label, url, disabled = false, tooltip }) =>
+            tooltip ? (
+              <Tooltip key={url} message={tooltip} position="left">
+                <Button disabled={disabled} element={Link} to={url}>
+                  {label}
+                </Button>
+              </Tooltip>
+            ) : (
+              <Button disabled={disabled} element={Link} key={url} to={url}>
                 {label}
               </Button>
-            </Tooltip>
-          ) : (
-            <Button disabled={disabled} element={Link} key={url} to={url}>
-              {label}
-            </Button>
-          )
-        )}
-      </div>
+            )
+          )}
+        </MainToolbar.Controls>
+      </MainToolbar>
       {loading && (
         <div className="settings-table__loader">
           <Spinner />
         </div>
       )}
       <MainTable
-        className={classNames("p-table-expanding--light", tableClassName, {
-          "u-no-padding--bottom": loading && !loaded,
-        })}
+        className={classNames(
+          "p-table-expanding--light u-nudge-down",
+          tableClassName,
+          {
+            "u-no-padding--bottom": loading && !loaded,
+          }
+        )}
         defaultSort={defaultSort}
         defaultSortDirection="ascending"
         emptyStateMsg={emptyStateMsg}

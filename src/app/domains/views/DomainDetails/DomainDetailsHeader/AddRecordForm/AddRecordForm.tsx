@@ -50,7 +50,6 @@ const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
 
   return (
     <FormikForm<CreateRecordValues>
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{

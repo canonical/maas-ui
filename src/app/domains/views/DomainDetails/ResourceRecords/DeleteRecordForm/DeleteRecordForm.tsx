@@ -49,7 +49,6 @@ const DeleteRecordForm = ({
   return (
     <FormikForm<EmptyObject>
       aria-label={Labels.FormLabel}
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}

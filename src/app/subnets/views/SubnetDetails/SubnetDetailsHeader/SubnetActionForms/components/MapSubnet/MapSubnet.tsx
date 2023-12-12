@@ -43,7 +43,6 @@ export const MapSubnet = ({
   const isIPv4 = subnet.version === 4;
   return (
     <FormikForm<EmptyObject>
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={scanError}
       initialValues={{}}

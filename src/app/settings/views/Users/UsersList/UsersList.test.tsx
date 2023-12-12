@@ -215,7 +215,7 @@ describe("UsersList", () => {
     expect(rows.length).toBe(2);
 
     await userEvent.type(
-      screen.getByRole("searchbox", { name: "Search users" }),
+      screen.getAllByPlaceholderText("Search users")[0],
       "admin"
     );
 

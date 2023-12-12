@@ -202,7 +202,7 @@ describe("DhcpList", () => {
     expect(rows.length).toBe(3);
 
     await userEvent.type(
-      screen.getByRole("searchbox", { name: "Search DHCP snippets" }),
+      screen.getAllByPlaceholderText("Search DHCP snippets")[0],
       "lease"
     );
 

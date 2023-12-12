@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -123,42 +124,47 @@ export const RepositoriesList = (): JSX.Element => {
   useFetchActions([repositoryActions.cleanup]);
 
   return (
-    <SettingsTable
-      aria-label="Package repositories"
-      buttons={[
-        {
-          label: "Add PPA",
-          url: settingsURLs.repositories.add({ type: "ppa" }),
-        },
-        {
-          label: "Add repository",
-          url: settingsURLs.repositories.add({ type: "repository" }),
-        },
-      ]}
-      defaultSort="id"
-      emptyStateMsg="No repositories available."
-      headers={[
-        { content: "Name", sortKey: "name" },
-        { content: "URL", sortKey: "url" },
-        { content: "Enabled", sortKey: "enabled" },
-        { content: "Actions", className: "u-align--right" },
-      ]}
-      loaded={loaded}
-      loading={loading}
-      rows={generateRepositoryRows(
-        dispatch,
-        expandedId,
-        repositories,
-        setDeletedRepo,
-        setExpandedId,
-        saved,
-        saving
-      )}
-      searchOnChange={setSearchText}
-      searchPlaceholder={Labels.SearchboxPlaceholder}
-      searchText={searchText}
-      tableClassName="repo-list"
-    />
+    <ContentSection>
+      <ContentSection.Content>
+        <SettingsTable
+          aria-label="Package repositories"
+          buttons={[
+            {
+              label: "Add PPA",
+              url: settingsURLs.repositories.add({ type: "ppa" }),
+            },
+            {
+              label: "Add repository",
+              url: settingsURLs.repositories.add({ type: "repository" }),
+            },
+          ]}
+          defaultSort="id"
+          emptyStateMsg="No repositories available."
+          headers={[
+            { content: "Name", sortKey: "name" },
+            { content: "URL", sortKey: "url" },
+            { content: "Enabled", sortKey: "enabled" },
+            { content: "Actions", className: "u-align--right" },
+          ]}
+          loaded={loaded}
+          loading={loading}
+          rows={generateRepositoryRows(
+            dispatch,
+            expandedId,
+            repositories,
+            setDeletedRepo,
+            setExpandedId,
+            saved,
+            saving
+          )}
+          searchOnChange={setSearchText}
+          searchPlaceholder={Labels.SearchboxPlaceholder}
+          searchText={searchText}
+          tableClassName="repo-list"
+          title="Package repos"
+        />
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 

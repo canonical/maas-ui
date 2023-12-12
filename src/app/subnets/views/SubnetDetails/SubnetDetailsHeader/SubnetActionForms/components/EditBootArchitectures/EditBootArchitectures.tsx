@@ -53,7 +53,6 @@ export const EditBootArchitectures = ({
   const closeForm = () => setActiveForm(null);
   return (
     <FormikForm<FormValues>
-      buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
       initialValues={{

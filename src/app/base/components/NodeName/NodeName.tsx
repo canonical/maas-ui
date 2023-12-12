@@ -78,8 +78,6 @@ const NodeName = ({
   }
   return (
     <FormikForm<FormValues>
-      buttonsAlign="right"
-      buttonsBordered={false}
       className="node-name"
       footer={
         hostnameError ? (

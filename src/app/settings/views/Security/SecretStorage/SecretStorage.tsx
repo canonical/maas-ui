@@ -1,4 +1,5 @@
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import VaultSettings from "./VaultSettings";
@@ -18,13 +19,14 @@ const SecretStorage = (): JSX.Element => {
   }
 
   return (
-    <>
-      <Row>
-        <Col size={12}>
-          <VaultSettings />
-        </Col>
-      </Row>
-    </>
+    <ContentSection variant="narrow">
+      <ContentSection.Title className="section-header__title">
+        Secret storage
+      </ContentSection.Title>
+      <ContentSection.Content>
+        <VaultSettings />
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 
