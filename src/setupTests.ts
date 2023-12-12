@@ -10,6 +10,7 @@ beforeAll(() => {
   global.IS_REACT_ACT_ENVIRONMENT = false;
 });
 
+// mock ResizeObserver for MainToolbar
 beforeEach(() => {
   window.ResizeObserver = jest.fn(() => ({
     observe: jest.fn(),
