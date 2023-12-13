@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
+
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import NodeActionMenu from "@/app/base/components/NodeActionMenu";
 import { useSendAnalytics } from "@/app/base/hooks";
@@ -12,11 +15,13 @@ import controllerSelectors from "@/app/store/controller/selectors";
 import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
+  searchFilter: string;
   setSearchFilter: SetSearchFilter;
   setSidePanelContent: SetSidePanelContent;
 };
 
 const ControllerListHeader = ({
+  searchFilter,
   setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
@@ -24,6 +29,12 @@ const ControllerListHeader = ({
   const controllersLoaded = useSelector(controllerSelectors.loaded);
   const selectedControllers = useSelector(controllerSelectors.selected);
   const sendAnalytics = useSendAnalytics();
+  const [searchText, setSearchText] = useState(searchFilter);
+
+  useEffect(() => {
+    // If the filters change then update the search input text.
+    setSearchText(searchFilter);
+  }, [searchFilter]);
 
   return (
     <MainToolbar>
@@ -39,6 +50,11 @@ const ControllerListHeader = ({
         <Spinner text="Loading" />
       )}
       <MainToolbar.Controls>
+        <DebounceSearchBox
+          onDebounced={(debouncedText) => setSearchFilter(debouncedText)}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
         <Button
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}

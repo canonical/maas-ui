@@ -4,6 +4,7 @@ context("Subnets", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateMAASURL("/networks?by=fabric"));
+    cy.waitForPageToLoad();
     cy.viewport("macbook-11");
   });
 
@@ -40,7 +41,7 @@ context("Subnets", () => {
 
   it("allows grouping by fabric and space", () => {
     cy.findByRole("grid", { name: "Subnets by Fabric" }).within(() => {
-      cy.findAllByRole("columnheader").first().should("have.text", "VLAN");
+      cy.get("tbody tr").first().should("include.text", "fabric");
     });
 
     cy.findByRole("combobox", { name: /group by/i }).should(
@@ -55,8 +56,10 @@ context("Subnets", () => {
 
     cy.findByRole("combobox", { name: /group by/i }).select("space");
 
+    cy.waitForPageToLoad();
+
     cy.findByRole("grid", { name: "Subnets by Space" }).within(() => {
-      cy.findAllByRole("columnheader").first().should("have.text", "VLAN");
+      cy.get("tbody tr").first().should("include.text", "space");
     });
 
     cy.url().should("include", generateMAASURL("/networks?by=space"));
