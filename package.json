@@ -1,5 +1,6 @@
 {
   "name": "maas-ui",
+  "type": "module",
   "version": "3.5.0",
   "homepage": "/MAAS/r/",
   "license": "AGPL-3.0",
