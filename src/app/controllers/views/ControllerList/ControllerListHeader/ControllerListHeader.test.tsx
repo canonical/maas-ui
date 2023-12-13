@@ -1,3 +1,5 @@
+import configureStore from "redux-mock-store";
+
 import ControllerListHeader from "./ControllerListHeader";
 
 import { ControllerSidePanelViews } from "app/controllers/constants";
@@ -8,6 +10,8 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+
+const mockStore = configureStore<RootState>();
 
 describe("ControllerListHeader", () => {
   let state: RootState;
@@ -28,6 +32,7 @@ describe("ControllerListHeader", () => {
     state.controller.loaded = false;
     renderWithBrowserRouter(
       <ControllerListHeader
+        searchFilter=""
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
       />,
@@ -41,6 +46,7 @@ describe("ControllerListHeader", () => {
     state.controller.loaded = true;
     renderWithBrowserRouter(
       <ControllerListHeader
+        searchFilter=""
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
       />,
@@ -55,6 +61,7 @@ describe("ControllerListHeader", () => {
     state.controller.selected = ["abc123"];
     renderWithBrowserRouter(
       <ControllerListHeader
+        searchFilter=""
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
       />,
@@ -69,6 +76,7 @@ describe("ControllerListHeader", () => {
     const setSidePanelContent = jest.fn();
     renderWithBrowserRouter(
       <ControllerListHeader
+        searchFilter=""
         setSearchFilter={jest.fn()}
         setSidePanelContent={setSidePanelContent}
       />,
@@ -80,5 +88,28 @@ describe("ControllerListHeader", () => {
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: ControllerSidePanelViews.ADD_CONTROLLER,
     });
+  });
+
+  it("changes the search text when the filters change", () => {
+    const store = mockStore(state);
+    const { rerender } = renderWithBrowserRouter(
+      <ControllerListHeader
+        searchFilter={""}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/machines", store }
+    );
+    expect(screen.getByRole("searchbox")).toHaveValue("");
+
+    rerender(
+      <ControllerListHeader
+        searchFilter={"free-text"}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />
+    );
+
+    expect(screen.getByRole("searchbox")).toHaveValue("free-text");
   });
 });
