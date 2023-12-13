@@ -29,12 +29,19 @@ export default defineConfig(({ mode }) => {
 
   return {
     envDir: "./",
-    base: "/",
+    base: "/MAAS/r/",
     define: {
       "process.env": env,
     },
     build: {
+      manifest: "asset-manifest.json",
       outDir: "build",
+      rollupOptions: {
+        output: {
+          sanitizeFileName: false,
+        },
+      },
+      sourcemap: true,
     },
     plugins: [react(), eslint(), fixAcceptHeader404()],
     server: { port: 8401, hmr: { port: 8402 } },
