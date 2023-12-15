@@ -62,8 +62,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+      - name: Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build assets
-        run: yarn build build
+        run: yarn build
       - name: Serve static demo
         run: yarn serve-static-demo &
       - name: Wait for MAAS UI to be ready
