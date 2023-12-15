@@ -46,18 +46,25 @@ jobs:
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn test:ci
 
-  run-dotrun:
+  build:
+    name: Build
     timeout-minutes: 15
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install dotrun
-        uses: canonical/install-dotrun@main
-      - name: Install dependencies
-        run: dotrun install
+      - name: Restore node_modules
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Use Node.js from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
       - name: Build assets
-        run: dotrun --env CI=false build
-      - name: Run dotrun
-        run: dotrun &
+        run: yarn build build
+      - name: Serve static demo
+        run: yarn serve-static-demo &
       - name: Wait for MAAS UI to be ready
-        run: dotrun wait-on-ui
+        run: yarn wait-on-ui
