@@ -173,7 +173,8 @@ const FormikFormContent = <V extends object, E = null>({
       inline={inline}
       onSubmit={handleSubmit}
     >
-      <ContentSection>
+      {/* collapse content section when there's no content */}
+      <ContentSection className={!children ? "u-no-padding--top" : undefined}>
         <ContentSection.Content>
           {!!nonFieldError && (
             <Notification severity="negative" title="Error:">
@@ -184,7 +185,9 @@ const FormikFormContent = <V extends object, E = null>({
             ? children({ ...formikContext })
             : children}
         </ContentSection.Content>
-        <ContentSection.Footer>
+        <ContentSection.Footer
+          className={!children ? "u-no-margin--top" : undefined}
+        >
           {editable && (
             <FormikFormButtons
               {...buttonsProps}
