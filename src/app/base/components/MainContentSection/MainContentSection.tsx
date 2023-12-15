@@ -26,12 +26,9 @@ const MainContentSection = ({
     <div {...props} id="main-content-section">
       <ContentSection>
         {header ? (
-          // <header aria-label="main content" className="row">
-          //   <Col size={12}>{header}</Col>
-          // </header>
-          <ContentSection.Header aria-label="main content">
-            {header}
-          </ContentSection.Header>
+          <header aria-label="main content" className="row">
+            <Col size={12}>{header}</Col>
+          </header>
         ) : null}
         <Row>
           {sidebar && (
