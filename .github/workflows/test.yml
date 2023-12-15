@@ -67,7 +67,5 @@ jobs:
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build assets
         run: yarn build
-      - name: Serve static demo
-        run: yarn serve --port=8400 --base="/" &
-      - name: Wait for MAAS UI to be ready
-        run: yarn wait-on-ui
+      - name: Serve build and wait for UI to be ready
+        run: yarn concurrently "yarn serve --port=8400 --base=/" "yarn wait-on-ui"
