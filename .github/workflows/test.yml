@@ -68,6 +68,6 @@ jobs:
       - name: Build assets
         run: yarn build
       - name: Serve static demo
-        run: yarn serve &
+        run: yarn serve --port=8400 &
       - name: Wait for MAAS UI to be ready
         run: yarn wait-on-ui
