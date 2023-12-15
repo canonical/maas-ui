@@ -68,7 +68,6 @@ const AppSidePanelContent = ({
                 <h3 className="section-header__title u-flex--no-shrink p-heading--4">
                   {title}
                 </h3>
-                <hr />
               </div>
             </div>
           ) : null}
