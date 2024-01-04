@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { Stepper } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,7 +9,6 @@ import CredentialsForm from "./CredentialsForm";
 import SelectProjectForm from "./SelectProjectForm";
 import type { AddLxdStepValues, NewPodValues } from "./types";
 
-import Stepper from "app/base/components/Stepper";
 import type { ClearSidePanelContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
@@ -19,16 +19,17 @@ type Props = {
 };
 
 export const AddLxdSteps = {
-  AUTHENTICATION: "authentication",
-  CREDENTIALS: "credentials",
-  SELECT_PROJECT: "selectProject",
+  AUTHENTICATION: "Authentication",
+  CREDENTIALS: "Credentials",
+  SELECT_PROJECT: "Project selection",
 } as const;
 
 export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
-  const [step, setStep] = useState<AddLxdStepValues>("credentials");
+  const [step, setStep] = useState<AddLxdStepValues>(AddLxdSteps.CREDENTIALS);
+  const stepIndex = Object.values(AddLxdSteps).indexOf(step);
   const [submissionErrors, setSubmissionErrors] = useState<string | null>(null);
   const [newPodValues, setNewPodValues] = useState<NewPodValues>({
     certificate: "",
@@ -52,14 +53,7 @@ export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
 
   return (
     <>
-      <Stepper
-        currentStep={step}
-        items={[
-          { step: AddLxdSteps.CREDENTIALS, title: "Credentials" },
-          { step: AddLxdSteps.AUTHENTICATION, title: "Authentication" },
-          { step: AddLxdSteps.SELECT_PROJECT, title: "Project selection" },
-        ]}
-      />
+      <Stepper activeStep={stepIndex} items={Object.values(AddLxdSteps)} />
       <hr />
       {submissionErrors ? (
         <Notification
