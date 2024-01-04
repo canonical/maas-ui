@@ -38,7 +38,9 @@ const ControllerListHeader = ({
 
   return (
     <MainToolbar>
-      <MainToolbar.Title>Controllers</MainToolbar.Title>
+      <MainToolbar.Title data-testid="section-header-title">
+        Controllers
+      </MainToolbar.Title>
       {controllersLoaded ? (
         <ModelListSubtitle
           available={controllers.length}
