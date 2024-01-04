@@ -1,6 +1,6 @@
 import MainContentSection from "./MainContentSection";
 
-import { renderWithMockStore, screen, within } from "testing/utils";
+import { renderWithMockStore, screen } from "testing/utils";
 
 it("renders sidebar", () => {
   renderWithMockStore(
@@ -22,9 +22,10 @@ it("can render without a header", () => {
   renderWithMockStore(
     <MainContentSection header={null}>content</MainContentSection>
   );
-  expect(
-    screen.queryByRole("banner", { name: "main content" })
-  ).not.toBeInTheDocument();
+
+  // ContentSection.Header doesn't have an accessible role, and also
+  // does not accept aria labels or test ids in its props.
+  expect(document.querySelector(".content-section__header")).toBeNull();
 });
 
 it("can render a node as a title", () => {
@@ -33,13 +34,7 @@ it("can render a node as a title", () => {
       content
     </MainContentSection>
   );
-  expect(
-    within(screen.getByRole("banner", { name: "main content" })).getByRole(
-      "heading",
-      {
-        name: "Node title",
-        level: 5,
-      }
-    )
-  ).toBeInTheDocument();
+  expect(screen.getByRole("heading", { level: 5 })).toHaveTextContent(
+    "Node title"
+  );
 });
