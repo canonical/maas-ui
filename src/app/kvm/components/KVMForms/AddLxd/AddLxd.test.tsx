@@ -75,9 +75,15 @@ describe("AddLxd", () => {
       state,
     });
 
-    expect(screen.getByText("Credentials")).toHaveClass("is-active");
-    expect(screen.getByText("Authentication")).not.toHaveClass("is-active");
-    expect(screen.getByText("Project selection")).not.toHaveClass("is-active");
+    expect(screen.getByText("Credentials")).toHaveClass(
+      "stepper__title--is-active"
+    );
+    expect(screen.getByText("Authentication")).not.toHaveClass(
+      "stepper__title--is-active"
+    );
+    expect(screen.getByText("Project selection")).not.toHaveClass(
+      "stepper__title--is-active"
+    );
   });
 
   it(`shows the authentication form if the user has generated a certificate for
@@ -115,14 +121,14 @@ describe("AddLxd", () => {
     await waitFor(() =>
       expect(
         screen.getByRole("listitem", { name: "Credentials" }).firstChild
-      ).not.toHaveClass("is-active")
+      ).not.toHaveClass("stepper__title--is-active")
     );
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
-    ).toHaveClass("is-active");
+    ).toHaveClass("stepper__title--is-active");
     expect(
       screen.getByRole("listitem", { name: "Project selection" }).firstChild
-    ).not.toHaveClass("is-active");
+    ).not.toHaveClass("stepper__title--is-active");
 
     expect(
       screen.queryByRole("form", { name: "Credentials" })
@@ -167,14 +173,14 @@ describe("AddLxd", () => {
     await waitFor(() =>
       expect(
         screen.getByRole("listitem", { name: "Credentials" }).firstChild
-      ).not.toHaveClass("is-active")
+      ).not.toHaveClass("stepper__title--is-active")
     );
     expect(
       screen.getByRole("listitem", { name: "Authentication" }).firstChild
-    ).not.toHaveClass("is-active");
+    ).not.toHaveClass("stepper__title--is-active");
     expect(
       screen.getByRole("listitem", { name: "Project selection" }).firstChild
-    ).toHaveClass("is-active");
+    ).toHaveClass("stepper__title--is-active");
   });
 
   it("clears projects and runs cleanup on unmount", () => {
