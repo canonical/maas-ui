@@ -1,5 +1,6 @@
 import type { HTMLProps, ReactNode } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { Col, Row } from "@canonical/react-components";
 import type { ColSize } from "@canonical/react-components";
 
@@ -23,11 +24,9 @@ const MainContentSection = ({
   const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
     <div {...props} id="main-content-section">
-      <div>
+      <ContentSection>
         {header ? (
-          <header aria-label="main content" className="row">
-            <Col size={12}>{header}</Col>
-          </header>
+          <ContentSection.Header>{header}</ContentSection.Header>
         ) : null}
         <Row>
           {sidebar && (
@@ -36,11 +35,13 @@ const MainContentSection = ({
             </Col>
           )}
           <Col size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}>
-            {!isNotificationListHidden && <NotificationList />}
-            {children}
+            <ContentSection.Content>
+              {!isNotificationListHidden && <NotificationList />}
+              {children}
+            </ContentSection.Content>
           </Col>
         </Row>
-      </div>
+      </ContentSection>
     </div>
   );
 };

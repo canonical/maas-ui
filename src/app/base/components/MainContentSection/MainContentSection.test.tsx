@@ -22,9 +22,8 @@ it("can render without a header", () => {
   renderWithMockStore(
     <MainContentSection header={null}>content</MainContentSection>
   );
-  expect(
-    screen.queryByRole("banner", { name: "main content" })
-  ).not.toBeInTheDocument();
+
+  expect(screen.queryByRole("banner")).not.toBeInTheDocument();
 });
 
 it("can render a node as a title", () => {
@@ -34,12 +33,6 @@ it("can render a node as a title", () => {
     </MainContentSection>
   );
   expect(
-    within(screen.getByRole("banner", { name: "main content" })).getByRole(
-      "heading",
-      {
-        name: "Node title",
-        level: 5,
-      }
-    )
-  ).toBeInTheDocument();
+    within(screen.getByRole("banner")).getByRole("heading", { level: 5 })
+  ).toHaveTextContent("Node title");
 });
