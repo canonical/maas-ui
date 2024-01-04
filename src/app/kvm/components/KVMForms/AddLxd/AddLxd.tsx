@@ -19,8 +19,8 @@ type Props = {
 };
 
 export const AddLxdSteps = {
-  AUTHENTICATION: "Authentication",
   CREDENTIALS: "Credentials",
+  AUTHENTICATION: "Authentication",
   SELECT_PROJECT: "Project selection",
 } as const;
 
