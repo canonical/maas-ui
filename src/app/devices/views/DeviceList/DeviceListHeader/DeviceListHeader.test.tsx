@@ -30,6 +30,7 @@ describe("DeviceListHeader", () => {
     state.device.loaded = false;
     renderWithBrowserRouter(
       <DeviceListHeader
+        searchFilter=""
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
       />,
@@ -42,26 +43,26 @@ describe("DeviceListHeader", () => {
     state.device.loaded = true;
     renderWithBrowserRouter(
       <DeviceListHeader
+        searchFilter=""
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
       />,
       { state }
     );
-    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
-      "2 devices available"
-    );
+    expect(screen.getByText("2 devices available")).toBeInTheDocument();
   });
 
   it("disables the add device button if any devices are selected", () => {
     state.device.selected = ["abc123"];
     renderWithBrowserRouter(
       <DeviceListHeader
+        searchFilter=""
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
       />,
       { state }
     );
-    expect(screen.getByTestId("add-device-button")).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Add device" })).toBeDisabled();
   });
 
   it("can open the add device form", async () => {
@@ -69,15 +70,39 @@ describe("DeviceListHeader", () => {
     renderWithBrowserRouter(
       <MemoryRouter>
         <DeviceListHeader
+          searchFilter=""
           setSearchFilter={jest.fn()}
           setSidePanelContent={setSidePanelContent}
         />
       </MemoryRouter>,
       { state }
     );
-    await userEvent.click(screen.getByTestId("add-device-button"));
+    await userEvent.click(screen.getByRole("button", { name: "Add device" }));
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: DeviceSidePanelViews.ADD_DEVICE,
     });
+  });
+
+  it("changes the search text when the filters change", () => {
+    const { rerender } = renderWithBrowserRouter(
+      <DeviceListHeader
+        searchFilter=""
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { state }
+    );
+
+    expect(screen.getByRole("searchbox")).toHaveValue("");
+
+    rerender(
+      <DeviceListHeader
+        searchFilter="free-text"
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />
+    );
+
+    expect(screen.getByRole("searchbox")).toHaveValue("free-text");
   });
 });
