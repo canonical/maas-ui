@@ -1,10 +1,10 @@
-import { Button } from "@canonical/react-components";
-import pluralize from "pluralize";
+import { MainToolbar } from "@canonical/maas-react-components";
+import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
+import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
-import SectionHeader from "app/base/components/SectionHeader";
 import { useFetchActions } from "app/base/hooks";
 import urls from "app/base/urls";
 import { KVMSidePanelViews } from "app/kvm/constants";
@@ -25,8 +25,14 @@ const KVMListHeader = ({ setSidePanelContent, title }: Props): JSX.Element => {
   useFetchActions([podActions.fetch]);
 
   return (
-    <SectionHeader
-      buttons={[
+    <MainToolbar>
+      <MainToolbar.Title>{title}</MainToolbar.Title>
+      {podsLoaded ? (
+        <ModelListSubtitle available={kvms.length} modelName="KVM host" />
+      ) : (
+        <Spinner text="Loading" />
+      )}
+      <MainToolbar.Controls>
         <Button
           appearance="positive"
           data-testid="add-kvm"
@@ -40,12 +46,9 @@ const KVMListHeader = ({ setSidePanelContent, title }: Props): JSX.Element => {
           }
         >
           Add {lxdTabActive ? "LXD" : "Virsh"} host
-        </Button>,
-      ]}
-      subtitle={`${pluralize("KVM host", kvms.length, true)} available`}
-      subtitleLoading={!podsLoaded}
-      title={title}
-    />
+        </Button>
+      </MainToolbar.Controls>
+    </MainToolbar>
   );
 };
 
