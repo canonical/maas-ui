@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import DeviceListControls from "./DeviceListControls";
 import DeviceListHeader from "./DeviceListHeader";
 import DeviceListTable from "./DeviceListTable";
 
@@ -53,6 +52,7 @@ const DeviceList = (): JSX.Element => {
     <PageContent
       header={
         <DeviceListHeader
+          searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
           setSidePanelContent={setSidePanelContent}
         />
@@ -68,7 +68,6 @@ const DeviceList = (): JSX.Element => {
       }
       sidePanelTitle={getSidePanelTitle("Devices", sidePanelContent)}
     >
-      <DeviceListControls filter={searchFilter} setFilter={setSearchFilter} />
       <DeviceListTable
         devices={filteredDevices}
         hasFilter={!!searchFilter}
