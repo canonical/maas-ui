@@ -1,14 +1,15 @@
 import { useEffect, useCallback } from "react";
 
+import { MainToolbar } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { useNavigate } from "react-router-dom-v5-compat";
 
+import SubnetsControls from "./SubnetsControls";
 import SubnetsTable from "./SubnetsTable";
 import type { GroupByKey } from "./SubnetsTable/types";
 
 import GroupSelect from "app/base/components/GroupSelect";
 import PageContent from "app/base/components/PageContent/PageContent";
-import SectionHeader from "app/base/components/SectionHeader";
 import { useWindowTitle } from "app/base/hooks";
 import { useQuery } from "app/base/hooks/urls";
 import { useSidePanel } from "app/base/side-panel-context";
@@ -67,8 +68,21 @@ const SubnetsList = (): JSX.Element => {
   return (
     <PageContent
       header={
-        <SectionHeader
-          buttons={[
+        <MainToolbar>
+          <MainToolbar.Title>Subnets</MainToolbar.Title>
+          <MainToolbar.Controls>
+            <SubnetsControls
+              groupBy={groupBy as GroupByKey}
+              handleSearch={setSearchText}
+              searchText={searchText}
+            />
+            <GroupSelect
+              className="subnet-group__select"
+              groupOptions={subnetGroupingOptions}
+              grouping={groupBy as GroupByKey}
+              name="network-groupings"
+              setGrouping={setGroupBy}
+            />
             <ContextualMenu
               hasToggleIcon
               links={[
@@ -86,21 +100,9 @@ const SubnetsList = (): JSX.Element => {
               position="right"
               toggleAppearance="positive"
               toggleLabel="Add"
-            />,
-          ]}
-          subtitle={
-            <div className="u-flex--wrap u-flex--align-center">
-              <GroupSelect
-                className="u-no-margin--bottom subnet-group__select"
-                groupOptions={subnetGroupingOptions}
-                grouping={groupBy as GroupByKey}
-                name="network-groupings"
-                setGrouping={setGroupBy}
-              />
-            </div>
-          }
-          title="Subnets"
-        />
+            />
+          </MainToolbar.Controls>
+        </MainToolbar>
       }
       sidePanelContent={
         activeForm ? (
@@ -113,11 +115,7 @@ const SubnetsList = (): JSX.Element => {
       sidePanelTitle={activeForm ? `Add ${activeForm}` : ""}
     >
       {hasValidGroupBy ? (
-        <SubnetsTable
-          groupBy={groupBy as GroupByKey}
-          searchText={searchText}
-          setSearchText={setSearchText}
-        />
+        <SubnetsTable groupBy={groupBy as GroupByKey} searchText={searchText} />
       ) : null}
     </PageContent>
   );

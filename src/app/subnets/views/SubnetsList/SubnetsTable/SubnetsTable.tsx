@@ -1,5 +1,3 @@
-import SubnetsControls from "../SubnetsControls";
-
 import FabricTable from "./FabricTable";
 import SpaceTable from "./SpaceTable";
 import { SubnetsColumns } from "./constants";
@@ -10,10 +8,8 @@ import type { SubnetGroupByProps } from "app/subnets/views/SubnetsList/SubnetsTa
 const SubnetsTable = ({
   groupBy,
   searchText,
-  setSearchText,
 }: Pick<SubnetGroupByProps, "groupBy"> & {
   searchText: string;
-  setSearchText: (text: string) => void;
 }): JSX.Element | null => {
   const subnetsTable = useSubnetsTable(groupBy);
   const { data, loaded } = useSubnetsTableSearch(subnetsTable, searchText);
@@ -22,12 +18,6 @@ const SubnetsTable = ({
 
   return (
     <>
-      <SubnetsControls
-        groupBy={groupBy}
-        handleSearch={setSearchText}
-        searchText={searchText}
-      />
-
       {groupBy === SubnetsColumns.FABRIC ? (
         <FabricTable data={data} emptyMsg={emptyMsg} />
       ) : (
