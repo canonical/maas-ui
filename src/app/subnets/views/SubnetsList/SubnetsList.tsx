@@ -77,7 +77,7 @@ const SubnetsList = (): JSX.Element => {
               searchText={searchText}
             />
             <GroupSelect
-              className="u-no-margin--bottom subnet-group__select"
+              className="subnet-group__select"
               groupOptions={subnetGroupingOptions}
               grouping={groupBy as GroupByKey}
               name="network-groupings"
