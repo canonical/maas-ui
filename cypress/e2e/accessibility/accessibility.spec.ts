@@ -1,7 +1,7 @@
 import { pages } from "../../constants";
 import { generateMAASURL } from "../utils";
 
-pages.forEach(({ heading, url }) => {
+pages.forEach(({ heading, headingLevel, url }) => {
   it(
     `"${heading}" page has no detectable accessibility violations on load`,
     { retries: 1 },
@@ -15,7 +15,10 @@ pages.forEach(({ heading, url }) => {
 
       cy.visit(pageUrl);
       cy.waitForPageToLoad();
-      cy.findByRole("heading", { name: new RegExp(heading, "i") });
+      cy.findByRole("heading", {
+        level: headingLevel || 1,
+        name: new RegExp(heading, "i"),
+      });
 
       cy.testA11y({ url, title: heading });
     }
