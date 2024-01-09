@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - "3.*"
+      - ci-sitespeed-setup-maas-github-action
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
