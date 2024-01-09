@@ -36,7 +36,7 @@ export const UpdateDatastoreFields = ({
 
   return (
     <Row>
-      <Col medium={6} size={6} small={4}>
+      <Col size={12}>
         <Table>
           <thead>
             <TableRow>
@@ -56,7 +56,7 @@ export const UpdateDatastoreFields = ({
           </tbody>
         </Table>
       </Col>
-      <Col medium={6} size={6} small={4}>
+      <Col size={12}>
         <FormikField
           component={Select}
           label="Datastore"

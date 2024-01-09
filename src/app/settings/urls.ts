@@ -69,6 +69,7 @@ const urls = {
   users: {
     add: "/settings/users/add",
     edit: argPath<{ id: User["id"] }>("/settings/users/:id/edit"),
+    delete: argPath<{ id: User["id"] }>("/settings/users/:id/delete"),
     index: "/settings/users",
   },
 } as const;

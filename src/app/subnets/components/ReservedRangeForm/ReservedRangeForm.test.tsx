@@ -45,7 +45,10 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm id={ipRange.id} onClose={vi.fn()} />
+            <ReservedRangeForm
+              ipRangeId={ipRange.id}
+              setActiveForm={vi.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -61,7 +64,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm onClose={vi.fn()} />
+            <ReservedRangeForm setActiveForm={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -77,7 +80,10 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm id={ipRange.id} onClose={vi.fn()} />
+            <ReservedRangeForm
+              ipRangeId={ipRange.id}
+              setActiveForm={vi.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -104,7 +110,10 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm id={ipRange.id} onClose={vi.fn()} />
+            <ReservedRangeForm
+              ipRangeId={ipRange.id}
+              setActiveForm={vi.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -127,8 +136,8 @@ describe("ReservedRangeForm", () => {
           <CompatRouter>
             <ReservedRangeForm
               createType={IPRangeType.Reserved}
-              onClose={vi.fn()}
-              subnetId={1}
+              id={1}
+              setActiveForm={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -169,7 +178,10 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm id={ipRange.id} onClose={vi.fn()} />
+            <ReservedRangeForm
+              ipRangeId={ipRange.id}
+              setActiveForm={vi.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -201,7 +213,10 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm id={ipRange.id} onClose={vi.fn()} />
+            <ReservedRangeForm
+              ipRangeId={ipRange.id}
+              setActiveForm={vi.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -236,7 +251,7 @@ describe("ReservedRangeForm", () => {
           <CompatRouter>
             <ReservedRangeForm
               createType={IPRangeType.Dynamic}
-              onClose={vi.fn()}
+              setActiveForm={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>

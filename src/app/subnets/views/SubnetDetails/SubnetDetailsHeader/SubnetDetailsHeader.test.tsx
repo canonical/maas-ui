@@ -1,5 +1,3 @@
-import { subnetActionLabels } from "../constants";
-
 import SubnetDetailsHeader from "./SubnetDetailsHeader";
 
 import {
@@ -37,13 +35,13 @@ it("displays available actions", async () => {
   const subnet = subnetDetailsFactory({ id: 1, name: "subnet-1" });
   renderWithBrowserRouter(<SubnetDetailsHeader subnet={subnet} />);
 
-  Object.values(subnetActionLabels).forEach((name) => {
+  ["Map subnet", "Edit boot architectures", "Delete subnet"].forEach((name) => {
     expect(screen.queryByRole("button", { name })).not.toBeInTheDocument();
   });
 
   await userEvent.click(screen.getByRole("button", { name: "Take action" }));
 
-  Object.values(subnetActionLabels).forEach((name) => {
+  ["Map subnet", "Edit boot architectures", "Delete subnet"].forEach((name) => {
     expect(screen.getByRole("button", { name })).toBeInTheDocument();
   });
 });

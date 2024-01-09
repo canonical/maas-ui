@@ -2,9 +2,8 @@ import configureStore from "redux-mock-store";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { RootState } from "@/app/store/root/types";
-import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceInterface as deviceInterfaceFactory,
@@ -49,27 +48,17 @@ describe("DeviceNetworkTable", () => {
   it("displays a spinner when loading", () => {
     state.device.items = [];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceNetworkTable
-        expanded={null}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
+    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
+      store,
+    });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a table when loaded", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceNetworkTable
-        expanded={null}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
+    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
+      store,
+    });
 
     expect(screen.getByRole("grid")).toBeInTheDocument();
   });
@@ -98,14 +87,9 @@ describe("DeviceNetworkTable", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceNetworkTable
-        expanded={null}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
+    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
+      store,
+    });
     expect(screen.getByTestId("ip-mode")).toHaveTextContent("Unconfigured");
   });
 
@@ -135,74 +119,13 @@ describe("DeviceNetworkTable", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceNetworkTable
-        expanded={null}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
+    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
+      store,
+    });
     expect(
       screen.getByRole("link", { name: "subnet-cidr" })
     ).toBeInTheDocument();
     expect(screen.getByTestId("ip-address")).toHaveTextContent("1.2.3.99");
-  });
-
-  it("expands a row when a matching link is found", () => {
-    state.device.items = [
-      deviceDetailsFactory({
-        interfaces: [
-          deviceInterfaceFactory({
-            discovered: null,
-            links: [networkLinkFactory(), networkLinkFactory({ id: 2 })],
-            name: "alias",
-            type: NetworkInterfaceTypes.ALIAS,
-          }),
-        ],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceNetworkTable
-        expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
-    const rows = screen.getAllByRole("row");
-    expect(rows[1]).not.toHaveClass("is-active");
-    expect(rows[2]).toHaveClass("is-active");
-  });
-
-  it("expands a row when a matching nic is found", () => {
-    state.device.items = [
-      deviceDetailsFactory({
-        interfaces: [
-          deviceInterfaceFactory({
-            id: 2,
-            discovered: null,
-            links: [],
-            name: "eth0",
-            type: NetworkInterfaceTypes.PHYSICAL,
-          }),
-        ],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceNetworkTable
-        expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
-    const rows = screen.getAllByRole("row");
-    expect(rows[1]).toHaveClass("is-active");
   });
 
   it("displays an empty table description", () => {
@@ -213,14 +136,9 @@ describe("DeviceNetworkTable", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceNetworkTable
-        expanded={null}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
+    renderWithBrowserRouter(<DeviceNetworkTable systemId="abc123" />, {
+      store,
+    });
     expect(screen.getByText("No interfaces available.")).toBeInTheDocument();
   });
 });

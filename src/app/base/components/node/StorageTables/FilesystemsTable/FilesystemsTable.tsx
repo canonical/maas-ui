@@ -4,14 +4,14 @@ import { Button, MainTable, Tooltip } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch } from "react-redux";
 
-import AddSpecialFilesystem from "./AddSpecialFilesystem";
-
-import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
-import ActionConfirm from "@/app/base/components/node/ActionConfirm";
-import type { ControllerDetails } from "@/app/store/controller/types";
-import { actions as machineActions } from "@/app/store/machine";
-import type { MachineDetails } from "@/app/store/machine/types";
-import type { Filesystem, Disk, Partition } from "@/app/store/types/node";
+import TableActionsDropdown from "app/base/components/TableActionsDropdown";
+import ActionConfirm from "app/base/components/node/ActionConfirm";
+import { useSidePanel } from "app/base/side-panel-context";
+import { MachineSidePanelViews } from "app/machines/constants";
+import type { ControllerDetails } from "app/store/controller/types";
+import { actions as machineActions } from "app/store/machine";
+import type { MachineDetails } from "app/store/machine/types";
+import type { Filesystem, Disk, Partition } from "app/store/types/node";
 import {
   formatSize,
   isMounted,
@@ -127,10 +127,9 @@ const FilesystemsTable = ({
   node,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const [addSpecialFormOpen, setAddSpecialFormOpen] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const isMachine = nodeIsMachine(node);
-  const closeAddSpecialForm = () => setAddSpecialFormOpen(false);
+  const { setSidePanelContent } = useSidePanel();
 
   const rows = node.disks.reduce<MainTableRow[]>((rows, disk) => {
     const diskFs = disk.filesystem;
@@ -346,18 +345,21 @@ const FilesystemsTable = ({
           No filesystems defined.
         </p>
       )}
-      {canEditStorage && !addSpecialFormOpen && (
+      {canEditStorage && (
         <Tooltip message="Create a tmpfs or ramfs filesystem.">
           <Button
             data-testid="add-special-fs-button"
-            onClick={() => setAddSpecialFormOpen(true)}
+            onClick={() => {
+              isMachine &&
+                setSidePanelContent({
+                  view: MachineSidePanelViews.ADD_SPECIAL_FILESYSTEM,
+                  extras: { node },
+                });
+            }}
           >
             Add special filesystem
           </Button>
         </Tooltip>
-      )}
-      {isMachine && addSpecialFormOpen && (
-        <AddSpecialFilesystem closeForm={closeAddSpecialForm} machine={node} />
       )}
     </>
   );

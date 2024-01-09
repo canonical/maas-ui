@@ -652,7 +652,6 @@ const AvailableStorageTable = ({
       )}
       {isMachine && canEditStorage && (
         <BulkActions
-          bulkAction={bulkAction}
           selected={selected}
           setBulkAction={setBulkAction}
           systemId={node.system_id}

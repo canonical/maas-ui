@@ -46,6 +46,7 @@ const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
           expanded={expanded}
           selected={selected}
           setExpanded={setExpanded}
+          setSelected={setSelected}
           setSidePanelContent={setSidePanelContent}
           systemId={id}
         />
@@ -93,6 +94,7 @@ const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
                 setSelected([]);
               }}
               selected={selected}
+              setSelected={setSelected}
               systemId={id}
             />
           );

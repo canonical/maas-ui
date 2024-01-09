@@ -1,5 +1,7 @@
 import configureStore from "redux-mock-store";
 
+import { storageLayoutOptions } from "../ChangeStorageLayoutMenu/ChangeStorageLayoutMenu";
+
 import ChangeStorageLayout from "./ChangeStorageLayout";
 
 import type { RootState } from "@/app/store/root/types";
@@ -21,7 +23,8 @@ import {
 const mockStore = configureStore<RootState>();
 
 describe("ChangeStorageLayout", () => {
-  it("shows a confirmation form if a storage layout is selected", async () => {
+  const sampleStoragelayout = storageLayoutOptions[0][0];
+  it("shows a confirmation form if a storage layout is selected", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -30,16 +33,16 @@ describe("ChangeStorageLayout", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(<ChangeStorageLayout systemId="abc123" />, {
-      state,
-    });
-
-    // Open storage layout dropdown
-    await userEvent.click(
-      screen.getByRole("button", { name: "Change storage layout" })
+    renderWithBrowserRouter(
+      <ChangeStorageLayout
+        clearSidePanelContent={jest.fn()}
+        selectedLayout={sampleStoragelayout}
+        systemId="abc123"
+      />,
+      {
+        state,
+      }
     );
-    // Select flat storage layout
-    await userEvent.click(screen.getByRole("button", { name: "Flat" }));
 
     expect(
       getByTextContent(
@@ -52,7 +55,7 @@ describe("ChangeStorageLayout", () => {
     ).toHaveAttribute("type", "submit");
   });
 
-  it("can show errors", async () => {
+  it("can show errors", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         eventErrors: [
@@ -68,16 +71,16 @@ describe("ChangeStorageLayout", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(<ChangeStorageLayout systemId="abc123" />, {
-      state,
-    });
-
-    // Open storage layout dropdown
-    await userEvent.click(
-      screen.getByRole("button", { name: "Change storage layout" })
+    renderWithBrowserRouter(
+      <ChangeStorageLayout
+        clearSidePanelContent={jest.fn()}
+        selectedLayout={sampleStoragelayout}
+        systemId="abc123"
+      />,
+      {
+        state,
+      }
     );
-    // Select flat storage layout
-    await userEvent.click(screen.getByRole("button", { name: "Flat" }));
 
     expect(screen.getByText(/not possible/i)).toBeInTheDocument();
   });
@@ -92,17 +95,16 @@ describe("ChangeStorageLayout", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<ChangeStorageLayout systemId="abc123" />, {
-      store,
-    });
-
-    // Open storage layout dropdown
-    await userEvent.click(
-      screen.getByRole("button", { name: "Change storage layout" })
+    renderWithBrowserRouter(
+      <ChangeStorageLayout
+        clearSidePanelContent={jest.fn()}
+        selectedLayout={sampleStoragelayout}
+        systemId="abc123"
+      />,
+      {
+        store,
+      }
     );
-
-    // Select flat storage layout
-    await userEvent.click(screen.getByRole("button", { name: "Flat" }));
 
     // Submit the form
     await userEvent.click(

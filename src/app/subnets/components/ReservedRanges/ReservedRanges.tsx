@@ -9,31 +9,32 @@ import {
 } from "@canonical/react-components";
 import type { MainTableCell } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
-import type { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 
-import ReservedRangeForm from "../ReservedRangeForm";
-
-import FormCard from "@/app/base/components/FormCard";
-import SubnetLink from "@/app/base/components/SubnetLink";
-import TableActions from "@/app/base/components/TableActions";
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import TitledSection from "@/app/base/components/TitledSection";
-import docsUrls from "@/app/base/docsUrls";
-import { useFetchActions } from "@/app/base/hooks";
-import { actions as ipRangeActions } from "@/app/store/iprange";
-import ipRangeSelectors from "@/app/store/iprange/selectors";
-import type { IPRange, IPRangeMeta } from "@/app/store/iprange/types";
-import { IPRangeType } from "@/app/store/iprange/types";
+import SubnetLink from "app/base/components/SubnetLink";
+import TableActions from "app/base/components/TableActions";
+import TitledSection from "app/base/components/TitledSection";
+import docsUrls from "app/base/docsUrls";
+import { useFetchActions } from "app/base/hooks";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
+import { useSidePanel } from "app/base/side-panel-context";
+import { actions as ipRangeActions } from "app/store/iprange";
+import ipRangeSelectors from "app/store/iprange/selectors";
+import type { IPRange } from "app/store/iprange/types";
+import { IPRangeType } from "app/store/iprange/types";
 import {
   getCommentDisplay,
   getOwnerDisplay,
   getTypeDisplay,
-} from "@/app/store/iprange/utils";
-import type { RootState } from "@/app/store/root/types";
-import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
-import { generateEmptyStateMsg, getTableStatus, isId } from "@/app/utils";
+} from "app/store/iprange/utils";
+import type { RootState } from "app/store/root/types";
+import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import type { VLAN, VLANMeta } from "app/store/vlan/types";
+import {
+  SubnetActionTypes,
+  SubnetDetailsSidePanelViews,
+} from "app/subnets/views/SubnetDetails/constants";
+import { generateEmptyStateMsg, getTableStatus, isId } from "app/utils";
 
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;
@@ -68,58 +69,17 @@ export enum ExpandedType {
   Update,
 }
 
-type Expanded = {
-  id?: IPRange[IPRangeMeta.PK];
-  type: ExpandedType;
-};
-
-const toggleExpanded = (
-  id: IPRange[IPRangeMeta.PK],
-  expanded: Expanded | null,
-  expandedType: ExpandedType,
-  setExpanded: (expanded: Expanded | null) => void
-) =>
-  setExpanded(
-    expanded?.id === id && expanded.type === expandedType
-      ? null
-      : {
-          id,
-          type: expandedType,
-        }
-  );
-
 const generateRows = (
-  dispatch: Dispatch,
   ipRanges: IPRange[],
-  expanded: Expanded | null,
-  setExpanded: (expanded: Expanded | null) => void,
-  saved: boolean,
-  saving: boolean,
-  showSubnetColumn: boolean
+  showSubnetColumn: boolean,
+  setSidePanelContent: SetSidePanelContent
 ) =>
   ipRanges.map((ipRange: IPRange) => {
-    const isExpanded = expanded?.id === ipRange.id;
     const comment = getCommentDisplay(ipRange);
     const owner = getOwnerDisplay(ipRange);
     const type = getTypeDisplay(ipRange);
     let expandedContent: ReactNode | null = null;
-    const onClose = () => setExpanded(null);
-    if (expanded?.type === ExpandedType.Delete) {
-      expandedContent = (
-        <TableDeleteConfirm
-          deleted={saved}
-          deleting={saving}
-          message="Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?"
-          onClose={onClose}
-          onConfirm={() => {
-            dispatch(ipRangeActions.delete(ipRange.id));
-          }}
-          sidebar={false}
-        />
-      );
-    } else if (expanded?.type === ExpandedType.Update) {
-      expandedContent = <ReservedRangeForm id={ipRange.id} onClose={onClose} />;
-    }
+
     const columns: MainTableCell[] = [
       {
         "aria-label": Labels.StartIP,
@@ -151,22 +111,26 @@ const generateRows = (
         className: "actions-col u-align--right",
         content: (
           <TableActions
-            onDelete={() => {
-              toggleExpanded(
-                ipRange.id,
-                expanded,
-                ExpandedType.Delete,
-                setExpanded
-              );
-            }}
-            onEdit={() => {
-              toggleExpanded(
-                ipRange.id,
-                expanded,
-                ExpandedType.Update,
-                setExpanded
-              );
-            }}
+            onDelete={() =>
+              setSidePanelContent({
+                view: SubnetDetailsSidePanelViews[
+                  SubnetActionTypes.DeleteReservedRange
+                ],
+                extras: {
+                  ipRangeId: ipRange.id,
+                },
+              })
+            }
+            onEdit={() =>
+              setSidePanelContent({
+                view: SubnetDetailsSidePanelViews[
+                  SubnetActionTypes.ReserveRange
+                ],
+                extras: {
+                  ipRangeId: ipRange.id,
+                },
+              })
+            }
           />
         ),
       },
@@ -179,9 +143,7 @@ const generateRows = (
       });
     }
     return {
-      className: isExpanded ? "p-table__row is-active" : null,
       columns,
-      expanded: isExpanded,
       expandedContent: expandedContent,
       key: ipRange.id,
       sortData: {
@@ -199,19 +161,15 @@ const ReservedRanges = ({
   subnetId,
   vlanId,
 }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
+  const [isAddingDynamic, setIsAddingDynamic] = useState(false);
+  const { setSidePanelContent } = useSidePanel();
   const isSubnet = isId(subnetId);
   const ipRangeLoading = useSelector(ipRangeSelectors.loading);
-  const saved = useSelector(ipRangeSelectors.saved);
-  const saving = useSelector(ipRangeSelectors.saving);
   const ipRanges = useSelector((state: RootState) =>
     isSubnet
       ? ipRangeSelectors.getBySubnet(state, subnetId)
       : ipRangeSelectors.getByVLAN(state, vlanId)
   );
-  const isAddingDynamic = expanded?.type === ExpandedType.CreateDynamic;
-  const isAdding = expanded?.type === ExpandedType.Create || isAddingDynamic;
   const isDisabled = isId(vlanId) && !hasVLANSubnets;
   const showSubnetColumn = isId(vlanId);
 
@@ -268,12 +226,32 @@ const ReservedRanges = ({
             {
               children: Labels.ReserveRange,
               "data-testid": "reserve-range-menu-item",
-              onClick: () => setExpanded({ type: ExpandedType.Create }),
+              onClick: () => {
+                setSidePanelContent({
+                  view: SubnetDetailsSidePanelViews[
+                    SubnetActionTypes.ReserveRange
+                  ],
+                  extras: {
+                    createType: IPRangeType.Reserved,
+                  },
+                });
+                setIsAddingDynamic(false);
+              },
             },
             {
               children: Labels.ReserveDynamicRange,
               "data-testid": "reserve-dynamic-range-menu-item",
-              onClick: () => setExpanded({ type: ExpandedType.CreateDynamic }),
+              onClick: () => {
+                setSidePanelContent({
+                  view: SubnetDetailsSidePanelViews[
+                    SubnetActionTypes.ReserveRange
+                  ],
+                  extras: {
+                    createType: IPRangeType.Dynamic,
+                  },
+                });
+                setIsAddingDynamic(true);
+              },
             },
           ]}
           position="right"
@@ -309,28 +287,9 @@ const ReservedRanges = ({
         expanding
         headers={headers}
         responsive
-        rows={generateRows(
-          dispatch,
-          ipRanges,
-          expanded,
-          setExpanded,
-          saved,
-          saving,
-          showSubnetColumn
-        )}
+        rows={generateRows(ipRanges, showSubnetColumn, setSidePanelContent)}
         sortable
       />
-      {isAdding ? (
-        <FormCard sidebar={false}>
-          <ReservedRangeForm
-            createType={
-              isAddingDynamic ? IPRangeType.Dynamic : IPRangeType.Reserved
-            }
-            onClose={() => setExpanded(null)}
-            subnetId={subnetId}
-          />
-        </FormCard>
-      ) : null}
       <ExternalLink to={docsUrls.ipRanges}>About IP ranges</ExternalLink>
     </TitledSection>
   );

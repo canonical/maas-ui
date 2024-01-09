@@ -32,8 +32,6 @@ describe("UserAdd", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(
-      screen.getByRole("heading", { name: "Add user" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("form", { name: "Add user" })).toBeInTheDocument();
   });
 });

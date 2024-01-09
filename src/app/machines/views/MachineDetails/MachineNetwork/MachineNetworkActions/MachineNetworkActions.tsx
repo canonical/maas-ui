@@ -34,6 +34,7 @@ type Props = {
   selected: Selected[];
   setExpanded: SetExpanded;
   setSidePanelContent: MachineSetSidePanelContent;
+  setSelected: React.Dispatch<React.SetStateAction<Selected[]>>;
   systemId: Machine["system_id"];
 };
 
@@ -79,11 +80,11 @@ const selectedDifferentVLANs = (
 };
 
 const MachineNetworkActions = ({
-  expanded,
   setExpanded,
   selected,
   setSidePanelContent,
   systemId,
+  setSelected,
 }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -137,7 +138,6 @@ const MachineNetworkActions = ({
 
   return (
     <NetworkActionRow
-      expanded={expanded}
       extraActions={actions}
       node={machine}
       rightContent={
@@ -159,7 +159,9 @@ const MachineNetworkActions = ({
           Validate network configuration
         </Button>
       }
+      selected={selected}
       setExpanded={setExpanded}
+      setSelected={setSelected}
     />
   );
 };

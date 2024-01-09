@@ -20,7 +20,7 @@ const BridgeFormFields = ({ typeDisabled }: Props): JSX.Element | null => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <h3 className="p-heading--5 u-no-margin--bottom">Bridge details</h3>
         <FormikField label="Bridge name" name="name" type="text" />
         <FormikField
@@ -72,7 +72,7 @@ const BridgeFormFields = ({ typeDisabled }: Props): JSX.Element | null => {
           />
         ) : null}
       </Col>
-      <Col size={6}>
+      <Col size={12}>
         <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
         <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
       </Col>

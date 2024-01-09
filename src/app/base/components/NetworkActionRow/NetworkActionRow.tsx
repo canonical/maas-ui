@@ -1,12 +1,20 @@
 import type { ReactNode } from "react";
 
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
+import { useLocation } from "react-router-dom";
 
-import type { Expanded, SetExpanded } from "../NodeNetworkTab/NodeNetworkTab";
+import type { SetExpanded } from "../NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "../NodeNetworkTab/NodeNetworkTab";
 
-import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
-import type { Node } from "@/app/store/types/node";
+import type {
+  Selected,
+  SetSelected,
+} from "app/base/components/node/networking/types";
+import { useIsAllNetworkingDisabled } from "app/base/hooks";
+import { useSidePanel } from "app/base/side-panel-context";
+import { DeviceSidePanelViews } from "app/devices/constants";
+import { MachineSidePanelViews } from "app/machines/constants";
+import type { Node } from "app/store/types/node";
 
 type Action = {
   disabled: [boolean, string?][];
@@ -15,37 +23,63 @@ type Action = {
 };
 
 type Props = {
-  expanded: Expanded | null;
   extraActions?: Action[];
   node: Node;
   rightContent?: ReactNode;
   setExpanded: SetExpanded;
+  selected?: Selected[];
+  setSelected?: SetSelected;
 };
 
 export const NETWORK_DISABLED_MESSAGE =
   "Network can't be modified for this machine.";
 
 const NetworkActionRow = ({
-  expanded,
   extraActions,
   node,
   rightContent,
   setExpanded,
+  selected,
+  setSelected,
 }: Props): JSX.Element | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
+  const { setSidePanelContent } = useSidePanel();
+  const { pathname } = useLocation();
+  const isMachinesPage = pathname.startsWith("/machine");
 
   const actions: Action[] = [
     {
-      disabled: [
-        [isAllNetworkingDisabled, NETWORK_DISABLED_MESSAGE],
-        // Disable the button when the form is visible.
-        [expanded?.content === ExpandedState.ADD_PHYSICAL],
-      ],
+      disabled: [[isAllNetworkingDisabled, NETWORK_DISABLED_MESSAGE]],
       label: "Add interface",
       state: ExpandedState.ADD_PHYSICAL,
     },
     ...(extraActions || []),
   ];
+
+  const handleButtonClick = (state: ExpandedState) => {
+    if (state === ExpandedState.ADD_PHYSICAL) {
+      if (isMachinesPage) {
+        setSidePanelContent({
+          view: MachineSidePanelViews.ADD_INTERFACE,
+          extras: { systemId: node.system_id },
+        });
+      } else {
+        setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE });
+      }
+    } else if (state === ExpandedState.ADD_BOND) {
+      setSidePanelContent({
+        view: MachineSidePanelViews.ADD_BOND,
+        extras: { systemId: node.system_id, selected: selected, setSelected },
+      });
+    } else if (state === ExpandedState.ADD_BRIDGE) {
+      setSidePanelContent({
+        view: MachineSidePanelViews.ADD_BRIDGE,
+        extras: { systemId: node.system_id, selected: selected, setSelected },
+      });
+    } else {
+      setExpanded({ content: state });
+    }
+  };
 
   const buttons = actions.map((item) => {
     // Check if there is any reason to disable the button.
@@ -55,9 +89,7 @@ const NetworkActionRow = ({
       <Button
         data-testid={item.state}
         disabled={disabled}
-        onClick={() => {
-          setExpanded({ content: item.state });
-        }}
+        onClick={() => handleButtonClick(item.state)}
       >
         {item.label}
       </Button>

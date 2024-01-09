@@ -75,7 +75,7 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size={4}>
+      <Col size={8}>
         <FormikField
           disabled={values.default}
           label={Labels.Name}
@@ -124,7 +124,7 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
           </>
         )}
       </Col>
-      <Col emptyLarge={6} size={3}>
+      <Col size={3}>
         <List
           className="is-split--small u-hide--small"
           items={[

@@ -67,6 +67,7 @@ export type {
   MachineStatus,
   MachineStatuses,
   SelectedMachines,
+  StorageLayoutOption,
 } from "./base";
 export { FilterGroupKey, FilterGroupType } from "./base";
 

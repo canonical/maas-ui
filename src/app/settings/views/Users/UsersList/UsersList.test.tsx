@@ -62,90 +62,6 @@ describe("UsersList", () => {
     });
   });
 
-  it("can show a delete confirmation", async () => {
-    const store = mockStore(state);
-    const { rerender } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    let row = screen.getAllByTestId("user-row")[1];
-    expect(row).not.toHaveClass("is-active");
-
-    // Click on the delete button:
-    await userEvent.click(within(row).getByTestId("table-actions-delete"));
-
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    row = screen.getAllByTestId("user-row")[1];
-    expect(row).toHaveClass("is-active");
-  });
-
-  it("can delete a user", async () => {
-    const store = mockStore(state);
-    const { rerender } = render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    let row = screen.getAllByTestId("user-row")[1];
-
-    // Click on the delete button:
-    await userEvent.click(within(row).getByTestId("table-actions-delete"));
-
-    rerender(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    row = screen.getAllByTestId("user-row")[1];
-
-    // Click on the delete confirm button
-    await userEvent.click(within(row).getByTestId("action-confirm"));
-
-    expect(store.getActions()[1]).toEqual({
-      type: "user/delete",
-      payload: {
-        params: {
-          id: 2,
-        },
-      },
-      meta: {
-        model: "user",
-        method: "delete",
-      },
-    });
-  });
-
   it("disables delete for the current user", () => {
     renderWithMockStore(
       <MemoryRouter
@@ -158,7 +74,10 @@ describe("UsersList", () => {
       { state }
     );
     let row = screen.getAllByTestId("user-row")[0];
-    expect(within(row).getByTestId("table-actions-delete")).toBeDisabled();
+    expect(within(row).getByRole("link", { name: /delete/i })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("links to preferences for the current user", () => {

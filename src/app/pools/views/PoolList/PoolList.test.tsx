@@ -1,7 +1,5 @@
-import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import PoolList from "./PoolList";
 
@@ -12,15 +10,11 @@ import {
   rootState as rootStateFactory,
 } from "@/testing/factories";
 import {
-  userEvent,
   screen,
-  render,
   within,
   renderWithMockStore,
   renderWithBrowserRouter,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("PoolList", () => {
   let state: RootState;
@@ -80,7 +74,7 @@ describe("PoolList", () => {
     );
   });
 
-  it("can show a delete confirmation", async () => {
+  it("displays a link to delete confirmation", async () => {
     state.resourcepool.items = [
       resourcePoolFactory({
         id: 0,
@@ -104,67 +98,9 @@ describe("PoolList", () => {
 
     expect(row).not.toHaveClass("is-active");
 
-    // Click on the delete button:
-    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
-
-    expect(row).toHaveClass("is-active");
     expect(
-      screen.getByText(
-        'Are you sure you want to delete resourcepool "squambo"?'
-      )
+      within(row).getByRole("link", { name: "Delete" })
     ).toBeInTheDocument();
-  });
-
-  it("can delete a pool", async () => {
-    state.resourcepool.items = [
-      resourcePoolFactory({
-        id: 2,
-        name: "squambo",
-        description: "a pool",
-        is_default: false,
-        machine_total_count: 0,
-        permissions: ["delete"],
-      }),
-    ];
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    const row = screen.getByRole("row", { name: "squambo" });
-
-    // Click on the delete button:
-    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
-
-    // Click on the delete confirm button
-    await userEvent.click(
-      within(
-        within(row).getByRole("gridcell", {
-          name: 'Are you sure you want to delete resourcepool "squambo"? This action is permanent and can not be undone. Cancel Delete',
-        })
-      ).getByRole("button", { name: "Delete" })
-    );
-
-    expect(
-      store.getActions().find(({ type }) => type === "resourcepool/delete")
-    ).toStrictEqual({
-      type: "resourcepool/delete",
-      payload: {
-        params: {
-          id: 2,
-        },
-      },
-      meta: {
-        model: "resourcepool",
-        method: "delete",
-      },
-    });
   });
 
   it("disables the delete button for default pools", () => {
@@ -185,7 +121,10 @@ describe("PoolList", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(screen.getByRole("button", { name: "Delete" })).toBeDisabled();
+    expect(screen.getByRole("link", { name: "Delete" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("disables the delete button for pools that contain machines", () => {
@@ -207,7 +146,10 @@ describe("PoolList", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(screen.getByRole("button", { name: "Delete" })).toBeDisabled();
+    expect(screen.getByRole("link", { name: "Delete" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("does not show a machine link for empty pools", () => {

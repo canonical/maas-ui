@@ -31,13 +31,13 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
       {showTitles ? null : (
         <>
           <Row>
-            <Col size={6}>{nameField}</Col>
+            <Col size={12}>{nameField}</Col>
           </Row>
           <hr />
         </>
       )}
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           {showTitles ? (
             <>
               <h3
@@ -60,7 +60,7 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
           <MacAddressField label="MAC address" name="mac_address" />
           <TagNameField name="tags" />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           {showTitles ? (
             <h3
               className="p-heading--5 u-no-margin--bottom"

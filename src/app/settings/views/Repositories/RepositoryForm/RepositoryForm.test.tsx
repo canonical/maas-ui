@@ -120,7 +120,9 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByText("Add repository")).toBeInTheDocument();
+    expect(
+      screen.getByRole("form", { name: "Add repository" })
+    ).toBeInTheDocument();
 
     rerender(
       <Provider store={store}>
@@ -133,7 +135,7 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByText("Add PPA")).toBeInTheDocument();
+    expect(screen.getByRole("form", { name: "Add PPA" })).toBeInTheDocument();
 
     rerender(
       <Provider store={store}>
@@ -149,7 +151,9 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByText("Edit repository")).toBeInTheDocument();
+    expect(
+      screen.getByRole("form", { name: "Edit repository" })
+    ).toBeInTheDocument();
 
     rerender(
       <Provider store={store}>
@@ -165,7 +169,7 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByText("Edit PPA")).toBeInTheDocument();
+    expect(screen.getByRole("form", { name: "Edit PPA" })).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", async () => {

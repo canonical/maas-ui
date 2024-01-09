@@ -19,8 +19,7 @@ import {
   networkFieldsInitialValues,
 } from "../NetworkFields/NetworkFields";
 
-import FormCard from "@/app/base/components/FormCard";
-import FormikForm from "@/app/base/components/FormikForm";
+import FormikForm from "app/base/components/FormikForm";
 import type {
   Selected,
   SetSelected,
@@ -92,6 +91,10 @@ const AddBondForm = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  const handleClose = () => {
+    setSelected([]);
+    close();
+  };
   // Use the first selected interface as the canary for the fabric and VLAN.
   const firstSelected = machine ? getFirstSelected(machine, selected) : null;
   const firstNic = useSelector((state: RootState) =>
@@ -120,7 +123,7 @@ const AddBondForm = ({
     systemId,
     "creatingBond",
     "createBond",
-    () => close()
+    () => handleClose()
   );
 
   useFetchActions([
@@ -164,68 +167,67 @@ const AddBondForm = ({
     : selected;
   const macAddress = firstNic?.mac_address || "";
   return (
-    <FormCard sidebar={false} stacked title="Create bond">
-      <FormikForm<BondFormValues, MachineEventErrors>
-        allowUnchanged
-        cleanup={cleanup}
-        errors={errors}
-        initialValues={{
-          ...networkFieldsInitialValues,
-          bond_downdelay: 0,
-          bond_lacp_rate: "",
-          bond_mode: BondMode.ACTIVE_BACKUP,
-          bond_miimon: 0,
-          bond_updelay: 0,
-          bond_xmit_hash_policy: "",
-          fabric: vlan ? vlan.fabric : "",
-          linkMonitoring: "",
-          mac_address: macAddress,
-          name: nextName || "",
-          macSource: MacSource.NIC,
-          macNic: macAddress,
-          subnet: subnet ? subnet.id : "",
-          tags: [],
-          vlan: bondVLAN || "",
-        }}
-        onCancel={close}
-        onSaveAnalytics={{
-          action: "Create bond",
-          category: "Machine details networking",
-          label: "Create bond form",
-        }}
-        onSubmit={(values) => {
-          // Clear the errors from the previous submission.
-          dispatch(cleanup());
-          const payload = prepareBondPayload(
-            values,
-            selected,
-            systemId
-          ) as CreateBondParams;
-          dispatch(machineActions.createBond(payload));
-        }}
-        resetOnSave
-        saved={saved}
-        saving={saving}
-        submitDisabled={!hasEnoughNics}
-        submitLabel="Save interface"
-        validationSchema={InterfaceSchema}
-      >
-        <InterfaceFormTable
-          interfaces={rows}
-          selected={selected}
-          selectedEditable={editingMembers}
-          setSelected={setSelected}
-          systemId={systemId}
-        />
-        <ToggleMembers
-          editingMembers={editingMembers}
-          selected={selected}
-          setEditingMembers={setEditingMembers}
-          validNics={validNics}
-        />
-        <BondFormFields selected={selected} systemId={systemId} />
-      </FormikForm>
-    </FormCard>
+    <FormikForm<BondFormValues, MachineEventErrors>
+      allowUnchanged
+      aria-label="Create bond"
+      cleanup={cleanup}
+      errors={errors}
+      initialValues={{
+        ...networkFieldsInitialValues,
+        bond_downdelay: 0,
+        bond_lacp_rate: "",
+        bond_mode: BondMode.ACTIVE_BACKUP,
+        bond_miimon: 0,
+        bond_updelay: 0,
+        bond_xmit_hash_policy: "",
+        fabric: vlan ? vlan.fabric : "",
+        linkMonitoring: "",
+        mac_address: macAddress,
+        name: nextName || "",
+        macSource: MacSource.NIC,
+        macNic: macAddress,
+        subnet: subnet ? subnet.id : "",
+        tags: [],
+        vlan: bondVLAN || "",
+      }}
+      onCancel={handleClose}
+      onSaveAnalytics={{
+        action: "Create bond",
+        category: "Machine details networking",
+        label: "Create bond form",
+      }}
+      onSubmit={(values) => {
+        // Clear the errors from the previous submission.
+        dispatch(cleanup());
+        const payload = prepareBondPayload(
+          values,
+          selected,
+          systemId
+        ) as CreateBondParams;
+        dispatch(machineActions.createBond(payload));
+      }}
+      resetOnSave
+      saved={saved}
+      saving={saving}
+      submitDisabled={!hasEnoughNics}
+      submitLabel="Save interface"
+      validationSchema={InterfaceSchema}
+    >
+      <InterfaceFormTable
+        interfaces={rows}
+        selected={selected}
+        selectedEditable={editingMembers}
+        setSelected={setSelected}
+        systemId={systemId}
+      />
+      <ToggleMembers
+        editingMembers={editingMembers}
+        selected={selected}
+        setEditingMembers={setEditingMembers}
+        validNics={validNics}
+      />
+      <BondFormFields selected={selected} systemId={systemId} />
+    </FormikForm>
   );
 };
 

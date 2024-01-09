@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom-v5-compat";
 
-import { storageLayoutOptions } from "./ChangeStorageLayout/ChangeStorageLayout";
+import { storageLayoutOptions } from "./ChangeStorageLayoutMenu/ChangeStorageLayoutMenu";
 import MachineStorage from "./MachineStorage";
 
 import * as hooks from "@/app/base/hooks/analytics";

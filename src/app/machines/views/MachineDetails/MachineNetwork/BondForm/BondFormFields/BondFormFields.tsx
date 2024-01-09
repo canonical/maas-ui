@@ -66,7 +66,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
   const showMonitoring = values.linkMonitoring === LinkMonitoring.MII;
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <h3 className="p-heading--5 u-no-margin--bottom">Bond details</h3>
         <BondModeSelect defaultOption={null} name="bond_mode" required />
         {showHashPolicy && (
@@ -165,7 +165,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
           </>
         )}
       </Col>
-      <Col size={6}>
+      <Col size={12}>
         <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
         <NetworkFields
           fabricDisabled

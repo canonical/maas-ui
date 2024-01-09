@@ -1,30 +1,22 @@
-import type { ReactNode } from "react";
-import { useState } from "react";
-
 import { Button, MainTable, Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import type { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 
-import AddStaticRouteForm from "./AddStaticRouteForm";
-import EditStaticRouteForm from "./EditStaticRouteForm";
+import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
-import FormCard from "@/app/base/components/FormCard";
-import SubnetLink from "@/app/base/components/SubnetLink";
-import TableActions from "@/app/base/components/TableActions";
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import TitledSection from "@/app/base/components/TitledSection";
-import { useFetchActions } from "@/app/base/hooks";
-import authSelectors from "@/app/store/auth/selectors";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
-import staticRouteSelectors from "@/app/store/staticroute/selectors";
-import type {
-  StaticRoute,
-  StaticRouteMeta,
-} from "@/app/store/staticroute/types";
-import { actions as subnetActions } from "@/app/store/subnet";
-import subnetSelectors from "@/app/store/subnet/selectors";
-import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import SubnetLink from "app/base/components/SubnetLink";
+import TableActions from "app/base/components/TableActions";
+import TitledSection from "app/base/components/TitledSection";
+import { useFetchActions } from "app/base/hooks";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
+import { useSidePanel } from "app/base/side-panel-context";
+import authSelectors from "app/store/auth/selectors";
+import { actions as staticRouteActions } from "app/store/staticroute";
+import staticRouteSelectors from "app/store/staticroute/selectors";
+import type { StaticRoute } from "app/store/staticroute/types";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
+import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import { getSubnetDisplay } from "app/store/subnet/utils";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK];
@@ -43,72 +35,16 @@ export enum ExpandedType {
   Update,
 }
 
-type Expanded = {
-  id?: StaticRoute[StaticRouteMeta.PK];
-  type: ExpandedType;
-};
-
-const toggleExpanded = (
-  id: StaticRoute[StaticRouteMeta.PK],
-  expanded: Expanded | null,
-  expandedType: ExpandedType,
-  setExpanded: (expanded: Expanded | null) => void
-) =>
-  setExpanded(
-    expanded?.id === id && expanded.type === expandedType
-      ? null
-      : {
-          id,
-          type: expandedType,
-        }
-  );
-
 const generateRows = (
-  dispatch: Dispatch,
   staticRoutes: StaticRoute[],
   subnets: Subnet[],
-  expanded: Expanded | null,
-  setExpanded: (expanded: Expanded | null) => void,
-  saved: boolean,
-  saving: boolean
+  setSidePanelContent: SetSidePanelContent
 ) =>
   staticRoutes.map((staticRoute: StaticRoute) => {
     const subnet = subnets.find(
       (subnet) => subnet.id === staticRoute.destination
     );
-    const isExpanded = expanded?.id === staticRoute.id;
-    let expandedContent: ReactNode | null = null;
-    const onClose = () => setExpanded(null);
-    if (expanded?.type === ExpandedType.Delete) {
-      expandedContent = (
-        <TableDeleteConfirm
-          deleted={saved}
-          deleting={saving}
-          message="Are you sure you want to remove this static route?"
-          onClose={onClose}
-          onConfirm={() => {
-            dispatch(staticRouteActions.delete(staticRoute.id));
-          }}
-          sidebar={false}
-        />
-      );
-    } else if (expanded?.type === ExpandedType.Update) {
-      expandedContent = (
-        <EditStaticRouteForm
-          handleDismiss={() =>
-            toggleExpanded(
-              staticRoute.id,
-              expanded,
-              ExpandedType.Update,
-              setExpanded
-            )
-          }
-          staticRouteId={staticRoute.id}
-        />
-      );
-    }
     return {
-      className: isExpanded ? "p-table__row is-active" : null,
       columns: [
         {
           "aria-label": Labels.GatewayIp,
@@ -127,28 +63,24 @@ const generateRows = (
           content: (
             <TableActions
               onDelete={() => {
-                toggleExpanded(
-                  staticRoute.id,
-                  expanded,
-                  ExpandedType.Delete,
-                  setExpanded
-                );
+                setSidePanelContent({
+                  view: SubnetDetailsSidePanelViews[
+                    SubnetActionTypes.DeleteStaticRoute
+                  ],
+                });
               }}
               onEdit={() => {
-                toggleExpanded(
-                  staticRoute.id,
-                  expanded,
-                  ExpandedType.Update,
-                  setExpanded
-                );
+                setSidePanelContent({
+                  view: SubnetDetailsSidePanelViews[
+                    SubnetActionTypes.EditStaticRoute
+                  ],
+                });
               }}
             />
           ),
           className: "u-align--right",
         },
       ],
-      expanded: isExpanded,
-      expandedContent: expandedContent,
       key: staticRoute.id,
       sortData: {
         destination: getSubnetDisplay(subnet),
@@ -159,11 +91,8 @@ const generateRows = (
   });
 
 const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
-  const saved = useSelector(staticRouteSelectors.saved);
-  const saving = useSelector(staticRouteSelectors.saving);
   const staticRoutes = useSelector(staticRouteSelectors.all).filter(
     (staticRoute) => staticRoute.source === subnetId
   );
@@ -171,7 +100,9 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const loading = staticRoutesLoading || subnetsLoading;
-  const isAddStaticRouteOpen = expanded?.type === ExpandedType.Create;
+  const isAddStaticRouteOpen =
+    sidePanelContent?.view ===
+    SubnetDetailsSidePanelViews[SubnetActionTypes.AddStaticRoute];
 
   useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
@@ -182,7 +113,11 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
           <Button
             disabled={isAddStaticRouteOpen}
             onClick={() => {
-              setExpanded({ type: ExpandedType.Create });
+              setSidePanelContent({
+                view: SubnetDetailsSidePanelViews[
+                  SubnetActionTypes.AddStaticRoute
+                ],
+              });
             }}
           >
             Add static route
@@ -202,7 +137,6 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
             "No static routes for this subnet."
           )
         }
-        expanding
         headers={[
           {
             content: Labels.GatewayIp,
@@ -222,25 +156,9 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
           },
         ]}
         responsive
-        rows={generateRows(
-          dispatch,
-          staticRoutes,
-          subnets,
-          expanded,
-          setExpanded,
-          saved,
-          saving
-        )}
+        rows={generateRows(staticRoutes, subnets, setSidePanelContent)}
         sortable
       />
-      {isAddStaticRouteOpen ? (
-        <FormCard sidebar={false}>
-          <AddStaticRouteForm
-            handleDismiss={() => setExpanded(null)}
-            subnetId={subnetId}
-          />
-        </FormCard>
-      ) : null}
     </TitledSection>
   );
 };

@@ -30,8 +30,19 @@ export const MachineActionSidePanelViews = {
 } as const;
 
 export const MachineNonActionSidePanelViews = {
+  ADD_ALIAS: ["machineNonActionForm", "addAlias"],
+  ADD_BOND: ["machineNonActionForm", "addBond"],
+  ADD_BRIDGE: ["machineNonActionForm", "addBridge"],
   ADD_CHASSIS: ["machineNonActionForm", "addChassis"],
+  ADD_INTERFACE: ["machineNonActionForm", "addInterface"],
   ADD_MACHINE: ["machineNonActionForm", "addMachine"],
+  ADD_SPECIAL_FILESYSTEM: ["machineNonActionForm", "addSpecialFilesystem"],
+  ADD_VLAN: ["machineNonActionForm", "addVlan"],
+  CHANGE_STORAGE_LAYOUT: ["machineNonActionForm", "changeStorageLayout"],
+  CREATE_DATASTORE: ["machineNonActionForm", "createDatastore"],
+  CREATE_RAID: ["machineNonActionForm", "createRaid"],
+  CREATE_VOLUME_GROUP: ["machineNonActionForm", "createVolumeGroup"],
+  UPDATE_DATASTORE: ["machineNonActionForm", "updateDatastore"],
 } as const;
 
 export const MachineSidePanelViews = {

@@ -9,11 +9,10 @@ import RepositoryFormFields from "../RepositoryFormFields";
 
 import type { RepositoryFormValues } from "./types";
 
-import FormCard from "@/app/base/components/FormCard";
-import FormikForm from "@/app/base/components/FormikForm";
-import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
-import settingsURLs from "@/app/settings/urls";
-import { actions as generalActions } from "@/app/store/general";
+import FormikForm from "app/base/components/FormikForm";
+import { useAddMessage } from "app/base/hooks";
+import settingsURLs from "app/settings/urls";
+import { actions as generalActions } from "app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
@@ -119,14 +118,12 @@ export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
     };
   }
 
-  useWindowTitle(title);
-
   return (
     <>
       {!allLoaded ? (
         <Spinner text="Loading..." />
       ) : (
-        <FormCard title={title}>
+        <>
           <FormikForm<RepositoryFormValues>
             aria-label={title}
             cleanup={repositoryActions.cleanup}
@@ -183,7 +180,7 @@ export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
           >
             <RepositoryFormFields type={type} />
           </FormikForm>
-        </FormCard>
+        </>
       )}
     </>
   );

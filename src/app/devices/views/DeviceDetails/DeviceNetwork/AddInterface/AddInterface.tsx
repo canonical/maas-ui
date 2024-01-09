@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InterfaceForm from "../InterfaceForm";
 
-import FormCard from "@/app/base/components/FormCard";
-import { useCycled, useScrollOnRender } from "@/app/base/hooks";
-import { actions as deviceActions } from "@/app/store/device";
-import deviceSelectors from "@/app/store/device/selectors";
+import { useCycled, useScrollOnRender } from "app/base/hooks";
+import { actions as deviceActions } from "app/store/device";
+import deviceSelectors from "app/store/device/selectors";
 import type {
   CreateInterfaceParams,
   Device,
@@ -44,28 +43,27 @@ const AddInterface = ({ closeForm, systemId }: Props): JSX.Element => {
   }
   return (
     <div ref={onRenderRef}>
-      <FormCard sidebar={false}>
-        <InterfaceForm
-          closeForm={closeForm}
-          onSaveAnalytics={{
-            action: "Add interface",
-            category: "Device details networking",
-            label: "Add interface form",
-          }}
-          onSubmit={(values) => {
-            resetCreatedInterface();
-            dispatch(deviceActions.cleanup());
-            const payload = preparePayload({
-              ...values,
-              system_id: device.system_id,
-            }) as CreateInterfaceParams;
-            dispatch(deviceActions.createInterface(payload));
-          }}
-          saved={saved}
-          saving={creatingInterface}
-          systemId={systemId}
-        />
-      </FormCard>
+      <InterfaceForm
+        aria-label="Add interface"
+        closeForm={closeForm}
+        onSaveAnalytics={{
+          action: "Add interface",
+          category: "Device details networking",
+          label: "Add interface form",
+        }}
+        onSubmit={(values) => {
+          resetCreatedInterface();
+          dispatch(deviceActions.cleanup());
+          const payload = preparePayload({
+            ...values,
+            system_id: device.system_id,
+          }) as CreateInterfaceParams;
+          dispatch(deviceActions.createInterface(payload));
+        }}
+        saved={saved}
+        saving={creatingInterface}
+        systemId={systemId}
+      />
     </div>
   );
 };

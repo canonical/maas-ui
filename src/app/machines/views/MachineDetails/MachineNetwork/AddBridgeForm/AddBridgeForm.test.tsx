@@ -80,7 +80,12 @@ describe("AddBridgeForm", () => {
     ];
     const selected = [{ nicId: nic.id }];
     renderWithBrowserRouter(
-      <AddBridgeForm close={vi.fn()} selected={selected} systemId="abc123" />,
+      <AddBridgeForm
+        close={vi.fn()}
+        selected={selected}
+        setSelected={vi.fn()}
+        systemId="abc123"
+      />,
       { route, state }
     );
     const table = screen.getByRole("grid");
@@ -94,6 +99,7 @@ describe("AddBridgeForm", () => {
       <AddBridgeForm
         close={vi.fn()}
         selected={[{ nicId: nic.id }]}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, store }
@@ -108,6 +114,7 @@ describe("AddBridgeForm", () => {
       <AddBridgeForm
         close={vi.fn()}
         selected={[{ nicId: nic.id }]}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, state }
@@ -124,6 +131,7 @@ describe("AddBridgeForm", () => {
       <AddBridgeForm
         close={vi.fn()}
         selected={[{ nicId: nic.id }]}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, store }

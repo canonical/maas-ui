@@ -3,7 +3,7 @@ import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import ChangeStorageLayout from "./ChangeStorageLayout";
+import ChangeStorageLayoutMenu from "./ChangeStorageLayoutMenu";
 
 import StorageTables from "@/app/base/components/node/StorageTables";
 import docsUrls from "@/app/base/docsUrls";
@@ -29,7 +29,7 @@ const MachineStorage = (): JSX.Element => {
   if (isId(id) && isMachineDetails(machine)) {
     return (
       <>
-        {canEditStorage && <ChangeStorageLayout systemId={id} />}
+        {canEditStorage && <ChangeStorageLayoutMenu systemId={id} />}
         <StorageTables canEditStorage={canEditStorage} node={machine} />
         <Strip shallow>
           <p>

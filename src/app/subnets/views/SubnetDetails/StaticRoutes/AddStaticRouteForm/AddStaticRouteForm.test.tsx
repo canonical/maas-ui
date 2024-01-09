@@ -46,7 +46,7 @@ it("dispatches a correct action on add static route form submit", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <AddStaticRouteForm handleDismiss={vi.fn()} subnetId={subnet.id} />
+          <AddStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

@@ -80,7 +80,7 @@ describe("DhcpForm", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Editing `lease`" })
+      screen.getByRole("form", { name: "Editing `lease`" })
     ).toBeInTheDocument();
   });
 });

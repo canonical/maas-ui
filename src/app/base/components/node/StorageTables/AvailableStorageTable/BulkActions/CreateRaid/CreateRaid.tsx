@@ -3,18 +3,17 @@ import * as Yup from "yup";
 
 import CreateRaidFields from "./CreateRaidFields";
 
-import FormCard from "@/app/base/components/FormCard";
-import FormikForm from "@/app/base/components/FormikForm";
-import { useMachineDetailsForm } from "@/app/machines/hooks";
-import { actions as machineActions } from "@/app/store/machine";
-import machineSelectors from "@/app/store/machine/selectors";
-import type { Machine } from "@/app/store/machine/types";
-import type { MachineEventErrors } from "@/app/store/machine/types/base";
-import { isMachineDetails } from "@/app/store/machine/utils";
-import type { RootState } from "@/app/store/root/types";
-import { DiskTypes } from "@/app/store/types/enum";
-import type { Disk, Partition } from "@/app/store/types/node";
-import { isRaid, splitDiskPartitionIds } from "@/app/store/utils";
+import FormikForm from "app/base/components/FormikForm";
+import { useMachineDetailsForm } from "app/machines/hooks";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types/base";
+import { isMachineDetails } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import { DiskTypes } from "app/store/types/enum";
+import type { Disk, Partition } from "app/store/types/node";
+import { isRaid, splitDiskPartitionIds } from "app/store/utils";
 
 export type CreateRaidValues = {
   blockDeviceIds: number[];
@@ -87,66 +86,64 @@ export const CreateRaid = ({
 
   if (isMachineDetails(machine)) {
     return (
-      <FormCard sidebar={false}>
-        <FormikForm<CreateRaidValues, MachineEventErrors>
-          allowUnchanged
-          cleanup={machineActions.cleanup}
-          errors={errors}
-          initialValues={{
-            blockDeviceIds: initialBlockDevices,
-            fstype: "",
-            level: DiskTypes.RAID_0,
-            mountOptions: "",
-            mountPoint: "",
-            name: getInitialName(machine.disks),
-            partitionIds: initialPartitions,
-            spareBlockDeviceIds: [],
-            sparePartitionIds: [],
-            tags: [],
-          }}
-          onCancel={closeForm}
-          onSaveAnalytics={{
-            action: "Create RAID",
-            category: "Machine storage",
-            label: "Create RAID",
-          }}
-          onSubmit={(values) => {
-            const {
-              blockDeviceIds,
-              fstype,
+      <FormikForm<CreateRaidValues, MachineEventErrors>
+        allowUnchanged
+        cleanup={machineActions.cleanup}
+        errors={errors}
+        initialValues={{
+          blockDeviceIds: initialBlockDevices,
+          fstype: "",
+          level: DiskTypes.RAID_0,
+          mountOptions: "",
+          mountPoint: "",
+          name: getInitialName(machine.disks),
+          partitionIds: initialPartitions,
+          spareBlockDeviceIds: [],
+          sparePartitionIds: [],
+          tags: [],
+        }}
+        onCancel={closeForm}
+        onSaveAnalytics={{
+          action: "Create RAID",
+          category: "Machine storage",
+          label: "Create RAID",
+        }}
+        onSubmit={(values) => {
+          const {
+            blockDeviceIds,
+            fstype,
+            level,
+            mountOptions,
+            mountPoint,
+            name,
+            partitionIds,
+            spareBlockDeviceIds,
+            sparePartitionIds,
+            tags,
+          } = values;
+          dispatch(
+            machineActions.createRaid({
               level,
-              mountOptions,
-              mountPoint,
               name,
-              partitionIds,
-              spareBlockDeviceIds,
-              sparePartitionIds,
+              systemId,
               tags,
-            } = values;
-            dispatch(
-              machineActions.createRaid({
-                level,
-                name,
-                systemId,
-                tags,
-                ...(fstype && { fstype }),
-                ...(fstype && mountOptions && { mountOptions }),
-                ...(fstype && mountPoint && { mountPoint }),
-                ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
-                ...(partitionIds.length > 0 && { partitionIds }),
-                ...(spareBlockDeviceIds.length > 0 && { spareBlockDeviceIds }),
-                ...(sparePartitionIds.length > 0 && { sparePartitionIds }),
-              })
-            );
-          }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Create RAID"
-          validationSchema={CreateRaidSchema}
-        >
-          <CreateRaidFields storageDevices={selected} systemId={systemId} />
-        </FormikForm>
-      </FormCard>
+              ...(fstype && { fstype }),
+              ...(fstype && mountOptions && { mountOptions }),
+              ...(fstype && mountPoint && { mountPoint }),
+              ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
+              ...(partitionIds.length > 0 && { partitionIds }),
+              ...(spareBlockDeviceIds.length > 0 && { spareBlockDeviceIds }),
+              ...(sparePartitionIds.length > 0 && { sparePartitionIds }),
+            })
+          );
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Create RAID"
+        validationSchema={CreateRaidSchema}
+      >
+        <CreateRaidFields storageDevices={selected} systemId={systemId} />
+      </FormikForm>
     );
   }
   return null;

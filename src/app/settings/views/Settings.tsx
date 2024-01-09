@@ -24,11 +24,7 @@ const Settings = (): JSX.Element => {
     );
   }
 
-  return (
-    <PageContent sidePanelContent={null} sidePanelTitle={null}>
-      <Routes />
-    </PageContent>
-  );
+  return <Routes />;
 };
 
 export default Settings;

@@ -4,21 +4,25 @@ import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikField from "@/app/base/components/FormikField";
-import FormikForm from "@/app/base/components/FormikForm";
-import { actions as ipRangeActions } from "@/app/store/iprange";
-import ipRangeSelectors from "@/app/store/iprange/selectors";
-import type { IPRange } from "@/app/store/iprange/types";
-import { IPRangeType, IPRangeMeta } from "@/app/store/iprange/types";
-import type { RootState } from "@/app/store/root/types";
-import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import { isId } from "@/app/utils";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
+import {
+  useSidePanel,
+  type SetSidePanelContent,
+} from "app/base/side-panel-context";
+import { actions as ipRangeActions } from "app/store/iprange";
+import ipRangeSelectors from "app/store/iprange/selectors";
+import type { IPRange } from "app/store/iprange/types";
+import { IPRangeType, IPRangeMeta } from "app/store/iprange/types";
+import type { RootState } from "app/store/root/types";
+import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import { isId } from "app/utils";
 
 type Props = {
   createType?: IPRangeType;
-  id?: IPRange[IPRangeMeta.PK] | null;
-  onClose: () => void;
-  subnetId?: Subnet[SubnetMeta.PK] | null;
+  ipRangeId?: IPRange[IPRangeMeta.PK] | null;
+  setActiveForm: SetSidePanelContent;
+  id?: Subnet[SubnetMeta.PK] | null;
 };
 
 export type FormValues = {
@@ -43,20 +47,36 @@ const Schema = Yup.object().shape({
 
 const ReservedRangeForm = ({
   createType,
+  ipRangeId,
+  setActiveForm,
   id,
-  onClose,
-  subnetId,
   ...props
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
+  const { sidePanelContent } = useSidePanel();
+  let computedIpRangeId = ipRangeId;
+  if (!ipRangeId) {
+    computedIpRangeId =
+      sidePanelContent?.extras && "ipRangeId" in sidePanelContent.extras
+        ? sidePanelContent?.extras?.ipRangeId
+        : undefined;
+  }
   const ipRange = useSelector((state: RootState) =>
-    ipRangeSelectors.getById(state, id)
+    ipRangeSelectors.getById(state, computedIpRangeId)
   );
   const saved = useSelector(ipRangeSelectors.saved);
   const saving = useSelector(ipRangeSelectors.saving);
   const errors = useSelector(ipRangeSelectors.errors);
   const cleanup = useCallback(() => ipRangeActions.cleanup(), []);
-  const isEditing = isId(id);
+  const isEditing = isId(computedIpRangeId);
+  const onClose = () => setActiveForm(null);
+  let computedCreateType = createType;
+  if (!createType) {
+    computedCreateType =
+      sidePanelContent?.extras && "createType" in sidePanelContent.extras
+        ? sidePanelContent?.extras?.createType
+        : undefined;
+  }
 
   if (isEditing && !ipRange) {
     return (
@@ -92,11 +112,11 @@ const ReservedRangeForm = ({
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
-        if (!isEditing && createType) {
+        if (!isEditing && computedCreateType) {
           dispatch(
             ipRangeActions.create({
-              subnet: subnetId,
-              type: createType,
+              subnet: id,
+              type: computedCreateType,
               ...values,
             })
           );
@@ -120,7 +140,7 @@ const ReservedRangeForm = ({
       {...props}
     >
       <Row>
-        <Col size={4}>
+        <Col size={12}>
           <FormikField
             label={Labels.StartIp}
             name="start_ip"
@@ -128,7 +148,7 @@ const ReservedRangeForm = ({
             type="text"
           />
         </Col>
-        <Col size={4}>
+        <Col size={12}>
           <FormikField
             label={Labels.EndIp}
             name="end_ip"
@@ -136,8 +156,8 @@ const ReservedRangeForm = ({
             type="text"
           />
         </Col>
-        {isEditing || createType === IPRangeType.Reserved ? (
-          <Col size={4}>
+        {isEditing || computedCreateType === IPRangeType.Reserved ? (
+          <Col size={12}>
             <FormikField
               disabled={showDynamicComment}
               label={Labels.Comment}

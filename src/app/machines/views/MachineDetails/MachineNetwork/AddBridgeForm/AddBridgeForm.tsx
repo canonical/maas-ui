@@ -13,14 +13,16 @@ import {
 
 import type { BridgeFormValues } from "./types";
 
-import FormCard from "@/app/base/components/FormCard";
-import FormikForm from "@/app/base/components/FormikForm";
-import type { Selected } from "@/app/base/components/node/networking/types";
-import { useFetchActions } from "@/app/base/hooks";
-import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
-import { useMachineDetailsForm } from "@/app/machines/hooks";
-import { actions as machineActions } from "@/app/store/machine";
-import machineSelectors from "@/app/store/machine/selectors";
+import FormikForm from "app/base/components/FormikForm";
+import type {
+  Selected,
+  SetSelected,
+} from "app/base/components/node/networking/types";
+import { useFetchActions } from "app/base/hooks";
+import { MAC_ADDRESS_REGEX } from "app/base/validation";
+import { useMachineDetailsForm } from "app/machines/hooks";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import type {
   CreateBridgeParams,
   MachineDetails,
@@ -50,18 +52,24 @@ type Props = {
   close: () => void;
   selected: Selected[];
   systemId: MachineDetails["system_id"];
+  setSelected: SetSelected;
 };
 
 const AddBridgeForm = ({
   close,
   selected,
   systemId,
+  setSelected,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
   const cleanup = useCallback(() => machineActions.cleanup(), []);
+  const handleClose = () => {
+    setSelected([]);
+    close();
+  };
   const nextName = getNextNicName(machine, NetworkInterfaceTypes.BRIDGE);
   const [{ linkId, nicId }] = selected;
   const nic = useSelector((state: RootState) =>
@@ -75,7 +83,7 @@ const AddBridgeForm = ({
     systemId,
     "creatingBridge",
     "createBridge",
-    () => close()
+    () => handleClose()
   );
 
   useFetchActions([vlanActions.fetch]);
@@ -90,7 +98,7 @@ const AddBridgeForm = ({
   }
 
   return (
-    <FormCard sidebar={false} stacked title="Create bridge">
+    <>
       <InterfaceFormTable interfaces={selected} systemId={systemId} />
       <FormikForm<BridgeFormValues, MachineEventErrors>
         allowUnchanged
@@ -109,7 +117,7 @@ const AddBridgeForm = ({
           // Prefill the vlan from the parent interface.
           vlan: nic.vlan_id,
         }}
-        onCancel={close}
+        onCancel={handleClose}
         onSaveAnalytics={{
           action: "Create bridge",
           category: "Machine details networking",
@@ -133,7 +141,7 @@ const AddBridgeForm = ({
       >
         <BridgeFormFields />
       </FormikForm>
-    </FormCard>
+    </>
   );
 };
 

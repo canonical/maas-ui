@@ -90,27 +90,8 @@ const routes = [
     path: urls.settings.users.index,
   },
   {
-    title: "Add user",
-    path: urls.settings.users.add,
-  },
-  {
-    title: `Editing \`${user.username}\``,
-    path: urls.settings.users.edit({ id: user.id }),
-  },
-  {
     title: "License keys",
     path: urls.settings.licenseKeys.index,
-  },
-  {
-    title: "Add license key",
-    path: urls.settings.licenseKeys.add,
-  },
-  {
-    title: "Update license key",
-    path: urls.settings.licenseKeys.edit({
-      osystem: licensekey.osystem,
-      distro_series: licensekey.distro_series,
-    }),
   },
   {
     title: "Storage",
@@ -141,43 +122,16 @@ const routes = [
     path: urls.settings.scripts.commissioning.index,
   },
   {
-    title: "Upload commissioning script",
-    path: urls.settings.scripts.commissioning.upload,
-  },
-  {
     title: "Testing scripts",
     path: urls.settings.scripts.testing.index,
-  },
-  {
-    title: "Upload testing script",
-    path: urls.settings.scripts.testing.upload,
   },
   {
     title: "DHCP snippets",
     path: urls.settings.dhcp.index,
   },
   {
-    title: "Add DHCP snippet",
-    path: urls.settings.dhcp.add,
-  },
-  {
-    title: `Editing \`${dhcpSnippet.name}\``,
-    path: urls.settings.dhcp.edit({ id: dhcpSnippet.id }),
-  },
-  {
     title: "Package repos",
     path: urls.settings.repositories.index,
-  },
-  {
-    title: "Add PPA",
-    path: urls.settings.repositories.add({ type: "ppa" }),
-  },
-  {
-    title: "Edit PPA",
-    path: urls.settings.repositories.edit({
-      id: packageRepository.id,
-      type: "ppa",
-    }),
   },
   {
     title: "Windows",

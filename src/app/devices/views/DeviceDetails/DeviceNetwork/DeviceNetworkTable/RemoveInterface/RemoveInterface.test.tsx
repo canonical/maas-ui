@@ -13,8 +13,8 @@ import {
   deviceStatus as deviceStatusFactory,
   deviceStatuses as deviceStatusesFactory,
   rootState as rootStateFactory,
-} from "@/testing/factories";
-import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
+} from "testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -37,21 +37,17 @@ describe("RemoveInterface", () => {
   });
 
   it("sends an analytics event and closes the form when saved", () => {
-    const closeExpanded = vi.fn();
+    const closeForm = vi.fn();
     const useSendMock = vi.spyOn(analyticsHooks, "useSendAnalyticsWhen");
     // Mock interface successfully being deleted.
     vi.spyOn(baseHooks, "useCycled").mockReturnValue([true, () => null]);
     const store = mockStore(state);
-    renderWithMockStore(
-      <RemoveInterface
-        closeExpanded={closeExpanded}
-        nicId={1}
-        systemId="abc123"
-      />,
+    renderWithBrowserRouter(
+      <RemoveInterface closeForm={closeForm} nicId={1} systemId="abc123" />,
       { store }
     );
 
-    expect(closeExpanded).toHaveBeenCalled();
+    expect(closeForm).toHaveBeenCalled();
     expect(useSendMock.mock.calls[0]).toEqual([
       true,
       "Device network",
@@ -84,24 +80,24 @@ describe("RemoveInterface", () => {
       }),
     ];
     const store = mockStore(state);
-    renderWithMockStore(
-      <RemoveInterface closeExpanded={vi.fn()} nicId={1} systemId="abc123" />,
+    renderWithBrowserRouter(
+      <RemoveInterface closeForm={vi.fn()} nicId={1} systemId="abc123" />,
       { store }
     );
 
-    expect(screen.getByTestId("error-message")).toHaveTextContent(
-      "Delete interface error for this device"
-    );
+    expect(
+      screen.getByText("Delete interface error for this device")
+    ).toBeInTheDocument();
   });
 
   it("correctly dispatches an action to delete an interface", async () => {
     const store = mockStore(state);
-    renderWithMockStore(
-      <RemoveInterface closeExpanded={vi.fn()} nicId={1} systemId="abc123" />,
+    renderWithBrowserRouter(
+      <RemoveInterface closeForm={vi.fn()} nicId={1} systemId="abc123" />,
       { store }
     );
 
-    await userEvent.click(screen.getByTestId("confirm-delete"));
+    await userEvent.click(screen.getByRole("button", { name: /remove/i }));
 
     const expectedAction = deviceActions.deleteInterface({
       interface_id: 1,

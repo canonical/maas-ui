@@ -4,18 +4,19 @@ import * as Yup from "yup";
 
 import { Labels } from "../StaticRoutes";
 
-import FormikField from "@/app/base/components/FormikField";
-import FormikForm from "@/app/base/components/FormikForm";
-import SubnetSelect from "@/app/base/components/SubnetSelect";
-import { useFetchActions } from "@/app/base/hooks";
-import type { RootState } from "@/app/store/root/types";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
-import staticRouteSelectors from "@/app/store/staticroute/selectors";
-import { actions as subnetActions } from "@/app/store/subnet";
-import subnetSelectors from "@/app/store/subnet/selectors";
-import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import { getIsDestinationForSource } from "@/app/store/subnet/utils";
-import { toFormikNumber } from "@/app/utils";
+import FormikField from "app/base/components/FormikField";
+import FormikForm from "app/base/components/FormikForm";
+import SubnetSelect from "app/base/components/SubnetSelect";
+import { useFetchActions } from "app/base/hooks";
+import type { SetSidePanelContent } from "app/base/side-panel-context";
+import type { RootState } from "app/store/root/types";
+import { actions as staticRouteActions } from "app/store/staticroute";
+import staticRouteSelectors from "app/store/staticroute/selectors";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
+import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import { getIsDestinationForSource } from "app/store/subnet/utils";
+import { toFormikNumber } from "app/utils";
 
 export type AddStaticRouteValues = {
   source: Subnet[SubnetMeta.PK];
@@ -37,22 +38,23 @@ const addStaticRouteSchema = Yup.object().shape({
 });
 
 export type Props = {
-  subnetId: Subnet[SubnetMeta.PK];
-  handleDismiss: () => void;
+  id: Subnet[SubnetMeta.PK];
+  setActiveForm: SetSidePanelContent;
 };
 const AddStaticRouteForm = ({
-  subnetId,
-  handleDismiss,
+  id,
+  setActiveForm,
 }: Props): JSX.Element | null => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);
   const dispatch = useDispatch();
+  const handleClose = () => setActiveForm(null);
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;
   const source = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, subnetId)
+    subnetSelectors.getById(state, id)
   );
 
   useFetchActions([subnetActions.fetch]);
@@ -67,12 +69,12 @@ const AddStaticRouteForm = ({
       cleanup={staticRouteActions.cleanup}
       errors={staticRouteErrors}
       initialValues={{
-        source: subnetId,
+        source: id,
         gateway_ip: "",
         destination: "",
         metric: "0",
       }}
-      onCancel={handleDismiss}
+      onCancel={handleClose}
       onSaveAnalytics={{
         action: AddStaticRouteFormLabels.Save,
         category: "Subnet",
@@ -82,7 +84,7 @@ const AddStaticRouteForm = ({
         dispatch(staticRouteActions.cleanup());
         dispatch(
           staticRouteActions.create({
-            source: subnetId,
+            source: id,
             gateway_ip,
             destination: toFormikNumber(destination) as number,
             metric: toFormikNumber(metric),
@@ -90,7 +92,7 @@ const AddStaticRouteForm = ({
         );
       }}
       onSuccess={() => {
-        handleDismiss();
+        handleClose();
       }}
       resetOnSave
       saved={saved}
@@ -99,10 +101,10 @@ const AddStaticRouteForm = ({
       validationSchema={addStaticRouteSchema}
     >
       <Row>
-        <Col size={4}>
+        <Col size={12}>
           <FormikField label={Labels.GatewayIp} name="gateway_ip" type="text" />
         </Col>
-        <Col size={4}>
+        <Col size={12}>
           <SubnetSelect
             defaultOption={{
               label: "Select destination",
@@ -116,7 +118,7 @@ const AddStaticRouteForm = ({
             name="destination"
           />
         </Col>
-        <Col size={4}>
+        <Col size={12}>
           <FormikField label={Labels.Metric} name="metric" type="text" />
         </Col>
       </Row>

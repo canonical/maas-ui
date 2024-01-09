@@ -3,17 +3,15 @@ import { useSelector } from "react-redux";
 
 import AddInterface from "./AddInterface";
 import DeviceNetworkTable from "./DeviceNetworkTable";
-import EditInterface from "./EditInterface";
 
-import DHCPTable from "@/app/base/components/DHCPTable";
-import NetworkActionRow from "@/app/base/components/NetworkActionRow";
-import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { useWindowTitle } from "@/app/base/hooks";
-import deviceSelectors from "@/app/store/device/selectors";
-import { DeviceMeta } from "@/app/store/device/types";
-import type { Device } from "@/app/store/device/types";
-import type { RootState } from "@/app/store/root/types";
+import DHCPTable from "app/base/components/DHCPTable";
+import NetworkActionRow from "app/base/components/NetworkActionRow";
+import NodeNetworkTab from "app/base/components/NodeNetworkTab";
+import { useWindowTitle } from "app/base/hooks";
+import deviceSelectors from "app/store/device/selectors";
+import { DeviceMeta } from "app/store/device/types";
+import type { Device } from "app/store/device/types";
+import type { RootState } from "app/store/root/types";
 
 export enum Label {
   Title = "Device network",
@@ -37,12 +35,8 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
   return (
     <>
       <NodeNetworkTab
-        actions={(expanded, setExpanded) => (
-          <NetworkActionRow
-            expanded={expanded}
-            node={device}
-            setExpanded={setExpanded}
-          />
+        actions={(_, setExpanded) => (
+          <NetworkActionRow node={device} setExpanded={setExpanded} />
         )}
         addInterface={(_, setExpanded) => (
           <AddInterface
@@ -58,26 +52,7 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
             node={device}
           />
         )}
-        expandedForm={(expanded, setExpanded) => {
-          if (expanded?.content === ExpandedState.EDIT) {
-            return (
-              <EditInterface
-                closeForm={() => setExpanded(null)}
-                linkId={expanded?.linkId}
-                nicId={expanded?.nicId}
-                systemId={systemId}
-              />
-            );
-          }
-          return null;
-        }}
-        interfaceTable={(expanded, setExpanded) => (
-          <DeviceNetworkTable
-            expanded={expanded}
-            setExpanded={setExpanded}
-            systemId={systemId}
-          />
-        )}
+        interfaceTable={() => <DeviceNetworkTable systemId={systemId} />}
       />
     </>
   );
