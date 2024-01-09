@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { ContentSection } from "@canonical/maas-react-components";
 import { Col, Notification, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -37,55 +38,58 @@ export const Details = (): JSX.Element => {
   );
 
   return (
-    <div aria-label={Label.Title}>
-      {externalAuthURL && (
-        <Notification severity="information">
-          Users for this MAAS are managed using an external service
-        </Notification>
-      )}
-      <Row>
-        <Col size={6}>
-          <UserForm
-            cleanup={cleanup}
-            includeCurrentPassword
-            includeUserType={false}
-            onSave={(values) => {
-              if (authUser) {
-                dispatch(
-                  userActions.update({
-                    id: authUser.id,
-                    email: values.email,
-                    is_superuser: values.isSuperuser,
-                    last_name: values.fullName,
-                    username: values.username,
-                  })
-                );
-              }
-              const passwordChanged =
-                !!values.old_password ||
-                !!values.password ||
-                !!values.passwordConfirm;
-              if (passwordChanged) {
-                dispatch(
-                  authActions.changePassword({
-                    old_password: values.old_password,
-                    new_password1: values.password,
-                    new_password2: values.passwordConfirm,
-                  })
-                );
-              }
-              setPasswordChanged(passwordChanged);
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Details preferences",
-              label: "Details form",
-            }}
-            user={authUser}
-          />
-        </Col>
-      </Row>
-    </div>
+    <ContentSection aria-label={Label.Title}>
+      <ContentSection.Title>{Label.Title}</ContentSection.Title>
+      <ContentSection.Content>
+        {externalAuthURL && (
+          <Notification severity="information">
+            Users for this MAAS are managed using an external service
+          </Notification>
+        )}
+        <Row>
+          <Col size={6}>
+            <UserForm
+              cleanup={cleanup}
+              includeCurrentPassword
+              includeUserType={false}
+              onSave={(values) => {
+                if (authUser) {
+                  dispatch(
+                    userActions.update({
+                      id: authUser.id,
+                      email: values.email,
+                      is_superuser: values.isSuperuser,
+                      last_name: values.fullName,
+                      username: values.username,
+                    })
+                  );
+                }
+                const passwordChanged =
+                  !!values.old_password ||
+                  !!values.password ||
+                  !!values.passwordConfirm;
+                if (passwordChanged) {
+                  dispatch(
+                    authActions.changePassword({
+                      old_password: values.old_password,
+                      new_password1: values.password,
+                      new_password2: values.passwordConfirm,
+                    })
+                  );
+                }
+                setPasswordChanged(passwordChanged);
+              }}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Details preferences",
+                label: "Details form",
+              }}
+              user={authUser}
+            />
+          </Col>
+        </Row>
+      </ContentSection.Content>
+    </ContentSection>
   );
 };
 
