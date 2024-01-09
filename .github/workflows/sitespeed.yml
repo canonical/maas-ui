@@ -21,13 +21,6 @@ jobs:
           maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
-      - name: Wait for MAAS
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: "http://${{env.MAAS_DOMAIN}}:5240/MAAS/r"
-          responseCode: 200
-          timeout: 200000
-          interval: 500
       - name: Run sitespeed.io tests
         run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
       - name: Upload results
