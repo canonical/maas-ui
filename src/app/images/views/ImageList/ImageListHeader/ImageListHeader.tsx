@@ -1,7 +1,7 @@
+import { MainToolbar } from "@canonical/maas-react-components";
 import { Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import SectionHeader from "app/base/components/SectionHeader";
 import SwitchField from "app/base/components/SwitchField";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useFetchActions, useCycled } from "app/base/hooks";
@@ -55,53 +55,54 @@ const ImageListHeader = (): JSX.Element => {
   useFetchActions([configActions.fetch]);
 
   return (
-    <SectionHeader
-      buttons={
-        configLoaded
-          ? [
-              <div className="u-flex--align-baseline">
-                {configSaving && (
-                  <div className="u-nudge-left--small">
-                    <Icon className="u-animation--spin" name="spinner" />
-                  </div>
-                )}
-                <SwitchField
-                  checked={autoImport || false}
-                  className="u-nudge-right"
-                  data-testid="auto-sync-switch"
-                  id="auto-sync-switch"
-                  label={
-                    <span>
-                      <span>{Labels.AutoSyncImages}</span>
-                      <TooltipButton
-                        className="u-nudge-right--small"
-                        iconName="help"
-                        message={`Enables automatic image updates (sync). The
-                        region controller will check for new images every hour
-                        and automatically sync them, if available, from the
-                        stream configured below. Syncing at the rack controller
-                        level occurs every 5 minutes and cannot be disabled.`}
-                      />
-                    </span>
-                  }
-                  onChange={() => {
-                    dispatch(configActions.cleanup());
-                    dispatch(
-                      configActions.update({
-                        boot_images_auto_import: !autoImport,
-                      })
-                    );
-                  }}
-                  wrapperClassName="u-flex--align-center"
+    <MainToolbar>
+      <MainToolbar.Title>Images</MainToolbar.Title>
+      {configLoaded ? (
+        <div className="u-flex--align-baseline">
+          {configSaving && (
+            <div className="u-nudge-left--small">
+              <Icon className="u-animation--spin" name="spinner" />
+            </div>
+          )}
+          <SwitchField
+            checked={autoImport || false}
+            className="u-nudge-right"
+            data-testid="auto-sync-switch"
+            id="auto-sync-switch"
+            label={
+              <span>
+                <span>{Labels.AutoSyncImages}</span>
+                <TooltipButton
+                  className="u-nudge-right--small"
+                  iconName="help"
+                  message={`Enables automatic image updates (sync). The
+                            region controller will check for new images every hour
+                            and automatically sync them, if available, from the
+                            stream configured below. Syncing at the rack controller
+                            level occurs every 5 minutes and cannot be disabled.`}
                 />
-              </div>,
-            ]
-          : null
-      }
-      subtitle={generateImportStatus(rackImportRunning, regionImportRunning)}
-      subtitleLoading={polling && !hasPolled}
-      title="Images"
-    />
+              </span>
+            }
+            onChange={() => {
+              dispatch(configActions.cleanup());
+              dispatch(
+                configActions.update({
+                  boot_images_auto_import: !autoImport,
+                })
+              );
+            }}
+            wrapperClassName="u-flex--align-center"
+          />
+        </div>
+      ) : null}
+      {polling && !hasPolled ? (
+        <Spinner text="Loading..." />
+      ) : (
+        <span className="u-text--muted">
+          {generateImportStatus(rackImportRunning, regionImportRunning)}
+        </span>
+      )}
+    </MainToolbar>
   );
 };
 
