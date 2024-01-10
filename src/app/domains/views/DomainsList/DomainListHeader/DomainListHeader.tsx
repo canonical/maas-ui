@@ -1,10 +1,10 @@
-import { Button } from "@canonical/react-components";
-import pluralize from "pluralize";
+import { MainToolbar } from "@canonical/maas-react-components";
+import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { DomainListSidePanelViews } from "../constants";
 
-import SectionHeader from "app/base/components/SectionHeader";
+import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import { useFetchActions } from "app/base/hooks";
 import type { SetSidePanelContent } from "app/base/side-panel-context";
 import { actions as domainActions } from "app/store/domain";
@@ -24,25 +24,26 @@ const DomainListHeader = ({
 
   useFetchActions([domainActions.fetch]);
 
-  let buttons: JSX.Element[] | null = [
-    <Button
-      data-testid="add-domain"
-      key="add-domain"
-      onClick={() =>
-        setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN })
-      }
-    >
-      {Labels.AddDomains}
-    </Button>,
-  ];
-
   return (
-    <SectionHeader
-      buttons={buttons}
-      subtitle={`${pluralize("domain", domainCount, true)} available`}
-      subtitleLoading={!domainsLoaded}
-      title="DNS"
-    />
+    <MainToolbar>
+      <MainToolbar.Title>DNS</MainToolbar.Title>
+      {domainsLoaded ? (
+        <ModelListSubtitle available={domainCount} modelName="domain" />
+      ) : (
+        <Spinner text="Loading..." />
+      )}
+      <MainToolbar.Controls>
+        <Button
+          data-testid="add-domain"
+          key="add-domain"
+          onClick={() =>
+            setSidePanelContent({ view: DomainListSidePanelViews.ADD_DOMAIN })
+          }
+        >
+          {Labels.AddDomains}
+        </Button>
+      </MainToolbar.Controls>
+    </MainToolbar>
   );
 };
 
