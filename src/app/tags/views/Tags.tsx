@@ -77,16 +77,13 @@ const Tags = (): JSX.Element => {
     <PageContent
       header={
         <TagsHeader
-          currentPage={currentPage}
           filter={filter}
           isDetails={isDetails}
+          onDelete={onDelete}
           searchText={searchText}
-          setCurrentPage={setCurrentPage}
           setFilter={setFilter}
           setSearchText={setSearchText}
           setSidePanelContent={setSidePanelContent}
-          tableId={tableId}
-          tagCount={tags.length}
           tagViewState={tagViewState}
         />
       }
@@ -104,7 +101,7 @@ const Tags = (): JSX.Element => {
         <Route
           element={
             isDetails ? (
-              <TagDetails onDelete={onDelete} tagViewState={tagViewState} />
+              <TagDetails tagViewState={tagViewState} />
             ) : (
               <TagList
                 currentPage={currentPage}
@@ -120,9 +117,7 @@ const Tags = (): JSX.Element => {
           path="/"
         />
         <Route
-          element={
-            <TagDetails onDelete={onDelete} tagViewState={tagViewState} />
-          }
+          element={<TagDetails tagViewState={tagViewState} />}
           path={getRelativeRoute(urls.tags.tag.update(null), base)}
         />
         <Route
