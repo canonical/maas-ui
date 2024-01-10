@@ -68,4 +68,4 @@ jobs:
       - name: Build assets
         run: yarn build
       - name: Serve build and wait for UI to be ready
-        run: yarn concurrently "yarn serve --port=8400 --base=/" "yarn wait-on-ui"
+        run: yarn concurrently "yarn serve --host --port=8400 --base=/" "yarn wait-on-ui"
