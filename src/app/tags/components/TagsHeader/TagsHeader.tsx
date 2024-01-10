@@ -64,26 +64,30 @@ export const TagsHeader = ({
       <MainToolbar.Controls>
         {tagViewState === TagViewState.Updating ? null : (
           <>
-            {isDetails && tag && showButtons ? (
+            {isDetails && tag ? (
               <>
-                <Button
-                  element={Link}
-                  hasIcon
-                  state={{ canGoBack: true }}
-                  to={{
-                    pathname: urls.tags.tag.update({ id: tag.id }),
-                  }}
-                >
-                  <Icon name="edit" /> <span>{Label.EditButton}</span>
-                </Button>
-                <Button
-                  appearance="negative"
-                  hasIcon
-                  onClick={() => onDelete(tag[TagMeta.PK], true)}
-                >
-                  <Icon className="is-light" name="delete" />{" "}
-                  <span>{Label.DeleteButton}</span>
-                </Button>
+                {showButtons ? (
+                  <>
+                    <Button
+                      element={Link}
+                      hasIcon
+                      state={{ canGoBack: true }}
+                      to={{
+                        pathname: urls.tags.tag.update({ id: tag.id }),
+                      }}
+                    >
+                      <Icon name="edit" /> <span>{Label.EditButton}</span>
+                    </Button>
+                    <Button
+                      appearance="negative"
+                      hasIcon
+                      onClick={() => onDelete(tag[TagMeta.PK], true)}
+                    >
+                      <Icon className="is-light" name="delete" />{" "}
+                      <span>{Label.DeleteButton}</span>
+                    </Button>
+                  </>
+                ) : null}
               </>
             ) : (
               <>
