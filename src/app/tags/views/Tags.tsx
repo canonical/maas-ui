@@ -77,8 +77,16 @@ const Tags = (): JSX.Element => {
     <PageContent
       header={
         <TagsHeader
+          currentPage={currentPage}
+          filter={filter}
           isDetails={isDetails}
+          searchText={searchText}
+          setCurrentPage={setCurrentPage}
+          setFilter={setFilter}
+          setSearchText={setSearchText}
           setSidePanelContent={setSidePanelContent}
+          tableId={tableId}
+          tagCount={tags.length}
           tagViewState={tagViewState}
         />
       }
@@ -104,8 +112,6 @@ const Tags = (): JSX.Element => {
                 onDelete={onDelete}
                 searchText={searchText}
                 setCurrentPage={setCurrentPage}
-                setFilter={setFilter}
-                setSearchText={setSearchText}
                 tableId={tableId}
                 tags={tags}
               />

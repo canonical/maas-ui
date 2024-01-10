@@ -1,6 +1,6 @@
-import TagListControls from "./TagListControls";
 import TagTable from "./TagTable";
 
+import ArrowPagination from "app/base/components/ArrowPagination";
 import { useWindowTitle } from "app/base/hooks";
 import type { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
@@ -9,9 +9,7 @@ type Props = {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   filter: TagSearchFilter;
-  setFilter: (filter: TagSearchFilter) => void;
   searchText: string;
-  setSearchText: (searchText: string) => void;
   tags: Tag[];
   tableId: string;
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
@@ -25,9 +23,7 @@ const TagList = ({
   currentPage,
   setCurrentPage,
   filter,
-  setFilter,
   searchText,
-  setSearchText,
   tags,
   tableId,
   onDelete,
@@ -36,16 +32,13 @@ const TagList = ({
 
   return (
     <div aria-label={Label.Title}>
-      <TagListControls
-        aria-controls={tableId}
-        aria-label="tag list controls"
+      <ArrowPagination
+        className="u-display--inline-block"
         currentPage={currentPage}
-        filter={filter}
-        searchText={searchText}
+        itemCount={tags.length}
+        pageSize={50}
         setCurrentPage={setCurrentPage}
-        setFilter={setFilter}
-        setSearchText={setSearchText}
-        tagCount={tags.length}
+        showPageBounds
       />
       <TagTable
         aria-label="tags"
