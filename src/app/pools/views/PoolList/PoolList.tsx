@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   Col,
   Spinner,
@@ -11,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import TableActions from "app/base/components/TableActions";
-import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
 import urls from "app/base/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -86,22 +84,10 @@ const Pools = (): JSX.Element => {
   useWindowTitle("Pools");
   const dispatch = useDispatch();
 
-  const [deletingPool, setDeleting] = useState<ResourcePool["name"] | null>(
-    null
-  );
-
   const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const poolsLoading = useSelector(resourcePoolSelectors.loading);
-  const saved = useSelector(resourcePoolSelectors.saved);
   const errors = useSelector(resourcePoolSelectors.errors);
   const errorMessage = formatErrors(errors);
-
-  useAddMessage(
-    saved,
-    resourcePoolActions.cleanup,
-    `${deletingPool} removed successfully.`,
-    () => setDeleting(null)
-  );
 
   useFetchActions([resourcePoolActions.fetch]);
 
