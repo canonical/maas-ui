@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import TagList from "./TagList";
 
 import type { RootState } from "app/store/root/types";
+import { TagSearchFilter } from "app/store/tag/selectors";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -35,13 +36,21 @@ it("renders", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags" }]}>
         <CompatRouter>
-          <TagList onDelete={jest.fn()} />
+          <TagList
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tableId="test-table"
+            tags={[]}
+          />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
-  expect(screen.getByLabelText("tag list controls")).toBeInTheDocument();
+  expect(screen.getByLabelText("pagination")).toBeInTheDocument();
   expect(screen.getByRole("grid", { name: "tags" })).toBeInTheDocument();
 });
