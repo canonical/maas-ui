@@ -450,7 +450,7 @@ describe("Machines", () => {
       sidePanelContent: { view: MachineSidePanelViews.DEPLOY_MACHINE },
     });
 
-    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
+    expect(screen.getByTestId("main-toolbar-heading")).toHaveTextContent(
       "0 machines in 0 pools"
     );
     expect(

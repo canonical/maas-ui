@@ -74,7 +74,7 @@ describe("MachineListHeader", () => {
       />,
       { state, route: urls.machines.index }
     );
-    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
+    expect(screen.getByTestId("main-toolbar-heading")).toHaveTextContent(
       "2 machines in 1 pool"
     );
   });
@@ -94,7 +94,7 @@ describe("MachineListHeader", () => {
       { state, route: urls.machines.index }
     );
     expect(
-      screen.queryByTestId("add-hardware-dropdown")
+      screen.queryByRole("button", { name: "Add hardware" })
     ).not.toBeInTheDocument();
     state.machine.selected.items = [];
     renderWithBrowserRouter(
@@ -109,7 +109,9 @@ describe("MachineListHeader", () => {
       />,
       { state, route: urls.machines.index }
     );
-    expect(screen.getByTestId("add-hardware-dropdown")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Add hardware" })
+    ).toBeInTheDocument();
   });
 
   it("displays a new label for the tag action", async () => {
