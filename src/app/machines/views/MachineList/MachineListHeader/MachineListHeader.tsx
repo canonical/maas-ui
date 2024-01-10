@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import MachineListControls from "../MachineListControls";
 import type { useResponsiveColumns } from "../hooks";
 
-import MachinesHeader from "app/base/components/node/MachinesHeader";
 import { useFetchActions } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import type { MachineSetSidePanelContent } from "app/machines/types";
@@ -57,22 +56,17 @@ export const MachineListHeader = ({
   );
 
   return (
-    <MachinesHeader
+    <MachineListControls
+      filter={searchFilter}
+      grouping={grouping}
+      hiddenColumns={hiddenColumns}
       machineCount={allMachineCount}
-      renderButtons={() => (
-        <MachineListControls
-          filter={searchFilter}
-          grouping={grouping}
-          hiddenColumns={hiddenColumns}
-          machineCount={allMachineCount}
-          resourcePoolsCount={resourcePoolsCount}
-          setFilter={handleSetSearchFilter}
-          setGrouping={setGrouping}
-          setHiddenColumns={setHiddenColumns}
-          setHiddenGroups={setHiddenGroups}
-          setSidePanelContent={setSidePanelContent}
-        />
-      )}
+      resourcePoolsCount={resourcePoolsCount}
+      setFilter={handleSetSearchFilter}
+      setGrouping={setGrouping}
+      setHiddenColumns={setHiddenColumns}
+      setHiddenGroups={setHiddenGroups}
+      setSidePanelContent={setSidePanelContent}
     />
   );
 };
