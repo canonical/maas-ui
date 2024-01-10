@@ -78,14 +78,12 @@ const MachineListControls = ({
               searchText={searchText}
               setSearchText={setSearchText}
             />
-            <span className="u-hide--small u-hide--medium">
-              <GroupSelect<FetchGroupKey>
-                groupOptions={groupOptions}
-                grouping={grouping}
-                setGrouping={setGrouping}
-                setHiddenGroups={setHiddenGroups}
-              />
-            </span>
+            <GroupSelect<FetchGroupKey>
+              groupOptions={groupOptions}
+              grouping={grouping}
+              setGrouping={setGrouping}
+              setHiddenGroups={setHiddenGroups}
+            />
           </>
         ) : (
           <>
