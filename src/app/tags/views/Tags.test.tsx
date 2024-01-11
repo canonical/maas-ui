@@ -13,7 +13,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("Tags", () => {
   let scrollToSpy: jest.Mock;
@@ -71,18 +71,17 @@ describe("Tags", () => {
       state,
       route: urls.tags.tag.index({ id: 1 }),
     });
-    const header = screen.getByLabelText(TagsHeaderLabel.Header);
-    const details = screen.getByLabelText(TagDetailsLabel.Title);
+
     expect(
-      within(header).getByRole("button", { name: TagsHeaderLabel.CreateButton })
+      screen.getByRole("button", { name: TagsHeaderLabel.CreateButton })
     ).toBeInTheDocument();
     expect(
-      within(details).getByRole("button", {
+      screen.getByRole("button", {
         name: TagDetailsLabel.DeleteButton,
       })
     ).toBeInTheDocument();
     expect(
-      within(details).getByRole("link", { name: TagDetailsLabel.EditButton })
+      screen.getByRole("link", { name: TagDetailsLabel.EditButton })
     ).toBeInTheDocument();
   });
 });

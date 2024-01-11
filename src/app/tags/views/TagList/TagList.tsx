@@ -1,17 +1,17 @@
-import { useState } from "react";
-
-import { useSelector } from "react-redux";
-
-import TagListControls from "./TagListControls";
 import TagTable from "./TagTable";
 
+import ArrowPagination from "app/base/components/ArrowPagination";
 import { useWindowTitle } from "app/base/hooks";
-import { useId } from "app/base/hooks/base";
-import type { RootState } from "app/store/root/types";
-import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
+import type { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
 
 type Props = {
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  filter: TagSearchFilter;
+  searchText: string;
+  tags: Tag[];
+  tableId: string;
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
 };
 
@@ -19,29 +19,26 @@ export enum Label {
   Title = "Tag list",
 }
 
-const TagList = ({ onDelete }: Props): JSX.Element => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState(TagSearchFilter.All);
-  const [searchText, setSearchText] = useState("");
-  const tags = useSelector((state: RootState) =>
-    tagSelectors.search(state, searchText, filter)
-  );
-  const tableId = useId();
-
+const TagList = ({
+  currentPage,
+  setCurrentPage,
+  filter,
+  searchText,
+  tags,
+  tableId,
+  onDelete,
+}: Props): JSX.Element => {
   useWindowTitle("Tags");
 
   return (
     <div aria-label={Label.Title}>
-      <TagListControls
-        aria-controls={tableId}
-        aria-label="tag list controls"
+      <ArrowPagination
+        className="u-display--inline-block"
         currentPage={currentPage}
-        filter={filter}
-        searchText={searchText}
+        itemCount={tags.length}
+        pageSize={50}
         setCurrentPage={setCurrentPage}
-        setFilter={setFilter}
-        setSearchText={setSearchText}
-        tagCount={tags.length}
+        showPageBounds
       />
       <TagTable
         aria-label="tags"
