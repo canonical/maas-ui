@@ -1,19 +1,16 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TagUpdate from "../TagUpdate";
-
-import ModelNotFound from "@/app/base/components/ModelNotFound";
-import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { useGetURLId } from "@/app/base/hooks/urls";
-import urls from "@/app/base/urls";
-import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
-import tagSelectors from "@/app/store/tag/selectors";
-import { TagMeta } from "@/app/store/tag/types";
-import BaseTagDetails from "@/app/tags/components/TagDetails";
-import { TagViewState } from "@/app/tags/types";
-import { isId } from "@/app/utils";
+import ModelNotFound from "app/base/components/ModelNotFound";
+import { useFetchActions, useWindowTitle } from "app/base/hooks";
+import { useGetURLId } from "app/base/hooks/urls";
+import urls from "app/base/urls";
+import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
+import tagSelectors from "app/store/tag/selectors";
+import { TagMeta } from "app/store/tag/types";
+import BaseTagDetails from "app/tags/components/TagDetails";
+import { isId } from "app/utils";
 
 export enum Label {
   Title = "Tag details",
@@ -27,11 +24,7 @@ export enum Label {
   Update = "Last update",
 }
 
-export type Props = {
-  tagViewState?: TagViewState | null;
-};
-
-const TagDetails = ({ tagViewState }: Props): JSX.Element => {
+const TagDetails = (): JSX.Element => {
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -52,10 +45,6 @@ const TagDetails = ({ tagViewState }: Props): JSX.Element => {
         <Spinner />
       </span>
     );
-  }
-
-  if (tagViewState === TagViewState.Updating) {
-    return <TagUpdate id={id} />;
   }
 
   return (

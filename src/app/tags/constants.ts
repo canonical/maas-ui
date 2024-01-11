@@ -1,6 +1,7 @@
 export const TagSidePanelViews = {
   AddTag: ["addTagForm", "addTag"],
   DeleteTag: ["deleteTagForm", "deleteTag"],
+  UpdateTag: ["updateTagForm", "updateTag"],
 } as const;
 
 export const NewDefinitionMessage =

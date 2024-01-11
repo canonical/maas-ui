@@ -55,3 +55,26 @@ it("can display the delete tag form", () => {
   );
   expect(screen.getByRole("form", { name: "Delete tag" })).toBeInTheDocument();
 });
+
+it("can display the update tag form", () => {
+  const state = rootStateFactory({
+    tag: tagStateFactory({
+      items: [
+        tagFactory({
+          id: 1,
+        }),
+      ],
+    }),
+  });
+  renderWithBrowserRouter(
+    <TagForms
+      setSidePanelContent={jest.fn()}
+      sidePanelContent={{
+        view: TagSidePanelViews.UpdateTag,
+        extras: { id: 1 },
+      }}
+    />,
+    { route: "/tags", state }
+  );
+  expect(screen.getByRole("form", { name: "Update tag" })).toBeInTheDocument();
+});

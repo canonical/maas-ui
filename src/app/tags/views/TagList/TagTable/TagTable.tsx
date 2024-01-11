@@ -7,8 +7,7 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip } from "@canonical/react-components";
-import type { NavigateFunction } from "react-router-dom-v5-compat";
-import { useNavigate, Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom-v5-compat";
 
 import { TAGS_PER_PAGE } from "../constants";
 
@@ -31,6 +30,7 @@ type Props = PropsWithSpread<
     currentPage: number;
     filter: TagSearchFilter;
     onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
+    onUpdate: (id: Tag[TagMeta.PK]) => void;
     searchText: string;
     setCurrentPage: (page: number) => void;
     tags: Tag[];
@@ -61,7 +61,7 @@ const getSortValue = (sortKey: SortKey, tag: Tag) => {
 const generateRows = (
   tags: Tag[],
   onDelete: Props["onDelete"],
-  navigate: NavigateFunction
+  onUpdate: Props["onUpdate"]
 ) =>
   tags.map((tag) => {
     return {
@@ -98,11 +98,7 @@ const generateRows = (
               onDelete={() => {
                 onDelete(tag[TagMeta.PK]);
               }}
-              onEdit={() =>
-                navigate(urls.tags.tag.update({ id: tag.id }), {
-                  state: { canGoBack: true },
-                })
-              }
+              onEdit={() => onUpdate(tag[TagMeta.PK])}
             />
           ),
           className: "u-align--right",
@@ -154,12 +150,12 @@ const TagTable = ({
   currentPage,
   filter,
   onDelete,
+  onUpdate,
   searchText,
   setCurrentPage,
   tags,
   ...tableProps
 }: Props): JSX.Element => {
-  const navigate = useNavigate();
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
     {
@@ -244,7 +240,7 @@ const TagTable = ({
             className: "u-align--right",
           },
         ]}
-        rows={generateRows(paginatedTags, onDelete, navigate)}
+        rows={generateRows(paginatedTags, onDelete, onUpdate)}
       />
       {generateNoTagsMessage(tags.length === 0, filter, searchText)}
     </>

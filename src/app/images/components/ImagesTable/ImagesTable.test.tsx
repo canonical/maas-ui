@@ -227,11 +227,6 @@ describe("ImagesTable", () => {
 
     await userEvent.click(delete_button);
 
-    // expect(
-    //   within(row).getByRole("gridcell", {
-    //     name: ImagesTableLabels.DeleteImageConfirm,
-    //   })
-    // ).toBeInTheDocument();
     expect(setSidePanelContent).toHaveBeenCalledWith(
       expect.objectContaining({
         view: ImageSidePanelViews.DELETE_IMAGE,

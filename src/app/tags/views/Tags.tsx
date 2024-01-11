@@ -64,6 +64,13 @@ const Tags = (): JSX.Element => {
       view: TagSidePanelViews.DeleteTag,
       extras: { fromDetails, id },
     });
+  const onUpdate = (id: Tag[TagMeta.PK]) =>
+    setSidePanelContent({
+      view: TagSidePanelViews.UpdateTag,
+      extras: {
+        id,
+      },
+    });
   const base = urls.tags.tag.index(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(TagSearchFilter.All);
@@ -101,12 +108,13 @@ const Tags = (): JSX.Element => {
         <Route
           element={
             isDetails ? (
-              <TagDetails tagViewState={tagViewState} />
+              <TagDetails />
             ) : (
               <TagList
                 currentPage={currentPage}
                 filter={filter}
                 onDelete={onDelete}
+                onUpdate={onUpdate}
                 searchText={searchText}
                 setCurrentPage={setCurrentPage}
                 tableId={tableId}
@@ -115,10 +123,6 @@ const Tags = (): JSX.Element => {
             )
           }
           path="/"
-        />
-        <Route
-          element={<TagDetails tagViewState={tagViewState} />}
-          path={getRelativeRoute(urls.tags.tag.update(null), base)}
         />
         <Route
           element={<TagMachines />}

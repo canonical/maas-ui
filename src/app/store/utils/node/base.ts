@@ -236,6 +236,8 @@ export const getSidePanelTitle = (
         return "Remove interface";
       case SidePanelViews.UPDATE_DATASTORE[1]:
         return "Update datastore";
+      case SidePanelViews.UpdateTag[1]:
+        return "Update Tag";
       default:
         return name ? getNodeActionTitle(name as NodeActions) : defaultTitle;
     }

@@ -10,7 +10,8 @@ export type TagSidePanelContent =
   | SidePanelContent<
       HeaderViews["DeleteTag"],
       { id: Tag[TagMeta.PK]; fromDetails?: boolean }
-    >;
+    >
+  | SidePanelContent<HeaderViews["UpdateTag"], { id: Tag[TagMeta.PK] }>;
 
 export type TagSetSidePanelContent = SetSidePanelContent<TagSidePanelContent>;
 
