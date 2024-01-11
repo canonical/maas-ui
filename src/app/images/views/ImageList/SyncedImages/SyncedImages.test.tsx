@@ -1,6 +1,8 @@
 import SyncedImages, { Labels as SyncedImagesLabels } from "./SyncedImages";
 
-import { BootResourceSourceType } from "@/app/store/bootresource/types";
+import * as sidePanelHooks from "app/base/side-panel-context";
+import { ImageSidePanelViews } from "app/images/constants";
+import { BootResourceSourceType } from "app/store/bootresource/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
@@ -16,7 +18,18 @@ import {
 } from "@/testing/utils";
 
 describe("SyncedImages", () => {
-  it("can render the form in a card", async () => {
+  const setSidePanelContent = jest.fn();
+
+  beforeEach(() => {
+    jest.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: jest.fn(),
+      sidePanelSize: "regular",
+    });
+  });
+
+  it("can trigger a side panel form", async () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         ubuntu: ubuntuFactory({
@@ -26,14 +39,18 @@ describe("SyncedImages", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(<SyncedImages formInCard />, {
+    renderWithBrowserRouter(<SyncedImages />, {
       state,
     });
 
     await userEvent.click(
       screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource })
     );
-    expect(screen.getByText("Choose source")).toBeInTheDocument();
+
+    expect(setSidePanelContent).toHaveBeenCalledWith({
+      view: ImageSidePanelViews.CHANGE_SOURCE,
+      extras: { hasSources: true },
+    });
   });
 
   it("renders the change source form and disables closing it if no sources are detected", () => {
@@ -43,10 +60,11 @@ describe("SyncedImages", () => {
       }),
     });
     renderWithBrowserRouter(<SyncedImages />, { state });
-    expect(screen.getByText("Choose source")).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Cancel" })
-    ).not.toBeInTheDocument();
+
+    expect(setSidePanelContent).toHaveBeenCalledWith({
+      view: ImageSidePanelViews.CHANGE_SOURCE,
+      extras: { hasSources: false },
+    });
   });
 
   it("renders the correct text for a single default source", () => {

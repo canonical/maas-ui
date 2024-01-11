@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import { actions as bootResourceActions } from "@/app/store/bootresource";
-import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import type { BootResource } from "@/app/store/bootresource/types";
-import { BootResourceAction } from "@/app/store/bootresource/types";
+import ModelDeleteForm from "app/base/components/ModelDeleteForm";
+import { actions as bootResourceActions } from "app/store/bootresource";
+import bootResourceSelectors from "app/store/bootresource/selectors";
+import type { BootResource } from "app/store/bootresource/types";
+import { BootResourceAction } from "app/store/bootresource/types";
 
 type Props = {
   closeForm: () => void;
@@ -38,20 +38,23 @@ const DeleteImageConfirm = ({
   }, [dispatch]);
 
   return (
-    <TableDeleteConfirm
-      deleted={saved}
-      deleting={saving}
+    <ModelDeleteForm
+      aria-label="Confirm image deletion"
       errors={error}
+      initialValues={{}}
       message={Labels.AreYouSure}
-      onClose={closeForm}
-      onConfirm={() => {
+      modelType="image"
+      onCancel={closeForm}
+      onSubmit={() => {
         dispatch(bootResourceActions.cleanup());
         dispatch(bootResourceActions.deleteImage({ id: resource.id }));
       }}
       onSuccess={() => {
         dispatch(bootResourceActions.poll({ continuous: false }));
+        closeForm();
       }}
-      sidebar={false}
+      saved={saved}
+      saving={saving}
     />
   );
 };

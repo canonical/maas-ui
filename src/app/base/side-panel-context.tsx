@@ -12,11 +12,13 @@ import {
 import {
   DomainListSidePanelViews,
   type DomainListSidePanelContent,
-} from "@/app/domains/views/DomainsList/constants";
-import { KVMSidePanelViews } from "@/app/kvm/constants";
-import type { KVMSidePanelContent } from "@/app/kvm/types";
-import { MachineSidePanelViews } from "@/app/machines/constants";
-import type { MachineSidePanelContent } from "@/app/machines/types";
+} from "app/domains/views/DomainsList/constants";
+import { ImageSidePanelViews } from "app/images/constants";
+import type { ImageSidePanelContent } from "app/images/types";
+import { KVMSidePanelViews } from "app/kvm/constants";
+import type { KVMSidePanelContent } from "app/kvm/types";
+import { MachineSidePanelViews } from "app/machines/constants";
+import type { MachineSidePanelContent } from "app/machines/types";
 import {
   NetworkDiscoverySidePanelViews,
   type NetworkDiscoverySidePanelContent,
@@ -61,6 +63,7 @@ export type SidePanelContent =
   | NetworkDiscoverySidePanelContent
   | VLANDetailsSidePanelContent
   | FabricDetailsSidePanelContent
+  | ImageSidePanelContent
   | SubnetDetailsSidePanelContent
   | SpaceDetailsSidePanelContent
   | null;
@@ -89,6 +92,7 @@ export const SidePanelViews = {
   ...NetworkDiscoverySidePanelViews,
   ...VLANDetailsSidePanelViews,
   ...FabricDetailsSidePanelViews,
+  ...ImageSidePanelViews,
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
 } as const;

@@ -8,12 +8,15 @@ import GeneratedImages from "./GeneratedImages";
 import ImageListHeader from "./ImageListHeader";
 import SyncedImages from "./SyncedImages";
 
-import PageContent from "@/app/base/components/PageContent";
-import { useWindowTitle } from "@/app/base/hooks";
-import { actions as bootResourceActions } from "@/app/store/bootresource";
-import bootResourceSelectors from "@/app/store/bootresource/selectors";
-import { actions as configActions } from "@/app/store/config";
-import configSelectors from "@/app/store/config/selectors";
+import PageContent from "app/base/components/PageContent";
+import { useWindowTitle } from "app/base/hooks";
+import { useSidePanel } from "app/base/side-panel-context";
+import ImagesForms from "app/images/components/ImagesForms";
+import { actions as bootResourceActions } from "app/store/bootresource";
+import bootResourceSelectors from "app/store/bootresource/selectors";
+import { actions as configActions } from "app/store/config";
+import configSelectors from "app/store/config/selectors";
+import { getSidePanelTitle } from "app/store/utils/node/base";
 
 export enum Labels {
   SyncDisabled = "Automatic image updates are disabled. This may mean that images won't be automatically updated and receive the latest package versions and security fixes.",
@@ -22,6 +25,7 @@ export enum Labels {
 const ImageList = (): JSX.Element => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configLoaded = useSelector(configSelectors.loaded);
   useWindowTitle("Images");
@@ -37,8 +41,15 @@ const ImageList = (): JSX.Element => {
   return (
     <PageContent
       header={<ImageListHeader />}
-      sidePanelContent={null}
-      sidePanelTitle={null}
+      sidePanelContent={
+        sidePanelContent && (
+          <ImagesForms
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        )
+      }
+      sidePanelTitle={getSidePanelTitle("Images", sidePanelContent)}
     >
       {configLoaded && (
         <>

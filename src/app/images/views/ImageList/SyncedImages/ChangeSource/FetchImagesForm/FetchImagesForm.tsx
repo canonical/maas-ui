@@ -54,6 +54,7 @@ const FetchImagesForm = ({ closeForm, setSource }: Props): JSX.Element => {
   return (
     <FormikForm<FetchImagesValues>
       allowUnchanged
+      aria-label="Choose source"
       cleanup={cleanup}
       errors={errors as APIError}
       initialValues={{

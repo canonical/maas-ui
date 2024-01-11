@@ -212,6 +212,8 @@ export const getSidePanelTitle = (
         return "Create new tag";
       case SidePanelViews.ADD_VLAN[1]:
         return "Add VLAN";
+      case SidePanelViews.CHANGE_SOURCE[1]:
+        return "Change source";
       case SidePanelViews.CREATE_DATASTORE[1]:
         return "Create datastore";
       case SidePanelViews.CREATE_RAID[1]:
@@ -224,6 +226,8 @@ export const getSidePanelTitle = (
         return "Edit interface";
       case SidePanelViews.CREATE_ZONE[1]:
         return "Add AZ";
+      case SidePanelViews.DELETE_IMAGE[1]:
+        return "Delete image";
       case SidePanelViews.DELETE_SPACE[1]:
         return "Delete space";
       case SidePanelViews.DELETE_FABRIC[1]:
