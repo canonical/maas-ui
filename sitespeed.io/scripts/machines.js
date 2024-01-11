@@ -5,7 +5,7 @@ const TIMEOUT = 120000;
 const waitForMachines = async (context, commands, pageSize = 50) => {
   context.log.info("waiting for machine list count");
   await commands.wait.byCondition(
-    `document.querySelector('[data-testid="section-header-title"]').textContent.includes("1000 machines")`,
+    `document.querySelector('[data-testid="main-toolbar-heading"]').textContent.includes("1000 machines")`,
     TIMEOUT
   );
   context.log.info(`waiting for ${pageSize} machine list rows`);

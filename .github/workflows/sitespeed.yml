@@ -10,7 +10,7 @@ jobs:
     name: Run sitespeed.io
     runs-on: ubuntu-22.04
     env:
-      MAAS_DOMAIN: localhost
+      MAAS_DOMAIN: "127.0.0.1"
     steps:
       - uses: actions/checkout@main
       - name: Setup MAAS
