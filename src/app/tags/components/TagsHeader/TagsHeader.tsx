@@ -92,7 +92,6 @@ export const TagsHeader = ({
             ) : (
               <>
                 <SearchBox
-                  className="u-no-margin--bottom"
                   externallyControlled
                   onChange={setSearchText}
                   value={searchText}
