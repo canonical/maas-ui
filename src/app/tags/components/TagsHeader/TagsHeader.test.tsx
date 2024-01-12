@@ -30,11 +30,11 @@ it("displays the searchbox and group select when isDetails is false", () => {
     <TagsHeader
       filter={TagSearchFilter.All}
       isDetails={false}
-      onDelete={jest.fn()}
+      onDelete={vi.fn()}
       searchText=""
-      setFilter={jest.fn()}
-      setSearchText={jest.fn()}
-      setSidePanelContent={jest.fn()}
+      setFilter={vi.fn()}
+      setSearchText={vi.fn()}
+      setSidePanelContent={vi.fn()}
     />,
     {
       route: "/tags",
@@ -72,11 +72,11 @@ it("displays edit and delete buttons, and a return link when isDetails is true",
           <TagsHeader
             filter={TagSearchFilter.All}
             isDetails={true}
-            onDelete={jest.fn()}
+            onDelete={vi.fn()}
             searchText=""
-            setFilter={jest.fn()}
-            setSearchText={jest.fn()}
-            setSidePanelContent={jest.fn()}
+            setFilter={vi.fn()}
+            setSearchText={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         }
         path={urls.tags.tag.index(null)}
@@ -110,10 +110,10 @@ it("can call a function to display the add tag form", async () => {
     <TagsHeader
       filter={TagSearchFilter.All}
       isDetails={false}
-      onDelete={jest.fn()}
+      onDelete={vi.fn()}
       searchText=""
-      setFilter={jest.fn()}
-      setSearchText={jest.fn()}
+      setFilter={vi.fn()}
+      setSearchText={vi.fn()}
       setSidePanelContent={setSidePanelContent}
     />,
     {
