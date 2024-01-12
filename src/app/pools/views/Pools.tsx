@@ -1,3 +1,4 @@
+import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
@@ -6,7 +7,6 @@ import { Link, Route, Routes } from "react-router-dom-v5-compat";
 import PoolList from "./PoolList";
 
 import PageContent from "@/app/base/components/PageContent";
-import MachinesHeader from "@/app/base/components/node/MachinesHeader";
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
@@ -29,20 +29,17 @@ const Pools = (): JSX.Element => {
   return (
     <PageContent
       header={
-        <MachinesHeader
-          buttons={[
+        <MainToolbar>
+          <MainToolbar.Title>
+            <Link to={urls.machines.index}>{machineCount} machines </Link>
+            in {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
+          </MainToolbar.Title>
+          <MainToolbar.Controls>
             <Button data-testid="add-pool" element={Link} to={urls.pools.add}>
               Add pool
-            </Button>,
-          ]}
-          machineCount={machineCount}
-          title={
-            <>
-              <Link to={urls.machines.index}>{machineCount} machines </Link>
-              in {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
-            </>
-          }
-        />
+            </Button>
+          </MainToolbar.Controls>
+        </MainToolbar>
       }
       sidePanelContent={null}
       sidePanelTitle={null}

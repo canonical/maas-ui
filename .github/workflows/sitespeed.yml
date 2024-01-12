@@ -1,10 +1,11 @@
 name: sitespeed.io
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - main
+      - "3.*"
 jobs:
   run-sitespeed:
-    if: github.event.pull_request.merged == true
     name: Run sitespeed.io
     runs-on: ubuntu-22.04
     env:
@@ -41,7 +42,7 @@ jobs:
       - name: Run sitespeed.io tests
         run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
       - name: Upload results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sitespeed.io-results
           path: sitespeed.io/results

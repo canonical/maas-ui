@@ -13,7 +13,7 @@ const SearchBox = (props: SearchBoxProps): JSX.Element => {
     searchBoxRef.current?.focus?.();
   });
 
-  return <BaseSearchBox {...props} ref={searchBoxRef} />;
+  return <BaseSearchBox aria-label="Search" {...props} ref={searchBoxRef} />;
 };
 
 export default SearchBox;

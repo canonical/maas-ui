@@ -162,7 +162,7 @@ describe("KVMList", () => {
     });
 
     expect(screen.queryByTestId("no-hosts")).not.toBeInTheDocument();
-    expect(screen.getAllByText(/Loading.../i)).toHaveLength(2);
+    expect(screen.getAllByText(/Loading/i)).toHaveLength(2);
     expect(
       screen.queryByText(/No LXD hosts available/i)
     ).not.toBeInTheDocument();

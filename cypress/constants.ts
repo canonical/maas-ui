@@ -1,4 +1,4 @@
-export type Page = { heading: string; url: string };
+export type Page = { heading: string; headingLevel?: number; url: string };
 export const pages: Page[] = [
   { heading: "Login", url: "/accounts/login" },
   { heading: "SSH keys for admin", url: "/intro/user" },
@@ -10,8 +10,12 @@ export const pages: Page[] = [
   { heading: "Images", url: "/images" },
   { heading: "DNS", url: "/domains" },
   { heading: "Availability zones", url: "/zones" },
-  { heading: "Settings", url: "/settings/configuration/general" },
-  { heading: "My preferences", url: "/account/prefs/details" },
+  {
+    heading: "Settings",
+    headingLevel: 2,
+    url: "/settings/configuration/general",
+  },
+  { heading: "My preferences", headingLevel: 2, url: "/account/prefs/details" },
 ];
 // longer timeout that can be useful for slow commands
 export const LONG_TIMEOUT = 30000;

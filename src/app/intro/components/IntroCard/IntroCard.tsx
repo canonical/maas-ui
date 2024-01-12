@@ -35,10 +35,10 @@ const IntroCard = ({
       title={
         <>
           <span className="u-flex--between">
-            <span className="p-heading--4" data-testid="section-header-title">
+            <h1 className="p-heading--4" data-testid="section-header-title">
               <Icon aria-label={icon} name={icon} />
               &ensp;{title}
-            </span>
+            </h1>
             {titleLink ? (
               <span className="p-text--default u-text--default-size">
                 {titleLink}

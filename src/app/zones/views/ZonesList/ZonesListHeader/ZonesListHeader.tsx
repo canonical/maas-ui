@@ -1,9 +1,10 @@
-import { Button } from "@canonical/react-components";
+import { MainToolbar } from "@canonical/maas-react-components";
+import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ZonesListTitle from "./ZonesListTitle";
 
-import SectionHeader from "@/app/base/components/SectionHeader";
+import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { actions } from "@/app/store/zone";
@@ -20,25 +21,28 @@ const ZonesListHeader = ({
 
   useFetchActions([actions.fetch]);
 
-  const buttons = [
-    <Button
-      data-testid="add-zone"
-      key="add-zone"
-      onClick={() => {
-        setSidePanelContent({ view: ZoneActionSidePanelViews.CREATE_ZONE });
-      }}
-    >
-      Add AZ
-    </Button>,
-  ];
-
   return (
-    <SectionHeader
-      buttons={buttons}
-      subtitle={`${zonesCount} AZs available`}
-      subtitleLoading={!zonesLoaded}
-      title={<ZonesListTitle />}
-    ></SectionHeader>
+    <MainToolbar>
+      <MainToolbar.Title>
+        <ZonesListTitle />
+      </MainToolbar.Title>
+      {zonesLoaded ? (
+        <ModelListSubtitle available={zonesCount} modelName="AZ" />
+      ) : (
+        <Spinner text="Loading..." />
+      )}
+      <MainToolbar.Controls>
+        <Button
+          data-testid="add-zone"
+          key="add-zone"
+          onClick={() => {
+            setSidePanelContent({ view: ZoneActionSidePanelViews.CREATE_ZONE });
+          }}
+        >
+          Add AZ
+        </Button>
+      </MainToolbar.Controls>
+    </MainToolbar>
   );
 };
 

@@ -61,9 +61,7 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
-      "2 KVM hosts available"
-    );
+    expect(screen.getByText("2 KVM hosts available")).toBeInTheDocument();
   });
 
   it("can open the add LXD form at the LXD URL", async () => {
@@ -83,8 +81,13 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add LXD host");
-    await userEvent.click(screen.getByTestId("add-kvm"));
+    expect(
+      screen.getByRole("button", { name: "Add LXD host" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Add Virsh host" })
+    ).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Add LXD host" }));
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMSidePanelViews.ADD_LXD_HOST,
     });
@@ -107,8 +110,15 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add Virsh host");
-    await userEvent.click(screen.getByTestId("add-kvm"));
+    expect(
+      screen.getByRole("button", { name: "Add Virsh host" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Add LXD host" })
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add Virsh host" })
+    );
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMSidePanelViews.ADD_VIRSH_HOST,
     });

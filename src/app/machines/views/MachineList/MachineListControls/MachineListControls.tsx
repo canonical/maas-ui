@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { Button, Icon } from "@canonical/react-components";
+import { MainToolbar } from "@canonical/maas-react-components";
+import { Button, Col, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
@@ -54,77 +55,64 @@ const MachineListControls = ({
   }, [filter]);
 
   return (
-    <div className="machine-list-controls">
-      <h1
-        className="section-header__title p-heading--4"
-        data-testid="section-header-title"
-      >
+    <MainToolbar>
+      <MainToolbar.Title>
         {machineCount} machines in{" "}
         <Link to={urls.pools.index}>
           {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
         </Link>
-      </h1>
-      <div className="machine-list-controls-inputs">
+      </MainToolbar.Title>
+      <MainToolbar.Controls>
         {!hasSelection ? (
           <>
-            <div className="machine-list-controls__item">
+            <Col size={3}>
               <MachinesFilterAccordion
                 searchText={searchText}
                 setSearchText={(searchText) => {
                   setFilter(searchText);
                 }}
               />
-            </div>
-            <div className="machine-list-controls__item u-flex--grow">
-              <DebounceSearchBox
-                onDebounced={(debouncedText) => setFilter(debouncedText)}
-                searchText={searchText}
-                setSearchText={setSearchText}
-              />
-            </div>
-            <div className="machine-list-controls__item u-hide--small u-hide--medium u-flex--align-baseline">
-              <GroupSelect<FetchGroupKey>
-                groupOptions={groupOptions}
-                grouping={grouping}
-                setGrouping={setGrouping}
-                setHiddenGroups={setHiddenGroups}
-              />
-            </div>
+            </Col>
+            <DebounceSearchBox
+              onDebounced={(debouncedText) => setFilter(debouncedText)}
+              searchText={searchText}
+              setSearchText={setSearchText}
+            />
+            <GroupSelect<FetchGroupKey>
+              groupOptions={groupOptions}
+              grouping={grouping}
+              setGrouping={setGrouping}
+              setHiddenGroups={setHiddenGroups}
+            />
           </>
         ) : (
           <>
-            <div className="machine-list-controls__item">
-              <MachineActionMenu
-                hasSelection={hasSelection}
-                setSidePanelContent={setSidePanelContent}
-              />
-            </div>
-            <div className="machine-list-controls__item">
-              <Button
-                appearance="link"
-                onClick={() => dispatch(machineActions.setSelected(null))}
-              >
-                Clear selection <Icon name="close-link" />
-              </Button>
-            </div>
+            <MachineActionMenu
+              hasSelection={hasSelection}
+              setSidePanelContent={setSidePanelContent}
+            />
+            <Button
+              appearance="link"
+              onClick={() => dispatch(machineActions.setSelected(null))}
+            >
+              Clear selection <Icon name="close-link" />
+            </Button>
           </>
         )}
         {!hasSelection ? (
-          <div className="machine-list-controls__item u-hide--small u-hide--medium">
+          <span className="u-hide--small u-hide--medium">
             <AddHardwareMenu
               key="add-hardware"
               setSidePanelContent={setSidePanelContent}
             />
-          </div>
+          </span>
         ) : null}
-        <div className="machine-list-controls__item">
-          <HiddenColumnsSelect
-            hiddenColumns={hiddenColumns}
-            setHiddenColumns={setHiddenColumns}
-          />
-        </div>
-      </div>
-    </div>
+        <HiddenColumnsSelect
+          hiddenColumns={hiddenColumns}
+          setHiddenColumns={setHiddenColumns}
+        />
+      </MainToolbar.Controls>
+    </MainToolbar>
   );
 };
 
