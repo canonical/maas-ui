@@ -42,6 +42,7 @@ it("renders", () => {
             currentPage={1}
             filter={TagSearchFilter.All}
             onDelete={vi.fn()}
+            onUpdate={vi.fn()}
             searchText=""
             setCurrentPage={vi.fn()}
             tableId="test-table"
