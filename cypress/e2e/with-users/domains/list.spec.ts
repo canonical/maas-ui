@@ -7,6 +7,6 @@ context("DNS", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains("DNS");
+    cy.get("[data-testid='main-toolbar-heading']").contains("DNS");
   });
 });
