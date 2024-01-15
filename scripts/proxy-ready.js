@@ -1,4 +1,4 @@
-import address from "address";
+import * as address from "address";
 import "colors";
 
 console.log("");
