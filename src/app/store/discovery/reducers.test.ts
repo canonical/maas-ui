@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("discovery reducers", () => {
   it("should return the initial state", () => {

@@ -1,26 +1,27 @@
 import { waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import MachineDetails from "./MachineDetails";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDevice as machineDeviceFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("MachineDetails", () => {
   let state: RootState;
-  let scrollToSpy: jest.Mock;
+  let scrollToSpy: Mock;
 
   beforeEach(() => {
-    scrollToSpy = jest.fn();
+    scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
     state = rootStateFactory({
       machine: machineStateFactory({
@@ -37,7 +38,7 @@ describe("MachineDetails", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   [

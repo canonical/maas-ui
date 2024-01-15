@@ -1,7 +1,7 @@
 import CloneNetworkTable from "./CloneNetworkTable";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -15,8 +15,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 describe("CloneNetworkTable", () => {
   let state: RootState;

@@ -2,14 +2,14 @@ import { Col, Row, Select } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
-import FormCard from "app/base/components/FormCard";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineDetails } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { usesStorage } from "app/store/utils";
+import FormCard from "@/app/base/components/FormCard";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { usesStorage } from "@/app/store/utils";
 
 const AddSpecialFilesystemSchema = Yup.object().shape({
   fstype: Yup.string().required(),

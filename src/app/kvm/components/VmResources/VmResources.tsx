@@ -4,16 +4,16 @@ import type { ValueOf } from "@canonical/react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import type { SortDirection } from "app/base/types";
-import MachineListTable from "app/machines/views/MachineList/MachineListTable";
-import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/constants";
-import type { FetchFilters, FetchGroupKey } from "app/store/machine/types";
-import { FilterGroupKey } from "app/store/machine/types";
-import { useFetchedCount } from "app/store/machine/utils";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { SortDirection } from "@/app/base/types";
+import MachineListTable from "@/app/machines/views/MachineList/MachineListTable";
+import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
+import type { FetchFilters, FetchGroupKey } from "@/app/store/machine/types";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import { useFetchedCount } from "@/app/store/machine/utils";
+import { useFetchMachines } from "@/app/store/machine/utils/hooks";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 
 export enum Label {
   ResourceVMs = "Resource VMs",

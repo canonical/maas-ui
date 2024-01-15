@@ -1,9 +1,9 @@
-import type { Fabric, FabricMeta } from "app/store/fabric/types";
-import type { Space, SpaceMeta } from "app/store/space/types";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import type { SubnetsUrlParams } from "app/subnets/types";
-import { argPath, isId } from "app/utils";
+import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
+import type { Space, SpaceMeta } from "@/app/store/space/types";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
+import type { SubnetsUrlParams } from "@/app/subnets/types";
+import { argPath, isId } from "@/app/utils";
 
 const urls = {
   index: "/networks",

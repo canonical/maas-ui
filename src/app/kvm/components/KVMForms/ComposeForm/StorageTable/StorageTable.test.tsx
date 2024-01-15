@@ -1,8 +1,8 @@
 import ComposeForm from "../ComposeForm";
 
-import { PodType } from "app/store/pod/constants";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -20,17 +20,17 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const generateWrapper = (state: RootState, pod: Pod) =>
   renderWithBrowserRouter(
-    <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+    <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { state, route: `/kvm/${pod.id}` }
   );
 

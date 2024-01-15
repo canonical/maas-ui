@@ -1,6 +1,6 @@
 import { actions } from "./";
 
-import { resourcePool as resourcePoolFactory } from "testing/factories";
+import { resourcePool as resourcePoolFactory } from "@/testing/factories";
 
 describe("resourcepool actions", () => {
   it("returns an action for fetching resource pools", () => {

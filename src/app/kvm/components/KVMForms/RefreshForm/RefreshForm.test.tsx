@@ -2,15 +2,15 @@ import configureStore from "redux-mock-store";
 
 import RefreshForm from "./RefreshForm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
   podStatuses as podStatusesFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -27,7 +27,7 @@ describe("RefreshForm", () => {
     });
 
     renderWithBrowserRouter(
-      <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1]} />,
+      <RefreshForm clearSidePanelContent={vi.fn()} hostIds={[1]} />,
       { state, route: "/kvm" }
     );
 
@@ -49,7 +49,7 @@ describe("RefreshForm", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1, 2]} />,
+      <RefreshForm clearSidePanelContent={vi.fn()} hostIds={[1, 2]} />,
       { store, route: "/kvm" }
     );
 

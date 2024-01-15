@@ -1,4 +1,4 @@
-import DoubleRow from "app/base/components/DoubleRow";
+import DoubleRow from "@/app/base/components/DoubleRow";
 
 type Props = {
   version?: string;

@@ -1,39 +1,51 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machineActionState as machineActionStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 let html: HTMLHtmlElement | null;
 const originalScrollTo = global.scrollTo;
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  vi.spyOn(query, "generateCallId").mockReturnValue("123456");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   global.innerHeight = 500;
   // eslint-disable-next-line testing-library/no-node-access
   html = document.querySelector("html");
-  global.scrollTo = jest.fn();
+  const scrollToSpy: Mock = vi.fn();
+  global.scrollTo = scrollToSpy;
 });
 
 afterEach(() => {
   if (html) {
     html.scrollTop = 0;
   }
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 afterAll(() => {
@@ -48,7 +60,7 @@ it("scrolls to the top of the window when opening the form", async () => {
   renderWithBrowserRouter(
     <MachineActionFormWrapper
       action={NodeActions.ABORT}
-      clearSidePanelContent={jest.fn()}
+      clearSidePanelContent={vi.fn()}
       selectedMachines={{}}
       viewingDetails={false}
     />
@@ -79,7 +91,7 @@ it("can show untag errors when the tag form is open", async () => {
   renderWithBrowserRouter(
     <MachineActionFormWrapper
       action={NodeActions.TAG}
-      clearSidePanelContent={jest.fn()}
+      clearSidePanelContent={vi.fn()}
       selectedMachines={{ items: [machines[0].system_id] }}
       viewingDetails={false}
     />,
@@ -100,7 +112,7 @@ it("clears selected machines and invalidates queries on delete success", async (
   renderWithBrowserRouter(
     <MachineActionFormWrapper
       action={NodeActions.DELETE}
-      clearSidePanelContent={jest.fn()}
+      clearSidePanelContent={vi.fn()}
       selectedMachines={{ items: [machines[0].system_id] }}
       viewingDetails={false}
     />,
@@ -123,7 +135,7 @@ it("displays a warning message and disabled submit button when selectedCount equ
   renderWithBrowserRouter(
     <MachineActionFormWrapper
       action={NodeActions.DELETE}
-      clearSidePanelContent={jest.fn()}
+      clearSidePanelContent={vi.fn()}
       selectedCount={0}
       selectedMachines={{ filter: {} }}
       viewingDetails={false}
@@ -162,7 +174,7 @@ it("displays an error message with failure details", async () => {
   renderWithBrowserRouter(
     <MachineActionFormWrapper
       action={NodeActions.MARK_BROKEN}
-      clearSidePanelContent={jest.fn()}
+      clearSidePanelContent={vi.fn()}
       selectedCountLoading={false}
       selectedMachines={{ items: [machines[0].system_id] }}
       viewingDetails={false}

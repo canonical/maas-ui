@@ -7,11 +7,11 @@ import * as Yup from "yup";
 
 import Fields from "./IpmiFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useWindowTitle } from "app/base/hooks";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { AutoIpmiPrivilegeLevel } from "app/store/config/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useWindowTitle } from "@/app/base/hooks";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
+import { AutoIpmiPrivilegeLevel } from "@/app/store/config/types";
 
 const IpmiSchema = Yup.object().shape({
   maas_auto_ipmi_user: Yup.string()

@@ -1,7 +1,7 @@
 import { actions } from "./slice";
 import { DeviceIpAssignment } from "./types";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 
 describe("device actions", () => {
   it("should handle fetching devices", () => {

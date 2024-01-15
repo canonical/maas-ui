@@ -5,30 +5,30 @@ import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
-import EditableSection from "app/base/components/EditableSection";
-import FormikForm from "app/base/components/FormikForm";
-import PowerTypeFields from "app/base/components/PowerTypeFields";
-import NodePowerParameters from "app/base/components/node/NodePowerParameters";
-import { useCanEdit, useWindowTitle } from "app/base/hooks";
-import authSelectors from "app/store/auth/selectors";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
+import EditableSection from "@/app/base/components/EditableSection";
+import FormikForm from "@/app/base/components/FormikForm";
+import PowerTypeFields from "@/app/base/components/PowerTypeFields";
+import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
+import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
+import authSelectors from "@/app/store/auth/selectors";
+import { actions as controllerActions } from "@/app/store/controller";
+import controllerSelectors from "@/app/store/controller/selectors";
 import type {
   Controller,
   ControllerDetails,
   ControllerMeta,
-} from "app/store/controller/types";
-import { isControllerDetails } from "app/store/controller/utils";
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import type { PowerType } from "app/store/general/types";
+} from "@/app/store/controller/types";
+import { isControllerDetails } from "@/app/store/controller/utils";
+import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
+import type { PowerType } from "@/app/store/general/types";
 import {
   formatPowerParameters,
   generatePowerParametersSchema,
   getPowerTypeFromName,
   useInitialPowerParameters,
-} from "app/store/general/utils";
-import type { RootState } from "app/store/root/types";
-import type { PowerParameters } from "app/store/types/node";
+} from "@/app/store/general/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { PowerParameters } from "@/app/store/types/node";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

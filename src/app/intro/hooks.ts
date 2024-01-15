@@ -1,4 +1,4 @@
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 
 /**
  * Get the URL to redirect to when the intro closes.

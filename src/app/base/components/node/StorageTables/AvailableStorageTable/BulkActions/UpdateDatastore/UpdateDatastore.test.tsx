@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import UpdateDatastore from "./UpdateDatastore";
 
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
+import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -14,8 +14,8 @@ import {
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -53,7 +53,7 @@ describe("UpdateDatastore", () => {
     });
     renderWithBrowserRouter(
       <UpdateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -85,7 +85,7 @@ describe("UpdateDatastore", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <UpdateDatastore
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,

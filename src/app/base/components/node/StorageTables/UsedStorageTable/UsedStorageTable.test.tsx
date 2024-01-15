@@ -3,17 +3,17 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import UsedStorageTable from "./UsedStorageTable";
 
-import urls from "app/base/urls";
-import { FilterControllers } from "app/store/controller/utils";
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import { FilterMachines } from "app/store/machine/utils";
-import { DiskTypes } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import { FilterControllers } from "@/app/store/controller/utils";
+import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   nodeDisk as diskFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 it("can show an empty message", () => {
   const node = machineDetailsFactory({

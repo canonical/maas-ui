@@ -1,4 +1,4 @@
-import TooltipButton from "app/base/components/TooltipButton";
+import TooltipButton from "@/app/base/components/TooltipButton";
 
 const ManagedAllocationLabel = (): JSX.Element => (
   <>

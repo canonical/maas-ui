@@ -3,8 +3,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import { createCachedSelector } from "re-reselect";
 import type { ParametricSelector } from "re-reselect";
 
-import type { RootState } from "app/store/root/types";
-import type { CommonStates, CommonStateTypes } from "app/store/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { CommonStates, CommonStateTypes } from "@/app/store/utils";
 
 /**
  * @template I - A model item type e.g. DHCPSnippet

@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import EditFabric from "./EditFabric";
 
-import { actions as fabricActions } from "app/store/fabric";
+import { actions as fabricActions } from "@/app/store/fabric";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const getRootState = () =>
   rootStateFactory({
@@ -38,7 +38,7 @@ it("dispatches an update action on submit", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <EditFabric close={jest.fn()} id={fabric.id} />
+          <EditFabric close={vi.fn()} id={fabric.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

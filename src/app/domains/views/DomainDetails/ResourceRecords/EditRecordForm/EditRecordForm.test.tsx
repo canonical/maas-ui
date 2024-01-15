@@ -7,22 +7,22 @@ import EditRecordForm, {
   Labels as EditRecordFormLabels,
 } from "./EditRecordForm";
 
-import { Labels as RecordFieldsLabels } from "app/domains/components/RecordFields/RecordFields";
-import { actions as domainActions } from "app/store/domain";
-import { RecordType } from "app/store/domain/types";
-import type { RootState } from "app/store/root/types";
+import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
+import { actions as domainActions } from "@/app/store/domain";
+import { RecordType } from "@/app/store/domain/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainDetails as domainFactory,
   domainState as domainStateFactory,
   domainResource as resourceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -58,7 +58,7 @@ describe("EditRecordForm", () => {
   });
 
   it("closes the form when Cancel button is clicked", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
 
     renderWithBrowserRouter(
       <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />,
@@ -76,7 +76,7 @@ describe("EditRecordForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
+            <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

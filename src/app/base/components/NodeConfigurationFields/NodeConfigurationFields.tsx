@@ -9,12 +9,12 @@ import type { SchemaOf } from "yup";
 
 import type { NodeConfigurationValues } from "./types";
 
-import FormikField from "app/base/components/FormikField";
-import TagIdField from "app/base/components/TagIdField";
-import ZoneSelect from "app/base/components/ZoneSelect";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import AddTagForm from "app/tags/components/AddTagForm";
+import FormikField from "@/app/base/components/FormikField";
+import TagIdField from "@/app/base/components/TagIdField";
+import ZoneSelect from "@/app/base/components/ZoneSelect";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import AddTagForm from "@/app/tags/components/AddTagForm";
 
 export enum Label {
   AddTag = "Create a new tag",

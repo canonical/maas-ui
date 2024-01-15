@@ -9,27 +9,27 @@ import DiscoveryAddFormFields from "./DiscoveryAddFormFields";
 import { DeviceType } from "./types";
 import type { DiscoveryAddValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useFetchActions, useCycled } from "app/base/hooks";
-import urls from "app/base/urls";
-import { hostnameValidation } from "app/base/validation";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
-import type { CreateInterfaceParams, Device } from "app/store/device/types";
-import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
-import { actions as discoveryActions } from "app/store/discovery";
-import type { Discovery } from "app/store/discovery/types";
-import { actions as domainActions } from "app/store/domain";
-import domainSelectors from "app/store/domain/selectors";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
-import { actions as messageActions } from "app/store/message";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { FetchNodeStatus } from "app/store/types/node";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import { preparePayload } from "app/utils";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions, useCycled } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { hostnameValidation } from "@/app/base/validation";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { CreateInterfaceParams, Device } from "@/app/store/device/types";
+import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
+import { actions as discoveryActions } from "@/app/store/discovery";
+import type { Discovery } from "@/app/store/discovery/types";
+import { actions as domainActions } from "@/app/store/domain";
+import domainSelectors from "@/app/store/domain/selectors";
+import { useFetchMachines } from "@/app/store/machine/utils/hooks";
+import { actions as messageActions } from "@/app/store/message";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { FetchNodeStatus } from "@/app/store/types/node";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { preparePayload } from "@/app/utils";
 
 export enum Labels {
   SubmitLabel = "Save",

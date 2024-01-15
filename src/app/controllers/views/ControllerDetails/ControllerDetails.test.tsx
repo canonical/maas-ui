@@ -2,28 +2,30 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import { ControllerDetailsTabLabels } from "../../constants";
 
 import ControllerDetails from "./ControllerDetails";
 
-import urls from "app/base/urls";
-import { actions as controllerActions } from "app/store/controller";
+import urls from "@/app/base/urls";
+import { actions as controllerActions } from "@/app/store/controller";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 beforeEach(() => {
-  global.scrollTo = jest.fn();
+  const scrollToSpy: Mock = vi.fn();
+  global.scrollTo = scrollToSpy;
 });
 
 afterAll(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("gets and sets the controller as active", () => {

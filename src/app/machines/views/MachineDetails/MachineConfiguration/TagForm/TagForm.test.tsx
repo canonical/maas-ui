@@ -5,11 +5,11 @@ import configureStore from "redux-mock-store";
 
 import TagForm from "./TagForm";
 
-import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
-import urls from "app/base/urls";
-import { Label as TagFormFieldsLabel } from "app/machines/components/MachineForms/MachineActionFormWrapper/TagForm/TagFormFields";
-import { FilterMachines } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
+import urls from "@/app/base/urls";
+import { Label as TagFormFieldsLabel } from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TagForm/TagFormFields";
+import { FilterMachines } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -18,8 +18,8 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

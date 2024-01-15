@@ -1,7 +1,8 @@
 import { Bakery, BakeryStorage } from "@canonical/macaroon-bakery";
 
-import { actions as statusActions } from "app/store/status";
-import { store } from "redux-store";
+import { store } from "./redux-store";
+
+import { actions as statusActions } from "@/app/store/status";
 
 // Initialise Macaroon Bakery singleton
 const visit = (error: { Info: { VisitURL: string } }) => {

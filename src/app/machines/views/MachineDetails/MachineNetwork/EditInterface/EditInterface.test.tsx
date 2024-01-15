@@ -1,7 +1,7 @@
 import EditInterface from "./EditInterface";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -10,8 +10,8 @@ import {
   machineStatuses as machineStatusesFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("EditInterface", () => {
   let state: RootState;
@@ -34,9 +34,9 @@ describe("EditInterface", () => {
     state.machine.items = [];
     renderWithBrowserRouter(
       <EditInterface
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
@@ -59,10 +59,10 @@ describe("EditInterface", () => {
     ];
     renderWithBrowserRouter(
       <EditInterface
-        close={jest.fn()}
+        close={vi.fn()}
         nicId={nic.id}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
@@ -92,11 +92,11 @@ describe("EditInterface", () => {
     ];
     renderWithBrowserRouter(
       <EditInterface
-        close={jest.fn()}
+        close={vi.fn()}
         linkId={link.id}
         nicId={nic.id}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
@@ -124,10 +124,10 @@ describe("EditInterface", () => {
     ];
     renderWithBrowserRouter(
       <EditInterface
-        close={jest.fn()}
+        close={vi.fn()}
         nicId={nic.id}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
@@ -155,10 +155,10 @@ describe("EditInterface", () => {
     ];
     renderWithBrowserRouter(
       <EditInterface
-        close={jest.fn()}
+        close={vi.fn()}
         nicId={nic.id}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       {

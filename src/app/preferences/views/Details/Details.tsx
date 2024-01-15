@@ -4,13 +4,13 @@ import { ContentSection } from "@canonical/maas-react-components";
 import { Col, Notification, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import UserForm from "app/base/components/UserForm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import { actions as authActions } from "app/store/auth";
-import authSelectors from "app/store/auth/selectors";
-import statusSelectors from "app/store/status/selectors";
-import { actions as userActions } from "app/store/user";
-import userSelectors from "app/store/user/selectors";
+import UserForm from "@/app/base/components/UserForm";
+import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import { actions as authActions } from "@/app/store/auth";
+import authSelectors from "@/app/store/auth/selectors";
+import statusSelectors from "@/app/store/status/selectors";
+import { actions as userActions } from "@/app/store/user";
+import userSelectors from "@/app/store/user/selectors";
 
 export enum Label {
   Title = "Details",

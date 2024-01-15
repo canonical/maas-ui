@@ -5,7 +5,7 @@ import {
   generatedCertificate as certificateFactory,
   generatedCertificateState as generatedCertificateStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("generatedCertificate selectors", () => {
   describe("get", () => {

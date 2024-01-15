@@ -8,10 +8,10 @@ import * as Yup from "yup";
 import StorageFormFields from "./StorageFormFields";
 import type { StorageFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useWindowTitle } from "app/base/hooks";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useWindowTitle } from "@/app/base/hooks";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
 
 const StorageSchema = Yup.object().shape({
   default_storage_layout: Yup.string().required(),

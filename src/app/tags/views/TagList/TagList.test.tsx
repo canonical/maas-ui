@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import TagList from "./TagList";
 
-import type { RootState } from "app/store/root/types";
-import { TagSearchFilter } from "app/store/tag/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { TagSearchFilter } from "@/app/store/tag/selectors";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -41,9 +41,9 @@ it("renders", () => {
           <TagList
             currentPage={1}
             filter={TagSearchFilter.All}
-            onDelete={jest.fn()}
+            onDelete={vi.fn()}
             searchText=""
-            setCurrentPage={jest.fn()}
+            setCurrentPage={vi.fn()}
             tableId="test-table"
             tags={[]}
           />

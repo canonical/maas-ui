@@ -5,9 +5,9 @@ import type { NewPodValues } from "../types";
 
 import SelectProjectForm from "./SelectProjectForm";
 
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { actions as podActions } from "@/app/store/pod";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podProject as podProjectFactory,
   podState as podStateFactory,
@@ -16,13 +16,13 @@ import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   fireEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -61,10 +61,10 @@ describe("SelectProjectForm", () => {
     };
     renderWithBrowserRouter(
       <SelectProjectForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setStep={jest.fn()}
-        setSubmissionErrors={jest.fn()}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", state }
     );
@@ -81,10 +81,10 @@ describe("SelectProjectForm", () => {
     };
     renderWithBrowserRouter(
       <SelectProjectForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setStep={jest.fn()}
-        setSubmissionErrors={jest.fn()}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", state }
     );
@@ -109,10 +109,10 @@ describe("SelectProjectForm", () => {
 
     renderWithBrowserRouter(
       <SelectProjectForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setStep={jest.fn()}
-        setSubmissionErrors={jest.fn()}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -153,10 +153,10 @@ describe("SelectProjectForm", () => {
 
     renderWithBrowserRouter(
       <SelectProjectForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setStep={jest.fn()}
-        setSubmissionErrors={jest.fn()}
+        setStep={vi.fn()}
+        setSubmissionErrors={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -189,12 +189,12 @@ describe("SelectProjectForm", () => {
   });
 
   it("reverts back to credentials step if attempt to create pod results in error", () => {
-    const setStep = jest.fn();
-    const setSubmissionErrors = jest.fn();
+    const setStep = vi.fn();
+    const setSubmissionErrors = vi.fn();
     state.pod.errors = "it didn't work";
     renderWithBrowserRouter(
       <SelectProjectForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={setStep}
         setSubmissionErrors={setSubmissionErrors}

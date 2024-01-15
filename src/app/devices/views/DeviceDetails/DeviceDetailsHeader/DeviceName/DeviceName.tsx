@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import NodeName from "app/base/components/NodeName";
-import { useFetchActions } from "app/base/hooks";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device } from "app/store/device/types";
-import { DeviceMeta } from "app/store/device/types";
-import { actions as domainActions } from "app/store/domain";
-import domainSelectors from "app/store/domain/selectors";
-import type { RootState } from "app/store/root/types";
+import NodeName from "@/app/base/components/NodeName";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device } from "@/app/store/device/types";
+import { DeviceMeta } from "@/app/store/device/types";
+import { actions as domainActions } from "@/app/store/domain";
+import domainSelectors from "@/app/store/domain/selectors";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   editingName: boolean;

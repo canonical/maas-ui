@@ -8,7 +8,7 @@ import type {
 import { Input } from "@canonical/react-components";
 import { useField } from "formik";
 
-import { useId } from "app/base/hooks/base";
+import { useId } from "@/app/base/hooks/base";
 
 export type Props<C extends ElementType | ComponentType = typeof Input> = {
   component?: C;

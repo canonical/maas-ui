@@ -5,11 +5,11 @@ import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "./LXDHostToolbar";
 
-import * as hooks from "app/base/hooks/analytics";
-import urls from "app/base/urls";
-import { ConfigNames } from "app/store/config/types";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import urls from "@/app/base/urls";
+import { ConfigNames } from "@/app/store/config/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -20,8 +20,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { waitFor, render, screen, within, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { waitFor, render, screen, within, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -58,8 +58,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -84,8 +84,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -115,8 +115,8 @@ describe("LXDHostToolbar", () => {
             <LXDHostToolbar
               clusterId={2}
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -143,8 +143,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -167,8 +167,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -190,8 +190,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>
@@ -222,7 +222,7 @@ describe("LXDHostToolbar", () => {
         ],
       }),
     });
-    const useSendMock = jest.spyOn(hooks, "useSendAnalytics");
+    const useSendMock = vi.spyOn(hooks, "useSendAnalytics");
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -230,8 +230,8 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setSidePanelContent={jest.fn()}
-              setViewByNuma={jest.fn()}
+              setSidePanelContent={vi.fn()}
+              setViewByNuma={vi.fn()}
               viewByNuma={false}
             />
           </CompatRouter>

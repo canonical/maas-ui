@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
 
 const VMWareSchema = Yup.object().shape({
   vcenter_server: Yup.string(),

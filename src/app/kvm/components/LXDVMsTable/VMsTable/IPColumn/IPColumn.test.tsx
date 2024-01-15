@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import IPColumn from "./IPColumn";
 
-import type { NodeIpAddress } from "app/store/types/node";
+import type { NodeIpAddress } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineIpAddress as ipAddressFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

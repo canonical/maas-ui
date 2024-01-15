@@ -1,11 +1,11 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
 
-import { actions as machineActions } from "app/store/machine";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -17,24 +17,33 @@ import {
   machineStatuses as machineStatusesFactory,
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
+
 const mockStore = configureStore<RootState>();
+
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 describe("CloneForm", () => {
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
+    vi.spyOn(query, "generateCallId").mockReturnValue("123456");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("should be submittable only when a machine and cloning config are selected", async () => {
@@ -73,7 +82,7 @@ describe("CloneForm", () => {
     state.vlan.loaded = true;
     renderWithBrowserRouter(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -97,9 +106,12 @@ describe("CloneForm", () => {
     expect(
       screen.getByRole("button", { name: "Clone to machine" })
     ).toBeDisabled();
-    expect(
-      screen.getByRole("checkbox", { name: "Clone network configuration" })
-    ).toBeEnabled();
+
+    await vi.waitFor(() => {
+      expect(
+        screen.getByRole("checkbox", { name: "Clone network configuration" })
+      ).toBeEnabled();
+    });
 
     // Select config to clone - submit should be re-disabled.
     await userEvent.click(
@@ -154,7 +166,7 @@ describe("CloneForm", () => {
 
     const { rerender } = renderWithBrowserRouter(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         processingCount={0}
         selectedMachines={{ items: [machines[1].system_id] }}
         viewingDetails={false}
@@ -177,7 +189,7 @@ describe("CloneForm", () => {
     mockFormikFormSaved();
     rerender(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         processingCount={0}
         selectedMachines={{ items: [machines[1].system_id] }}
         viewingDetails={false}
@@ -230,7 +242,7 @@ describe("CloneForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CloneForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         selectedMachines={{
           items: [machines[0].system_id, machines[1].system_id],
@@ -264,6 +276,6 @@ describe("CloneForm", () => {
     const actualAction = store
       .getActions()
       .find((action) => action.type === expectedAction.type);
-    expect(expectedAction).toStrictEqual(actualAction);
+    expect(actualAction).toStrictEqual(expectedAction);
   });
 });

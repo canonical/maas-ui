@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
-import RecordFields from "app/domains/components/RecordFields";
-import { actions as domainActions } from "app/store/domain";
-import { MIN_TTL } from "app/store/domain/constants";
-import domainSelectors from "app/store/domain/selectors";
-import type { Domain, DomainResource } from "app/store/domain/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import RecordFields from "@/app/domains/components/RecordFields";
+import { actions as domainActions } from "@/app/store/domain";
+import { MIN_TTL } from "@/app/store/domain/constants";
+import domainSelectors from "@/app/store/domain/selectors";
+import type { Domain, DomainResource } from "@/app/store/domain/types";
 
 type Props = {
   closeForm: () => void;

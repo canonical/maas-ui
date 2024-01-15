@@ -1,4 +1,4 @@
-import type { AnyObject } from "app/base/types";
+import type { AnyObject } from "@/app/base/types";
 
 // The script parameters are parsed from a JSON object with any shape so we have
 // to do a bit more work to be sure we're retrieving valid values.

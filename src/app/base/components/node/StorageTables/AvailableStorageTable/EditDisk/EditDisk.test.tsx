@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import EditDisk from "./EditDisk";
 
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
-import type { Disk } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
+import type { Disk } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -12,8 +12,8 @@ import {
   machineStatuses as machineStatusesFactory,
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -43,7 +43,7 @@ describe("EditDisk", () => {
 
   it("shows filesystem fields if the disk is not the boot disk", () => {
     renderWithBrowserRouter(
-      <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <EditDisk closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { state }
     );
 
@@ -72,7 +72,7 @@ describe("EditDisk", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <EditDisk closeExpanded={jest.fn()} disk={disk} systemId="abc123" />,
+      <EditDisk closeExpanded={vi.fn()} disk={disk} systemId="abc123" />,
       { store }
     );
 

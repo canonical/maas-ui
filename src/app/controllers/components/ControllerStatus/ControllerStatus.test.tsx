@@ -1,20 +1,15 @@
 import { ControllerStatus } from "./ControllerStatus";
 
-import type { RootState } from "app/store/root/types";
-import { ServiceStatus } from "app/store/service/types";
+import type { RootState } from "@/app/store/root/types";
+import { ServiceStatus } from "@/app/store/service/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
-import {
-  screen,
-  renderWithBrowserRouter,
-  userEvent,
-  expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 const getIcon = () => screen.getByTestId("controller-status-icon");
 
@@ -51,7 +46,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-error");
-    await expectTooltipOnHover(screen.getByRole("button"), "2 dead");
+    await userEvent.hover(getIcon());
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("2 dead");
+    });
   });
 
   it("handles a degraded controller", async () => {
@@ -72,7 +70,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--warning");
-    await expectTooltipOnHover(getIcon(), "2 degraded");
+    await userEvent.hover(getIcon());
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("2 degraded");
+    });
   });
 
   it("handles a running controller", async () => {
@@ -93,7 +94,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--success");
-    await expectTooltipOnHover(getIcon(), "2 running");
+    await userEvent.hover(getIcon());
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
+    });
   });
 
   it("handles a powered off controller", async () => {
@@ -114,7 +118,10 @@ describe("ControllerStatus", () => {
       state,
     });
     expect(getIcon()).toHaveClass("p-icon--power-off");
-    await expectTooltipOnHover(getIcon(), "2 off");
+    await userEvent.hover(getIcon());
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("2 off");
+    });
   });
 
   it("handles a controller with unknown status", async () => {

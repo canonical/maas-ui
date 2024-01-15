@@ -7,7 +7,7 @@ import {
   podProject as podProjectFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("pod reducer", () => {
   it("returns the initial state", () => {

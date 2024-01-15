@@ -1,11 +1,12 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
 import CloneFormFields from "./CloneFormFields";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
@@ -15,12 +16,24 @@ import {
   rootState as rootStateFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, userEvent, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import {
+  renderWithMockStore,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const callId = "mocked-nanoid";
 
-enableCallIdMocks();
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 describe("CloneFormFields", () => {
   let state: RootState;
@@ -29,6 +42,8 @@ describe("CloneFormFields", () => {
     system_id: "abc123",
   });
   beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
     state = rootStateFactory({
       fabric: fabricStateFactory({ loaded: true }),
 
@@ -51,7 +66,7 @@ describe("CloneFormFields", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("dispatches action to fetch data on load", async () => {
@@ -59,12 +74,9 @@ describe("CloneFormFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
-        <CloneFormFields
-          selectedMachine={null}
-          setSelectedMachine={jest.fn()}
-        />
+        <CloneFormFields selectedMachine={null} setSelectedMachine={vi.fn()} />
       </Formik>,
       { store }
     );
@@ -93,12 +105,9 @@ describe("CloneFormFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
-        <CloneFormFields
-          selectedMachine={null}
-          setSelectedMachine={jest.fn()}
-        />
+        <CloneFormFields selectedMachine={null} setSelectedMachine={vi.fn()} />
       </Formik>,
       { store }
     );
@@ -119,11 +128,11 @@ describe("CloneFormFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ interfaces: false, source: "", storage: false }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <CloneFormFields
           selectedMachine={machine}
-          setSelectedMachine={jest.fn()}
+          setSelectedMachine={vi.fn()}
         />
       </Formik>,
       { state }

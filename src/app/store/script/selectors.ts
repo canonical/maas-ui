@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { RootState } from "app/store/root/types";
-import { ScriptMeta, ScriptType } from "app/store/script/types";
-import type { Script, ScriptState } from "app/store/script/types";
-import { generateBaseSelectors } from "app/store/utils";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptMeta, ScriptType } from "@/app/store/script/types";
+import type { Script, ScriptState } from "@/app/store/script/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 type ScriptTypeName = keyof typeof ScriptType;
 

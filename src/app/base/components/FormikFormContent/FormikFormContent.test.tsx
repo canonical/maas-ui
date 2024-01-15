@@ -7,28 +7,31 @@ import * as Yup from "yup";
 
 import FormikFormContent from "./FormikFormContent";
 
-import { TestIds } from "app/base/components/FormikFormButtons";
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { TestIds } from "@/app/base/components/FormikFormButtons";
+import * as hooks from "@/app/base/hooks/analytics";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   render,
   screen,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom-v5-compat", () => ({
-  ...jest.requireActual("react-router-dom-v5-compat"),
-  useNavigate: () => mockUseNavigate,
-}));
+const mockUseNavigate = vi.fn();
+vi.mock("react-router-dom-v5-compat", async () => {
+  const actual: object = await vi.importActual("react-router-dom-v5-compat");
+  return {
+    ...actual,
+    useNavigate: () => mockUseNavigate,
+  };
+});
 
 describe("FormikFormContent", () => {
   let state: RootState;
@@ -43,14 +46,14 @@ describe("FormikFormContent", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.resetAllMocks();
+    vi.resetModules();
+    vi.resetAllMocks();
   });
 
   it("disables cancel button while saving", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
-        <FormikFormContent onCancel={jest.fn()} saving>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <FormikFormContent onCancel={vi.fn()} saving>
           Content
         </FormikFormContent>
       </Formik>,
@@ -61,7 +64,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can disable the submit button", async () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     renderWithBrowserRouter(
       <Formik initialValues={{}} onSubmit={onSubmit}>
         <FormikFormContent
@@ -80,8 +83,8 @@ describe("FormikFormContent", () => {
 
   it("can override disabling cancel button while saving", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
-        <FormikFormContent cancelDisabled={false} onCancel={jest.fn()} saving>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <FormikFormContent cancelDisabled={false} onCancel={vi.fn()} saving>
           Content
         </FormikFormContent>
       </Formik>,
@@ -93,7 +96,7 @@ describe("FormikFormContent", () => {
 
   it("can display non-field errors from a string", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
       </Formik>,
       { state }
@@ -104,7 +107,7 @@ describe("FormikFormContent", () => {
 
   it("can display non-field errors from the __all__ key", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={{ __all__: ["Uh oh!"] }}>
           Content
         </FormikFormContent>
@@ -117,7 +120,7 @@ describe("FormikFormContent", () => {
 
   it("can display non-field errors from the unknown keys with strings", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={{ username: "Wrong username" }}>
           Content
         </FormikFormContent>
@@ -130,7 +133,7 @@ describe("FormikFormContent", () => {
 
   it("does not display non-field errors for fields", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{ username: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ username: "" }} onSubmit={vi.fn()}>
         <FormikFormContent errors={{ username: "Wrong username" }}>
           Content
         </FormikFormContent>
@@ -143,7 +146,7 @@ describe("FormikFormContent", () => {
 
   it("can display non-field errors from the unknown keys with arrays", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent
           errors={{
             username: ["Wrong username", "Username must be provided"],
@@ -161,7 +164,7 @@ describe("FormikFormContent", () => {
 
   it("can display custom components for non-field errors", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={<div>Errors component text</div>}>
           Content
         </FormikFormContent>
@@ -174,7 +177,7 @@ describe("FormikFormContent", () => {
 
   it("can be inline", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent aria-label="Fake form" inline>
           Content
         </FormikFormContent>
@@ -188,7 +191,7 @@ describe("FormikFormContent", () => {
 
   it("does not render buttons if editable is set to false", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent editable={false}>Content</FormikFormContent>
       </Formik>,
       { state }
@@ -199,7 +202,7 @@ describe("FormikFormContent", () => {
 
   it("can redirect when saved", () => {
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent saved={true} savedRedirect="/success">
           Content
         </FormikFormContent>
@@ -212,12 +215,12 @@ describe("FormikFormContent", () => {
 
   it("can clean up when unmounted", async () => {
     const store = mockStore(state);
-    const cleanup = jest.fn(() => ({
+    const cleanup = vi.fn(() => ({
       type: "CLEANUP",
     }));
 
     const { unmount } = renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent cleanup={cleanup}>Content</FormikFormContent>
       </Formik>,
       { store }
@@ -234,10 +237,10 @@ describe("FormikFormContent", () => {
       category: "Settings",
       label: "Form",
     };
-    const useSendMock = jest.spyOn(hooks, "useSendAnalyticsWhen");
+    const useSendMock = vi.spyOn(hooks, "useSendAnalyticsWhen");
 
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent
           onSaveAnalytics={eventData}
           saved={true}
@@ -273,7 +276,7 @@ describe("FormikFormContent", () => {
           <CompatRouter>
             <Formik
               initialValues={initialValues}
-              onSubmit={jest.fn()}
+              onSubmit={vi.fn()}
               validationSchema={Schema}
             >
               <FormikFormContent resetOnSave saved={saved}>
@@ -308,7 +311,7 @@ describe("FormikFormContent", () => {
           <CompatRouter>
             <Formik
               initialValues={initialValues}
-              onSubmit={jest.fn()}
+              onSubmit={vi.fn()}
               validationSchema={Schema}
             >
               <FormikFormContent resetOnSave saved={saved}>
@@ -336,13 +339,13 @@ describe("FormikFormContent", () => {
   });
 
   it("runs onSuccess function if successfully saved with no errors", async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const store = mockStore(state);
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <Formik initialValues={{}} onSubmit={vi.fn()}>
               <FormikFormContent onSuccess={onSuccess} saved={saved}>
                 <Field name="val1" />
               </FormikFormContent>
@@ -359,9 +362,9 @@ describe("FormikFormContent", () => {
   });
 
   it("does not run onSuccess on first render", async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     renderWithBrowserRouter(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <FormikFormContent errors={null} onSuccess={onSuccess} saved={true}>
           <Field name="val1" />
         </FormikFormContent>
@@ -373,13 +376,13 @@ describe("FormikFormContent", () => {
   });
 
   it("does not run onSuccess function if saved but there are errors", async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const store = mockStore(state);
     const Proxy = ({ errors, saved }: { errors?: string; saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <Formik initialValues={{}} onSubmit={vi.fn()}>
               <FormikFormContent
                 errors={errors}
                 onSuccess={onSuccess}
@@ -400,7 +403,7 @@ describe("FormikFormContent", () => {
   });
 
   it("does not run onSuccess function more than once", async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const store = mockStore(state);
     const Proxy = ({
       saved,
@@ -412,7 +415,7 @@ describe("FormikFormContent", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <Formik initialValues={{}} onSubmit={vi.fn()}>
               <FormikFormContent
                 errors={errors}
                 onSuccess={onSuccess}
@@ -436,7 +439,7 @@ describe("FormikFormContent", () => {
   });
 
   it("can run onSuccess again after resetting the form", async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const store = mockStore(state);
     const Proxy = ({
       saved,
@@ -448,7 +451,7 @@ describe("FormikFormContent", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <Formik initialValues={{}} onSubmit={vi.fn()}>
               <FormikFormContent
                 errors={errors}
                 onSuccess={onSuccess}
@@ -479,10 +482,10 @@ describe("FormikFormContent", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <Formik initialValues={{}} onSubmit={vi.fn()}>
               <FormikFormContent
                 footer={<div data-testid="footer"></div>}
-                onCancel={jest.fn()}
+                onCancel={vi.fn()}
               >
                 Content
               </FormikFormContent>

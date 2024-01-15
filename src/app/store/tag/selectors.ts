@@ -1,10 +1,10 @@
 import { createCachedSelector } from "re-reselect";
 import { createSelector } from "reselect";
 
-import type { RootState } from "app/store/root/types";
-import { TagMeta } from "app/store/tag/types";
-import type { Tag, TagState } from "app/store/tag/types";
-import { generateBaseSelectors } from "app/store/utils";
+import type { RootState } from "@/app/store/root/types";
+import { TagMeta } from "@/app/store/tag/types";
+import type { Tag, TagState } from "@/app/store/tag/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (tag: Tag, term: string) => tag.name.includes(term);
 

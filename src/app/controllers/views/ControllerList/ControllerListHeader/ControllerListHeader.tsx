@@ -4,15 +4,15 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DebounceSearchBox from "app/base/components/DebounceSearchBox";
-import ModelListSubtitle from "app/base/components/ModelListSubtitle";
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import { useSendAnalytics } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import type { SetSearchFilter } from "app/base/types";
-import { ControllerSidePanelViews } from "app/controllers/constants";
-import controllerSelectors from "app/store/controller/selectors";
-import { getNodeActionTitle } from "app/store/utils";
+import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
+import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import { useSendAnalytics } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import type { SetSearchFilter } from "@/app/base/types";
+import { ControllerSidePanelViews } from "@/app/controllers/constants";
+import controllerSelectors from "@/app/store/controller/selectors";
+import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
   searchFilter: string;

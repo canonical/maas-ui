@@ -1,12 +1,12 @@
 import { ExternalLink } from "@canonical/maas-react-components";
 
-import CertificateDownload from "app/base/components/CertificateDownload";
-import CertificateMetadata from "app/base/components/CertificateMetadata";
-import { useSendAnalytics } from "app/base/hooks";
+import CertificateDownload from "@/app/base/components/CertificateDownload";
+import CertificateMetadata from "@/app/base/components/CertificateMetadata";
+import { useSendAnalytics } from "@/app/base/hooks";
 import type {
   CertificateData,
   CertificateMetadata as CertificateMetadataType,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 
 type Props = {
   certificate: CertificateData["certificate"];

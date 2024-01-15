@@ -1,11 +1,11 @@
 import reducers from "./slice";
 
-import type { UserState } from "app/store/user/types";
+import type { UserState } from "@/app/store/user/types";
 import {
   authState as authStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("auth", () => {
   let userState: UserState;

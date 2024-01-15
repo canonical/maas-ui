@@ -7,7 +7,7 @@ import {
   isSubnetDetails,
 } from "./utils";
 
-import { NodeType } from "app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 import {
   subnet as subnetFactory,
   subnetDetails as subnetDetailsFactory,
@@ -15,7 +15,7 @@ import {
   subnetBMC as subnetBMCFactory,
   subnetDNSRecord as subnetDNSRecordFactory,
   subnetIPNodeSummary as nodeSummaryFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("subnet utils", () => {
   describe("getSubnetDisplay", function () {

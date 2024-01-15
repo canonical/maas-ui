@@ -2,15 +2,15 @@ import configureStore from "redux-mock-store";
 
 import { StatusColumn } from "./StatusColumn";
 
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { PowerState } from "app/store/types/enum";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { PowerState } from "@/app/store/types/enum";
 import {
   NodeActions,
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -18,13 +18,13 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   userEvent,
   screen,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -76,7 +76,7 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.NEW;
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
 
@@ -91,7 +91,7 @@ describe("StatusColumn", () => {
       const store = mockStore(state);
 
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
 
@@ -108,7 +108,7 @@ describe("StatusColumn", () => {
       const store = mockStore(state);
 
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
       expect(screen.getByTestId("status-text")).toHaveTextContent("CentOS 7");
@@ -122,7 +122,7 @@ describe("StatusColumn", () => {
       const store = mockStore(state);
 
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
       expect(screen.getByTestId("status-text")).toHaveTextContent(
@@ -137,7 +137,7 @@ describe("StatusColumn", () => {
       const store = mockStore(state);
 
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
 
@@ -154,7 +154,7 @@ describe("StatusColumn", () => {
       machine.status_message = "2 of 6 tests complete";
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
 
@@ -170,7 +170,7 @@ describe("StatusColumn", () => {
       machine.status_message = "This machine is allocated";
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
       expect(screen.getByTestId("progress-text")).toHaveTextContent("");
@@ -183,7 +183,7 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.COMMISSIONING;
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
       expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -196,7 +196,7 @@ describe("StatusColumn", () => {
       machine.testing_status = TestStatusStatus.FAILED;
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
       expect(screen.getByLabelText(/warning/i)).toBeInTheDocument();
@@ -219,7 +219,7 @@ describe("StatusColumn", () => {
         NodeActions.UNLOCK,
       ];
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { state, route: "/machines" }
       );
       await userEvent.click(
@@ -252,7 +252,7 @@ describe("StatusColumn", () => {
       machine.status_code = NodeStatusCode.NEW;
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+        <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
         { route: "/machines", store }
       );
 
@@ -275,7 +275,7 @@ describe("StatusColumn", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <StatusColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", store }
     );
 

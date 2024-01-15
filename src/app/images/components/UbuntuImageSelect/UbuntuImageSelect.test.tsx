@@ -2,16 +2,16 @@ import { Formik } from "formik";
 
 import UbuntuImageSelect from "./UbuntuImageSelect";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("UbuntuImageSelect", () => {
   let state: RootState;
@@ -45,7 +45,7 @@ describe("UbuntuImageSelect", () => {
     ];
     const arches = [bootResourceUbuntuArchFactory()];
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <UbuntuImageSelect
           arches={arches}
           releases={[available, deleted]}
@@ -77,7 +77,7 @@ describe("UbuntuImageSelect", () => {
     ];
 
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <UbuntuImageSelect
           arches={[available, deleted]}
           releases={releases}

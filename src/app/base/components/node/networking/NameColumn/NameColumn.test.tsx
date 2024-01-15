@@ -3,17 +3,17 @@ import configureStore from "redux-mock-store";
 
 import NameColumn from "./NameColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import { NodeStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -46,7 +46,7 @@ describe("NameColumn", () => {
     render(
       <Provider store={store}>
         <NameColumn
-          handleRowCheckbox={jest.fn()}
+          handleRowCheckbox={vi.fn()}
           nic={nic}
           node={state.machine.items[0]}
           selected={[]}
@@ -73,7 +73,7 @@ describe("NameColumn", () => {
     render(
       <Provider store={store}>
         <NameColumn
-          handleRowCheckbox={jest.fn()}
+          handleRowCheckbox={vi.fn()}
           nic={nic}
           node={state.machine.items[0]}
           selected={[]}

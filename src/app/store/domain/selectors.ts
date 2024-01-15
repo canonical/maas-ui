@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { DomainMeta } from "app/store/domain/types";
-import type { Domain, DomainState } from "app/store/domain/types";
-import type { RootState } from "app/store/root/types";
-import { generateBaseSelectors } from "app/store/utils";
+import { DomainMeta } from "@/app/store/domain/types";
+import type { Domain, DomainState } from "@/app/store/domain/types";
+import type { RootState } from "@/app/store/root/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (domain: Domain, term: string) =>
   domain.name.includes(term);

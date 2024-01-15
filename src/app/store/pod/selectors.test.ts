@@ -1,6 +1,6 @@
 import pod from "./selectors";
 
-import { PodType } from "app/store/pod/constants";
+import { PodType } from "@/app/store/pod/constants";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -13,7 +13,7 @@ import {
   podState as podStateFactory,
   podVM as podVMFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("pod selectors", () => {
   it("can get all items", () => {

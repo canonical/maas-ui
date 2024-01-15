@@ -1,4 +1,4 @@
-import type { Tag, TagMeta } from "app/store/tag/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 export type NodeConfigurationValues = {
   description: string;

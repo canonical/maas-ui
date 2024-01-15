@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import { KVMSidePanelViews } from "app/kvm/constants";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podPowerParameters as powerParametersFactory,
@@ -18,8 +18,8 @@ import {
   podVmCount as podVmCountFactory,
   zone as zoneFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -56,7 +56,7 @@ describe("LXDSingleDetailsHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -76,7 +76,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -98,7 +98,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -119,7 +119,7 @@ describe("LXDSingleDetailsHeader", () => {
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
           <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={jest.fn()} />
+            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -133,7 +133,7 @@ describe("LXDSingleDetailsHeader", () => {
   it("can open the refresh host form", async () => {
     state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>

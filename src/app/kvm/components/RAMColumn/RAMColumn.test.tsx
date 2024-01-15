@@ -1,7 +1,7 @@
 import RAMColumn from "./RAMColumn";
 
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podMemoryResource as podMemoryResourceFactory,
@@ -11,8 +11,8 @@ import {
   rootState as rootStateFactory,
   vmClusterResource as vmClusterResourceFactory,
   vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("RAMColumn", () => {
   let state: RootState;

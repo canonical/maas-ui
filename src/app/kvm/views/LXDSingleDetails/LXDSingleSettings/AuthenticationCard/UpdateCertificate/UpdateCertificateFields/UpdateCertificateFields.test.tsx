@@ -2,19 +2,19 @@ import { Formik } from "formik";
 
 import UpdateCertificateFields from "./UpdateCertificateFields";
 
-import { Labels } from "app/base/components/CertificateFields/CertificateFields";
-import { generatedCertificate as generatedCertificateFactory } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import { Labels } from "@/app/base/components/CertificateFields/CertificateFields";
+import { generatedCertificate as generatedCertificateFactory } from "@/testing/factories";
+import { render, screen, waitFor } from "@/testing/utils";
 describe("UpdateCertificateFields", () => {
   it("shows authentication fields if no certificate provided", async () => {
     render(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <UpdateCertificateFields
           generatedCertificate={null}
-          setShouldGenerateCert={jest.fn()}
+          setShouldGenerateCert={vi.fn()}
           shouldGenerateCert
         />
       </Formik>
@@ -30,11 +30,11 @@ describe("UpdateCertificateFields", () => {
     render(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <UpdateCertificateFields
           generatedCertificate={generatedCertificate}
-          setShouldGenerateCert={jest.fn()}
+          setShouldGenerateCert={vi.fn()}
           shouldGenerateCert
         />
       </Formik>

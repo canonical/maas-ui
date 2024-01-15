@@ -2,9 +2,9 @@ import type { Meta } from "@storybook/react";
 
 import { MachineActionForm } from "./MachineActionFormWrapper";
 
-import { ACTION_STATUS } from "app/base/constants";
-import ErrorDetails from "app/machines/components/ErrorDetails";
-import { NodeActions } from "app/store/types/node";
+import { ACTION_STATUS } from "@/app/base/constants";
+import ErrorDetails from "@/app/machines/components/ErrorDetails";
+import { NodeActions } from "@/app/store/types/node";
 
 const meta: Meta<typeof MachineActionForm> = {
   title: "Sections/Machine/MachineActionForm",

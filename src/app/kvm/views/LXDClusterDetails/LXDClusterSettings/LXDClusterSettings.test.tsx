@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterSettings from "./LXDClusterSettings";
 
-import { actions as podActions } from "app/store/pod";
+import { actions as podActions } from "@/app/store/pod";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -11,8 +11,8 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { render } from "testing/utils";
+} from "@/testing/factories";
+import { render } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -34,7 +34,7 @@ describe("LXDClusterSettings", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <LXDClusterSettings clusterId={1} setSidePanelContent={jest.fn()} />
+        <LXDClusterSettings clusterId={1} setSidePanelContent={vi.fn()} />
       </Provider>
     );
 

@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 
 import NumaCardDetails from "./NumaCardDetails";
 
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   id: Machine["system_id"];

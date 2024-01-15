@@ -2,18 +2,18 @@ import configureStore from "redux-mock-store";
 
 import SSHKeyList from "./SSHKeyList";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

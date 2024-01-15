@@ -1,6 +1,10 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
-import type { Model, ModelRef, TimestampedModel } from "app/store/types/model";
+import type {
+  Model,
+  ModelRef,
+  TimestampedModel,
+} from "@/app/store/types/model";
 
 export const model = define<Model>({
   id: sequence,

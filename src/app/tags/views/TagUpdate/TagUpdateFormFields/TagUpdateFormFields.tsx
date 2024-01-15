@@ -2,16 +2,16 @@ import { ExternalLink } from "@canonical/maas-react-components";
 import { Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import Definition from "app/base/components/Definition";
-import FormikField from "app/base/components/FormikField";
-import docsUrls from "app/base/docsUrls";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import AppliedTo from "app/tags/components/AppliedTo";
-import DefinitionField from "app/tags/components/DefinitionField";
-import KernelOptionsField from "app/tags/components/KernelOptionsField";
-import { Label } from "app/tags/views/TagDetails";
+import Definition from "@/app/base/components/Definition";
+import FormikField from "@/app/base/components/FormikField";
+import docsUrls from "@/app/base/docsUrls";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import AppliedTo from "@/app/tags/components/AppliedTo";
+import DefinitionField from "@/app/tags/components/DefinitionField";
+import KernelOptionsField from "@/app/tags/components/KernelOptionsField";
+import { Label } from "@/app/tags/views/TagDetails";
 
 type Props = {
   id: Tag[TagMeta.PK];

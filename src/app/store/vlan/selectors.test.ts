@@ -1,6 +1,6 @@
 import vlan from "./selectors";
 
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -13,7 +13,7 @@ import {
   vlanState as vlanStateFactory,
   vlanStatus as vlanStatusFactory,
   vlanStatuses as vlanStatusesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("vlan selectors", () => {
   it("can get all items", () => {

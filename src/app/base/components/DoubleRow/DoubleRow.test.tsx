@@ -1,6 +1,6 @@
 import DoubleRow, { TestIds } from "./DoubleRow";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("DoubleRow ", () => {
   it("can render without a secondary row", () => {

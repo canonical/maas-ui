@@ -1,7 +1,7 @@
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
-import urls from "app/base/urls";
-import { screen, getTestState, renderWithBrowserRouter } from "testing/utils";
+import urls from "@/app/base/urls";
+import { screen, getTestState, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("KVMDetailsHeader", () => {
   let state: ReturnType<typeof getTestState>;
@@ -13,7 +13,7 @@ describe("KVMDetailsHeader", () => {
   it("renders extra title blocks", () => {
     renderWithBrowserRouter(
       <KVMDetailsHeader
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         tabLinks={[]}
         title="Title"
         titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}

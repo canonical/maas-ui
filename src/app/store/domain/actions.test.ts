@@ -1,7 +1,7 @@
 import { actions } from "./slice";
 import { RecordType } from "./types";
 
-import { domainResource as resourceFactory } from "testing/factories";
+import { domainResource as resourceFactory } from "@/testing/factories";
 
 describe("domain actions", () => {
   it("creates an action for fetching domains", () => {

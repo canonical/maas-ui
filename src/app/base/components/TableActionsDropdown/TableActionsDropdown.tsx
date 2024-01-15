@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@canonical/react-components";
 
-import TableMenu from "app/base/components/TableMenu";
-import type { DataTestElement } from "app/base/types";
+import TableMenu from "@/app/base/components/TableMenu";
+import type { DataTestElement } from "@/app/base/types";
 
 export type TableAction<A> = {
   label: string;

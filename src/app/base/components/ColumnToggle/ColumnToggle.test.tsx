@@ -1,6 +1,6 @@
 import ColumnToggle from "./ColumnToggle";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const DOM_RECT = {
   height: 0,
@@ -10,22 +10,22 @@ const DOM_RECT = {
   bottom: 0,
   left: 0,
   right: 0,
-  toJSON: jest.fn(),
+  toJSON: vi.fn(),
 };
 
 describe("ColumnToggle ", () => {
   beforeEach(() => {
-    jest.spyOn(window, "scrollTo");
+    vi.spyOn(window, "scrollTo");
   });
 
   it("calls the close function when expanded", async () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     render(
       <ColumnToggle
         isExpanded={true}
         label="maas.local"
         onClose={onClose}
-        onOpen={jest.fn()}
+        onOpen={vi.fn()}
       />
     );
 
@@ -35,12 +35,12 @@ describe("ColumnToggle ", () => {
   });
 
   it("calls the open function when not expanded", async () => {
-    const onOpen = jest.fn();
+    const onOpen = vi.fn();
     render(
       <ColumnToggle
         isExpanded={false}
         label="maas.local"
-        onClose={jest.fn()}
+        onClose={vi.fn()}
         onOpen={onOpen}
       />
     );
@@ -52,26 +52,26 @@ describe("ColumnToggle ", () => {
 
   describe("scroll", () => {
     beforeEach(() => {
-      jest
-        .spyOn(window, "requestAnimationFrame")
-        .mockImplementation((cb: FrameRequestCallback) => {
+      vi.spyOn(window, "requestAnimationFrame").mockImplementation(
+        (cb: FrameRequestCallback) => {
           cb(0);
           return 0;
-        });
+        }
+      );
       Object.defineProperty(window, "scrollY", { value: 100 });
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
       Object.defineProperty(window, "scrollY", { value: 0 });
     });
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     it("can scroll to a toggle", async () => {
-      Element.prototype.getBoundingClientRect = jest.fn(() => ({
+      Element.prototype.getBoundingClientRect = vi.fn(() => ({
         ...DOM_RECT,
         top: -20,
       }));
@@ -79,8 +79,8 @@ describe("ColumnToggle ", () => {
         <ColumnToggle
           isExpanded={false}
           label="maas.local"
-          onClose={jest.fn()}
-          onOpen={jest.fn()}
+          onClose={vi.fn()}
+          onOpen={vi.fn()}
         />
       );
 
@@ -90,7 +90,7 @@ describe("ColumnToggle ", () => {
     });
 
     it("does not scroll if the toggle is visible", async () => {
-      Element.prototype.getBoundingClientRect = jest.fn(() => ({
+      Element.prototype.getBoundingClientRect = vi.fn(() => ({
         ...DOM_RECT,
         top: 20,
       }));
@@ -98,8 +98,8 @@ describe("ColumnToggle ", () => {
         <ColumnToggle
           isExpanded={false}
           label="maas.local"
-          onClose={jest.fn()}
-          onOpen={jest.fn()}
+          onClose={vi.fn()}
+          onOpen={vi.fn()}
         />
       );
 

@@ -3,18 +3,18 @@ import configureStore from "redux-mock-store";
 
 import ServicesCard from "./ServicesCard";
 
-import { actions as serviceActions } from "app/store/service";
-import { ServiceName, ServiceStatus } from "app/store/service/types";
-import { getServiceDisplayName } from "app/store/service/utils";
-import { NodeType } from "app/store/types/node";
+import { actions as serviceActions } from "@/app/store/service";
+import { ServiceName, ServiceStatus } from "@/app/store/service/types";
+import { getServiceDisplayName } from "@/app/store/service/utils";
+import { NodeType } from "@/app/store/types/node";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

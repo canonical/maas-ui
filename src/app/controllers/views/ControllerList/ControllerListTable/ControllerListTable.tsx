@@ -6,30 +6,30 @@ import StatusColumn from "./StatusColumn";
 import VLANsColumn from "./VLANsColumn";
 import VersionColumn from "./VersionColumn";
 
-import ControllerLink from "app/base/components/ControllerLink";
-import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
-import RowCheckbox from "app/base/components/RowCheckbox";
-import TableHeader from "app/base/components/TableHeader";
-import TooltipButton from "app/base/components/TooltipButton";
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions, useTableSort } from "app/base/hooks";
-import { SortDirection } from "app/base/types";
-import ImageStatus from "app/controllers/components/ImageStatus";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import { actions as generalActions } from "app/store/general";
-import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
-import type { RootState } from "app/store/root/types";
-import { NodeType } from "app/store/types/node";
+import ControllerLink from "@/app/base/components/ControllerLink";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import GroupCheckbox from "@/app/base/components/GroupCheckbox";
+import RowCheckbox from "@/app/base/components/RowCheckbox";
+import TableHeader from "@/app/base/components/TableHeader";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions, useTableSort } from "@/app/base/hooks";
+import { SortDirection } from "@/app/base/types";
+import ImageStatus from "@/app/controllers/components/ImageStatus";
+import { actions as controllerActions } from "@/app/store/controller";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import { actions as generalActions } from "@/app/store/general";
+import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { NodeType } from "@/app/store/types/node";
 import {
   generateEmptyStateMsg,
   generateCheckboxHandlers,
   isComparable,
   getTableStatus,
-} from "app/utils";
-import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+} from "@/app/utils";
+import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 type Props = {
   controllers: Controller[];

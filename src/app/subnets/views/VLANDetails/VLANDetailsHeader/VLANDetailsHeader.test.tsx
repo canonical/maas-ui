@@ -1,8 +1,8 @@
 import VLANDetailsHeader from "./VLANDetailsHeader";
 
-import type { RootState } from "app/store/root/types";
-import type { VLAN } from "app/store/vlan/types";
-import { VlanVid } from "app/store/vlan/types";
+import type { RootState } from "@/app/store/root/types";
+import type { VLAN } from "@/app/store/vlan/types";
+import { VlanVid } from "@/app/store/vlan/types";
 import {
   authState as authStateFactory,
   fabric as fabricFactory,
@@ -13,8 +13,8 @@ import {
   vlan as vlanFactory,
   vlanDetails as vlanDetailsFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("VLANDetailsHeader", () => {
   let state: RootState;

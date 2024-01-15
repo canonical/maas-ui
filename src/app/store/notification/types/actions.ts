@@ -1,6 +1,6 @@
 import type { Notification } from "./base";
 
-import type { User, UserMeta } from "app/store/user/types";
+import type { User, UserMeta } from "@/app/store/user/types";
 
 export type CreateParams = {
   admins: Notification["admins"];

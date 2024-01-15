@@ -1,7 +1,7 @@
 import { OwnerColumn } from "./OwnerColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -12,8 +12,8 @@ import {
   user as userFactory,
   userState as userStateFactory,
   tag as tagFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("OwnerColumn", () => {
   let state: RootState;
@@ -54,7 +54,7 @@ describe("OwnerColumn", () => {
 
   it("displays owner's username", () => {
     renderWithBrowserRouter(
-      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { state, route: "/machines" }
     );
 
@@ -64,7 +64,7 @@ describe("OwnerColumn", () => {
   it("displays owner's username if showFullName is true and user doesn't have a full name", () => {
     state.user.items[0].last_name = "";
     renderWithBrowserRouter(
-      <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
+      <OwnerColumn onToggleMenu={vi.fn()} showFullName systemId="abc123" />,
       { state, route: "/machines" }
     );
 
@@ -73,7 +73,7 @@ describe("OwnerColumn", () => {
 
   it("can display owner's full name if present", () => {
     renderWithBrowserRouter(
-      <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
+      <OwnerColumn onToggleMenu={vi.fn()} showFullName systemId="abc123" />,
       { state, route: "/machines" }
     );
 
@@ -87,7 +87,7 @@ describe("OwnerColumn", () => {
       tagFactory({ id: 2, name: "aloof" }),
     ];
     renderWithBrowserRouter(
-      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { state, route: "/machines" }
     );
 
@@ -97,7 +97,7 @@ describe("OwnerColumn", () => {
   it("can show a menu item to allocate a machine", async () => {
     state.machine.items[0].actions = [NodeActions.ACQUIRE];
     renderWithBrowserRouter(
-      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { state, route: "/machines" }
     );
     // Open the menu so the elements get rendered.
@@ -111,7 +111,7 @@ describe("OwnerColumn", () => {
   it("can show a menu item to release a machine", async () => {
     state.machine.items[0].actions = [NodeActions.RELEASE];
     renderWithBrowserRouter(
-      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { state, route: "/machines" }
     );
     // Open the menu so the elements get rendered.
@@ -124,7 +124,7 @@ describe("OwnerColumn", () => {
 
   it("can show a message when there are no menu items", async () => {
     renderWithBrowserRouter(
-      <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { state, route: "/machines" }
     );
     // Open the menu so the elements get rendered.

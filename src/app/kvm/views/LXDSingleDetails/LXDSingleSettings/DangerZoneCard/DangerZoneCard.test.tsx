@@ -1,11 +1,11 @@
 import DangerZoneCard from "./DangerZoneCard";
 
-import { KVMSidePanelViews } from "app/kvm/constants";
-import { render, screen, userEvent } from "testing/utils";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("DangerZoneCard", () => {
   it("can open the delete KVM form", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     render(
       <DangerZoneCard
         hostId={1}
@@ -24,7 +24,7 @@ describe("DangerZoneCard", () => {
   });
 
   it("can display message", () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     render(
       <DangerZoneCard
         hostId={1}

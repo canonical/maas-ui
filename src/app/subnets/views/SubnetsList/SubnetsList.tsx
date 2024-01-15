@@ -8,18 +8,18 @@ import SubnetsControls from "./SubnetsControls";
 import SubnetsTable from "./SubnetsTable";
 import type { GroupByKey } from "./SubnetsTable/types";
 
-import GroupSelect from "app/base/components/GroupSelect";
-import PageContent from "app/base/components/PageContent/PageContent";
-import { useWindowTitle } from "app/base/hooks";
-import { useQuery } from "app/base/hooks/urls";
-import { useSidePanel } from "app/base/side-panel-context";
+import GroupSelect from "@/app/base/components/GroupSelect";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useQuery } from "@/app/base/hooks/urls";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import {
   SubnetForms,
   SubnetsUrlParams,
   subnetGroupingOptions,
-} from "app/subnets/constants";
-import { SubnetSidePanelViews } from "app/subnets/types";
-import FormActions from "app/subnets/views/FormActions";
+} from "@/app/subnets/constants";
+import { SubnetSidePanelViews } from "@/app/subnets/types";
+import FormActions from "@/app/subnets/views/FormActions";
 
 const SubnetsList = (): JSX.Element => {
   useWindowTitle("Subnets");

@@ -1,5 +1,5 @@
-import { FetchGroupKey } from "app/store/machine/types";
-import { NodeActions } from "app/store/types/node";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import { NodeActions } from "@/app/store/types/node";
 
 export const MachineActionSidePanelViews = {
   ABORT_MACHINE: ["machineActionForm", NodeActions.ABORT],

@@ -1,8 +1,8 @@
 import { FetchGroupKey } from "../types/actions";
 
-import type { Machine, MachineStateListGroup } from "app/store/machine/types";
-import { FetchNodeStatus, NodeStatus } from "app/store/types/node";
-import { capitaliseFirst } from "app/utils";
+import type { Machine, MachineStateListGroup } from "@/app/store/machine/types";
+import { FetchNodeStatus, NodeStatus } from "@/app/store/types/node";
+import { capitaliseFirst } from "@/app/utils";
 
 export function getNodeStatusKey(
   value: string

@@ -6,7 +6,7 @@ import {
 } from "@canonical/react-components";
 import fileDownload from "js-file-download";
 
-import type { CertificateData } from "app/store/general/types";
+import type { CertificateData } from "@/app/store/general/types";
 
 type Props = {
   certificate: CertificateData["certificate"];

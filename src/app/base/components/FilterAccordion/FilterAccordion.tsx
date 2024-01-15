@@ -9,8 +9,8 @@ import {
 } from "@canonical/react-components";
 import classNames from "classnames";
 
-import type { FilterValue } from "app/utils/search/filter-handlers";
-import type FilterItems from "app/utils/search/filter-items";
+import type { FilterValue } from "@/app/utils/search/filter-handlers";
+import type FilterItems from "@/app/utils/search/filter-items";
 
 // The key for the filter, this will usually be a model attribute.
 type FilterKey = string;

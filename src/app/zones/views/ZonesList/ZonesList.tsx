@@ -4,12 +4,12 @@ import ZonesListForm from "./ZonesListForm";
 import ZonesListHeader from "./ZonesListHeader";
 import ZonesListTable from "./ZonesListTable";
 
-import PageContent from "app/base/components/PageContent";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import { useSidePanel } from "app/base/side-panel-context";
-import { actions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
-import { ZoneActionSidePanelViews } from "app/zones/constants";
+import PageContent from "@/app/base/components/PageContent";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { actions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
+import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
 const ZonesList = (): JSX.Element => {
   const zonesCount = useSelector(zoneSelectors.count);

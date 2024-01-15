@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 
 import DeviceOverviewCard from "./DeviceOverviewCard";
 
-import NodeSummaryNetworkCard from "app/base/components/NodeSummaryNetworkCard";
-import { useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device, DeviceMeta } from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import type { RootState } from "app/store/root/types";
+import NodeSummaryNetworkCard from "@/app/base/components/NodeSummaryNetworkCard";
+import { useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device, DeviceMeta } from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import type { RootState } from "@/app/store/root/types";
 
 export enum Label {
   Title = "Device summary",

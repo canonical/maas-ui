@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 
 import type { FormValues } from "../EditBootArchitectures";
 
-import RowCheckbox from "app/base/components/RowCheckbox";
-import { knownBootArchitectures as knownBootArchitecturesSelectors } from "app/store/general/selectors";
-import type { KnownBootArchitecture } from "app/store/general/types";
+import RowCheckbox from "@/app/base/components/RowCheckbox";
+import { knownBootArchitectures as knownBootArchitecturesSelectors } from "@/app/store/general/selectors";
+import type { KnownBootArchitecture } from "@/app/store/general/types";
 
 export enum Headers {
   BootloaderArch = "Bootloader architecture",

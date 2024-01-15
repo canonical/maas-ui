@@ -1,12 +1,12 @@
 import { getRepoDisplayName } from "./utils";
 
-import { PackageRepositoryMeta } from "app/store/packagerepository/types";
+import { PackageRepositoryMeta } from "@/app/store/packagerepository/types";
 import type {
   PackageRepository,
   PackageRepositoryState,
-} from "app/store/packagerepository/types";
-import type { RootState } from "app/store/root/types";
-import { generateBaseSelectors } from "app/store/utils";
+} from "@/app/store/packagerepository/types";
+import type { RootState } from "@/app/store/root/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (repo: PackageRepository, term: string) =>
   getRepoDisplayName(repo).includes(term) ||

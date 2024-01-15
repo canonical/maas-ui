@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import FormikForm from "./FormikForm";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,7 +36,7 @@ describe("FormikForm", () => {
             <FormikForm
               aria-label="example"
               initialValues={{}}
-              onSubmit={jest.fn()}
+              onSubmit={vi.fn()}
             >
               Content
             </FormikForm>

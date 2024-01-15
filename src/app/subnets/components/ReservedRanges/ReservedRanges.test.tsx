@@ -7,12 +7,12 @@ import { Labels as ReservedRangeFormLabels } from "../ReservedRangeForm/Reserved
 
 import ReservedRanges, { Labels } from "./ReservedRanges";
 
-import { actions as ipRangeActions } from "app/store/iprange";
-import type { IPRange } from "app/store/iprange/types";
-import { IPRangeType } from "app/store/iprange/types";
-import type { RootState } from "app/store/root/types";
-import type { Subnet } from "app/store/subnet/types";
-import type { VLAN } from "app/store/vlan/types";
+import { actions as ipRangeActions } from "@/app/store/iprange";
+import type { IPRange } from "@/app/store/iprange/types";
+import { IPRangeType } from "@/app/store/iprange/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Subnet } from "@/app/store/subnet/types";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   rootState as rootStateFactory,
   ipRange as ipRangeFactory,
@@ -21,8 +21,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let ipRange: IPRange;

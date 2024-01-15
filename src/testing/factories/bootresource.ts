@@ -15,12 +15,12 @@ import type {
   BootResourceUbuntuCoreImage,
   BootResourceUbuntuRelease,
   BootResourceUbuntuSource,
-} from "app/store/bootresource/types";
+} from "@/app/store/bootresource/types";
 import {
   BootResourceSourceType,
   BootResourceAction,
-} from "app/store/bootresource/types";
-import type { Model } from "app/store/types/model";
+} from "@/app/store/bootresource/types";
+import type { Model } from "@/app/store/types/model";
 
 export const bootResource = extend<Model, BootResource>(model, {
   rtype: 0,

@@ -1,8 +1,8 @@
 /* eslint-disable testing-library/no-container */
 import AppSidePanel from "./AppSidePanel";
 
-import { MAAS_UI_ID } from "app/constants";
-import { within, screen, renderWithBrowserRouter } from "testing/utils";
+import { MAAS_UI_ID } from "@/app/constants";
+import { within, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("displays side panel as a child of #maas-ui DOM node", async () => {
   const mainContainer = document.createElement("div");

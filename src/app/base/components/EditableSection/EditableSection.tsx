@@ -4,8 +4,8 @@ import { useState } from "react";
 import type { PropsWithSpread } from "@canonical/react-components";
 import { Button } from "@canonical/react-components";
 
-import type { Props as TitledSectionProps } from "app/base/components/TitledSection";
-import TitledSection from "app/base/components/TitledSection";
+import type { Props as TitledSectionProps } from "@/app/base/components/TitledSection";
+import TitledSection from "@/app/base/components/TitledSection";
 
 type Props = PropsWithSpread<
   {

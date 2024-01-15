@@ -1,7 +1,7 @@
 import DiskNumaNodes from "./DiskNumaNodes";
 
-import { nodeDisk as diskFactory } from "testing/factories";
-import { expectTooltipOnHover, render, screen } from "testing/utils";
+import { nodeDisk as diskFactory } from "@/testing/factories";
+import { expectTooltipOnHover, render, screen } from "@/testing/utils";
 
 describe("DiskNumaNodes", () => {
   it("can show a single numa node", () => {

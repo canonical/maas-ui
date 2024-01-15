@@ -7,7 +7,7 @@ import { Link } from "react-router-dom-v5-compat";
 import type { NavItem } from "../types";
 import { isSelected } from "../utils";
 
-import { useId } from "app/base/hooks/base";
+import { useId } from "@/app/base/hooks/base";
 
 type Props = {
   navLink: NavItem;

@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import InterfaceForm from "./InterfaceForm";
 
-import type { DeviceNetworkInterface } from "app/store/device/types";
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { DeviceNetworkInterface } from "@/app/store/device/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,
@@ -19,8 +19,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -49,7 +49,7 @@ describe("InterfaceForm", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("displays a spinner if device is not detailed version", () => {
@@ -57,9 +57,9 @@ describe("InterfaceForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <InterfaceForm
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         nicId={nic.id}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -99,10 +99,10 @@ describe("InterfaceForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <InterfaceForm
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         linkId={link.id}
         nicId={nic.id}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -135,8 +135,8 @@ describe("InterfaceForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <InterfaceForm
-        closeForm={jest.fn()}
-        onSubmit={jest.fn()}
+        closeForm={vi.fn()}
+        onSubmit={vi.fn()}
         systemId="abc123"
       />,
       { store }

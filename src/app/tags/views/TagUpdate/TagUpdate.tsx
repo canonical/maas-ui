@@ -6,15 +6,15 @@ import * as Yup from "yup";
 
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as messageActions } from "app/store/message";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag, UpdateParams, TagMeta } from "app/store/tag/types";
-import { NewDefinitionMessage } from "app/tags/constants";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as messageActions } from "@/app/store/message";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag, UpdateParams, TagMeta } from "@/app/store/tag/types";
+import { NewDefinitionMessage } from "@/app/tags/constants";
 
 type Props = {
   id: Tag[TagMeta.PK];

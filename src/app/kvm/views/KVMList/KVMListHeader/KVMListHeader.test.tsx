@@ -7,14 +7,14 @@ import configureStore from "redux-mock-store";
 
 import KVMListHeader from "./KVMListHeader";
 
-import urls from "app/base/urls";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -31,7 +31,7 @@ describe("KVMListHeader", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("displays a loader if pods have not loaded", () => {
@@ -41,7 +41,7 @@ describe("KVMListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <KVMListHeader setSidePanelContent={jest.fn()} title="some text" />
+            <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -56,7 +56,7 @@ describe("KVMListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <KVMListHeader setSidePanelContent={jest.fn()} title="some text" />
+            <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -65,7 +65,7 @@ describe("KVMListHeader", () => {
   });
 
   it("can open the add LXD form at the LXD URL", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -94,7 +94,7 @@ describe("KVMListHeader", () => {
   });
 
   it("can open the add Virsh form at the Virsh URL", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>

@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 
 import type { CommissioningFormValues } from "../CommissioningForm";
 
-import FormikField from "app/base/components/FormikField";
-import configSelectors from "app/store/config/selectors";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
-import type { RootState } from "app/store/root/types";
+import FormikField from "@/app/base/components/FormikField";
+import configSelectors from "@/app/store/config/selectors";
+import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
+import type { RootState } from "@/app/store/root/types";
 
 const CommissioningFormFields = (): JSX.Element => {
   const formikProps = useFormikContext<CommissioningFormValues>();

@@ -5,33 +5,33 @@ import { useSelector } from "react-redux";
 
 import RemoveInterface from "./RemoveInterface";
 
-import MacAddressDisplay from "app/base/components/MacAddressDisplay";
+import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import type {
   Expanded,
   SetExpanded,
-} from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import TableHeader from "app/base/components/TableHeader";
-import TableMenu from "app/base/components/TableMenu";
-import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
+} from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import TableHeader from "@/app/base/components/TableHeader";
+import TableMenu from "@/app/base/components/TableMenu";
+import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
 import {
   useFetchActions,
   useIsAllNetworkingDisabled,
   useTableSort,
-} from "app/base/hooks";
-import { SortDirection } from "app/base/types";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device, DeviceMeta } from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric } from "app/store/fabric/types";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "@/app/base/hooks";
+import { SortDirection } from "@/app/base/types";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device, DeviceMeta } from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceIPAddress,
   getInterfaceName,
@@ -39,11 +39,11 @@ import {
   getInterfaceTypeText,
   getLinkInterface,
   getLinkModeDisplay,
-} from "app/store/utils";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
-import { isComparable } from "app/utils";
+} from "@/app/store/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
+import { isComparable } from "@/app/utils";
 
 type NetworkRowSortData = {
   ip_address: string | null;

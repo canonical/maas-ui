@@ -2,8 +2,8 @@ import { Link } from "react-router-dom-v5-compat";
 
 import PageContent from "../PageContent";
 
-import SectionHeader from "app/base/components/SectionHeader";
-import { capitaliseFirst, isId } from "app/utils";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { capitaliseFirst, isId } from "@/app/utils";
 
 type Props = {
   id?: number | string | null;

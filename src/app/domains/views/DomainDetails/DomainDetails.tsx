@@ -10,17 +10,17 @@ import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
 import { DomainDetailsSidePanelViews } from "./constants";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import PageContent from "app/base/components/PageContent";
-import { useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import { useSidePanel } from "app/base/side-panel-context";
-import urls from "app/base/urls";
-import { actions as domainsActions } from "app/store/domain";
-import domainsSelectors from "app/store/domain/selectors";
-import { DomainMeta } from "app/store/domain/types";
-import type { RootState } from "app/store/root/types";
-import { isId } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import PageContent from "@/app/base/components/PageContent";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
+import { actions as domainsActions } from "@/app/store/domain";
+import domainsSelectors from "@/app/store/domain/selectors";
+import { DomainMeta } from "@/app/store/domain/types";
+import type { RootState } from "@/app/store/root/types";
+import { isId } from "@/app/utils";
 
 const DomainDetails = (): JSX.Element => {
   const id = useGetURLId(DomainMeta.PK);

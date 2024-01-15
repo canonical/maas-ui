@@ -1,13 +1,13 @@
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import type { NodeDevice } from "app/store/nodedevice/types";
-import { NodeActions, NodeStatusCode } from "app/store/types/node";
-import { nodeIsMachine } from "app/store/utils";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import type { NodeDevice } from "@/app/store/nodedevice/types";
+import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
+import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
   bus: NodeDeviceBus;

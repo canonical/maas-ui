@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import NumaResourcesCard from "./NumaResourcesCard";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -16,14 +16,14 @@ import {
   podState as podStateFactory,
   podVM as podVmFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("NumaResourcesCard", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("fetches machines on load", () => {

@@ -5,16 +5,16 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

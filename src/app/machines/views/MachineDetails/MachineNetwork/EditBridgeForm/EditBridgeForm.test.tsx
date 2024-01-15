@@ -3,13 +3,13 @@ import configureStore from "redux-mock-store";
 
 import EditBridgeForm from "./EditBridgeForm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   BridgeType,
   NetworkInterfaceTypes,
   NetworkLinkMode,
-} from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "@/app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -24,8 +24,8 @@ import {
   subnet as subnetFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -76,7 +76,7 @@ describe("EditBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         link={link}
         nic={nic}
         systemId="abc123"
@@ -93,7 +93,7 @@ describe("EditBridgeForm", () => {
     state.vlan.loading = true;
     renderWithBrowserRouter(
       <EditBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         link={link}
         nic={nic}
         systemId="abc123"
@@ -108,7 +108,7 @@ describe("EditBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         link={link}
         nic={nic}
         systemId="abc123"

@@ -11,8 +11,8 @@ import {
   Labels as LicenseKeyFormLabels,
 } from "./LicenseKeyForm";
 
-import settingsURLs from "app/settings/urls";
-import type { RootState } from "app/store/root/types";
+import settingsURLs from "@/app/settings/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   licenseKeys as licenseKeysFactory,
@@ -20,8 +20,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -6,10 +6,10 @@ import MaasIntroSuccess, {
   Labels as MaasIntroSuccessLabels,
 } from "./MaasIntroSuccess";
 
-import urls from "app/base/urls";
-import { actions as configActions } from "app/store/config";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { actions as configActions } from "@/app/store/config";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   config as configFactory,
@@ -17,13 +17,13 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -54,7 +54,7 @@ describe("MaasIntroSuccess", () => {
     });
     expect(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-    ).toHaveProperty("href", `http://example.com${urls.intro.user}`);
+    ).toHaveAttribute("href", urls.intro.user);
   });
 
   it("links to the machine list if an admin that has completed the user intro", () => {
@@ -67,7 +67,7 @@ describe("MaasIntroSuccess", () => {
     });
     expect(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-    ).toHaveProperty("href", `http://example.com${urls.machines.index}`);
+    ).toHaveAttribute("href", urls.machines.index);
   });
 
   it("links to the machine list if a non-admin that has completed the user intro", () => {
@@ -80,7 +80,7 @@ describe("MaasIntroSuccess", () => {
     });
     expect(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
-    ).toHaveProperty("href", `http://example.com${urls.machines.index}`);
+    ).toHaveAttribute("href", urls.machines.index);
   });
 
   it("dispatches an action to update completed intro config", async () => {

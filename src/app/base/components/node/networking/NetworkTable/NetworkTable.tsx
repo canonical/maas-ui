@@ -7,40 +7,40 @@ import IPColumn from "./IPColumn";
 import PXEColumn from "./PXEColumn";
 import SpeedColumn from "./SpeedColumn";
 
-import GroupCheckbox from "app/base/components/GroupCheckbox";
+import GroupCheckbox from "@/app/base/components/GroupCheckbox";
 import type {
   Expanded,
   SetExpanded,
-} from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import TableHeader from "app/base/components/TableHeader";
-import DHCPColumn from "app/base/components/node/networking/DHCPColumn";
-import FabricColumn from "app/base/components/node/networking/FabricColumn";
-import NameColumn from "app/base/components/node/networking/NameColumn";
-import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
-import TypeColumn from "app/base/components/node/networking/TypeColumn";
+} from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import TableHeader from "@/app/base/components/TableHeader";
+import DHCPColumn from "@/app/base/components/node/networking/DHCPColumn";
+import FabricColumn from "@/app/base/components/node/networking/FabricColumn";
+import NameColumn from "@/app/base/components/node/networking/NameColumn";
+import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
+import TypeColumn from "@/app/base/components/node/networking/TypeColumn";
 import type {
   Selected,
   SetSelected,
-} from "app/base/components/node/networking/types";
+} from "@/app/base/components/node/networking/types";
 import {
   useFetchActions,
   useIsAllNetworkingDisabled,
   useTableSort,
-} from "app/base/hooks";
-import type { Sort } from "app/base/types";
-import { SortDirection } from "app/base/types";
-import NetworkTableActions from "app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
-import NetworkTableConfirmation from "app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableConfirmation";
-import type { ControllerDetails } from "app/store/controller/types";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric } from "app/store/fabric/types";
-import type { MachineDetails } from "app/store/machine/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+} from "@/app/base/hooks";
+import type { Sort } from "@/app/base/types";
+import { SortDirection } from "@/app/base/types";
+import NetworkTableActions from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
+import NetworkTableConfirmation from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableConfirmation";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceFabric,
   getInterfaceIPAddressOrMode,
@@ -52,13 +52,13 @@ import {
   isBondOrBridgeParent,
   isBootInterface,
   nodeIsMachine,
-} from "app/store/utils";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
-import { getDHCPStatus } from "app/store/vlan/utils";
-import { generateCheckboxHandlers, isComparable } from "app/utils";
-import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+} from "@/app/store/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
+import { getDHCPStatus } from "@/app/store/vlan/utils";
+import { generateCheckboxHandlers, isComparable } from "@/app/utils";
+import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 export enum Label {
   Actions = "Actions",

@@ -1,7 +1,7 @@
 import ReleaseSelect from "./ReleaseSelect";
 
-import { bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory } from "testing/factories";
-import { userEvent, screen, render } from "testing/utils";
+import { bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory } from "@/testing/factories";
+import { userEvent, screen, render } from "@/testing/utils";
 
 describe("ReleaseSelect", () => {
   it("separates ubuntu releases by LTS and non-LTS, sorted descending by title", () => {
@@ -35,7 +35,7 @@ describe("ReleaseSelect", () => {
       <ReleaseSelect
         releases={releases}
         selectedRelease="focal"
-        setSelectedRelease={jest.fn()}
+        setSelectedRelease={vi.fn()}
       />
     );
 
@@ -56,7 +56,7 @@ describe("ReleaseSelect", () => {
   });
 
   it("can set the selected release", async () => {
-    const setSelectedRelease = jest.fn();
+    const setSelectedRelease = vi.fn();
     const releases = [
       bootResourceUbuntuReleaseFactory({
         name: "focal",

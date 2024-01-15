@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import DefinitionField, { INVALID_XPATH_ERROR, Label } from "./DefinitionField";
 
-import * as hooks from "app/base/hooks/analytics";
-import type { RootState } from "app/store/root/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import type { RootState } from "@/app/store/root/types";
 import {
   tag as tagFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -31,7 +31,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("overrides the xpath errors", async () => {
@@ -44,7 +44,7 @@ it("overrides the xpath errors", async () => {
             definition: INVALID_XPATH_ERROR,
           }}
           initialValues={{}}
-          onSubmit={jest.fn()}
+          onSubmit={vi.fn()}
         >
           <DefinitionField />
         </Formik>
@@ -69,7 +69,7 @@ it("displays a warning when changing the definition", async () => {
             definition: INVALID_XPATH_ERROR,
           }}
           initialValues={{}}
-          onSubmit={jest.fn()}
+          onSubmit={vi.fn()}
         >
           <DefinitionField id={1} />
         </Formik>
@@ -88,10 +88,10 @@ it("displays a warning when changing the definition", async () => {
 });
 
 it("sends analytics when there is an xpath error", async () => {
-  const mockSendAnalytics = jest.fn();
-  jest
-    .spyOn(hooks, "useSendAnalytics")
-    .mockImplementation(() => mockSendAnalytics);
+  const mockSendAnalytics = vi.fn();
+  vi.spyOn(hooks, "useSendAnalytics").mockImplementation(
+    () => mockSendAnalytics
+  );
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -101,7 +101,7 @@ it("sends analytics when there is an xpath error", async () => {
             definition: INVALID_XPATH_ERROR,
           }}
           initialValues={{}}
-          onSubmit={jest.fn()}
+          onSubmit={vi.fn()}
         >
           <DefinitionField />
         </Formik>
@@ -117,10 +117,10 @@ it("sends analytics when there is an xpath error", async () => {
 });
 
 it("does not send xpath error analytics more than once", async () => {
-  const mockSendAnalytics = jest.fn();
-  jest
-    .spyOn(hooks, "useSendAnalytics")
-    .mockImplementation(() => mockSendAnalytics);
+  const mockSendAnalytics = vi.fn();
+  vi.spyOn(hooks, "useSendAnalytics").mockImplementation(
+    () => mockSendAnalytics
+  );
   const store = mockStore(state);
   const Field = () => (
     <Provider store={store}>
@@ -130,7 +130,7 @@ it("does not send xpath error analytics more than once", async () => {
             definition: INVALID_XPATH_ERROR,
           }}
           initialValues={{}}
-          onSubmit={jest.fn()}
+          onSubmit={vi.fn()}
         >
           <DefinitionField />
         </Formik>

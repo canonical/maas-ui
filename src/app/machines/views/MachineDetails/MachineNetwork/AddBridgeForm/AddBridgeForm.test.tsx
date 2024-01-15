@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import AddBridgeForm from "./AddBridgeForm";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -17,13 +17,13 @@ import {
   vlanState as vlanStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;
@@ -80,7 +80,7 @@ describe("AddBridgeForm", () => {
     ];
     const selected = [{ nicId: nic.id }];
     renderWithBrowserRouter(
-      <AddBridgeForm close={jest.fn()} selected={selected} systemId="abc123" />,
+      <AddBridgeForm close={vi.fn()} selected={selected} systemId="abc123" />,
       { route, state }
     );
     const table = screen.getByRole("grid");
@@ -92,7 +92,7 @@ describe("AddBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,
@@ -106,7 +106,7 @@ describe("AddBridgeForm", () => {
     state.machine.loaded = false;
     renderWithBrowserRouter(
       <AddBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,
@@ -122,7 +122,7 @@ describe("AddBridgeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddBridgeForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,

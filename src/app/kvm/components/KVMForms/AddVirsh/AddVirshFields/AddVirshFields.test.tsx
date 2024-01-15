@@ -1,9 +1,9 @@
 import AddVirsh from "../AddVirsh";
 
-import { ConfigNames } from "app/store/config/types";
-import { PowerTypeNames } from "app/store/general/constants";
-import { PowerFieldScope } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { PowerFieldScope } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -17,8 +17,8 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("AddVirshFields", () => {
   let state: RootState;
@@ -73,7 +73,7 @@ describe("AddVirshFields", () => {
     ];
     state.general.powerTypes.data = powerTypes;
 
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
       route: "/machines/chassis/add",
     });

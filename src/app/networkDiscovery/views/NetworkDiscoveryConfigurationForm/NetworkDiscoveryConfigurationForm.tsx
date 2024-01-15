@@ -1,7 +1,7 @@
 import NetworkDiscoveryConfigurationSubnetForm from "./NetworkDiscoveryConfigurationSubnetForm";
 
-import { useWindowTitle } from "app/base/hooks";
-import NetworkDiscoveryForm from "app/settings/views/Network/NetworkDiscoveryForm";
+import { useWindowTitle } from "@/app/base/hooks";
+import NetworkDiscoveryForm from "@/app/settings/views/Network/NetworkDiscoveryForm";
 
 export enum Label {
   Title = "Dashboard configuration",

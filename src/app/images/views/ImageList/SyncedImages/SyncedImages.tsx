@@ -16,9 +16,9 @@ import OtherImages from "./OtherImages";
 import UbuntuCoreImages from "./UbuntuCoreImages";
 import UbuntuImages from "./UbuntuImages";
 
-import bootResourceSelectors from "app/store/bootresource/selectors";
-import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
-import { BootResourceSourceType } from "app/store/bootresource/types";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
+import type { BootResourceUbuntuSource } from "@/app/store/bootresource/types";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
 
 const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
   if (sources.length === 1) {

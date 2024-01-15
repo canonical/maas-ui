@@ -2,16 +2,16 @@ import configureStore from "redux-mock-store";
 
 import PowerOffForm from "./PowerOffForm";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -36,11 +36,11 @@ describe("PowerOffForm", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("can dispatch a soft power off action on machines", async () => {
@@ -51,7 +51,7 @@ describe("PowerOffForm", () => {
         action={NodeActions.SOFT_OFF}
         actions={machineActions}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={[state.machine.items[0]]}
         processingCount={0}

@@ -1,14 +1,14 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import CoreResources from "app/kvm/components/CoreResources";
-import RamResources from "app/kvm/components/RamResources";
-import StorageResources from "app/kvm/components/StorageResources";
-import VfResources from "app/kvm/components/VfResources";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { resourceWithOverCommit } from "app/store/pod/utils";
-import type { RootState } from "app/store/root/types";
+import CoreResources from "@/app/kvm/components/CoreResources";
+import RamResources from "@/app/kvm/components/RamResources";
+import StorageResources from "@/app/kvm/components/StorageResources";
+import VfResources from "@/app/kvm/components/VfResources";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import { resourceWithOverCommit } from "@/app/store/pod/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   id: Pod["id"];

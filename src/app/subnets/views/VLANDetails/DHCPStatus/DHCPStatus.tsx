@@ -9,23 +9,23 @@ import {
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import ControllerLink from "app/base/components/ControllerLink";
-import Definition from "app/base/components/Definition";
-import TitledSection from "app/base/components/TitledSection";
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric } from "app/store/fabric/types";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import { getFullVLANName } from "app/store/vlan/utils";
-import { isId } from "app/utils";
+import ControllerLink from "@/app/base/components/ControllerLink";
+import Definition from "@/app/base/components/Definition";
+import TitledSection from "@/app/base/components/TitledSection";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
+import { getFullVLANName } from "@/app/store/vlan/utils";
+import { isId } from "@/app/utils";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;

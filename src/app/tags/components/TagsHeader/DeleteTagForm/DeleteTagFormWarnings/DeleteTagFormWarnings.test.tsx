@@ -1,4 +1,4 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -6,10 +6,10 @@ import configureStore from "redux-mock-store";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import urls from "@/app/base/urls";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -17,17 +17,25 @@ import {
   rootState as rootStateFactory,
   machineStateCount as machineStateCountFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 let state: RootState;
 
-enableCallIdMocks();
+const callId = "mocked-nanoid";
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("{}");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("{}");
+  vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [

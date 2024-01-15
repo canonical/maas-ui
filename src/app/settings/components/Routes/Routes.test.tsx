@@ -1,7 +1,7 @@
 import Routes from "./Routes";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   userState as userStateFactory,
@@ -14,8 +14,8 @@ import {
   packageRepository as packageRepositoryFactory,
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 

@@ -8,18 +8,18 @@ import AddTagForm from "./AddTagForm";
 import TagFormFields from "./TagFormFields";
 import type { TagFormValues } from "./types";
 
-import ActionForm from "app/base/components/ActionForm";
-import { useSidePanel } from "app/base/side-panel-context";
-import type { MachineActionFormProps } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineEventErrors } from "app/store/machine/types";
-import { selectedToFilters } from "app/store/machine/utils";
-import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
-import { actions as messageActions } from "app/store/message";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import { NodeActions } from "app/store/types/node";
-import TagDetails from "app/tags/components/TagDetails";
+import ActionForm from "@/app/base/components/ActionForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import type { MachineActionFormProps } from "@/app/machines/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineEventErrors } from "@/app/store/machine/types";
+import { selectedToFilters } from "@/app/store/machine/utils";
+import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import { actions as messageActions } from "@/app/store/message";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import { NodeActions } from "@/app/store/types/node";
+import TagDetails from "@/app/tags/components/TagDetails";
 
 type Props = MachineActionFormProps & {
   viewingMachineConfig?: boolean;

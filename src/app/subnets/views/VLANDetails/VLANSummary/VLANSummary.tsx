@@ -5,14 +5,14 @@ import EditVLAN from "../EditVLAN";
 
 import VLANControllers from "./VLANControllers";
 
-import Definition from "app/base/components/Definition";
-import EditableSection from "app/base/components/EditableSection";
-import FabricLink from "app/base/components/FabricLink";
-import SpaceLink from "app/base/components/SpaceLink";
-import authSelectors from "app/store/auth/selectors";
-import type { RootState } from "app/store/root/types";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
+import Definition from "@/app/base/components/Definition";
+import EditableSection from "@/app/base/components/EditableSection";
+import FabricLink from "@/app/base/components/FabricLink";
+import SpaceLink from "@/app/base/components/SpaceLink";
+import authSelectors from "@/app/store/auth/selectors";
+import type { RootState } from "@/app/store/root/types";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;

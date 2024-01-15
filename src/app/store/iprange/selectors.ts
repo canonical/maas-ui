@@ -2,10 +2,10 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "../root/types";
 
-import { IPRangeMeta } from "app/store/iprange/types";
-import type { IPRange, IPRangeState } from "app/store/iprange/types";
-import { generateBaseSelectors } from "app/store/utils";
-import { isId } from "app/utils";
+import { IPRangeMeta } from "@/app/store/iprange/types";
+import type { IPRange, IPRangeState } from "@/app/store/iprange/types";
+import { generateBaseSelectors } from "@/app/store/utils";
+import { isId } from "@/app/utils";
 
 const defaultSelectors = generateBaseSelectors<
   IPRangeState,

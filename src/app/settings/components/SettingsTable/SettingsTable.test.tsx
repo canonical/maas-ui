@@ -1,6 +1,6 @@
 import SettingsTable from "./SettingsTable";
 
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("SettingsTable", () => {
   it("can render", () => {
@@ -15,7 +15,7 @@ describe("SettingsTable", () => {
         ]}
         loaded={true}
         loading={false}
-        searchOnChange={jest.fn()}
+        searchOnChange={vi.fn()}
         searchPlaceholder="Search"
         searchText=""
       />,

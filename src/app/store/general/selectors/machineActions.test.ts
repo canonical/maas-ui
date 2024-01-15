@@ -1,12 +1,12 @@
 import machineActions from "./machineActions";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineActionsState as machineActionsStateFactory,
   machineAction as machineActionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("machineActions selectors", () => {
   describe("get", () => {

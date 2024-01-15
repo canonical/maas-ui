@@ -1,3 +1,5 @@
+import type { Mock } from "vitest";
+
 import { Label as TagsHeaderLabel } from "../components/TagsHeader/TagsHeader";
 
 import { Label as TagDetailsLabel } from "./TagDetails/TagDetails";
@@ -5,18 +7,18 @@ import { Label as TagListLabel } from "./TagList/TagList";
 import { Label as TagUpdateLabel } from "./TagUpdate/TagUpdate";
 import Tags from "./Tags";
 
-import urls from "app/base/urls";
-import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("Tags", () => {
-  let scrollToSpy: jest.Mock;
+  let scrollToSpy: Mock;
   let state: RootState;
 
   beforeEach(() => {
@@ -27,12 +29,12 @@ describe("Tags", () => {
       }),
     });
     // Mock the scrollTo method as jsdom doesn't support this and will error.
-    scrollToSpy = jest.fn();
+    scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   [

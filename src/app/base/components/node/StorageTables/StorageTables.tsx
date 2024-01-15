@@ -6,9 +6,9 @@ import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
 
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import { isCacheSet, isVMWareLayout } from "app/store/utils";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { isCacheSet, isVMWareLayout } from "@/app/store/utils";
 
 export enum Labels {
   AvailableStorage = "Available disks and partitions",

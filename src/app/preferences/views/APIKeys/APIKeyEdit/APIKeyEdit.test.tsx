@@ -5,13 +5,13 @@ import { Label as APIKeyFormLabels } from "../APIKeyForm/APIKeyForm";
 
 import { APIKeyEdit, Label as APIKeyEditLabels } from "./APIKeyEdit";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("APIKeyEdit", () => {
   let state: RootState;

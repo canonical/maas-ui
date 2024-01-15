@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetailsForm from "./ZoneDetailsForm";
 
-import type { RootState } from "app/store/root/types";
-import { actions as zoneActions } from "app/store/zone";
+import type { RootState } from "@/app/store/root/types";
+import { actions as zoneActions } from "@/app/store/zone";
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -29,7 +29,7 @@ describe("ZoneDetailsForm", () => {
   });
 
   it("runs closeForm function when the cancel button is clicked", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const store = mockStore(initialState);
     render(
       <Provider store={store}>
@@ -51,7 +51,7 @@ describe("ZoneDetailsForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <ZoneDetailsForm closeForm={jest.fn()} id={testZone.id} />
+            <ZoneDetailsForm closeForm={vi.fn()} id={testZone.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

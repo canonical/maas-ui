@@ -2,7 +2,7 @@ import pluralize from "pluralize";
 
 import MachineHostname from "../MachineHostname";
 
-import type { ActionState } from "app/base/types";
+import type { ActionState } from "@/app/base/types";
 
 const ErrorDetailsItem = ({
   errorMessage,

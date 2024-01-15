@@ -14,14 +14,14 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import type { APIError, SetSearchFilter } from "app/base/types";
-import urls from "app/base/urls";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineDetails } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
-import { formatErrors } from "app/utils";
+import type { APIError, SetSearchFilter } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine, MachineDetails } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
+import { formatErrors } from "@/app/utils";
 
 export const CloneErrorCodes = {
   IS_SOURCE: "is-source",

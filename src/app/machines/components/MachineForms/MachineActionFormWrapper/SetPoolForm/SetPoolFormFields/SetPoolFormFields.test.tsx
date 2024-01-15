@@ -1,6 +1,6 @@
 import SetPoolForm from "../SetPoolForm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -8,8 +8,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
@@ -41,7 +41,7 @@ describe("SetPoolFormFields", () => {
   it("shows a select if select pool radio chosen", async () => {
     renderWithBrowserRouter(
       <SetPoolForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -62,7 +62,7 @@ describe("SetPoolFormFields", () => {
   it("shows inputs for creating a pool if create pool radio chosen", async () => {
     renderWithBrowserRouter(
       <SetPoolForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}

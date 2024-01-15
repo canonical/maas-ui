@@ -65,8 +65,8 @@ Create new branch protection rules for the new version branch, copying the rules
 
 Usabilla button IDs can be found in the Usabilla dashboard.
 
-Update the `REACT_APP_USABILLA_ID` on the new release branch with a Usabilla button ID that matches the new version (e.g. "MAAS 3.4").
+Update the `VITE_APP_USABILLA_ID` on the new release branch with a Usabilla button ID that matches the new version (e.g. "MAAS 3.4").
 
-Update the `REACT_APP_USABILLA_ID` on the main branch with a Usabilla button ID that matches the next expected version, e.g. "MAAS 3.5" button id.
+Update the `VITE_APP_USABILLA_ID` on the main branch with a Usabilla button ID that matches the next expected version, e.g. "MAAS 3.5" button id.
 
 You may need to create new buttons in Usabilla if they don't yet exist.

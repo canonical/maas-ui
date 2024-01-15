@@ -4,11 +4,11 @@ import Placeholder from "./Placeholder";
 
 describe("Placeholder", () => {
   beforeEach(() => {
-    jest.spyOn(Math, "floor").mockReturnValue(0);
+    vi.spyOn(Math, "floor").mockReturnValue(0);
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("renders", () => {

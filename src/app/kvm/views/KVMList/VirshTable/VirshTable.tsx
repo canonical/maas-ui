@@ -1,22 +1,22 @@
 import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
-import { SortDirection } from "app/base/types";
-import urls from "app/base/urls";
-import CPUColumn from "app/kvm/components/CPUColumn";
-import NameColumn from "app/kvm/components/NameColumn";
-import PoolColumn from "app/kvm/components/PoolColumn";
-import RAMColumn from "app/kvm/components/RAMColumn";
-import StorageColumn from "app/kvm/components/StorageColumn";
-import TagsColumn from "app/kvm/components/TagsColumn";
-import VMsColumn from "app/kvm/components/VMsColumn";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import poolSelectors from "app/store/resourcepool/selectors";
-import type { ResourcePool } from "app/store/resourcepool/types";
-import { isComparable } from "app/utils";
+import TableHeader from "@/app/base/components/TableHeader";
+import { useTableSort } from "@/app/base/hooks";
+import { SortDirection } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import CPUColumn from "@/app/kvm/components/CPUColumn";
+import NameColumn from "@/app/kvm/components/NameColumn";
+import PoolColumn from "@/app/kvm/components/PoolColumn";
+import RAMColumn from "@/app/kvm/components/RAMColumn";
+import StorageColumn from "@/app/kvm/components/StorageColumn";
+import TagsColumn from "@/app/kvm/components/TagsColumn";
+import VMsColumn from "@/app/kvm/components/VMsColumn";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import poolSelectors from "@/app/store/resourcepool/selectors";
+import type { ResourcePool } from "@/app/store/resourcepool/types";
+import { isComparable } from "@/app/utils";
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
 

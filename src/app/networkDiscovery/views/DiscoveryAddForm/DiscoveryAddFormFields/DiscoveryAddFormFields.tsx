@@ -6,22 +6,22 @@ import { Link } from "react-router-dom-v5-compat";
 import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
 
-import MachineSelect from "app/base/components/DhcpFormFields/MachineSelect";
-import FormikField from "app/base/components/FormikField";
-import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
-import TooltipButton from "app/base/components/TooltipButton";
-import urls from "app/base/urls";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device } from "app/store/device/types";
-import { DeviceMeta } from "app/store/device/types";
-import type { Discovery } from "app/store/discovery/types";
-import domainSelectors from "app/store/domain/selectors";
-import type { RootState } from "app/store/root/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import { FetchNodeStatus } from "app/store/types/node";
-import vlanSelectors from "app/store/vlan/selectors";
-import { getVLANDisplay } from "app/store/vlan/utils";
+import MachineSelect from "@/app/base/components/DhcpFormFields/MachineSelect";
+import FormikField from "@/app/base/components/FormikField";
+import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import urls from "@/app/base/urls";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device } from "@/app/store/device/types";
+import { DeviceMeta } from "@/app/store/device/types";
+import type { Discovery } from "@/app/store/discovery/types";
+import domainSelectors from "@/app/store/domain/selectors";
+import type { RootState } from "@/app/store/root/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import { FetchNodeStatus } from "@/app/store/types/node";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
   discovery: Discovery;

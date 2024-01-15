@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import DebounceSearchBox from "app/base/components/DebounceSearchBox";
-import { MachineSelectTable } from "app/base/components/MachineSelectTable/MachineSelectTable";
-import MachineListPagination from "app/machines/views/MachineList/MachineListTable/MachineListPagination";
-import type { FetchFilters, Machine } from "app/store/machine/types";
-import { FilterGroupKey } from "app/store/machine/types";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
+import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
+import { MachineSelectTable } from "@/app/base/components/MachineSelectTable/MachineSelectTable";
+import MachineListPagination from "@/app/machines/views/MachineList/MachineListTable/MachineListPagination";
+import type { FetchFilters, Machine } from "@/app/store/machine/types";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import { useFetchMachines } from "@/app/store/machine/utils/hooks";
 
 const MachineSelectBox = ({
   onSelect,

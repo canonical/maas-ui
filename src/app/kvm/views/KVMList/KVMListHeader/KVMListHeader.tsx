@@ -3,14 +3,14 @@ import { Button, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-import ModelListSubtitle from "app/base/components/ModelListSubtitle";
-import type { SectionHeaderProps } from "app/base/components/SectionHeader";
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import { actions as podActions } from "app/store/pod";
-import podSelectors from "app/store/pod/selectors";
+import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
+import type { SectionHeaderProps } from "@/app/base/components/SectionHeader";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { actions as podActions } from "@/app/store/pod";
+import podSelectors from "@/app/store/pod/selectors";
 
 type Props = Required<Pick<SectionHeaderProps, "title">> & {
   setSidePanelContent: KVMSetSidePanelContent;

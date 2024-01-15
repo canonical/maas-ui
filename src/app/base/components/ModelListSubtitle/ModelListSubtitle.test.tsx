@@ -1,6 +1,6 @@
 import ModelListSubtitle, { TestIds } from "./ModelListSubtitle";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("ModelListSubtitle", () => {
   it("correctly displays when one model is available and none selected", () => {
@@ -48,7 +48,7 @@ describe("ModelListSubtitle", () => {
   });
 
   it("can render a filter button when some models are selected", async () => {
-    const filterSelected = jest.fn();
+    const filterSelected = vi.fn();
     render(
       <ModelListSubtitle
         available={2}

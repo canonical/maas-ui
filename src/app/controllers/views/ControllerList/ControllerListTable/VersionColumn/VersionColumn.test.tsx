@@ -1,15 +1,15 @@
 import { VersionColumn } from "./VersionColumn";
 
-import { ControllerInstallType } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
+import { ControllerInstallType } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   controllerVersions as controllerVersionsFactory,
   controllerVersionInfo as controllerVersionInfoFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("VersionColumn", () => {
   let state: RootState;

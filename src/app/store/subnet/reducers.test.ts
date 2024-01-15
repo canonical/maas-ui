@@ -8,7 +8,7 @@ import {
   subnetState as subnetStateFactory,
   subnetStatus as subnetStatusFactory,
   subnetStatuses as subnetStatusesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("subnet reducer", () => {
   it("should return the initial state", () => {

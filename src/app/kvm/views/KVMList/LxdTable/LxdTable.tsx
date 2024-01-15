@@ -5,11 +5,11 @@ import LxdKVMHostTable from "./LxdKVMHostTable";
 import type { LxdKVMHostTableRow } from "./LxdKVMHostTable/LxdKVMHostTable";
 import { LxdKVMHostType } from "./LxdKVMHostTable/LxdKVMHostTable";
 
-import urls from "app/base/urls";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import vmclusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
+import urls from "@/app/base/urls";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import vmclusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 export const generateSingleHostRows = (pods: Pod[]): LxdKVMHostTableRow[] =>
   pods.map((pod) => {

@@ -5,7 +5,7 @@ import { Card } from "@canonical/react-components";
 import FetchImagesForm from "./FetchImagesForm";
 import FetchedImages from "./FetchedImages";
 
-import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
+import type { BootResourceUbuntuSource } from "@/app/store/bootresource/types";
 
 type Props = {
   closeForm: (() => void) | null;

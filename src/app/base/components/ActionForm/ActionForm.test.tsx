@@ -1,8 +1,8 @@
 import type { ActionFormProps } from "./ActionForm";
 import ActionForm, { Labels } from "./ActionForm";
 
-import { TestIds } from "app/base/components/FormikFormButtons";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+import { TestIds } from "@/app/base/components/FormikFormButtons";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ActionForm", () => {
   it("shows a spinner if form has not fully loaded", () => {
@@ -12,7 +12,7 @@ describe("ActionForm", () => {
         initialValues={{}}
         loaded={false}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={0}
         selectedCount={1}
       />
@@ -29,7 +29,7 @@ describe("ActionForm", () => {
         actionName="action"
         initialValues={{}}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={0}
         selectedCount={1}
       />
@@ -46,7 +46,7 @@ describe("ActionForm", () => {
         actionName="action"
         initialValues={{}}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={0}
         selectedCount={1}
         submitLabel="Special save"
@@ -64,7 +64,7 @@ describe("ActionForm", () => {
         actionName="action"
         initialValues={{}}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={1}
         selectedCount={2}
       />
@@ -84,7 +84,7 @@ describe("ActionForm", () => {
         actionName="action"
         initialValues={{}}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         selectedCount={0}
       />
     );
@@ -98,7 +98,7 @@ describe("ActionForm", () => {
         actionName="action"
         initialValues={{}}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={2}
         selectedCount={selectedCount}
       />
@@ -125,7 +125,7 @@ describe("ActionForm", () => {
         actionName="action"
         initialValues={{}}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         processingCount={1}
         selectedCount={2}
         showProcessingCount={false}
@@ -145,7 +145,7 @@ describe("ActionForm", () => {
         errors={errors}
         initialValues={{}}
         modelName="machine"
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       />
     );
 
@@ -163,7 +163,7 @@ describe("ActionForm", () => {
   });
 
   it("sets saved status when processingCount drops to 0", () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     const Proxy = ({ processingCount }: Partial<ActionFormProps<{}>>) => (
       <ActionForm
         actionName="action"

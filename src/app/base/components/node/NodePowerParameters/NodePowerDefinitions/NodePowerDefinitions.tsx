@@ -1,19 +1,19 @@
 import { useSelector } from "react-redux";
 
-import CertificateDetails from "app/base/components/CertificateDetails";
-import Definition from "app/base/components/Definition";
-import PowerParameterDefinition from "app/base/components/node/NodePowerParameters/NodePowerDefinitions/PowerParameterDefinition";
-import type { ControllerDetails } from "app/store/controller/types";
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import type { PowerField } from "app/store/general/types";
-import { PowerFieldScope } from "app/store/general/types";
+import CertificateDetails from "@/app/base/components/CertificateDetails";
+import Definition from "@/app/base/components/Definition";
+import PowerParameterDefinition from "@/app/base/components/node/NodePowerParameters/NodePowerDefinitions/PowerParameterDefinition";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
+import type { PowerField } from "@/app/store/general/types";
+import { PowerFieldScope } from "@/app/store/general/types";
 import {
   getFieldsInScope,
   getPowerTypeFromName,
-} from "app/store/general/utils";
-import type { MachineDetails } from "app/store/machine/types";
-import { getMachineFieldScopes } from "app/store/machine/utils";
-import { nodeIsMachine } from "app/store/utils";
+} from "@/app/store/general/utils";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { getMachineFieldScopes } from "@/app/store/machine/utils";
+import { nodeIsMachine } from "@/app/store/utils";
 
 const generatePowerParameters = (
   node: MachineDetails | ControllerDetails,

@@ -1,16 +1,15 @@
 import { MachineListTable, Label } from "./MachineListTable";
 
-import { SortDirection } from "app/base/types";
-import { MachineColumns, columnLabels } from "app/machines/constants";
-import type { Machine, MachineStateListGroup } from "app/store/machine/types";
-import { FetchGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { SortDirection } from "@/app/base/types";
+import { MachineColumns, columnLabels } from "@/app/machines/constants";
+import type { Machine, MachineStateListGroup } from "@/app/store/machine/types";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+} from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -29,16 +28,16 @@ import {
   userState as userStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
-enableCallIdMocks();
+const callId = "mocked-nanoid";
 
 describe("MachineListTable", () => {
   let state: RootState;
@@ -242,10 +241,10 @@ describe("MachineListTable", () => {
         machines={machines}
         machinesLoading
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -289,10 +288,10 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -325,10 +324,10 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -350,10 +349,10 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -384,10 +383,10 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -411,10 +410,10 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -458,10 +457,10 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -485,8 +484,8 @@ describe("MachineListTable", () => {
   });
 
   it("updates sort on header click", async () => {
-    const setSortDirection = jest.fn();
-    const setSortKey = jest.fn();
+    const setSortDirection = vi.fn();
+    const setSortKey = vi.fn();
     renderWithBrowserRouter(
       <MachineListTable
         callId={callId}
@@ -498,8 +497,8 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection="none"
@@ -517,8 +516,8 @@ describe("MachineListTable", () => {
   });
 
   it("clears the sort when the same header is clicked and is ascending", async () => {
-    const setSortDirection = jest.fn();
-    const setSortKey = jest.fn();
+    const setSortDirection = vi.fn();
+    const setSortKey = vi.fn();
     renderWithBrowserRouter(
       <MachineListTable
         callId={callId}
@@ -530,8 +529,8 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={SortDirection.ASCENDING}
@@ -549,8 +548,8 @@ describe("MachineListTable", () => {
   });
 
   it("updates the sort when the same header is clicked and is descending", async () => {
-    const setSortDirection = jest.fn();
-    const setSortKey = jest.fn();
+    const setSortDirection = vi.fn();
+    const setSortKey = vi.fn();
     renderWithBrowserRouter(
       <MachineListTable
         callId={callId}
@@ -562,8 +561,8 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={SortDirection.DESCENDING}
@@ -581,8 +580,8 @@ describe("MachineListTable", () => {
   });
 
   it("updates the sort when the same header is clicked and direction is not set", async () => {
-    const setSortDirection = jest.fn();
-    const setSortKey = jest.fn();
+    const setSortDirection = vi.fn();
+    const setSortKey = vi.fn();
     renderWithBrowserRouter(
       <MachineListTable
         callId={callId}
@@ -594,8 +593,8 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={SortDirection.NONE}
@@ -613,8 +612,8 @@ describe("MachineListTable", () => {
   });
 
   it("updates the sort when a different header is clicked", async () => {
-    const setSortDirection = jest.fn();
-    const setSortKey = jest.fn();
+    const setSortDirection = vi.fn();
+    const setSortKey = vi.fn();
     renderWithBrowserRouter(
       <MachineListTable
         callId={callId}
@@ -626,8 +625,8 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={SortDirection.DESCENDING}
@@ -657,10 +656,10 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection="none"
         sortKey={null}
         totalPages={1}
@@ -683,9 +682,9 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         showActions={true}
         sortDirection="none"
         sortKey={null}
@@ -703,9 +702,9 @@ describe("MachineListTable", () => {
         machineCount={10}
         machines={machines}
         pageSize={20}
-        setCurrentPage={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setCurrentPage={vi.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         showActions={false}
         sortDirection="none"
         sortKey={null}
@@ -726,9 +725,9 @@ describe("MachineListTable", () => {
           machineCount={10}
           machines={machines}
           pageSize={20}
-          setCurrentPage={jest.fn()}
-          setSortDirection={jest.fn()}
-          setSortKey={jest.fn()}
+          setCurrentPage={vi.fn()}
+          setSortDirection={vi.fn()}
+          setSortKey={vi.fn()}
           sortDirection="none"
           sortKey={null}
           totalPages={1}
@@ -751,9 +750,9 @@ describe("MachineListTable", () => {
           machineCount={10}
           machines={machines}
           pageSize={20}
-          setCurrentPage={jest.fn()}
-          setSortDirection={jest.fn()}
-          setSortKey={jest.fn()}
+          setCurrentPage={vi.fn()}
+          setSortDirection={vi.fn()}
+          setSortKey={vi.fn()}
           sortDirection="none"
           sortKey={null}
           totalPages={1}
@@ -778,9 +777,9 @@ describe("MachineListTable", () => {
           machineCount={10}
           machines={machines}
           pageSize={20}
-          setCurrentPage={jest.fn()}
-          setSortDirection={jest.fn()}
-          setSortKey={jest.fn()}
+          setCurrentPage={vi.fn()}
+          setSortDirection={vi.fn()}
+          setSortKey={vi.fn()}
           showActions
           sortDirection="none"
           sortKey={null}
@@ -804,9 +803,9 @@ describe("MachineListTable", () => {
           machineCount={10}
           machines={machines}
           pageSize={20}
-          setCurrentPage={jest.fn()}
-          setSortDirection={jest.fn()}
-          setSortKey={jest.fn()}
+          setCurrentPage={vi.fn()}
+          setSortDirection={vi.fn()}
+          setSortKey={vi.fn()}
           showActions={false}
           sortDirection="none"
           sortKey={null}

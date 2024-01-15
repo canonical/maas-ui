@@ -1,7 +1,7 @@
 import type {
   BootResource,
   BootResourceMeta,
-} from "app/store/bootresource/types";
+} from "@/app/store/bootresource/types";
 
 export type ImageValue = {
   arch: string;

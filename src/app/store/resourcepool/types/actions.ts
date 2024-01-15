@@ -5,7 +5,7 @@ import type {
   FetchFilters,
   Machine,
   MachineMeta,
-} from "app/store/machine/types";
+} from "@/app/store/machine/types";
 
 export type CreateParams = {
   description: ResourcePool["description"];

@@ -15,12 +15,12 @@ import type {
   UpdateParams,
 } from "./types";
 
-import { generateStatusHandlers } from "app/store/utils";
-import type { GenericItemMeta } from "app/store/utils";
+import { generateStatusHandlers } from "@/app/store/utils";
+import type { GenericItemMeta } from "@/app/store/utils";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 export const DEFAULT_STATUSES = {
   composing: false,

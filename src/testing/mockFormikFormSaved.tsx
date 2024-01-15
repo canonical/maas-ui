@@ -1,17 +1,22 @@
-import * as baseHooks from "app/base/hooks/base";
+import { vi } from "vitest";
+import type { SpyInstance } from "vitest";
+
+import * as baseHooks from "@/app/base/hooks/base";
 
 beforeEach(() => {
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
+  vi.spyOn(baseHooks, "useCycled").mockImplementation(
+    (): ReturnType<typeof baseHooks.useCycled> => [false, () => {}]
+  );
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 // Simulate FormikForm saved state going from false to true by mocking useCycled
-export const mockFormikFormSaved = (): jest.SpyInstance =>
-  jest
+export const mockFormikFormSaved = (): SpyInstance =>
+  vi
     .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
+    .mockImplementation(
+      (): ReturnType<typeof baseHooks.useCycled> => [true, () => null]
+    );

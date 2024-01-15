@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import VirshSettings from "./VirshSettings";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
@@ -13,8 +13,8 @@ import {
   rootState as rootStateFactory,
   tagState as tagStateFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

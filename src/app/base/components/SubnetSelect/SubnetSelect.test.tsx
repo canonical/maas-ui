@@ -5,12 +5,12 @@ import configureStore from "redux-mock-store";
 
 import SubnetSelect from "./SubnetSelect";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -43,7 +43,7 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={vi.fn()}>
           <SubnetSelect name="subnet" />
         </Formik>
       </Provider>
@@ -55,7 +55,7 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={vi.fn()}>
           <SubnetSelect name="subnet" />
         </Formik>
       </Provider>
@@ -77,7 +77,7 @@ describe("SubnetSelect", () => {
     };
     render(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={vi.fn()}>
           <SubnetSelect defaultOption={defaultOption} name="subnet" />
         </Formik>
       </Provider>
@@ -92,7 +92,7 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={vi.fn()}>
           <SubnetSelect defaultOption={null} name="subnet" />
         </Formik>
       </Provider>
@@ -106,7 +106,7 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={vi.fn()}>
           <SubnetSelect name="subnet" vlan={3} />
         </Formik>
       </Provider>
@@ -123,7 +123,7 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={vi.fn()}>
           <SubnetSelect
             filterFunction={(subnet) => subnet.vlan === 4}
             name="subnet"
@@ -157,7 +157,7 @@ describe("SubnetSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={vi.fn()}>
           <SubnetSelect name="subnet" />
         </Formik>
       </Provider>

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import SubnetsTable from "./SubnetsTable";
 import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 
-import urls from "app/subnets/urls";
+import urls from "@/app/subnets/urls";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -14,15 +14,14 @@ import {
   subnetState as subnetStateFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   render,
   screen,
   within,
-  waitFor,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
   const fabrics = [
@@ -158,12 +157,12 @@ it("updates the list of items correctly when navigating to another page", async 
       name: "2",
     })
   );
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(tableBody).getAllByRole("link", { name: /fabric/i })
     ).toHaveLength(25)
   );
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(tableBody).getByRole("link", { name: "fabric-26" })
     ).toBeInTheDocument()
@@ -227,7 +226,7 @@ it("displays correctly paginated rows", async () => {
     })
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
         "button",
@@ -269,7 +268,7 @@ it("displays the last available page once the currently active has no items", as
     )
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(within(tableBody).getAllByRole("row")).toHaveLength(2)
   );
   expect(
@@ -292,7 +291,7 @@ it("displays the last available page once the currently active has no items", as
   );
 
   const pagination = screen.getByRole("navigation", { name: "pagination" });
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")
@@ -326,7 +325,7 @@ it("remains on the same page once the data is updated and page is still availabl
     })
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")
@@ -347,7 +346,7 @@ it("remains on the same page once the data is updated and page is still availabl
     </Provider>
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")
@@ -375,7 +374,7 @@ it("displays the table group summary at the top of every page", async () => {
     })
   );
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")

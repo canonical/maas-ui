@@ -1,18 +1,20 @@
 import { NotificationSeverity } from "@canonical/react-components";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import DeleteTagForm from "./DeleteTagForm";
 
-import * as baseHooks from "app/base/hooks/base";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { NodeStatus } from "app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import * as baseHooks from "@/app/base/hooks/base";
+import urls from "@/app/base/urls";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -20,16 +22,25 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
-enableCallIdMocks();
+const callId = "mocked-nanoid";
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 const mockStore = configureStore();
 
 let state: RootState;
-let scrollToSpy: jest.Mock;
+let scrollToSpy: Mock;
 
 beforeEach(() => {
+  vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -44,12 +55,12 @@ beforeEach(() => {
     }),
   });
   // Mock the scrollTo method as jsdom doesn't support this and will error.
-  scrollToSpy = jest.fn();
+  scrollToSpy = vi.fn();
   global.scrollTo = scrollToSpy;
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("dispatches an action to delete a tag", async () => {
@@ -58,7 +69,7 @@ it("dispatches an action to delete a tag", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <DeleteTagForm id={1} onClose={jest.fn()} />
+          <DeleteTagForm id={1} onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -73,7 +84,7 @@ it("dispatches an action to delete a tag", async () => {
 });
 
 it("dispatches an action to add a notification when tag successfully deleted", async () => {
-  const useAddMessageMock = jest.spyOn(baseHooks, "useAddMessage");
+  const useAddMessageMock = vi.spyOn(baseHooks, "useAddMessage");
   state.tag.saved = true;
   state.tag.errors = null;
   state.tag.items[0].name = "tagalog";
@@ -82,7 +93,7 @@ it("dispatches an action to add a notification when tag successfully deleted", a
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <DeleteTagForm id={1} onClose={jest.fn()} />
+          <DeleteTagForm id={1} onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -106,7 +117,7 @@ it("displays a message when deleting a tag on a machine", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <DeleteTagForm id={1} onClose={jest.fn()} />
+          <DeleteTagForm id={1} onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -131,7 +142,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <DeleteTagForm id={1} onClose={jest.fn()} />
+          <DeleteTagForm id={1} onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -156,7 +167,7 @@ it("can return to the list on cancel", async () => {
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
   });
-  const onClose = jest.fn();
+  const onClose = vi.fn();
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -195,7 +206,7 @@ it("can return to the details on cancel", async () => {
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
   });
-  const onClose = jest.fn();
+  const onClose = vi.fn();
   const store = mockStore(state);
   render(
     <Provider store={store}>

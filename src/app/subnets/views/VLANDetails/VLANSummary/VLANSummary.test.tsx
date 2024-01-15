@@ -5,12 +5,12 @@ import configureStore from "redux-mock-store";
 
 import VLANSummary from "./VLANSummary";
 
-import urls from "app/base/urls";
-import type { Controller } from "app/store/controller/types";
-import type { Fabric } from "app/store/fabric/types";
-import type { RootState } from "app/store/root/types";
-import type { Space } from "app/store/space/types";
-import type { VLAN } from "app/store/vlan/types";
+import urls from "@/app/base/urls";
+import type { Controller } from "@/app/store/controller/types";
+import type { Fabric } from "@/app/store/fabric/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Space } from "@/app/store/space/types";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   authState as authStateFactory,
   user as userFactory,
@@ -25,8 +25,8 @@ import {
   spaceState as spaceStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 

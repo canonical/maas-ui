@@ -4,14 +4,14 @@ import configureStore from "redux-mock-store";
 
 import ErrorBoundary, { Labels } from "./ErrorBoundary";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -19,7 +19,7 @@ describe("ErrorBoundary", () => {
   let state: RootState;
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe("ErrorBoundary", () => {
   });
 
   it("should display an ErrorMessage if wrapped component throws", () => {
-    jest.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
+    vi.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
 
     const store = mockStore(state);
 
@@ -50,8 +50,8 @@ describe("ErrorBoundary", () => {
   });
 
   it("should not capture exceptions with Sentry when enable_analytics is disabled", () => {
-    jest.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
-    jest.spyOn(Sentry, "captureException").mockImplementation(() => "");
+    vi.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
+    vi.spyOn(Sentry, "captureException").mockImplementation(() => "");
 
     state.config.items = [
       {
@@ -76,8 +76,8 @@ describe("ErrorBoundary", () => {
   });
 
   it("should capture exceptions with Sentry when enable_analytics is enabled", () => {
-    jest.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
-    jest.spyOn(Sentry, "captureException").mockImplementation(() => "");
+    vi.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
+    vi.spyOn(Sentry, "captureException").mockImplementation(() => "");
 
     state.config.items = [
       {

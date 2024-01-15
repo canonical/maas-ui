@@ -2,15 +2,15 @@ import configureStore from "redux-mock-store";
 
 import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   deviceState as deviceStateFactory,
   fabricState as fabricStateFactory,
   networkInterface as networkInterfaceFactory,
   rootState as rootStateFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

@@ -1,10 +1,10 @@
 import FilterAccordion, { Labels } from "./FilterAccordion";
 import type { Props as FilterAccordionProps } from "./FilterAccordion";
 
-import type { MachineDetails, MachineMeta } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import { machineDetails as machineDetailsFactory } from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+import type { MachineDetails, MachineMeta } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { machineDetails as machineDetailsFactory } from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("FilterAccordion", () => {
   let items: MachineDetails[];
@@ -84,7 +84,7 @@ describe("FilterAccordion", () => {
   });
 
   it("can set a filter", async () => {
-    const onUpdateFilterString = jest.fn();
+    const onUpdateFilterString = vi.fn();
     render(
       <FilterAccordion
         filterNames={filterNames}

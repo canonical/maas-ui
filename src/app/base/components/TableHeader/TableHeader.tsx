@@ -4,7 +4,7 @@ import type { ButtonProps } from "@canonical/react-components";
 import { Button, Icon } from "@canonical/react-components";
 import classNames from "classnames";
 
-import type { Sort } from "app/base/types";
+import type { Sort } from "@/app/base/types";
 
 type Props = {
   children: ReactNode;

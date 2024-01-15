@@ -2,13 +2,13 @@ import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
 
-import { ConfigNames } from "app/store/config/types";
-import type { Notification } from "app/store/notification/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { Notification } from "@/app/store/notification/types";
 import {
   NotificationCategory,
   NotificationIdent,
-} from "app/store/notification/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/notification/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -19,8 +19,8 @@ import {
   notificationState as notificationStateFactory,
   rootState as rootStateFactory,
   routerState as routerStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

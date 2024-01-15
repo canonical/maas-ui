@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useSendAnalytics } from "app/base/hooks";
-import urls from "app/base/urls";
-import { TAG_NAME_REGEX } from "app/base/validation";
-import { actions as messageActions } from "app/store/message";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
-import type { CreateParams, Tag } from "app/store/tag/types";
-import DefinitionField from "app/tags/components/DefinitionField";
-import KernelOptionsField from "app/tags/components/KernelOptionsField";
-import { NewDefinitionMessage } from "app/tags/constants";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useSendAnalytics } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { TAG_NAME_REGEX } from "@/app/base/validation";
+import { actions as messageActions } from "@/app/store/message";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { CreateParams, Tag } from "@/app/store/tag/types";
+import DefinitionField from "@/app/tags/components/DefinitionField";
+import KernelOptionsField from "@/app/tags/components/KernelOptionsField";
+import { NewDefinitionMessage } from "@/app/tags/constants";
 
 type Props = {
   onClose: () => void;

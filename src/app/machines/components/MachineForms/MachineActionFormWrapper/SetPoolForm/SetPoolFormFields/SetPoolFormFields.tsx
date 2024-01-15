@@ -5,8 +5,8 @@ import { useFormikContext } from "formik";
 
 import type { SetPoolFormValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
+import FormikField from "@/app/base/components/FormikField";
+import ResourcePoolSelect from "@/app/base/components/ResourcePoolSelect";
 
 export const SetPoolFormFields = (): JSX.Element => {
   const { handleChange, values, setFieldValue, setFieldTouched } =

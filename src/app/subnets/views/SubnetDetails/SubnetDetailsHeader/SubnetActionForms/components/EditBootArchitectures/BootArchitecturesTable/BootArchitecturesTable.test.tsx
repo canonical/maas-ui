@@ -11,8 +11,8 @@ import {
   knownBootArchitecture as knownBootArchitectureFactory,
   knownBootArchitecturesState as knownBootArchitecturesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 let initialValues: FormValues;
@@ -35,7 +35,7 @@ it("renders a table of known boot architectures", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <BootArchitecturesTable />
       </Formik>
     </Provider>

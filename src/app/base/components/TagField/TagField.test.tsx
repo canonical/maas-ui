@@ -2,13 +2,13 @@ import { Formik } from "formik";
 
 import TagField from "./TagField";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("TagField", () => {
   it("sorts the tags by name", async () => {
     const initialValues = { tags: null };
     render(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={vi.fn()}>
         <TagField
           name="wombatTags"
           tags={[

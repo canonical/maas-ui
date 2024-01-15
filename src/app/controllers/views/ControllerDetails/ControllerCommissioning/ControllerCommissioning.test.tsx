@@ -1,14 +1,14 @@
-import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
+import * as reactComponents from "@canonical/react-components";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 
-import { HardwareType } from "app/base/enum";
-import { actions as scriptResultActions } from "app/store/scriptresult";
-import { ScriptResultType } from "app/store/scriptresult/types";
-import { TestStatusStatus } from "app/store/types/node";
+import { HardwareType } from "@/app/base/enum";
+import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { ScriptResultType } from "@/app/store/scriptresult/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
@@ -17,14 +17,16 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
-jest.mock("@canonical/react-components/dist/hooks", () => {
-  const hooks = jest.requireActual("@canonical/react-components/dist/hooks");
+vi.mock("@canonical/react-components", async () => {
+  const components: typeof reactComponents = await vi.importActual(
+    "@canonical/react-components"
+  );
   return {
-    ...hooks,
-    usePrevious: jest.fn(),
+    ...components,
+    usePrevious: vi.fn(),
   };
 });
 
@@ -81,9 +83,9 @@ it("fetches script results if they haven't been fetched", () => {
 
 it("fetches script results if the commissioning status changes to pending", () => {
   // Mock the previous commissioning status being different to pending.
-  jest
-    .spyOn(reactComponentHooks, "usePrevious")
-    .mockImplementation(() => TestStatusStatus.PASSED);
+  vi.spyOn(reactComponents, "usePrevious").mockImplementation(
+    () => TestStatusStatus.PASSED
+  );
   const controller = controllerDetailsFactory({
     commissioning_status: testStatusFactory({
       status: TestStatusStatus.PENDING, // "new" status is pending

@@ -5,7 +5,7 @@ import {
   partialScriptResult as partialScriptResultFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("script result reducer", () => {
   it("returns the initial state", () => {

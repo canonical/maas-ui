@@ -9,8 +9,8 @@ import {
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
   fabric as fabricFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

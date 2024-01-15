@@ -1,5 +1,5 @@
-import type { TagIdCountMap } from "app/store/machine/utils";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import type { TagIdCountMap } from "@/app/store/machine/utils";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 export const getTagsDisplay = (tags: Tag[]): string => {
   if (tags.length === 0) {

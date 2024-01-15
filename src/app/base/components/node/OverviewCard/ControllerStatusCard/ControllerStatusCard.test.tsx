@@ -3,12 +3,12 @@ import configureStore from "redux-mock-store";
 
 import ControllerStatusCard, { Labels } from "./ControllerStatusCard";
 
-import { actions as controllerActions } from "app/store/controller";
+import { actions as controllerActions } from "@/app/store/controller";
 import {
   ControllerInstallType,
   ImageSyncStatus,
-} from "app/store/controller/types";
-import { NodeType } from "app/store/types/node";
+} from "@/app/store/controller/types";
+import { NodeType } from "@/app/store/types/node";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
@@ -21,8 +21,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, userEvent, within } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, userEvent, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 

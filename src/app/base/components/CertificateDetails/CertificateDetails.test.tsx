@@ -3,23 +3,23 @@ import configureStore from "redux-mock-store";
 
 import CertificateDetails, { Labels } from "./CertificateDetails";
 
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   certificateMetadata as metadataFactory,
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("CertificateDetails", () => {
   it(`sends an analytics event when clicking the 'read more' link if analytics
     is enabled`, async () => {
-    const mockSendAnalytics = jest.fn();
-    const mockUseSendAnalytics = jest
+    const mockSendAnalytics = vi.fn();
+    const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
     const state = rootStateFactory({

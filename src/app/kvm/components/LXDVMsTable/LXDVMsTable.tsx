@@ -8,15 +8,15 @@ import VMsActionBar from "./VMsActionBar";
 import VMsTable from "./VMsTable";
 import type { GetHostColumn, GetResources } from "./VMsTable/VMsTable";
 
-import type { SetSearchFilter, SortDirection } from "app/base/types";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/constants";
-import { actions as machineActions } from "app/store/machine";
-import type { FetchGroupKey } from "app/store/machine/types";
-import { FilterGroupKey } from "app/store/machine/types";
-import { FilterMachines, useFetchedCount } from "app/store/machine/utils";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
-import type { Pod } from "app/store/pod/types";
+import type { SetSearchFilter, SortDirection } from "@/app/base/types";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FetchGroupKey } from "@/app/store/machine/types";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import { FilterMachines, useFetchedCount } from "@/app/store/machine/utils";
+import { useFetchMachines } from "@/app/store/machine/utils/hooks";
+import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
   displayForCluster?: boolean;

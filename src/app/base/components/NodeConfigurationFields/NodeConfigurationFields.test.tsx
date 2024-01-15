@@ -6,20 +6,20 @@ import configureStore from "redux-mock-store";
 
 import NodeConfigurationFields, { Label } from "./NodeConfigurationFields";
 
-import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
-import * as baseHooks from "app/base/hooks/base";
-import type { RootState } from "app/store/root/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import { Label as AddTagFormLabel } from "app/tags/components/AddTagForm/AddTagForm";
+import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
+import * as baseHooks from "@/app/base/hooks/base";
+import type { RootState } from "@/app/store/root/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -43,13 +43,13 @@ beforeEach(() => {
       items: tags,
     }),
   });
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
+  vi.spyOn(baseHooks, "useCycled").mockImplementation(
+    () => [false, () => {}] as ReturnType<typeof baseHooks.useCycled>
+  );
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("can open a create tag form", async () => {
@@ -58,7 +58,7 @@ it("can open a create tag form", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
             <NodeConfigurationFields />
           </Formik>
         </CompatRouter>
@@ -89,7 +89,7 @@ it("does not display automatic tags on the list", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
             <NodeConfigurationFields />
           </Formik>
         </CompatRouter>
@@ -115,7 +115,7 @@ it("updates the new tags after creating a tag", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik initialValues={{ tags: tags }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
             <NodeConfigurationFields />
           </Formik>
         </CompatRouter>

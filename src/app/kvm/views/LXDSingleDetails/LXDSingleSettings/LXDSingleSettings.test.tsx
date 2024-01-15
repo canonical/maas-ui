@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleSettings from "./LXDSingleSettings";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
@@ -14,7 +14,7 @@ import {
   rootState as rootStateFactory,
   tagState as tagStateFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -44,7 +44,7 @@ describe("LXDSingleSettings", () => {
         <Provider store={store}>
           <MemoryRouter>
             <CompatRouter>
-              <LXDSingleSettings id={1} setSidePanelContent={jest.fn()} />
+              <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
             </CompatRouter>
           </MemoryRouter>
         </Provider>
@@ -72,7 +72,7 @@ describe("LXDSingleSettings", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <LXDSingleSettings id={1} setSidePanelContent={jest.fn()} />
+            <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

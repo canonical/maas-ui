@@ -5,15 +5,15 @@ import configureStore from "redux-mock-store";
 
 import FabricDeleteForm from "./FabricDeleteForm";
 
-import { actions as fabricActions } from "app/store/fabric";
+import { actions as fabricActions } from "@/app/store/fabric";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -29,7 +29,7 @@ it("does not allow deletion if the fabric is the default fabric", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -58,7 +58,7 @@ it("does not allow deletion if the fabric has subnets attached", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -82,7 +82,7 @@ it(`displays a delete confirmation if the fabric is not the default and has no
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -103,7 +103,7 @@ it("deletes the fabric when confirmed", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

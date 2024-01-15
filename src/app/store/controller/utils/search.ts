@@ -1,13 +1,13 @@
-import type { Controller } from "app/store/controller/types";
-import { ControllerMeta } from "app/store/controller/types";
-import type { Tag } from "app/store/tag/types";
-import { getTagNamesForIds } from "app/store/tag/utils";
-import type { FilterValue } from "app/utils/search/filter-handlers";
+import type { Controller } from "@/app/store/controller/types";
+import { ControllerMeta } from "@/app/store/controller/types";
+import type { Tag } from "@/app/store/tag/types";
+import { getTagNamesForIds } from "@/app/store/tag/utils";
+import type { FilterValue } from "@/app/utils/search/filter-handlers";
 import {
   isFilterValue,
   isFilterValueArray,
-} from "app/utils/search/filter-handlers";
-import FilterItems from "app/utils/search/filter-items";
+} from "@/app/utils/search/filter-handlers";
+import FilterItems from "@/app/utils/search/filter-items";
 
 type ExtraData = {
   tags: Tag[];

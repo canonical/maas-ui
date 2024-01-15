@@ -1,8 +1,8 @@
 import LXDClusterHostVMs, { Label } from "./LXDClusterHostVMs";
 
-import urls from "app/base/urls";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
@@ -10,8 +10,8 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 
@@ -39,8 +39,8 @@ describe("LXDClusterHostVMs", () => {
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
@@ -57,8 +57,8 @@ describe("LXDClusterHostVMs", () => {
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
@@ -75,8 +75,8 @@ describe("LXDClusterHostVMs", () => {
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),

@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
 
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import { ConfigNames } from "@/app/store/config/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -16,8 +16,8 @@ import {
   machineStatus as machineStatusFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -101,7 +101,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -131,7 +131,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -147,7 +147,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}
@@ -188,7 +188,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -234,7 +234,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -268,7 +268,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -306,7 +306,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -335,14 +335,14 @@ describe("DeployForm", () => {
   });
 
   it("sends an analytics event with cloud-init user data set", async () => {
-    const mockSendAnalytics = jest.fn();
-    const mockUseSendAnalytics = jest
+    const mockSendAnalytics = vi.fn();
+    const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -383,7 +383,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -415,7 +415,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -448,7 +448,7 @@ describe("DeployForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}

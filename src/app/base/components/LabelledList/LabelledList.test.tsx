@@ -1,6 +1,6 @@
 import LabelledList from "./LabelledList";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("LabelledList ", () => {
   it("can add additional classes", () => {

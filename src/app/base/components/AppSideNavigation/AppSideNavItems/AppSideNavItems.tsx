@@ -7,9 +7,9 @@ import AppSideNavItem from "../AppSideNavItem";
 import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
-import { useId } from "app/base/hooks/base";
-import urls from "app/base/urls";
-import type { User } from "app/store/user/types";
+import { useId } from "@/app/base/hooks/base";
+import urls from "@/app/base/urls";
+import type { User } from "@/app/store/user/types";
 
 type Props = {
   authUser: User | null;

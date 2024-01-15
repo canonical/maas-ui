@@ -1,5 +1,5 @@
-import TableConfirm from "app/base/components/TableConfirm";
-import type { Props as TableConfirmProps } from "app/base/components/TableConfirm/TableConfirm";
+import TableConfirm from "@/app/base/components/TableConfirm";
+import type { Props as TableConfirmProps } from "@/app/base/components/TableConfirm/TableConfirm";
 
 type Props = {
   deleted: TableConfirmProps["finished"];

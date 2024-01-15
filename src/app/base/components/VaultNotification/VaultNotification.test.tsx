@@ -1,11 +1,11 @@
 import VaultNotification from "./VaultNotification";
 
-import { NodeType } from "app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 import {
   rootState as rootStateFactory,
   controller as controllerFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("does not display a notification when data has not loaded", async () => {
   const state = rootStateFactory();

@@ -7,20 +7,20 @@ import UbuntuCoreImages, {
   Labels as UbuntuCoreImagesLabels,
 } from "./UbuntuCoreImages";
 
-import { actions as bootResourceActions } from "app/store/bootresource";
-import type { RootState } from "app/store/root/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceUbuntuCoreImage as ubuntuCoreImageFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

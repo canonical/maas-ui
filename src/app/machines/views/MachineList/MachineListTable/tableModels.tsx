@@ -21,11 +21,15 @@ import type {
   GroupRowsProps,
 } from "./types";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import Placeholder from "app/base/components/Placeholder";
-import { columnLabels, columns, MachineColumns } from "app/machines/constants";
-import type { GetMachineMenuToggleHandler } from "app/machines/types";
-import type { Machine } from "app/store/machine/types";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import Placeholder from "@/app/base/components/Placeholder";
+import {
+  columnLabels,
+  columns,
+  MachineColumns,
+} from "@/app/machines/constants";
+import type { GetMachineMenuToggleHandler } from "@/app/machines/types";
+import type { Machine } from "@/app/store/machine/types";
 
 /**
  * Filters columns by hiddenColumns.

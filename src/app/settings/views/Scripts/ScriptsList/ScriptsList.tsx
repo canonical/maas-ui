@@ -7,17 +7,17 @@ import type { Dispatch } from "redux";
 
 import ScriptDetails from "../ScriptDetails";
 
-import ColumnToggle from "app/base/components/ColumnToggle";
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useWindowTitle, useAddMessage } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
-import type { RootState } from "app/store/root/types";
-import { actions as scriptActions } from "app/store/script";
-import scriptSelectors from "app/store/script/selectors";
-import type { Script } from "app/store/script/types";
-import { generateEmptyStateMsg, getTableStatus } from "app/utils";
-import { parseUtcDatetime } from "app/utils/time";
+import ColumnToggle from "@/app/base/components/ColumnToggle";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import { useWindowTitle, useAddMessage } from "@/app/base/hooks";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import type { RootState } from "@/app/store/root/types";
+import { actions as scriptActions } from "@/app/store/script";
+import scriptSelectors from "@/app/store/script/selectors";
+import type { Script } from "@/app/store/script/types";
+import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
+import { parseUtcDatetime } from "@/app/utils/time";
 
 export enum Labels {
   Actions = "Table actions",

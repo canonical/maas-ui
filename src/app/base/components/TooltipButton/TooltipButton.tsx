@@ -8,7 +8,7 @@ import type {
 } from "@canonical/react-components";
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 
-import { breakLines, unindentString } from "app/utils";
+import { breakLines, unindentString } from "@/app/utils";
 
 type Props = Omit<TooltipProps, "aria-label" | "children"> & {
   "aria-label"?: ButtonProps["aria-label"];

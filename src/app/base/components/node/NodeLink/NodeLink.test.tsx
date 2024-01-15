@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import NodeLink from "./NodeLink";
 
-import { NodeType } from "app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -15,8 +15,8 @@ import {
   machineState as machineStateFactory,
   modelRef as modelRefFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

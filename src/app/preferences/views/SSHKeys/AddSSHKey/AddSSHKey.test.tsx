@@ -4,13 +4,13 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import { AddSSHKey, Label as AddSSHKeyLabels } from "./AddSSHKey";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("AddSSHKey", () => {
   let state: RootState;

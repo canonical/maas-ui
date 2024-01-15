@@ -7,25 +7,25 @@ import type {
 } from "./base";
 import type { MachineMeta } from "./enum";
 
-import type { Prettify } from "app/base/types";
-import type { Domain } from "app/store/domain/types";
-import type { Fabric } from "app/store/fabric/types";
-import type { LicenseKeys } from "app/store/licensekeys/types";
-import type { Pod } from "app/store/pod/types";
+import type { Prettify } from "@/app/base/types";
+import type { Domain } from "@/app/store/domain/types";
+import type { Fabric } from "@/app/store/fabric/types";
+import type { LicenseKeys } from "@/app/store/licensekeys/types";
+import type { Pod } from "@/app/store/pod/types";
 import type {
   ResourcePool,
   ResourcePoolMeta,
-} from "app/store/resourcepool/types";
-import type { Script, ScriptName } from "app/store/script/types";
-import type { Space } from "app/store/space/types";
-import type { Subnet } from "app/store/subnet/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
+} from "@/app/store/resourcepool/types";
+import type { Script, ScriptName } from "@/app/store/script/types";
+import type { Space } from "@/app/store/space/types";
+import type { Subnet } from "@/app/store/subnet/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 import type {
   DiskTypes,
   NetworkLinkMode,
   StorageLayout,
-} from "app/store/types/enum";
-import type { ModelRef } from "app/store/types/model";
+} from "@/app/store/types/enum";
+import type { ModelRef } from "@/app/store/types/model";
 import type {
   Node,
   BaseNodeActionParams,
@@ -40,8 +40,8 @@ import type {
   ScriptInputParam,
   SetZoneParams as NodeSetZoneParams,
   TestParams as NodeTestParams,
-} from "app/store/types/node";
-import type { Zone } from "app/store/zone/types";
+} from "@/app/store/types/node";
+import type { Zone } from "@/app/store/zone/types";
 
 export type Action = {
   name: string;

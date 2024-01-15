@@ -2,12 +2,12 @@ import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
 
-import { actions as deviceActions } from "app/store/device";
-import { DeviceIpAssignment } from "app/store/device/types";
-import { actions as domainActions } from "app/store/domain";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import { actions as zoneActions } from "app/store/zone";
+import { actions as deviceActions } from "@/app/store/device";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import { actions as domainActions } from "@/app/store/domain";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import { actions as zoneActions } from "@/app/store/zone";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -17,14 +17,14 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -50,12 +50,9 @@ describe("AddDeviceForm", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddDeviceForm clearSidePanelContent={jest.fn()} />,
-      {
-        store,
-      }
-    );
+    renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
+      store,
+    });
 
     const expectedActions = [
       domainActions.fetch(),
@@ -75,24 +72,18 @@ describe("AddDeviceForm", () => {
   it("displays a spinner if data has not loaded", () => {
     state.zone.genericActions.fetch = "idle";
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddDeviceForm clearSidePanelContent={jest.fn()} />,
-      {
-        store,
-      }
-    );
+    renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
+      store,
+    });
 
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });
 
   it("can handle saving a device", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(
-      <AddDeviceForm clearSidePanelContent={jest.fn()} />,
-      {
-        store,
-      }
-    );
+    renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
+      store,
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Device name" }),

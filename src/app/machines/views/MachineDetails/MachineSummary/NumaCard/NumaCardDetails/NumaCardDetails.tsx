@@ -5,13 +5,13 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 
-import LabelledList from "app/base/components/LabelledList";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { NodeNumaNode } from "app/store/types/node";
-import { formatBytes, getRanges } from "app/utils";
+import LabelledList from "@/app/base/components/LabelledList";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { NodeNumaNode } from "@/app/store/types/node";
+import { formatBytes, getRanges } from "@/app/utils";
 
 type Props = {
   isLast?: boolean;

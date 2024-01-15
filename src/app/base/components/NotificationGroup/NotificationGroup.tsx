@@ -9,9 +9,9 @@ import type { Dispatch } from "redux";
 
 import NotificationGroupNotification from "./Notification";
 
-import { actions as notificationActions } from "app/store/notification";
-import type { Notification as NotificationType } from "app/store/notification/types";
-import { capitaliseFirst } from "app/utils";
+import { actions as notificationActions } from "@/app/store/notification";
+import type { Notification as NotificationType } from "@/app/store/notification/types";
+import { capitaliseFirst } from "@/app/utils";
 
 const dismissAll = (notifications: NotificationType[], dispatch: Dispatch) => {
   notifications.forEach((notification) => {

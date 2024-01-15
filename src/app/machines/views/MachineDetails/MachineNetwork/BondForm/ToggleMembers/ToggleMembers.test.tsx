@@ -2,13 +2,13 @@ import configureStore from "redux-mock-store";
 
 import ToggleMembers from "./ToggleMembers";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   machineInterface as machineInterfaceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -29,7 +29,7 @@ describe("ToggleMembers", () => {
     renderWithBrowserRouter(
       <ToggleMembers
         selected={selected}
-        setEditingMembers={jest.fn()}
+        setEditingMembers={vi.fn()}
         validNics={interfaces}
       />,
       { route: "/machines", store }
@@ -58,7 +58,7 @@ describe("ToggleMembers", () => {
       <ToggleMembers
         editingMembers
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setEditingMembers={jest.fn()}
+        setEditingMembers={vi.fn()}
         validNics={interfaces}
       />,
       { route: "/machines", store }
@@ -72,7 +72,7 @@ describe("ToggleMembers", () => {
       <ToggleMembers
         editingMembers
         selected={[]}
-        setEditingMembers={jest.fn()}
+        setEditingMembers={vi.fn()}
         validNics={interfaces}
       />,
       { route: "/machines", store }

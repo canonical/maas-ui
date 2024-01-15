@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 
 import type { StorageFormValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import configSelectors from "app/store/config/selectors";
-import { StorageLayout } from "app/store/types/enum";
-import { isVMWareLayout } from "app/store/utils";
+import FormikField from "@/app/base/components/FormikField";
+import configSelectors from "@/app/store/config/selectors";
+import { StorageLayout } from "@/app/store/types/enum";
+import { isVMWareLayout } from "@/app/store/utils";
 
 const StorageFormFields = (): JSX.Element => {
   const { values } = useFormikContext<StorageFormValues>();

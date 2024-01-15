@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import MemoryCard from "./MemoryCard";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
@@ -15,7 +15,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -61,7 +61,7 @@ it("renders test info if node is a machine", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+          <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -87,7 +87,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -112,7 +112,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -136,7 +136,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -160,7 +160,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -184,7 +184,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard node={machine} setSidePanelContent={jest.fn()} />
+            <MemoryCard node={machine} setSidePanelContent={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

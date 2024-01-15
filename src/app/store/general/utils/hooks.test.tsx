@@ -7,14 +7,14 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useInitialPowerParameters } from "./hooks";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   powerField as powerFieldFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

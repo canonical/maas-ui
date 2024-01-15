@@ -3,7 +3,7 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
 import RepositoryAdd from "./RepositoryAdd";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
@@ -12,8 +12,8 @@ import {
   pocketsToDisableState as pocketsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("RepositoryAdd", () => {
   let state: RootState;

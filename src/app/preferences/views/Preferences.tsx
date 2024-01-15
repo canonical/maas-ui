@@ -1,5 +1,5 @@
-import PageContent from "app/base/components/PageContent/PageContent";
-import Routes from "app/preferences/components/Routes";
+import PageContent from "@/app/base/components/PageContent/PageContent";
+import Routes from "@/app/preferences/components/Routes";
 
 export enum Labels {
   Title = "My preferences",

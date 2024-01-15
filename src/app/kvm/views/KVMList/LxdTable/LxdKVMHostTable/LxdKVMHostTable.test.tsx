@@ -2,7 +2,7 @@ import { generateClusterRows, generateSingleHostRows } from "../LxdTable";
 
 import LxdKVMHostTable from "./LxdKVMHostTable";
 
-import { PodType } from "app/store/pod/constants";
+import { PodType } from "@/app/store/pod/constants";
 import {
   pod as podFactory,
   podResources as podResourcesFactory,
@@ -12,8 +12,8 @@ import {
   vmCluster as vmClusterFactory,
   vmHost as vmHostFactory,
   vmClusterState as vmClusterStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("LxdKVMHostTable", () => {
   it("can update the LXD hosts sort order", async () => {

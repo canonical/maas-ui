@@ -3,19 +3,19 @@ import userEvent from "@testing-library/user-event";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
-import { MachineSidePanelViews } from "app/machines/constants";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import { NodeActions, NodeStatusCode } from "app/store/types/node";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   nodeDevice as nodeDeviceFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("node is machine", () => {
   it(`prompts user to commission machine if no devices found and machine can be
     commissioned`, async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     const machine = machineDetailsFactory({
       actions: [NodeActions.COMMISSION],
     });
@@ -48,7 +48,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 
@@ -65,7 +65,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 
@@ -82,7 +82,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 
@@ -100,7 +100,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 
@@ -121,7 +121,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 
@@ -140,7 +140,7 @@ describe("node is machine", () => {
         nodeDevices={[
           nodeDeviceFactory({ bus: NodeDeviceBus.PCIE, node_id: machine.id }),
         ]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 
@@ -157,7 +157,7 @@ describe("node is controller", () => {
         bus={NodeDeviceBus.USB}
         node={controller}
         nodeDevices={[]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 

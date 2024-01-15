@@ -1,15 +1,15 @@
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 
-import ActionBar from "app/base/components/ActionBar";
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import { useSendAnalytics } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
-import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import { MachineSidePanelViews } from "app/machines/constants";
-import { useHasSelection } from "app/store/machine/utils/hooks";
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
+import ActionBar from "@/app/base/components/ActionBar";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import { useSendAnalytics } from "@/app/base/hooks";
+import type { SetSearchFilter } from "@/app/base/types";
+import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import { useHasSelection } from "@/app/store/machine/utils/hooks";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
   currentPage: number;

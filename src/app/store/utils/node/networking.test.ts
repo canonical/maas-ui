@@ -31,7 +31,7 @@ import {
   BridgeType,
   NetworkInterfaceTypes,
   NetworkLinkMode,
-} from "app/store/types/enum";
+} from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   machineDetails as machineDetailsFactory,
@@ -40,7 +40,7 @@ import {
   networkLink as networkLinkFactory,
   subnet as subnetFactory,
   vlan as vlanFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("machine networking utils", () => {
   describe("getLinkInterface", () => {

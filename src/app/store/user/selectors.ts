@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 import createCachedSelector from "re-reselect";
 
-import type { RootState } from "app/store/root/types";
-import { UserMeta } from "app/store/user/types";
-import type { UserState, User } from "app/store/user/types";
-import { generateBaseSelectors } from "app/store/utils";
+import type { RootState } from "@/app/store/root/types";
+import { UserMeta } from "@/app/store/user/types";
+import type { UserState, User } from "@/app/store/user/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (user: User, term: string) =>
   user.username.includes(term) ||

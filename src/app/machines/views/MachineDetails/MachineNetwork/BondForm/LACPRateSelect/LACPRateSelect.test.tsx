@@ -2,15 +2,15 @@ import { Formik } from "formik";
 
 import LACPRateSelect from "./LACPRateSelect";
 
-import { BondLacpRate } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { BondLacpRate } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   bondOptions as bondOptionsFactory,
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("LACPRateSelect", () => {
   let state: RootState;
@@ -33,7 +33,7 @@ describe("LACPRateSelect", () => {
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect name="lacp_rate" />
       </Formik>,
       { state }
@@ -43,7 +43,7 @@ describe("LACPRateSelect", () => {
 
   it("displays the options", () => {
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect name="lacp_rate" />
       </Formik>,
       { state }
@@ -75,7 +75,7 @@ describe("LACPRateSelect", () => {
       value: "99",
     };
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect defaultOption={defaultOption} name="lacp_rate" />
       </Formik>,
       { state }
@@ -94,7 +94,7 @@ describe("LACPRateSelect", () => {
       loaded: true,
     });
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LACPRateSelect defaultOption={null} name="lacp_rate" />
       </Formik>,
       { state }

@@ -1,10 +1,10 @@
 import VirshDetails from "./VirshDetails";
 
-import urls from "app/base/urls";
-import { Label as VirshResourcesLabel } from "app/kvm/views/VirshDetails/VirshResources/VirshResources";
-import { Label as VirshSettingsLabel } from "app/kvm/views/VirshDetails/VirshSettings/VirshSettings";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as VirshResourcesLabel } from "@/app/kvm/views/VirshDetails/VirshResources/VirshResources";
+import { Label as VirshSettingsLabel } from "@/app/kvm/views/VirshDetails/VirshSettings/VirshSettings";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
@@ -13,8 +13,8 @@ import {
   tagState as tagStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("VirshDetails", () => {
   let state: RootState;

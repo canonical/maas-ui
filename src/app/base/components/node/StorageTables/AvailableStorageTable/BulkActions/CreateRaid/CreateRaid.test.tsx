@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import CreateRaid from "./CreateRaid";
 
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -12,8 +12,8 @@ import {
   nodeDisk as diskFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -49,7 +49,7 @@ describe("CreateRaid", () => {
 
     renderWithBrowserRouter(
       <CreateRaid
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[physicalDisk]}
         systemId="abc123"
       />,
@@ -85,7 +85,7 @@ describe("CreateRaid", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateRaid
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,

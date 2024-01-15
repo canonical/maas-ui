@@ -1,6 +1,6 @@
-import { BasePod } from "app/store/pod/types";
-import { VMCluster } from "app/store/vmcluster/types";
-import { argPath } from "app/utils";
+import type { BasePod } from "@/app/store/pod/types";
+import type { VMCluster } from "@/app/store/vmcluster/types";
+import { argPath } from "@/app/utils";
 
 const withClusterId = argPath<{ clusterId: VMCluster["id"] }>;
 const withId = argPath<{ id: BasePod["id"] }>;

@@ -5,8 +5,8 @@ import {
   nodeDisk as diskFactory,
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
-} from "testing/factories";
-import { render, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, within } from "@/testing/utils";
 
 describe("CloneStorageTable", () => {
   it("renders empty table if neither loading details nor machine provided", () => {

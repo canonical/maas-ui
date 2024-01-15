@@ -8,8 +8,8 @@ import {
   hweKernelsState as hweKernelsStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -19,7 +19,7 @@ describe("MinimumKernelSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ minKernel: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
           <MinimumKernelSelect name="minKernel" />
         </Formik>
       </Provider>
@@ -43,7 +43,7 @@ describe("MinimumKernelSelect", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <Formik initialValues={{ minKernel: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ minKernel: "" }} onSubmit={vi.fn()}>
           <MinimumKernelSelect name="minKernel" />
         </Formik>
       </Provider>

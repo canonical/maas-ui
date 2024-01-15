@@ -1,13 +1,13 @@
 import SubnetsList from "./SubnetsList";
 
-import urls from "app/subnets/urls";
+import urls from "@/app/subnets/urls";
 import {
   fabricState as fabricStateFactory,
   vlanState as vlanStateFactory,
   subnetState as subnetStateFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -15,7 +15,7 @@ import {
   waitFor,
   getUrlParam,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const getMockState = () => {
   return rootStateFactory({

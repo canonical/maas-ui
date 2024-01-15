@@ -9,7 +9,7 @@ import {
   statusState as statusStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("rootReducer", () => {
   it(`should reset app to initial state on LOGOUT_SUCCESS, except status which
@@ -18,7 +18,7 @@ describe("rootReducer", () => {
       status: statusStateFactory({ authenticating: true }),
     });
     const newState = createRootReducer(
-      jest.fn().mockReturnValue(routerStateFactory())
+      vi.fn().mockReturnValue(routerStateFactory())
     )(initialState, {
       type: "status/logoutSuccess",
     });
@@ -42,7 +42,7 @@ describe("rootReducer", () => {
       }),
     });
     const newState = createRootReducer(
-      jest.fn().mockReturnValue(routerStateFactory())
+      vi.fn().mockReturnValue(routerStateFactory())
     )(initialState, {
       type: "status/checkAuthenticatedError",
     });

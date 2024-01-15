@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import DeviceLink, { Labels } from "./DeviceLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

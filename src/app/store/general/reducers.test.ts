@@ -8,7 +8,7 @@ import {
   generatedCertificateState as generatedCertificateStateFactory,
   tlsCertificate as tlsCertificateFactory,
   tlsCertificateState as tlsCertificateStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("general reducer", () => {
   it("should return the initial state", () => {

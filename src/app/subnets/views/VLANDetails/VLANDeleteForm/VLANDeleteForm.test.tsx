@@ -5,15 +5,15 @@ import configureStore from "redux-mock-store";
 
 import VLANDeleteForm from "./VLANDeleteForm";
 
-import { actions as vlanActions } from "app/store/vlan";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -37,7 +37,7 @@ it("does not allow deletion if the VLAN is the default VLAN in its fabric", () =
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+          <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -70,7 +70,7 @@ it("displays a delete confirmation if the VLAN is not the default for its fabric
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+          <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -101,7 +101,7 @@ it("deletes the VLAN when confirmed", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+          <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

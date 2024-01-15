@@ -1,8 +1,8 @@
 import classNames from "classnames";
 
-import DoughnutChart from "app/base/components/DoughnutChart";
-import { COLOURS } from "app/base/constants";
-import { memoryWithUnit } from "app/kvm/utils";
+import DoughnutChart from "@/app/base/components/DoughnutChart";
+import { COLOURS } from "@/app/base/constants";
+import { memoryWithUnit } from "@/app/kvm/utils";
 
 export type Props = {
   dynamicLayout?: boolean;

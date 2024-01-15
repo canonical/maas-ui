@@ -12,23 +12,23 @@ import {
 import AddAliasOrVlanFields from "./AddAliasOrVlanFields";
 import type { AddAliasOrVlanValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useScrollOnRender } from "app/base/hooks";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useScrollOnRender } from "@/app/base/hooks";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   CreateVlanParams,
   LinkSubnetParams,
   MachineDetails,
-} from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
-import vlanSelectors from "app/store/vlan/selectors";
-import { preparePayload } from "app/utils";
+} from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { preparePayload } from "@/app/utils";
 
 export enum Labels {
   SaveInterface = "Save interface",

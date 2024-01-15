@@ -1,4 +1,4 @@
-import { all } from "typed-redux-saga/macro";
+import { all } from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import {
@@ -17,7 +17,7 @@ import {
   watchZonesFetch,
 } from "./app/base/sagas";
 
-import type { MessageHandler } from "app/base/sagas/actions";
+import type { MessageHandler } from "@/app/base/sagas/actions";
 import type WebSocketClient from "websocket-client";
 
 export default function* rootSaga(

@@ -4,18 +4,18 @@ import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 import type {
   BondLacpRateOptions,
   BondModeOptions,
   BondXmitHashPolicyOptions,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 import {
   generalState as generalStateFactory,
   bondOptions as bondOptionsFactory,
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const lacpRates: BondLacpRateOptions = [
   [BondLacpRate.FAST, BondLacpRate.FAST],

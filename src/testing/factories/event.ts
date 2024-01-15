@@ -2,9 +2,9 @@ import { define, extend } from "cooky-cutter";
 
 import { timestampedModel } from "./model";
 
-import type { EventRecord, EventType } from "app/store/event/types";
-import { EventTypeLevel } from "app/store/event/types";
-import type { TimestampedModel } from "app/store/types/model";
+import type { EventRecord, EventType } from "@/app/store/event/types";
+import { EventTypeLevel } from "@/app/store/event/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 
 export const eventType = define<EventType>({
   description: "description-2HCo4f",

@@ -1,13 +1,13 @@
 import PageContent from "./PageContent";
 
-import { preferencesNavItems } from "app/preferences/constants";
-import { settingsNavItems } from "app/settings/constants";
+import { preferencesNavItems } from "@/app/preferences/constants";
+import { settingsNavItems } from "@/app/settings/constants";
 import {
   getTestState,
   renderWithBrowserRouter,
   screen,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const state = getTestState();
 

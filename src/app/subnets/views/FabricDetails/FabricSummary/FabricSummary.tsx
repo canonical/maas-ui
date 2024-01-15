@@ -4,9 +4,9 @@ import EditFabric from "../EditFabric";
 
 import FabricController from "./FabricController";
 
-import Definition from "app/base/components/Definition";
-import EditableSection from "app/base/components/EditableSection";
-import type { Fabric } from "app/store/fabric/types";
+import Definition from "@/app/base/components/Definition";
+import EditableSection from "@/app/base/components/EditableSection";
+import type { Fabric } from "@/app/store/fabric/types";
 
 const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
   return (

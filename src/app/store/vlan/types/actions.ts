@@ -1,8 +1,8 @@
 import type { VLAN } from "./base";
 import type { VLANMeta } from "./enum";
 
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 
 export type ConfigureDHCPParams = {
   [VLANMeta.PK]: VLAN[VLANMeta.PK];

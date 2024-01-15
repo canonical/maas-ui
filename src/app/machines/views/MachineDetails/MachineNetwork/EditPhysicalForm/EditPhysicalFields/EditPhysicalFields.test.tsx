@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import EditPhysicalFields from "./EditPhysicalFields";
 
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -17,13 +17,13 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("EditPhysicalFields", () => {
   let nic: NetworkInterface;
@@ -64,7 +64,7 @@ describe("EditPhysicalFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ interface_speed: 0, link_speed: 0 }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <EditPhysicalFields nic={nic} />
       </Formik>,

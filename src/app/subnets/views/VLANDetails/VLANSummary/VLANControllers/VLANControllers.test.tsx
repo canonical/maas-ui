@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import VLANControllers from "./VLANControllers";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import type { VLAN } from "app/store/vlan/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -15,8 +15,8 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -1,6 +1,6 @@
 import SelectButton from "./SelectButton";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 it("displays a button", () => {
   render(<SelectButton>Test</SelectButton>);

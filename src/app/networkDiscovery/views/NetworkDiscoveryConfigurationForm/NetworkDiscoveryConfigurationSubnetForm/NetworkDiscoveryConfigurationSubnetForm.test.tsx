@@ -4,9 +4,9 @@ import NetworkDiscoveryConfigurationSubnetForm, {
   Labels as SubnetFormLabels,
 } from "./NetworkDiscoveryConfigurationSubnetForm";
 
-import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
+import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   configState as configStateFactory,
   fabric as fabricFactory,
@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -91,13 +91,13 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
       state,
     });
 
-    expect(screen.getByRole("link", { name: "172.16.1.0/24" })).toHaveProperty(
+    expect(screen.getByRole("link", { name: "172.16.1.0/24" })).toHaveAttribute(
       "href",
-      "http://example.com/subnet/1"
+      "/subnet/1"
     );
-    expect(screen.getByRole("link", { name: "test-fabric-1" })).toHaveProperty(
+    expect(screen.getByRole("link", { name: "test-fabric-1" })).toHaveAttribute(
       "href",
-      "http://example.com/fabric/3"
+      "/fabric/3"
     );
   });
 

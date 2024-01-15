@@ -4,7 +4,7 @@ import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("space selectors", () => {
   it("can get all items", () => {

@@ -4,8 +4,8 @@ import { MaasIntroSchema } from "../MaasIntro";
 
 import NameCard, { Labels as NameCardLabels } from "./NameCard";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   config as configFactory,
@@ -13,8 +13,8 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 describe("NameCard", () => {
   let state: RootState;
@@ -34,7 +34,7 @@ describe("NameCard", () => {
 
   it("displays a tick when there are no name errors", () => {
     renderWithMockStore(
-      <Formik initialValues={{ name: "my new maas" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ name: "my new maas" }} onSubmit={vi.fn()}>
         <NameCard />
       </Formik>,
       { state }
@@ -48,7 +48,7 @@ describe("NameCard", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ name: "my new maas" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         validationSchema={MaasIntroSchema}
       >
         <NameCard />

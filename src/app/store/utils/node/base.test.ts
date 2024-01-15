@@ -7,8 +7,8 @@ import {
   nodeIsMachine,
 } from "./base";
 
-import { SidePanelViews } from "app/base/side-panel-context";
-import { NodeActions, NodeStatus } from "app/store/types/node";
+import { SidePanelViews } from "@/app/base/side-panel-context";
+import { NodeActions, NodeStatus } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   controllerDetails as controllerDetailsFactory,
@@ -16,7 +16,7 @@ import {
   deviceDetails as deviceDetailsFactory,
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("node utils", () => {
   describe("nodeIsController", () => {

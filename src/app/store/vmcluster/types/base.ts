@@ -1,15 +1,15 @@
 import type { VMClusterMeta } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { Machine } from "app/store/machine/types";
-import type { Pod, PodPowerParameters } from "app/store/pod/types";
+import type { APIError } from "@/app/base/types";
+import type { Machine } from "@/app/store/machine/types";
+import type { Pod, PodPowerParameters } from "@/app/store/pod/types";
 import type {
   ResourcePool,
   ResourcePoolMeta,
-} from "app/store/resourcepool/types";
-import type { Model } from "app/store/types/model";
-import type { GenericState } from "app/store/types/state";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+} from "@/app/store/resourcepool/types";
+import type { Model } from "@/app/store/types/model";
+import type { GenericState } from "@/app/store/types/state";
+import type { Zone, ZoneMeta } from "@/app/store/zone/types";
 
 export type VMClusterResource = {
   allocated_other: number;

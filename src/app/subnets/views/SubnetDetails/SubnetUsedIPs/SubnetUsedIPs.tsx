@@ -1,16 +1,16 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TitledSection from "app/base/components/TitledSection";
-import NodeLink from "app/base/components/node/NodeLink";
-import type { RootState } from "app/store/root/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import TitledSection from "@/app/base/components/TitledSection";
+import NodeLink from "@/app/base/components/node/NodeLink";
+import type { RootState } from "@/app/store/root/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import {
   getIPTypeDisplay,
   getIPUsageDisplay,
   isSubnetDetails,
-} from "app/store/subnet/utils";
+} from "@/app/store/subnet/utils";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK] | null;

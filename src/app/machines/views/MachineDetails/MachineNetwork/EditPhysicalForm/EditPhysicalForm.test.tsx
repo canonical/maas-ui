@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import EditPhysicalForm from "./EditPhysicalForm";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkLinkMode } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkLinkMode } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -18,8 +18,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -62,7 +62,7 @@ describe("EditPhysicalForm", () => {
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />,
+      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
       { route: "/machines", store }
     );
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
@@ -77,7 +77,7 @@ describe("EditPhysicalForm", () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
     renderWithBrowserRouter(
-      <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />,
+      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
       { route: "/machines", state }
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -87,7 +87,7 @@ describe("EditPhysicalForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditPhysicalForm
-        close={jest.fn()}
+        close={vi.fn()}
         linkId={1}
         nicId={1}
         systemId="abc123"

@@ -1,11 +1,12 @@
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import { useCompletedIntro, useCompletedUserIntro } from "./intro";
 
-import { ConfigNames } from "app/store/config/types";
-import { getCookie } from "app/utils";
+import { ConfigNames } from "@/app/store/config/types";
+import { getCookie } from "@/app/utils";
 import {
   authState as authStateFactory,
   config as configFactory,
@@ -13,14 +14,14 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
-jest.mock("app/utils", () => ({
-  ...jest.requireActual("app/utils"),
-  getCookie: jest.fn(),
-}));
+vi.mock("@/app/utils", async () => {
+  const actual: object = await vi.importActual("@/app/utils");
+  return { ...actual, getCookie: vi.fn() };
+});
 
 describe("intro hooks", () => {
   describe("useCompletedIntro", () => {
@@ -42,7 +43,7 @@ describe("intro hooks", () => {
     });
 
     it("gets whether the intro has been skipped", () => {
-      const getCookieMock = getCookie as jest.Mock;
+      const getCookieMock = getCookie as Mock;
       getCookieMock.mockImplementation(() => "true");
       const state = rootStateFactory({
         config: configStateFactory({
@@ -81,7 +82,7 @@ describe("intro hooks", () => {
     });
 
     it("gets whether the user intro has been skipped", () => {
-      const getCookieMock = getCookie as jest.Mock;
+      const getCookieMock = getCookie as Mock;
       getCookieMock.mockImplementation(() => "true");
       const state = rootStateFactory({
         user: userStateFactory({

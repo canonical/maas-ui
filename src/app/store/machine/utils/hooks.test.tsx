@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -24,20 +24,19 @@ import {
   useFetchMachineCount,
   useFetchedCount,
 } from "./hooks";
-import { generateCallId } from "./query";
 
-import { actions as machineActions } from "app/store/machine";
+import { actions as machineActions } from "@/app/store/machine";
 import type {
   FetchFilters,
   FetchGroupKey,
   Machine,
   SelectedMachines,
-} from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { FetchNodeStatus, TestParams } from "app/store/types/node";
-import { NodeStatus, NodeStatusCode } from "app/store/types/node";
+} from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { FetchNodeStatus, TestParams } from "@/app/store/types/node";
+import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
   fabric as fabricFactory,
@@ -58,10 +57,18 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
   machineActionState,
-} from "testing/factories";
-import { renderHook, cleanup, waitFor, screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { renderHook, cleanup, waitFor, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
+
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 
 describe("machine hook utils", () => {
   let state: RootState;
@@ -89,11 +96,11 @@ describe("machine hook utils", () => {
         items: [machine],
       }),
     });
-    jest.spyOn(query, "generateCallId").mockReturnValue(mockCallId);
+    vi.spyOn(query, "generateCallId").mockReturnValue(mockCallId);
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("useFetchMachineCount", () => {
@@ -156,8 +163,8 @@ describe("machine hook utils", () => {
     });
 
     it("returns the machine count", async () => {
-      jest.restoreAllMocks();
-      jest.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
+      vi.restoreAllMocks();
+      vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
       const machineCount = 2;
       const counts = machineStateCountsFactory({
         "mocked-nanoid": machineStateCountFactory({
@@ -209,7 +216,7 @@ describe("machine hook utils", () => {
 
     it("fetches again if the filters change", () => {
       // clera all spies
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
       const store = mockStore(state);
       const { rerender } = renderHook(
         ({ filters }) => useFetchMachineCount(filters),
@@ -252,16 +259,15 @@ describe("machine hook utils", () => {
 
   describe("useFetchMachines", () => {
     beforeEach(() => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2")
         .mockReturnValueOnce("mocked-nanoid-3");
-      jest.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
+      vi.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     const generateWrapper =
@@ -432,7 +438,7 @@ describe("machine hook utils", () => {
     });
 
     it("fetches again if the options change", () => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
       const store = mockStore(state);
       const { rerender } = renderHook(
         (options: UseFetchMachinesOptions) => useFetchMachines(options),
@@ -459,7 +465,7 @@ describe("machine hook utils", () => {
 
     it("resets the page number if the options change", () => {
       const store = mockStore(state);
-      const handleSetCurrentPage = jest.fn();
+      const handleSetCurrentPage = vi.fn();
       const initialProps = {
         filters: { hostname: "spotted-quoll" },
         pagination: {
@@ -482,11 +488,12 @@ describe("machine hook utils", () => {
 
     it("cleans up list request on unmount", async () => {
       const store = mockStore(state);
+      vi.spyOn(query, "generateCallId").mockReturnValue(mockCallId);
       renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
       cleanup();
-      const expected = machineActions.cleanupRequest(generateCallId());
+      const expected = machineActions.cleanupRequest(mockCallId);
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
@@ -500,7 +507,7 @@ describe("machine hook utils", () => {
 
   describe("useFetchSelectedMachines", () => {
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     const generateWrapper =
@@ -509,7 +516,7 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("can fetch selected machines", async () => {
-      jest.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
+      vi.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
       const selected = { items: ["abc123", "def456"] };
       state.machine.selected = selected;
       const store = mockStore(state);
@@ -528,7 +535,7 @@ describe("machine hook utils", () => {
 
   describe("useDispatchWithCallId", () => {
     beforeEach(() => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
@@ -568,7 +575,7 @@ describe("machine hook utils", () => {
 
   describe("useMachineActionDispatch", () => {
     beforeEach(() => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
@@ -635,8 +642,7 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("dispatches separate calls when there are selected both groups and items", async () => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
@@ -682,8 +688,7 @@ describe("machine hook utils", () => {
     });
 
     it("dispatches a single call when there are only items selected", async () => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
@@ -720,8 +725,7 @@ describe("machine hook utils", () => {
     });
 
     it("dispatches a single call when there are only groups selected", async () => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
@@ -778,10 +782,10 @@ describe("machine hook utils", () => {
 
   describe("useFetchMachine", () => {
     beforeEach(() => {
-      jest.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
+      vi.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
     });
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
@@ -789,7 +793,7 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("can get a machine", () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
       const store = mockStore(state);
       renderHook(() => useFetchMachine("def456"), {
         wrapper: generateWrapper(store),
@@ -802,6 +806,7 @@ describe("machine hook utils", () => {
 
     it("does not fetch again if the id hasn't changed", () => {
       const store = mockStore(state);
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
       const { rerender } = renderHook(
         ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
@@ -820,8 +825,7 @@ describe("machine hook utils", () => {
     });
 
     it("gets a machine if the id changes", () => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);
@@ -844,7 +848,7 @@ describe("machine hook utils", () => {
     });
 
     it("returns the machine and loading states", () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue(mockCallId);
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(mockCallId);
       const machine = machineFactory({
         system_id: "abc123",
       });
@@ -874,7 +878,7 @@ describe("machine hook utils", () => {
     });
 
     it("cleans up machine request on unmount", async () => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce(mockCallId);
+      vi.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce(mockCallId);
       const store = mockStore(state);
       renderHook(
         ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
@@ -893,8 +897,7 @@ describe("machine hook utils", () => {
     });
 
     it("cleans up machine requests when the id changes", async () => {
-      jest
-        .spyOn(reduxToolkit, "nanoid")
+      vi.spyOn(reduxToolkit, "nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);

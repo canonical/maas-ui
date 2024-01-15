@@ -6,7 +6,7 @@ import { ServiceMeta } from "./types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const serviceSlice = createSlice({
   name: ServiceMeta.MODEL,

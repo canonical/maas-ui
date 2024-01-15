@@ -2,19 +2,19 @@ import { useMemo } from "react";
 
 import { Pagination, MainTable } from "@canonical/react-components";
 
-import TableHeader from "app/base/components/TableHeader";
-import { generateSubnetGroupRows } from "app/subnets/views/SubnetsList/SubnetsTable/components";
+import TableHeader from "@/app/base/components/TableHeader";
+import { generateSubnetGroupRows } from "@/app/subnets/views/SubnetsList/SubnetsTable/components";
 import {
   fabricTableColumns,
   subnetColumnLabels,
   SubnetsColumns,
-} from "app/subnets/views/SubnetsList/SubnetsTable/constants";
-import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
-import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
+} from "@/app/subnets/views/SubnetsList/SubnetsTable/constants";
+import { usePagination } from "@/app/subnets/views/SubnetsList/SubnetsTable/hooks";
+import type { SubnetsTableRow } from "@/app/subnets/views/SubnetsList/SubnetsTable/types";
 import {
   groupSubnetData,
   groupRowsByFabric,
-} from "app/subnets/views/SubnetsList/SubnetsTable/utils";
+} from "@/app/subnets/views/SubnetsList/SubnetsTable/utils";
 
 const FabricTable = ({
   data,

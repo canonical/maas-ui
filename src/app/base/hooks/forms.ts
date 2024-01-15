@@ -5,7 +5,7 @@ import { useFormikContext } from "formik";
 
 import type { AnyObject, APIError } from "../types";
 
-import { simpleObjectEquality } from "app/settings/utils";
+import { simpleObjectEquality } from "@/app/settings/utils";
 
 /**
  * Combines formik validation errors and errors returned from server

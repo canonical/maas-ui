@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import FormCard from "app/base/components/FormCard";
-import SSHKeyForm from "app/base/components/SSHKeyForm";
-import { COL_SIZES } from "app/base/constants";
-import { useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
+import FormCard from "@/app/base/components/FormCard";
+import SSHKeyForm from "@/app/base/components/SSHKeyForm";
+import { COL_SIZES } from "@/app/base/constants";
+import { useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
 
 export enum Label {
   Title = "Add SSH key",

@@ -1,4 +1,4 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -6,19 +6,27 @@ import configureStore from "redux-mock-store";
 
 import MachineLink, { Labels } from "./MachineLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
-} from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 it("handles when machines are loading", async () => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   const state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -34,21 +42,11 @@ it("handles when machines are loading", async () => {
       },
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <MachineLink systemId="abc123" />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<MachineLink systemId="abc123" />, { state });
 
-  await waitFor(() =>
-    expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument()
-  );
-  jest.restoreAllMocks();
+  expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
+
+  vi.restoreAllMocks();
 });
 
 it("handles when a machine does not exist", () => {

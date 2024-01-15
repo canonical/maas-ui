@@ -2,20 +2,20 @@ import { Formik } from "formik";
 
 import ArchSelect, { Labels as ArchSelectLabels } from "./ArchSelect";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithMockStore,
   expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("ArchSelect", () => {
   let state: RootState;
@@ -36,7 +36,7 @@ describe("ArchSelect", () => {
 
   it("shows a message if no release is selected", () => {
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <ArchSelect
           arches={[bootResourceUbuntuArchFactory()]}
           release={null}
@@ -69,7 +69,7 @@ describe("ArchSelect", () => {
             },
           ],
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <ArchSelect arches={arches} release={release} resources={[]} />
       </Formik>,
@@ -92,7 +92,7 @@ describe("ArchSelect", () => {
     ];
 
     renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <ArchSelect arches={arches} release={release} resources={[]} />
       </Formik>,
       { state }
@@ -105,15 +105,9 @@ describe("ArchSelect", () => {
       screen.getByRole("button", { name: "information" }),
       "i386 is not available on 20.04 LTS."
     );
-    expect(screen.getByRole("tooltip")).toMatchInlineSnapshot(`
-      <span
-        class="p-tooltip__message"
-        id="mock-nanoid-7"
-        role="tooltip"
-      >
-        i386 is not available on 20.04 LTS.
-      </span>
-    `);
+    expect(screen.getByRole("tooltip")).toHaveTextContent(
+      "i386 is not available on 20.04 LTS."
+    );
   });
 
   it(`disables a checkbox if it's the last checked arch for the default
@@ -138,7 +132,7 @@ describe("ArchSelect", () => {
         initialValues={{
           images: [{ arch: "amd64", os: "ubuntu", release: "focal" }],
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <ArchSelect arches={arches} release={release} resources={[]} />
       </Formik>,

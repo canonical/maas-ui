@@ -1,14 +1,14 @@
 import { RamColumn } from "./RamColumn";
 
-import type { RootState } from "app/store/root/types";
-import { TestStatusStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("RamColumn", () => {
   let state: RootState;

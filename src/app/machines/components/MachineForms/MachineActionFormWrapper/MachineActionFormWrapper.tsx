@@ -11,25 +11,25 @@ import ReleaseForm from "./ReleaseForm";
 import SetPoolForm from "./SetPoolForm";
 import TagForm from "./TagForm";
 
-import DeleteForm from "app/base/components/node/DeleteForm";
-import FieldlessForm from "app/base/components/node/FieldlessForm";
-import NodeActionWarning from "app/base/components/node/NodeActionWarning";
-import PowerOffForm from "app/base/components/node/PowerOffForm";
-import SetZoneForm from "app/base/components/node/SetZoneForm";
-import TestForm from "app/base/components/node/TestForm";
-import type { HardwareType } from "app/base/enum";
-import { useScrollOnRender } from "app/base/hooks";
-import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
-import urls from "app/base/urls";
-import type { MachineActionFormProps } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
+import DeleteForm from "@/app/base/components/node/DeleteForm";
+import FieldlessForm from "@/app/base/components/node/FieldlessForm";
+import NodeActionWarning from "@/app/base/components/node/NodeActionWarning";
+import PowerOffForm from "@/app/base/components/node/PowerOffForm";
+import SetZoneForm from "@/app/base/components/node/SetZoneForm";
+import TestForm from "@/app/base/components/node/TestForm";
+import type { HardwareType } from "@/app/base/enum";
+import { useScrollOnRender } from "@/app/base/hooks";
+import type { ClearSidePanelContent, SetSearchFilter } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import type { MachineActionFormProps } from "@/app/machines/types";
+import { actions as machineActions } from "@/app/store/machine";
 import type {
   MachineActions,
   MachineEventErrors,
-} from "app/store/machine/types";
-import { selectedToFilters } from "app/store/machine/utils";
-import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
-import { NodeActions } from "app/store/types/node";
+} from "@/app/store/machine/types";
+import { selectedToFilters } from "@/app/store/machine/utils";
+import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
+import { NodeActions } from "@/app/store/types/node";
 
 type ContainerProps = Omit<MachineActionFormProps, "processingCount"> & {
   action: MachineActions;

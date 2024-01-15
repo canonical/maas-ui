@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import cloneDeep from "clone-deep";
 import { useSelector } from "react-redux";
 
-import TableCheckbox from "app/machines/components/TableCheckbox";
-import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
-import machineSelectors from "app/store/machine/selectors";
+import TableCheckbox from "@/app/machines/components/TableCheckbox";
+import { Checked } from "@/app/machines/components/TableCheckbox/TableCheckbox";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   FetchGroupKey,
   FilterGroupOptionType,
@@ -13,7 +13,7 @@ import type {
   MachineMeta,
   MachineStateListGroup,
   SelectedMachines,
-} from "app/store/machine/types";
+} from "@/app/store/machine/types";
 
 type Props = {
   callId?: string | null;

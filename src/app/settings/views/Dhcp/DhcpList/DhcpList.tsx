@@ -6,34 +6,34 @@ import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import ColumnToggle from "app/base/components/ColumnToggle";
-import DhcpSnippetType from "app/base/components/DhcpSnippetType";
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import docsUrls from "app/base/docsUrls";
-import { useWindowTitle, useAddMessage } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
-import settingsURLs from "app/settings/urls";
-import DhcpTarget from "app/settings/views/Dhcp/DhcpTarget";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller } from "app/store/controller/types";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device } from "app/store/device/types";
-import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
-import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
+import ColumnToggle from "@/app/base/components/ColumnToggle";
+import DhcpSnippetType from "@/app/base/components/DhcpSnippetType";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import docsUrls from "@/app/base/docsUrls";
+import { useWindowTitle, useAddMessage } from "@/app/base/hooks";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import settingsURLs from "@/app/settings/urls";
+import DhcpTarget from "@/app/settings/views/Dhcp/DhcpTarget";
+import { actions as controllerActions } from "@/app/store/controller";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller } from "@/app/store/controller/types";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device } from "@/app/store/device/types";
+import { actions as dhcpsnippetActions } from "@/app/store/dhcpsnippet";
+import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
 import type {
   DHCPSnippet,
   DHCPSnippetMeta,
   DHCPSnippetState,
-} from "app/store/dhcpsnippet/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
+} from "@/app/store/dhcpsnippet/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
 
 const getTargetName = (
   controllers: Controller[],

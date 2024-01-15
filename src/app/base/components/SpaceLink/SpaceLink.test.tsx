@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import SpaceLink from "./SpaceLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   rootState as rootStateFactory,
   space as spaceFactory,
   spaceState as spaceStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

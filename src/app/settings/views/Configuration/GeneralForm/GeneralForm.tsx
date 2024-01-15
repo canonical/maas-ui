@@ -9,13 +9,13 @@ import * as Yup from "yup";
 import ThemedRadioButton from "./ThemedRadioButton";
 import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useSendAnalytics } from "app/base/hooks";
-import { useThemeContext } from "app/base/theme-context";
-import type { UsabillaLive } from "app/base/types";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useSendAnalytics } from "@/app/base/hooks";
+import { useThemeContext } from "@/app/base/theme-context";
+import type { UsabillaLive } from "@/app/base/types";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
 
 declare global {
   interface Window {

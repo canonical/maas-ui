@@ -2,15 +2,15 @@ import configureStore from "redux-mock-store";
 
 import MarkBrokenForm from "./MarkBrokenForm";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   rootState as rootStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -36,7 +36,7 @@ describe("MarkBrokenForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MarkBrokenForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}
@@ -98,7 +98,7 @@ describe("MarkBrokenForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MarkBrokenForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}

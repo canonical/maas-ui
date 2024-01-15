@@ -3,8 +3,8 @@ import type { HTMLProps, ReactNode } from "react";
 import { Col, Row } from "@canonical/react-components";
 import type { ColSize } from "@canonical/react-components";
 
-import NotificationList from "app/base/components/NotificationList";
-import { COL_SIZES } from "app/base/constants";
+import NotificationList from "@/app/base/components/NotificationList";
+import { COL_SIZES } from "@/app/base/constants";
 
 export type Props = {
   children?: ReactNode;

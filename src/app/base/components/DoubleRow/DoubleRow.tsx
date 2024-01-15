@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 
 import classNames from "classnames";
 
-import TableMenu from "app/base/components/TableMenu";
-import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
+import TableMenu from "@/app/base/components/TableMenu";
+import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
 
 type Props<L> = {
   className?: string | null;

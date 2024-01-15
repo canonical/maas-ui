@@ -1,14 +1,14 @@
 import KVMStorageCards, { TRUNCATION_POINT } from "./KVMStorageCards";
 
-import * as hooks from "app/base/hooks/analytics";
-import { ConfigNames } from "app/store/config/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
   podStoragePoolResource as podStoragePoolFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("KVMStorageCards", () => {
   it("shows sort label as sorting by default then id if default pool id provided", () => {
@@ -75,8 +75,8 @@ describe("KVMStorageCards", () => {
       d: podStoragePoolFactory(),
       e: podStoragePoolFactory(),
     };
-    const mockSendAnalytics = jest.fn();
-    const mockUseSendAnalytics = jest
+    const mockSendAnalytics = vi.fn();
+    const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
 

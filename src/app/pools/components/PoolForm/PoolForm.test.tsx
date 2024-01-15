@@ -5,20 +5,20 @@ import configureStore from "redux-mock-store";
 
 import { PoolForm, Labels as PoolFormLabels } from "./PoolForm";
 
-import urls from "app/base/urls";
-import { actions } from "app/store/resourcepool";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { actions } from "@/app/store/resourcepool";
+import type { RootState } from "@/app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 
-import authSelectors from "app/store/auth/selectors";
-import configSelectors from "app/store/config/selectors";
-import { getCookie } from "app/utils";
+import authSelectors from "@/app/store/auth/selectors";
+import configSelectors from "@/app/store/config/selectors";
+import { getCookie } from "@/app/utils";
 
 /**
  * Returns whether the initial setup intro has been completed or skipped.

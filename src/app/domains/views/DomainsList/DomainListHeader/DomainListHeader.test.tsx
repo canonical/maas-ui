@@ -4,13 +4,13 @@ import DomainListHeader, {
   Labels as DomainListHeaderLabels,
 } from "./DomainListHeader";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("DomainListHeader", () => {
   let initialState: RootState;
@@ -25,7 +25,7 @@ describe("DomainListHeader", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("displays a loader if domains have not loaded", () => {
@@ -33,7 +33,7 @@ describe("DomainListHeader", () => {
     state.domain.loaded = false;
 
     renderWithBrowserRouter(
-      <DomainListHeader setSidePanelContent={jest.fn()} />,
+      <DomainListHeader setSidePanelContent={vi.fn()} />,
       {
         route: "/domains",
         state,
@@ -46,7 +46,7 @@ describe("DomainListHeader", () => {
     const state = { ...initialState };
     state.domain.loaded = true;
     renderWithBrowserRouter(
-      <DomainListHeader setSidePanelContent={jest.fn()} />,
+      <DomainListHeader setSidePanelContent={vi.fn()} />,
       {
         route: "/domains",
         state,
@@ -58,7 +58,7 @@ describe("DomainListHeader", () => {
 
   it("displays the form when Add domains is clicked", async () => {
     const state = { ...initialState };
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <DomainListHeader setSidePanelContent={setSidePanelContent} />,
       {

@@ -2,13 +2,17 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Space } from "../space/types";
 
-import fabricSelectors from "app/store/fabric/selectors";
-import type { PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import { SubnetMeta } from "app/store/subnet/types";
-import type { Subnet, SubnetState, SubnetStatus } from "app/store/subnet/types";
-import { generateBaseSelectors } from "app/store/utils";
-import { isId } from "app/utils";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { PodDetails } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import { SubnetMeta } from "@/app/store/subnet/types";
+import type {
+  Subnet,
+  SubnetState,
+  SubnetStatus,
+} from "@/app/store/subnet/types";
+import { generateBaseSelectors } from "@/app/store/utils";
+import { isId } from "@/app/utils";
 
 const searchFunction = (subnet: Subnet, term: string) =>
   subnet.name.includes(term);

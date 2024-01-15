@@ -2,16 +2,16 @@ import configureStore from "redux-mock-store";
 
 import AllDropdown, { AllDropdownLabel } from "./AllDropdown";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { FetchNodeStatus } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { FetchNodeStatus } from "@/app/store/types/node";
 import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineState as machineStateFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

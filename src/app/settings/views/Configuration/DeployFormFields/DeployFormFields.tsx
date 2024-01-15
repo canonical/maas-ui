@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 
 import type { DeployFormValues } from "../DeployForm/types";
 
-import FormikField from "app/base/components/FormikField";
-import configSelectors from "app/store/config/selectors";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
-import type { RootState } from "app/store/root/types";
+import FormikField from "@/app/base/components/FormikField";
+import configSelectors from "@/app/store/config/selectors";
+import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
+import type { RootState } from "@/app/store/root/types";
 
 const DeployFormFields = (): JSX.Element => {
   const formikProps = useFormikContext<DeployFormValues>();

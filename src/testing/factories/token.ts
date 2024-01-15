@@ -2,8 +2,8 @@ import { define, extend } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Token, TokenConsumer } from "app/store/token/types";
-import type { Model } from "app/store/types/model";
+import type { Token, TokenConsumer } from "@/app/store/token/types";
+import type { Model } from "@/app/store/types/model";
 
 export const tokenConsumer = define<TokenConsumer>({
   key: (i: number) => `consumer key ${i}`,

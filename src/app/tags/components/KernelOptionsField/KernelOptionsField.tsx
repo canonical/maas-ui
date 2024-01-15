@@ -3,19 +3,19 @@ import { Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
-import docsUrls from "app/base/docsUrls";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
+import FormikField from "@/app/base/components/FormikField";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
 import type {
   CreateParams,
   Tag,
   TagMeta,
   UpdateParams,
-} from "app/store/tag/types";
-import { FetchNodeStatus } from "app/store/types/node";
-import { isId } from "app/utils";
+} from "@/app/store/tag/types";
+import { FetchNodeStatus } from "@/app/store/types/node";
+import { isId } from "@/app/utils";
 
 export enum Label {
   KernelOptions = "Kernel options",

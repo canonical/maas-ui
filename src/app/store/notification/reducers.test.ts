@@ -4,7 +4,7 @@ import type { NotificationState } from "./types";
 import {
   notification as notificationFactory,
   notificationState as notificationStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("notifications reducer", () => {
   let state: Pick<NotificationState, "items">;

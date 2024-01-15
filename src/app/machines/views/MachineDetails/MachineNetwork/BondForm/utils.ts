@@ -1,18 +1,18 @@
 import type { BondFormValues } from "./types";
 
-import type { Selected } from "app/base/components/node/networking/types";
-import type { Machine, MachineDetails } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type { Selected } from "@/app/base/components/node/networking/types";
+import type { Machine, MachineDetails } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
   isBondOrBridgeParent,
-} from "app/store/utils";
-import type { VLAN } from "app/store/vlan/types";
-import { preparePayload } from "app/utils";
+} from "@/app/store/utils";
+import type { VLAN } from "@/app/store/vlan/types";
+import { preparePayload } from "@/app/utils";
 
 export const getFirstSelected = (
   machine: Machine,

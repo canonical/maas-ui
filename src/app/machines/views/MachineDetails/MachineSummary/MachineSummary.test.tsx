@@ -1,13 +1,13 @@
 import MachineSummary from "./MachineSummary";
 
-import type { RootState } from "app/store/root/types";
-import { NodeStatusCode } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("MachineSummary", () => {
   let state: RootState;
@@ -21,26 +21,20 @@ describe("MachineSummary", () => {
 
   it("displays a spinner if machines are loading", () => {
     state.machine.items = [];
-    renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
-      {
-        route: "/machine/abc123/summary",
-        routePattern: "/machine/:id/summary",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+      route: "/machine/abc123/summary",
+      routePattern: "/machine/:id/summary",
+      state,
+    });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("renders", () => {
-    renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
-      {
-        route: "/machine/abc123/summary",
-        routePattern: "/machine/:id/summary",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+      route: "/machine/abc123/summary",
+      routePattern: "/machine/:id/summary",
+      state,
+    });
 
     expect(screen.getByText("Machine Status")).toBeInTheDocument();
     expect(screen.getByText("CPU")).toBeInTheDocument();
@@ -67,14 +61,11 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
-      {
-        route: "/machine/abc123/summary",
-        routePattern: "/machine/:id/summary",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+      route: "/machine/abc123/summary",
+      routePattern: "/machine/:id/summary",
+      state,
+    });
     expect(screen.getByText("Workload annotations")).toBeInTheDocument();
   });
 
@@ -85,14 +76,11 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
-      {
-        route: "/machine/abc123/summary",
-        routePattern: "/machine/:id/summary",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+      route: "/machine/abc123/summary",
+      routePattern: "/machine/:id/summary",
+      state,
+    });
     expect(screen.getByText("Workload annotations")).toBeInTheDocument();
   });
 
@@ -103,14 +91,11 @@ describe("MachineSummary", () => {
         system_id: "abc123",
       }),
     ];
-    renderWithBrowserRouter(
-      <MachineSummary setSidePanelContent={jest.fn()} />,
-      {
-        route: "/machine/abc123/summary",
-        routePattern: "/machine/:id/summary",
-        state,
-      }
-    );
+    renderWithBrowserRouter(<MachineSummary setSidePanelContent={vi.fn()} />, {
+      route: "/machine/abc123/summary",
+      routePattern: "/machine/:id/summary",
+      state,
+    });
     expect(screen.queryByText("Workload annotations")).not.toBeInTheDocument();
   });
 });

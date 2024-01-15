@@ -1,12 +1,12 @@
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useIsRackControllerConnected } from "app/base/hooks";
-import type { ControllerDetails } from "app/store/controller/types";
-import { PowerTypeNames } from "app/store/general/constants";
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import { getPowerTypeFromName } from "app/store/general/utils";
-import type { MachineDetails } from "app/store/machine/types";
+import { useIsRackControllerConnected } from "@/app/base/hooks";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
+import { getPowerTypeFromName } from "@/app/store/general/utils";
+import type { MachineDetails } from "@/app/store/machine/types";
 
 type Props = {
   node: MachineDetails | ControllerDetails;

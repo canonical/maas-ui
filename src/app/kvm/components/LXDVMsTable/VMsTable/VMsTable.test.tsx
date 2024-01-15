@@ -1,11 +1,11 @@
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 
 import VMsTable, { Label } from "./VMsTable";
 
-import { SortDirection } from "app/base/types";
-import { FetchGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import { SortDirection } from "@/app/base/types";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -16,23 +16,22 @@ import {
   tagState as tagStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   within,
   renderWithMockStore,
   userEvent,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
-enableCallIdMocks();
 const mockStore = configureStore<RootState>();
 
 describe("VMsTable", () => {
-  let getResources: jest.Mock;
+  let getResources: Mock;
 
   beforeEach(() => {
-    getResources = jest.fn().mockReturnValue({
+    getResources = vi.fn().mockReturnValue({
       hugepagesBacked: false,
       pinnedCores: [],
       unpinnedCores: 0,
@@ -47,8 +46,8 @@ describe("VMsTable", () => {
         machinesLoading={true}
         pods={[]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={[]}
@@ -64,8 +63,8 @@ describe("VMsTable", () => {
   });
 
   it("can change sort order", async () => {
-    const setSortKey = jest.fn();
-    const setSortDirection = jest.fn();
+    const setSortKey = vi.fn();
+    const setSortDirection = vi.fn();
     const vms = [
       machineFactory({ hostname: "b" }),
       machineFactory({ hostname: "c" }),
@@ -75,7 +74,7 @@ describe("VMsTable", () => {
       machine: machineStateFactory({
         items: vms,
         lists: {
-          [callId]: machineStateListFactory({
+          "mocked-nanoid": machineStateListFactory({
             loaded: true,
             groups: [
               machineStateListGroupFactory({
@@ -130,8 +129,8 @@ describe("VMsTable", () => {
         machinesLoading={false}
         pods={[pod.name]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={vms}
@@ -175,8 +174,8 @@ describe("VMsTable", () => {
         machinesLoading={false}
         pods={[pod.name]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={vms}
@@ -213,8 +212,8 @@ describe("VMsTable", () => {
         machinesLoading={false}
         pods={[]}
         searchFilter="system_id:(=ghi789)"
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={[]}
@@ -242,8 +241,8 @@ describe("VMsTable", () => {
         machinesLoading={false}
         pods={[]}
         searchFilter="system_id:(=ghi789)"
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={[]}
@@ -262,13 +261,13 @@ describe("VMsTable", () => {
 
     renderWithBrowserRouter(
       <VMsTable
-        getHostColumn={jest.fn()}
+        getHostColumn={vi.fn()}
         getResources={getResources}
         machinesLoading={false}
         pods={[]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={[]}
@@ -291,8 +290,8 @@ describe("VMsTable", () => {
         machinesLoading={false}
         pods={[]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={[]}
@@ -325,8 +324,8 @@ describe("VMsTable", () => {
         machinesLoading={false}
         pods={[]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={vms}
@@ -345,13 +344,13 @@ describe("VMsTable", () => {
 
     renderWithBrowserRouter(
       <VMsTable
-        getHostColumn={jest.fn()}
+        getHostColumn={vi.fn()}
         getResources={getResources}
         machinesLoading={false}
         pods={[]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={[]}
@@ -377,8 +376,8 @@ describe("VMsTable", () => {
         machinesLoading={false}
         pods={[]}
         searchFilter=""
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
+        setSortDirection={vi.fn()}
+        setSortKey={vi.fn()}
         sortDirection={SortDirection.DESCENDING}
         sortKey={FetchGroupKey.Hostname}
         vms={[]}

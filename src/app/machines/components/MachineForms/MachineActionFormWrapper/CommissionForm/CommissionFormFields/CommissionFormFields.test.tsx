@@ -1,7 +1,7 @@
 import CommissionForm from "../CommissionForm";
 
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -9,8 +9,8 @@ import {
   rootState as rootStateFactory,
   scriptState as scriptStateFactory,
   script as scriptFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("CommissionForm", () => {
   let state: RootState;
@@ -63,7 +63,7 @@ describe("CommissionForm", () => {
   it("displays a field for URL if a selected script has url parameter", async () => {
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}

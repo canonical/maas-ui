@@ -1,13 +1,13 @@
 import IPColumn from "./IPColumn";
 
-import { HardwareType } from "app/base/enum";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
-import { NetworkLinkMode } from "app/store/types/enum";
-import type { VLAN } from "app/store/vlan/types";
+} from "@/app/store/scriptresult/types";
+import { NetworkLinkMode } from "@/app/store/types/enum";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -21,8 +21,8 @@ import {
   scriptResultState as scriptResultStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("IPColumn", () => {
   let state: RootState;

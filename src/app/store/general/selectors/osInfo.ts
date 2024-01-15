@@ -11,8 +11,8 @@ import type {
   OSInfoOsKernelEntry,
   OSInfoOSystem,
   OSInfoRelease,
-} from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 
 const generalSelectors = generateGeneralSelector<"osInfo">("osInfo");
 

@@ -2,11 +2,11 @@ import { useState } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 
-import type { FormikFormProps } from "app/base/components/FormikForm";
-import FormikForm from "app/base/components/FormikForm";
-import { useProcessing } from "app/base/hooks";
-import type { ActionState } from "app/base/types";
-import { getNodeActionLabel } from "app/store/utils";
+import type { FormikFormProps } from "@/app/base/components/FormikForm";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useProcessing } from "@/app/base/hooks";
+import type { ActionState } from "@/app/base/types";
+import { getNodeActionLabel } from "@/app/store/utils";
 
 const getLabel = (
   modelName: string,

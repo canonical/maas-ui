@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import NonUbuntuImageSelect from "./NonUbuntuImageSelect";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
@@ -11,8 +11,8 @@ import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("NonUbuntuImageSelect", () => {
   let state: RootState;
@@ -58,7 +58,7 @@ describe("NonUbuntuImageSelect", () => {
             },
           ],
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <NonUbuntuImageSelect images={otherImages} resources={resources} />
       </Formik>,

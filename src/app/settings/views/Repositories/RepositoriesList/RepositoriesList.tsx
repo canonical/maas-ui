@@ -4,20 +4,24 @@ import { ContentSection } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
-import TableActions from "app/base/components/TableActions";
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
-import SettingsTable from "app/settings/components/SettingsTable";
-import settingsURLs from "app/settings/urls";
-import { actions as repositoryActions } from "app/store/packagerepository";
-import repositorySelectors from "app/store/packagerepository/selectors";
+import TableActions from "@/app/base/components/TableActions";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import {
+  useFetchActions,
+  useAddMessage,
+  useWindowTitle,
+} from "@/app/base/hooks";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import settingsURLs from "@/app/settings/urls";
+import { actions as repositoryActions } from "@/app/store/packagerepository";
+import repositorySelectors from "@/app/store/packagerepository/selectors";
 import type {
   PackageRepository,
   PackageRepositoryMeta,
   PackageRepositoryState,
-} from "app/store/packagerepository/types";
-import { getRepoDisplayName } from "app/store/packagerepository/utils";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/packagerepository/types";
+import { getRepoDisplayName } from "@/app/store/packagerepository/utils";
+import type { RootState } from "@/app/store/root/types";
 
 export enum Labels {
   Actions = "Table actions",

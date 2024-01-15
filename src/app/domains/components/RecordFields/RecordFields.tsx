@@ -1,9 +1,9 @@
 import { Col, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import FormikField from "app/base/components/FormikField";
-import { MIN_TTL } from "app/store/domain/constants";
-import { RecordType } from "app/store/domain/types";
+import FormikField from "@/app/base/components/FormikField";
+import { MIN_TTL } from "@/app/store/domain/constants";
+import { RecordType } from "@/app/store/domain/types";
 
 export enum Labels {
   Name = "Name",

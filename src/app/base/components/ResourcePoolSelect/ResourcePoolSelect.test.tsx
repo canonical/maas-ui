@@ -3,13 +3,13 @@ import configureStore from "redux-mock-store";
 
 import ResourcePoolSelect from "./ResourcePoolSelect";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -25,7 +25,7 @@ describe("ResourcePoolSelect", () => {
       }),
     });
     renderWithMockStore(
-      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>,
       { state }
@@ -41,7 +41,7 @@ describe("ResourcePoolSelect", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>,
       { store }
@@ -59,7 +59,7 @@ describe("ResourcePoolSelect", () => {
       }),
     });
     renderWithMockStore(
-      <Formik initialValues={{ pool: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
         <ResourcePoolSelect name="pool" />
       </Formik>,
       { state }

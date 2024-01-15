@@ -2,11 +2,11 @@ import DeleteSubnet from "./components/DeleteSubnet";
 import EditBootArchitectures from "./components/EditBootArchitectures";
 import MapSubnet from "./components/MapSubnet";
 
-import { SubnetActionTypes } from "app/subnets/views/SubnetDetails/constants";
+import { SubnetActionTypes } from "@/app/subnets/views/SubnetDetails/constants";
 import type {
   SubnetAction,
   SubnetActionProps,
-} from "app/subnets/views/SubnetDetails/types";
+} from "@/app/subnets/views/SubnetDetails/types";
 
 const FormComponents: Record<
   SubnetAction,

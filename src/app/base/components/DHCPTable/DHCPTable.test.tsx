@@ -5,10 +5,10 @@ import configureStore from "redux-mock-store";
 
 import DHCPTable, { TestIds } from "./DHCPTable";
 
-import { Labels as FormLabels } from "app/base/components/DhcpForm";
-import { MachineMeta } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import { Labels as FormLabels } from "@/app/base/components/DhcpForm";
+import { MachineMeta } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
@@ -17,8 +17,8 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

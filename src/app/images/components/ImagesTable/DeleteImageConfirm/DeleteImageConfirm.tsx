@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
-import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { actions as bootResourceActions } from "app/store/bootresource";
-import bootResourceSelectors from "app/store/bootresource/selectors";
-import type { BootResource } from "app/store/bootresource/types";
-import { BootResourceAction } from "app/store/bootresource/types";
+import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
+import type { BootResource } from "@/app/store/bootresource/types";
+import { BootResourceAction } from "@/app/store/bootresource/types";
 
 type Props = {
   closeForm: () => void;

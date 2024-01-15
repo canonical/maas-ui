@@ -3,12 +3,12 @@ import configureStore from "redux-mock-store";
 import AddTagForm from "./AddTagForm";
 import type { Props } from "./AddTagForm";
 
-import { actions as machineActions } from "app/store/machine";
-import type { FetchFilters } from "app/store/machine/types";
-import { FetchGroupKey } from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
-import { FetchNodeStatus } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FetchFilters } from "@/app/store/machine/types";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { FetchNodeStatus } from "@/app/store/types/node";
 import {
   rootState as rootStateFactory,
   machineState as machineStateFactory,
@@ -16,21 +16,20 @@ import {
   machineStateCounts as machineStateCountsFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter } from "@/testing/utils";
 
-const mockBaseAddTagForm = jest.fn();
-jest.mock("app/tags/components/AddTagForm", () => (props: Props) => {
-  mockBaseAddTagForm(props);
-  return null;
-});
+const mockBaseAddTagForm = vi.fn();
+vi.mock("@/app/tags/components/AddTagForm", () => ({
+  default: (props: Props) => mockBaseAddTagForm(props),
+}));
 
 const mockStore = configureStore<RootState, {}>();
 
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       counts: machineStateCountsFactory({
@@ -60,13 +59,13 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("set the analytics category for the machine list", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
+    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
@@ -86,7 +85,7 @@ it("set the analytics category for the machine details", async () => {
     <AddTagForm
       machines={[]}
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       viewingDetails
     />,
     { route: "/tags", store }
@@ -108,7 +107,7 @@ it("set the analytics category for the machine config", async () => {
     <AddTagForm
       machines={[]}
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       viewingMachineConfig
     />,
     { route: "/tags", store }
@@ -127,7 +126,7 @@ it("set the analytics category for the machine config", async () => {
 it("generates a deployed message for a single machine", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
+    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(
@@ -140,7 +139,7 @@ it("generates a deployed message for a single machine", async () => {
 it("generates a deployed message for multiple machines", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
+    <AddTagForm machines={[]} name="new-tag" onTagCreated={vi.fn()} />,
     { route: "/tags", store }
   );
   expect(
@@ -156,7 +155,7 @@ it("fetches deployed machine count for selected machines", async () => {
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }
@@ -172,9 +171,8 @@ it("fetches deployed machine count for selected machines", async () => {
 });
 
 it("fetches deployed machine count separately for deployed group when selected", async () => {
-  jest.spyOn(query, "generateCallId").mockRestore();
-  jest
-    .spyOn(query, "generateCallId")
+  vi.spyOn(query, "generateCallId").mockRestore();
+  vi.spyOn(query, "generateCallId")
     .mockReturnValueOnce("mocked-nanoid-1")
     .mockReturnValueOnce("mocked-nanoid-2");
   const store = mockStore(state);
@@ -186,7 +184,7 @@ it("fetches deployed machine count separately for deployed group when selected",
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }
@@ -217,7 +215,7 @@ it("fetches deployed machine count when all machines are selected", async () => 
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }
@@ -243,7 +241,7 @@ it(`fetches deployed machine count only for selected items
   renderWithBrowserRouter(
     <AddTagForm
       name="new-tag"
-      onTagCreated={jest.fn()}
+      onTagCreated={vi.fn()}
       selectedMachines={selectedMachines}
     />,
     { route: "/tags", store }

@@ -1,16 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { Days, TimeSpan } from "app/base/types";
+import type { Days, TimeSpan } from "@/app/base/types";
 import type {
   AutoIpmiPrivilegeLevel,
   Config,
   ConfigState,
   ConfigValues,
   NetworkDiscovery,
-} from "app/store/config/types";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import type { StorageLayout } from "app/store/types/enum";
+} from "@/app/store/config/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import type { StorageLayout } from "@/app/store/types/enum";
 /**
  * Returns value of an object in an array, given a certain name.
  * @param {Config[]} arr - Array to search for name.

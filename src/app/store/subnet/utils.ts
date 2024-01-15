@@ -1,9 +1,9 @@
-import type { Space } from "app/store/space/types";
-import type { Subnet, SubnetDetails, SubnetIP } from "app/store/subnet/types";
-import { IPAddressType } from "app/store/subnet/types";
-import { NodeType } from "app/store/types/node";
-import { getNodeTypeDisplay } from "app/store/utils";
-import type { VLAN } from "app/store/vlan/types";
+import type { Space } from "@/app/store/space/types";
+import type { Subnet, SubnetDetails, SubnetIP } from "@/app/store/subnet/types";
+import { IPAddressType } from "@/app/store/subnet/types";
+import { NodeType } from "@/app/store/types/node";
+import { getNodeTypeDisplay } from "@/app/store/utils";
+import type { VLAN } from "@/app/store/vlan/types";
 
 /**
  * Get the Subnet display text.

@@ -2,15 +2,15 @@ import { Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-import CoreResources from "app/kvm/components/CoreResources";
-import RamResources from "app/kvm/components/RamResources";
-import StorageResources from "app/kvm/components/StorageResources";
-import VfResources from "app/kvm/components/VfResources";
-import podSelectors from "app/store/pod/selectors";
-import type { PodNetworkInterface } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
+import CoreResources from "@/app/kvm/components/CoreResources";
+import RamResources from "@/app/kvm/components/RamResources";
+import StorageResources from "@/app/kvm/components/StorageResources";
+import VfResources from "@/app/kvm/components/VfResources";
+import podSelectors from "@/app/store/pod/selectors";
+import type { PodNetworkInterface } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];

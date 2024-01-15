@@ -4,7 +4,7 @@ import {
   rootState as rootStateFactory,
   sshKey as sshKeyFactory,
   sshKeyState as sshKeyStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("sshkey selectors", () => {
   describe("all", () => {

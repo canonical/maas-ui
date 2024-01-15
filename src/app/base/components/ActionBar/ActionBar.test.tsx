@@ -3,8 +3,8 @@ import configureStore from "redux-mock-store";
 
 import ActionBar from "./ActionBar";
 
-import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -18,9 +18,9 @@ describe("ActionBar", () => {
           actions={<span data-testid="actions">Actions</span>}
           currentPage={1}
           itemCount={10}
-          onSearchChange={jest.fn()}
+          onSearchChange={vi.fn()}
           searchFilter=""
-          setCurrentPage={jest.fn()}
+          setCurrentPage={vi.fn()}
         />
       </Provider>
     );

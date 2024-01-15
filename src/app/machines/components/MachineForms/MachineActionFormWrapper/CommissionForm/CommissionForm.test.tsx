@@ -2,11 +2,11 @@ import configureStore from "redux-mock-store";
 
 import CommissionForm from "./CommissionForm";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { ScriptName, ScriptType } from "app/store/script/types";
-import { PowerState } from "app/store/types/enum";
-import { NodeStatusCode } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptName, ScriptType } from "@/app/store/script/types";
+import { PowerState } from "@/app/store/types/enum";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -15,8 +15,8 @@ import {
   rootState as rootStateFactory,
   script as scriptFactory,
   scriptState as scriptStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -76,7 +76,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -93,7 +93,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}
@@ -194,7 +194,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[state.machine.items[0]]}
         processingCount={0}
         viewingDetails={false}
@@ -254,7 +254,7 @@ describe("CommissionForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CommissionForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,

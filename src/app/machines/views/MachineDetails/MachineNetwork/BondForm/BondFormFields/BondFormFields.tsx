@@ -9,21 +9,21 @@ import LACPRateSelect from "../LACPRateSelect";
 import type { BondFormValues } from "../types";
 import { MacSource, LinkMonitoring } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import MacAddressField from "app/base/components/MacAddressField";
-import TagNameField from "app/base/components/TagNameField";
-import type { Selected } from "app/base/components/node/networking/types";
-import { BondMode } from "app/store/general/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineDetails } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import FormikField from "@/app/base/components/FormikField";
+import MacAddressField from "@/app/base/components/MacAddressField";
+import TagNameField from "@/app/base/components/TagNameField";
+import type { Selected } from "@/app/base/components/node/networking/types";
+import { BondMode } from "@/app/store/general/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine, MachineDetails } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   getInterfaceById,
   getInterfaceName,
   getLinkFromNic,
-} from "app/store/utils";
+} from "@/app/store/utils";
 
 type Props = {
   selected: Selected[];

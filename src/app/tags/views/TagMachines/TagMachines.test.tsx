@@ -5,15 +5,14 @@ import configureStore from "redux-mock-store";
 
 import TagMachines, { Label } from "./TagMachines";
 
-import urls from "app/base/urls";
-import { columnLabels, MachineColumns } from "app/machines/constants";
-import { actions as machineActions } from "app/store/machine";
-import { FetchGroupKey, FetchSortDirection } from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { NodeStatus, FetchNodeStatus } from "app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import urls from "@/app/base/urls";
+import { columnLabels, MachineColumns } from "@/app/machines/constants";
+import { actions as machineActions } from "@/app/store/machine";
+import { FetchGroupKey, FetchSortDirection } from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { NodeStatus, FetchNodeStatus } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -23,15 +22,15 @@ import {
   tagState as tagStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
-enableCallIdMocks();
+const callId = "mocked-nanoid";
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  jest.spyOn(query, "generateCallId").mockReturnValue(callId);
+  vi.spyOn(query, "generateCallId").mockReturnValue(callId);
   const machines = [
     machineFactory({
       domain: modelRefFactory({ id: 1, name: "test" }),
@@ -68,7 +67,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("dispatches actions to fetch necessary data", () => {

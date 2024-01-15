@@ -3,11 +3,11 @@ import { useState } from "react";
 import { Button, Card, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 
-import { useSendAnalytics } from "app/base/hooks";
-import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
-import type { KVMStoragePoolResources } from "app/kvm/types";
-import { calcFreePoolStorage, getSortedPoolsArray } from "app/kvm/utils";
-import type { Pod } from "app/store/pod/types";
+import { useSendAnalytics } from "@/app/base/hooks";
+import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
+import type { KVMStoragePoolResources } from "@/app/kvm/types";
+import { calcFreePoolStorage, getSortedPoolsArray } from "@/app/kvm/utils";
+import type { Pod } from "@/app/store/pod/types";
 
 export const TRUNCATION_POINT = 3;
 

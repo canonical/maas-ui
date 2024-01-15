@@ -1,8 +1,8 @@
 import TestForm from "../TestForm";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -10,8 +10,8 @@ import {
   rootState as rootStateFactory,
   scriptState as scriptStateFactory,
   script as scriptFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("TestForm", () => {
   let state: RootState;
@@ -65,10 +65,10 @@ describe("TestForm", () => {
     renderWithBrowserRouter(
       <TestForm
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={state.machine.items}
-        onTest={jest.fn()}
+        onTest={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,

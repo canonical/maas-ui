@@ -2,15 +2,15 @@ import configureStore from "redux-mock-store";
 
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { RootState } from "app/store/root/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -29,7 +29,7 @@ describe("DeviceDetailsHeader", () => {
     state.device.items = [];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -42,7 +42,7 @@ describe("DeviceDetailsHeader", () => {
     state.device.items = [deviceFactory({ system_id: "abc123" })];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -60,7 +60,7 @@ describe("DeviceDetailsHeader", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store, sidePanelContent: { view: DeviceSidePanelViews.DELETE_DEVICE } }
     );
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
@@ -74,7 +74,7 @@ describe("DeviceDetailsHeader", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceDetailsHeader setSidePanelContent={jest.fn()} systemId="abc123" />,
+      <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
       { store }
     );
 

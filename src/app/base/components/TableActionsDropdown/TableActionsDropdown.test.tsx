@@ -1,6 +1,6 @@
 import TableActionsDropdown from "./TableActionsDropdown";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("TableActionsDropdown", () => {
   it("can be explicitly disabled", () => {
@@ -12,14 +12,14 @@ describe("TableActionsDropdown", () => {
           { label: "Action 3", type: "action-3" },
         ]}
         disabled
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
       />
     );
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
   it("is disabled if no actions are provided", () => {
-    render(<TableActionsDropdown actions={[]} onActionClick={jest.fn()} />);
+    render(<TableActionsDropdown actions={[]} onActionClick={vi.fn()} />);
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
@@ -31,7 +31,7 @@ describe("TableActionsDropdown", () => {
           { label: "Action 2", type: "action-2" },
           { label: "Action 3", show: false, type: "action-3" },
         ]}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
       />
     );
     // Open menu
@@ -49,7 +49,7 @@ describe("TableActionsDropdown", () => {
   });
 
   it("runs click function with action type as argument", async () => {
-    const onActionClick = jest.fn();
+    const onActionClick = vi.fn();
     render(
       <TableActionsDropdown
         actions={[{ label: "Action 1", type: "action-1" }]}

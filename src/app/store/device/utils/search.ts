@@ -1,14 +1,14 @@
-import { DeviceMeta } from "app/store/device/types";
-import type { Device } from "app/store/device/types";
-import { getIpAssignmentDisplay } from "app/store/device/utils";
-import type { Tag } from "app/store/tag/types/base";
-import { getTagNamesForIds } from "app/store/tag/utils";
-import type { FilterValue } from "app/utils/search/filter-handlers";
+import { DeviceMeta } from "@/app/store/device/types";
+import type { Device } from "@/app/store/device/types";
+import { getIpAssignmentDisplay } from "@/app/store/device/utils";
+import type { Tag } from "@/app/store/tag/types/base";
+import { getTagNamesForIds } from "@/app/store/tag/utils";
+import type { FilterValue } from "@/app/utils/search/filter-handlers";
 import {
   isFilterValue,
   isFilterValueArray,
-} from "app/utils/search/filter-handlers";
-import FilterItems from "app/utils/search/filter-items";
+} from "@/app/utils/search/filter-handlers";
+import FilterItems from "@/app/utils/search/filter-items";
 
 type ExtraData = {
   tags: Tag[];

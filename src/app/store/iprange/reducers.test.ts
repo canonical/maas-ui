@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 it("should return the initial state", () => {
   expect(reducers(undefined, { type: "" })).toEqual(

@@ -6,24 +6,27 @@ import * as Yup from "yup";
 import CommissionFormFields from "./CommissionFormFields";
 import type { CommissionFormValues, FormattedScript } from "./types";
 
-import ActionForm from "app/base/components/ActionForm";
-import { useFetchActions, useGetURLId } from "app/base/hooks";
-import urls from "app/base/urls";
-import type { MachineActionFormProps } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
-import { MachineMeta, type MachineEventErrors } from "app/store/machine/types";
-import { isUnconfiguredPowerType } from "app/store/machine/utils/common";
+import ActionForm from "@/app/base/components/ActionForm";
+import { useFetchActions, useGetURLId } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import type { MachineActionFormProps } from "@/app/machines/types";
+import { actions as machineActions } from "@/app/store/machine";
+import {
+  MachineMeta,
+  type MachineEventErrors,
+} from "@/app/store/machine/types";
+import { isUnconfiguredPowerType } from "@/app/store/machine/utils/common";
 import {
   useFetchMachine,
   useSelectedMachinesActionsDispatch,
-} from "app/store/machine/utils/hooks";
-import { actions as scriptActions } from "app/store/script";
-import scriptSelectors from "app/store/script/selectors";
-import type { Script } from "app/store/script/types";
-import { ScriptName } from "app/store/script/types";
-import { getObjectString } from "app/store/script/utils";
-import { NodeActions } from "app/store/types/node";
-import { simpleSortByKey } from "app/utils";
+} from "@/app/store/machine/utils/hooks";
+import { actions as scriptActions } from "@/app/store/script";
+import scriptSelectors from "@/app/store/script/selectors";
+import type { Script } from "@/app/store/script/types";
+import { ScriptName } from "@/app/store/script/types";
+import { getObjectString } from "@/app/store/script/utils";
+import { NodeActions } from "@/app/store/types/node";
+import { simpleSortByKey } from "@/app/utils";
 
 const formatScripts = (scripts: Script[]): FormattedScript[] =>
   scripts.map((script) => ({

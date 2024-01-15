@@ -2,14 +2,14 @@ import { MemoryRouter } from "react-router-dom";
 
 import DeviceListHeader from "./DeviceListHeader";
 
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { RootState } from "app/store/root/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceListHeader", () => {
   let state: RootState;
@@ -31,8 +31,8 @@ describe("DeviceListHeader", () => {
     renderWithBrowserRouter(
       <DeviceListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -44,8 +44,8 @@ describe("DeviceListHeader", () => {
     renderWithBrowserRouter(
       <DeviceListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -57,8 +57,8 @@ describe("DeviceListHeader", () => {
     renderWithBrowserRouter(
       <DeviceListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -66,12 +66,12 @@ describe("DeviceListHeader", () => {
   });
 
   it("can open the add device form", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <MemoryRouter>
         <DeviceListHeader
           searchFilter=""
-          setSearchFilter={jest.fn()}
+          setSearchFilter={vi.fn()}
           setSidePanelContent={setSidePanelContent}
         />
       </MemoryRouter>,
@@ -87,8 +87,8 @@ describe("DeviceListHeader", () => {
     const { rerender } = renderWithBrowserRouter(
       <DeviceListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -98,8 +98,8 @@ describe("DeviceListHeader", () => {
     rerender(
       <DeviceListHeader
         searchFilter="free-text"
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 

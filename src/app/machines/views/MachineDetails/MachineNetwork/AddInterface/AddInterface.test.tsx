@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NetworkLinkMode } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkLinkMode } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -17,8 +17,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;
@@ -64,7 +64,7 @@ describe("AddInterface", () => {
   it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddInterface close={jest.fn()} systemId="abc123" />,
+      <AddInterface close={vi.fn()} systemId="abc123" />,
       { route, store }
     );
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
@@ -79,7 +79,7 @@ describe("AddInterface", () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
     renderWithBrowserRouter(
-      <AddInterface close={jest.fn()} systemId="abc123" />,
+      <AddInterface close={vi.fn()} systemId="abc123" />,
       { route, state }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe("AddInterface", () => {
     state.machine.selected = { items: ["abc123", "def456"] };
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddInterface close={jest.fn()} systemId="abc123" />,
+      <AddInterface close={vi.fn()} systemId="abc123" />,
       { route, store }
     );
     await userEvent.type(

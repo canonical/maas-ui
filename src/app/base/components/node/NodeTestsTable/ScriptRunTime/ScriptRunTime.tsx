@@ -6,8 +6,8 @@ import pluralize from "pluralize";
 import {
   ScriptResultStatus,
   ScriptResultEstimated,
-} from "app/store/scriptresult/types";
-import type { ScriptResult } from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
+import type { ScriptResult } from "@/app/store/scriptresult/types";
 
 type Props = {
   scriptResult: ScriptResult;

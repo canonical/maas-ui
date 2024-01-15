@@ -7,14 +7,14 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("VMsActionBar", () => {
   it("executes onAddVMClick on add VM button click", async () => {
-    const onAddVMClick = jest.fn();
+    const onAddVMClick = vi.fn();
     const state = rootStateFactory();
     const store = mockStore(state);
     render(
@@ -24,9 +24,9 @@ describe("VMsActionBar", () => {
           machinesLoading={false}
           onAddVMClick={onAddVMClick}
           searchFilter=""
-          setCurrentPage={jest.fn()}
-          setSearchFilter={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setCurrentPage={vi.fn()}
+          setSearchFilter={vi.fn()}
+          setSidePanelContent={vi.fn()}
           vmCount={2}
         />
       </Provider>
@@ -49,11 +49,11 @@ describe("VMsActionBar", () => {
         <VMsActionBar
           currentPage={1}
           machinesLoading={false}
-          onAddVMClick={jest.fn()}
+          onAddVMClick={vi.fn()}
           searchFilter=""
-          setCurrentPage={jest.fn()}
-          setSearchFilter={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setCurrentPage={vi.fn()}
+          setSearchFilter={vi.fn()}
+          setSidePanelContent={vi.fn()}
           vmCount={2}
         />
       </Provider>
@@ -79,11 +79,11 @@ describe("VMsActionBar", () => {
         <VMsActionBar
           currentPage={1}
           machinesLoading={false}
-          onAddVMClick={jest.fn()}
+          onAddVMClick={vi.fn()}
           searchFilter=""
-          setCurrentPage={jest.fn()}
-          setSearchFilter={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setCurrentPage={vi.fn()}
+          setSearchFilter={vi.fn()}
+          setSidePanelContent={vi.fn()}
           vmCount={2}
         />
       </Provider>

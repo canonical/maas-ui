@@ -7,12 +7,12 @@ import * as Yup from "yup";
 
 import NodeNameFields from "./NodeNameFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useCanEdit } from "app/base/hooks";
-import { hostnameValidation } from "app/base/validation";
-import type { Domain, DomainMeta } from "app/store/domain/types";
-import type { Node, SimpleNode } from "app/store/types/node";
-import { nodeIsController } from "app/store/utils";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useCanEdit } from "@/app/base/hooks";
+import { hostnameValidation } from "@/app/base/validation";
+import type { Domain, DomainMeta } from "@/app/store/domain/types";
+import type { Node, SimpleNode } from "@/app/store/types/node";
+import { nodeIsController } from "@/app/store/utils";
 
 export type Props = {
   editingName: boolean;

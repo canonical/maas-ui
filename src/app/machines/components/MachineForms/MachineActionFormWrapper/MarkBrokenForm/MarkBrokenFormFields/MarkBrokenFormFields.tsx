@@ -1,7 +1,7 @@
 import { Col, Row } from "@canonical/react-components";
 import pluralize from "pluralize";
 
-import FormikField from "app/base/components/FormikField";
+import FormikField from "@/app/base/components/FormikField";
 
 type Props = {
   selectedCount: number;

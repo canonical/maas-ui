@@ -4,7 +4,7 @@ import {
   rootState as rootStateFactory,
   staticRoute as staticRouteFactory,
   staticRouteState as staticRouteStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("all", () => {
   it("returns list of all static routes", () => {

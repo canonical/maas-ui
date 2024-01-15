@@ -6,10 +6,10 @@ import configureStore from "redux-mock-store";
 
 import AppSideNavigation from "./AppSideNavigation";
 
-import urls from "app/base/urls";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { actions as statusActions } from "app/store/status";
+import urls from "@/app/base/urls";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as statusActions } from "@/app/store/status";
 import {
   authState as authStateFactory,
   config as configFactory,
@@ -21,7 +21,7 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -29,19 +29,22 @@ import {
   waitFor,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
-const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom-v5-compat", () => ({
-  ...jest.requireActual("react-router-dom-v5-compat"),
-  useNavigate: () => mockUseNavigate,
-}));
+const mockUseNavigate = vi.fn();
+vi.mock("react-router-dom-v5-compat", async () => {
+  const actual: object = await vi.importActual("react-router-dom-v5-compat");
+  return {
+    ...actual,
+    useNavigate: () => mockUseNavigate,
+  };
+});
 
 const mockStore = configureStore<RootState>();
 
 afterEach(() => {
-  jest.resetModules();
-  jest.resetAllMocks();
+  vi.resetModules();
+  vi.resetAllMocks();
 });
 
 describe("GlobalSideNav", () => {

@@ -3,14 +3,14 @@ import { Route } from "react-router-dom";
 
 import DeviceList from "./DeviceList";
 
-import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
+import type { RootState } from "@/app/store/root/types";
+import { rootState as rootStateFactory } from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("DeviceList", () => {
   let state: RootState;

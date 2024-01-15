@@ -6,10 +6,10 @@ import { Labels as ConnectivityCardLabels } from "./ConnectivityCard/Connectivit
 import MaasIntro, { Labels as MaasIntroLabels } from "./MaasIntro";
 import { Labels as NameCardLabels } from "./NameCard/NameCard";
 
-import { actions as configActions } from "app/store/config";
-import { ConfigNames } from "app/store/config/types";
-import { actions as repoActions } from "app/store/packagerepository";
-import type { RootState } from "app/store/root/types";
+import { actions as configActions } from "@/app/store/config";
+import { ConfigNames } from "@/app/store/config/types";
+import { actions as repoActions } from "@/app/store/packagerepository";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   config as configFactory,
@@ -19,13 +19,13 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

@@ -1,27 +1,28 @@
 import { Route, Routes } from "react-router-dom-v5-compat";
+import type { Mock } from "vitest";
 
 import TagsHeader, { Label } from "./TagsHeader";
 
-import urls from "app/base/urls";
-import { TagSearchFilter } from "app/store/tag/selectors";
-import { TagSidePanelViews } from "app/tags/constants";
+import urls from "@/app/base/urls";
+import { TagSearchFilter } from "@/app/store/tag/selectors";
+import { TagSidePanelViews } from "@/app/tags/constants";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
-let scrollToSpy: jest.Mock;
+let scrollToSpy: Mock;
 
 beforeEach(() => {
   // Mock the scrollTo method as jsdom doesn't support this and will error.
-  scrollToSpy = jest.fn();
+  scrollToSpy = vi.fn();
   global.scrollTo = scrollToSpy;
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("displays the searchbox and group select when isDetails is false", () => {
@@ -29,11 +30,11 @@ it("displays the searchbox and group select when isDetails is false", () => {
     <TagsHeader
       filter={TagSearchFilter.All}
       isDetails={false}
-      onDelete={jest.fn()}
+      onDelete={vi.fn()}
       searchText=""
-      setFilter={jest.fn()}
-      setSearchText={jest.fn()}
-      setSidePanelContent={jest.fn()}
+      setFilter={vi.fn()}
+      setSearchText={vi.fn()}
+      setSidePanelContent={vi.fn()}
     />,
     {
       route: "/tags",
@@ -71,11 +72,11 @@ it("displays edit and delete buttons, and a return link when isDetails is true",
           <TagsHeader
             filter={TagSearchFilter.All}
             isDetails={true}
-            onDelete={jest.fn()}
+            onDelete={vi.fn()}
             searchText=""
-            setFilter={jest.fn()}
-            setSearchText={jest.fn()}
-            setSidePanelContent={jest.fn()}
+            setFilter={vi.fn()}
+            setSearchText={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         }
         path={urls.tags.tag.index(null)}
@@ -104,15 +105,15 @@ it("displays edit and delete buttons, and a return link when isDetails is true",
 });
 
 it("can call a function to display the add tag form", async () => {
-  const setSidePanelContent = jest.fn();
+  const setSidePanelContent = vi.fn();
   renderWithBrowserRouter(
     <TagsHeader
       filter={TagSearchFilter.All}
       isDetails={false}
-      onDelete={jest.fn()}
+      onDelete={vi.fn()}
       searchText=""
-      setFilter={jest.fn()}
-      setSearchText={jest.fn()}
+      setFilter={vi.fn()}
+      setSearchText={vi.fn()}
       setSidePanelContent={setSidePanelContent}
     />,
     {
@@ -132,11 +133,11 @@ it("displays the default title", () => {
     <TagsHeader
       filter={TagSearchFilter.All}
       isDetails={false}
-      onDelete={jest.fn()}
+      onDelete={vi.fn()}
       searchText=""
-      setFilter={jest.fn()}
-      setSearchText={jest.fn()}
-      setSidePanelContent={jest.fn()}
+      setFilter={vi.fn()}
+      setSearchText={vi.fn()}
+      setSidePanelContent={vi.fn()}
     />,
     {
       route: "/tags",
@@ -150,16 +151,16 @@ it("displays the default title", () => {
 });
 
 it("can update the filter", async () => {
-  const setFilter = jest.fn();
+  const setFilter = vi.fn();
   renderWithBrowserRouter(
     <TagsHeader
       filter={TagSearchFilter.All}
       isDetails={false}
-      onDelete={jest.fn()}
+      onDelete={vi.fn()}
       searchText=""
       setFilter={setFilter}
-      setSearchText={jest.fn()}
-      setSidePanelContent={jest.fn()}
+      setSearchText={vi.fn()}
+      setSidePanelContent={vi.fn()}
     />,
     {
       route: "/tags",
@@ -187,11 +188,11 @@ it("can go to the tag edit page", async () => {
           <TagsHeader
             filter={TagSearchFilter.All}
             isDetails={true}
-            onDelete={jest.fn()}
+            onDelete={vi.fn()}
             searchText=""
-            setFilter={jest.fn()}
-            setSearchText={jest.fn()}
-            setSidePanelContent={jest.fn()}
+            setFilter={vi.fn()}
+            setSearchText={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         }
         path={urls.tags.tag.index(null)}

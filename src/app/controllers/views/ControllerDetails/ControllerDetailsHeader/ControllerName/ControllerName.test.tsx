@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerName from "./ControllerName";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -15,8 +15,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -62,7 +62,7 @@ it("can update a controller with the new domain", async () => {
           <ControllerName
             id={controller.system_id}
             isEditing={true}
-            setIsEditing={jest.fn()}
+            setIsEditing={vi.fn()}
           />
         </CompatRouter>
       </MemoryRouter>

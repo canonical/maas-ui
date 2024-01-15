@@ -3,13 +3,13 @@ import configureStore from "redux-mock-store";
 
 import DeleteConfirm from "./DeleteConfirm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -30,8 +30,8 @@ describe("DeleteConfirm", () => {
   });
 
   it("runs onConfirm function when Delete AZ is clicked", async () => {
-    const closeExpanded = jest.fn();
-    const onConfirm = jest.fn();
+    const closeExpanded = vi.fn();
+    const onConfirm = vi.fn();
     const store = mockStore(initialState);
     render(
       <Provider store={store}>
@@ -49,8 +49,8 @@ describe("DeleteConfirm", () => {
   });
 
   it("runs closeExpanded function when cancel is clicked", async () => {
-    const closeExpanded = jest.fn();
-    const onConfirm = jest.fn();
+    const closeExpanded = vi.fn();
+    const onConfirm = vi.fn();
     const store = mockStore(initialState);
     render(
       <Provider store={store}>

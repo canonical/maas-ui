@@ -7,12 +7,12 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useGetInstallationOutput } from "./hooks";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultNames,
   ScriptResultType,
   ScriptResultStatus,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
@@ -21,7 +21,7 @@ import {
   scriptResultData as scriptResultDataFactory,
   scriptResultState as scriptResultStateFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

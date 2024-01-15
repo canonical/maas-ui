@@ -1,7 +1,8 @@
 import { eventChannel } from "redux-saga";
+import { call, put, take } from "redux-saga/effects";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
-import { call, put, take } from "redux-saga/effects";
+import type { Mock } from "vitest";
 
 import {
   handleFileContextRequest,
@@ -22,47 +23,50 @@ import {
   watchWebSockets,
 } from "./websockets";
 
-import { actions as machineActions } from "app/store/machine";
-import { getCookie } from "app/utils";
+import { actions as machineActions } from "@/app/store/machine";
+import { getCookie } from "@/app/utils";
 import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import WebSocketClient, {
   WebSocketMessageType,
   WebSocketResponseType,
-} from "websocket-client";
+} from "@/websocket-client";
 import type {
   WebSocketResponseNotify,
   WebSocketResponsePing,
   WebSocketResponseResult,
-} from "websocket-client";
+} from "@/websocket-client";
 
-jest.mock("app/utils", () => ({
-  ...jest.requireActual("app/utils"),
-  getCookie: jest.fn(),
-}));
+vi.mock("@/app/utils", async () => {
+  const actual: object = await vi.importActual("@/app/utils");
+  return {
+    ...actual,
+    getCookie: vi.fn(),
+  };
+});
 
 describe("websocket sagas", () => {
   let socketChannel: WebSocketChannel;
   let socketClient: WebSocketClient;
-  const getCookieMock = getCookie as jest.Mock;
+  const getCookieMock = getCookie as Mock;
 
   beforeEach(() => {
     getCookieMock.mockImplementation(() => "abc123");
     socketClient = new WebSocketClient();
     socketClient.connect();
     if (socketClient.rws) {
-      socketClient.rws.onerror = jest.fn();
-      socketClient.rws.close = jest.fn();
+      socketClient.rws.onerror = vi.fn();
+      socketClient.rws.close = vi.fn();
     }
     socketChannel = eventChannel(() => () => null);
   });
 
   afterEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   it("connects to a WebSocket", () => {
@@ -83,7 +87,7 @@ describe("websocket sagas", () => {
       "No csrftoken found, please ensure you are logged into MAAS."
     );
     socketClient.rws = null;
-    socketClient.buildURL = jest.fn(() => {
+    socketClient.buildURL = vi.fn(() => {
       throw error;
     });
     return expectSaga(watchWebSockets, socketClient)
@@ -253,7 +257,7 @@ describe("websocket sagas", () => {
         params: { foo: "bar" },
       },
     };
-    const nextActionCreators = [jest.fn()];
+    const nextActionCreators = [vi.fn()];
     return expectSaga(sendMessage, socketClient, action, nextActionCreators)
       .provide([[matchers.call.fn(socketClient.send), 808]])
       .call([nextActions, nextActions.set], 808, nextActionCreators)
@@ -442,7 +446,7 @@ describe("websocket sagas", () => {
       result: { id: 808 },
     };
     const action = { type: "NEXT_ACTION" };
-    const actionCreator = jest.fn(() => action);
+    const actionCreator = vi.fn(() => action);
     return expectSaga(handleNextActions, response)
       .provide([
         [call([nextActions, nextActions.get], 99), [actionCreator]],

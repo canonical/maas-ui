@@ -1,8 +1,8 @@
 import FabricDetailsHeader from "./FabricDetailsHeader";
 import { FabricDetailsSidePanelViews } from "./constants";
 
-import type { Fabric } from "app/store/fabric/types";
-import type { RootState } from "app/store/root/types";
+import type { Fabric } from "@/app/store/fabric/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   fabric as fabricFactory,
@@ -10,8 +10,8 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
 let fabric: Fabric;
@@ -33,7 +33,7 @@ describe("FabricDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <FabricDetailsHeader fabric={fabric} setSidePanelContent={jest.fn()} />,
+      <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
       {
         route: "/fabric/1",
         state,
@@ -52,7 +52,7 @@ describe("FabricDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <FabricDetailsHeader fabric={fabric} setSidePanelContent={jest.fn()} />,
+      <FabricDetailsHeader fabric={fabric} setSidePanelContent={vi.fn()} />,
       {
         route: "/fabric/1",
         state,
@@ -63,7 +63,7 @@ describe("FabricDetailsHeader", () => {
   });
 
   it("calls a function to open the Delete form when the button is clicked", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     state.user = userStateFactory({
       auth: authStateFactory({
         user: userFactory({ is_superuser: true }),

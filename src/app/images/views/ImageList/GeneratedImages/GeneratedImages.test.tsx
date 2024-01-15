@@ -1,13 +1,13 @@
 import GeneratedImages from "./GeneratedImages";
 
-import { Labels as ImagesTableLabels } from "app/images/components/ImagesTable/ImagesTable";
-import { BootResourceType } from "app/store/bootresource/types";
+import { Labels as ImagesTableLabels } from "@/app/images/components/ImagesTable/ImagesTable";
+import { BootResourceType } from "@/app/store/bootresource/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("GeneratedImages", () => {
   it("does not render if there are no generated resources", () => {

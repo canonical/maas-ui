@@ -2,11 +2,11 @@ import configureStore from "redux-mock-store";
 
 import NodeDevices from "./NodeDevices";
 
-import { HardwareType } from "app/base/enum";
-import urls from "app/base/urls";
-import { actions as nodeDeviceActions } from "app/store/nodedevice";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import urls from "@/app/base/urls";
+import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
@@ -14,12 +14,12 @@ import {
   nodeDevice as nodeDeviceFactory,
   nodeDeviceState as nodeDeviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   renderWithMockStore,
   screen,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -36,7 +36,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { store }
     );
@@ -59,7 +59,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { store }
     );
@@ -81,7 +81,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -100,7 +100,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -115,7 +115,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.USB}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -149,7 +149,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machine/abc123/pci-devices", state }
     );
@@ -182,7 +182,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machine/abc123/pci-devices", state }
     );
@@ -250,7 +250,7 @@ describe("NodeDevices", () => {
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
         node={machine}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machine/abc123/pci-devices", state }
     );

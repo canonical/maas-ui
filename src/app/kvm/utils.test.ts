@@ -3,7 +3,7 @@ import { getSortedPoolsArray, memoryWithUnit } from "./utils";
 import {
   podStoragePoolResource as podPoolFactory,
   vmClusterStoragePoolResource as vmPoolFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("kvm utils", () => {
   describe("memoryWithUnit", () => {

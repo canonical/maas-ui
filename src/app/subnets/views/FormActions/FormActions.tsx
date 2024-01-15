@@ -3,9 +3,9 @@ import AddSpace from "./components/AddSpace";
 import AddSubnet from "./components/AddSubnet";
 import AddVlan from "./components/AddVlan";
 
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import { SubnetForms } from "app/subnets/constants";
-import type { SubnetForm } from "app/subnets/types";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { SubnetForms } from "@/app/subnets/constants";
+import type { SubnetForm } from "@/app/subnets/types";
 
 const FormComponents: Record<
   SubnetForm,

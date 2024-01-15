@@ -2,8 +2,8 @@ import { Formik } from "formik";
 
 import PowerFormFields from ".";
 
-import { PowerFieldScope } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { PowerFieldScope } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -11,8 +11,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("PowerFormFields", () => {
   let state: RootState;
@@ -62,7 +62,7 @@ describe("PowerFormFields", () => {
           powerParameters: {},
           powerType: "manual",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <PowerFormFields machine={machine} />
       </Formik>,

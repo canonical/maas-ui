@@ -3,7 +3,7 @@ import status from "./selectors";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("status", () => {
   it("can get the connected status", () => {

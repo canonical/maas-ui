@@ -1,9 +1,9 @@
 import { createSelector } from "reselect";
 
-import type { RootState } from "app/store/root/types";
-import { SpaceMeta } from "app/store/space/types";
-import type { Space, SpaceState } from "app/store/space/types";
-import { generateBaseSelectors } from "app/store/utils";
+import type { RootState } from "@/app/store/root/types";
+import { SpaceMeta } from "@/app/store/space/types";
+import type { Space, SpaceState } from "@/app/store/space/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (space: Space, term: string) =>
   space.name.includes(term);

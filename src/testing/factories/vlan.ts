@@ -2,8 +2,8 @@ import { extend, random } from "cooky-cutter";
 
 import { timestampedModel } from "./model";
 
-import type { TimestampedModel } from "app/store/types/model";
-import type { BaseVLAN, VLANDetails } from "app/store/vlan/types";
+import type { TimestampedModel } from "@/app/store/types/model";
+import type { BaseVLAN, VLANDetails } from "@/app/store/vlan/types";
 
 export const vlan = extend<TimestampedModel, BaseVLAN>(timestampedModel, {
   description: "a vlan",

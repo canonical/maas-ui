@@ -5,8 +5,8 @@ import {
   rootState as rootStateFactory,
   tlsCertificate as tlsCertificateFactory,
   tlsCertificateState as tlsCertificateStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("displays loading text if TLS certificate has not loaded", () => {
   const state = rootStateFactory({

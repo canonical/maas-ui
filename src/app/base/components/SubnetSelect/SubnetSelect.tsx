@@ -2,14 +2,14 @@ import type { SelectProps } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DynamicSelect from "app/base/components/DynamicSelect";
-import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
-import { useFetchActions } from "app/base/hooks";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import { simpleSortByKey } from "app/utils";
+import DynamicSelect from "@/app/base/components/DynamicSelect";
+import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import { simpleSortByKey } from "@/app/utils";
 
 type Option = NonNullable<SelectProps["options"]>[0];
 

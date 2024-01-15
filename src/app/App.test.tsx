@@ -3,21 +3,26 @@ import configureStore from "redux-mock-store";
 
 import { App } from "./App";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { actions as statusActions } from "app/store/status";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as statusActions } from "@/app/store/status";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
-jest.mock("@canonical/react-components/dist/hooks", () => ({
-  ...jest.requireActual("@canonical/react-components/dist/hooks"),
-  usePrevious: jest.fn(),
-}));
+vi.mock("@canonical/react-components/dist/hooks", async () => {
+  const actual: object = await vi.importActual(
+    "@canonical/react-components/dist/hooks"
+  );
+  return {
+    ...actual,
+    usePrevious: vi.fn(),
+  };
+});
 
 describe("App", () => {
   let state: RootState;
@@ -146,7 +151,7 @@ describe("App", () => {
   it("fetches the auth details again when logging out", () => {
     // Mock the user being previously authenticated, and currently unauthenticated
     // i.e. they've logged out.
-    jest.spyOn(reactComponentHooks, "usePrevious").mockReturnValue(true);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockReturnValue(true);
     state.status.authenticated = false;
     const store = mockStore(state);
     renderWithBrowserRouter(<App />, { route: "/settings", store });

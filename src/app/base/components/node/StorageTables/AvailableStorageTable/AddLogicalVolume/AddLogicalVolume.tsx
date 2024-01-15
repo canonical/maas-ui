@@ -3,17 +3,17 @@ import * as Yup from "yup";
 
 import AddLogicalVolumeFields from "./AddLogicalVolumeFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { Disk } from "app/store/types/node";
-import { formatBytes } from "app/utils";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Disk } from "@/app/store/types/node";
+import { formatBytes } from "@/app/utils";
 
 export type AddLogicalVolumeValues = {
   fstype?: string;

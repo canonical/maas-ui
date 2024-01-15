@@ -1,7 +1,7 @@
 import KVMConfigurationCard from "../KVMConfigurationCard";
 
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podPowerParameters as powerParametersFactory,
@@ -11,8 +11,8 @@ import {
   zone as zoneFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 describe("KVMConfigurationCardFields", () => {
   let state: RootState;

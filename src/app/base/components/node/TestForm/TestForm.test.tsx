@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import TestForm from "./TestForm";
 
-import { HardwareType } from "app/base/enum";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { HardwareType } from "@/app/base/enum";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -13,8 +13,8 @@ import {
   rootState as rootStateFactory,
   script as scriptFactory,
   scriptState as scriptStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -71,11 +71,11 @@ describe("TestForm", () => {
     const script = state.script.items[1];
     state.script.items = [state.script.items[1]];
     const store = mockStore(state);
-    const onTest = jest.fn();
+    const onTest = vi.fn();
     renderWithBrowserRouter(
       <TestForm
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={state.machine.items}
         onTest={onTest}
@@ -153,11 +153,11 @@ describe("TestForm", () => {
     renderWithBrowserRouter(
       <TestForm
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         hardwareType={HardwareType.Network}
         modelName="machine"
         nodes={state.machine.items}
-        onTest={jest.fn()}
+        onTest={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,
@@ -194,10 +194,10 @@ describe("TestForm", () => {
       <TestForm
         applyConfiguredNetworking={true}
         cleanup={machineActions.cleanup}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         modelName="machine"
         nodes={state.machine.items}
-        onTest={jest.fn()}
+        onTest={vi.fn()}
         processingCount={0}
         viewingDetails={false}
       />,

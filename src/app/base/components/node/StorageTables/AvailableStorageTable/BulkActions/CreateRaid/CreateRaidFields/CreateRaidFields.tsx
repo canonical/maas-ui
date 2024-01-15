@@ -4,13 +4,13 @@ import { useFormikContext } from "formik";
 import FilesystemFields from "../../../FilesystemFields";
 import type { CreateRaidValues } from "../CreateRaid";
 
-import FormikField from "app/base/components/FormikField";
-import TagNameField from "app/base/components/TagNameField";
-import { RAID_MODES } from "app/store/machine/constants";
-import type { RaidMode } from "app/store/machine/constants";
-import type { Machine } from "app/store/machine/types";
-import type { Disk, Partition } from "app/store/types/node";
-import { formatSize, formatType, isDisk } from "app/store/utils";
+import FormikField from "@/app/base/components/FormikField";
+import TagNameField from "@/app/base/components/TagNameField";
+import { RAID_MODES } from "@/app/store/machine/constants";
+import type { RaidMode } from "@/app/store/machine/constants";
+import type { Machine } from "@/app/store/machine/types";
+import type { Disk, Partition } from "@/app/store/types/node";
+import { formatSize, formatType, isDisk } from "@/app/store/utils";
 
 type Props = {
   storageDevices: (Disk | Partition)[];

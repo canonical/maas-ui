@@ -7,10 +7,10 @@ import MachineStatusCard from "./MachineStatusCard";
 import MemoryCard from "./MemoryCard";
 import StorageCard from "./StorageCard";
 
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import { nodeIsMachine } from "app/store/utils";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { nodeIsMachine } from "@/app/store/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;

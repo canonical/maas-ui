@@ -2,16 +2,16 @@ import { FetchGroupKey } from "../types/actions";
 
 import { createMachineListGroup } from "./createMachineListGroup";
 
-import { PowerState } from "app/store/types/enum";
+import { PowerState } from "@/app/store/types/enum";
 import {
   FetchNodeStatus,
   NodeStatus,
   NodeStatusCode,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   machine as machineFactory,
   modelRef as modelRefFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("createMachineListGroup", () => {
   it("creates a group from architecture", () => {

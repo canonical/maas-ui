@@ -8,11 +8,11 @@ import * as Yup from "yup";
 import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 import type { NetworkDiscoveryValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useWindowTitle } from "app/base/hooks";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { NetworkDiscovery } from "app/store/config/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useWindowTitle } from "@/app/base/hooks";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
+import { NetworkDiscovery } from "@/app/store/config/types";
 
 const NetworkDiscoverySchema = Yup.object().shape({
   active_discovery_interval: Yup.number().required(),

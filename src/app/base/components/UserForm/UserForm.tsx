@@ -4,13 +4,13 @@ import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
-import authSelectors from "app/store/auth/selectors";
-import statusSelectors from "app/store/status/selectors";
-import userSelectors from "app/store/user/selectors";
-import type { User } from "app/store/user/types";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
+import authSelectors from "@/app/store/auth/selectors";
+import statusSelectors from "@/app/store/status/selectors";
+import userSelectors from "@/app/store/user/selectors";
+import type { User } from "@/app/store/user/types";
 
 export enum Labels {
   Username = "Username",

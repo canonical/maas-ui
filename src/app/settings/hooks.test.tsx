@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -8,7 +8,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useDhcpTarget } from "./hooks";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -20,7 +20,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -31,8 +31,16 @@ const generateWrapper =
 
 let state: RootState;
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   state = rootStateFactory({
     controller: controllerStateFactory({
       items: [
@@ -65,7 +73,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("handles loading for a subnet", () => {

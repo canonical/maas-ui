@@ -5,11 +5,11 @@ import { useFormikContext } from "formik";
 
 import type { UpdateCertificateValues } from "../UpdateCertificate";
 
-import CertificateDownload from "app/base/components/CertificateDownload";
-import CertificateFields from "app/base/components/CertificateFields";
-import CertificateMetadata from "app/base/components/CertificateMetadata";
-import FormikField from "app/base/components/FormikField";
-import type { GeneratedCertificate } from "app/store/general/types";
+import CertificateDownload from "@/app/base/components/CertificateDownload";
+import CertificateFields from "@/app/base/components/CertificateFields";
+import CertificateMetadata from "@/app/base/components/CertificateMetadata";
+import FormikField from "@/app/base/components/FormikField";
+import type { GeneratedCertificate } from "@/app/store/general/types";
 
 type Props = {
   generatedCertificate: GeneratedCertificate | null;

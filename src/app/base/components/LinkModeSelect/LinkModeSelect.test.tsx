@@ -4,10 +4,10 @@ import configureStore from "redux-mock-store";
 
 import LinkModeSelect, { Label } from "./LinkModeSelect";
 
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
-import { LINK_MODE_DISPLAY } from "app/store/utils";
-import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
+import { LINK_MODE_DISPLAY } from "@/app/store/utils";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -16,7 +16,7 @@ describe("LinkModeSelect", () => {
     const store = mockStore(rootStateFactory());
     render(
       <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
           <LinkModeSelect
             defaultOption={null}
             interfaceType={NetworkInterfaceTypes.PHYSICAL}
@@ -39,7 +39,7 @@ describe("LinkModeSelect", () => {
     const store = mockStore(rootStateFactory());
     render(
       <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
           <LinkModeSelect
             defaultOption={null}
             interfaceType={NetworkInterfaceTypes.PHYSICAL}
@@ -76,7 +76,7 @@ describe("LinkModeSelect", () => {
     const store = mockStore(rootStateFactory());
     render(
       <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
           <LinkModeSelect
             defaultOption={null}
             interfaceType={NetworkInterfaceTypes.ALIAS}
@@ -117,7 +117,7 @@ describe("LinkModeSelect", () => {
     };
     render(
       <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
           <LinkModeSelect
             defaultOption={defaultOption}
             interfaceType={NetworkInterfaceTypes.PHYSICAL}
@@ -134,7 +134,7 @@ describe("LinkModeSelect", () => {
     const store = mockStore(rootStateFactory());
     render(
       <Provider store={store}>
-        <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
           <LinkModeSelect
             defaultOption={null}
             interfaceType={NetworkInterfaceTypes.PHYSICAL}

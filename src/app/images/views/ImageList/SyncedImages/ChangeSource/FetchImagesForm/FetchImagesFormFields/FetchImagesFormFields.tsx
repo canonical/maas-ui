@@ -5,9 +5,9 @@ import { useFormikContext } from "formik";
 
 import type { FetchImagesValues } from "../FetchImagesForm";
 
-import FormikField from "app/base/components/FormikField";
-import ShowAdvanced from "app/base/components/ShowAdvanced";
-import { BootResourceSourceType } from "app/store/bootresource/types";
+import FormikField from "@/app/base/components/FormikField";
+import ShowAdvanced from "@/app/base/components/ShowAdvanced";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
 
 export enum Labels {
   ChooseSource = "Choose source",

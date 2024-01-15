@@ -17,7 +17,7 @@ import {
   generateStatusHandlers,
   genericInitialState,
   updateErrors,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 export const DEFAULT_STATUSES = {
   configuringDHCP: false,

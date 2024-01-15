@@ -3,17 +3,17 @@ import { useSelector } from "react-redux";
 
 import TagUpdate from "../TagUpdate";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
-import { TagMeta } from "app/store/tag/types";
-import BaseTagDetails from "app/tags/components/TagDetails";
-import { TagViewState } from "app/tags/types";
-import { isId } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import tagSelectors from "@/app/store/tag/selectors";
+import { TagMeta } from "@/app/store/tag/types";
+import BaseTagDetails from "@/app/tags/components/TagDetails";
+import { TagViewState } from "@/app/tags/types";
+import { isId } from "@/app/utils";
 
 export enum Label {
   Title = "Tag details",

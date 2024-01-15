@@ -4,7 +4,7 @@ import type { SearchBoxProps } from "@canonical/react-components";
 import { Icon } from "@canonical/react-components";
 import classNames from "classnames";
 
-import SearchBox from "app/base/components/SearchBox";
+import SearchBox from "@/app/base/components/SearchBox";
 
 type Props = {
   debounceInterval?: number;

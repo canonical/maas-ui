@@ -7,15 +7,15 @@ import { Labels } from "../StaticRoutes";
 
 import EditStaticRouteForm from "./EditStaticRouteForm";
 
-import { actions as staticRouteActions } from "app/store/staticroute";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
 import {
   rootState as rootStateFactory,
   staticRouteState as staticRouteStateFactory,
   subnet as subnetFactory,
   staticRoute as staticRouteFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 it("displays loading text on load", async () => {
   const mockStore = configureStore();
@@ -36,7 +36,7 @@ it("displays loading text on load", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <EditStaticRouteForm handleDismiss={jest.fn()} staticRouteId={1} />
+          <EditStaticRouteForm handleDismiss={vi.fn()} staticRouteId={1} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -80,7 +80,7 @@ it("dispatches a correct action on edit static route form submit", async () => {
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
           <EditStaticRouteForm
-            handleDismiss={jest.fn()}
+            handleDismiss={vi.fn()}
             staticRouteId={staticRoute.id}
           />
         </CompatRouter>

@@ -1,6 +1,6 @@
 import ErrorDetails from "./ErrorDetails";
 
-import { renderWithMockStore, screen } from "testing/utils";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 const errorMessage = "error message text";
 const failedSystemIds = ["abc123", "def456"];

@@ -6,14 +6,14 @@ import configureStore from "redux-mock-store";
 
 import TestResults from "./TestResults";
 
-import { HardwareType } from "app/base/enum";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   testStatus as testStatusFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -42,7 +42,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.CPU}
               machine={machine}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -70,7 +70,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.Memory}
               machine={machine}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -97,7 +97,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.Storage}
               machine={machine}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -124,7 +124,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.CPU}
               machine={machine}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -151,7 +151,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.Network}
               machine={machine}
-              setSidePanelContent={jest.fn()}
+              setSidePanelContent={vi.fn()}
             />
           </CompatRouter>
         </MemoryRouter>

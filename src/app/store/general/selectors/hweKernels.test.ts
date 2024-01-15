@@ -5,7 +5,7 @@ import {
   hweKernelsState as hweKernelsStateFactory,
   hweKernel as hweKernelFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("hweKernels selectors", () => {
   describe("get", () => {

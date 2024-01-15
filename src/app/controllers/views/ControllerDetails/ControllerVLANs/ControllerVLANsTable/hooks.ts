@@ -4,32 +4,32 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { ControllerTableData } from "./types";
 
-import controllerSelectors from "app/store/controller/selectors";
+import controllerSelectors from "@/app/store/controller/selectors";
 import type {
   Controller,
   ControllerDetails,
   ControllerMeta,
-} from "app/store/controller/types";
-import { isControllerDetails } from "app/store/controller/utils";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { Fabric } from "app/store/fabric/types";
-import { getFabricById } from "app/store/fabric/utils";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { getSubnetsInVLAN } from "app/store/subnet/utils";
-import { getBondOrBridgeChild } from "app/store/utils/node/networking";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
+} from "@/app/store/controller/types";
+import { isControllerDetails } from "@/app/store/controller/utils";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
+import { getFabricById } from "@/app/store/fabric/utils";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import { getSubnetsInVLAN } from "@/app/store/subnet/utils";
+import { getBondOrBridgeChild } from "@/app/store/utils/node/networking";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   getDHCPStatus,
   getVlanById,
   getVLANDisplay,
-} from "app/store/vlan/utils";
-import { simpleSortByKey } from "app/utils";
+} from "@/app/store/vlan/utils";
+import { simpleSortByKey } from "@/app/utils";
 
 const getTableData = (
   data: {

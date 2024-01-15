@@ -1,6 +1,6 @@
 import { isTransientStatus } from "./status";
 
-import { NodeStatusCode } from "app/store/types/node";
+import { NodeStatusCode } from "@/app/store/types/node";
 
 describe("machine status utils", () => {
   describe("isTransientStatus", () => {

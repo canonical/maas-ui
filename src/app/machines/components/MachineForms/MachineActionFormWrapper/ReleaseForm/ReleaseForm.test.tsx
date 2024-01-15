@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import ReleaseForm from "./ReleaseForm";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -13,8 +13,8 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -70,7 +70,7 @@ describe("ReleaseForm", () => {
     ];
     renderWithBrowserRouter(
       <ReleaseForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -95,7 +95,7 @@ describe("ReleaseForm", () => {
     renderWithBrowserRouter(
       <Provider store={store}>
         <ReleaseForm
-          clearSidePanelContent={jest.fn()}
+          clearSidePanelContent={vi.fn()}
           machines={state.machine.items}
           processingCount={0}
           viewingDetails={false}

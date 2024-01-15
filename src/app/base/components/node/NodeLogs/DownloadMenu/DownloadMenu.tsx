@@ -11,20 +11,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useGetInstallationOutput } from "../hooks";
 
-import FileContext from "app/base/file-context";
-import { useSendAnalytics } from "app/base/hooks";
-import { api } from "app/base/sagas/http";
-import { actions as controllerActions } from "app/store/controller";
-import type { ControllerDetails } from "app/store/controller/types";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineDetails } from "app/store/machine/types";
-import { actions as messageActions } from "app/store/message";
-import type { RootState } from "app/store/root/types";
-import scriptResultSelectors from "app/store/scriptresult/selectors";
-import { ScriptResultNames } from "app/store/scriptresult/types";
-import { NodeStatus } from "app/store/types/node";
-import { nodeIsMachine } from "app/store/utils";
-import { capitaliseFirst } from "app/utils";
+import FileContext from "@/app/base/file-context";
+import { useSendAnalytics } from "@/app/base/hooks";
+import { api } from "@/app/base/sagas/http";
+import { actions as controllerActions } from "@/app/store/controller";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { actions as messageActions } from "@/app/store/message";
+import type { RootState } from "@/app/store/root/types";
+import scriptResultSelectors from "@/app/store/scriptresult/selectors";
+import { ScriptResultNames } from "@/app/store/scriptresult/types";
+import { NodeStatus } from "@/app/store/types/node";
+import { nodeIsMachine } from "@/app/store/utils";
+import { capitaliseFirst } from "@/app/utils";
 
 type Props = {
   node: MachineDetails | ControllerDetails;

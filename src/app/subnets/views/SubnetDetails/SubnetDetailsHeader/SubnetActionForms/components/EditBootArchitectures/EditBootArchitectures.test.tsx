@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import { Headers } from "./BootArchitecturesTable";
 import EditBootArchitectures from "./EditBootArchitectures";
 
-import { actions as subnetActions } from "app/store/subnet";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   knownBootArchitecture as knownBootArchitectureFactory,
   knownBootArchitecturesState as knownBootArchitecturesStateFactory,
@@ -14,8 +14,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -32,7 +32,7 @@ it("shows a spinner while data is loading", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <EditBootArchitectures id={1} setActiveForm={jest.fn()} />
+          <EditBootArchitectures id={1} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -63,7 +63,7 @@ it("initialises form data correctly", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+          <EditBootArchitectures id={subnet.id} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -97,7 +97,7 @@ it("can update the arches to disable", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+          <EditBootArchitectures id={subnet.id} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -135,7 +135,7 @@ it("can dispatch an action to update subnet's disabled boot architectures", asyn
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+          <EditBootArchitectures id={subnet.id} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

@@ -13,7 +13,7 @@ import {
   bootResourceUbuntuCoreImage as bootResourceUbuntuCoreImageFactory,
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("bootresource selectors", () => {
   it("can get all boot resources", () => {

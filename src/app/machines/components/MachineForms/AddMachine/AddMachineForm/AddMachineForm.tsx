@@ -8,33 +8,33 @@ import * as Yup from "yup";
 import AddMachineFormFields from "../AddMachineFormFields";
 import type { AddMachineValues } from "../types";
 
-import FormikForm from "app/base/components/FormikForm";
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions, useAddMessage } from "app/base/hooks";
-import type { ClearSidePanelContent } from "app/base/types";
-import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
-import { actions as domainActions } from "app/store/domain";
-import domainSelectors from "app/store/domain/selectors";
-import { actions as generalActions } from "app/store/general";
-import { PowerTypeNames } from "app/store/general/constants";
+import FormikForm from "@/app/base/components/FormikForm";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { actions as domainActions } from "@/app/store/domain";
+import domainSelectors from "@/app/store/domain/selectors";
+import { actions as generalActions } from "@/app/store/general";
+import { PowerTypeNames } from "@/app/store/general/constants";
 import {
   architectures as architecturesSelectors,
   defaultMinHweKernel as defaultMinHweKernelSelectors,
   hweKernels as hweKernelsSelectors,
   powerTypes as powerTypesSelectors,
-} from "app/store/general/selectors";
-import type { PowerType } from "app/store/general/types";
+} from "@/app/store/general/selectors";
+import type { PowerType } from "@/app/store/general/types";
 import {
   formatPowerParameters,
   generatePowerParametersSchema,
   useInitialPowerParameters,
-} from "app/store/general/utils";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import { actions as zoneActions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
+} from "@/app/store/general/utils";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
+import { actions as zoneActions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;

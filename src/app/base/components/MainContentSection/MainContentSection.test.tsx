@@ -1,6 +1,6 @@
 import MainContentSection from "./MainContentSection";
 
-import { renderWithMockStore, screen, within } from "testing/utils";
+import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 it("renders sidebar", () => {
   renderWithMockStore(

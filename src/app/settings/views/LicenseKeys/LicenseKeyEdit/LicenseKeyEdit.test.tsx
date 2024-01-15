@@ -8,7 +8,7 @@ import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFo
 
 import { LicenseKeyEdit, Labels as LicenseKeyLabels } from "./LicenseKeyEdit";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   licenseKeys as licenseKeysFactory,
@@ -16,8 +16,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 

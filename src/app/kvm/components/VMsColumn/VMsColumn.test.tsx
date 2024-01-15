@@ -4,14 +4,14 @@ import configureStore from "redux-mock-store";
 
 import VMsColumn from "./VMsColumn";
 
-import { PodType } from "app/store/pod/constants";
+import { PodType } from "@/app/store/pod/constants";
 import {
   pod as podFactory,
   podResources as podResourcesFactory,
   podState as podStateFactory,
   podVmCount as podVmCountFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

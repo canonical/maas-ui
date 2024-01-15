@@ -1,4 +1,4 @@
-import type { PackageRepository } from "app/store/packagerepository/types";
+import type { PackageRepository } from "@/app/store/packagerepository/types";
 
 export type RepositoryFormValues = {
   arches: PackageRepository["arches"];

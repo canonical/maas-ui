@@ -5,10 +5,10 @@ import type { NewPodValues } from "../types";
 
 import AuthenticationForm from "./AuthenticationForm";
 
-import { actions as generalActions } from "app/store/general";
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { actions as generalActions } from "@/app/store/general";
+import { actions as podActions } from "@/app/store/pod";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   generatedCertificate as generatedCertificateFactory,
@@ -20,8 +20,8 @@ import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -65,10 +65,10 @@ describe("AuthenticationForm", () => {
     };
     renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setNewPodValues={jest.fn()}
-        setStep={jest.fn()}
+        setNewPodValues={vi.fn()}
+        setStep={vi.fn()}
       />,
       { route: "/kvm/add", state }
     );
@@ -87,7 +87,7 @@ describe("AuthenticationForm", () => {
   });
 
   it("dispatches an action to poll LXD server if authenticating via certificate", async () => {
-    const setNewPodValues = jest.fn();
+    const setNewPodValues = vi.fn();
     const generatedCert = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
@@ -95,10 +95,10 @@ describe("AuthenticationForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
-        setStep={jest.fn()}
+        setStep={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -123,7 +123,7 @@ describe("AuthenticationForm", () => {
   });
 
   it("dispatches an action to fetch projects if using a password", async () => {
-    const setNewPodValues = jest.fn();
+    const setNewPodValues = vi.fn();
     const generatedCert = generatedCertificateFactory({
       CN: "my-favourite-kvm@host",
     });
@@ -131,10 +131,10 @@ describe("AuthenticationForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setNewPodValues={setNewPodValues}
-        setStep={jest.fn()}
+        setStep={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );
@@ -166,13 +166,13 @@ describe("AuthenticationForm", () => {
 
   it(`reverts back to credentials step if attempt to fetch projects using a
     password results in error`, async () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.pod.errors = "it didn't work";
     renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
       { route: "/kvm/add", state }
@@ -190,13 +190,13 @@ describe("AuthenticationForm", () => {
   });
 
   it("displays errors when it failed to trust the cert", async () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.pod.errors = "it didn't work";
     renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
       { route: "/kvm/add", state }
@@ -210,13 +210,13 @@ describe("AuthenticationForm", () => {
   });
 
   it("does not display errors when attempting to trust the cert", async () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.pod.errors = "Certificate is not trusted and no password was given";
     renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
       { route: "/kvm/add", state }
@@ -232,15 +232,15 @@ describe("AuthenticationForm", () => {
   });
 
   it("moves to the project select step if projects exist for given LXD address", () => {
-    const setStep = jest.fn();
+    const setStep = vi.fn();
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
     renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setNewPodValues={jest.fn()}
+        setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
       { route: "/kvm/add", state }
@@ -253,10 +253,10 @@ describe("AuthenticationForm", () => {
     const store = mockStore(state);
     const { unmount } = renderWithBrowserRouter(
       <AuthenticationForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
-        setNewPodValues={jest.fn()}
-        setStep={jest.fn()}
+        setNewPodValues={vi.fn()}
+        setStep={vi.fn()}
       />,
       { route: "/kvm/add", store }
     );

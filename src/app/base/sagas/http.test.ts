@@ -1,4 +1,3 @@
-import fetch from "jest-fetch-mock";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
 import { throwError } from "redux-saga-test-plan/providers";
@@ -18,18 +17,16 @@ import {
   SERVICE_API,
 } from "./http";
 
-import { ScriptType } from "app/store/script/types";
-import { ScriptResultNames } from "app/store/scriptresult/types";
-import { getCookie } from "app/utils";
-import { zone as zoneFactory } from "testing/factories";
+import { ScriptType } from "@/app/store/script/types";
+import { ScriptResultNames } from "@/app/store/scriptresult/types";
+import { getCookie } from "@/app/utils";
+import { zone as zoneFactory } from "@/testing/factories";
 
-jest.mock("../../../bakery", () => {
-  // Mock the bakery module.
-});
+vi.mock("@/bakery");
 
 describe("Auth API", () => {
   beforeEach(() => {
-    fetch.resetMocks();
+    fetchMock.resetMocks();
   });
 
   describe("check authenticated", () => {
@@ -105,7 +102,7 @@ describe("Auth API", () => {
         password: "gum%tree",
       });
       expect(fetch).toHaveBeenCalled();
-      expect(fetch.mock.calls[0][1]?.body?.toString()).toBe(
+      expect(fetchMock.mock.calls[0][1]?.body?.toString()).toBe(
         "username=ko%26ala&password=gum%25tree"
       );
     });
@@ -324,7 +321,7 @@ describe("Machines API", () => {
 describe("scriptresults", () => {
   describe("download", () => {
     beforeEach(() => {
-      fetch.resetMocks();
+      fetchMock.resetMocks();
     });
 
     it("handles a tar.xz file", async () => {
@@ -345,7 +342,7 @@ describe("scriptresults", () => {
     });
 
     it("handles a txt file", async () => {
-      fetch.mockResponse("file contents");
+      fetchMock.mockResponse("file contents");
       const response = await api.scriptresults.download(
         "abc123",
         "current-installation",
@@ -362,7 +359,7 @@ describe("scriptresults", () => {
 
     it("handles errors", async () => {
       const errorMessage = new Error("Uh oh!");
-      fetch.mockReject(errorMessage);
+      fetchMock.mockReject(errorMessage);
       const error = await api.scriptresults
         .download(
           "abc123",
@@ -377,12 +374,12 @@ describe("scriptresults", () => {
 
   describe("getCurtinLogsTar", () => {
     beforeEach(() => {
-      fetch.resetMocks();
+      fetchMock.resetMocks();
     });
 
     it("can fetch a curtin log", async () => {
       const testFile = "test file";
-      fetch.mockResponse(testFile);
+      fetchMock.mockResponse(testFile);
       const response = await api.scriptresults.getCurtinLogsTar("abc123");
       expect(response).toBe(testFile);
       expect(fetch).toHaveBeenCalledWith(
@@ -396,12 +393,12 @@ describe("scriptresults", () => {
 
 describe("zone list API", () => {
   beforeEach(() => {
-    fetch.resetMocks();
+    fetchMock.resetMocks();
   });
 
   it("can fetch zones", async () => {
     const zones = [zoneFactory()];
-    fetch.mockResponse(JSON.stringify(zones));
+    fetchMock.mockResponse(JSON.stringify(zones));
     const response = await api.zones.fetch("csrf-token");
     expect(response).toMatchObject(zones);
     expect(fetch).toHaveBeenCalledWith(

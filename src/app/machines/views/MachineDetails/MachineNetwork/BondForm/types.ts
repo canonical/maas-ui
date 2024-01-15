@@ -4,11 +4,11 @@ import type {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 import type {
   NetworkInterface,
   NetworkInterfaceParams,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 
 export enum LinkMonitoring {
   MII = "mii",

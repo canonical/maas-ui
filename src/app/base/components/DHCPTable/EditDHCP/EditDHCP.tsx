@@ -1,5 +1,5 @@
-import DhcpForm from "app/base/components/DhcpForm";
-import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import DhcpForm from "@/app/base/components/DhcpForm";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
   close: () => void;

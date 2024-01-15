@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SubnetSummaryForm from "./SubnetSummaryForm";
 
-import { actions as subnetActions } from "app/store/subnet";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -14,8 +14,8 @@ import {
   vlanState as vlanStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("can dispatch an action to update the subnet", async () => {
   const fabrics = [
@@ -49,7 +49,7 @@ it("can dispatch an action to update the subnet", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <SubnetSummaryForm handleDismiss={jest.fn()} id={subnet.id} />
+          <SubnetSummaryForm handleDismiss={vi.fn()} id={subnet.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

@@ -1,18 +1,18 @@
 import type { IPAddressType, SubnetMeta } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { Domain } from "app/store/domain/types";
-import type { KnownBootArchitecture } from "app/store/general/types";
-import type { Pod } from "app/store/pod/types";
+import type { APIError } from "@/app/base/types";
+import type { Domain } from "@/app/store/domain/types";
+import type { KnownBootArchitecture } from "@/app/store/general/types";
+import type { Pod } from "@/app/store/pod/types";
 import type {
   Model,
   TimestampedModel,
   TimestampFields,
-} from "app/store/types/model";
-import type { NetworkInterface, Node, NodeType } from "app/store/types/node";
-import type { EventError, GenericState } from "app/store/types/state";
-import type { User } from "app/store/user/types";
-import type { VLAN } from "app/store/vlan/types";
+} from "@/app/store/types/model";
+import type { NetworkInterface, Node, NodeType } from "@/app/store/types/node";
+import type { EventError, GenericState } from "@/app/store/types/state";
+import type { User } from "@/app/store/user/types";
+import type { VLAN } from "@/app/store/vlan/types";
 
 export type SubnetStatisticsRange = {
   end: string;

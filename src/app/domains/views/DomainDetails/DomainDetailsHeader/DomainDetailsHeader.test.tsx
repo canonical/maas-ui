@@ -9,8 +9,8 @@ import {
   domainDetails as domainDetailsFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {
@@ -19,7 +19,7 @@ describe("DomainDetailsHeader", () => {
     });
 
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       {
         state,
       }
@@ -35,7 +35,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       {
         state,
       }
@@ -61,7 +61,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       {
         state,
       }
@@ -85,7 +85,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       {
         state,
       }
@@ -109,7 +109,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       {
         state,
       }
@@ -135,7 +135,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={1} setSidePanelContent={jest.fn()} />,
+      <DomainDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
       {
         state,
       }
@@ -156,7 +156,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(
-      <DomainDetailsHeader id={0} setSidePanelContent={jest.fn()} />,
+      <DomainDetailsHeader id={0} setSidePanelContent={vi.fn()} />,
       {
         state,
       }
@@ -183,7 +183,7 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
 
     renderWithBrowserRouter(
       <DomainDetailsHeader id={1} setSidePanelContent={setSidePanelContent} />,
@@ -212,7 +212,7 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
 
     renderWithBrowserRouter(
       <DomainDetailsHeader id={1} setSidePanelContent={setSidePanelContent} />,

@@ -2,14 +2,14 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import { useGetURLId } from "app/base/hooks/urls";
-import urls from "app/base/urls";
-import podSelectors from "app/store/pod/selectors";
-import { PodMeta } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import type { VMCluster } from "app/store/vmcluster/types";
-import { isId } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import urls from "@/app/base/urls";
+import podSelectors from "@/app/store/pod/selectors";
+import { PodMeta } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import type { VMCluster } from "@/app/store/vmcluster/types";
+import { isId } from "@/app/utils";
 
 type Props = {
   clusterId: VMCluster["id"];

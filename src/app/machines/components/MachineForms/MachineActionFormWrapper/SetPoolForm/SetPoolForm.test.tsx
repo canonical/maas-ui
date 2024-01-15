@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import SetPoolForm from "./SetPoolForm";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -11,8 +11,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -53,7 +53,7 @@ describe("SetPoolForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <SetPoolForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -70,7 +70,7 @@ describe("SetPoolForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <SetPoolForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}
@@ -130,7 +130,7 @@ describe("SetPoolForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <SetPoolForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={state.machine.items}
         processingCount={0}
         viewingDetails={false}

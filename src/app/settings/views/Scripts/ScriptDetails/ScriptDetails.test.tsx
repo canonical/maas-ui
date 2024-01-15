@@ -4,15 +4,15 @@ import configureStore from "redux-mock-store";
 
 import ScriptDetails from ".";
 
-import FileContext, { fileContextStore } from "app/base/file-context";
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import FileContext, { fileContextStore } from "@/app/base/file-context";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, render, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,11 +36,11 @@ describe("ScriptDetails", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("fetches the script", () => {
@@ -69,7 +69,7 @@ describe("ScriptDetails", () => {
   });
 
   it("can display the script", () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
     renderWithBrowserRouter(
       <FileContext.Provider value={fileContextStore}>
         <ScriptDetails id={1} />
@@ -81,7 +81,7 @@ describe("ScriptDetails", () => {
   });
 
   it("displays a collapse button if 'isCollapsible' prop is provided", () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("some random text");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("some random text");
     renderWithBrowserRouter(
       <FileContext.Provider value={fileContextStore}>
         <ScriptDetails id={1} isCollapsible />
@@ -95,7 +95,7 @@ describe("ScriptDetails", () => {
   });
 
   it("doesn't display a collapse button if 'isCollapsible' prop is not provided", () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("some random text");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("some random text");
     renderWithBrowserRouter(
       <FileContext.Provider value={fileContextStore}>
         <ScriptDetails id={1} />

@@ -9,24 +9,32 @@ import type {
   Controller,
   ControllerDetails,
   ControllerMeta,
-} from "app/store/controller/types";
-import type { Device, DeviceDetails, DeviceMeta } from "app/store/device/types";
+} from "@/app/store/controller/types";
+import type {
+  Device,
+  DeviceDetails,
+  DeviceMeta,
+} from "@/app/store/device/types";
 import type {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 import type {
   Machine,
   MachineDetails,
   MachineMeta,
-} from "app/store/machine/types";
-import type { Script } from "app/store/script/types";
-import type { Subnet } from "app/store/subnet/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import type { Model, ModelRef, TimestampedModel } from "app/store/types/model";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+} from "@/app/store/machine/types";
+import type { Script } from "@/app/store/script/types";
+import type { Subnet } from "@/app/store/subnet/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import type {
+  Model,
+  ModelRef,
+  TimestampedModel,
+} from "@/app/store/types/model";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
+import type { Zone, ZoneMeta } from "@/app/store/zone/types";
 
 export enum NodeType {
   DEFAULT = 0,

@@ -1,8 +1,8 @@
 import CPUPopover from "./CPUPopover";
 
-import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
-import type { KVMResource } from "app/kvm/types";
-import { resourceWithOverCommit } from "app/store/pod/utils";
+import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
+import type { KVMResource } from "@/app/kvm/types";
+import { resourceWithOverCommit } from "@/app/store/pod/utils";
 
 type Props = {
   cores: KVMResource;

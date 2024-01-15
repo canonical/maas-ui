@@ -1,32 +1,32 @@
 import { Redirect } from "react-router-dom";
 import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
-import ErrorBoundary from "app/base/components/ErrorBoundary";
-import urls from "app/base/urls";
-import NotFound from "app/base/views/NotFound";
-import ControllerDetails from "app/controllers/views/ControllerDetails";
-import ControllerList from "app/controllers/views/ControllerList";
-import DeviceDetails from "app/devices/views/DeviceDetails";
-import DeviceList from "app/devices/views/DeviceList";
-import DomainDetails from "app/domains/views/DomainDetails";
-import DomainsList from "app/domains/views/DomainsList";
-import ImageList from "app/images/views/ImageList";
-import Intro from "app/intro/views/Intro";
-import KVM from "app/kvm/views/KVM";
-import MachineDetails from "app/machines/views/MachineDetails";
-import Machines from "app/machines/views/Machines";
-import NetworkDiscovery from "app/networkDiscovery/views/NetworkDiscovery";
-import Pools from "app/pools/views/Pools";
-import Preferences from "app/preferences/views/Preferences";
-import Settings from "app/settings/views/Settings";
-import FabricDetails from "app/subnets/views/FabricDetails";
-import SpaceDetails from "app/subnets/views/SpaceDetails";
-import SubnetDetails from "app/subnets/views/SubnetDetails";
-import SubnetsList from "app/subnets/views/SubnetsList";
-import VLANDetails from "app/subnets/views/VLANDetails";
-import Tags from "app/tags/views/Tags";
-import ZoneDetails from "app/zones/views/ZoneDetails";
-import ZonesList from "app/zones/views/ZonesList";
+import ErrorBoundary from "@/app/base/components/ErrorBoundary";
+import urls from "@/app/base/urls";
+import NotFound from "@/app/base/views/NotFound";
+import ControllerDetails from "@/app/controllers/views/ControllerDetails";
+import ControllerList from "@/app/controllers/views/ControllerList";
+import DeviceDetails from "@/app/devices/views/DeviceDetails";
+import DeviceList from "@/app/devices/views/DeviceList";
+import DomainDetails from "@/app/domains/views/DomainDetails";
+import DomainsList from "@/app/domains/views/DomainsList";
+import ImageList from "@/app/images/views/ImageList";
+import Intro from "@/app/intro/views/Intro";
+import KVM from "@/app/kvm/views/KVM";
+import MachineDetails from "@/app/machines/views/MachineDetails";
+import Machines from "@/app/machines/views/Machines";
+import NetworkDiscovery from "@/app/networkDiscovery/views/NetworkDiscovery";
+import Pools from "@/app/pools/views/Pools";
+import Preferences from "@/app/preferences/views/Preferences";
+import Settings from "@/app/settings/views/Settings";
+import FabricDetails from "@/app/subnets/views/FabricDetails";
+import SpaceDetails from "@/app/subnets/views/SpaceDetails";
+import SubnetDetails from "@/app/subnets/views/SubnetDetails";
+import SubnetsList from "@/app/subnets/views/SubnetsList";
+import VLANDetails from "@/app/subnets/views/VLANDetails";
+import Tags from "@/app/tags/views/Tags";
+import ZoneDetails from "@/app/zones/views/ZoneDetails";
+import ZonesList from "@/app/zones/views/ZonesList";
 
 const Routes = (): JSX.Element => (
   <ReactRouterRoutes>

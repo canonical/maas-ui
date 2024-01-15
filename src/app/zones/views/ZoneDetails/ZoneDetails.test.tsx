@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetails from "./ZoneDetails";
 
-import { Labels } from "app/base/components/EditableSection";
-import type { RootState } from "app/store/root/types";
+import { Labels } from "@/app/base/components/EditableSection";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   zone as zoneFactory,
@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

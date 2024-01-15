@@ -1,17 +1,25 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 
-import * as query from "app/store/machine/utils/query";
+import * as query from "@/app/store/machine/utils/query";
 
-export const callId = "mocked-call-id";
+export const callId = "mocked-nanoid";
 
-export const enableCallIdMocks = (): void => {
+export const enableCallIdMocks = (id = callId): void => {
+  vi.mock("@reduxjs/toolkit", async () => {
+    const actual: object = await vi.importActual("@reduxjs/toolkit");
+    return {
+      ...actual,
+      nanoid: vi.fn(),
+    };
+  });
+
   beforeEach(() => {
-    jest.spyOn(query, "generateCallId").mockReturnValue(callId);
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
+    vi.spyOn(query, "generateCallId").mockReturnValue(id);
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(id);
   });
 
   afterEach(() => {
-    jest.spyOn(query, "generateCallId").mockRestore();
-    jest.spyOn(reduxToolkit, "nanoid").mockRestore();
+    vi.spyOn(query, "generateCallId").mockRestore();
+    vi.spyOn(reduxToolkit, "nanoid").mockRestore();
   });
 };

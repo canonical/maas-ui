@@ -4,8 +4,8 @@ import { render, screen } from "@testing-library/react";
 
 import ScriptStatus from "./ScriptStatus";
 
-import { ScriptResultStatus } from "app/store/scriptresult/types";
-import { expectTooltipOnHover } from "testing/utils";
+import { ScriptResultStatus } from "@/app/store/scriptresult/types";
+import { expectTooltipOnHover } from "@/testing/utils";
 
 const getIcon = (name: string, container: HTMLElement): Element | null => {
   return container.querySelector(`.p-icon--${name}`);

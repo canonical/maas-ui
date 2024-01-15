@@ -3,8 +3,8 @@
 
 import TableHeader from "./TableHeader";
 
-import { SortDirection } from "app/base/types";
-import { render, screen, userEvent } from "testing/utils";
+import { SortDirection } from "@/app/base/types";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("TableHeader ", () => {
   it("renders a div if no onClick prop is present", () => {
@@ -14,7 +14,7 @@ describe("TableHeader ", () => {
   });
 
   it("renders a Button if onClick prop is present", async () => {
-    const mockFn = jest.fn();
+    const mockFn = vi.fn();
     render(<TableHeader onClick={mockFn}>Text</TableHeader>);
     expect(screen.getByRole("button")).toBeInTheDocument();
 
@@ -28,11 +28,7 @@ describe("TableHeader ", () => {
       direction: SortDirection.DESCENDING,
     };
     const { container } = render(
-      <TableHeader
-        currentSort={currentSort}
-        onClick={jest.fn()}
-        sortKey={"key"}
-      >
+      <TableHeader currentSort={currentSort} onClick={vi.fn()} sortKey={"key"}>
         Text
       </TableHeader>
     );
@@ -48,11 +44,7 @@ describe("TableHeader ", () => {
       direction: SortDirection.ASCENDING,
     };
     const { container } = render(
-      <TableHeader
-        currentSort={currentSort}
-        onClick={jest.fn()}
-        sortKey={"key"}
-      >
+      <TableHeader currentSort={currentSort} onClick={vi.fn()} sortKey={"key"}>
         Text
       </TableHeader>
     );

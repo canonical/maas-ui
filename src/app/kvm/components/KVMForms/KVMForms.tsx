@@ -8,15 +8,15 @@ import ComposeForm from "./ComposeForm";
 import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
-import { useScrollOnRender } from "app/base/hooks";
-import type { SidePanelContentTypes } from "app/base/side-panel-context";
-import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import MachineForms from "app/machines/components/MachineForms";
-import machineSelectors from "app/store/machine/selectors";
-import type { SelectedMachines } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
+import { useScrollOnRender } from "@/app/base/hooks";
+import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
+import type { ClearSidePanelContent, SetSearchFilter } from "@/app/base/types";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import MachineForms from "@/app/machines/components/MachineForms";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { SelectedMachines } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
 
 type Props = SidePanelContentTypes & {
   searchFilter?: string;

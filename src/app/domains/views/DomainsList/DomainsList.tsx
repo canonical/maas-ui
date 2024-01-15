@@ -5,11 +5,11 @@ import DomainListHeaderForm from "./DomainListHeaderForm";
 import DomainsTable from "./DomainsTable";
 import { DomainListSidePanelViews } from "./constants";
 
-import PageContent from "app/base/components/PageContent";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import { useSidePanel } from "app/base/side-panel-context";
-import { actions } from "app/store/domain";
-import domainsSelectors from "app/store/domain/selectors";
+import PageContent from "@/app/base/components/PageContent";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { actions } from "@/app/store/domain";
+import domainsSelectors from "@/app/store/domain/selectors";
 
 const DomainsList = (): JSX.Element => {
   const domains = useSelector(domainsSelectors.all);

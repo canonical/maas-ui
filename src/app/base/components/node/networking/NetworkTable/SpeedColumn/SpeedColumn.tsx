@@ -1,17 +1,17 @@
 import type { ReactNode } from "react";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TooltipButton from "app/base/components/TooltipButton";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getLinkInterface,
   hasInterfaceType,
   isInterfaceConnected,
-} from "app/store/utils";
-import { formatSpeedUnits } from "app/utils";
+} from "@/app/store/utils";
+import { formatSpeedUnits } from "@/app/utils";
 
 type Props = {
   link?: NetworkLink | null;

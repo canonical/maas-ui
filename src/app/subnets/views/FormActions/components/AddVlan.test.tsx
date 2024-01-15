@@ -5,15 +5,15 @@ import configureStore from "redux-mock-store";
 
 import AddVlan from "./AddVlan";
 
-import { actions as vlanActions } from "app/store/vlan";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   space as spaceFactory,
   fabric as fabricFactory,
   spaceState as spaceStateFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("displays validation messages for VID", async () => {
   const store = configureStore()(rootStateFactory());

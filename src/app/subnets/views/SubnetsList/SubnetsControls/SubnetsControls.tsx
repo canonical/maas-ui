@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import DebounceSearchBox from "app/base/components/DebounceSearchBox";
-import type { SubnetGroupByProps } from "app/subnets/views/SubnetsList/SubnetsTable/types";
+import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
+import type { SubnetGroupByProps } from "@/app/subnets/views/SubnetsList/SubnetsTable/types";
 
 const SubnetsControls = ({
   searchText: initialSearchText = "",

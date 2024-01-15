@@ -1,8 +1,8 @@
 import NodeName from "./NodeName";
 import type { Props as NodeNameProps } from "./NodeName";
 
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -12,8 +12,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("NodeName", () => {
   let state: RootState;
@@ -49,8 +49,8 @@ describe("NodeName", () => {
       <NodeName
         editingName={false}
         node={null}
-        onSubmit={jest.fn()}
-        setEditingName={jest.fn()}
+        onSubmit={vi.fn()}
+        setEditingName={vi.fn()}
       />,
       { route: "/machine/abc123", state }
     );
@@ -64,8 +64,8 @@ describe("NodeName", () => {
       <NodeName
         editingName={false}
         node={machine}
-        onSubmit={jest.fn()}
-        setEditingName={jest.fn()}
+        onSubmit={vi.fn()}
+        setEditingName={vi.fn()}
       />,
       { route: "/machine/abc123", state }
     );
@@ -78,8 +78,8 @@ describe("NodeName", () => {
       <NodeName
         editingName={false}
         node={machine}
-        onSubmit={jest.fn()}
-        setEditingName={jest.fn()}
+        onSubmit={vi.fn()}
+        setEditingName={vi.fn()}
       />,
       { route: "/machine/abc123", state }
     );
@@ -90,12 +90,12 @@ describe("NodeName", () => {
   });
 
   it("changes the form state when clicking the name", async () => {
-    const setEditingName = jest.fn();
+    const setEditingName = vi.fn();
     renderWithBrowserRouter(
       <NodeName
         editingName={false}
         node={machine}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         setEditingName={setEditingName}
       />,
       { route: "/machine/abc123", state }
@@ -112,8 +112,8 @@ describe("NodeName", () => {
       <NodeName
         editingName={true}
         node={machine}
-        onSubmit={jest.fn()}
-        setEditingName={jest.fn()}
+        onSubmit={vi.fn()}
+        setEditingName={vi.fn()}
       />,
       { route: "/machine/abc123", state }
     );
@@ -125,13 +125,13 @@ describe("NodeName", () => {
 
   it("closes the form when it saves", () => {
     state.machine.saving = true;
-    const setEditingName = jest.fn();
+    const setEditingName = vi.fn();
     const ProxyNodeName = (props: NodeNameProps) => <NodeName {...props} />;
     const { rerender } = renderWithBrowserRouter(
       <ProxyNodeName
         editingName={true}
         node={machine}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         saved={false}
         saving={true}
         setEditingName={setEditingName}
@@ -142,7 +142,7 @@ describe("NodeName", () => {
       <ProxyNodeName
         editingName={true}
         node={machine}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         saved={true}
         saving={false}
         setEditingName={setEditingName}
@@ -156,8 +156,8 @@ describe("NodeName", () => {
       <NodeName
         editingName={true}
         node={machine}
-        onSubmit={jest.fn()}
-        setEditingName={jest.fn()}
+        onSubmit={vi.fn()}
+        setEditingName={vi.fn()}
       />,
       { route: "/machine/abc123", state }
     );

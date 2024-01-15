@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { ACTION_STATUS } from "./constants";
 
-import type { Machine } from "app/store/machine/types";
+import type { Machine } from "@/app/store/machine/types";
 
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 

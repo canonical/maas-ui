@@ -9,15 +9,15 @@ import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 import LXDClusterHostsActionBar from "./LXDClusterHostsActionBar";
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import { FilterMachines } from "app/store/machine/utils";
-import podSelectors from "app/store/pod/selectors";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import type { SetSearchFilter } from "@/app/base/types";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import podSelectors from "@/app/store/pod/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];

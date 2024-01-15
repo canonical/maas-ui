@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import EditPartition from "./EditPartition";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -11,8 +11,8 @@ import {
   nodeDisk as diskFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -37,7 +37,7 @@ describe("EditPartition", () => {
     });
     renderWithBrowserRouter(
       <EditPartition
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         partition={partition}
         systemId="abc123"
@@ -68,7 +68,7 @@ describe("EditPartition", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditPartition
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         partition={partition}
         systemId="abc123"

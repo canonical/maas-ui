@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "../DeployForm";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   configState as configStateFactory,
@@ -17,14 +17,14 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   render,
   screen,
   waitFor,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -145,7 +145,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -169,7 +169,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -199,7 +199,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -231,7 +231,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -257,7 +257,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -293,7 +293,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -339,7 +339,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -376,7 +376,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -402,7 +402,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -431,7 +431,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -469,7 +469,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -510,7 +510,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -553,7 +553,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -591,7 +591,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -614,7 +614,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[state.machine.items[0]]}
               processingCount={0}
               viewingDetails={false}
@@ -650,7 +650,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearSidePanelContent={jest.fn()}
+              clearSidePanelContent={vi.fn()}
               machines={[state.machine.items[0]]}
               processingCount={0}
               viewingDetails={false}
@@ -685,7 +685,7 @@ describe("DeployFormFields", () => {
   it("selects 'Deploy to disk' as the default deployment target", () => {
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}
@@ -702,7 +702,7 @@ describe("DeployFormFields", () => {
   it("hides 'Register as MAAS KVM host' if 'Deploy in memory' is selected", async () => {
     renderWithBrowserRouter(
       <DeployForm
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         machines={[]}
         processingCount={0}
         viewingDetails={false}

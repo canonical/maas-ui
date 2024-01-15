@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import ControllerConfigurationForm from "./ControllerConfigurationForm";
 import ControllerPowerConfiguration from "./ControllerPowerConfiguration";
 
-import { useWindowTitle } from "app/base/hooks";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

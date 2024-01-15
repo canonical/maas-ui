@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import EditAliasOrVlanForm from "./EditAliasOrVlanForm";
 
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -19,8 +19,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -63,7 +63,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -85,7 +85,7 @@ describe("EditAliasOrVlanForm", () => {
     state.machine.items = [];
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -99,7 +99,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -115,7 +115,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         link={link}
         nic={nic}
@@ -154,7 +154,7 @@ describe("EditAliasOrVlanForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         link={link}
         nic={nic}

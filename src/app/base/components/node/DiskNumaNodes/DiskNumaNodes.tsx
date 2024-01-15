@@ -1,5 +1,5 @@
-import TooltipButton from "app/base/components/TooltipButton";
-import type { Disk } from "app/store/types/node";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import type { Disk } from "@/app/store/types/node";
 
 type Props = { disk: Disk };
 

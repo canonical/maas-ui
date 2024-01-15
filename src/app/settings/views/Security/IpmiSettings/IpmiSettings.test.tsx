@@ -3,13 +3,13 @@ import configureStore from "redux-mock-store";
 import { Labels as FormFieldsLabels } from "./IpmiFormFields/IpmiFormFields";
 import IpmiSettings, { Labels as IpmiSettingsLabels } from "./IpmiSettings";
 
-import { Labels as FormikButtonLabels } from "app/base/components/FormikFormButtons/FormikFormButtons";
-import type { RootState } from "app/store/root/types";
+import { Labels as FormikButtonLabels } from "@/app/base/components/FormikFormButtons/FormikFormButtons";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   configState as configStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

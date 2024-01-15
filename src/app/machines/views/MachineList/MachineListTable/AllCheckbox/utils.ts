@@ -4,7 +4,7 @@ import type {
   FetchFilters,
   MachineStateListGroup,
   SelectedMachines,
-} from "app/store/machine/types";
+} from "@/app/store/machine/types";
 
 /**
  * Generate SelectedMachines for all machines across all pages

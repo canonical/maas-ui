@@ -4,7 +4,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import RepositoryForm from "../RepositoryForm";
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
@@ -13,8 +13,8 @@ import {
   pocketsToDisableState as pocketsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("RepositoryFormFields", () => {
   let state: RootState;

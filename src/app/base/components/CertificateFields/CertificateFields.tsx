@@ -1,6 +1,6 @@
 import { Input } from "@canonical/react-components";
 
-import UploadTextArea from "app/base/components/UploadTextArea";
+import UploadTextArea from "@/app/base/components/UploadTextArea";
 
 type Props = {
   certificateFieldName?: string;

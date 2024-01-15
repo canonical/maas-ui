@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import KVMConfigurationCard from "./KVMConfigurationCard";
 
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { actions as podActions } from "@/app/store/pod";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
@@ -17,8 +17,8 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { userEvent, fireEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;

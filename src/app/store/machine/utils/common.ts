@@ -1,7 +1,7 @@
 import type { ValueOf } from "@canonical/react-components";
 
-import { SortDirection } from "app/base/types";
-import { PowerFieldScope } from "app/store/general/types";
+import { SortDirection } from "@/app/base/types";
+import { PowerFieldScope } from "@/app/store/general/types";
 import type {
   FetchFilters,
   Machine,
@@ -9,11 +9,11 @@ import type {
   SelectedMachines,
   FilterGroupOptionType,
   MachineStateListGroup,
-} from "app/store/machine/types";
-import { FetchSortDirection, FilterGroupKey } from "app/store/machine/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import { PowerState } from "app/store/types/enum";
-import { NodeStatus, NodeStatusCode } from "app/store/types/node";
+} from "@/app/store/machine/types";
+import { FetchSortDirection, FilterGroupKey } from "@/app/store/machine/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import { PowerState } from "@/app/store/types/enum";
+import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 
 /**
  * Whether a machine has a Machine or MachineDetails type.

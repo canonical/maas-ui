@@ -1,6 +1,6 @@
 import SearchBox from "./SearchBox";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 it("focuses on the search box when pressing '/' key", async () => {
   render(<SearchBox />);

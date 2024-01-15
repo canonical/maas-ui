@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import EditInterfaceTable from "./EditInterfaceTable";
 
-import type { DeviceNetworkInterface } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { DeviceNetworkInterface } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceInterface as deviceInterfaceFactory,
@@ -17,8 +17,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

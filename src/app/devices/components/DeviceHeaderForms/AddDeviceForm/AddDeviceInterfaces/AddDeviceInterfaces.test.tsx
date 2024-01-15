@@ -4,19 +4,19 @@ import configureStore from "redux-mock-store";
 import AddDeviceInterfaces from "../AddDeviceInterfaces";
 import type { AddDeviceInterface } from "../types";
 
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -47,7 +47,7 @@ describe("AddDeviceInterfaces", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
       { store }
@@ -61,7 +61,7 @@ describe("AddDeviceInterfaces", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.EXTERNAL;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
       { store }
@@ -75,7 +75,7 @@ describe("AddDeviceInterfaces", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.STATIC;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
       { store }
@@ -88,7 +88,7 @@ describe("AddDeviceInterfaces", () => {
   it("can add and remove interfaces", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
       { store }

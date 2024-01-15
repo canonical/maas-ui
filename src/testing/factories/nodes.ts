@@ -8,17 +8,20 @@ import type {
   ControllerVersionInfo,
   ControllerVersions,
   ControllerVlansHA,
-} from "app/store/controller/types";
+} from "@/app/store/controller/types";
 import type {
   Device,
   DeviceDetails,
   DeviceNetworkInterface,
-} from "app/store/device/types";
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { Machine, MachineDetails } from "app/store/machine/types";
-import { FilterGroupKey, FilterGroupType } from "app/store/machine/types/base";
-import type { FilterGroup, BaseMachine } from "app/store/machine/types/base";
-import { PodType } from "app/store/pod/constants";
+} from "@/app/store/device/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { Machine, MachineDetails } from "@/app/store/machine/types";
+import {
+  FilterGroupKey,
+  FilterGroupType,
+} from "@/app/store/machine/types/base";
+import type { FilterGroup, BaseMachine } from "@/app/store/machine/types/base";
+import { PodType } from "@/app/store/pod/constants";
 import type {
   Pod,
   PodDetails,
@@ -36,15 +39,15 @@ import type {
   PodStoragePoolResource,
   PodVM,
   PodVmCount,
-} from "app/store/pod/types";
+} from "@/app/store/pod/types";
 import {
   NetworkLinkMode,
   NetworkInterfaceTypes,
   DiskTypes,
   PowerState,
   StorageLayout,
-} from "app/store/types/enum";
-import type { Model, TimestampedModel } from "app/store/types/model";
+} from "@/app/store/types/enum";
+import type { Model, TimestampedModel } from "@/app/store/types/model";
 import type {
   DiscoveredIP,
   NetworkInterface,
@@ -60,13 +63,13 @@ import type {
   Partition,
   NodeDeviceRef,
   NodeIpAddress,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   NodeLinkType,
   NodeStatus,
   NodeType,
   NodeTypeDisplay,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 
 export const testStatus = define<TestStatus>({
   status: 0,

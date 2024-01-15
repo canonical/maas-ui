@@ -1,20 +1,20 @@
 import KVM from "./KVM";
 
-import urls from "app/base/urls";
-import { Label as KVMListLabel } from "app/kvm/views/KVMList/KVMList";
-import { Label as LXDClusterDetailsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterDetails";
-import { Label as LXDSingleDetailsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleDetails";
-import { Label as VirshDetailsLabel } from "app/kvm/views/VirshDetails/VirshDetails";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as KVMListLabel } from "@/app/kvm/views/KVMList/KVMList";
+import { Label as LXDClusterDetailsLabel } from "@/app/kvm/views/LXDClusterDetails/LXDClusterDetails";
+import { Label as LXDSingleDetailsLabel } from "@/app/kvm/views/LXDSingleDetails/LXDSingleDetails";
+import { Label as VirshDetailsLabel } from "@/app/kvm/views/VirshDetails/VirshDetails";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 

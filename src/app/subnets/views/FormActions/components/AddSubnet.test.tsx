@@ -5,15 +5,15 @@ import configureStore from "redux-mock-store";
 
 import AddSubnet from "./AddSubnet";
 
-import { actions as subnetActions } from "app/store/subnet";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   fabric as fabricFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
   fabricState as fabricSpaceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("correctly dispatches subnet cleanup and create actions on form submit", async () => {
   const vlan1 = vlanFactory({ id: 111, fabric: 5 });

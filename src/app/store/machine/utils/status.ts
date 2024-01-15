@@ -1,4 +1,4 @@
-import { NodeStatusCode } from "app/store/types/node";
+import { NodeStatusCode } from "@/app/store/types/node";
 
 /**
  * Returns whether a a status code represents a transient status.

@@ -1,8 +1,8 @@
 import AuthenticationCard from "./AuthenticationCard";
 
-import { PodType } from "app/store/pod/constants";
-import type { PodDetails, PodPowerParameters } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { PodDetails, PodPowerParameters } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   certificateMetadata as certificateFactory,
   pod as podFactory,
@@ -10,8 +10,8 @@ import {
   podPowerParameters as powerParametersFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("AuthenticationCard", () => {
   let state: RootState;

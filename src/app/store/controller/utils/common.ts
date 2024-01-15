@@ -1,5 +1,8 @@
-import type { Controller, ControllerDetails } from "app/store/controller/types";
-import { NodeType } from "app/store/types/node";
+import type {
+  Controller,
+  ControllerDetails,
+} from "@/app/store/controller/types";
+import { NodeType } from "@/app/store/types/node";
 
 /**
  * Returns whether a controller is of type ControllerDetails.

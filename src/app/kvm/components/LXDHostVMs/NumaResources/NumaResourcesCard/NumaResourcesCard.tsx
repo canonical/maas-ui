@@ -1,19 +1,19 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import CoreResources from "app/kvm/components/CoreResources";
-import RamResources from "app/kvm/components/RamResources";
-import VfResources from "app/kvm/components/VfResources";
-import VmResources from "app/kvm/components/VmResources";
-import { FilterGroupKey } from "app/store/machine/types";
-import podSelectors from "app/store/pod/selectors";
+import CoreResources from "@/app/kvm/components/CoreResources";
+import RamResources from "@/app/kvm/components/RamResources";
+import VfResources from "@/app/kvm/components/VfResources";
+import VmResources from "@/app/kvm/components/VmResources";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import podSelectors from "@/app/store/pod/selectors";
 import type {
   Pod,
   PodNetworkInterface,
   PodNuma,
   PodVM,
-} from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 
 export const TRUNCATION_POINT = 4;
 

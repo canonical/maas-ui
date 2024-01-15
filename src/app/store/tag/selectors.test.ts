@@ -4,8 +4,8 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { tagStateListFactory } from "testing/factories/state";
+} from "@/testing/factories";
+import { tagStateListFactory } from "@/testing/factories/state";
 
 describe("tag selectors", () => {
   it("can get all items", () => {

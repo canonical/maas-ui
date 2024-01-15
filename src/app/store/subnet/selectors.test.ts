@@ -10,7 +10,7 @@ import {
   subnetState as subnetStateFactory,
   subnetStatus as subnetStatusFactory,
   subnetStatuses as subnetStatusesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("subnet selectors", () => {
   it("can get all items", () => {

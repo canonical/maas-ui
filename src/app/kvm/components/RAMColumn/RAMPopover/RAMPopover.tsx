@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
-import Popover from "app/base/components/Popover";
-import type { KVMResource } from "app/kvm/types";
-import { memoryWithUnit } from "app/kvm/utils";
-import { resourceWithOverCommit } from "app/store/pod/utils";
+import Popover from "@/app/base/components/Popover";
+import type { KVMResource } from "@/app/kvm/types";
+import { memoryWithUnit } from "@/app/kvm/utils";
+import { resourceWithOverCommit } from "@/app/store/pod/utils";
 
 type Props = {
   children: ReactNode;

@@ -2,19 +2,19 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import type { RootState } from "app/store/root/types";
-import { actions as scriptResultActions } from "app/store/scriptresult";
-import scriptResultSelectors from "app/store/scriptresult/selectors";
+import type { RootState } from "@/app/store/root/types";
+import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import {
   ScriptResultDataType,
   ScriptResultNames,
   ScriptResultStatus,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import type {
   ScriptResult,
   ScriptResultData,
-} from "app/store/scriptresult/types";
-import type { Node } from "app/store/types/node";
+} from "@/app/store/scriptresult/types";
+import type { Node } from "@/app/store/types/node";
 
 /**
  * Fetch the installation log for a node.

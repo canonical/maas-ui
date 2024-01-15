@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-container */
 import CoreResources from "./CoreResources";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("CoreResources", () => {
   it("renders correctly", () => {

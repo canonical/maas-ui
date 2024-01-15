@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import AddBondForm from "./AddBondForm";
 
-import urls from "app/base/urls";
-import { BondMode } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import { BondMode } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -19,13 +19,13 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;
@@ -85,9 +85,9 @@ describe("AddBondForm", () => {
     ];
     renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: 9 }, { nicId: 10 }]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, state }
@@ -120,9 +120,9 @@ describe("AddBondForm", () => {
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
     renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={selected}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, state }
@@ -184,9 +184,9 @@ describe("AddBondForm", () => {
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
     renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={selected}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, state }
@@ -258,9 +258,9 @@ describe("AddBondForm", () => {
     ];
     const { rerender } = renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       {
@@ -272,9 +272,9 @@ describe("AddBondForm", () => {
 
     rerender(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />
     );
@@ -287,9 +287,9 @@ describe("AddBondForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, store }
@@ -305,9 +305,9 @@ describe("AddBondForm", () => {
     state.vlan.loaded = false;
     renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, state }
@@ -321,9 +321,9 @@ describe("AddBondForm", () => {
     state.vlan.loaded = true;
     renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, state }
@@ -352,9 +352,9 @@ describe("AddBondForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         selected={[{ nicId: 9 }, { nicId: 10 }]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route, store }

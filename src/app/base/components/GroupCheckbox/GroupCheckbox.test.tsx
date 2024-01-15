@@ -1,12 +1,12 @@
 import GroupCheckbox from "./GroupCheckbox";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("GroupCheckbox", () => {
   it("shows as mixed when some items are checked", () => {
     render(
       <GroupCheckbox
-        handleGroupCheckbox={jest.fn()}
+        handleGroupCheckbox={vi.fn()}
         items={[1, 2, 3]}
         selectedItems={[2]}
       />
@@ -19,7 +19,7 @@ describe("GroupCheckbox", () => {
   it("can show a label", () => {
     render(
       <GroupCheckbox
-        handleGroupCheckbox={jest.fn()}
+        handleGroupCheckbox={vi.fn()}
         inputLabel="Check all"
         items={[]}
         selectedItems={[]}
@@ -35,7 +35,7 @@ describe("GroupCheckbox", () => {
     render(
       <GroupCheckbox
         disabled
-        handleGroupCheckbox={jest.fn()}
+        handleGroupCheckbox={vi.fn()}
         inputLabel="Check all"
         items={[1, 2, 3]}
         selectedItems={[2]}
@@ -49,7 +49,7 @@ describe("GroupCheckbox", () => {
     render(
       <GroupCheckbox
         checkSelected={() => true}
-        handleGroupCheckbox={jest.fn()}
+        handleGroupCheckbox={vi.fn()}
         items={[]}
         selectedItems={[]}
       />
@@ -62,7 +62,7 @@ describe("GroupCheckbox", () => {
     render(
       <GroupCheckbox
         checkAllSelected={() => false}
-        handleGroupCheckbox={jest.fn()}
+        handleGroupCheckbox={vi.fn()}
         items={[1, 2, 3]}
         selectedItems={[2]}
       />

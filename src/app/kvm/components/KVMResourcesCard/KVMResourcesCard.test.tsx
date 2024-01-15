@@ -1,17 +1,17 @@
 import KVMResourcesCard from "./KVMResourcesCard";
 
-import urls from "app/base/urls";
-import { PodType } from "app/store/pod/constants";
+import urls from "@/app/base/urls";
+import { PodType } from "@/app/store/pod/constants";
 import {
   podState as podStateFactory,
   rootState as rootStateFactory,
   pod as podFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("KVMResourcesCard", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("shows a spinner if pods have not loaded yet", () => {

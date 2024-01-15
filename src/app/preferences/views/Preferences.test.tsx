@@ -1,6 +1,6 @@
 import Preferences, { Labels as PreferencesLabels } from "./Preferences";
 
-import { screen, renderWithBrowserRouter, getTestState } from "testing/utils";
+import { screen, renderWithBrowserRouter, getTestState } from "@/testing/utils";
 
 describe("Preferences", () => {
   it("renders", () => {

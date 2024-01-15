@@ -1,9 +1,9 @@
 import NodeActionMenuGroup, { Labels } from "./NodeActionMenuGroup";
 
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
-import { machine as machineFactory } from "testing/factories";
-import { userEvent, render, screen, within } from "testing/utils";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
+import { machine as machineFactory } from "@/testing/factories";
+import { userEvent, render, screen, within } from "@/testing/utils";
 
 describe("NodeActionMenuGroup", () => {
   const openMenu = async (name: string) => {
@@ -27,7 +27,7 @@ describe("NodeActionMenuGroup", () => {
 
   it("renders", () => {
     render(
-      <NodeActionMenuGroup hasSelection={false} onActionClick={jest.fn()} />
+      <NodeActionMenuGroup hasSelection={false} onActionClick={vi.fn()} />
     );
 
     Object.values(Labels).forEach((label) => {
@@ -45,7 +45,7 @@ describe("NodeActionMenuGroup", () => {
         filterActions
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -92,7 +92,7 @@ describe("NodeActionMenuGroup", () => {
         alwaysShowLifecycle
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -119,7 +119,7 @@ describe("NodeActionMenuGroup", () => {
         alwaysShowLifecycle
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount={false}
       />
     );
@@ -140,7 +140,7 @@ describe("NodeActionMenuGroup", () => {
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {
-    render(<NodeActionMenuGroup hasSelection onActionClick={jest.fn()} />);
+    render(<NodeActionMenuGroup hasSelection onActionClick={vi.fn()} />);
 
     expect(
       screen.getByRole("button", { name: Labels.Delete })
@@ -190,7 +190,7 @@ describe("NodeActionMenuGroup", () => {
       <NodeActionMenuGroup
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -215,7 +215,7 @@ describe("NodeActionMenuGroup", () => {
         actions: [NodeActions.DEPLOY],
       }),
     ];
-    const onActionClick = jest.fn();
+    const onActionClick = vi.fn();
     render(
       <NodeActionMenuGroup
         hasSelection
@@ -243,7 +243,7 @@ describe("NodeActionMenuGroup", () => {
         excludeActions={[NodeActions.DELETE]}
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -263,7 +263,7 @@ describe("NodeActionMenuGroup", () => {
         hasSelection={false}
         nodeDisplay="foobar"
         nodes={[]}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -288,7 +288,7 @@ describe("NodeActionMenuGroup", () => {
         getTitle={() => "Overridden"}
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );

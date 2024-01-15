@@ -11,10 +11,10 @@ import type {
 import { ScriptResultType } from "./types";
 import { scriptResultFailed } from "./utils";
 
-import { HardwareType } from "app/base/enum";
-import type { APIError } from "app/base/types";
-import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import type { APIError } from "@/app/base/types";
+import type { NodeScriptResultState } from "@/app/store/nodescriptresult/types";
+import type { RootState } from "@/app/store/root/types";
 
 /**
  * Returns list of all script results.

@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
 
-import { PodType } from "app/store/pod/constants";
-import podSelectors from "app/store/pod/selectors";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
+import { PodType } from "@/app/store/pod/constants";
+import podSelectors from "@/app/store/pod/selectors";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -16,14 +16,14 @@ import {
   vmClusterEventError as vmClusterEventErrorFactory,
   vmClusterState as vmClusterStateFactory,
   vmClusterStatuses as vmClusterStatusesFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("DeleteForm", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("can show the processing status when deleting the given pod", () => {
@@ -38,7 +38,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm", store }
     );
 
@@ -59,7 +59,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />,
+      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />,
       { route: "/kvm", store }
     );
     expect(screen.getByTestId("saving-label")).toHaveTextContent(
@@ -79,7 +79,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm", store }
     );
 
@@ -102,7 +102,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />,
+      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />,
       { route: "/kvm", store }
     );
 
@@ -125,7 +125,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm", store }
     );
 
@@ -144,7 +144,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm", store }
     );
 
@@ -184,7 +184,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />,
+      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />,
       { route: "/kvm", store }
     );
 
@@ -223,7 +223,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
+      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />
     );
     const { rerender } = renderWithBrowserRouter(<Proxy />, {
       route: "/kvm",
@@ -237,8 +237,8 @@ describe("DeleteForm", () => {
 
     // Mock the change from deleting the cluster to no longer deleting the
     // cluster, then rerender the component.
-    jest.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
-    rerender(<DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />);
+    vi.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
+    rerender(<DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />);
 
     // Form should have saved successfully.
     expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
@@ -256,7 +256,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
+      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />
     );
     const { rerender } = renderWithBrowserRouter(<Proxy />, {
       route: "/kvm",
@@ -270,8 +270,8 @@ describe("DeleteForm", () => {
 
     // Mock the change from deleting the pod to no longer deleting the pod, then
     // rerender the component.
-    jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
-    rerender(<DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />);
+    vi.spyOn(podSelectors, "deleting").mockReturnValue([]);
+    rerender(<DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />);
 
     // Form should have saved successfully.
     expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
@@ -289,7 +289,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
+      <DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />
     );
     const { rerender } = renderWithBrowserRouter(<Proxy />, {
       route: "/kvm",
@@ -303,14 +303,14 @@ describe("DeleteForm", () => {
 
     // Mock the change from deleting the cluster to no longer deleting the
     // cluster including an error, then rerender the component.
-    jest.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
-    jest.spyOn(vmClusterSelectors, "eventError").mockReturnValue([
+    vi.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
+    vi.spyOn(vmClusterSelectors, "eventError").mockReturnValue([
       vmClusterEventErrorFactory({
         error: "Uh oh",
         event: "delete",
       }),
     ]);
-    rerender(<DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />);
+    rerender(<DeleteForm clearSidePanelContent={vi.fn()} clusterId={1} />);
 
     // Form should not have saved successfully.
     expect(screen.getByTestId("notification-title")).toHaveTextContent(
@@ -331,7 +331,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
+      <DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />
     );
     const { rerender } = renderWithBrowserRouter(<Proxy />, {
       route: "/kvm",
@@ -345,9 +345,9 @@ describe("DeleteForm", () => {
 
     // Mock the change from deleting the pod to no longer deleting the pod
     // including an error, then rerender the component.
-    jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
-    jest.spyOn(podSelectors, "errors").mockReturnValue("Uh oh");
-    rerender(<DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />);
+    vi.spyOn(podSelectors, "deleting").mockReturnValue([]);
+    vi.spyOn(podSelectors, "errors").mockReturnValue("Uh oh");
+    rerender(<DeleteForm clearSidePanelContent={vi.fn()} hostId={1} />);
 
     // Form should not have saved successfully.
     expect(screen.getByTestId("notification-title")).toHaveTextContent(

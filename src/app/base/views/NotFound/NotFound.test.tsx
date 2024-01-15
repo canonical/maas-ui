@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-container */
 import NotFound from "./NotFound";
 
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("NotFound ", () => {
   it("can render", () => {

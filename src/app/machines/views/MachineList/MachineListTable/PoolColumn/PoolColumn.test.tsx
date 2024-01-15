@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import { PoolColumn } from "./PoolColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -11,8 +11,8 @@ import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -51,7 +51,7 @@ describe("PoolColumn", () => {
     state.machine.items[0].pool = modelRefFactory({ name: "pool-1" });
 
     renderWithBrowserRouter(
-      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
         state,
@@ -65,7 +65,7 @@ describe("PoolColumn", () => {
     state.machine.items[0].description = "decomissioned";
 
     renderWithBrowserRouter(
-      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
         state,
@@ -84,7 +84,7 @@ describe("PoolColumn", () => {
     ];
 
     renderWithBrowserRouter(
-      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
         state,
@@ -100,7 +100,7 @@ describe("PoolColumn", () => {
     state.machine.items[0].actions = [];
 
     renderWithBrowserRouter(
-      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
         state,
@@ -117,7 +117,7 @@ describe("PoolColumn", () => {
   it("can change pools", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
         store,
@@ -148,7 +148,7 @@ describe("PoolColumn", () => {
 
   it("shows a spinner when changing pools", async () => {
     renderWithBrowserRouter(
-      <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       {
         route: "/machines",
         state,

@@ -1,10 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { DeleteParams, DiscoveryState } from "app/store/discovery/types";
-import { DiscoveryMeta } from "app/store/discovery/types";
-import type { GenericItemMeta } from "app/store/utils";
-import { genericInitialState } from "app/store/utils/slice";
+import type { DeleteParams, DiscoveryState } from "@/app/store/discovery/types";
+import { DiscoveryMeta } from "@/app/store/discovery/types";
+import type { GenericItemMeta } from "@/app/store/utils";
+import { genericInitialState } from "@/app/store/utils/slice";
 
 const discoverySlice = createSlice({
   name: DiscoveryMeta.MODEL,

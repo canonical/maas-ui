@@ -5,9 +5,9 @@ import { useFormikContext } from "formik";
 import type { TLSEnabledValues } from "../TLSEnabled";
 import { Labels } from "../TLSEnabled";
 
-import FormikField from "app/base/components/FormikField";
-import docsUrls from "app/base/docsUrls";
-import { TLSExpiryNotificationInterval } from "app/store/config/types";
+import FormikField from "@/app/base/components/FormikField";
+import docsUrls from "@/app/base/docsUrls";
+import { TLSExpiryNotificationInterval } from "@/app/store/config/types";
 
 const TLSEnabledFields = (): JSX.Element => {
   const { setFieldValue, values } = useFormikContext<TLSEnabledValues>();

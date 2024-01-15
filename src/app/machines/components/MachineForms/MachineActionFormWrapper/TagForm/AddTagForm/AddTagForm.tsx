@@ -1,7 +1,7 @@
-import type { MachineActionFormProps } from "app/machines/types";
-import { useFetchDeployedMachineCount } from "app/store/machine/utils/hooks";
-import type { Tag } from "app/store/tag/types";
-import BaseAddTagForm from "app/tags/components/AddTagForm";
+import type { MachineActionFormProps } from "@/app/machines/types";
+import { useFetchDeployedMachineCount } from "@/app/store/machine/utils/hooks";
+import type { Tag } from "@/app/store/tag/types";
+import BaseAddTagForm from "@/app/tags/components/AddTagForm";
 
 export type Props = {
   name: string | null;

@@ -6,15 +6,15 @@ import { Link } from "react-router-dom-v5-compat";
 
 import DeviceName from "./DeviceName";
 
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import SectionHeader from "app/base/components/SectionHeader";
-import urls from "app/base/urls";
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { DeviceSetSidePanelContent } from "app/devices/types";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device } from "app/store/device/types";
-import { isDeviceDetails } from "app/store/device/utils";
-import type { RootState } from "app/store/root/types";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import urls from "@/app/base/urls";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { DeviceSetSidePanelContent } from "@/app/devices/types";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device } from "@/app/store/device/types";
+import { isDeviceDetails } from "@/app/store/device/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   setSidePanelContent: DeviceSetSidePanelContent;

@@ -1,9 +1,9 @@
 import * as Yup from "yup";
 import type { ObjectShape } from "yup/lib/object";
 
-import type { PowerField, PowerType } from "app/store/general/types";
-import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
-import type { PowerParameters } from "app/store/types/node";
+import type { PowerField, PowerType } from "@/app/store/general/types";
+import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
+import type { PowerParameters } from "@/app/store/types/node";
 
 /**
  * Formats power parameters by what is expected by the api. Also, React expects

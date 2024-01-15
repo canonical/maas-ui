@@ -1,14 +1,14 @@
 import InterfaceFormTable from "./InterfaceFormTable";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("InterfaceFormTable", () => {
   let state: RootState;
@@ -80,7 +80,7 @@ describe("InterfaceFormTable", () => {
       <InterfaceFormTable
         interfaces={[{ nicId: nic.id }]}
         selectedEditable
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -104,7 +104,7 @@ describe("InterfaceFormTable", () => {
         interfaces={[{ nicId: nic.id }]}
         selected={[]}
         selectedEditable
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { state }

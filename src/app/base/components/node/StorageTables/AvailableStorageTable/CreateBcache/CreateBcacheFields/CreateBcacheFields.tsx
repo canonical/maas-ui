@@ -2,12 +2,12 @@ import { Col, Input, Row, Select } from "@canonical/react-components";
 
 import FilesystemFields from "../../FilesystemFields";
 
-import FormikField from "app/base/components/FormikField";
-import TagNameField from "app/base/components/TagNameField";
-import type { Machine } from "app/store/machine/types";
-import { BcacheModes } from "app/store/machine/types";
-import type { Disk, Partition } from "app/store/types/node";
-import { formatSize } from "app/store/utils";
+import FormikField from "@/app/base/components/FormikField";
+import TagNameField from "@/app/base/components/TagNameField";
+import type { Machine } from "@/app/store/machine/types";
+import { BcacheModes } from "@/app/store/machine/types";
+import type { Disk, Partition } from "@/app/store/types/node";
+import { formatSize } from "@/app/store/utils";
 
 type Props = {
   cacheSets: Disk[];

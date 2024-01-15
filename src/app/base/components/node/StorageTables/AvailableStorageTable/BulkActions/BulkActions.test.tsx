@@ -2,7 +2,7 @@ import { BulkAction } from "../AvailableStorageTable";
 
 import BulkActions from "./BulkActions";
 
-import { DiskTypes, StorageLayout } from "app/store/types/enum";
+import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -12,12 +12,12 @@ import {
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithBrowserRouter,
   screen,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("BulkActions", () => {
   it("disables create volume group button with tooltip if selected devices are not eligible", async () => {
@@ -44,7 +44,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={null}
         selected={selected}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -80,7 +80,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={null}
         selected={selected}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -109,7 +109,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={null}
         selected={[]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -138,7 +138,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={null}
         selected={selected}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -173,7 +173,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={null}
         selected={[selected]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -201,7 +201,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={BulkAction.CREATE_DATASTORE}
         selected={[]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -235,7 +235,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={BulkAction.CREATE_RAID}
         selected={[]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -279,7 +279,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={BulkAction.CREATE_VOLUME_GROUP}
         selected={[]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -315,7 +315,7 @@ describe("BulkActions", () => {
       <BulkActions
         bulkAction={BulkAction.UPDATE_DATASTORE}
         selected={[]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }

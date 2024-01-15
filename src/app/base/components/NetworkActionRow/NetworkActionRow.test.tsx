@@ -2,20 +2,20 @@ import configureStore from "redux-mock-store";
 
 import NetworkActionRow from "./NetworkActionRow";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -46,7 +46,7 @@ describe("NetworkActionRow", () => {
           },
         ]}
         node={state.machine.items[0]}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />,
       { route: "/machine/abc123", store }
     );
@@ -56,7 +56,7 @@ describe("NetworkActionRow", () => {
   describe("add physical", () => {
     it("sets the state to show the form when clicking the button", async () => {
       const store = mockStore(state);
-      const setExpanded = jest.fn();
+      const setExpanded = vi.fn();
       renderWithBrowserRouter(
         <NetworkActionRow
           expanded={null}
@@ -80,7 +80,7 @@ describe("NetworkActionRow", () => {
         <NetworkActionRow
           expanded={null}
           node={state.machine.items[0]}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
         />,
         { route: "/machine/abc123", store }
       );
@@ -101,7 +101,7 @@ describe("NetworkActionRow", () => {
         <NetworkActionRow
           expanded={{ content: ExpandedState.ADD_PHYSICAL }}
           node={state.machine.items[0]}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
         />,
         { route: "/machine/abc123", store }
       );

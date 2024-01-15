@@ -1,14 +1,14 @@
 import EventLogsTable, { Label } from "./EventLogsTable";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   eventRecord as eventRecordFactory,
   eventState as eventStateFactory,
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("EventLogsTable", () => {
   let state: RootState;

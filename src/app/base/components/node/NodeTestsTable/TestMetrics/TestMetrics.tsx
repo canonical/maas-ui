@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { Button } from "@canonical/react-components";
 
-import type { ScriptResult } from "app/store/scriptresult/types";
+import type { ScriptResult } from "@/app/store/scriptresult/types";
 
 type Props = {
   close: () => void;

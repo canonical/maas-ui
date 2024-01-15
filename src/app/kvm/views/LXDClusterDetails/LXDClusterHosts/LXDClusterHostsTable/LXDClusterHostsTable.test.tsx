@@ -1,10 +1,10 @@
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
-import urls from "app/base/urls";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import { PodType } from "app/store/pod/constants";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import { PodType } from "@/app/store/pod/constants";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -14,8 +14,8 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("LXDClusterHostsTable", () => {
   let state: RootState;
@@ -56,7 +56,7 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
@@ -70,7 +70,7 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
@@ -88,7 +88,7 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
@@ -97,7 +97,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("can open the compose VM form for a host", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <LXDClusterHostsTable
         clusterId={1}
@@ -122,7 +122,7 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={state.pod.items}
         searchFilter=""
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );
@@ -142,7 +142,7 @@ describe("LXDClusterHostsTable", () => {
         currentPage={1}
         hosts={[]}
         searchFilter="nothing"
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }), state }
     );

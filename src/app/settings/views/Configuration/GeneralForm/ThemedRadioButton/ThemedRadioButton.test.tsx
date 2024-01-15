@@ -1,6 +1,6 @@
 import ThemedRadioButton from "./ThemedRadioButton";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("ThemedRadioButton", () => {
   it("displays a radio button", () => {

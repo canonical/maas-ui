@@ -1,8 +1,8 @@
 import { ContextualMenu } from "@canonical/react-components";
 
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import type { Pod } from "app/store/pod/types";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
   hostId: Pod["id"];

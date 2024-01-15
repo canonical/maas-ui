@@ -1,12 +1,12 @@
 import { Select } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import FormikField from "app/base/components/FormikField";
-import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
-import { useFetchActions } from "app/base/hooks";
-import { actions as spaceActions } from "app/store/space";
-import spaceSelectors from "app/store/space/selectors";
-import { simpleSortByKey } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as spaceActions } from "@/app/store/space";
+import spaceSelectors from "@/app/store/space/selectors";
+import { simpleSortByKey } from "@/app/utils";
 
 type Props = {
   defaultOption?: { label: string; value: string; disabled?: boolean } | null;

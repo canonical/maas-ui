@@ -4,17 +4,17 @@ import configureStore from "redux-mock-store";
 
 import LXDVMsTable from "./LXDVMsTable";
 
-import { actions as machineActions } from "app/store/machine";
-import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
-import { generateCallId } from "app/store/machine/utils/query";
-import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { actions as machineActions } from "@/app/store/machine";
+import { FetchSortDirection, FetchGroupKey } from "@/app/store/machine/types";
+import { generateCallId } from "@/app/store/machine/utils/query";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("LXDVMsTable", () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("fetches machines on load", () => {
@@ -26,11 +26,11 @@ describe("LXDVMsTable", () => {
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDVMsTable
-            getResources={jest.fn()}
+            getResources={vi.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={jest.fn()}
+            setSearchFilter={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -68,11 +68,11 @@ describe("LXDVMsTable", () => {
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDVMsTable
-            getResources={jest.fn()}
+            getResources={vi.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={jest.fn()}
+            setSearchFilter={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -95,12 +95,12 @@ describe("LXDVMsTable", () => {
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDVMsTable
-            getResources={jest.fn()}
-            onAddVMClick={jest.fn()}
+            getResources={vi.fn()}
+            onAddVMClick={vi.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={jest.fn()}
+            setSearchFilter={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -118,11 +118,11 @@ describe("LXDVMsTable", () => {
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDVMsTable
-            getResources={jest.fn()}
+            getResources={vi.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setSearchFilter={jest.fn()}
-            setSidePanelContent={jest.fn()}
+            setSearchFilter={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         </MemoryRouter>
       </Provider>

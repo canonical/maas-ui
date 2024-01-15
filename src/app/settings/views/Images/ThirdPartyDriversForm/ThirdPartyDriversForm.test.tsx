@@ -7,13 +7,13 @@ import ThirdPartyDriversForm, {
   Labels as TPDFormLabels,
 } from "./ThirdPartyDriversForm";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 

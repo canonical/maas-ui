@@ -17,13 +17,13 @@ import MaasIntro from "./MaasIntro";
 import MaasIntroSuccess from "./MaasIntroSuccess";
 import UserIntro from "./UserIntro";
 
-import PageContent from "app/base/components/PageContent";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
-import urls from "app/base/urls";
-import authSelectors from "app/store/auth/selectors";
-import configSelectors from "app/store/config/selectors";
-import { getRelativeRoute } from "app/utils";
+import PageContent from "@/app/base/components/PageContent";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useCompletedIntro, useCompletedUserIntro } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import authSelectors from "@/app/store/auth/selectors";
+import configSelectors from "@/app/store/config/selectors";
+import { getRelativeRoute } from "@/app/utils";
 
 const Intro = (): JSX.Element => {
   const navigate = useNavigate();

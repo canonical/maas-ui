@@ -5,7 +5,7 @@ import { generateBaseSelectors } from "../utils";
 import { VMClusterMeta } from "./types";
 import type { VMClusterState, VMCluster, VMClusterStatuses } from "./types";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 
 const defaultSelectors = generateBaseSelectors<
   VMClusterState,

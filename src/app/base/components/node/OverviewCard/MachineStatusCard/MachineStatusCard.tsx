@@ -3,21 +3,21 @@ import { Tooltip } from "@canonical/react-components";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
 
-import TooltipButton from "app/base/components/TooltipButton";
-import docsUrls from "app/base/docsUrls";
-import type { Seconds } from "app/base/types";
-import { PowerTypeNames } from "app/store/general/constants";
-import type { MachineDetails } from "app/store/machine/types";
-import { useFormattedOS } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import docsUrls from "@/app/base/docsUrls";
+import type { Seconds } from "@/app/base/types";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { useFormattedOS } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors from "@/app/store/tag/selectors";
+import type { Tag } from "@/app/store/tag/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
-import { breakLines, isEphemerallyDeployed } from "app/utils";
+} from "@/app/store/types/node";
+import { breakLines, isEphemerallyDeployed } from "@/app/utils";
 
 type Props = {
   machine: MachineDetails;

@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import AddLogicalVolume from "./AddLogicalVolume";
 
-import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
+import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -12,8 +12,8 @@ import {
   machineStatuses as machineStatusesFactory,
   nodeDisk as diskFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, userEvent, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, userEvent, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -60,7 +60,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={volumeGroup}
         systemId="abc123"
       />,
@@ -113,7 +113,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={volumeGroup}
         systemId="abc123"
       />,
@@ -141,7 +141,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         systemId="abc123"
       />,
@@ -177,7 +177,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         systemId="abc123"
       />,
@@ -215,7 +215,7 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddLogicalVolume
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         disk={disk}
         systemId="abc123"
       />,

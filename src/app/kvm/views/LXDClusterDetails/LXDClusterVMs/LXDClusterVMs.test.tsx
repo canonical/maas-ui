@@ -1,11 +1,12 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import configureStore from "redux-mock-store";
 
 import LXDClusterVMs from "./LXDClusterVMs";
 
-import urls from "app/base/urls";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import urls from "@/app/base/urls";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -16,13 +17,29 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
   vmHost as vmHostFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
-enableCallIdMocks();
+const callId = "mocked-nanoid";
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
 const mockStore = configureStore<RootState, {}>();
 
 describe("LXDClusterVMs", () => {
+  beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("renders a link to a cluster's host's VM page", () => {
     const machine = machineFactory({
       pod: { id: 11, name: "podrick" },
@@ -57,8 +74,8 @@ describe("LXDClusterVMs", () => {
       <LXDClusterVMs
         clusterId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );
@@ -88,8 +105,8 @@ describe("LXDClusterVMs", () => {
       <LXDClusterVMs
         clusterId={1}
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }), store }
     );

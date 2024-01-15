@@ -1,14 +1,14 @@
 import InstallationOutput, { Label } from "./InstallationOutput";
 
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import type { ScriptResult } from "app/store/scriptresult/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import type { ScriptResult } from "@/app/store/scriptresult/types";
 import {
   ScriptResultNames,
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
-import { PowerState } from "app/store/types/enum";
+} from "@/app/store/scriptresult/types";
+import { PowerState } from "@/app/store/types/enum";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
@@ -17,8 +17,8 @@ import {
   scriptResultData as scriptResultDataFactory,
   scriptResultState as scriptResultStateFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("InstallationOutput", () => {
   let state: RootState;

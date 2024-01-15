@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import MachineForm from "./MachineForm";
 
-import { Labels } from "app/base/components/EditableSection";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { Labels } from "@/app/base/components/EditableSection";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,
@@ -16,8 +16,8 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

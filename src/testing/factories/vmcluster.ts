@@ -2,7 +2,7 @@ import { define, extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Model } from "app/store/types/model";
+import type { Model } from "@/app/store/types/model";
 import type {
   VirtualMachine,
   VMCluster,
@@ -12,7 +12,7 @@ import type {
   VMClusterResourcesMemory,
   VMClusterStoragePoolResource,
   VMHost,
-} from "app/store/vmcluster/types";
+} from "@/app/store/vmcluster/types";
 
 export const vmHost = extend<Model, VMHost>(model, {
   name: (i: number) => `vmHost-${i}`,

@@ -2,11 +2,15 @@ import * as fileDownload from "js-file-download";
 
 import CertificateDownload, { Labels, TestIds } from "./CertificateDownload";
 
-import type { GeneratedCertificate } from "app/store/general/types";
-import { generatedCertificate as certFactory } from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+import type { GeneratedCertificate } from "@/app/store/general/types";
+import { generatedCertificate as certFactory } from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
-jest.mock("js-file-download", () => jest.fn());
+vi.mock("js-file-download", () => {
+  return {
+    default: vi.fn(),
+  };
+});
 
 describe("CertificateDownload", () => {
   let certificate: GeneratedCertificate;
@@ -18,11 +22,11 @@ describe("CertificateDownload", () => {
     });
   });
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("can generate a download based on the certificate details", async () => {
-    const downloadSpy = jest.spyOn(fileDownload, "default");
+    const downloadSpy = vi.spyOn(fileDownload, "default");
     render(
       <CertificateDownload
         certificate={certificate.certificate}

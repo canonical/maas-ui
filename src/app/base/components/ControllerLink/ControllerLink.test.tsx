@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import ControllerLink, { Labels } from "./ControllerLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   modelRef as modelRefFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

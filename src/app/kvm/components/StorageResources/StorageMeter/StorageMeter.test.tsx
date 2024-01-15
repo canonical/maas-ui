@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 
 import StorageMeter from "./StorageMeter";
 
-import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
+import { podStoragePoolResource as storagePoolResourceFactory } from "@/testing/factories";
 
 const pools = {
   "pool-1": storagePoolResourceFactory({

@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import CreateVolumeGroup from "./CreateVolumeGroup";
 
-import type { RootState } from "app/store/root/types";
-import { DiskTypes } from "app/store/types/enum";
+import type { RootState } from "@/app/store/root/types";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -12,13 +12,13 @@ import {
   nodeDisk as diskFactory,
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -48,7 +48,7 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateVolumeGroup
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[physicalDisk]}
         systemId="abc123"
       />,
@@ -83,7 +83,7 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateVolumeGroup
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,
@@ -121,7 +121,7 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <CreateVolumeGroup
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         selected={[selectedDisk, selectedPartition]}
         systemId="abc123"
       />,

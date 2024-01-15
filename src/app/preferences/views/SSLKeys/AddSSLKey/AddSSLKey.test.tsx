@@ -6,13 +6,18 @@ import configureStore from "redux-mock-store";
 
 import { AddSSLKey, Label as AddSSLKeyLabels } from "./AddSSLKey";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   sslKeyState as sslKeyStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -1,14 +1,14 @@
 import DeviceFilterAccordion from "./DeviceFilterAccordion";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceFilterAccordion", () => {
   let state: RootState;
@@ -29,7 +29,7 @@ describe("DeviceFilterAccordion", () => {
     state.device.loaded = false;
 
     renderWithBrowserRouter(
-      <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <DeviceFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { route: "/devices", state }
     );
 
@@ -38,7 +38,7 @@ describe("DeviceFilterAccordion", () => {
 
   it("displays tags", async () => {
     renderWithBrowserRouter(
-      <DeviceFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <DeviceFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { route: "/devices", state }
     );
     // Open the menu:

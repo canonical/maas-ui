@@ -1,4 +1,4 @@
-import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 export type DHCPFormValues = {
   description: DHCPSnippet["description"];

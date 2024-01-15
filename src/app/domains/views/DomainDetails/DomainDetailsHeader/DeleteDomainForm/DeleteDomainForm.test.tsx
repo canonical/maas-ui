@@ -11,19 +11,19 @@ import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("DeleteDomainForm", () => {
   it("calls closeForm on cancel click", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
         items: [domainFactory({ id: 1, name: "domain-in-the-brain" })],
@@ -37,7 +37,7 @@ describe("DeleteDomainForm", () => {
   });
 
   it("shows the correct text if the domain is deletable and dispatches the correct action when delete is clicked", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
         items: [
@@ -85,7 +85,7 @@ describe("DeleteDomainForm", () => {
   });
 
   it("shows the correct text and disables the delete button if the domain has resource records", () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
         items: [

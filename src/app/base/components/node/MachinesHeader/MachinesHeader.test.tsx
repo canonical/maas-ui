@@ -6,8 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MachinesHeader from "./MachinesHeader";
 
-import type { RootState } from "app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -15,9 +14,8 @@ import {
   machineStateCounts as machineStateCountsFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
-enableCallIdMocks();
 const mockStore = configureStore();
 
 describe("MachinesHeader", () => {
@@ -28,7 +26,7 @@ describe("MachinesHeader", () => {
       machine: machineStateFactory({
         loaded: true,
         counts: machineStateCountsFactory({
-          [callId]: machineStateCountFactory({
+          "mocked-nanoid": machineStateCountFactory({
             count: 2,
             loaded: true,
             loading: false,

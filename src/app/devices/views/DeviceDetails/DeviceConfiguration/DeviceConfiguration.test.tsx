@@ -5,12 +5,12 @@ import configureStore from "redux-mock-store";
 
 import DeviceConfiguration, { Label } from "./DeviceConfiguration";
 
-import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
-import { Label as DeviceConfigurationFieldsLabel } from "app/base/components/NodeConfigurationFields/NodeConfigurationFields";
-import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
-import { Label as ZoneSelectLabel } from "app/base/components/ZoneSelect/ZoneSelect";
-import { actions as deviceActions } from "app/store/device";
-import type { RootState } from "app/store/root/types";
+import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
+import { Label as DeviceConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
+import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
+import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneSelect";
+import { actions as deviceActions } from "@/app/store/device";
+import type { RootState } from "@/app/store/root/types";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceState as deviceStateFactory,
@@ -20,8 +20,8 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -1,7 +1,7 @@
 import MachineListPagination, { Label } from "./MachineListPagination";
 import type { Props as MachineListPaginationProps } from "./MachineListPagination";
 
-import { fireEvent, render, screen, userEvent, waitFor } from "testing/utils";
+import { fireEvent, render, screen, userEvent, waitFor } from "@/testing/utils";
 
 describe("MachineListPagination", () => {
   let props: MachineListPaginationProps;
@@ -12,7 +12,7 @@ describe("MachineListPagination", () => {
       totalPages: 4,
       machineCount: 100,
       machinesLoading: false,
-      paginate: jest.fn(),
+      paginate: vi.fn(),
     };
   });
 
@@ -138,7 +138,7 @@ describe("MachineListPagination", () => {
 
   // this is important if pagination is nested in a form that has a submit handler and does not use preventDefault
   it("does not trigger native form event when the pagination buttons are pressed", async () => {
-    const handleSubmit = jest.fn();
+    const handleSubmit = vi.fn();
     render(
       <form onSubmit={handleSubmit}>
         <MachineListPagination {...props} />

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { Button } from "@canonical/react-components";
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -12,10 +13,10 @@ import {
   useMachineActions,
 } from "./node";
 
-import { actions as machineActions } from "app/store/machine";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { actions as machineActions } from "@/app/store/machine";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,
@@ -29,8 +30,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -162,7 +163,9 @@ describe("node hooks", () => {
       return (
         <>
           {actions.map((buttonProps, i) => (
-            <button {...buttonProps} key={i} />
+            <Button {...buttonProps} key={i}>
+              action
+            </Button>
           ))}
         </>
       );

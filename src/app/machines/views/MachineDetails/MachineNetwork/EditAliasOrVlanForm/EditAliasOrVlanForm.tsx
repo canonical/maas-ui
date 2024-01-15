@@ -9,35 +9,35 @@ import NetworkFields, {
 } from "../NetworkFields/NetworkFields";
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import TagNameField from "app/base/components/TagNameField";
-import { useFetchActions, useIsAllNetworkingDisabled } from "app/base/hooks";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import FormikForm from "@/app/base/components/FormikForm";
+import TagNameField from "@/app/base/components/TagNameField";
+import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as fabricActions } from "@/app/store/fabric";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type {
   NetworkInterface,
   NetworkLink,
   UpdateInterfaceParams,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   getInterfaceTypeText,
   getInterfaceIPAddress,
   getInterfaceSubnet,
   getLinkMode,
-} from "app/store/utils";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import { preparePayload } from "app/utils";
+} from "@/app/store/utils";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { preparePayload } from "@/app/utils";
 
 type Props = {
   close: () => void;

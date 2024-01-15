@@ -7,16 +7,20 @@ import AddAliasOrVlan from "../../AddAliasOrVlan";
 import type {
   Expanded,
   SetExpanded,
-} from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import ActionConfirm from "app/base/components/node/ActionConfirm";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
-import { getLinkInterface, getRemoveTypeText, isAlias } from "app/store/utils";
+} from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import ActionConfirm from "@/app/base/components/node/ActionConfirm";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
+import {
+  getLinkInterface,
+  getRemoveTypeText,
+  isAlias,
+} from "@/app/store/utils";
 
 type Props = {
   expanded: Expanded | null;

@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import NodePowerParameters from "./NodePowerParameters";
 
-import { PowerTypeNames } from "app/store/general/constants";
-import { PowerFieldScope } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { PowerFieldScope } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   certificateMetadata as certificateMetadataFactory,
   generalState as generalStateFactory,
@@ -16,8 +16,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

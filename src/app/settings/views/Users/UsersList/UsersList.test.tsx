@@ -5,15 +5,15 @@ import configureStore from "redux-mock-store";
 
 import UsersList from "./UsersList";
 
-import type { RootState } from "app/store/root/types";
-import type { User } from "app/store/user/types";
+import type { RootState } from "@/app/store/root/types";
+import type { User } from "@/app/store/user/types";
 import {
   authState as authStateFactory,
   user as userFactory,
   userState as userStateFactory,
   rootState as rootStateFactory,
   statusState as statusStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -21,7 +21,7 @@ import {
   within,
   renderWithMockStore,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

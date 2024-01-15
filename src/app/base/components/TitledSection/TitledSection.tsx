@@ -10,7 +10,7 @@ import type {
 
 import VisuallyHidden from "../VisuallyHidden";
 
-import { useId } from "app/base/hooks/base";
+import { useId } from "@/app/base/hooks/base";
 
 export type Props = PropsWithSpread<
   {

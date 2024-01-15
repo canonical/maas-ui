@@ -8,19 +8,19 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useMachineDetailsForm } from "./hooks";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 
-jest.mock("@canonical/react-components/dist/hooks", () => ({
-  usePrevious: jest.fn(),
+vi.mock("@canonical/react-components/dist/hooks", () => ({
+  usePrevious: vi.fn(),
 }));
 
 const generateWrapper =
@@ -64,7 +64,7 @@ describe("machine utils", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("useMachineDetailsForm", () => {
@@ -77,7 +77,7 @@ describe("machine utils", () => {
             "abc123",
             "deletingFilesystem",
             "deleteFilesystem",
-            jest.fn()
+            vi.fn()
           ),
         {
           wrapper: generateWrapper(store),
@@ -101,7 +101,7 @@ describe("machine utils", () => {
             "abc123",
             "deletingFilesystem",
             "deleteFilesystem",
-            jest.fn()
+            vi.fn()
           ),
         {
           wrapper: generateWrapper(store),
@@ -112,9 +112,9 @@ describe("machine utils", () => {
 
     it("can return saved state for a machine performing an action", () => {
       // Mock previous saving value to be true
-      jest
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
+      vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+        () => true
+      );
       state.machine.statuses.abc123.deletingFilesystem = false;
       const store = mockStore(state);
       const { result } = renderHook(
@@ -123,7 +123,7 @@ describe("machine utils", () => {
             "abc123",
             "deletingFilesystem",
             "deleteFilesystem",
-            jest.fn()
+            vi.fn()
           ),
         {
           wrapper: generateWrapper(store),
@@ -134,11 +134,11 @@ describe("machine utils", () => {
 
     it("runs the onSaved function if successfully saved", () => {
       // Mock previous saving value to be true
-      jest
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
+      vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+        () => true
+      );
       state.machine.statuses.abc123.deletingFilesystem = false;
-      const onSaved = jest.fn();
+      const onSaved = vi.fn();
       const store = mockStore(state);
       renderHook(
         () =>
@@ -157,9 +157,9 @@ describe("machine utils", () => {
 
     it("does not run the onSaved function if errors are present", () => {
       // Mock previous saving value to be true
-      jest
-        .spyOn(reactComponentHooks, "usePrevious")
-        .mockImplementation(() => true);
+      vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+        () => true
+      );
       state.machine.eventErrors = [
         machineEventErrorFactory({
           error: "front fell off",
@@ -168,7 +168,7 @@ describe("machine utils", () => {
         }),
       ];
       state.machine.statuses.abc123.deletingFilesystem = false;
-      const onSaved = jest.fn();
+      const onSaved = vi.fn();
       const store = mockStore(state);
       renderHook(
         () =>

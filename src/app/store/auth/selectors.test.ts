@@ -5,7 +5,7 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("auth", () => {
   it("can get the current user details", () => {

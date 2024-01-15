@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AnyAction } from "redux";
 
-import statusSelectors from "app/store/status/selectors";
+import statusSelectors from "@/app/store/status/selectors";
 
 /**
  * A hook to run a set of actions once on mount and again when the websocket

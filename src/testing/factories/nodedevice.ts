@@ -2,10 +2,10 @@ import { extend } from "cooky-cutter";
 
 import { timestampedModel } from "./model";
 
-import { HardwareType } from "app/base/enum";
-import type { NodeDevice } from "app/store/nodedevice/types";
-import { NodeDeviceBus } from "app/store/nodedevice/types";
-import type { TimestampedModel } from "app/store/types/model";
+import { HardwareType } from "@/app/base/enum";
+import type { NodeDevice } from "@/app/store/nodedevice/types";
+import { NodeDeviceBus } from "@/app/store/nodedevice/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 
 export const nodeDevice = extend<TimestampedModel, NodeDevice>(
   timestampedModel,

@@ -2,14 +2,14 @@ import configureStore from "redux-mock-store";
 
 import ControllerListHeader from "./ControllerListHeader";
 
-import { ControllerSidePanelViews } from "app/controllers/constants";
-import type { RootState } from "app/store/root/types";
+import { ControllerSidePanelViews } from "@/app/controllers/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -33,8 +33,8 @@ describe("ControllerListHeader", () => {
     renderWithBrowserRouter(
       <ControllerListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -47,8 +47,8 @@ describe("ControllerListHeader", () => {
     renderWithBrowserRouter(
       <ControllerListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -62,8 +62,8 @@ describe("ControllerListHeader", () => {
     renderWithBrowserRouter(
       <ControllerListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { state }
     );
@@ -73,11 +73,11 @@ describe("ControllerListHeader", () => {
   });
 
   it("can open the add controller form", async () => {
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <ControllerListHeader
         searchFilter=""
-        setSearchFilter={jest.fn()}
+        setSearchFilter={vi.fn()}
         setSidePanelContent={setSidePanelContent}
       />,
       { state }
@@ -95,8 +95,8 @@ describe("ControllerListHeader", () => {
     const { rerender } = renderWithBrowserRouter(
       <ControllerListHeader
         searchFilter={""}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", store }
     );
@@ -105,8 +105,8 @@ describe("ControllerListHeader", () => {
     rerender(
       <ControllerListHeader
         searchFilter={"free-text"}
-        setSearchFilter={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />
     );
 

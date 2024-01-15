@@ -2,12 +2,12 @@ import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
-import type { Device, DeviceMeta } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
+import type { Device, DeviceMeta } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId?: Device[DeviceMeta.PK] | null;

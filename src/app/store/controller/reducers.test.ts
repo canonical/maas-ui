@@ -9,7 +9,7 @@ import {
   controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
   controllerStatus as controllerStatusFactory,
   controllerState as controllerStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("controller reducers", () => {
   it("should return the initial state", () => {

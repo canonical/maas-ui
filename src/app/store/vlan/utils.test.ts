@@ -5,12 +5,12 @@ import {
   isVLANDetails,
 } from "./utils";
 
-import { VlanVid } from "app/store/vlan/types";
+import { VlanVid } from "@/app/store/vlan/types";
 import {
   fabric as fabricFactory,
   vlan as vlanFactory,
   vlanDetails as vlanDetailsFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("vlan utils", () => {
   describe("getVLANDisplay", () => {

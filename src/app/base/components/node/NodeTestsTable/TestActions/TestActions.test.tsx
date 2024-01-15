@@ -1,30 +1,32 @@
+import type { Mock, SpyInstance } from "vitest";
+
 import TestActions from "./TestActions";
 
-import * as hooks from "app/base/hooks/analytics";
-import urls from "app/base/urls";
+import * as hooks from "@/app/base/hooks/analytics";
+import urls from "@/app/base/urls";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import {
   controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
 };
 
 describe("TestActions", () => {
-  let mockSendAnalytics: jest.Mock;
-  let mockUseSendAnalytics: jest.SpyInstance;
+  let mockSendAnalytics: Mock;
+  let mockUseSendAnalytics: SpyInstance;
 
   beforeEach(() => {
-    mockSendAnalytics = jest.fn();
-    mockUseSendAnalytics = jest
+    mockSendAnalytics = vi.fn();
+    mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
   });
@@ -44,7 +46,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.COMMISSIONING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -69,7 +71,7 @@ describe("TestActions", () => {
         node={controller}
         resultType={ScriptResultType.COMMISSIONING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -93,7 +95,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -118,7 +120,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -136,7 +138,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 
@@ -161,7 +163,7 @@ describe("TestActions", () => {
         node={machine}
         resultType={ScriptResultType.TESTING}
         scriptResult={scriptResult}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
       />
     );
 

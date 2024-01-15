@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import DhcpSnippetType from "./DhcpSnippetType";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerState as controllerStateFactory,
   deviceState as deviceStateFactory,
@@ -15,8 +15,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

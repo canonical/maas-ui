@@ -1,10 +1,10 @@
 import { Button } from "@canonical/react-components";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/machines/views/MachineList/MachineListTable/GroupCheckbox";
-import MachineListGroupCount from "app/machines/views/MachineList/MachineListTable/MachineListGroupCount";
-import type { GroupRowsProps } from "app/machines/views/MachineList/MachineListTable/types";
-import type { MachineStateListGroup } from "app/store/machine/types";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import GroupCheckbox from "@/app/machines/views/MachineList/MachineListTable/GroupCheckbox";
+import MachineListGroupCount from "@/app/machines/views/MachineList/MachineListTable/MachineListGroupCount";
+import type { GroupRowsProps } from "@/app/machines/views/MachineList/MachineListTable/types";
+import type { MachineStateListGroup } from "@/app/store/machine/types";
 
 export enum Label {
   HideGroup = "Hide",

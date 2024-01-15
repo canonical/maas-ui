@@ -5,10 +5,10 @@ import IPMIPowerFields, {
   WORKAROUNDS_FIELD_NAME,
 } from "./IPMIPowerFields";
 
-import type { PowerField } from "app/store/general/types";
-import { PowerFieldType } from "app/store/general/types";
-import { powerField as powerFieldFactory } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import type { PowerField } from "@/app/store/general/types";
+import { PowerFieldType } from "@/app/store/general/types";
+import { powerField as powerFieldFactory } from "@/testing/factories";
+import { render, screen, waitFor } from "@/testing/utils";
 
 let workaroundsField: PowerField;
 beforeEach(() => {
@@ -29,7 +29,7 @@ it("does not render the 'None' choice for the workaround flags field", async () 
       initialValues={{
         power_parameters: { [WORKAROUNDS_FIELD_NAME]: [] },
       }}
-      onSubmit={jest.fn()}
+      onSubmit={vi.fn()}
     >
       <IPMIPowerFields fields={[workaroundsField]} />
     </Formik>

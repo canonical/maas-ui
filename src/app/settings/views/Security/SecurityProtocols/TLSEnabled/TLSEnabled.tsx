@@ -4,12 +4,12 @@ import * as Yup from "yup";
 
 import TLSEnabledFields from "./TLSEnabledFields";
 
-import CertificateMetadata from "app/base/components/CertificateMetadata";
-import FormikForm from "app/base/components/FormikForm";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { TLSExpiryNotificationInterval } from "app/store/config/types";
-import { tlsCertificate as tlsCertificateSelectors } from "app/store/general/selectors";
+import CertificateMetadata from "@/app/base/components/CertificateMetadata";
+import FormikForm from "@/app/base/components/FormikForm";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
+import { TLSExpiryNotificationInterval } from "@/app/store/config/types";
+import { tlsCertificate as tlsCertificateSelectors } from "@/app/store/general/selectors";
 
 export type TLSEnabledValues = {
   notificationEnabled: boolean;

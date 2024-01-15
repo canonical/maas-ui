@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   zone as zoneFactory,
@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { screen, render, within } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 

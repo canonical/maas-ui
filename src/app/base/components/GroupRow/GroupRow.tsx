@@ -1,6 +1,6 @@
 import pluralize from "pluralize";
 
-import DoubleRow from "app/base/components/DoubleRow";
+import DoubleRow from "@/app/base/components/DoubleRow";
 
 export enum Label {
   HideGroup = "Hide",

@@ -1,6 +1,6 @@
 import VisuallyHidden from "./VisuallyHidden";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 it("renders children correctly", () => {
   render(<VisuallyHidden>test content</VisuallyHidden>);

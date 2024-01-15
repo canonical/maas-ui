@@ -3,15 +3,15 @@ import { useState } from "react";
 import { ContextualMenu, Icon } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
-import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
-import type { EmptyObject } from "app/base/types";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import type { Machine } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { StorageLayout } from "app/store/types/enum";
-import { isVMWareLayout } from "app/store/utils";
+import FormCard from "@/app/base/components/FormCard";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { EmptyObject } from "@/app/base/types";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import type { Machine } from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { StorageLayout } from "@/app/store/types/enum";
+import { isVMWareLayout } from "@/app/store/utils";
 
 type StorageLayoutOption = {
   label: string;

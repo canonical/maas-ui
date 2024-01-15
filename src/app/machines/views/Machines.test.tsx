@@ -1,4 +1,4 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -10,16 +10,16 @@ import { Label } from "./MachineList/MachineListTable/GroupColumn";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
 import Machines from "./Machines";
 
-import { actions as machineActions } from "app/store/machine";
-import { FetchGroupKey, FilterGroupKey } from "app/store/machine/types";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import { FetchGroupKey, FilterGroupKey } from "@/app/store/machine/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
   FetchNodeStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -36,18 +36,24 @@ import {
   routerState as routerStateFactory,
   modelRef as modelRefFactory,
   vaultEnabledState as vaultEnabledStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   userEvent as userEventCore,
   within,
   screen,
   render,
-  waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 const mockStore = configureStore<RootState>();
 const userEvent = userEventCore.setup({
-  advanceTimers: jest.runAllTimers,
+  advanceTimers: vi.runAllTimers,
+});
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
 });
 
 describe("Machines", () => {
@@ -194,8 +200,8 @@ describe("Machines", () => {
   });
 
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    vi.useFakeTimers();
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       general: generalStateFactory({
         machineActions: {
@@ -249,8 +255,8 @@ describe("Machines", () => {
 
   afterEach(() => {
     localStorage.clear();
-    jest.restoreAllMocks();
-    jest.useRealTimers();
+    vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("can set the search from the URL", () => {
@@ -284,12 +290,11 @@ describe("Machines", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await waitFor(() => expect(window.location.search).toBe("?status=new"));
+    await vi.waitFor(() => expect(window.location.search).toBe("?status=new"));
   });
 
   it("can hide groups", async () => {
-    jest
-      .spyOn(query, "generateCallId")
+    vi.spyOn(query, "generateCallId")
       .mockReturnValueOnce("123456")
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
@@ -300,14 +305,14 @@ describe("Machines", () => {
     const getFetchActions = () =>
       store.getActions().filter((action) => action.type === expected.type);
     const initialFetchActions = getFetchActions();
-    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await vi.waitFor(() => expect(initialFetchActions).toHaveLength(1));
     // Click the button to toggle the group.
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
       ).getByRole("button", { name: Label.HideGroup })
     );
-    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await vi.waitFor(() => expect(getFetchActions()).toHaveLength(2));
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_collapsed).toStrictEqual([
       "failed_testing",
@@ -315,8 +320,7 @@ describe("Machines", () => {
   });
 
   it("can change groups", async () => {
-    jest
-      .spyOn(reduxToolkit, "nanoid")
+    vi.spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.
@@ -343,13 +347,13 @@ describe("Machines", () => {
     renderWithBrowserRouter(<Machines />, { route: "/machines", store });
 
     const initialFetchActions = getFetchActions();
-    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await vi.waitFor(() => expect(initialFetchActions).toHaveLength(1));
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Group by/i }),
       screen.getByRole("option", { name: "Group by owner" })
     );
-    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await vi.waitFor(() => expect(getFetchActions()).toHaveLength(2));
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_key).toBe(FetchGroupKey.Owner);
   });
@@ -378,7 +382,7 @@ describe("Machines", () => {
 
   it("uses the default fallback value for invalid stored grouping values", async () => {
     localStorage.setItem("grouping", '"invalid_value"');
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(<Machines />, { store });
     expect(screen.getByRole("combobox", { name: /Group by/ })).toHaveValue(
@@ -395,8 +399,7 @@ describe("Machines", () => {
   });
 
   it("can store hidden groups in local storage", async () => {
-    jest
-      .spyOn(query, "generateCallId")
+    vi.spyOn(query, "generateCallId")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
     state.machine.lists = {
@@ -468,7 +471,7 @@ describe("Machines", () => {
 
     await userEvent.click(screen.getByRole("checkbox", { name: "animal (1)" }));
 
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByRole("searchbox")).toHaveValue("workload-animal:()");
     });
 

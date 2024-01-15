@@ -1,13 +1,13 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TooltipButton from "app/base/components/TooltipButton";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { RootState } from "app/store/root/types";
-import type { NetworkInterface } from "app/store/types/node";
-import vlanSelectors from "app/store/vlan/selectors";
-import { getDHCPStatus } from "app/store/vlan/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { RootState } from "@/app/store/root/types";
+import type { NetworkInterface } from "@/app/store/types/node";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { getDHCPStatus } from "@/app/store/vlan/utils";
 
 type Props = {
   nic?: NetworkInterface | null;

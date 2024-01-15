@@ -1,8 +1,8 @@
-import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import type { LicenseKeys } from "app/store/licensekeys/types";
-import type { PackageRepository } from "app/store/packagerepository/types";
-import type { User } from "app/store/user/types";
-import { argPath } from "app/utils";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
+import type { LicenseKeys } from "@/app/store/licensekeys/types";
+import type { PackageRepository } from "@/app/store/packagerepository/types";
+import type { User } from "@/app/store/user/types";
+import { argPath } from "@/app/utils";
 
 const urls = {
   index: "/settings",

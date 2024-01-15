@@ -1,4 +1,4 @@
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 
 export type Selected = {
   linkId?: NetworkLink["id"] | null;

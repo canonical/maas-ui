@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 
 import type { RepositoryFormValues } from "../RepositoryForm/types";
 
-import FormikField from "app/base/components/FormikField";
+import FormikField from "@/app/base/components/FormikField";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
-} from "app/store/general/selectors";
+} from "@/app/store/general/selectors";
 
 type Props = {
   type: "ppa" | "repository";

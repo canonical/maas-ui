@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import { ImageStatus } from "./ImageStatus";
 
-import { ImageSyncStatus } from "app/store/controller/types/enum";
-import type { RootState } from "app/store/root/types";
+import { ImageSyncStatus } from "@/app/store/controller/types/enum";
+import type { RootState } from "@/app/store/root/types";
 import {
   controller as controllerFactory,
   controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
@@ -11,8 +11,8 @@ import {
   controllerStatus as controllerStatusFactory,
   controllerStatuses as controllerStatusesFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

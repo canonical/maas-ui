@@ -1,4 +1,6 @@
-const toolkit = jest.requireActual("@reduxjs/toolkit");
+import { vi } from "vitest";
+
+const toolkit = vi.importActual("@reduxjs/toolkit");
 
 let id = 0;
 

@@ -3,12 +3,12 @@ import { Fragment } from "react";
 
 import { Meter } from "@canonical/maas-react-components";
 
-import Popover from "app/base/components/Popover";
-import { COLOURS } from "app/base/constants";
-import type { KVMStoragePoolResources } from "app/kvm/types";
-import { getSortedPoolsArray } from "app/kvm/utils";
-import type { Pod } from "app/store/pod/types";
-import { formatBytes } from "app/utils";
+import Popover from "@/app/base/components/Popover";
+import { COLOURS } from "@/app/base/constants";
+import type { KVMStoragePoolResources } from "@/app/kvm/types";
+import { getSortedPoolsArray } from "@/app/kvm/utils";
+import type { Pod } from "@/app/store/pod/types";
+import { formatBytes } from "@/app/utils";
 
 type Props = {
   children: ReactNode;

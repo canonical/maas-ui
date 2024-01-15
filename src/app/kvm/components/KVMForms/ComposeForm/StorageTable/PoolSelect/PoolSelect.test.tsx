@@ -4,8 +4,8 @@ import configureStore from "redux-mock-store";
 
 import ComposeForm from "../../ComposeForm";
 
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -25,19 +25,19 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
 const renderComposeForm = (store: MockStore, pod: Pod) =>
   renderWithBrowserRouter(
-    <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+    <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { route: `/kvm/${pod.id}`, store }
   );
 

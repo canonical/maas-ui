@@ -1,4 +1,4 @@
-import type { KeySource, SSHKey } from "app/store/sshkey/types";
+import type { KeySource, SSHKey } from "@/app/store/sshkey/types";
 
 export type SSHKeyFormValues = {
   protocol: KeySource["protocol"];

@@ -1,5 +1,5 @@
-import { Zone } from "app/store/zone/types";
-import { argPath } from "app/utils";
+import type { Zone } from "@/app/store/zone/types";
+import { argPath } from "@/app/utils";
 
 const withId = argPath<{ id: Zone["id"] }>;
 

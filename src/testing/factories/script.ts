@@ -2,9 +2,9 @@ import { extend, random } from "cooky-cutter";
 
 import { timestampedModel } from "./model";
 
-import { ScriptType } from "app/store/script/types";
-import type { Script } from "app/store/script/types";
-import type { TimestampedModel } from "app/store/types/model";
+import { ScriptType } from "@/app/store/script/types";
+import type { Script } from "@/app/store/script/types";
+import type { TimestampedModel } from "@/app/store/types/model";
 
 export const script = extend<TimestampedModel, Script>(timestampedModel, {
   apply_configured_networking: false,

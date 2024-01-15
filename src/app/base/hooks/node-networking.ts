@@ -1,8 +1,8 @@
 import { useCanEdit } from "./node";
 
-import type { Node } from "app/store/types/node";
-import { NodeStatus } from "app/store/types/node";
-import { nodeIsController, nodeIsDevice } from "app/store/utils";
+import type { Node } from "@/app/store/types/node";
+import { NodeStatus } from "@/app/store/types/node";
+import { nodeIsController, nodeIsDevice } from "@/app/store/utils";
 
 /**
  * Check if the networking information can be edited.

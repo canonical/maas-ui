@@ -5,8 +5,8 @@ import {
   podResource as podResourceFactory,
   vmClusterResource as vmClusterResourceFactory,
   vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
-} from "testing/factories";
-import { fireEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { fireEvent, render, screen } from "@/testing/utils";
 
 describe("RAMPopover", () => {
   it("shows if memory is used by any other projects in the group", () => {

@@ -1,52 +1,52 @@
 import type { PropsWithChildren } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 
-import { ControllerSidePanelViews } from "app/controllers/constants";
-import type { ControllerSidePanelContent } from "app/controllers/types";
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { DeviceSidePanelContent } from "app/devices/types";
+import { ControllerSidePanelViews } from "@/app/controllers/constants";
+import type { ControllerSidePanelContent } from "@/app/controllers/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { DeviceSidePanelContent } from "@/app/devices/types";
 import {
   DomainDetailsSidePanelViews,
   type DomainDetailsSidePanelContent,
-} from "app/domains/views/DomainDetails/constants";
+} from "@/app/domains/views/DomainDetails/constants";
 import {
   DomainListSidePanelViews,
   type DomainListSidePanelContent,
-} from "app/domains/views/DomainsList/constants";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { KVMSidePanelContent } from "app/kvm/types";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineSidePanelContent } from "app/machines/types";
+} from "@/app/domains/views/DomainsList/constants";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { KVMSidePanelContent } from "@/app/kvm/types";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineSidePanelContent } from "@/app/machines/types";
 import {
   NetworkDiscoverySidePanelViews,
   type NetworkDiscoverySidePanelContent,
-} from "app/networkDiscovery/views/constants";
+} from "@/app/networkDiscovery/views/constants";
 import {
   SubnetSidePanelViews,
   type SubnetSidePanelContent,
-} from "app/subnets/types";
+} from "@/app/subnets/types";
 import {
   FabricDetailsSidePanelViews,
   type FabricDetailsSidePanelContent,
-} from "app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
+} from "@/app/subnets/views/FabricDetails/FabricDetailsHeader/constants";
 import {
   SpaceDetailsSidePanelViews,
   type SpaceDetailsSidePanelContent,
-} from "app/subnets/views/SpaceDetails/constants";
+} from "@/app/subnets/views/SpaceDetails/constants";
 import {
   SubnetDetailsSidePanelViews,
   type SubnetDetailsSidePanelContent,
-} from "app/subnets/views/SubnetDetails/constants";
+} from "@/app/subnets/views/SubnetDetails/constants";
 import {
   VLANDetailsSidePanelViews,
   type VLANDetailsSidePanelContent,
-} from "app/subnets/views/VLANDetails/constants";
-import { TagSidePanelViews } from "app/tags/constants";
-import type { TagSidePanelContent } from "app/tags/types";
+} from "@/app/subnets/views/VLANDetails/constants";
+import { TagSidePanelViews } from "@/app/tags/constants";
+import type { TagSidePanelContent } from "@/app/tags/types";
 import {
   ZoneActionSidePanelViews,
   type ZoneSidePanelContent,
-} from "app/zones/constants";
+} from "@/app/zones/constants";
 
 export type SidePanelContent =
   | MachineSidePanelContent

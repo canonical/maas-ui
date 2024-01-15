@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
 
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
-import { DeviceIpAssignment } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,
@@ -16,9 +16,9 @@ import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const createNewInterface = async () => {
@@ -79,14 +79,14 @@ describe("AddInterface", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = deviceFactory({ system_id: "abc123" });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddInterface closeForm={jest.fn()} systemId="abc123" />,
+      <AddInterface closeForm={vi.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -96,7 +96,7 @@ describe("AddInterface", () => {
   it("correctly dispatches action to create an interface", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddInterface closeForm={jest.fn()} systemId="abc123" />,
+      <AddInterface closeForm={vi.fn()} systemId="abc123" />,
       { store }
     );
 
@@ -118,7 +118,7 @@ describe("AddInterface", () => {
   });
 
   it("closes the form if there are no errors when creating the interface", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     state.device.errors = null;
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -133,7 +133,7 @@ describe("AddInterface", () => {
   });
 
   it("does not close the form if there is an error when creating the interface", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     state.device.errors = null;
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -141,13 +141,13 @@ describe("AddInterface", () => {
       { store }
     );
     await createNewInterface();
-    const errors = jest.spyOn(deviceSelectors, "eventErrorsForDevices");
+    const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
       deviceEventErrorFactory({
         event: "createInterface",
       }),
     ]);
-    const creatingInterface = jest.spyOn(deviceSelectors, "getStatusForDevice");
+    const creatingInterface = vi.spyOn(deviceSelectors, "getStatusForDevice");
     creatingInterface.mockReturnValue(true);
     store.dispatch({ type: "" });
     creatingInterface.mockReturnValue(false);
@@ -156,7 +156,7 @@ describe("AddInterface", () => {
   });
 
   it("does not close the form if there is an error when submitting the form multiple times", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     state.device.errors = null;
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -164,13 +164,13 @@ describe("AddInterface", () => {
       { store }
     );
     await createNewInterface();
-    const errors = jest.spyOn(deviceSelectors, "eventErrorsForDevices");
+    const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
       deviceEventErrorFactory({
         event: "createInterface",
       }),
     ]);
-    const creatingInterface = jest.spyOn(deviceSelectors, "getStatusForDevice");
+    const creatingInterface = vi.spyOn(deviceSelectors, "getStatusForDevice");
     creatingInterface.mockReturnValue(true);
     store.dispatch({ type: "" });
     creatingInterface.mockReturnValue(false);

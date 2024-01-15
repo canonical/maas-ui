@@ -5,8 +5,8 @@ import configureStore from "redux-mock-store";
 
 import TLSEnabled, { Labels } from "./TLSEnabled";
 
-import { actions as configActions } from "app/store/config";
-import { ConfigNames } from "app/store/config/types";
+import { actions as configActions } from "@/app/store/config";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -14,8 +14,8 @@ import {
   rootState as rootStateFactory,
   tlsCertificate as tlsCertificateFactory,
   tlsCertificateState as tlsCertificateStateFactory,
-} from "testing/factories";
-import { userEvent, fireEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

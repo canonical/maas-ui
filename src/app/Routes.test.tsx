@@ -1,7 +1,9 @@
+import type { Mock } from "vitest";
+
 import Routes from "./Routes";
 import type { RootState } from "./store/root/types";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   rootState as rootStateFactory,
   controller as controllerFactory,
@@ -17,8 +19,8 @@ import {
   zoneState as zoneStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
-} from "testing/factories";
-import { waitFor, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { waitFor, renderWithBrowserRouter } from "@/testing/utils";
 
 const nodeSummaryRoutes: { path: string; name: string }[] = [
   {
@@ -120,6 +122,7 @@ const routes: { title: string; path: string }[] = [
 
 describe("Routes", () => {
   let state: RootState;
+  let scrollToSpy: Mock;
 
   beforeEach(() => {
     state = rootStateFactory({
@@ -166,11 +169,12 @@ describe("Routes", () => {
         ],
       }),
     });
-    global.scrollTo = jest.fn();
+    scrollToSpy = vi.fn();
+    global.scrollTo = scrollToSpy;
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   routes.forEach(({ title, path }) => {

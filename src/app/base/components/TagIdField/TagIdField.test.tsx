@@ -2,9 +2,9 @@ import { Formik } from "formik";
 
 import TagIdField from "./TagIdField";
 
-import type { Tag } from "app/store/tag/types";
-import { tag as tagFactory } from "testing/factories";
-import { screen, render, userEvent } from "testing/utils";
+import type { Tag } from "@/app/store/tag/types";
+import { tag as tagFactory } from "@/testing/factories";
+import { screen, render, userEvent } from "@/testing/utils";
 
 describe("TagIdField", () => {
   let tags: Tag[];
@@ -18,7 +18,7 @@ describe("TagIdField", () => {
 
   it("maps the initial value to the tag format", () => {
     render(
-      <Formik initialValues={{ tags: [2] }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ tags: [2] }} onSubmit={vi.fn()}>
         <TagIdField tagList={tags} />
       </Formik>
     );
@@ -31,7 +31,7 @@ describe("TagIdField", () => {
 
   it("can override the field name", () => {
     render(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagIdField name="wombatTags" tagList={tags} />
       </Formik>
     );
@@ -45,7 +45,7 @@ describe("TagIdField", () => {
 
   it("can populate the list of tags", async () => {
     render(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagIdField tagList={tags} />
       </Formik>
     );

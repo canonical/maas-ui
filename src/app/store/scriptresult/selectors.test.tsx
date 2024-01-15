@@ -1,10 +1,10 @@
 import selectors from "./selectors";
 
-import { HardwareType } from "app/base/enum";
+import { HardwareType } from "@/app/base/enum";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import {
   nodeScriptResultState as nodeScriptResultStateFactory,
   partialScriptResult as partialScriptResultFactory,
@@ -12,7 +12,7 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultData as scriptResultDataFactory,
   scriptResultState as scriptResultStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("scriptResult selectors", () => {
   it("returns all script results", () => {

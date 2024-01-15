@@ -2,7 +2,7 @@ import userEvent from "@testing-library/user-event";
 
 import TableConfirm from "./TableConfirm";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("TableConfirm", () => {
   it("renders", () => {
@@ -12,8 +12,8 @@ describe("TableConfirm", () => {
         finished={false}
         inProgress={false}
         message="...ARE YOU SURE ABOUT THAT?"
-        onClose={jest.fn()}
-        onConfirm={jest.fn()}
+        onClose={vi.fn()}
+        onConfirm={vi.fn()}
       />
     );
     expect(screen.getByText("...ARE YOU SURE ABOUT THAT?")).toBeInTheDocument();
@@ -24,14 +24,14 @@ describe("TableConfirm", () => {
   });
 
   it("can confirm", async () => {
-    const onConfirm = jest.fn();
+    const onConfirm = vi.fn();
     render(
       <TableConfirm
         confirmLabel="save"
         finished={false}
         inProgress={false}
         message="Are you sure"
-        onClose={jest.fn()}
+        onClose={vi.fn()}
         onConfirm={onConfirm}
       />
     );
@@ -41,7 +41,7 @@ describe("TableConfirm", () => {
   });
 
   it("can cancel", async () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     render(
       <TableConfirm
         confirmLabel="save"
@@ -49,7 +49,7 @@ describe("TableConfirm", () => {
         inProgress={false}
         message="Are you sure"
         onClose={onClose}
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
       />
     );
     const cancelButton = screen.getByRole("button", { name: /cancel/i });
@@ -58,7 +58,7 @@ describe("TableConfirm", () => {
   });
 
   it("closes when it has finished", async () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     const { rerender } = render(
       <TableConfirm
         confirmLabel="save"
@@ -66,7 +66,7 @@ describe("TableConfirm", () => {
         inProgress={false}
         message="Are you sure"
         onClose={onClose}
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
       />
     );
     const confirmButton = screen.getByText(/save/i);
@@ -79,22 +79,22 @@ describe("TableConfirm", () => {
         inProgress={false}
         message="Are you sure"
         onClose={onClose}
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
       />
     );
     expect(onClose).toHaveBeenCalled();
   });
 
   it("runs onSuccess function when it has finished", async () => {
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const { rerender } = render(
       <TableConfirm
         confirmLabel="save"
         finished={false}
         inProgress={false}
         message="Are you sure"
-        onClose={jest.fn()}
-        onConfirm={jest.fn()}
+        onClose={vi.fn()}
+        onConfirm={vi.fn()}
         onSuccess={onSuccess}
       />
     );
@@ -107,8 +107,8 @@ describe("TableConfirm", () => {
         finished={true}
         inProgress={false}
         message="Are you sure"
-        onClose={jest.fn()}
-        onConfirm={jest.fn()}
+        onClose={vi.fn()}
+        onConfirm={vi.fn()}
         onSuccess={onSuccess}
       />
     );
@@ -116,7 +116,7 @@ describe("TableConfirm", () => {
   });
 
   it("can display an error", () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     render(
       <TableConfirm
         confirmLabel="save"
@@ -125,14 +125,14 @@ describe("TableConfirm", () => {
         inProgress={false}
         message="Are you sure"
         onClose={onClose}
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
       />
     );
     expect(screen.getByText("It didn't work")).toBeInTheDocument();
   });
 
   it("can display an error for a field", () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     render(
       <TableConfirm
         confirmLabel="save"
@@ -142,7 +142,7 @@ describe("TableConfirm", () => {
         inProgress={false}
         message="Are you sure"
         onClose={onClose}
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
       />
     );
     expect(screen.getByText("It didn't work")).toBeInTheDocument();

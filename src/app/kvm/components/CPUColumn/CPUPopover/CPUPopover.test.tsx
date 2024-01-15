@@ -3,8 +3,8 @@ import CPUPopover from "./CPUPopover";
 import {
   podResource as podResourceFactory,
   vmClusterResource as vmClusterResourceFactory,
-} from "testing/factories";
-import { render, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("CPUPopover", () => {
   it("shows if cores are used by any other projects in the group", async () => {

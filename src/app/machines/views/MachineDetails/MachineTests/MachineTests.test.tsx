@@ -6,27 +6,27 @@ import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
 
-import { HardwareType } from "app/base/enum";
-import type { RootState } from "app/store/root/types";
+import { HardwareType } from "@/app/base/enum";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultType,
   ScriptResultParamType,
-} from "app/store/scriptresult/types";
-import { TestStatusStatus } from "app/store/types/node";
+} from "@/app/store/scriptresult/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
-jest.mock("@canonical/react-components/dist/hooks", () => {
-  const hooks = jest.requireActual("@canonical/react-components/dist/hooks");
+vi.mock("@canonical/react-components/dist/hooks", () => {
+  const hooks = vi.importActual("@canonical/react-components/dist/hooks");
   return {
     ...hooks,
-    usePrevious: jest.fn(),
+    usePrevious: vi.fn(),
   };
 });
 
@@ -278,9 +278,9 @@ describe("MachineTests", () => {
 
   it("refetchs script results when the machine testing status changes", () => {
     // Mock the previous value to something different to the current machine.
-    jest
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => TestStatusStatus.PASSED);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+      () => TestStatusStatus.PASSED
+    );
     state.machine.items = [
       machineDetailsFactory({
         locked: false,

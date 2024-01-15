@@ -2,8 +2,8 @@ import { extend, random } from "cooky-cutter";
 
 import { model } from "./model";
 
-import type { Discovery } from "app/store/discovery/types";
-import type { Model } from "app/store/types/model";
+import type { Discovery } from "@/app/store/discovery/types";
+import type { Model } from "@/app/store/types/model";
 
 export const discovery = extend<Model, Discovery>(model, {
   discovery_id: () => `discovery-${random()}`,

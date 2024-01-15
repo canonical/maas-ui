@@ -5,16 +5,16 @@ import { Link } from "react-router-dom-v5-compat";
 
 import ChangeStorageLayout from "./ChangeStorageLayout";
 
-import StorageTables from "app/base/components/node/StorageTables";
-import docsUrls from "app/base/docsUrls";
-import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import settingsURLs from "app/settings/urls";
-import machineSelectors from "app/store/machine/selectors";
-import { MachineMeta } from "app/store/machine/types";
-import { isMachineDetails, useCanEditStorage } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { isId } from "app/utils";
+import StorageTables from "@/app/base/components/node/StorageTables";
+import docsUrls from "@/app/base/docsUrls";
+import { useSendAnalytics, useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import settingsURLs from "@/app/settings/urls";
+import machineSelectors from "@/app/store/machine/selectors";
+import { MachineMeta } from "@/app/store/machine/types";
+import { isMachineDetails, useCanEditStorage } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { isId } from "@/app/utils";
 
 const MachineStorage = (): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);

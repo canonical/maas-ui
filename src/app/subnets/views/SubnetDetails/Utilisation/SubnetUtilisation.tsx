@@ -1,8 +1,8 @@
 import { Row, Col } from "@canonical/react-components";
 
-import Definition from "app/base/components/Definition";
-import TitledSection from "app/base/components/TitledSection";
-import type { SubnetStatistics } from "app/store/subnet/types";
+import Definition from "@/app/base/components/Definition";
+import TitledSection from "@/app/base/components/TitledSection";
+import type { SubnetStatistics } from "@/app/store/subnet/types";
 
 type Props = {
   statistics: SubnetStatistics;

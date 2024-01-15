@@ -3,9 +3,9 @@ import { useFormikContext } from "formik";
 
 import type { MaasIntroValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import docsUrls from "app/base/docsUrls";
-import IntroCard from "app/intro/components/IntroCard";
+import FormikField from "@/app/base/components/FormikField";
+import docsUrls from "@/app/base/docsUrls";
+import IntroCard from "@/app/intro/components/IntroCard";
 
 export enum Labels {
   Welcome = "Welcome to MAAS",

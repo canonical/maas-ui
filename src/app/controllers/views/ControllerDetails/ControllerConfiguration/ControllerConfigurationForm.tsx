@@ -3,27 +3,27 @@ import { useCallback } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import Definition from "app/base/components/Definition";
-import EditableSection from "app/base/components/EditableSection";
-import FormikForm from "app/base/components/FormikForm";
+import Definition from "@/app/base/components/Definition";
+import EditableSection from "@/app/base/components/EditableSection";
+import FormikForm from "@/app/base/components/FormikForm";
 import NodeConfigurationFields, {
   NodeConfigurationSchema,
-} from "app/base/components/NodeConfigurationFields";
-import type { NodeConfigurationValues } from "app/base/components/NodeConfigurationFields";
-import TagLinks from "app/base/components/TagLinks";
-import { useFetchActions, useCanEdit } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
+} from "@/app/base/components/NodeConfigurationFields";
+import type { NodeConfigurationValues } from "@/app/base/components/NodeConfigurationFields";
+import TagLinks from "@/app/base/components/TagLinks";
+import { useFetchActions, useCanEdit } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as controllerActions } from "@/app/store/controller";
+import controllerSelectors from "@/app/store/controller/selectors";
 import {
   FilterControllers,
   isControllerDetails,
-} from "app/store/controller/utils";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
+} from "@/app/store/controller/utils";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = { systemId: MachineDetails["system_id"] };
 

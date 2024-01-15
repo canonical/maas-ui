@@ -1,7 +1,7 @@
 import type { Position } from "@canonical/react-components/dist/components/Tooltip/Tooltip";
 
-import ScriptStatus from "app/base/components/ScriptStatus";
-import { TestStatusStatus } from "app/store/types/node";
+import ScriptStatus from "@/app/base/components/ScriptStatus";
+import { TestStatusStatus } from "@/app/store/types/node";
 
 type Props = {
   children: React.ReactNode;

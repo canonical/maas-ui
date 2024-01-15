@@ -3,18 +3,18 @@ import ScriptRunTime from "./ScriptRunTime";
 import {
   ScriptResultStatus,
   ScriptResultEstimated,
-} from "app/store/scriptresult/types";
-import { scriptResult as scriptResultFactory } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+} from "@/app/store/scriptresult/types";
+import { scriptResult as scriptResultFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 describe("ScriptRunTime", () => {
   beforeEach(() => {
-    jest
-      .useFakeTimers("modern")
-      .setSystemTime(new Date("Thu Apr 01 2021 05:21:58 GMT+0000").getTime());
+    vi.useFakeTimers().setSystemTime(
+      new Date("Thu Apr 01 2021 05:21:58 GMT+0000").getTime()
+    );
   });
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it("displays the elapsed time when running and runtime is not known", () => {
@@ -76,8 +76,8 @@ describe("ScriptRunTime", () => {
     });
     render(<ScriptRunTime scriptResult={scriptResult} />);
     expect(screen.getByText(/0:05:00/i)).toBeInTheDocument();
-    jest.advanceTimersByTime(1000);
-    await waitFor(() =>
+    vi.advanceTimersByTime(1000);
+    await vi.waitFor(() =>
       expect(screen.getByText(/0:05:01/i)).toBeInTheDocument()
     );
   });

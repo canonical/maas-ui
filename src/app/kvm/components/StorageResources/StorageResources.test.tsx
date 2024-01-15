@@ -1,7 +1,7 @@
 import StorageResources from "./StorageResources";
 
-import { podStoragePoolResource as storagePoolResourceFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { podStoragePoolResource as storagePoolResourceFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 describe("StorageResources", () => {
   it("displays as a meter if there is only one pool", () => {

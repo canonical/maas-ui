@@ -1,8 +1,8 @@
 import pluralize from "pluralize";
 
-import LabelledList from "app/base/components/LabelledList";
-import Placeholder from "app/base/components/Placeholder";
-import type { MachineDetails } from "app/store/machine/types";
+import LabelledList from "@/app/base/components/LabelledList";
+import Placeholder from "@/app/base/components/Placeholder";
+import type { MachineDetails } from "@/app/store/machine/types";
 
 type Props = {
   machine: MachineDetails | null;

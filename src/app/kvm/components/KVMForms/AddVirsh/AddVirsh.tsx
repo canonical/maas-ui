@@ -7,26 +7,26 @@ import * as Yup from "yup";
 
 import AddVirshFields from "./AddVirshFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useFetchActions, useAddMessage } from "app/base/hooks";
-import type { ClearSidePanelContent } from "app/base/types";
-import { actions as generalActions } from "app/store/general";
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import { PowerFieldScope } from "app/store/general/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import type { ClearSidePanelContent } from "@/app/base/types";
+import { actions as generalActions } from "@/app/store/general";
+import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
+import { PowerFieldScope } from "@/app/store/general/types";
 import {
   formatPowerParameters,
   generatePowerParametersSchema,
   useInitialPowerParameters,
-} from "app/store/general/utils";
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { PowerParameters } from "app/store/types/node";
-import { actions as zoneActions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
+} from "@/app/store/general/utils";
+import { actions as podActions } from "@/app/store/pod";
+import { PodType } from "@/app/store/pod/constants";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
+import type { PowerParameters } from "@/app/store/types/node";
+import { actions as zoneActions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;

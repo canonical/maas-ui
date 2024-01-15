@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import MachineListControls from "../MachineListControls";
 import type { useResponsiveColumns } from "../hooks";
 
-import { useFetchActions } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
-import type { FetchGroupKey } from "app/store/machine/types";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
+import { useFetchActions } from "@/app/base/hooks";
+import type { SetSearchFilter } from "@/app/base/types";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FetchGroupKey } from "@/app/store/machine/types";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 
 type Props = {
   grouping: FetchGroupKey | null;

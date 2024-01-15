@@ -5,17 +5,17 @@ import { useSelector } from "react-redux";
 
 import ServiceStatus from "./ServiceStatus";
 
-import { useFetchActions } from "app/base/hooks";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
-import { actions as serviceActions } from "app/store/service";
-import serviceSelectors from "app/store/service/selectors";
-import type { Service } from "app/store/service/types";
+import { useFetchActions } from "@/app/base/hooks";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
+import { actions as serviceActions } from "@/app/store/service";
+import serviceSelectors from "@/app/store/service/selectors";
+import type { Service } from "@/app/store/service/types";
 import {
   ServiceName,
   ServiceStatus as ServiceStatusName,
-} from "app/store/service/types";
-import { NodeType } from "app/store/types/node";
+} from "@/app/store/service/types";
+import { NodeType } from "@/app/store/types/node";
 
 type Props = {
   controller: ControllerDetails;

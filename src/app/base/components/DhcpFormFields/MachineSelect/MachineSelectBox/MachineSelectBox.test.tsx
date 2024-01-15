@@ -2,29 +2,28 @@ import configureStore from "redux-mock-store";
 
 import MachineSelectBox from "./MachineSelectBox";
 
-import { DEFAULT_DEBOUNCE_INTERVAL } from "app/base/components/DebounceSearchBox/DebounceSearchBox";
-import { actions as machineActions } from "app/store/machine";
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-import { userEvent, screen, waitFor, renderWithMockStore } from "testing/utils";
+import { DEFAULT_DEBOUNCE_INTERVAL } from "@/app/base/components/DebounceSearchBox/DebounceSearchBox";
+import { actions as machineActions } from "@/app/store/machine";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 beforeEach(() => {
-  jest
-    .spyOn(query, "generateCallId")
+  vi.spyOn(query, "generateCallId")
     .mockReturnValueOnce("mocked-nanoid-1")
     .mockReturnValueOnce("mocked-nanoid-2");
-  jest.useFakeTimers();
+  vi.useFakeTimers();
 });
 afterEach(() => {
-  jest.restoreAllMocks();
-  jest.useRealTimers();
+  vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 it("displays a listbox and a search input field", async () => {
-  renderWithMockStore(<MachineSelectBox onSelect={jest.fn()} />);
+  renderWithMockStore(<MachineSelectBox onSelect={vi.fn()} />);
 
   expect(screen.getByRole("listbox")).toBeInTheDocument();
 });
@@ -32,7 +31,7 @@ it("displays a listbox and a search input field", async () => {
 it("fetches machines on mount", async () => {
   const state = rootStateFactory();
   const store = mockStore(state);
-  renderWithMockStore(<MachineSelectBox onSelect={jest.fn()} />, {
+  renderWithMockStore(<MachineSelectBox onSelect={vi.fn()} />, {
     store,
   });
 
@@ -55,11 +54,11 @@ it("fetches machines on mount", async () => {
 it("requests machines filtered by the free text input value", async () => {
   const state = rootStateFactory();
   const store = mockStore(state);
-  renderWithMockStore(<MachineSelectBox onSelect={jest.fn()} />, {
+  renderWithMockStore(<MachineSelectBox onSelect={vi.fn()} />, {
     store,
   });
 
-  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+  const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
   await user.type(screen.getByRole("combobox"), "test-machine");
   const expectedActionParams = {
     group_collapsed: undefined,
@@ -77,10 +76,10 @@ it("requests machines filtered by the free text input value", async () => {
     filter: { free_text: "test-machine" },
     ...expectedActionParams,
   });
-  await waitFor(() => {
-    jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
-  });
-  await waitFor(() =>
+
+  vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+
+  await vi.waitFor(() =>
     expect(
       store.getActions().filter((action) => action.type === expectedAction.type)
         .length

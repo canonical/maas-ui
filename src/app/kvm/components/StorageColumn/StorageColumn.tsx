@@ -1,8 +1,8 @@
 import StoragePopover from "./StoragePopover";
 
-import KVMResourceMeter from "app/kvm/components/KVMResourceMeter";
-import type { KVMResource, KVMStoragePoolResources } from "app/kvm/types";
-import type { Pod } from "app/store/pod/types";
+import KVMResourceMeter from "@/app/kvm/components/KVMResourceMeter";
+import type { KVMResource, KVMStoragePoolResources } from "@/app/kvm/types";
+import type { Pod } from "@/app/store/pod/types";
 
 type Props = {
   defaultPoolId?: Pod["default_storage_pool"];

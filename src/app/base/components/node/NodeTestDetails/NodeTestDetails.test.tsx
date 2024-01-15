@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import NodeTestDetails from "./NodeTestDetails";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
@@ -10,8 +10,8 @@ import {
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
   scriptResultState as scriptResultStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const getReturnPath = (id: string) => `/some/url/${id}`;

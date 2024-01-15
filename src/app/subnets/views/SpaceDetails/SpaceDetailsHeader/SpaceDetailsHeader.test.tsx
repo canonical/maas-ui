@@ -8,13 +8,13 @@ import { SpaceDetailsSidePanelViews } from "../constants";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, userEvent } from "@/testing/utils";
 
 const renderTestCase = (
   space = spaceFactory({
@@ -32,7 +32,7 @@ const renderTestCase = (
       loading: false,
     }),
   });
-  const setSidePanelContent = jest.fn();
+  const setSidePanelContent = vi.fn();
   const store = configureStore()(state);
   return {
     history,

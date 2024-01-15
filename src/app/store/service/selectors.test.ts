@@ -4,7 +4,7 @@ import {
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 it("can get all items", () => {
   const items = [serviceFactory(), serviceFactory()];

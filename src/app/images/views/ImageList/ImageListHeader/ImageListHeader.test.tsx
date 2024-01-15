@@ -4,17 +4,17 @@ import ImageListHeader, {
   Labels as ImageListHeaderLabels,
 } from "./ImageListHeader";
 
-import { actions as configActions } from "app/store/config";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { actions as configActions } from "@/app/store/config";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

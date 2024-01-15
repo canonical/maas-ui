@@ -1,7 +1,7 @@
 import SecondaryNavigation from "./SecondaryNavigation";
 import type { NavItem } from "./SecondaryNavigation";
 
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("SecondaryNavigation", () => {
   const navItems: NavItem[] = [

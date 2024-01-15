@@ -1,8 +1,8 @@
 import LXDClusterHosts from "./LXDClusterHosts";
 
-import urls from "app/base/urls";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -10,8 +10,8 @@ import {
   vmCluster as vmClusterFactory,
   vmHost as vmHostFactory,
   vmClusterState as vmClusterStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("LXDClusterHosts", () => {
   let state: RootState;
@@ -40,7 +40,7 @@ describe("LXDClusterHosts", () => {
   it("displays a spinner if pods haven't loaded", () => {
     state.pod.loaded = false;
     renderWithBrowserRouter(
-      <LXDClusterHosts clusterId={1} setSidePanelContent={jest.fn()} />,
+      <LXDClusterHosts clusterId={1} setSidePanelContent={vi.fn()} />,
       {
         route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
         routePattern: `${urls.kvm.index}/*`,

@@ -2,14 +2,14 @@ import configureStore from "redux-mock-store";
 
 import MachineUSBDevices from "./MachineUSBDevices";
 
-import { actions as nodeDeviceActions } from "app/store/nodedevice";
-import type { RootState } from "app/store/root/types";
+import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -26,7 +26,7 @@ describe("MachineUSBDevices", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineUSBDevices setSidePanelContent={jest.fn()} />,
+      <MachineUSBDevices setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/usb-devices",
         routePattern: "/machine/:id/usb-devices",

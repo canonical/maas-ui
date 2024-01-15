@@ -6,10 +6,10 @@ import {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
-} from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+} from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   bondOptions as bondOptionsFactory,
   fabric as fabricFactory,
@@ -24,13 +24,13 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -95,10 +95,10 @@ describe("EditBondForm", () => {
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
     renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={selected}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", state }
@@ -128,10 +128,10 @@ describe("EditBondForm", () => {
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
     renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={selected}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", state }
@@ -192,10 +192,10 @@ describe("EditBondForm", () => {
     ];
     renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", state }
@@ -236,10 +236,10 @@ describe("EditBondForm", () => {
     ];
     const { rerender } = renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", state }
@@ -250,10 +250,10 @@ describe("EditBondForm", () => {
     await userEvent.click(screen.getByTestId("edit-members"));
     rerender(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />
     );
@@ -286,10 +286,10 @@ describe("EditBondForm", () => {
     nic.parents = [interfaces[0].id, interfaces[1].id];
     const { rerender } = renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", state }
@@ -301,14 +301,14 @@ describe("EditBondForm", () => {
     // Select an extra interface.
     rerender(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={[
           { nicId: interfaces[0].id },
           { nicId: interfaces[1].id },
           { nicId: interfaces[2].id },
         ]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />
     );
@@ -321,10 +321,10 @@ describe("EditBondForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", store }
@@ -340,10 +340,10 @@ describe("EditBondForm", () => {
     state.vlan.loaded = false;
     renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         nic={nic}
         selected={[]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", state }
@@ -400,11 +400,11 @@ describe("EditBondForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBondForm
-        close={jest.fn()}
+        close={vi.fn()}
         link={link}
         nic={bond}
         selected={[{ nicId: 9 }, { nicId: 10 }]}
-        setSelected={jest.fn()}
+        setSelected={vi.fn()}
         systemId="abc123"
       />,
       { route: "/machines", store }

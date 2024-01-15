@@ -3,16 +3,21 @@ import timezoneMock from "timezone-mock";
 
 import ImagesTable, { Labels as ImagesTableLabels } from "./ImagesTable";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as resourceFactory,
   bootResourceState as bootResourceStateFactory,
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 beforeEach(() => {
   MockDate.set("Fri, 18 Nov. 2022 10:55:00");
@@ -139,7 +144,7 @@ describe("ImagesTable", () => {
   });
 
   it("can clear an image that has been selected", async () => {
-    const handleClear = jest.fn();
+    const handleClear = vi.fn();
     const image = {
       arch: "arch",
       os: "os",
@@ -159,7 +164,7 @@ describe("ImagesTable", () => {
 
   it(`can not clear a selected image if it is the last image that uses the
     default commissioning release`, () => {
-    const handleClear = jest.fn();
+    const handleClear = vi.fn();
     const image = {
       arch: "amd64",
       os: "ubuntu",
@@ -482,7 +487,7 @@ describe("ImagesTable", () => {
     const unsupported_resource = resourceFactory({ canDeployToMemory: false });
     renderWithMockStore(
       <ImagesTable
-        handleClear={jest.fn()}
+        handleClear={vi.fn()}
         images={[]}
         resources={[supported_resource, unsupported_resource]}
       />,

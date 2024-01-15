@@ -6,7 +6,7 @@ import ConnectivityCard, {
   Labels as ConnectivityCardLabels,
 } from "./ConnectivityCard";
 
-import { userEvent, screen, render } from "testing/utils";
+import { userEvent, screen, render } from "@/testing/utils";
 
 const renderTestCase = () =>
   render(
@@ -17,7 +17,7 @@ const renderTestCase = () =>
         portsArchiveUrl: "http://www.portsarchive.com",
         upstreamDns: "8.8.8.8",
       }}
-      onSubmit={jest.fn()}
+      onSubmit={vi.fn()}
       validationSchema={MaasIntroSchema}
     >
       <ConnectivityCard />

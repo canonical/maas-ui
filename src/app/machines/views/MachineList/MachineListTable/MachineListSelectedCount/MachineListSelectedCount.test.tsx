@@ -2,14 +2,14 @@ import configureStore from "redux-mock-store";
 
 import MachineListSelectedCount from "./MachineListSelectedCount";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   screen,
   renderWithMockStore,
   getTestState,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

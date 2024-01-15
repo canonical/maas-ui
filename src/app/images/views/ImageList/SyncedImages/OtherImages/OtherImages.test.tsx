@@ -5,20 +5,20 @@ import configureStore from "redux-mock-store";
 
 import OtherImages, { Labels as OtherImagesLabels } from "./OtherImages";
 
-import { actions as bootResourceActions } from "app/store/bootresource";
-import type { RootState } from "app/store/root/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceOtherImage as otherImageFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

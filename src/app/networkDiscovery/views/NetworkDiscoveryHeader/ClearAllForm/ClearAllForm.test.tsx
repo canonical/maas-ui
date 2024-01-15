@@ -2,21 +2,16 @@ import configureStore from "redux-mock-store";
 
 import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
-import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import {
-  userEvent,
-  screen,
-  waitFor,
-  renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -56,7 +51,7 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/network-discovery",
       state,
     });
@@ -72,7 +67,7 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/network-discovery",
       state,
     });
@@ -81,7 +76,7 @@ describe("ClearAllForm", () => {
 
   it("dispatches an action to clear the discoveries", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/network-discovery",
       store,
     });
@@ -97,7 +92,7 @@ describe("ClearAllForm", () => {
     mockFormikFormSaved();
 
     const store = mockStore(state);
-    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+    renderWithBrowserRouter(<ClearAllForm closeForm={vi.fn()} />, {
       route: "/network-discovery",
       store,
     });
@@ -105,7 +100,7 @@ describe("ClearAllForm", () => {
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(
         store.getActions().some(({ type }) => type === "message/add")
       ).toBe(true);

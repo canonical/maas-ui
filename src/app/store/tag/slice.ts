@@ -5,12 +5,12 @@ import { TagMeta } from "./types";
 import type { TagState, CreateParams, UpdateParams } from "./types";
 import type { Tag, TagStateList } from "./types/base";
 
-import type { FetchFilters } from "app/store/machine/types/actions";
-import type { GenericMeta } from "app/store/utils/slice";
+import type { FetchFilters } from "@/app/store/machine/types/actions";
+import type { GenericMeta } from "@/app/store/utils/slice";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const DEFAULT_LIST_STATE = {
   errors: null,

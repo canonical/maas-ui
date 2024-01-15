@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import DeviceName from "./DeviceName";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -12,8 +12,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -48,7 +48,7 @@ describe("DeviceName", () => {
   it("can update a device with the new name and domain", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeviceName editingName={true} id="abc123" setEditingName={jest.fn()} />,
+      <DeviceName editingName={true} id="abc123" setEditingName={vi.fn()} />,
       { route: "/device/abc123", store }
     );
 

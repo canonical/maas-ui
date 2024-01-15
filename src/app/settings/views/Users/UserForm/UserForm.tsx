@@ -3,15 +3,15 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import FormCard from "app/base/components/FormCard";
-import BaseUserForm from "app/base/components/UserForm";
-import type { Props as UserFormProps } from "app/base/components/UserForm/UserForm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import settingsURLs from "app/settings/urls";
-import { actions as authActions } from "app/store/auth";
-import { actions as userActions } from "app/store/user";
-import userSelectors from "app/store/user/selectors";
-import type { User } from "app/store/user/types";
+import FormCard from "@/app/base/components/FormCard";
+import BaseUserForm from "@/app/base/components/UserForm";
+import type { Props as UserFormProps } from "@/app/base/components/UserForm/UserForm";
+import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import settingsURLs from "@/app/settings/urls";
+import { actions as authActions } from "@/app/store/auth";
+import { actions as userActions } from "@/app/store/user";
+import userSelectors from "@/app/store/user/selectors";
+import type { User } from "@/app/store/user/types";
 
 export enum Labels {
   Save = "Save user",

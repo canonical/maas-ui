@@ -2,14 +2,14 @@ import configureStore from "redux-mock-store";
 
 import MachinePCIDevices from "./MachinePCIDevices";
 
-import { actions as nodeDeviceActions } from "app/store/nodedevice";
-import type { RootState } from "app/store/root/types";
+import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -26,7 +26,7 @@ describe("MachinePCIDevices", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachinePCIDevices setSidePanelContent={jest.fn()} />,
+      <MachinePCIDevices setSidePanelContent={vi.fn()} />,
       {
         route: "/machine/abc123/pci-devices",
         routePattern: "/machine/:id/pci-devices",

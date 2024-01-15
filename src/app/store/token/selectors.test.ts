@@ -4,7 +4,7 @@ import {
   rootState as rootStateFactory,
   token as tokenFactory,
   tokenState as tokenStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("token selectors", () => {
   describe("all", () => {

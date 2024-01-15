@@ -4,15 +4,15 @@ import AddAliasOrVlan, {
   Labels as AddAliasOrVlanLabels,
 } from "./AddAliasOrVlan";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
-import type { NetworkInterface } from "app/store/types/node";
+} from "@/app/store/types/node";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -28,13 +28,13 @@ import {
   testStatus as testStatusFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   renderWithBrowserRouter,
   expectTooltipOnHover,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;
@@ -104,7 +104,7 @@ describe("AddAliasOrVlan", () => {
     state.machine.items = [];
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         systemId="abc123"
       />,
@@ -116,7 +116,7 @@ describe("AddAliasOrVlan", () => {
   it("displays a save-another button for aliases", () => {
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"
@@ -146,7 +146,7 @@ describe("AddAliasOrVlan", () => {
     ];
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -164,7 +164,7 @@ describe("AddAliasOrVlan", () => {
     state.vlan.items = [];
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -209,7 +209,7 @@ describe("AddAliasOrVlan", () => {
     });
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"
@@ -230,7 +230,7 @@ describe("AddAliasOrVlan", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.VLAN}
         nic={nic}
         systemId="abc123"
@@ -295,7 +295,7 @@ describe("AddAliasOrVlan", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddAliasOrVlan
-        close={jest.fn()}
+        close={vi.fn()}
         interfaceType={NetworkInterfaceTypes.ALIAS}
         nic={nic}
         systemId="abc123"

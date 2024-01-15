@@ -19,4 +19,4 @@ export const generateName = (name?: string) =>
   `cy-${name ? `${name}-` : ""}${generateId()}`;
 
 export const generateMAASURL = (route?: string): string =>
-  `${Cypress.env("BASENAME")}${Cypress.env("REACT_BASENAME")}${route || ""}`;
+  `${Cypress.env("BASENAME")}${Cypress.env("VITE_BASENAME")}${route || ""}`;

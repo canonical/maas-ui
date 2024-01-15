@@ -2,11 +2,11 @@ import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { actions as spaceActions } from "app/store/space";
-import spaceSelectors from "app/store/space/selectors";
-import type { Space } from "app/store/space/types";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { actions as spaceActions } from "@/app/store/space";
+import spaceSelectors from "@/app/store/space/selectors";
+import type { Space } from "@/app/store/space/types";
 
 export type SpaceSummaryValues = Pick<Space, "name" | "description">;
 const spaceSummaryFormSchema = Yup.object().shape({

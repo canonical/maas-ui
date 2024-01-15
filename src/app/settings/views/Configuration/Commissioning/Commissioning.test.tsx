@@ -7,15 +7,15 @@ import { Labels as CommissioningFormLabels } from "../CommissioningForm/Commissi
 
 import Commissioning, { Labels as CommissioningLabels } from "./Commissioning";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 

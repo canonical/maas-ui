@@ -2,14 +2,14 @@ import { Formik } from "formik";
 
 import VLANSelect from "./VLANSelect";
 
-import type { RootState } from "app/store/root/types";
-import { VlanVid } from "app/store/vlan/types";
+import type { RootState } from "@/app/store/root/types";
+import { VlanVid } from "@/app/store/vlan/types";
 import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, within } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 describe("VLANSelect", () => {
   let state: RootState;
@@ -28,7 +28,7 @@ describe("VLANSelect", () => {
   it("shows a spinner if the vlans haven't loaded", () => {
     state.vlan.loaded = false;
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect name="vlan" showSpinnerOnLoad />
       </Formik>,
       { state }
@@ -39,7 +39,7 @@ describe("VLANSelect", () => {
 
   it("displays the vlan options", () => {
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect name="vlan" />
       </Formik>,
       { state }
@@ -61,7 +61,7 @@ describe("VLANSelect", () => {
       value: "99",
     };
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect defaultOption={defaultOption} name="vlan" />
       </Formik>,
       { state }
@@ -77,7 +77,7 @@ describe("VLANSelect", () => {
   it("can hide the default option", () => {
     state.vlan.items = [];
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect defaultOption={null} name="vlan" />
       </Formik>,
       { state }
@@ -87,7 +87,7 @@ describe("VLANSelect", () => {
 
   it("filter the vlans by fabric", () => {
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect fabric={3} name="vlan" />
       </Formik>,
       { state }
@@ -110,7 +110,7 @@ describe("VLANSelect", () => {
       vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
     ];
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect includeDefaultVlan={false} name="vlan" />
       </Formik>,
       { state }
@@ -130,7 +130,7 @@ describe("VLANSelect", () => {
 
   it("can generate the vlan names", () => {
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect generateName={(vlan) => `name: ${vlan.name}`} name="vlan" />
       </Formik>,
       { state }
@@ -152,7 +152,7 @@ describe("VLANSelect", () => {
       vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
     ];
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect name="vlan" />
       </Formik>,
       { state }
@@ -174,7 +174,7 @@ describe("VLANSelect", () => {
       vlanFactory({ id: 2, vid: VlanVid.UNTAGGED, fabric: 4 }),
     ];
     renderWithMockStore(
-      <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
         <VLANSelect name="vlan" />
       </Formik>,
       { state }

@@ -2,19 +2,19 @@ import configureStore from "redux-mock-store";
 
 import MachineListControls from "./MachineListControls";
 
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -42,7 +42,7 @@ describe("MachineListControls", () => {
   });
 
   it("changes the filter when the filter accordion changes", async () => {
-    const setFilter = jest.fn();
+    const setFilter = vi.fn();
     renderWithBrowserRouter(
       <MachineListControls
         filter=""
@@ -51,10 +51,10 @@ describe("MachineListControls", () => {
         machineCount={1}
         resourcePoolsCount={1}
         setFilter={setFilter}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines?q=test+search", state: initialState }
     );
@@ -74,11 +74,11 @@ describe("MachineListControls", () => {
         hiddenColumns={[]}
         machineCount={1}
         resourcePoolsCount={1}
-        setFilter={jest.fn()}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", state: initialState }
     );
@@ -120,11 +120,11 @@ describe("MachineListControls", () => {
         hiddenColumns={[]}
         machineCount={1}
         resourcePoolsCount={1}
-        setFilter={jest.fn()}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", state: initialState }
     );
@@ -161,11 +161,11 @@ describe("MachineListControls", () => {
         hiddenColumns={[]}
         machineCount={1}
         resourcePoolsCount={1}
-        setFilter={jest.fn()}
-        setGrouping={jest.fn()}
-        setHiddenColumns={jest.fn()}
-        setHiddenGroups={jest.fn()}
-        setSidePanelContent={jest.fn()}
+        setFilter={vi.fn()}
+        setGrouping={vi.fn()}
+        setHiddenColumns={vi.fn()}
+        setHiddenGroups={vi.fn()}
+        setSidePanelContent={vi.fn()}
       />,
       { route: "/machines", store }
     );

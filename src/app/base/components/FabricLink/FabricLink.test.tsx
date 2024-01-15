@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import FabricLink, { Labels } from "./FabricLink";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

@@ -2,8 +2,8 @@ import { Label as APIKeyFormLabels } from "../APIKeyForm/APIKeyForm";
 
 import { APIKeyAdd } from "./APIKeyAdd";
 
-import type { RootState } from "app/store/root/types";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import type { RootState } from "@/app/store/root/types";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("APIKeyAdd", () => {
   let state: RootState;

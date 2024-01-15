@@ -1,7 +1,7 @@
 import type { SagaGenerator } from "typed-redux-saga";
 import { call } from "typed-redux-saga";
 
-import { fileContextStore } from "app/base/file-context";
+import { fileContextStore } from "@/app/base/file-context";
 import type {
   WebSocketAction,
   WebSocketRequest,

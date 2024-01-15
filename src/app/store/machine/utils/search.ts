@@ -1,9 +1,9 @@
 import fastDeepEqual from "fast-deep-equal";
 
-import type { FetchFilters } from "app/store/machine/types";
-import type { Tag } from "app/store/tag/types";
-import type { FilterValue } from "app/utils/search/filter-handlers";
-import FilterHandlers from "app/utils/search/filter-handlers";
+import type { FetchFilters } from "@/app/store/machine/types";
+import type { Tag } from "@/app/store/tag/types";
+import type { FilterValue } from "@/app/utils/search/filter-handlers";
+import FilterHandlers from "@/app/utils/search/filter-handlers";
 
 export type ExtraData = {
   tags: Tag[];

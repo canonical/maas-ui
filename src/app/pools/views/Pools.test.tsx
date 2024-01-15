@@ -3,15 +3,15 @@ import { Label as PoolEditLabel } from "./PoolEdit/PoolEdit";
 import { Label as PoolListLabel } from "./PoolList/PoolList";
 import Pools from "./Pools";
 
-import urls from "app/base/urls";
-import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
+import type { RootState } from "@/app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("Pools", () => {
   let state: RootState;

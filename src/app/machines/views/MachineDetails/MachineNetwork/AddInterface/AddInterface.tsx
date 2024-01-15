@@ -11,27 +11,27 @@ import {
 } from "../NetworkFields/NetworkFields";
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
-import FormCard from "app/base/components/FormCard";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import MacAddressField from "app/base/components/MacAddressField";
-import TagNameField from "app/base/components/TagNameField";
-import { useScrollOnRender } from "app/base/hooks";
-import { MAC_ADDRESS_REGEX } from "app/base/validation";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+import FormCard from "@/app/base/components/FormCard";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import MacAddressField from "@/app/base/components/MacAddressField";
+import TagNameField from "@/app/base/components/TagNameField";
+import { useScrollOnRender } from "@/app/base/hooks";
+import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   CreatePhysicalParams,
   MachineDetails,
-} from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
-import { getNextNicName } from "app/store/utils";
-import { preparePayload } from "app/utils";
+} from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
+import { getNextNicName } from "@/app/store/utils";
+import { preparePayload } from "@/app/utils";
 
 type Props = {
   close: () => void;

@@ -7,14 +7,14 @@ import RamResources from "../RamResources";
 import VfResources from "../VfResources";
 import VmResources from "../VmResources";
 
-import urls from "app/base/urls";
-import { FilterGroupKey } from "app/store/machine/types";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
-import { PodType } from "app/store/pod/constants";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { resourceWithOverCommit } from "app/store/pod/utils";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import { PodType } from "@/app/store/pod/constants";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import { resourceWithOverCommit } from "@/app/store/pod/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = { id: Pod["id"] };
 

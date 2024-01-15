@@ -2,16 +2,16 @@ import configureStore from "redux-mock-store";
 
 import { ZoneColumn } from "./ZoneColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -49,7 +49,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].zone.name = "zone-one";
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     expect(screen.getByTestId("zone")).toHaveTextContent("zone-one");
@@ -59,7 +59,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].spaces = ["space1"];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("space1");
@@ -69,7 +69,7 @@ describe("ZoneColumn", () => {
     state.machine.items[0].spaces = ["space1", "space2"];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("2 spaces");
@@ -79,21 +79,23 @@ describe("ZoneColumn", () => {
     state.machine.items[0].spaces = ["space2", "space1", "space3"];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
     await userEvent.hover(screen.getByTestId("spaces"));
-    expect(screen.getByRole("tooltip")).toHaveTextContent(
-      /space1 space2 space3/i
-    );
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        /space1 space2 space3/i
+      );
+    });
   });
 
   it("displays a message if the machine cannot have its zone changed", async () => {
     state.machine.items[0].actions = [];
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
@@ -107,7 +109,7 @@ describe("ZoneColumn", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", store }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
@@ -135,7 +137,7 @@ describe("ZoneColumn", () => {
 
   it("shows a spinner when changing zones", async () => {
     renderWithBrowserRouter(
-      <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));

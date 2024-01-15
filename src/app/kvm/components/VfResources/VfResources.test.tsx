@@ -1,7 +1,7 @@
 import VfResources from "./VfResources";
 
-import { podNetworkInterface as interfaceFactory } from "testing/factories";
-import { render, screen, within } from "testing/utils";
+import { podNetworkInterface as interfaceFactory } from "@/testing/factories";
+import { render, screen, within } from "@/testing/utils";
 
 describe("VfResources", () => {
   it("can be made to have a dynamic layout", () => {

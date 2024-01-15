@@ -5,11 +5,11 @@ import {
   isRegion,
 } from "./common";
 
-import { NodeType } from "app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   controllerDetails as controllerDetailsFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("isControllerDetails", () => {
   it("identifies controller details", () => {

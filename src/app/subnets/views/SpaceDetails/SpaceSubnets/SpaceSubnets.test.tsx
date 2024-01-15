@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import SpaceSubnets from "./SpaceSubnets";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 import {
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
@@ -17,8 +17,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   subnetStatistics,
-} from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 const getRootState = () =>

@@ -6,22 +6,22 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
 
-import urls from "app/base/urls";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   render,
   screen,
   waitFor,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 let state: RootState;
 

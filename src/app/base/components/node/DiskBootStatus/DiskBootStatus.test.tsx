@@ -1,8 +1,8 @@
 import DiskBootStatus from "./DiskBootStatus";
 
-import { DiskTypes } from "app/store/types/enum";
-import { nodeDisk as diskFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { DiskTypes } from "@/app/store/types/enum";
+import { nodeDisk as diskFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 describe("DiskBootStatus", () => {
   it("shows boot status for boot disks", () => {

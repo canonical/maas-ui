@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import SpaceSummaryForm from "./SpaceSummaryForm";
 
-import { actions as spaceActions } from "app/store/space";
+import { actions as spaceActions } from "@/app/store/space";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, within, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const getRootState = () =>
   rootStateFactory({
@@ -38,7 +38,7 @@ it("dispatches an update action on submit", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <SpaceSummaryForm handleDismiss={jest.fn()} space={space} />
+          <SpaceSummaryForm handleDismiss={vi.fn()} space={space} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

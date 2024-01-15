@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom-v5-compat";
 
 import { isSelected } from "../utils";
 
-import urls from "app/base/urls";
+import urls from "@/app/base/urls";
 
 const NavigationBanner = ({
   children,

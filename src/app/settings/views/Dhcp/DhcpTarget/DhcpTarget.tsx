@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import { Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom-v5-compat";
 
-import urls from "app/base/urls";
-import { useDhcpTarget } from "app/settings/hooks";
-import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import urls from "@/app/base/urls";
+import { useDhcpTarget } from "@/app/settings/hooks";
+import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 
 type Props = {
   nodeId?: DHCPSnippet["node"];

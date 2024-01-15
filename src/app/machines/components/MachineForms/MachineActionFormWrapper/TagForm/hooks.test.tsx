@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { renderHook } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -8,13 +8,14 @@ import configureStore from "redux-mock-store";
 
 import { useFetchTags, useSelectedTags, useUnchangedTags } from "./hooks";
 
-import { actions as tagActions } from "app/store/tag";
+import * as query from "@/app/store/machine/utils/query";
+import { actions as tagActions } from "@/app/store/tag";
 import {
   tag as tagFactory,
   tagState as tagStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -33,7 +34,7 @@ describe("useSelectedTags", () => {
         <Provider store={store}>
           <Formik
             initialValues={{ added: [tags[0].id, tags[2].id] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             {children}
           </Formik>
@@ -57,7 +58,7 @@ describe("useSelectedTags", () => {
         <Provider store={store}>
           <Formik
             initialValues={{ removed: [tags[0].id, tags[2].id] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             {children}
           </Formik>
@@ -79,7 +80,7 @@ describe("useUnchangedTags", () => {
       wrapper: ({ children }: { children: ReactNode }) => (
         <Formik
           initialValues={{ added: [tags[0].id], removed: [tags[1].id] }}
-          onSubmit={jest.fn()}
+          onSubmit={vi.fn()}
         >
           {children}
         </Formik>
@@ -90,9 +91,23 @@ describe("useUnchangedTags", () => {
 });
 
 describe("useFetchTags", () => {
-  beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
+  vi.mock("@reduxjs/toolkit", async () => {
+    const actual: object = await vi.importActual("@reduxjs/toolkit");
+    return {
+      ...actual,
+      nanoid: vi.fn(),
+    };
   });
+
+  beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue("mock-call-id");
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("cleans up request on unmount", async () => {
     const tags = [tagFactory(), tagFactory(), tagFactory()];
     const state = rootStateFactory({
@@ -105,7 +120,7 @@ describe("useFetchTags", () => {
     const { result, unmount } = renderHook(() => useFetchTags(), {
       wrapper: ({ children }: { children: ReactNode }) => (
         <Provider store={store}>
-          <Formik initialValues={{ added: [] }} onSubmit={jest.fn()}>
+          <Formik initialValues={{ added: [] }} onSubmit={vi.fn()}>
             {children}
           </Formik>
         </Provider>

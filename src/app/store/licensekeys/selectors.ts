@@ -1,12 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { LicenseKeysMeta } from "app/store/licensekeys/types";
+import { LicenseKeysMeta } from "@/app/store/licensekeys/types";
 import type {
   LicenseKeys,
   LicenseKeysState,
-} from "app/store/licensekeys/types";
-import type { RootState } from "app/store/root/types";
-import { generateBaseSelectors } from "app/store/utils";
+} from "@/app/store/licensekeys/types";
+import type { RootState } from "@/app/store/root/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (licenseKey: LicenseKeys, term: string) =>
   licenseKey.osystem.includes(term) || licenseKey.distro_series.includes(term);

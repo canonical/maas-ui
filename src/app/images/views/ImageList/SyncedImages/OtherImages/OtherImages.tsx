@@ -5,16 +5,16 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
-import NonUbuntuImageSelect from "app/images/components/NonUbuntuImageSelect";
-import type { ImageValue } from "app/images/types";
-import { actions as bootResourceActions } from "app/store/bootresource";
-import bootResourceSelectors from "app/store/bootresource/selectors";
-import { BootResourceAction } from "app/store/bootresource/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import NonUbuntuImageSelect from "@/app/images/components/NonUbuntuImageSelect";
+import type { ImageValue } from "@/app/images/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
+import { BootResourceAction } from "@/app/store/bootresource/types";
 import {
   splitImageName,
   splitResourceName,
-} from "app/store/bootresource/utils";
+} from "@/app/store/bootresource/utils";
 
 const OtherImagesSchema = Yup.object()
   .shape({

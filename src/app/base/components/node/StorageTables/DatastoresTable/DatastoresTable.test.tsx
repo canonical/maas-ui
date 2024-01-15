@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import DatastoresTable from "./DatastoresTable";
 
-import { actions as machineActions } from "app/store/machine";
+import { actions as machineActions } from "@/app/store/machine";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
@@ -14,8 +14,8 @@ import {
   nodeDisk as diskFactory,
   nodeFilesystem as fsFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

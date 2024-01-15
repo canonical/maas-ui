@@ -1,9 +1,9 @@
 import NodeActionMenu, { Label } from "./NodeActionMenu";
 
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
-import { machine as machineFactory } from "testing/factories";
-import { userEvent, render, screen, within } from "testing/utils";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
+import { machine as machineFactory } from "@/testing/factories";
+import { userEvent, render, screen, within } from "@/testing/utils";
 
 describe("NodeActionMenu", () => {
   const openMenu = async () =>
@@ -29,7 +29,7 @@ describe("NodeActionMenu", () => {
       <NodeActionMenu
         hasSelection={false}
         nodes={[]}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -45,7 +45,7 @@ describe("NodeActionMenu", () => {
       <NodeActionMenu
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -65,7 +65,7 @@ describe("NodeActionMenu", () => {
         filterActions
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -85,7 +85,7 @@ describe("NodeActionMenu", () => {
         alwaysShowLifecycle
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -105,7 +105,7 @@ describe("NodeActionMenu", () => {
         alwaysShowLifecycle
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount={false}
       />
     );
@@ -119,7 +119,7 @@ describe("NodeActionMenu", () => {
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {
-    render(<NodeActionMenu hasSelection onActionClick={jest.fn()} />);
+    render(<NodeActionMenu hasSelection onActionClick={vi.fn()} />);
     await openMenu();
     expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
     expect(queryActionButton(NodeActions.DELETE)).not.toBeDisabled();
@@ -149,7 +149,7 @@ describe("NodeActionMenu", () => {
       <NodeActionMenu
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -173,7 +173,7 @@ describe("NodeActionMenu", () => {
         actions: [NodeActions.DEPLOY],
       }),
     ];
-    const onActionClick = jest.fn();
+    const onActionClick = vi.fn();
     render(
       <NodeActionMenu
         hasSelection
@@ -200,7 +200,7 @@ describe("NodeActionMenu", () => {
         excludeActions={[NodeActions.DELETE]}
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -217,7 +217,7 @@ describe("NodeActionMenu", () => {
         hasSelection={false}
         nodeDisplay="foobar"
         nodes={[]}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );
@@ -235,7 +235,7 @@ describe("NodeActionMenu", () => {
       <NodeActionMenu
         hasSelection
         nodes={[]}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
         toggleAppearance="negative"
       />
@@ -257,7 +257,7 @@ describe("NodeActionMenu", () => {
         getTitle={() => "Overridden"}
         hasSelection
         nodes={nodes}
-        onActionClick={jest.fn()}
+        onActionClick={vi.fn()}
         showCount
       />
     );

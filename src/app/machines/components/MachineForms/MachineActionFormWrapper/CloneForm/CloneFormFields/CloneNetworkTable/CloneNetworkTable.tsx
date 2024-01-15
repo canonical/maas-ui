@@ -3,14 +3,14 @@ import type { MainTableRow } from "@canonical/react-components/dist/components/M
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import Placeholder from "app/base/components/Placeholder";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import fabricSelectors from "app/store/fabric/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import { getSubnetDisplay } from "app/store/subnet/utils";
-import type { NetworkInterface, NetworkLink } from "app/store/types/node";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import Placeholder from "@/app/base/components/Placeholder";
+import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
+import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
 import {
   getBondOrBridgeParents,
   getInterfaceFabric,
@@ -20,9 +20,9 @@ import {
   getInterfaceTypeText,
   getLinkInterface,
   isBondOrBridgeParent,
-} from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
-import { getDHCPStatus, getVLANDisplay } from "app/store/vlan/utils";
+} from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { getDHCPStatus, getVLANDisplay } from "@/app/store/vlan/utils";
 
 type Props = {
   loadingMachineDetails?: boolean;

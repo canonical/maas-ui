@@ -11,7 +11,7 @@ import {
   vlan as vlanFactory,
   subnet as subnetFactory,
   space as spaceFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 test("getTableData generates correct sortData for fabric", () => {
   const fabrics = [fabricFactory({ id: 1, vlan_ids: [1] })];

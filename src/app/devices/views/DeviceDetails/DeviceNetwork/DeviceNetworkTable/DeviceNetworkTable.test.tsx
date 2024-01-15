@@ -2,9 +2,9 @@ import configureStore from "redux-mock-store";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceInterface as deviceInterfaceFactory,
@@ -18,8 +18,8 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -52,7 +52,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -65,7 +65,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -101,7 +101,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -138,7 +138,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -167,7 +167,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -196,7 +196,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -216,7 +216,7 @@ describe("DeviceNetworkTable", () => {
     renderWithBrowserRouter(
       <DeviceNetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }

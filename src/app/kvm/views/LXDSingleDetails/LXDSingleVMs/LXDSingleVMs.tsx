@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 
-import { useWindowTitle } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
-import LXDHostVMs from "app/kvm/components/LXDHostVMs";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import type { SetSearchFilter } from "@/app/base/types";
+import LXDHostVMs from "@/app/kvm/components/LXDHostVMs";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   id: Pod["id"];

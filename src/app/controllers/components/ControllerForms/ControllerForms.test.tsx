@@ -1,11 +1,11 @@
 import ControllerForms from "./ControllerForms";
 
-import { ControllerSidePanelViews } from "app/controllers/constants";
+import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import {
   controller as controllerFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ControllerForms", () => {
   it("can render a warning if an action cannot be taken", () => {
@@ -13,7 +13,7 @@ describe("ControllerForms", () => {
     renderWithBrowserRouter(
       <ControllerForms
         controllers={[controllerFactory()]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{
           view: ControllerSidePanelViews.SET_ZONE_CONTROLLER,
         }}
@@ -31,7 +31,7 @@ describe("ControllerForms", () => {
     renderWithBrowserRouter(
       <ControllerForms
         controllers={[controllerFactory()]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: ControllerSidePanelViews.ADD_CONTROLLER }}
       />,
       { state }

@@ -1,7 +1,7 @@
 import DiskTestStatus from "./DiskTestStatus";
 
-import { ScriptResultStatus } from "app/store/scriptresult/types";
-import { render, screen } from "testing/utils";
+import { ScriptResultStatus } from "@/app/store/scriptresult/types";
+import { render, screen } from "@/testing/utils";
 
 describe("DiskTestStatus", () => {
   it("can show passed test status", () => {

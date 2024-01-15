@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 
 import MapSubnet from "./MapSubnet";
 
-import { actions as subnetActions } from "app/store/subnet";
+import { actions as subnetActions } from "@/app/store/subnet";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -22,7 +22,7 @@ it("shows a spinner while subnet is loading", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <MapSubnet id={1} setActiveForm={jest.fn()} />
+          <MapSubnet id={1} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -41,7 +41,7 @@ it("shows an error if the subnet is IPv6", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <MapSubnet id={subnet.id} setActiveForm={jest.fn()} />
+          <MapSubnet id={subnet.id} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -63,7 +63,7 @@ it("can map an IPv4 subnet", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <MapSubnet id={subnet.id} setActiveForm={jest.fn()} />
+          <MapSubnet id={subnet.id} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

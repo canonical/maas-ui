@@ -3,8 +3,8 @@ import configureStore from "redux-mock-store";
 
 import ActionConfirm from "./ActionConfirm";
 
-import * as maasUiHooks from "app/base/hooks/analytics";
-import type { RootState } from "app/store/root/types";
+import * as maasUiHooks from "@/app/base/hooks/analytics";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
@@ -12,13 +12,13 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
-jest.mock("@canonical/react-components/dist/hooks", () => ({
-  usePrevious: jest.fn(),
+vi.mock("@canonical/react-components/dist/hooks", () => ({
+  usePrevious: vi.fn(),
 }));
 
 describe("ActionConfirm", () => {
@@ -34,11 +34,11 @@ describe("ActionConfirm", () => {
     const store = mockStore(state);
     renderWithMockStore(
       <ActionConfirm
-        closeExpanded={jest.fn()}
+        closeExpanded={vi.fn()}
         confirmLabel="Confirm"
         eventName="deleteFilesystem"
         message={<span>Are you sure you want to do that?</span>}
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
         onSaveAnalytics={{
           action: "Action",
           category: "Category",
@@ -74,13 +74,13 @@ describe("ActionConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const closeExpanded = jest.fn();
+    const closeExpanded = vi.fn();
     renderWithMockStore(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
         message="Are you sure you want to do that?"
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
         onSaveAnalytics={{
           action: "Action",
           category: "Category",
@@ -105,13 +105,13 @@ describe("ActionConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const closeExpanded = jest.fn();
+    const closeExpanded = vi.fn();
     renderWithMockStore(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
         message="Are you sure you want to do that?"
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
         onSaveAnalytics={{
           action: "Action",
           category: "Category",
@@ -135,11 +135,9 @@ describe("ActionConfirm", () => {
       category: "Category",
       label: "Label",
     };
-    const useSendMock = jest.spyOn(maasUiHooks, "useSendAnalyticsWhen");
+    const useSendMock = vi.spyOn(maasUiHooks, "useSendAnalyticsWhen");
     // Mock saved state by simulating "deletingFilesystem" changing from true to false
-    jest
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => true);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(() => true);
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -149,14 +147,14 @@ describe("ActionConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const closeExpanded = jest.fn();
+    const closeExpanded = vi.fn();
     renderWithMockStore(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
         eventName="deleteFilesystem"
         message="Are you sure you want to do that?"
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
         onSaveAnalytics={analyticsEvent}
         statusKey="deletingFilesystem"
         systemId="abc123"
@@ -176,9 +174,7 @@ describe("ActionConfirm", () => {
 
   it("closes the form when saved", () => {
     // Mock saved state by simulating "deletingFilesystem" changing from true to false
-    jest
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => true);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(() => true);
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -188,14 +184,14 @@ describe("ActionConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const closeExpanded = jest.fn();
+    const closeExpanded = vi.fn();
     renderWithMockStore(
       <ActionConfirm
         closeExpanded={closeExpanded}
         confirmLabel="Confirm"
         eventName="deleteFilesystem"
         message="Are you sure you want to do that?"
-        onConfirm={jest.fn()}
+        onConfirm={vi.fn()}
         onSaveAnalytics={{
           action: "Action",
           category: "Category",

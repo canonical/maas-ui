@@ -10,8 +10,8 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("updates to use the fabric's default VLAN on fabric change", async () => {
   const fabrics = [
@@ -30,7 +30,7 @@ it("updates to use the fabric's default VLAN on fabric change", async () => {
   const store = configureStore()(state);
   render(
     <Provider store={store}>
-      <Formik initialValues={{ fabric: 1, vlan: 3 }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ fabric: 1, vlan: 3 }} onSubmit={vi.fn()}>
         <SubnetSummaryFormFields />
       </Formik>
     </Provider>

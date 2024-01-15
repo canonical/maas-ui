@@ -1,4 +1,4 @@
-import type { APIError } from "app/base/types";
+import type { APIError } from "@/app/base/types";
 
 export type StatusState = {
   authenticated: boolean;

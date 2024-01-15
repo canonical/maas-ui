@@ -1,7 +1,7 @@
 import { isEphemerallyDeployed } from "./IsEphemerallyDeployed";
 
-import { NodeStatusCode } from "app/store/types/node";
-import { machine as machineFactory } from "testing/factories";
+import { NodeStatusCode } from "@/app/store/types/node";
+import { machine as machineFactory } from "@/testing/factories";
 
 it("returns true if a machine is deployed ephemerally", () => {
   const machine = machineFactory({

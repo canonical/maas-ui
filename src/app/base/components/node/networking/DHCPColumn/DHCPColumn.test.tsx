@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import DHCPColumn from "./DHCPColumn";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -12,7 +12,7 @@ import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 const mockStore = configureStore();
 

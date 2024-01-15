@@ -4,14 +4,14 @@ import NetworkDiscoveryHeader, {
   Labels as NetworkDiscoveryHeaderLabels,
 } from "./NetworkDiscoveryHeader";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -36,7 +36,7 @@ describe("NetworkDiscoveryHeader", () => {
 
   it("displays the discovery count in the header", () => {
     renderWithBrowserRouter(
-      <NetworkDiscoveryHeader setSidePanelContent={jest.fn()} />,
+      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />,
       {
         route: "/network-discovery",
         state,
@@ -45,15 +45,12 @@ describe("NetworkDiscoveryHeader", () => {
 
     const indexLink = screen.getByText("2 discoveries");
     expect(indexLink).toBeInTheDocument();
-    expect(indexLink).toHaveProperty(
-      "href",
-      `http://example.com${urls.networkDiscovery.index}`
-    );
+    expect(indexLink).toHaveAttribute("href", urls.networkDiscovery.index);
   });
 
   it("has a button to clear discoveries", () => {
     renderWithBrowserRouter(
-      <NetworkDiscoveryHeader setSidePanelContent={jest.fn()} />,
+      <NetworkDiscoveryHeader setSidePanelContent={vi.fn()} />,
       {
         route: "/network-discovery",
         state,
@@ -68,7 +65,7 @@ describe("NetworkDiscoveryHeader", () => {
 
   it("opens the side panel when the 'Clear all discoveries' button is clicked", async () => {
     const store = mockStore(state);
-    const setSidePanelContent = jest.fn();
+    const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
       <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />,
       {

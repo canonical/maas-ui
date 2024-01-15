@@ -3,11 +3,11 @@ import * as Yup from "yup";
 
 import type { DeployFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import DeployFormFields from "app/settings/views/Configuration/DeployFormFields";
-import { actions as configActions } from "app/store/config";
-import configSelectors from "app/store/config/selectors";
-import { timeSpanToMinutes } from "app/utils";
+import FormikForm from "@/app/base/components/FormikForm";
+import DeployFormFields from "@/app/settings/views/Configuration/DeployFormFields";
+import { actions as configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
+import { timeSpanToMinutes } from "@/app/utils";
 
 const DeploySchema = Yup.object().shape({
   default_osystem: Yup.string(),

@@ -1,4 +1,4 @@
-import { getCookie } from "app/utils";
+import { getCookie } from "@/app/utils";
 
 describe("getCookie", () => {
   it("returns undefined if a cookie is not found", () => {
@@ -7,7 +7,7 @@ describe("getCookie", () => {
 
   it("returns the value of a cookie by name", () => {
     Object.defineProperty(document, "cookie", {
-      get: jest.fn().mockImplementation(() => {
+      get: vi.fn().mockImplementation(() => {
         return "a=foo; b=bar; c=baz";
       }),
     });

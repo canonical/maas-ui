@@ -1,7 +1,7 @@
 import TagChip from "./TagChip";
 
-import { tag as tagFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { tag as tagFactory } from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const tags = [
   tagFactory({ name: "chip1", id: 1 }),

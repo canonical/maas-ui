@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
-import FormCard from "app/base/components/FormCard";
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as tokenActions } from "app/store/token";
-import tokenSelectors from "app/store/token/selectors";
-import type { Token } from "app/store/token/types";
+import FormCard from "@/app/base/components/FormCard";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage, useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as tokenActions } from "@/app/store/token";
+import tokenSelectors from "@/app/store/token/selectors";
+import type { Token } from "@/app/store/token/types";
 
 export enum Label {
   AddTitle = "Generate MAAS API key",

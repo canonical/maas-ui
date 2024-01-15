@@ -1,7 +1,7 @@
 import StatusColumn from "./StatusColumn";
 
-import { PowerState } from "app/store/types/enum";
-import { NodeStatusCode } from "app/store/types/node";
+import { PowerState } from "@/app/store/types/enum";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -9,8 +9,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   it("shows a spinner if the machine is still loading", () => {

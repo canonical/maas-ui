@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { Sort } from "../types";
 import { SortDirection } from "../types";
 
-import { isComparable } from "app/utils";
+import { isComparable } from "@/app/utils";
 
 type SortValueGetter<I, K extends string | null, A = null> = (
   sortKey: K,

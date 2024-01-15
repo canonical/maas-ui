@@ -1,17 +1,17 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`rootReducer should reset app to initial state on LOGOUT_SUCCESS, except status which
+exports[`rootReducer > should reset app to initial state on LOGOUT_SUCCESS, except status which
     resets to authenticating = false 1`] = `
-Object {
-  "bootresource": Object {
+{
+  "bootresource": {
     "connectionError": false,
-    "eventErrors": Array [],
+    "eventErrors": [],
     "fetchedImages": null,
-    "otherImages": Array [],
+    "otherImages": [],
     "rackImportRunning": false,
     "regionImportRunning": false,
-    "resources": Array [],
-    "statuses": Object {
+    "resources": [],
+    "statuses": {
       "deletingImage": false,
       "fetching": false,
       "polling": false,
@@ -21,361 +21,361 @@ Object {
       "stoppingImport": false,
     },
     "ubuntu": null,
-    "ubuntuCoreImages": Array [],
+    "ubuntuCoreImages": [],
   },
-  "config": Object {
+  "config": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "controller": Object {
+  "controller": {
     "active": null,
     "errors": null,
-    "eventErrors": Array [],
-    "imageSyncStatuses": Object {},
-    "items": Array [],
+    "eventErrors": [],
+    "imageSyncStatuses": {},
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
-    "selected": Array [],
-    "statuses": Object {},
+    "selected": [],
+    "statuses": {},
   },
-  "device": Object {
+  "device": {
     "active": null,
     "errors": null,
-    "eventErrors": Array [],
-    "items": Array [],
+    "eventErrors": [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
-    "selected": Array [],
-    "statuses": Object {},
+    "selected": [],
+    "statuses": {},
   },
-  "dhcpsnippet": Object {
+  "dhcpsnippet": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "discovery": Object {
+  "discovery": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "domain": Object {
+  "domain": {
     "active": null,
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "event": Object {
+  "event": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "fabric": Object {
+  "fabric": {
     "active": null,
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "general": Object {
-    "architectures": Object {
-      "data": Array [],
+  "general": {
+    "architectures": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "bondOptions": Object {
+    "bondOptions": {
       "data": null,
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "componentsToDisable": Object {
-      "data": Array [],
+    "componentsToDisable": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "defaultMinHweKernel": Object {
+    "defaultMinHweKernel": {
       "data": "",
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "generatedCertificate": Object {
+    "generatedCertificate": {
       "data": null,
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "hweKernels": Object {
-      "data": Array [],
+    "hweKernels": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "knownArchitectures": Object {
-      "data": Array [],
+    "knownArchitectures": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "knownBootArchitectures": Object {
-      "data": Array [],
+    "knownBootArchitectures": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "machineActions": Object {
-      "data": Array [],
+    "machineActions": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "osInfo": Object {
+    "osInfo": {
       "data": null,
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "pocketsToDisable": Object {
-      "data": Array [],
+    "pocketsToDisable": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "powerTypes": Object {
-      "data": Array [],
+    "powerTypes": {
+      "data": [],
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "tlsCertificate": Object {
+    "tlsCertificate": {
       "data": null,
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "vaultEnabled": Object {
+    "vaultEnabled": {
       "data": null,
       "errors": null,
       "loaded": false,
       "loading": false,
     },
-    "version": Object {
+    "version": {
       "data": "",
       "errors": null,
       "loaded": false,
       "loading": false,
     },
   },
-  "iprange": Object {
+  "iprange": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "licensekeys": Object {
+  "licensekeys": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "machine": Object {
-    "actions": Object {},
+  "machine": {
+    "actions": {},
     "active": null,
-    "counts": Object {},
-    "details": Object {},
+    "counts": {},
+    "details": {},
     "errors": null,
-    "eventErrors": Array [],
-    "filters": Array [],
+    "eventErrors": [],
+    "filters": [],
     "filtersLoaded": false,
     "filtersLoading": false,
-    "items": Array [],
-    "lists": Object {},
+    "items": [],
+    "lists": {},
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
     "selected": null,
-    "statuses": Object {},
+    "statuses": {},
   },
-  "message": Object {
-    "items": Array [],
+  "message": {
+    "items": [],
   },
-  "nodedevice": Object {
+  "nodedevice": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "nodescriptresult": Object {
-    "items": Object {},
+  "nodescriptresult": {
+    "items": {},
   },
-  "notification": Object {
+  "notification": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "packagerepository": Object {
+  "packagerepository": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "pod": Object {
+  "pod": {
     "active": null,
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
-    "projects": Object {},
+    "projects": {},
     "saved": false,
     "saving": false,
-    "statuses": Object {},
+    "statuses": {},
   },
-  "resourcepool": Object {
+  "resourcepool": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "router": Object {
+  "router": {
     "action": "POP",
-    "location": Object {
+    "location": {
       "hash": "",
       "pathname": "/",
       "search": "",
       "state": null,
     },
   },
-  "script": Object {
+  "script": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "scriptresult": Object {
+  "scriptresult": {
     "errors": null,
-    "history": Object {},
-    "items": Array [],
+    "history": {},
+    "items": [],
     "loaded": false,
     "loading": false,
     "logs": null,
     "saved": false,
     "saving": false,
   },
-  "service": Object {
+  "service": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "space": Object {
+  "space": {
     "active": null,
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "sshkey": Object {
+  "sshkey": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "sslkey": Object {
+  "sslkey": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "staticroute": Object {
+  "staticroute": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "status": Object {
+  "status": {
     "authenticated": false,
     "authenticating": false,
   },
-  "subnet": Object {
+  "subnet": {
     "active": null,
     "errors": null,
-    "eventErrors": Array [],
-    "items": Array [],
+    "eventErrors": [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
-    "statuses": Object {},
+    "statuses": {},
   },
-  "tag": Object {
+  "tag": {
     "errors": null,
-    "items": Array [],
-    "lists": Object {},
+    "items": [],
+    "lists": {},
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "token": Object {
+  "token": {
     "errors": null,
-    "items": Array [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
   },
-  "user": Object {
-    "auth": Object {
+  "user": {
+    "auth": {
       "errors": null,
       "loaded": false,
       "loading": false,
@@ -384,58 +384,58 @@ Object {
       "user": null,
     },
     "errors": null,
-    "eventErrors": Array [],
-    "items": Array [],
+    "eventErrors": [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
-    "statuses": Object {
+    "statuses": {
       "markingIntroComplete": false,
     },
   },
-  "vlan": Object {
+  "vlan": {
     "active": null,
     "errors": null,
-    "eventErrors": Array [],
-    "items": Array [],
+    "eventErrors": [],
+    "items": [],
     "loaded": false,
     "loading": false,
     "saved": false,
     "saving": false,
-    "statuses": Object {},
+    "statuses": {},
   },
-  "vmcluster": Object {
+  "vmcluster": {
     "errors": null,
-    "eventErrors": Array [],
-    "items": Array [],
+    "eventErrors": [],
+    "items": [],
     "loaded": false,
     "loading": false,
-    "physicalClusters": Array [],
+    "physicalClusters": [],
     "saved": false,
     "saving": false,
-    "statuses": Object {
+    "statuses": {
       "deleting": false,
       "getting": false,
     },
   },
-  "zone": Object {
-    "errors": Array [],
-    "genericActions": Object {
+  "zone": {
+    "errors": [],
+    "genericActions": {
       "create": "idle",
       "fetch": "idle",
     },
-    "items": Array [],
-    "modelActions": Object {
-      "delete": Object {
-        "error": Array [],
-        "loading": Array [],
-        "success": Array [],
+    "items": [],
+    "modelActions": {
+      "delete": {
+        "error": [],
+        "loading": [],
+        "success": [],
       },
-      "update": Object {
-        "error": Array [],
-        "loading": Array [],
-        "success": Array [],
+      "update": {
+        "error": [],
+        "loading": [],
+        "success": [],
       },
     },
   },

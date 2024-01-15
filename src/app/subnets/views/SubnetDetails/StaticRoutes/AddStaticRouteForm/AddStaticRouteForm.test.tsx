@@ -7,7 +7,7 @@ import { Labels } from "../StaticRoutes";
 
 import AddStaticRouteForm from "./AddStaticRouteForm";
 
-import { actions as staticRouteActions } from "app/store/staticroute";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
 import {
   rootState as rootStateFactory,
   staticRouteState as staticRouteStateFactory,
@@ -16,8 +16,8 @@ import {
   authState as authStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -46,7 +46,7 @@ it("dispatches a correct action on add static route form submit", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <AddStaticRouteForm handleDismiss={jest.fn()} subnetId={subnet.id} />
+          <AddStaticRouteForm handleDismiss={vi.fn()} subnetId={subnet.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

@@ -4,8 +4,8 @@ import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 
-import type { SidePanelSize } from "app/base/side-panel-context";
-import { useSidePanel } from "app/base/side-panel-context";
+import type { SidePanelSize } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
 
 export type AppSidePanelProps = {
   title: string | null;

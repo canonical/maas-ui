@@ -1,11 +1,11 @@
 import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import SubnetLink from "app/base/components/SubnetLink";
-import TitledSection from "app/base/components/TitledSection";
-import type { RootState } from "app/store/root/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
+import SubnetLink from "@/app/base/components/SubnetLink";
+import TitledSection from "@/app/base/components/TitledSection";
+import type { RootState } from "@/app/store/root/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;

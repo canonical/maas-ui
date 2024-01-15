@@ -4,7 +4,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("version selectors", () => {
   describe("get", () => {

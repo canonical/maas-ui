@@ -3,14 +3,14 @@ import configureStore from "redux-mock-store";
 
 import ZoneSelect from "./ZoneSelect";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -27,7 +27,7 @@ describe("ZoneSelect", () => {
     });
 
     renderWithMockStore(
-      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>,
       { state }
@@ -41,7 +41,7 @@ describe("ZoneSelect", () => {
     const store = mockStore(state);
 
     renderWithMockStore(
-      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>,
       { store }
@@ -60,7 +60,7 @@ describe("ZoneSelect", () => {
     const store = mockStore(state);
 
     renderWithMockStore(
-      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>,
       { store }

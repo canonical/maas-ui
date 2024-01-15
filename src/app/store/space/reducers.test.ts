@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("space reducer", () => {
   it("should return the initial state", () => {

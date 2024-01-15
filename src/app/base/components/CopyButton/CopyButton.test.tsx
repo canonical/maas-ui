@@ -1,6 +1,6 @@
 import CopyButton from "./CopyButton";
 
-import { userEvent, render, screen } from "testing/utils";
+import { userEvent, render, screen } from "@/testing/utils";
 
 describe("CopyButton", () => {
   let execCommand: (
@@ -11,7 +11,7 @@ describe("CopyButton", () => {
 
   beforeEach(() => {
     execCommand = document.execCommand;
-    document.execCommand = jest.fn();
+    document.execCommand = vi.fn();
   });
 
   afterEach(() => {

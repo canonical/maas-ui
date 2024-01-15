@@ -1,13 +1,13 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import ControllerLink from "app/base/components/ControllerLink";
-import Definition from "app/base/components/Definition";
-import TooltipButton from "app/base/components/TooltipButton";
-import controllerSelectors from "app/store/controller/selectors";
-import type { RootState } from "app/store/root/types";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
+import ControllerLink from "@/app/base/components/ControllerLink";
+import Definition from "@/app/base/components/Definition";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { RootState } from "@/app/store/root/types";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;

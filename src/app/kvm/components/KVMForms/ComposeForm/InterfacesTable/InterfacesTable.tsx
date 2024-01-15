@@ -15,17 +15,17 @@ import type { ComposeFormValues, InterfaceField } from "../ComposeForm";
 
 import SubnetSelect from "./SubnetSelect";
 
-import Definition from "app/base/components/Definition";
-import FormikField from "app/base/components/FormikField";
-import fabricSelectors from "app/store/fabric/selectors";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod, PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import spaceSelectors from "app/store/space/selectors";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
+import Definition from "@/app/base/components/Definition";
+import FormikField from "@/app/base/components/FormikField";
+import fabricSelectors from "@/app/store/fabric/selectors";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod, PodDetails } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import spaceSelectors from "@/app/store/space/selectors";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
 
 /**
  * Generate a new InterfaceField with a given id and preselected subnet.

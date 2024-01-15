@@ -1,7 +1,7 @@
 import { ZONE_ACTIONS } from "./constants";
 import zone from "./selectors";
 
-import { ACTION_STATUS } from "app/base/constants";
+import { ACTION_STATUS } from "@/app/base/constants";
 import {
   rootState as rootStateFactory,
   zone as zoneFactory,
@@ -10,7 +10,7 @@ import {
   zoneModelAction as zoneModelActionFactory,
   zoneModelActions as zoneModelActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 it("can get all zones", () => {
   const items = [zoneFactory(), zoneFactory()];

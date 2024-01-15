@@ -6,11 +6,11 @@ import * as Yup from "yup";
 import SSHKeyFormFields from "./SSHKeyFormFields";
 import type { SSHKeyFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
-import { useAddMessage } from "app/base/hooks";
-import { actions as sshkeyActions } from "app/store/sshkey";
-import sshkeySelectors from "app/store/sshkey/selectors";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
+import { useAddMessage } from "@/app/base/hooks";
+import { actions as sshkeyActions } from "@/app/store/sshkey";
+import sshkeySelectors from "@/app/store/sshkey/selectors";
 
 const SSHKeySchema = Yup.object().shape({
   protocol: Yup.string().required("Source is required"),

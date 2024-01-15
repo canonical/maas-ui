@@ -3,23 +3,23 @@ import type { ReactNode } from "react";
 import { Button, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useUsabilla } from "app/base/hooks";
-import configSelectors from "app/store/config/selectors";
-import controllerSelectors from "app/store/controller/selectors";
+import { useUsabilla } from "@/app/base/hooks";
+import configSelectors from "@/app/store/config/selectors";
+import controllerSelectors from "@/app/store/controller/selectors";
 import {
   isControllerDetails,
   isRack,
   isRegionAndRack,
-} from "app/store/controller/utils";
-import { version as versionSelectors } from "app/store/general/selectors";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
+} from "@/app/store/controller/utils";
+import { version as versionSelectors } from "@/app/store/general/selectors";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
 import {
   isDeployedWithHardwareSync,
   isMachineDetails,
-} from "app/store/machine/utils";
-import { NodeStatus } from "app/store/types/node";
-import { getTimeDistanceString } from "app/utils/time";
+} from "@/app/store/machine/utils";
+import { NodeStatus } from "@/app/store/types/node";
+import { getTimeDistanceString } from "@/app/utils/time";
 
 const getLastCommissionedString = (machine: MachineDetails) => {
   if (machine.status === NodeStatus.COMMISSIONING) {
@@ -101,7 +101,7 @@ export const StatusBar = (): JSX.Element | null => {
         <ul className="p-inline-list--middot u-no-margin--bottom">
           <li className="p-inline-list__item">
             <Link
-              href={`${process.env.REACT_APP_BASENAME}/docs/`}
+              href={`${import.meta.env.VITE_APP_BASENAME}/docs/`}
               rel="noreferrer"
               target="_blank"
             >

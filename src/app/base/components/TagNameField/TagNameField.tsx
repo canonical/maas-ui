@@ -1,9 +1,9 @@
 import type { PropsWithSpread } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
-import TagField from "app/base/components/TagField";
-import type { Props as TagFieldProps } from "app/base/components/TagField/TagField";
-import type { AnyObject } from "app/base/types";
+import TagField from "@/app/base/components/TagField";
+import type { Props as TagFieldProps } from "@/app/base/components/TagField/TagField";
+import type { AnyObject } from "@/app/base/types";
 
 type Props = PropsWithSpread<
   {

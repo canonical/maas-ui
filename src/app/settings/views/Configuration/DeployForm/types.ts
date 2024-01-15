@@ -1,4 +1,4 @@
-import type { TimeSpan } from "app/base/types";
+import type { TimeSpan } from "@/app/base/types";
 
 export type DeployFormValues = {
   default_osystem: string;

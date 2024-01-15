@@ -5,11 +5,11 @@ import { useFormikContext } from "formik";
 
 import type { FormValues } from "../TestForm";
 
-import FormikField from "app/base/components/FormikField";
-import TagSelector from "app/base/components/TagSelector";
-import type { Tag } from "app/base/components/TagSelector/TagSelector";
-import type { Script } from "app/store/script/types";
-import { getObjectString } from "app/store/script/utils";
+import FormikField from "@/app/base/components/FormikField";
+import TagSelector from "@/app/base/components/TagSelector";
+import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
+import type { Script } from "@/app/store/script/types";
+import { getObjectString } from "@/app/store/script/utils";
 
 type ScriptsDisplay = Script & { displayName: string };
 type Props = {

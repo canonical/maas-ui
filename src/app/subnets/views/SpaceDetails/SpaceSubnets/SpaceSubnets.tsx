@@ -4,20 +4,20 @@ import type { MainTableProps } from "@canonical/react-components";
 import { Spinner, MainTable } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FabricLink from "app/base/components/FabricLink";
-import SubnetLink from "app/base/components/SubnetLink";
-import TitledSection from "app/base/components/TitledSection";
-import VLANLink from "app/base/components/VLANLink";
-import type { RootState } from "app/store/root/types";
-import type { Space } from "app/store/space/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet } from "app/store/subnet/types";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import type { VLAN } from "app/store/vlan/types";
-import { getVlanById } from "app/store/vlan/utils";
-import { simpleSortByKey } from "app/utils";
+import FabricLink from "@/app/base/components/FabricLink";
+import SubnetLink from "@/app/base/components/SubnetLink";
+import TitledSection from "@/app/base/components/TitledSection";
+import VLANLink from "@/app/base/components/VLANLink";
+import type { RootState } from "@/app/store/root/types";
+import type { Space } from "@/app/store/space/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet } from "@/app/store/subnet/types";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import type { VLAN } from "@/app/store/vlan/types";
+import { getVlanById } from "@/app/store/vlan/utils";
+import { simpleSortByKey } from "@/app/utils";
 
 const generateRows = ({
   subnets,

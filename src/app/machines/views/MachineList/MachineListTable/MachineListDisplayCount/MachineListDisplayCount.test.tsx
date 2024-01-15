@@ -1,6 +1,6 @@
 import MachineListDisplayCount from "./MachineListDisplayCount";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("MachineListDisplayCount", () => {
   it("shows the true number of machines on a page if it is under the maximum items per page limit.", () => {

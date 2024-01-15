@@ -3,8 +3,8 @@ import { Route, Routes } from "react-router-dom-v5-compat";
 import { storageLayoutOptions } from "./ChangeStorageLayout/ChangeStorageLayout";
 import MachineStorage from "./MachineStorage";
 
-import * as hooks from "app/base/hooks/analytics";
-import { NodeStatusCode } from "app/store/types/node";
+import * as hooks from "@/app/base/hooks/analytics";
+import { NodeStatusCode } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -14,8 +14,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 it("displays a spinner if machine is loading", () => {
   const state = rootStateFactory({
@@ -83,8 +83,8 @@ it("sends an analytics event when clicking on the MAAS docs footer link", async 
       loaded: true,
     }),
   });
-  const mockSendAnalytics = jest.fn();
-  const mockUseSendAnalytics = jest
+  const mockSendAnalytics = vi.fn();
+  const mockUseSendAnalytics = vi
     .spyOn(hooks, "useSendAnalytics")
     .mockImplementation(() => mockSendAnalytics);
   renderWithBrowserRouter(

@@ -1,6 +1,6 @@
 import MachineInstances from "./MachineInstances";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
   machineDevice as machineDeviceFactory,
@@ -8,8 +8,8 @@ import {
   networkLink as networkLinkFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("MachineInstances", () => {
   let state: RootState;

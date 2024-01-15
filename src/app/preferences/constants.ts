@@ -1,5 +1,5 @@
-import type { NavItem } from "app/base/components/SecondaryNavigation/SecondaryNavigation";
-import urls from "app/base/urls";
+import type { NavItem } from "@/app/base/components/SecondaryNavigation/SecondaryNavigation";
+import urls from "@/app/base/urls";
 
 export const preferencesNavItems: NavItem[] = [
   {

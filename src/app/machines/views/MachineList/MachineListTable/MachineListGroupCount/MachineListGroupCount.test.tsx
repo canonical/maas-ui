@@ -1,14 +1,15 @@
 import { render, screen } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import MachineListGroupCount from "./MachineListGroupCount";
 
-import { FetchGroupKey } from "app/store/machine/types";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
-import { FetchNodeStatus } from "app/store/types/node";
+import { FetchGroupKey } from "@/app/store/machine/types";
+import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
+import { FetchNodeStatus } from "@/app/store/types/node";
 
-jest.mock("app/store/machine/utils/hooks");
+vi.mock("@/app/store/machine/utils/hooks");
 
-const mockedUseFetchMachineCount = useFetchMachineCount as jest.MockedFunction<
+const mockedUseFetchMachineCount = useFetchMachineCount as MockedFunction<
   typeof useFetchMachineCount
 >;
 

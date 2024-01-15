@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import UpdateCertificate from "./UpdateCertificate";
 
-import { actions as generalActions } from "app/store/general";
-import { actions as podActions } from "app/store/pod";
-import type { PodDetails } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import { actions as generalActions } from "@/app/store/general";
+import { actions as podActions } from "@/app/store/pod";
+import type { PodDetails } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   generatedCertificate as generatedCertificateFactory,
@@ -13,8 +13,8 @@ import {
   podDetails as podFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -40,7 +40,7 @@ describe("UpdateCertificate", () => {
   it("can dispatch an action to generate certificate if not providing certificate and key", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <UpdateCertificate closeForm={jest.fn()} hasCertificateData pod={pod} />,
+      <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
       { route: "/kvm/edit", store }
     );
 
@@ -60,7 +60,7 @@ describe("UpdateCertificate", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <UpdateCertificate
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         hasCertificateData
         objectName="custom-name"
         pod={pod}
@@ -91,7 +91,7 @@ describe("UpdateCertificate", () => {
     const store = mockStore(state);
 
     renderWithBrowserRouter(
-      <UpdateCertificate closeForm={jest.fn()} hasCertificateData pod={pod} />,
+      <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
       {
         route: "/kvm/edit",
         store,
@@ -116,7 +116,7 @@ describe("UpdateCertificate", () => {
   it("can dispatch an action to update pod with provided certificate and key", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <UpdateCertificate closeForm={jest.fn()} hasCertificateData pod={pod} />,
+      <UpdateCertificate closeForm={vi.fn()} hasCertificateData pod={pod} />,
       {
         route: "/kvm/edit",
         store,
@@ -151,7 +151,7 @@ describe("UpdateCertificate", () => {
   });
 
   it("closes the form on cancel if pod has a certificate", async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
 
     renderWithBrowserRouter(
       <UpdateCertificate closeForm={closeForm} hasCertificateData pod={pod} />,
@@ -168,7 +168,7 @@ describe("UpdateCertificate", () => {
 
   it(`clears generated certificate on cancel if pod has no certificate and a
       certificate has been generated`, async () => {
-    const closeForm = jest.fn();
+    const closeForm = vi.fn();
     state.general.generatedCertificate.data = generatedCertificateFactory();
     const store = mockStore(state);
 
@@ -198,7 +198,7 @@ describe("UpdateCertificate", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <UpdateCertificate
-        closeForm={jest.fn()}
+        closeForm={vi.fn()}
         hasCertificateData={false}
         pod={pod}
       />,

@@ -4,13 +4,13 @@ import DiscoveriesList, {
   Labels as DiscoveriesListLabels,
 } from "./DiscoveriesList";
 
-import * as query from "app/store/machine/utils/query";
-import type { RootState } from "app/store/root/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 import {
   discovery as discoveryFactory,
   domain as domainFactory,
@@ -27,14 +27,13 @@ import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
-  waitFor,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = "/network-discovery";
@@ -42,7 +41,7 @@ describe("DiscoveriesList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
+    vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -126,7 +125,7 @@ describe("DiscoveriesList", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("displays the discoveries", () => {
@@ -187,7 +186,7 @@ describe("DiscoveriesList", () => {
       screen.getByRole("button", { name: DiscoveriesListLabels.AddDiscovery })
     );
 
-    await waitFor(() =>
+    await vi.waitFor(() =>
       expect(
         screen.getByRole("form", { name: /Add discovery/ })
       ).toBeInTheDocument()

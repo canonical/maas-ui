@@ -1,14 +1,11 @@
 import MachineHostname from "./MachineHostname";
 
-import { callId, enableCallIdMocks } from "testing/callId-mock";
 import {
   machineStateDetailsItem as machineStateDetailsItemFactory,
   machine as machineFactory,
   rootState,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
-
-enableCallIdMocks();
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 it("displays machine systemId when hostname is not available", async () => {
   renderWithMockStore(<MachineHostname systemId="abc123" />);
@@ -24,7 +21,7 @@ it("displays machine hostname once loaded", () => {
     }),
   ];
   state.machine.details = {
-    [callId]: machineStateDetailsItemFactory({
+    "mocked-nanoid": machineStateDetailsItemFactory({
       system_id: "abc123",
     }),
   };

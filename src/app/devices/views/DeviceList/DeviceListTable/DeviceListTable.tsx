@@ -3,23 +3,23 @@ import { Link } from "react-router-dom-v5-compat";
 
 import OwnerColumn from "./OwnerColumn";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
-import MacAddressDisplay from "app/base/components/MacAddressDisplay";
-import RowCheckbox from "app/base/components/RowCheckbox";
-import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
-import { SortDirection } from "app/base/types";
-import urls from "app/base/urls";
-import type { Device, DeviceMeta } from "app/store/device/types";
-import { getIpAssignmentDisplay } from "app/store/device/utils";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import GroupCheckbox from "@/app/base/components/GroupCheckbox";
+import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
+import RowCheckbox from "@/app/base/components/RowCheckbox";
+import TableHeader from "@/app/base/components/TableHeader";
+import { useTableSort } from "@/app/base/hooks";
+import { SortDirection } from "@/app/base/types";
+import urls from "@/app/base/urls";
+import type { Device, DeviceMeta } from "@/app/store/device/types";
+import { getIpAssignmentDisplay } from "@/app/store/device/utils";
 import {
   generateCheckboxHandlers,
   generateEmptyStateMsg,
   getTableStatus,
   isComparable,
-} from "app/utils";
-import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+} from "@/app/utils";
+import type { CheckboxHandlers } from "@/app/utils/generateCheckboxHandlers";
 
 type Props = {
   devices: Device[];

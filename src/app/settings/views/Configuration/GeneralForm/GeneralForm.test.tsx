@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import GeneralForm from "./GeneralForm";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -154,7 +154,7 @@ describe("GeneralForm", () => {
 
   it("can trigger usabilla when the notifications are turned off", async () => {
     const store = mockStore(state);
-    window.usabilla_live = jest.fn();
+    window.usabilla_live = vi.fn();
     render(
       <Provider store={store}>
         <MemoryRouter>

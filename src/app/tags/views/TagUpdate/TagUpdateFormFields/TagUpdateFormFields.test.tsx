@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
-import type { RootState } from "app/store/root/types";
-import { Label as DefinitionLabel } from "app/tags/components/DefinitionField";
+import type { RootState } from "@/app/store/root/types";
+import { Label as DefinitionLabel } from "@/app/tags/components/DefinitionField";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -36,7 +36,7 @@ it("hides the definition field if it is a manual tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <TagUpdateFormFields id={1} />
         </Formik>
       </MemoryRouter>
@@ -56,7 +56,7 @@ it("displays the definition field if it is an automatic tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <Formik initialValues={{}} onSubmit={vi.fn()}>
           <TagUpdateFormFields id={1} />
         </Formik>
       </MemoryRouter>

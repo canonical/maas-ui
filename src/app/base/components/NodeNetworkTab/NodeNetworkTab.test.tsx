@@ -31,9 +31,9 @@ describe("NodeNetworkTab", () => {
           ></button>
         )}
         addInterface={() => <div data-testid="add-interface"></div>}
-        dhcpTable={jest.fn()}
-        expandedForm={jest.fn()}
-        interfaceTable={jest.fn()}
+        dhcpTable={vi.fn()}
+        expandedForm={vi.fn()}
+        interfaceTable={vi.fn()}
       />
     );
     expect(screen.queryByTestId("add-interface")).not.toBeInTheDocument();
@@ -50,14 +50,14 @@ describe("NodeNetworkTab", () => {
             onClick={() => setExpanded({ content: ExpandedState.EDIT })}
           ></button>
         )}
-        addInterface={jest.fn()}
-        dhcpTable={jest.fn()}
+        addInterface={vi.fn()}
+        dhcpTable={vi.fn()}
         expandedForm={(expanded) =>
           expanded?.content === ExpandedState.EDIT ? (
             <div data-testid="edit-interface"></div>
           ) : null
         }
-        interfaceTable={jest.fn()}
+        interfaceTable={vi.fn()}
       />
     );
     expect(screen.queryByTestId("edit-interface")).not.toBeInTheDocument();

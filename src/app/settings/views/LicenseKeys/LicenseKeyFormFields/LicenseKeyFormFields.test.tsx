@@ -7,16 +7,16 @@ import LicenseKeyFormFields, {
   Labels as FormFieldsLabels,
 } from "./LicenseKeyFormFields";
 
-import type { OSInfoOptions } from "app/store/general/selectors/osInfo";
-import type { RootState } from "app/store/root/types";
+import type { OSInfoOptions } from "@/app/store/general/selectors/osInfo";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   licenseKeysState as licenseKeysStateFactory,
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, render } from "testing/utils";
+} from "@/testing/factories";
+import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -58,7 +58,7 @@ describe("LicenseKeyFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
             <LicenseKeyFormFields osystems={osystems} releases={releases} />
           </Formik>
         </MemoryRouter>

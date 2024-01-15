@@ -1,8 +1,8 @@
 import StatusBar from "./StatusBar";
 
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus, NodeType } from "app/store/types/node";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus, NodeType } from "@/app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -13,16 +13,16 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 let state: RootState;
 const originalEnv = process.env;
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  vi.useFakeTimers();
   // Thu, 31 Dec. 2020 23:00:00 UTC
-  jest.setSystemTime(new Date(Date.UTC(2020, 11, 31, 23, 0, 0)));
+  vi.setSystemTime(new Date(Date.UTC(2020, 11, 31, 23, 0, 0)));
   state = rootStateFactory({
     config: configStateFactory({
       items: [configFactory({ name: ConfigNames.MAAS_NAME, value: "bolla" })],
@@ -41,7 +41,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.useRealTimers();
+  vi.useRealTimers();
   process.env = originalEnv;
 });
 

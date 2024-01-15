@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import SubnetSummary from "./SubnetSummary";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import type { Subnet } from "app/store/subnet/types";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import type { Subnet } from "@/app/store/subnet/types";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -18,8 +18,8 @@ import {
   vlanState as vlanStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-} from "testing/factories";
-import { render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -79,7 +79,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("renders correct section heading", async () => {

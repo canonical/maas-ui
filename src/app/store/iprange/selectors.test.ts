@@ -8,7 +8,7 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("all", () => {
   it("returns list of all IP ranges", () => {

@@ -6,14 +6,14 @@ import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
-import type { SidePanelContentTypes } from "app/base/side-panel-context";
-import type { SetSearchFilter } from "app/base/types";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineActionSidePanelViews } from "app/machines/constants";
+import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
+import type { SetSearchFilter } from "@/app/base/types";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineActionSidePanelViews } from "@/app/machines/constants";
 import type {
   MachineActionVariableProps,
   MachineSidePanelContent,
-} from "app/machines/types";
+} from "@/app/machines/types";
 
 type Props = SidePanelContentTypes & {
   setSearchFilter?: SetSearchFilter;

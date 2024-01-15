@@ -6,8 +6,8 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithMockStore, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithMockStore, screen, userEvent } from "@/testing/utils";
 
 describe("FilesystemFields", () => {
   it("only shows filesystem types that require a storage device", () => {
@@ -27,7 +27,7 @@ describe("FilesystemFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FilesystemFields systemId="abc123" />
       </Formik>,
@@ -54,7 +54,7 @@ describe("FilesystemFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FilesystemFields systemId="abc123" />
       </Formik>,
@@ -79,7 +79,7 @@ describe("FilesystemFields", () => {
     renderWithMockStore(
       <Formik
         initialValues={{ fstype: "", mountOptions: "", mountPoint: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <FilesystemFields systemId="abc123" />
       </Formik>,

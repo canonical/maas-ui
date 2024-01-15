@@ -1,7 +1,7 @@
 import StoragePopover from "./StoragePopover";
 
-import { podStoragePoolResource as podStoragePoolResourceFactory } from "testing/factories";
-import { fireEvent, render, screen } from "testing/utils";
+import { podStoragePoolResource as podStoragePoolResourceFactory } from "@/testing/factories";
+import { fireEvent, render, screen } from "@/testing/utils";
 
 describe("StoragePopover", () => {
   const body = document.querySelector("body");

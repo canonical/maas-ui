@@ -6,9 +6,9 @@ import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";
 import InstallationOutput from "./InstallationOutput";
 
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { Node } from "app/store/types/node";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { Node } from "@/app/store/types/node";
 
 type GenerateURL = (
   args: { id: Node["system_id"] } | null,

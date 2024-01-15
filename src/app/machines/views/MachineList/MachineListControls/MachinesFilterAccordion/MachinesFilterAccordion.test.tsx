@@ -2,15 +2,20 @@ import configureStore from "redux-mock-store";
 
 import MachinesFilterAccordion, { Label } from "./MachinesFilterAccordion";
 
-import { actions as machineActions } from "app/store/machine";
-import { FilterGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   machineFilterGroup as machineFilterGroupFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithMockStore, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  renderWithMockStore,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -28,7 +33,7 @@ describe("MachinesFilterAccordion", () => {
   it("filter is disabled when filter have not loaded", async () => {
     state.machine.filtersLoaded = false;
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { state }
     );
     expect(screen.getByRole("button", { name: Label.Toggle })).toBeDisabled();
@@ -38,7 +43,7 @@ describe("MachinesFilterAccordion", () => {
     state.machine.filtersLoaded = true;
     const store = mockStore(state);
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { store }
     );
     expect(store.getActions()).toEqual(
@@ -50,7 +55,7 @@ describe("MachinesFilterAccordion", () => {
     state.machine.filtersLoaded = false;
     const store = mockStore(state);
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { store }
     );
     await waitFor(() =>
@@ -67,7 +72,7 @@ describe("MachinesFilterAccordion", () => {
       }),
     ];
     renderWithMockStore(
-      <MachinesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { state }
     );
     // Open the menu:

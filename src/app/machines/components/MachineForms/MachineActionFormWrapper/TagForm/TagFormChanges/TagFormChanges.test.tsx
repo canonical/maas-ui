@@ -1,4 +1,4 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -7,17 +7,18 @@ import configureStore from "redux-mock-store";
 
 import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 
-import type { RootState } from "app/store/root/types";
-import type { Tag } from "app/store/tag/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import type { Tag } from "@/app/store/tag/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { tagStateListFactory } from "testing/factories/state";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { tagStateListFactory } from "@/testing/factories/state";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -25,11 +26,20 @@ let state: RootState;
 let tags: Tag[];
 const commonProps = {
   selectedCount: 0,
-  toggleTagDetails: jest.fn(),
+  toggleTagDetails: vi.fn(),
 };
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),
@@ -62,10 +72,7 @@ it("displays manual tags", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={jest.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
@@ -93,10 +100,7 @@ it("displays automatic tags", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={jest.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
@@ -126,7 +130,7 @@ it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
         <CompatRouter>
           <Formik
             initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <TagFormChanges
               {...commonProps}
@@ -159,7 +163,7 @@ it("discards added tags", async () => {
         <CompatRouter>
           <Formik
             initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
           </Formik>
@@ -182,15 +186,12 @@ it("displays a tag details modal when chips are clicked", async () => {
   expectedTag.name = "tag1";
   expectedTag.machine_count = 2;
   const store = mockStore(state);
-  const handleToggleTagDetails = jest.fn();
+  const handleToggleTagDetails = vi.fn();
   render(
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={jest.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges
               newTags={[]}
               selectedCount={2}
@@ -214,10 +215,7 @@ it("can remove manual tags", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={jest.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
@@ -246,7 +244,7 @@ it("displays removed tags", () => {
         <CompatRouter>
           <Formik
             initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <TagFormChanges {...commonProps} newTags={[]} tags={[]} />
           </Formik>
@@ -277,7 +275,7 @@ it("discards removed tags", async () => {
         <CompatRouter>
           <Formik
             initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
@@ -316,10 +314,7 @@ it("shows a message if no tags are assigned to the selected machines", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <Formik
-            initialValues={{ added: [], removed: [] }}
-            onSubmit={jest.fn()}
-          >
+          <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
             <TagFormChanges {...commonProps} newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>

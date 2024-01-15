@@ -2,13 +2,13 @@ import configureStore from "redux-mock-store";
 
 import AddChassisForm from "./AddChassisForm";
 
-import { PowerTypeNames } from "app/store/general/constants";
+import { PowerTypeNames } from "@/app/store/general/constants";
 import {
   DriverType,
   PowerFieldScope,
   PowerFieldType,
-} from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+} from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -17,8 +17,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -144,7 +144,7 @@ describe("AddChassisForm", () => {
     state.domain.loaded = false;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", store }
     );
     const expectedActions = ["FETCH_DOMAIN", "general/fetchPowerTypes"];
@@ -158,7 +158,7 @@ describe("AddChassisForm", () => {
     state.domain.loaded = false;
     state.general.powerTypes.loaded = false;
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", state }
     );
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
@@ -167,7 +167,7 @@ describe("AddChassisForm", () => {
   it("correctly dispatches action to add chassis", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/add", store }
     );
 

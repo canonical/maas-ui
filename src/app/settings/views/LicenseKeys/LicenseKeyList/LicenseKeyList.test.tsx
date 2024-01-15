@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import LicenseKeyList from ".";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   licenseKeys as licenseKeysFactory,
@@ -13,8 +13,8 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 

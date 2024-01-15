@@ -1,7 +1,7 @@
 import type { DeviceIpAssignment, DeviceMeta } from "./enum";
 
-import type { APIError } from "app/base/types";
-import type { ModelRef, TimestampFields } from "app/store/types/model";
+import type { APIError } from "@/app/base/types";
+import type { ModelRef, TimestampFields } from "@/app/store/types/model";
 import type {
   NetworkInterface,
   NodeActions,
@@ -9,8 +9,8 @@ import type {
   NodeType,
   NodeTypeDisplay,
   SimpleNode,
-} from "app/store/types/node";
-import type { EventError, GenericState } from "app/store/types/state";
+} from "@/app/store/types/node";
+import type { EventError, GenericState } from "@/app/store/types/state";
 
 export type DeviceActions = NodeActions.DELETE | NodeActions.SET_ZONE;
 

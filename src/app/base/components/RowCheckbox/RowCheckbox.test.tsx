@@ -1,12 +1,12 @@
 import RowCheckbox from "./RowCheckbox";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("RowCheckbox", () => {
   it("can show a label", () => {
     render(
       <RowCheckbox
-        handleRowCheckbox={jest.fn()}
+        handleRowCheckbox={vi.fn()}
         item={null}
         items={[]}
         label="Check row"
@@ -21,7 +21,7 @@ describe("RowCheckbox", () => {
     render(
       <RowCheckbox
         checkSelected={() => true}
-        handleRowCheckbox={jest.fn()}
+        handleRowCheckbox={vi.fn()}
         item={null}
         items={[]}
         label="Check row"

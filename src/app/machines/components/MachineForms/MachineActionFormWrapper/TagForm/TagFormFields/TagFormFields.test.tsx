@@ -1,4 +1,4 @@
-import reduxToolkit from "@reduxjs/toolkit";
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,16 +9,17 @@ import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
 
 import TagFormFields, { Label } from "./TagFormFields";
 
-import type { RootState } from "app/store/root/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { tagStateListFactory } from "testing/factories/state";
+} from "@/testing/factories";
+import { tagStateListFactory } from "@/testing/factories/state";
 import {
   userEvent,
   render,
@@ -26,19 +27,28 @@ import {
   waitFor,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 let tags: Tag[];
 const commonProps = {
-  setSecondaryContent: jest.fn(),
-  setNewTagName: jest.fn(),
-  toggleTagDetails: jest.fn(),
+  setSecondaryContent: vi.fn(),
+  setNewTagName: vi.fn(),
+  toggleTagDetails: vi.fn(),
 };
 
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
+  vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),
@@ -48,7 +58,8 @@ beforeEach(() => {
     machine: machineStateFactory({
       items: [
         machineFactory({
-          tags: [],
+          system_id: "abc123",
+          tags: [3],
         }),
       ],
     }),
@@ -65,12 +76,12 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("displays available tags in the dropdown", async () => {
   renderWithBrowserRouter(
-    <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
+    <Formik initialValues={{ added: [], removed: [] }} onSubmit={vi.fn()}>
       <TagFormFields
         {...commonProps}
         machines={[]}
@@ -79,7 +90,7 @@ it("displays available tags in the dropdown", async () => {
         selectedMachines={{
           items: state.machine.items.map((item) => item.system_id),
         }}
-        setNewTags={jest.fn()}
+        setNewTags={vi.fn()}
       />
     </Formik>,
     { state }
@@ -113,7 +124,7 @@ it("displays the tags to be added", () => {
   renderWithBrowserRouter(
     <Formik
       initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
-      onSubmit={jest.fn()}
+      onSubmit={vi.fn()}
     >
       <TagFormFields
         {...commonProps}
@@ -123,7 +134,7 @@ it("displays the tags to be added", () => {
         selectedMachines={{
           items: state.machine.items.map((item) => item.system_id),
         }}
-        setNewTags={jest.fn()}
+        setNewTags={vi.fn()}
       />
     </Formik>,
     { state }
@@ -142,14 +153,14 @@ it("displays the tags to be added", () => {
 it("updates the new tags after creating a tag", async () => {
   const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
-  const setNewTags = jest.fn();
+  const setNewTags = vi.fn();
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
           <Formik
             initialValues={{ added: tags, removed: [] }}
-            onSubmit={jest.fn()}
+            onSubmit={vi.fn()}
           >
             <TagFormFields
               {...commonProps}
@@ -179,7 +190,7 @@ it("updates the new tags after creating a tag", async () => {
   ).not.toBeInTheDocument();
   rerender(<Form tags={[newTag.id]} />);
 
-  await waitFor(() =>
+  await vi.waitFor(() =>
     expect(
       within(changes).getByRole("button", { name: /new-tag/i })
     ).toBeInTheDocument()

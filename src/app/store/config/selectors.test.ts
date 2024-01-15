@@ -1,11 +1,11 @@
 import config from "./selectors";
 
-import { ConfigNames } from "app/store/config/types";
+import { ConfigNames } from "@/app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("config selectors", () => {
   describe("all", () => {

@@ -7,14 +7,14 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
-import docsUrls from "app/base/docsUrls";
-import type { EmptyObject } from "app/base/types";
-import configSelectors from "app/store/config/selectors";
-import { NetworkDiscovery } from "app/store/config/types";
-import { actions as discoveryActions } from "app/store/discovery";
-import discoverySelectors from "app/store/discovery/selectors";
-import { actions as messageActions } from "app/store/message";
+import FormikForm from "@/app/base/components/FormikForm";
+import docsUrls from "@/app/base/docsUrls";
+import type { EmptyObject } from "@/app/base/types";
+import configSelectors from "@/app/store/config/selectors";
+import { NetworkDiscovery } from "@/app/store/config/types";
+import { actions as discoveryActions } from "@/app/store/discovery";
+import discoverySelectors from "@/app/store/discovery/selectors";
+import { actions as messageActions } from "@/app/store/message";
 
 export enum Labels {
   SubmitLabel = "Clear all discoveries",

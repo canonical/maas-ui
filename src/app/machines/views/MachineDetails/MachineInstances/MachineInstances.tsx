@@ -4,18 +4,18 @@ import { Spinner, Row, Col, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import { useWindowTitle } from "app/base/hooks";
-import { useGetURLId } from "app/base/hooks/urls";
-import urls from "app/base/urls";
-import machineSelectors from "app/store/machine/selectors";
-import { MachineMeta } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import urls from "@/app/base/urls";
+import machineSelectors from "@/app/store/machine/selectors";
+import { MachineMeta } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
 import type {
   NetworkInterface,
   NetworkLink,
   NodeDeviceRef,
-} from "app/store/types/node";
+} from "@/app/store/types/node";
 
 type InterfaceRow = {
   key: string;

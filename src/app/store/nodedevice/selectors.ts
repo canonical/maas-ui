@@ -3,9 +3,9 @@ import { createSelector } from "@reduxjs/toolkit";
 import { NodeDeviceMeta } from "./types";
 import type { NodeDevice, NodeDeviceState } from "./types";
 
-import type { RootState } from "app/store/root/types";
-import type { Node } from "app/store/types/node";
-import { generateBaseSelectors } from "app/store/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Node } from "@/app/store/types/node";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const defaultSelectors = generateBaseSelectors<
   NodeDeviceState,

@@ -1,6 +1,6 @@
 import { array, define } from "cooky-cutter";
 
-import { PowerTypeNames } from "app/store/general/constants";
+import { PowerTypeNames } from "@/app/store/general/constants";
 import type {
   Architecture,
   BondOptions,
@@ -22,14 +22,14 @@ import type {
   PowerType,
   TLSCertificate,
   Version,
-} from "app/store/general/types";
+} from "@/app/store/general/types";
 import {
   BootProtocol,
   DriverType,
   PowerFieldScope,
   PowerFieldType,
-} from "app/store/general/types";
-import { NodeActions } from "app/store/types/node";
+} from "@/app/store/general/types";
+import { NodeActions } from "@/app/store/types/node";
 
 export const architecture = define<Architecture>("amd64");
 

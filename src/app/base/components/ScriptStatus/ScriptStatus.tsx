@@ -2,9 +2,9 @@ import { Icon } from "@canonical/react-components";
 import type { Position } from "@canonical/react-components/dist/components/Tooltip/Tooltip";
 import classNames from "classnames";
 
-import TooltipButton from "app/base/components/TooltipButton";
-import { ScriptResultStatus } from "app/store/scriptresult/types";
-import { TestStatusStatus } from "app/store/types/node";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { ScriptResultStatus } from "@/app/store/scriptresult/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 
 type Props = {
   children?: React.ReactNode;

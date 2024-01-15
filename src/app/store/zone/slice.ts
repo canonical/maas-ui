@@ -16,8 +16,8 @@ import type {
 } from "./types";
 import { ZoneMeta } from "./types";
 
-import { ACTION_STATUS } from "app/base/constants";
-import type { ActionStatuses, APIError } from "app/base/types";
+import { ACTION_STATUS } from "@/app/base/constants";
+import type { ActionStatuses, APIError } from "@/app/base/types";
 
 const { cleanup, create, delete: deleteAction, fetch, update } = ZONE_ACTIONS;
 

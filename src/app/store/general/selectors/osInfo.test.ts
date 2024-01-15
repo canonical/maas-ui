@@ -1,12 +1,12 @@
 import osInfo from "./osInfo";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   osInfoState as osInfoStateFactory,
   osInfo as osInfoFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("osInfo selectors", () => {
   describe("get", () => {

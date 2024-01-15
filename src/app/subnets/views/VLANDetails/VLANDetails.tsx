@@ -10,20 +10,20 @@ import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
 import { VLANDetailsSidePanelViews } from "./constants";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import PageContent from "app/base/components/PageContent";
-import SectionHeader from "app/base/components/SectionHeader";
-import { useGetURLId, useWindowTitle } from "app/base/hooks";
-import { useSidePanel } from "app/base/side-panel-context";
-import type { RootState } from "app/store/root/types";
-import subnetSelectors from "app/store/subnet/selectors";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import { VLANMeta } from "app/store/vlan/types";
-import DHCPSnippets from "app/subnets/components/DHCPSnippets";
-import ReservedRanges from "app/subnets/components/ReservedRanges";
-import subnetURLs from "app/subnets/urls";
-import { isId } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import PageContent from "@/app/base/components/PageContent";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import type { RootState } from "@/app/store/root/types";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { actions as vlanActions } from "@/app/store/vlan";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { VLANMeta } from "@/app/store/vlan/types";
+import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
+import ReservedRanges from "@/app/subnets/components/ReservedRanges";
+import subnetURLs from "@/app/subnets/urls";
+import { isId } from "@/app/utils";
 
 const VLANDetails = (): JSX.Element => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();

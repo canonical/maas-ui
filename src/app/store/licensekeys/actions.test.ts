@@ -1,6 +1,6 @@
 import { actions } from "./slice";
 
-import { licenseKeys as licenseKeysFactory } from "testing/factories";
+import { licenseKeys as licenseKeysFactory } from "@/testing/factories";
 
 describe("licenseKeys actions", () => {
   it("can create a license key", () => {

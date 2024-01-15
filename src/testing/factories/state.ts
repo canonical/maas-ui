@@ -3,33 +3,33 @@ import type { RouterState } from "redux-first-history";
 
 import { bondOptions } from "./general";
 
-import { ACTION_STATUS } from "app/base/constants";
-import type { APIError, ActionState } from "app/base/types";
-import type { BootResourceState } from "app/store/bootresource/types";
-import type { ConfigState } from "app/store/config/types";
-import { DEFAULT_STATUSES as DEFAULT_CONTROLLER_STATUSES } from "app/store/controller/slice";
+import { ACTION_STATUS } from "@/app/base/constants";
+import type { APIError, ActionState } from "@/app/base/types";
+import type { BootResourceState } from "@/app/store/bootresource/types";
+import type { ConfigState } from "@/app/store/config/types";
+import { DEFAULT_STATUSES as DEFAULT_CONTROLLER_STATUSES } from "@/app/store/controller/slice";
 import type {
   Controller,
   ControllerMeta,
   ControllerState,
   ControllerStatus,
   ControllerStatuses,
-} from "app/store/controller/types";
-import type { ImageSyncStatuses } from "app/store/controller/types/base";
-import { ImageSyncStatus } from "app/store/controller/types/enum";
-import { DEFAULT_STATUSES as DEFAULT_DEVICE_STATUSES } from "app/store/device/slice";
+} from "@/app/store/controller/types";
+import type { ImageSyncStatuses } from "@/app/store/controller/types/base";
+import { ImageSyncStatus } from "@/app/store/controller/types/enum";
+import { DEFAULT_STATUSES as DEFAULT_DEVICE_STATUSES } from "@/app/store/device/slice";
 import type {
   Device,
   DeviceMeta,
   DeviceState,
   DeviceStatus,
   DeviceStatuses,
-} from "app/store/device/types";
-import type { DHCPSnippetState } from "app/store/dhcpsnippet/types";
-import type { DiscoveryState } from "app/store/discovery/types";
-import type { DomainState } from "app/store/domain/types";
-import type { EventState } from "app/store/event/types";
-import type { FabricState } from "app/store/fabric/types";
+} from "@/app/store/device/types";
+import type { DHCPSnippetState } from "@/app/store/dhcpsnippet/types";
+import type { DiscoveryState } from "@/app/store/discovery/types";
+import type { DomainState } from "@/app/store/domain/types";
+import type { EventState } from "@/app/store/event/types";
+import type { FabricState } from "@/app/store/fabric/types";
 import type {
   ArchitecturesState,
   BondOptionsState,
@@ -47,10 +47,10 @@ import type {
   TLSCertificateState,
   VaultEnabledState,
   VersionState,
-} from "app/store/general/types";
-import type { IPRangeState } from "app/store/iprange/types";
-import type { LicenseKeysState } from "app/store/licensekeys/types";
-import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
+} from "@/app/store/general/types";
+import type { IPRangeState } from "@/app/store/iprange/types";
+import type { LicenseKeysState } from "@/app/store/licensekeys/types";
+import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "@/app/store/machine";
 import type {
   FilterGroup,
   Machine,
@@ -66,56 +66,56 @@ import type {
   MachineStateLists,
   MachineStatus,
   MachineStatuses,
-} from "app/store/machine/types";
-import { FilterGroupKey, FilterGroupType } from "app/store/machine/types";
-import type { MessageState } from "app/store/message/types";
-import type { NodeDeviceState } from "app/store/nodedevice/types";
-import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
-import type { NotificationState } from "app/store/notification/types";
-import type { PackageRepositoryState } from "app/store/packagerepository/types";
-import { DEFAULT_STATUSES as DEFAULT_POD_STATUSES } from "app/store/pod/slice";
-import type { PodState, PodStatus, PodStatuses } from "app/store/pod/types";
-import type { ResourcePoolState } from "app/store/resourcepool/types";
-import type { RootState } from "app/store/root/types";
-import type { ScriptState } from "app/store/script/types";
-import type { ScriptResultState } from "app/store/scriptresult/types";
-import type { ServiceState } from "app/store/service/types";
-import type { SpaceState } from "app/store/space/types";
-import type { SSHKeyState } from "app/store/sshkey/types";
-import type { SSLKeyState } from "app/store/sslkey/types";
-import type { StaticRouteState } from "app/store/staticroute/types";
-import type { StatusState } from "app/store/status/types";
-import { DEFAULT_STATUSES as DEFAULT_SUBNET_STATUSES } from "app/store/subnet/slice";
+} from "@/app/store/machine/types";
+import { FilterGroupKey, FilterGroupType } from "@/app/store/machine/types";
+import type { MessageState } from "@/app/store/message/types";
+import type { NodeDeviceState } from "@/app/store/nodedevice/types";
+import type { NodeScriptResultState } from "@/app/store/nodescriptresult/types";
+import type { NotificationState } from "@/app/store/notification/types";
+import type { PackageRepositoryState } from "@/app/store/packagerepository/types";
+import { DEFAULT_STATUSES as DEFAULT_POD_STATUSES } from "@/app/store/pod/slice";
+import type { PodState, PodStatus, PodStatuses } from "@/app/store/pod/types";
+import type { ResourcePoolState } from "@/app/store/resourcepool/types";
+import type { RootState } from "@/app/store/root/types";
+import type { ScriptState } from "@/app/store/script/types";
+import type { ScriptResultState } from "@/app/store/scriptresult/types";
+import type { ServiceState } from "@/app/store/service/types";
+import type { SpaceState } from "@/app/store/space/types";
+import type { SSHKeyState } from "@/app/store/sshkey/types";
+import type { SSLKeyState } from "@/app/store/sslkey/types";
+import type { StaticRouteState } from "@/app/store/staticroute/types";
+import type { StatusState } from "@/app/store/status/types";
+import { DEFAULT_STATUSES as DEFAULT_SUBNET_STATUSES } from "@/app/store/subnet/slice";
 import type {
   Subnet,
   SubnetMeta,
   SubnetState,
   SubnetStatus,
   SubnetStatuses,
-} from "app/store/subnet/types";
-import type { TagState } from "app/store/tag/types";
-import type { TagStateList } from "app/store/tag/types/base";
-import type { TokenState } from "app/store/token/types";
-import type { EventError } from "app/store/types/state";
-import type { AuthState, UserState } from "app/store/user/types";
-import { DEFAULT_STATUSES as DEFAULT_VLAN_STATUSES } from "app/store/vlan/slice";
+} from "@/app/store/subnet/types";
+import type { TagState } from "@/app/store/tag/types";
+import type { TagStateList } from "@/app/store/tag/types/base";
+import type { TokenState } from "@/app/store/token/types";
+import type { EventError } from "@/app/store/types/state";
+import type { AuthState, UserState } from "@/app/store/user/types";
+import { DEFAULT_STATUSES as DEFAULT_VLAN_STATUSES } from "@/app/store/vlan/slice";
 import type {
   VLAN,
   VLANMeta,
   VLANState,
   VLANStatus,
   VLANStatuses,
-} from "app/store/vlan/types";
-import type { VMClusterState } from "app/store/vmcluster/types";
-import type { VMClusterStatuses } from "app/store/vmcluster/types/base";
-import { ZONE_ACTIONS } from "app/store/zone/constants";
+} from "@/app/store/vlan/types";
+import type { VMClusterState } from "@/app/store/vmcluster/types";
+import type { VMClusterStatuses } from "@/app/store/vmcluster/types/base";
+import { ZONE_ACTIONS } from "@/app/store/zone/constants";
 import type {
   ZoneGenericActions,
   ZoneModelAction,
   ZoneModelActions,
   ZoneState,
   ZoneStateError,
-} from "app/store/zone/types";
+} from "@/app/store/zone/types";
 
 const defaultState = {
   errors: () => ({}),

@@ -8,8 +8,8 @@ import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/Reposito
 
 import RepositoryForm from "./RepositoryForm";
 
-import settingsURLs from "app/settings/urls";
-import type { RootState } from "app/store/root/types";
+import settingsURLs from "@/app/settings/urls";
+import type { RootState } from "@/app/store/root/types";
 import {
   componentsToDisableState as componentsToDisableStateFactory,
   knownArchitecturesState as knownArchitecturesStateFactory,
@@ -18,8 +18,13 @@ import {
   pocketsToDisableState as pocketsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

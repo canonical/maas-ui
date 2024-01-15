@@ -8,11 +8,11 @@ import type { Disk, ComposeFormValues } from "../ComposeForm";
 
 import PoolSelect from "./PoolSelect";
 
-import FormikField from "app/base/components/FormikField";
-import TagNameField from "app/base/components/TagNameField";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
+import FormikField from "@/app/base/components/FormikField";
+import TagNameField from "@/app/base/components/TagNameField";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   defaultDisk: Disk;

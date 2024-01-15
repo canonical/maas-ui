@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 
-import FilterAccordion from "app/base/components/FilterAccordion";
-import discoverySelectors from "app/store/discovery/selectors";
+import FilterAccordion from "@/app/base/components/FilterAccordion";
+import discoverySelectors from "@/app/store/discovery/selectors";
 import {
   FilterDiscoveries,
   getDiscoveryValue,
-} from "app/store/discovery/utils";
+} from "@/app/store/discovery/utils";
 
 type Props = {
   searchText?: string;

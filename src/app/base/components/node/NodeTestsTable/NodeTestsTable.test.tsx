@@ -1,15 +1,16 @@
 import configureStore from "redux-mock-store";
+import type { Mock, SpyInstance } from "vitest";
 
 import NodeTestsTable from "./NodeTestsTable";
 
-import * as hooks from "app/base/hooks/analytics";
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import * as hooks from "@/app/base/hooks/analytics";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   ScriptResultStatus,
   ScriptResultType,
-} from "app/store/scriptresult/types";
+} from "@/app/store/scriptresult/types";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
@@ -18,13 +19,8 @@ import {
   rootState as rootStateFactory,
   scriptResult as scriptResultFactory,
   scriptResultState as scriptResultStateFactory,
-} from "testing/factories";
-import {
-  expectTooltipOnHover,
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-} from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -32,8 +28,8 @@ describe("NodeTestsTable", () => {
   let controller: ControllerDetails;
   let machine: MachineDetails;
   let state: RootState;
-  let mockSendAnalytics: jest.Mock;
-  let mockUseSendAnalytics: jest.SpyInstance;
+  let mockSendAnalytics: Mock;
+  let mockUseSendAnalytics: SpyInstance;
 
   beforeEach(() => {
     machine = machineDetailsFactory({
@@ -56,8 +52,8 @@ describe("NodeTestsTable", () => {
         loaded: true,
       }),
     });
-    mockSendAnalytics = jest.fn();
-    mockUseSendAnalytics = jest
+    mockSendAnalytics = vi.fn();
+    mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
   });
@@ -146,10 +142,12 @@ describe("NodeTestsTable", () => {
 
     const checkbox = screen.getByTestId("suppress-script-results");
     expect(checkbox).toBeDisabled();
-    await expectTooltipOnHover(
-      checkbox,
-      "Only failed testing scripts can be suppressed."
-    );
+    await userEvent.hover(checkbox);
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        "Only failed testing scripts can be suppressed."
+      );
+    });
   });
 
   it("dispatches suppress for an unsuppressed script result", async () => {

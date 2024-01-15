@@ -1,8 +1,8 @@
 import AddChassisForm from "../AddChassisForm";
 
-import { PowerTypeNames } from "app/store/general/constants";
-import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -11,8 +11,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("AddChassisFormFields", () => {
   let state: RootState;
@@ -33,7 +33,7 @@ describe("AddChassisFormFields", () => {
 
   it("can render", () => {
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", state }
     );
 
@@ -88,7 +88,7 @@ describe("AddChassisFormFields", () => {
     );
 
     renderWithBrowserRouter(
-      <AddChassisForm clearSidePanelContent={jest.fn()} />,
+      <AddChassisForm clearSidePanelContent={vi.fn()} />,
       { route: "/machines/chassis/add", state }
     );
 

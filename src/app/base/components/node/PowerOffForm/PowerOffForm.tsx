@@ -1,7 +1,7 @@
 import type { FieldlessFormProps } from "../FieldlessForm/FieldlessForm";
 import FieldlessForm from "../FieldlessForm/FieldlessForm";
 
-import { NodeActions } from "app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 
 const PowerOffForm = ({ action, actions, ...props }: FieldlessFormProps) => {
   const helperText =

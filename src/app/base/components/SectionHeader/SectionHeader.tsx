@@ -6,7 +6,7 @@ import type { TabLink } from "@canonical/react-components/dist/components/Tabs/T
 import classNames from "classnames";
 import type { LinkProps } from "react-router-dom";
 
-import type { DataTestElement } from "app/base/types";
+import type { DataTestElement } from "@/app/base/types";
 
 export type Props<P = LinkProps> = {
   actionMenuGroup?: JSX.Element | null;

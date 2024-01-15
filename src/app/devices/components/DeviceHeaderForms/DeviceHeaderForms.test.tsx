@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import DeviceHeaderForms from "./DeviceHeaderForms";
 
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { RootState } from "app/store/root/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -13,8 +13,8 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -38,7 +38,7 @@ describe("DeviceHeaderForms", () => {
     renderWithBrowserRouter(
       <DeviceHeaderForms
         devices={[]}
-        setSidePanelContent={jest.fn()}
+        setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: DeviceSidePanelViews.ADD_DEVICE }}
       />,
       { store }

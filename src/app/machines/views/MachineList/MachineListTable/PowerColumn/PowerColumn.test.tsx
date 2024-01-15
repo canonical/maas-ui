@@ -1,20 +1,15 @@
 import { PowerColumn } from "./PowerColumn";
 
-import { PowerTypeNames } from "app/store/general/constants";
-import type { RootState } from "app/store/root/types";
-import { PowerState } from "app/store/types/enum";
-import { NodeActions } from "app/store/types/node";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import type { RootState } from "@/app/store/root/types";
+import { PowerState } from "@/app/store/types/enum";
+import { NodeActions } from "@/app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import {
-  expectTooltipOnHover,
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-} from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("PowerColumn", () => {
   let state: RootState;
@@ -37,7 +32,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_state = PowerState.OFF;
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -48,7 +43,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_type = "manual";
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -60,7 +55,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_state = PowerState.OFF;
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
     // Open the menu so the elements get rendered.
@@ -73,7 +68,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].actions = [NodeActions.OFF];
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -85,7 +80,7 @@ describe("PowerColumn", () => {
 
   it("can show a menu item to check power", async () => {
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -99,7 +94,7 @@ describe("PowerColumn", () => {
     state.machine.items[0].power_state = PowerState.UNKNOWN;
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
@@ -125,13 +120,14 @@ describe("PowerColumn", () => {
     state.machine.items[0].status_message = "It's not working";
 
     renderWithBrowserRouter(
-      <PowerColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      <PowerColumn onToggleMenu={vi.fn()} systemId="abc123" />,
       { route: "/machines", state }
     );
 
-    await expectTooltipOnHover(
-      screen.getByLabelText("error"),
-      "It's not working"
-    );
+    await userEvent.hover(screen.getByLabelText("error"));
+
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent("It's not working");
+    });
   });
 });

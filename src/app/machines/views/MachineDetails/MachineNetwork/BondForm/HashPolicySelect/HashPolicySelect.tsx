@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 
 import type { BondFormValues } from "../types";
 
-import DynamicSelect from "app/base/components/DynamicSelect";
-import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
-import { useFetchActions } from "app/base/hooks";
-import { actions as generalActions } from "app/store/general";
-import { bondOptions as bondOptionsSelectors } from "app/store/general/selectors";
-import { BondMode, BondXmitHashPolicy } from "app/store/general/types";
+import DynamicSelect from "@/app/base/components/DynamicSelect";
+import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
+import { useFetchActions } from "@/app/base/hooks";
+import { actions as generalActions } from "@/app/store/general";
+import { bondOptions as bondOptionsSelectors } from "@/app/store/general/selectors";
+import { BondMode, BondXmitHashPolicy } from "@/app/store/general/types";
 
 type Props = {
   bondMode?: BondMode | null;

@@ -10,14 +10,14 @@ import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
 import { FetchGroupKey } from "./types/actions";
 
-import { actions as statusActions } from "app/store/status/slice";
+import { actions as statusActions } from "@/app/store/status/slice";
 import {
   NodeActions,
   NodeStatus,
   NodeStatusCode,
   FetchNodeStatus,
-} from "app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+} from "@/app/store/types/node";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   filterGroup as filterGroupFactory,
   machine as machineFactory,
@@ -29,17 +29,17 @@ import {
   machineStateCount as machineStateCountFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStatus as machineStatusFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 enableCallIdMocks();
 
 describe("machine reducer", () => {
   const NOW = 1000;
   beforeEach(() => {
-    jest.spyOn(Date, "now").mockImplementation(() => NOW);
+    vi.spyOn(Date, "now").mockImplementation(() => NOW);
   });
   afterEach(() => {
-    jest.spyOn(Date, "now").mockRestore();
+    vi.spyOn(Date, "now").mockRestore();
   });
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
@@ -121,7 +121,7 @@ describe("machine reducer", () => {
         },
       });
 
-      jest.spyOn(Date, "now").mockImplementation(() => NOW + 1);
+      vi.spyOn(Date, "now").mockImplementation(() => NOW + 1);
 
       const updatedState = reducers(initialState, actions.countStart(callId));
 
@@ -198,7 +198,7 @@ describe("machine reducer", () => {
     });
 
     it("reduces fetchStart for subsequent fetch for the same callId", () => {
-      jest.spyOn(Date, "now").mockImplementation(() => NOW + 1);
+      vi.spyOn(Date, "now").mockImplementation(() => NOW + 1);
 
       const initialState = machineStateFactory({
         lists: {

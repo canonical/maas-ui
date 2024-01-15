@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 
 import { FabricDetailsSidePanelViews } from "./constants";
 
-import SectionHeader from "app/base/components/SectionHeader";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import authSelectors from "app/store/auth/selectors";
-import type { Fabric } from "app/store/fabric/types";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import authSelectors from "@/app/store/auth/selectors";
+import type { Fabric } from "@/app/store/fabric/types";
 
 type Props = {
   fabric: Fabric;

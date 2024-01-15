@@ -6,16 +6,16 @@ import DiscoveryAddForm, {
 import { Labels as FormFieldLabels } from "./DiscoveryAddFormFields/DiscoveryAddFormFields";
 import { DeviceType } from "./types";
 
-import { actions as deviceActions } from "app/store/device";
-import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
-import type { Discovery } from "app/store/discovery/types";
-import type { RootState } from "app/store/root/types";
+import { actions as deviceActions } from "@/app/store/device";
+import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
+import type { Discovery } from "@/app/store/discovery/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
   TestStatusStatus,
-} from "app/store/types/node";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+} from "@/app/store/types/node";
+import { callId, enableCallIdMocks } from "@/testing/callId-mock";
 import {
   discovery as discoveryFactory,
   domain as domainFactory,
@@ -32,15 +32,15 @@ import {
   rootState as rootStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   userEvent,
   screen,
   waitFor,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 const mockStore = configureStore<RootState, {}>();
 
 enableCallIdMocks();
@@ -132,13 +132,13 @@ describe("DiscoveryAddForm", () => {
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", store }
     );
     const expectedActions = [
@@ -163,7 +163,7 @@ describe("DiscoveryAddForm", () => {
     state.vlan.loaded = false;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", store }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
@@ -172,14 +172,14 @@ describe("DiscoveryAddForm", () => {
   it("maps name errors to hostname", async () => {
     // Render the form with default state.
     const { rerender } = renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", state }
     );
     const error = "Name is invalid";
     // Change the device state to included the errors (as if it has changed via an API response).
     state.device.errors = { name: error };
     // Rerender the form to simulate the state change.
-    rerender(<DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />);
+    rerender(<DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />);
     expect(
       screen.getByRole("textbox", {
         name: `${FormFieldLabels.Hostname}`,
@@ -191,7 +191,7 @@ describe("DiscoveryAddForm", () => {
   it("can dispatch to create a device", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", store }
     );
 
@@ -250,7 +250,7 @@ describe("DiscoveryAddForm", () => {
   it("can dispatch to create a device interface", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", store }
     );
 
@@ -309,7 +309,7 @@ describe("DiscoveryAddForm", () => {
     mockFormikFormSaved();
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", store }
     );
 
@@ -328,7 +328,7 @@ describe("DiscoveryAddForm", () => {
     mockFormikFormSaved();
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", store }
     );
 
@@ -352,7 +352,7 @@ describe("DiscoveryAddForm", () => {
     state.discovery.items[0].hostname = "";
     const store = mockStore(state);
     const { rerender } = renderWithBrowserRouter(
-      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      <DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />,
       { route: "/network-discovery", store }
     );
 
@@ -362,7 +362,7 @@ describe("DiscoveryAddForm", () => {
     );
 
     mockFormikFormSaved();
-    rerender(<DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />);
+    rerender(<DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />);
 
     await userEvent.click(
       screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })

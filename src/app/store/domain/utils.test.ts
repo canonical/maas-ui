@@ -3,7 +3,7 @@ import { isDomainDetails } from "./utils";
 import {
   domain as domainFactory,
   domainDetails as domainDetailsFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("domain utils", () => {
   describe("isDomainDetails", () => {

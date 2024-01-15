@@ -1,7 +1,7 @@
 import SubnetColumn from "./SubnetColumn";
 
-import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceInterface as deviceInterfaceFactory,
@@ -14,8 +14,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("SubnetColumn", () => {
   let state: RootState;

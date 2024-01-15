@@ -5,9 +5,9 @@ import configureStore from "redux-mock-store";
 
 import UbuntuImages, { Labels as UbuntuImagesLabels } from "./UbuntuImages";
 
-import { actions as bootResourceActions } from "app/store/bootresource";
-import { BootResourceSourceType } from "app/store/bootresource/types";
-import type { RootState } from "app/store/root/types";
+import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
@@ -16,14 +16,14 @@ import {
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
   bootResourceUbuntuSource as sourceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
   render,
   within,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

@@ -4,9 +4,9 @@ import configureStore from "redux-mock-store";
 
 import MachineStatusCard from "./MachineStatusCard";
 
-import docsUrls from "app/base/docsUrls";
-import type { RootState } from "app/store/root/types";
-import { NodeStatus, NodeStatusCode } from "app/store/types/node";
+import docsUrls from "@/app/base/docsUrls";
+import type { RootState } from "@/app/store/root/types";
+import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -14,13 +14,13 @@ import {
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   render,
   screen,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

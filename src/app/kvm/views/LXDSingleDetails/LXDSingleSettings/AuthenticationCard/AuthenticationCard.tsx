@@ -6,12 +6,12 @@ import { useSelector } from "react-redux";
 
 import UpdateCertificate from "./UpdateCertificate";
 
-import CertificateDetails from "app/base/components/CertificateDetails";
-import FormCard from "app/base/components/FormCard";
-import podSelectors from "app/store/pod/selectors";
-import type { Pod } from "app/store/pod/types";
-import { isPodDetails } from "app/store/pod/utils";
-import type { RootState } from "app/store/root/types";
+import CertificateDetails from "@/app/base/components/CertificateDetails";
+import FormCard from "@/app/base/components/FormCard";
+import podSelectors from "@/app/store/pod/selectors";
+import type { Pod } from "@/app/store/pod/types";
+import { isPodDetails } from "@/app/store/pod/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   hostId: Pod["id"] | null;

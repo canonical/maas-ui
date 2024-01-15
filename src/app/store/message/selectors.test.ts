@@ -4,7 +4,7 @@ import {
   message as messageFactory,
   messageState as messageStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("messages", () => {
   it("can get all messages", () => {

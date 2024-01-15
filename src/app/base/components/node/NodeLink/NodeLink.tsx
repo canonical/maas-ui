@@ -1,8 +1,8 @@
-import ControllerLink from "app/base/components/ControllerLink";
-import DeviceLink from "app/base/components/DeviceLink";
-import MachineLink from "app/base/components/MachineLink";
-import type { Node } from "app/store/types/node";
-import { NodeType } from "app/store/types/node";
+import ControllerLink from "@/app/base/components/ControllerLink";
+import DeviceLink from "@/app/base/components/DeviceLink";
+import MachineLink from "@/app/base/components/MachineLink";
+import type { Node } from "@/app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
 
 type Props = {
   nodeType: NodeType;

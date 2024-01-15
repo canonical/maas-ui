@@ -2,14 +2,14 @@ import configureStore from "redux-mock-store";
 
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
-import { actions as controllerActions } from "app/store/controller";
-import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
+import { actions as controllerActions } from "@/app/store/controller";
+import type { RootState } from "@/app/store/root/types";
+import { NodeActions } from "@/app/store/types/node";
 import {
   controller as controllerFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -24,7 +24,7 @@ describe("ControllerActionFormWrapper", () => {
     renderWithBrowserRouter(
       <ControllerActionFormWrapper
         action={NodeActions.DELETE}
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         controllers={controllers}
         viewingDetails={false}
       />,

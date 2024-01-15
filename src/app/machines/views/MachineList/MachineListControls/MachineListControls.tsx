@@ -6,19 +6,19 @@ import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import DebounceSearchBox from "app/base/components/DebounceSearchBox";
-import GroupSelect from "app/base/components/GroupSelect";
-import urls from "app/base/urls";
-import { groupOptions } from "app/machines/constants";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import HiddenColumnsSelect from "app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
-import MachineActionMenu from "app/machines/views/MachineList/MachineListControls/MachineActionMenu";
-import MachinesFilterAccordion from "app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
-import AddHardwareMenu from "app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
-import type { useResponsiveColumns } from "app/machines/views/MachineList/hooks";
-import { actions as machineActions } from "app/store/machine";
-import type { FetchGroupKey } from "app/store/machine/types";
-import { useHasSelection } from "app/store/machine/utils/hooks";
+import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
+import GroupSelect from "@/app/base/components/GroupSelect";
+import urls from "@/app/base/urls";
+import { groupOptions } from "@/app/machines/constants";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import HiddenColumnsSelect from "@/app/machines/views/MachineList/MachineListControls/HiddenColumnsSelect";
+import MachineActionMenu from "@/app/machines/views/MachineList/MachineListControls/MachineActionMenu";
+import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
+import AddHardwareMenu from "@/app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
+import type { useResponsiveColumns } from "@/app/machines/views/MachineList/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FetchGroupKey } from "@/app/store/machine/types";
+import { useHasSelection } from "@/app/store/machine/utils/hooks";
 
 export type MachineListControlsProps = {
   machineCount: number;

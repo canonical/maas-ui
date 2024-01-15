@@ -2,12 +2,12 @@ import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import { FilterDevices } from "app/store/device/utils";
-import { FilterMachines } from "app/store/machine/utils";
-import { actions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { FilterDevices } from "@/app/store/device/utils";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { actions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 export enum TestIds {
   ZonesTable = "zones-table",

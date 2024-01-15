@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import NetworkTableConfirmation from "./NetworkTableConfirmation";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -13,13 +13,13 @@ import {
   machineStatus as machineStatusFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -50,7 +50,7 @@ describe("NetworkTableConfirmation", () => {
       <NetworkTableConfirmation
         expanded={null}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -75,7 +75,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.REMOVE,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -99,7 +99,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.REMOVE,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -148,7 +148,7 @@ describe("NetworkTableConfirmation", () => {
           }}
           link={link}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -181,7 +181,7 @@ describe("NetworkTableConfirmation", () => {
           }}
           link={link}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -217,7 +217,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_CONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -238,7 +238,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_DISCONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -260,7 +260,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.DISCONNECTED_WARNING,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -284,7 +284,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_CONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -320,7 +320,7 @@ describe("NetworkTableConfirmation", () => {
             content: ExpandedState.MARK_DISCONNECTED,
           }}
           nic={nic}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           systemId="abc123"
         />,
         { store }
@@ -357,7 +357,7 @@ describe("NetworkTableConfirmation", () => {
           content: ExpandedState.ADD_ALIAS,
         }}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }
@@ -376,7 +376,7 @@ describe("NetworkTableConfirmation", () => {
           content: ExpandedState.ADD_VLAN,
         }}
         nic={nic}
-        setExpanded={jest.fn()}
+        setExpanded={vi.fn()}
         systemId="abc123"
       />,
       { store }

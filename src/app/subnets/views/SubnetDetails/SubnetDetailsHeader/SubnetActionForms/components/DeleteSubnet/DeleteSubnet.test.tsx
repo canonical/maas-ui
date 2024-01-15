@@ -7,9 +7,9 @@ import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
 
-import urls from "app/base/urls";
-import { actions as subnetActions } from "app/store/subnet";
-import { actions as vlanActions } from "app/store/vlan";
+import urls from "@/app/base/urls";
+import { actions as subnetActions } from "@/app/store/subnet";
+import { actions as vlanActions } from "@/app/store/vlan";
 import {
   subnetDetails as subnetFactory,
   subnetIP as subnetIPFactory,
@@ -17,8 +17,8 @@ import {
   vlanState as vlanStateFactory,
   vlan as vlanFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { render, screen, within, waitFor, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, within, waitFor, userEvent } from "@/testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {
@@ -64,7 +64,7 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
     <Provider store={store}>
       <Router history={history}>
         <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
         </CompatRouter>
       </Router>
     </Provider>
@@ -91,7 +91,7 @@ it("displays a message if DHCP is disabled on the VLAN", () => {
     <Provider store={store}>
       <Router history={history}>
         <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
         </CompatRouter>
       </Router>
     </Provider>
@@ -118,7 +118,7 @@ it("does not display a message if DHCP is enabled on the VLAN", () => {
     <Provider store={store}>
       <Router history={history}>
         <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
         </CompatRouter>
       </Router>
     </Provider>
@@ -146,7 +146,7 @@ it("dispatches an action to load vlans and subnets if not loaded", () => {
     <Provider store={store}>
       <Router history={history}>
         <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
         </CompatRouter>
       </Router>
     </Provider>
@@ -173,7 +173,7 @@ it("dispatches a delete action on submit", async () => {
     <Provider store={store}>
       <Router history={history}>
         <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
         </CompatRouter>
       </Router>
     </Provider>
@@ -204,7 +204,7 @@ it("redirects on save", async () => {
         <CompatRouter>
           <Route
             component={() => (
-              <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+              <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
             )}
             exact
             path={urls.subnets.subnet.index({ id: subnetId })}
@@ -226,7 +226,7 @@ it("redirects on save", async () => {
         <CompatRouter>
           <Route
             component={() => (
-              <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+              <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
             )}
             exact
             path={urls.subnets.subnet.index({ id: subnetId })}

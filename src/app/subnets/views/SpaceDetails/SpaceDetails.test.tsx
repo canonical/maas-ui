@@ -3,21 +3,21 @@ import configureStore from "redux-mock-store";
 
 import SpaceDetails from "./SpaceDetails";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as spaceActions } from "app/store/space";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as spaceActions } from "@/app/store/space";
 import {
   spaceState as spaceStateFactory,
   space as spaceFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 

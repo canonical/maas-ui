@@ -20,11 +20,11 @@ import type {
   UpdateRecordParams,
 } from "./types";
 
-import type { APIError } from "app/base/types";
+import type { APIError } from "@/app/base/types";
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const domainSlice = createSlice({
   name: DomainMeta.MODEL,

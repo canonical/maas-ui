@@ -5,17 +5,17 @@ import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
 
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
 import {
   tag as tagFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
-} from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -28,7 +28,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 it("dispatches an action to create a tag", async () => {
@@ -37,7 +37,7 @@ it("dispatches an action to create a tag", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <AddTagForm name="new-tag" onTagCreated={jest.fn()} />
+          <AddTagForm name="new-tag" onTagCreated={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -64,7 +64,7 @@ it("dispatches an action to create a tag", async () => {
 });
 
 it("returns the newly created tag on save", async () => {
-  const onTagCreated = jest.fn();
+  const onTagCreated = vi.fn();
   const store = mockStore(state);
   render(
     <Provider store={store}>

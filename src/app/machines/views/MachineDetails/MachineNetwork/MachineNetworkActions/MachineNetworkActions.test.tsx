@@ -1,18 +1,18 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import { NodeStatus } from "app/store/types/node";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import { NodeStatus } from "@/app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const expectDisabledButtonWithTooltip = async (
   buttonLabel: string | RegExp,
@@ -52,8 +52,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -65,13 +65,13 @@ describe("MachineNetworkActions", () => {
     });
 
     it("shows the test form when clicking the button", async () => {
-      const setSidePanelContent = jest.fn();
+      const setSidePanelContent = vi.fn();
 
       renderWithBrowserRouter(
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={jest.fn()}
+          setExpanded={vi.fn()}
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
@@ -107,14 +107,14 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setExpanded = jest.fn();
+      const setExpanded = vi.fn();
 
       renderWithBrowserRouter(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
           setExpanded={setExpanded}
-          setSidePanelContent={jest.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -136,8 +136,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -152,8 +152,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -185,8 +185,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -225,8 +225,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -260,8 +260,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -287,14 +287,14 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setExpanded = jest.fn();
+      const setExpanded = vi.fn();
 
       renderWithBrowserRouter(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
           setExpanded={setExpanded}
-          setSidePanelContent={jest.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -315,8 +315,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -333,8 +333,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -366,8 +366,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -406,8 +406,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -440,8 +440,8 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={jest.fn()}
-          setSidePanelContent={jest.fn()}
+          setExpanded={vi.fn()}
+          setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }

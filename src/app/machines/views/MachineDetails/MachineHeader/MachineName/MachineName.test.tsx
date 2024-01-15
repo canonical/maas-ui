@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import MachineName from "./MachineName";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -12,8 +12,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -47,7 +47,7 @@ describe("MachineName", () => {
   it("can update a machine with the new name and domain", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineName editingName={true} id="abc123" setEditingName={jest.fn()} />,
+      <MachineName editingName={true} id="abc123" setEditingName={vi.fn()} />,
       { route: "/machine/abc123", store }
     );
 

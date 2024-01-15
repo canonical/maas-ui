@@ -4,22 +4,22 @@ import type { NewPodValues } from "../../types";
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
-import urls from "app/base/urls";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   pod as podFactory,
   podPowerParameters as powerParametersFactory,
   podProject as podProjectFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   within,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("SelectProjectFormFields", () => {
   let state: RootState;
@@ -50,7 +50,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
@@ -91,7 +91,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
@@ -137,7 +137,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,
@@ -170,7 +170,7 @@ describe("SelectProjectFormFields", () => {
     renderWithBrowserRouter(
       <Formik
         initialValues={{ existingProject: "", newProject: "" }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <SelectProjectFormFields newPodValues={newPodValues} />
       </Formik>,

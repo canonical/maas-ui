@@ -3,14 +3,14 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
 import { UserEdit } from "./UserEdit";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("UserEdit", () => {
   let state: RootState;

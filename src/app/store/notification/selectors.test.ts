@@ -1,7 +1,7 @@
 import notification from "./selectors";
 
-import { ConfigNames } from "app/store/config/types";
-import { NotificationIdent } from "app/store/notification/types";
+import { ConfigNames } from "@/app/store/config/types";
+import { NotificationIdent } from "@/app/store/notification/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -10,7 +10,7 @@ import {
   notificationState as notificationStateFactory,
   rootState as rootStateFactory,
   routerState as routerStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("notification selectors", () => {
   it("can get all items", () => {

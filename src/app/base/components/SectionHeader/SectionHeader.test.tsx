@@ -1,6 +1,6 @@
 import SectionHeader from "./SectionHeader";
 
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("SectionHeader", () => {
   it("can render title and subtitle", () => {

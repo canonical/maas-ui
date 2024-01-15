@@ -3,7 +3,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import TagLinks from "./TagLinks";
 
-import { render, screen } from "testing/utils";
+import { render, screen } from "@/testing/utils";
 
 describe("TagLinks", () => {
   it("displays tag links", () => {

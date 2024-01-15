@@ -7,10 +7,10 @@ import configureStore from "redux-mock-store";
 
 import MachineCommissioning from ".";
 
-import { HardwareType } from "app/base/enum";
-import type { RootState } from "app/store/root/types";
-import { ScriptResultType } from "app/store/scriptresult/types";
-import { TestStatusStatus } from "app/store/types/node";
+import { HardwareType } from "@/app/base/enum";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptResultType } from "@/app/store/scriptresult/types";
+import { TestStatusStatus } from "@/app/store/types/node";
 import {
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
@@ -18,13 +18,13 @@ import {
   scriptResultState as scriptResultStateFactory,
   testStatus as testStatusFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
-jest.mock("@canonical/react-components/dist/hooks", () => {
-  const hooks = jest.requireActual("@canonical/react-components/dist/hooks");
+vi.mock("@canonical/react-components/dist/hooks", () => {
+  const hooks = vi.importActual("@canonical/react-components/dist/hooks");
   return {
     ...hooks,
-    usePrevious: jest.fn(),
+    usePrevious: vi.fn(),
   };
 });
 const mockStore = configureStore();
@@ -126,9 +126,9 @@ describe("MachineCommissioning", () => {
     ).toBe(1);
   });
   it("refetchs script results when the machine commissioning status changes", () => {
-    jest
-      .spyOn(reactComponentHooks, "usePrevious")
-      .mockImplementation(() => TestStatusStatus.PASSED);
+    vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(
+      () => TestStatusStatus.PASSED
+    );
     state.machine.items = [
       machineDetailsFactory({
         commissioning_status: testStatusFactory({

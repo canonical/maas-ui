@@ -1,9 +1,9 @@
 import TagTable from "./TagTable";
 
-import ArrowPagination from "app/base/components/ArrowPagination";
-import { useWindowTitle } from "app/base/hooks";
-import type { TagSearchFilter } from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import ArrowPagination from "@/app/base/components/ArrowPagination";
+import { useWindowTitle } from "@/app/base/hooks";
+import type { TagSearchFilter } from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 type Props = {
   currentPage: number;

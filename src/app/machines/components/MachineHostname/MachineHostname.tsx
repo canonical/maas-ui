@@ -1,5 +1,5 @@
-import type { Machine } from "app/store/machine/types";
-import { useFetchMachine } from "app/store/machine/utils/hooks";
+import type { Machine } from "@/app/store/machine/types";
+import { useFetchMachine } from "@/app/store/machine/utils/hooks";
 
 const MachineHostname = ({
   systemId,

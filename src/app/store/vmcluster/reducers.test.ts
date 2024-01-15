@@ -5,7 +5,7 @@ import {
   vmClusterEventError as vmClusterEventErrorFactory,
   vmClusterState as vmClusterStateFactory,
   vmClusterStatuses as vmClusterStatusesFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("vmCluster reducers", () => {
   it("returns the initial state", () => {

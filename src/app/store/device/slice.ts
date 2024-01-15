@@ -20,15 +20,15 @@ import type {
   BaseNodeActionParams,
   SetZoneParams,
   UpdateInterfaceParams,
-} from "app/store/types/node";
-import { NodeActions } from "app/store/types/node";
+} from "@/app/store/types/node";
+import { NodeActions } from "@/app/store/types/node";
 import {
   generateCommonReducers,
   generateStatusHandlers,
   genericInitialState,
   updateErrors,
-} from "app/store/utils/slice";
-import { kebabToCamelCase, preparePayloadParams } from "app/utils";
+} from "@/app/store/utils/slice";
+import { kebabToCamelCase, preparePayloadParams } from "@/app/utils";
 
 export const DEFAULT_STATUSES = {
   creatingInterface: false,

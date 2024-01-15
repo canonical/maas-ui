@@ -1,14 +1,14 @@
 import StorageTables, { Labels } from "./StorageTables";
 
-import { DiskTypes, StorageLayout } from "app/store/types/enum";
+import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   nodeDisk as diskFactory,
   nodeFilesystem as fsFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("renders a list of cache sets if any exist", () => {
   const node = machineDetailsFactory({

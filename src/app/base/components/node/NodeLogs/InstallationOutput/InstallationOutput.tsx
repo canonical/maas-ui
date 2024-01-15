@@ -4,16 +4,16 @@ import { useSelector } from "react-redux";
 
 import { useGetInstallationOutput } from "../hooks";
 
-import type { ControllerDetails } from "app/store/controller/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import scriptResultSelectors from "app/store/scriptresult/selectors";
-import { ScriptResultStatus } from "app/store/scriptresult/types";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import scriptResultSelectors from "@/app/store/scriptresult/selectors";
+import { ScriptResultStatus } from "@/app/store/scriptresult/types";
 import type {
   ScriptResult,
   ScriptResultData,
-} from "app/store/scriptresult/types";
-import { PowerState } from "app/store/types/enum";
+} from "@/app/store/scriptresult/types";
+import { PowerState } from "@/app/store/types/enum";
 
 type Props = {
   node: MachineDetails | ControllerDetails;

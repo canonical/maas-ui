@@ -12,7 +12,7 @@ import type {
 import {
   generateCommonReducers,
   genericInitialState,
-} from "app/store/utils/slice";
+} from "@/app/store/utils/slice";
 
 const licenseKeysSlice = createSlice({
   name: LicenseKeysMeta.MODEL,

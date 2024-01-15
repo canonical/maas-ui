@@ -7,14 +7,14 @@ import { Labels as ScriptsListLabels } from "./ScriptsList";
 
 import ScriptsList from ".";
 
-import { fileContextStore } from "app/base/file-context";
-import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { fileContextStore } from "@/app/base/file-context";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptType } from "@/app/store/script/types";
 import {
   script as scriptFactory,
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -22,17 +22,17 @@ import {
   within,
   renderWithMockStore,
   renderWithBrowserRouter,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("ScriptsList", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   let state: RootState;
@@ -293,7 +293,7 @@ describe("ScriptsList", () => {
   });
 
   it("can show script source", async () => {
-    jest.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
+    vi.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>

@@ -2,18 +2,18 @@ import { Labels as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesLis
 import NetworkDiscovery, { Label } from "./NetworkDiscovery";
 import { Label as NetworkDiscoveryConfigurationFormLabel } from "./NetworkDiscoveryConfigurationForm/NetworkDiscoveryConfigurationForm";
 
-import urls from "app/base/urls";
-import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import urls from "@/app/base/urls";
+import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NetworkDiscovery", () => {
   let state: RootState;

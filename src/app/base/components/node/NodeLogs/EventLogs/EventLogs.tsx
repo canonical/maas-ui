@@ -6,14 +6,14 @@ import { useStorageState } from "react-storage-hooks";
 
 import EventLogsTable from "./EventLogsTable";
 
-import ArrowPagination from "app/base/components/ArrowPagination";
-import SearchBox from "app/base/components/SearchBox";
-import type { ControllerDetails } from "app/store/controller/types";
-import { actions as eventActions } from "app/store/event";
-import eventSelectors from "app/store/event/selectors";
-import type { EventRecord } from "app/store/event/types";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import ArrowPagination from "@/app/base/components/ArrowPagination";
+import SearchBox from "@/app/base/components/SearchBox";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { actions as eventActions } from "@/app/store/event";
+import eventSelectors from "@/app/store/event/selectors";
+import type { EventRecord } from "@/app/store/event/types";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   node: MachineDetails | ControllerDetails;

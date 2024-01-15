@@ -1,7 +1,7 @@
 import type { SubnetActionTypes } from "./constants";
 
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 
 export type SubnetAction = keyof typeof SubnetActionTypes;
 

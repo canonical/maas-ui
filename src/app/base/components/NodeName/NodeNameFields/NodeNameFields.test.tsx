@@ -1,14 +1,14 @@
 import NodeNameFields from "./NodeNameFields";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { RootState } from "app/store/root/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainState as domainStateFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("NodeNameFields", () => {
   let state: RootState;
@@ -38,9 +38,9 @@ describe("NodeNameFields", () => {
           domain: "",
           hostname: "",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
-        <NodeNameFields setHostnameError={jest.fn()} />
+        <NodeNameFields setHostnameError={vi.fn()} />
       </FormikForm>,
       {
         route: "/machine/abc123",
@@ -57,9 +57,9 @@ describe("NodeNameFields", () => {
           domain: "",
           hostname: "",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
-        <NodeNameFields canEditHostname setHostnameError={jest.fn()} />
+        <NodeNameFields canEditHostname setHostnameError={vi.fn()} />
       </FormikForm>,
       { route: "/machine/abc123", state }
     );
@@ -79,9 +79,9 @@ describe("NodeNameFields", () => {
           domain: "",
           hostname: "",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
-        <NodeNameFields canEditHostname saving setHostnameError={jest.fn()} />
+        <NodeNameFields canEditHostname saving setHostnameError={vi.fn()} />
       </FormikForm>,
       { route: "/machine/abc123", state }
     );
@@ -90,7 +90,7 @@ describe("NodeNameFields", () => {
   });
 
   it("updates the hostname errors if they exist", () => {
-    const setHostnameError = jest.fn();
+    const setHostnameError = vi.fn();
     renderWithBrowserRouter(
       <FormikForm
         initialErrors={{ hostname: "Uh oh!" }}
@@ -98,7 +98,7 @@ describe("NodeNameFields", () => {
           domain: "",
           hostname: "",
         }}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
       >
         <NodeNameFields
           canEditHostname

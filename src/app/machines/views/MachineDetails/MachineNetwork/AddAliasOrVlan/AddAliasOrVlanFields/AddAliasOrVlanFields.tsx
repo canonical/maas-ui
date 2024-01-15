@@ -5,15 +5,15 @@ import { useSelector } from "react-redux";
 import NetworkFields from "../../NetworkFields";
 import type { AddAliasOrVlanValues } from "../types";
 
-import TagNameField from "app/base/components/TagNameField";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
-import { INTERFACE_TYPE_DISPLAY, getNextNicName } from "app/store/utils";
-import vlanSelectors from "app/store/vlan/selectors";
-import { toFormikNumber } from "app/utils";
+import TagNameField from "@/app/base/components/TagNameField";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import type { NetworkInterface } from "@/app/store/types/node";
+import { INTERFACE_TYPE_DISPLAY, getNextNicName } from "@/app/store/utils";
+import vlanSelectors from "@/app/store/vlan/selectors";
+import { toFormikNumber } from "@/app/utils";
 
 type Props = {
   nic?: NetworkInterface | null;

@@ -5,7 +5,7 @@ import type { InputProps, PropsWithSpread } from "@canonical/react-components";
 import { Input } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 
-import { someInArray } from "app/utils";
+import { someInArray } from "@/app/utils";
 
 type Props<I> = PropsWithSpread<
   {

@@ -4,8 +4,8 @@ import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("displays a spinner if machine is loading", () => {
   const state = rootStateFactory({
@@ -14,7 +14,7 @@ it("displays a spinner if machine is loading", () => {
     }),
   });
   renderWithBrowserRouter(
-    <MachineNetwork id="abc123" setSidePanelContent={jest.fn()} />,
+    <MachineNetwork id="abc123" setSidePanelContent={vi.fn()} />,
     { state }
   );
   expect(screen.getByLabelText("Loading machine")).toBeInTheDocument();
@@ -28,7 +28,7 @@ it("displays the network tab when loaded", () => {
     }),
   });
   renderWithBrowserRouter(
-    <MachineNetwork id="abc123" setSidePanelContent={jest.fn()} />,
+    <MachineNetwork id="abc123" setSidePanelContent={vi.fn()} />,
     { state }
   );
   expect(screen.queryByLabelText("Loading machine")).not.toBeInTheDocument();

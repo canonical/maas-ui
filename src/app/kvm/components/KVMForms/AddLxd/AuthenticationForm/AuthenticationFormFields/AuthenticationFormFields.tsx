@@ -3,9 +3,9 @@ import { useFormikContext } from "formik";
 
 import type { AuthenticationFormValues } from "../AuthenticationForm";
 
-import CertificateDownload from "app/base/components/CertificateDownload";
-import FormikField from "app/base/components/FormikField";
-import type { GeneratedCertificate } from "app/store/general/types";
+import CertificateDownload from "@/app/base/components/CertificateDownload";
+import FormikField from "@/app/base/components/FormikField";
+import type { GeneratedCertificate } from "@/app/store/general/types";
 
 type Props = {
   disabled: boolean;

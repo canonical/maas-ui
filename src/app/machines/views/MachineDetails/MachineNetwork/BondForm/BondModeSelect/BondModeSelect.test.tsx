@@ -2,15 +2,15 @@ import { Formik } from "formik";
 
 import BondModeSelect from "./BondModeSelect";
 
-import { BondMode } from "app/store/general/types";
-import type { RootState } from "app/store/root/types";
+import { BondMode } from "@/app/store/general/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   bondOptions as bondOptionsFactory,
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("BondModeSelect", () => {
   let state: RootState;
@@ -38,7 +38,7 @@ describe("BondModeSelect", () => {
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect name="mode" />
       </Formik>,
       { state }
@@ -48,7 +48,7 @@ describe("BondModeSelect", () => {
 
   it("displays the options", () => {
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect name="mode" />
       </Formik>,
       { state }
@@ -100,7 +100,7 @@ describe("BondModeSelect", () => {
       value: "99",
     };
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect defaultOption={defaultOption} name="mode" />
       </Formik>,
       { state }
@@ -119,7 +119,7 @@ describe("BondModeSelect", () => {
       loaded: true,
     });
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BondModeSelect defaultOption={null} name="mode" />
       </Formik>,
       { state }

@@ -6,16 +6,16 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import { useFetchActions } from "app/base/hooks";
-import urls from "app/base/urls";
-import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
-import { KVMSidePanelViews } from "app/kvm/constants";
-import type { KVMSetSidePanelContent } from "app/kvm/types";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
-import { actions as zoneActions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
+import { KVMSidePanelViews } from "@/app/kvm/constants";
+import type { KVMSetSidePanelContent } from "@/app/kvm/types";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
+import { actions as zoneActions } from "@/app/store/zone";
+import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clusterId: VMCluster["id"];

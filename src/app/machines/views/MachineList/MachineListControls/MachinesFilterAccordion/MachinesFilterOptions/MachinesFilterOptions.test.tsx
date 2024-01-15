@@ -2,16 +2,21 @@ import configureStore from "redux-mock-store";
 
 import MachinesFilterOptions, { Label } from "./MachinesFilterOptions";
 
-import { actions as machineActions } from "app/store/machine";
-import type { FilterGroup } from "app/store/machine/types";
-import { FilterGroupKey } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { FilterGroup } from "@/app/store/machine/types";
+import { FilterGroupKey } from "@/app/store/machine/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   machineFilterGroup as machineFilterGroupFactory,
-} from "testing/factories";
-import { userEvent, screen, waitFor, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -40,7 +45,7 @@ describe("MachinesFilterOptions", () => {
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { store }
     );
@@ -59,7 +64,7 @@ describe("MachinesFilterOptions", () => {
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { store }
     );
@@ -78,7 +83,7 @@ describe("MachinesFilterOptions", () => {
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { store }
     );
@@ -97,7 +102,7 @@ describe("MachinesFilterOptions", () => {
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { store }
     );
@@ -109,7 +114,7 @@ describe("MachinesFilterOptions", () => {
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -120,7 +125,7 @@ describe("MachinesFilterOptions", () => {
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -134,7 +139,7 @@ describe("MachinesFilterOptions", () => {
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
         searchText="status:(=status1)"
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -142,7 +147,7 @@ describe("MachinesFilterOptions", () => {
   });
 
   it("can set a filter", async () => {
-    const setSearchText = jest.fn();
+    const setSearchText = vi.fn();
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
@@ -156,7 +161,7 @@ describe("MachinesFilterOptions", () => {
 
   it("can set a boolean filter", async () => {
     filterGroup.options = [{ key: true, label: "Yes" }];
-    const setSearchText = jest.fn();
+    const setSearchText = vi.fn();
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
@@ -169,7 +174,7 @@ describe("MachinesFilterOptions", () => {
   });
 
   it("can remove a filter", async () => {
-    const setSearchText = jest.fn();
+    const setSearchText = vi.fn();
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Status}
@@ -196,7 +201,7 @@ describe("MachinesFilterOptions", () => {
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Workloads}
-        setSearchText={jest.fn()}
+        setSearchText={vi.fn()}
       />,
       { state }
     );
@@ -221,7 +226,7 @@ describe("MachinesFilterOptions", () => {
       ],
     });
     state.machine.filters = [filterGroup];
-    const setSearchText = jest.fn();
+    const setSearchText = vi.fn();
     renderWithMockStore(
       <MachinesFilterOptions
         group={FilterGroupKey.Workloads}

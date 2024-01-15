@@ -5,9 +5,9 @@ import ComposeForm from "../ComposeForm";
 
 import ComposeFormFields from "./ComposeFormFields";
 
-import { DriverType } from "app/store/general/types";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { DriverType } from "@/app/store/general/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -29,14 +29,14 @@ import {
   vlanState as vlanStateFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,
   userEvent,
   fireEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -93,7 +93,7 @@ describe("ComposeFormFields", () => {
     pod.cpu_over_commit_ratio = 3;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
     // Allocated = 1 + 2 = 3
@@ -126,7 +126,7 @@ describe("ComposeFormFields", () => {
     pod.memory_over_commit_ratio = 2;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
     // Allocated = (1000 + 2000) + (4000 + 5000) = 12000
@@ -176,7 +176,7 @@ describe("ComposeFormFields", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
     expect(
@@ -195,7 +195,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -222,18 +222,20 @@ describe("ComposeFormFields", () => {
     const enableHugepages = screen.getByLabelText("Enable hugepages");
     expect(enableHugepages).toBeDisabled();
     await userEvent.hover(enableHugepages);
-    expect(
-      screen.getByRole("tooltip", {
-        name: "Hugepages are only supported on LXD KVMs.",
-      })
-    ).toBeInTheDocument();
+    await vi.waitFor(() => {
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Hugepages are only supported on LXD KVMs.",
+        })
+      ).toBeInTheDocument();
+    });
   });
 
   it("disables hugepage backing checkbox if no hugepages are free", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -272,7 +274,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -309,7 +311,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -352,7 +354,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithMockStore(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
         <ComposeFormFields
           architectures={[]}
           available={{
@@ -395,7 +397,7 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 
@@ -423,7 +425,7 @@ describe("ComposeFormFields", () => {
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 
@@ -445,7 +447,7 @@ describe("ComposeFormFields", () => {
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 
@@ -487,7 +489,7 @@ describe("ComposeFormFields", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 

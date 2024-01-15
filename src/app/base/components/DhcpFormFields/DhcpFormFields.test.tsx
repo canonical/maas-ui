@@ -1,3 +1,4 @@
+import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -5,10 +6,10 @@ import configureStore from "redux-mock-store";
 
 import { Labels } from "./DhcpFormFields";
 
-import DhcpForm from "app/base/components/DhcpForm";
-import { getIpRangeDisplayName } from "app/store/iprange/utils";
-import type { RootState } from "app/store/root/types";
-import { callId, enableCallIdMocks } from "testing/callId-mock";
+import DhcpForm from "@/app/base/components/DhcpForm";
+import { getIpRangeDisplayName } from "@/app/store/iprange/utils";
+import * as query from "@/app/store/machine/utils/query";
+import type { RootState } from "@/app/store/root/types";
 import {
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,
@@ -23,18 +24,28 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor, within } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
-enableCallIdMocks();
+vi.mock("@reduxjs/toolkit", async () => {
+  const actual: object = await vi.importActual("@reduxjs/toolkit");
+  return {
+    ...actual,
+    nanoid: vi.fn(),
+  };
+});
+
 const mockStore = configureStore();
 const machines = [machineFactory()];
 const ipRange = ipRangeFactory();
+const callId = "mocked-nanoid";
 
 describe("DhcpFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
+    vi.spyOn(query, "generateCallId").mockReturnValue(callId);
+    vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
     state = rootStateFactory({
       controller: controllerStateFactory({ loaded: true }),
       device: deviceStateFactory({ loaded: true }),
@@ -86,6 +97,10 @@ describe("DhcpFormFields", () => {
         loaded: true,
       }),
     });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("shows a notification if editing and disabled", () => {

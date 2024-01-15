@@ -1,4 +1,4 @@
-import PoolForm from "app/pools/components/PoolForm";
+import PoolForm from "@/app/pools/components/PoolForm";
 
 export enum Label {
   Title = "Add pool form",

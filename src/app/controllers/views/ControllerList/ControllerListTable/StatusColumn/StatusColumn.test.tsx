@@ -1,8 +1,8 @@
 import { StatusColumn } from "./StatusColumn";
 
-import { ControllerVersionIssues } from "app/store/controller/types";
-import type { RootState } from "app/store/root/types";
-import { ServiceStatus } from "app/store/service/types";
+import { ControllerVersionIssues } from "@/app/store/controller/types";
+import type { RootState } from "@/app/store/root/types";
+import { ServiceStatus } from "@/app/store/service/types";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -10,8 +10,8 @@ import {
   rootState as rootStateFactory,
   service as serviceFactory,
   serviceState as serviceStateFactory,
-} from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   let state: RootState;

@@ -1,5 +1,5 @@
-import type { Device, DeviceDetails } from "app/store/device/types";
-import { DeviceIpAssignment } from "app/store/device/types";
+import type { Device, DeviceDetails } from "@/app/store/device/types";
+import { DeviceIpAssignment } from "@/app/store/device/types";
 
 /**
  * Returns whether a device is of type DeviceDetails.

@@ -3,15 +3,15 @@ import { useEffect } from "react";
 import { Spinner, usePrevious } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import NodeTestsTable from "app/base/components/node/NodeTestsTable";
-import { useWindowTitle } from "app/base/hooks";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import { isControllerDetails } from "app/store/controller/utils";
-import type { RootState } from "app/store/root/types";
-import { actions as scriptResultActions } from "app/store/scriptresult";
-import scriptResultSelectors from "app/store/scriptresult/selectors";
-import { TestStatusStatus } from "app/store/types/node";
+import NodeTestsTable from "@/app/base/components/node/NodeTestsTable";
+import { useWindowTitle } from "@/app/base/hooks";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import { isControllerDetails } from "@/app/store/controller/utils";
+import type { RootState } from "@/app/store/root/types";
+import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import scriptResultSelectors from "@/app/store/scriptresult/selectors";
+import { TestStatusStatus } from "@/app/store/types/node";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

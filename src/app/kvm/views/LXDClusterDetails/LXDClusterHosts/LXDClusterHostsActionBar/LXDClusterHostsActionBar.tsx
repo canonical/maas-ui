@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 
-import ActionBar from "app/base/components/ActionBar";
-import type { SetSearchFilter } from "app/base/types";
-import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
-import type { Pod } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
+import ActionBar from "@/app/base/components/ActionBar";
+import type { SetSearchFilter } from "@/app/base/types";
+import { VMS_PER_PAGE } from "@/app/kvm/components/LXDVMsTable";
+import type { Pod } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster[VMClusterMeta.PK];

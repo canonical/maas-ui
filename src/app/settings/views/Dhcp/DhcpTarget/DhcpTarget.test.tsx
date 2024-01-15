@@ -3,7 +3,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import DhcpTarget from "./DhcpTarget";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   controllerState as controllerStateFactory,
   deviceState as deviceStateFactory,
@@ -15,8 +15,8 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("DhcpTarget", () => {
   let state: RootState;
@@ -96,7 +96,7 @@ describe("DhcpTarget", () => {
     const link = screen.getByRole("link", { name: "10.0.0.99" });
 
     expect(link).toBeInTheDocument();
-    expect(link).toHaveProperty("href", "http://example.com/subnet/1");
+    expect(link).toHaveAttribute("href", "/subnet/1");
   });
 
   it("can display a node link", () => {
@@ -110,6 +110,6 @@ describe("DhcpTarget", () => {
     );
     const link = screen.getByRole("link", { name: "machine1 .test" });
     expect(link).toBeInTheDocument();
-    expect(link).toHaveProperty("href", "http://example.com/machine/xyz");
+    expect(link).toHaveAttribute("href", "/machine/xyz");
   });
 });

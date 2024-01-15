@@ -5,16 +5,16 @@ import configureStore from "redux-mock-store";
 
 import ControllerDetailsHeader from "./ControllerDetailsHeader";
 
-import type { ControllerActions } from "app/store/controller/types";
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
+import type { ControllerActions } from "@/app/store/controller/types";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
 import {
   controller as controllerFactory,
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -30,7 +30,7 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            setSidePanelContent={jest.fn()}
+            setSidePanelContent={vi.fn()}
             systemId="abc123"
           />
         </CompatRouter>
@@ -56,7 +56,7 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            setSidePanelContent={jest.fn()}
+            setSidePanelContent={vi.fn()}
             systemId={controller.system_id}
           />
         </CompatRouter>
@@ -82,7 +82,7 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            setSidePanelContent={jest.fn()}
+            setSidePanelContent={vi.fn()}
             systemId={controllerDetails.system_id}
           />
         </CompatRouter>
@@ -115,7 +115,7 @@ it("displays actions in take action menu", async () => {
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            setSidePanelContent={jest.fn()}
+            setSidePanelContent={vi.fn()}
             systemId={controllerDetails.system_id}
           />
         </CompatRouter>

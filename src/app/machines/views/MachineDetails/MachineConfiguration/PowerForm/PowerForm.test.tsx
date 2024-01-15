@@ -5,11 +5,11 @@ import configureStore from "redux-mock-store";
 
 import PowerForm from "./PowerForm";
 
-import { Labels } from "app/base/components/EditableSection";
-import { PowerTypeNames } from "app/store/general/constants";
-import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
-import { actions as machineActions } from "app/store/machine";
-import type { RootState } from "app/store/root/types";
+import { Labels } from "@/app/base/components/EditableSection";
+import { PowerTypeNames } from "@/app/store/general/constants";
+import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { RootState } from "@/app/store/root/types";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
@@ -20,8 +20,8 @@ import {
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

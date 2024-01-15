@@ -4,20 +4,20 @@ import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import { useGetURLId, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
-import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
-import SettingsBackLink from "app/kvm/components/SettingsBackLink";
-import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import podSelectors from "app/store/pod/selectors";
-import { PodMeta } from "app/store/pod/types";
-import { isPodDetails } from "app/store/pod/utils";
-import type { RootState } from "app/store/root/types";
-import vmClusterSelectors from "app/store/vmcluster/selectors";
-import type { VMCluster } from "app/store/vmcluster/types";
-import { isId } from "app/utils";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import KVMConfigurationCard from "@/app/kvm/components/KVMConfigurationCard";
+import LXDHostToolbar from "@/app/kvm/components/LXDHostToolbar";
+import SettingsBackLink from "@/app/kvm/components/SettingsBackLink";
+import { useActivePod, useKVMDetailsRedirect } from "@/app/kvm/hooks";
+import podSelectors from "@/app/store/pod/selectors";
+import { PodMeta } from "@/app/store/pod/types";
+import { isPodDetails } from "@/app/store/pod/utils";
+import type { RootState } from "@/app/store/root/types";
+import vmClusterSelectors from "@/app/store/vmcluster/selectors";
+import type { VMCluster } from "@/app/store/vmcluster/types";
+import { isId } from "@/app/utils";
 
 type Props = {
   clusterId: VMCluster["id"];

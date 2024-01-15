@@ -3,17 +3,17 @@ import { Button, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import SearchBox from "app/base/components/SearchBox";
-import SegmentedControl from "app/base/components/SegmentedControl";
-import { useGetURLId } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import urls from "app/base/urls";
-import type { RootState } from "app/store/root/types";
-import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
-import { TagMeta } from "app/store/tag/types";
-import { TagSidePanelViews } from "app/tags/constants";
-import { TagViewState } from "app/tags/types";
+import SearchBox from "@/app/base/components/SearchBox";
+import SegmentedControl from "@/app/base/components/SegmentedControl";
+import { useGetURLId } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
+import type { Tag } from "@/app/store/tag/types";
+import { TagMeta } from "@/app/store/tag/types";
+import { TagSidePanelViews } from "@/app/tags/constants";
+import { TagViewState } from "@/app/tags/types";
 
 export type Props = {
   filter: TagSearchFilter;

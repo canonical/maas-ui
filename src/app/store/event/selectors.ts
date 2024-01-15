@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { EventMeta } from "app/store/event/types";
-import type { EventRecord, EventState } from "app/store/event/types";
-import type { RootState } from "app/store/root/types";
-import { generateBaseSelectors } from "app/store/utils";
+import { EventMeta } from "@/app/store/event/types";
+import type { EventRecord, EventState } from "@/app/store/event/types";
+import type { RootState } from "@/app/store/root/types";
+import { generateBaseSelectors } from "@/app/store/utils";
 
 const searchFunction = (event: EventRecord, term: string) =>
   event.description.includes(term);

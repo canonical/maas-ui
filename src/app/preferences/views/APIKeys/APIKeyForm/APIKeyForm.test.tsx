@@ -5,13 +5,18 @@ import configureStore from "redux-mock-store";
 
 import { APIKeyForm, Label as APIKeyFormLabels } from "./APIKeyForm";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   token as tokenFactory,
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

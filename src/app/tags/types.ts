@@ -1,7 +1,7 @@
 import type { TagSidePanelViews } from "./constants";
 
-import type { SidePanelContent, SetSidePanelContent } from "app/base/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import type { SidePanelContent, SetSidePanelContent } from "@/app/base/types";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
 
 type HeaderViews = typeof TagSidePanelViews;
 

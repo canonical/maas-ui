@@ -1,18 +1,18 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import EditableSection from "app/base/components/EditableSection";
-import TagLinks from "app/base/components/TagLinks";
-import { useFetchActions, useCanEdit } from "app/base/hooks";
-import urls from "app/base/urls";
-import TagActionForm from "app/machines/components/MachineForms/MachineActionFormWrapper/TagForm";
-import machineSelectors from "app/store/machine/selectors";
-import type { MachineDetails } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
-import { NodeActions } from "app/store/types/node";
+import EditableSection from "@/app/base/components/EditableSection";
+import TagLinks from "@/app/base/components/TagLinks";
+import { useFetchActions, useCanEdit } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import TagActionForm from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TagForm";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { MachineDetails } from "@/app/store/machine/types";
+import { FilterMachines } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import { actions as tagActions } from "@/app/store/tag";
+import tagSelectors from "@/app/store/tag/selectors";
+import { NodeActions } from "@/app/store/types/node";
 
 type Props = { systemId: MachineDetails["system_id"] };
 

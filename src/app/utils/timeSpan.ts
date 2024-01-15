@@ -7,7 +7,7 @@ import {
 } from "date-fns";
 import humanInterval from "human-interval";
 
-import type { Minutes, Seconds, TimeSpan } from "app/base/types";
+import type { Minutes, Seconds, TimeSpan } from "@/app/base/types";
 
 export const timeSpanToDuration = (timeSpan: TimeSpan | null): Duration => {
   if (!timeSpan) {

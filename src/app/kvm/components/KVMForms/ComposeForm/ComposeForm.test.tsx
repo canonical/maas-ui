@@ -6,8 +6,8 @@ import ComposeForm, {
   getDefaultPoolLocation,
 } from "./ComposeForm";
 
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -30,8 +30,8 @@ import {
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -88,7 +88,7 @@ describe("ComposeForm", () => {
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
     const expectedActions = [
@@ -111,7 +111,7 @@ describe("ComposeForm", () => {
   it("displays a spinner if data has not loaded", () => {
     state.zone.genericActions.fetch = "idle";
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -160,7 +160,7 @@ describe("ComposeForm", () => {
     state.subnet.items = [subnet];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 
@@ -276,7 +276,7 @@ describe("ComposeForm", () => {
     state.subnet.items = [subnet];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", store }
     );
 

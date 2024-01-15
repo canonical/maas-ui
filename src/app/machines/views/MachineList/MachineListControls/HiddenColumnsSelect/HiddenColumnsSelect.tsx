@@ -6,8 +6,8 @@ import {
 
 import type { MachineListControlsProps } from "../MachineListControls";
 
-import { useSendAnalytics } from "app/base/hooks";
-import { columnLabels, columnToggles } from "app/machines/constants";
+import { useSendAnalytics } from "@/app/base/hooks";
+import { columnLabels, columnToggles } from "@/app/machines/constants";
 
 type Props = {
   hiddenColumns: string[];

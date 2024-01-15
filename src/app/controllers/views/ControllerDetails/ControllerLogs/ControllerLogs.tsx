@@ -1,13 +1,13 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import NodeLogs from "app/base/components/node/NodeLogs";
-import { useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import { isControllerDetails } from "app/store/controller/utils";
-import type { RootState } from "app/store/root/types";
+import NodeLogs from "@/app/base/components/node/NodeLogs";
+import { useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import controllerSelectors from "@/app/store/controller/selectors";
+import type { Controller, ControllerMeta } from "@/app/store/controller/types";
+import { isControllerDetails } from "@/app/store/controller/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   systemId: Controller[ControllerMeta.PK];

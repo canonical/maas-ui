@@ -6,9 +6,9 @@ import configureStore from "redux-mock-store";
 
 import ControllerList from "./ControllerList";
 
-import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-import { userEvent, screen, render, waitFor } from "testing/utils";
+import type { RootState } from "@/app/store/root/types";
+import { rootState as rootStateFactory } from "@/testing/factories";
+import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

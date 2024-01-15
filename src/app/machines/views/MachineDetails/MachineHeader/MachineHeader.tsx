@@ -6,28 +6,28 @@ import { Link } from "react-router-dom-v5-compat";
 
 import MachineName from "./MachineName";
 
-import NodeActionMenu from "app/base/components/NodeActionMenu";
-import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
-import PowerIcon from "app/base/components/PowerIcon";
-import ScriptStatus from "app/base/components/ScriptStatus";
-import SectionHeader from "app/base/components/SectionHeader";
-import TooltipButton from "app/base/components/TooltipButton";
-import { useSendAnalytics } from "app/base/hooks";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import { isUnconfiguredPowerType } from "app/store/machine/utils/common";
+import NodeActionMenu from "@/app/base/components/NodeActionMenu";
+import NodeActionMenuGroup from "@/app/base/components/NodeActionMenuGroup";
+import PowerIcon from "@/app/base/components/PowerIcon";
+import ScriptStatus from "@/app/base/components/ScriptStatus";
+import SectionHeader from "@/app/base/components/SectionHeader";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import { useSendAnalytics } from "@/app/base/hooks";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import { isUnconfiguredPowerType } from "@/app/store/machine/utils/common";
 import {
   useFetchMachine,
   useSelectedMachinesActionsDispatch,
-} from "app/store/machine/utils/hooks";
-import type { RootState } from "app/store/root/types";
-import { ScriptResultStatus } from "app/store/scriptresult/types";
-import { NodeActions } from "app/store/types/node";
-import { getNodeActionTitle } from "app/store/utils";
+} from "@/app/store/machine/utils/hooks";
+import type { RootState } from "@/app/store/root/types";
+import { ScriptResultStatus } from "@/app/store/scriptresult/types";
+import { NodeActions } from "@/app/store/types/node";
+import { getNodeActionTitle } from "@/app/store/utils";
 
 type Props = {
   setSidePanelContent: MachineSetSidePanelContent;

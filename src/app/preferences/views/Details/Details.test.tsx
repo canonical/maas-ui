@@ -5,16 +5,21 @@ import configureStore from "redux-mock-store";
 
 import { Details, Label as DetailsLabels } from "./Details";
 
-import { Labels as UserFormLabels } from "app/base/components/UserForm/UserForm";
-import type { RootState } from "app/store/root/types";
+import { Labels as UserFormLabels } from "@/app/base/components/UserForm/UserForm";
+import type { RootState } from "@/app/store/root/types";
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
   statusState as statusStateFactory,
-} from "testing/factories";
-import { userEvent, screen, render, renderWithMockStore } from "testing/utils";
+} from "@/testing/factories";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithMockStore,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 

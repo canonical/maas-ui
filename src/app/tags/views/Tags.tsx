@@ -18,17 +18,17 @@ import TagDetails from "./TagDetails";
 import TagList from "./TagList";
 import TagMachines from "./TagMachines";
 
-import PageContent from "app/base/components/PageContent";
-import { useId } from "app/base/hooks/base";
-import type { SidePanelContent } from "app/base/side-panel-context";
-import { useSidePanel } from "app/base/side-panel-context";
-import urls from "app/base/urls";
-import NotFound from "app/base/views/NotFound";
-import type { RootState } from "app/store/root/types";
-import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
-import type { Tag, TagMeta } from "app/store/tag/types";
-import { getSidePanelTitle } from "app/store/utils/node/base";
-import { getRelativeRoute } from "app/utils";
+import PageContent from "@/app/base/components/PageContent";
+import { useId } from "@/app/base/hooks/base";
+import type { SidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
+import NotFound from "@/app/base/views/NotFound";
+import type { RootState } from "@/app/store/root/types";
+import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
+import type { Tag, TagMeta } from "@/app/store/tag/types";
+import { getSidePanelTitle } from "@/app/store/utils/node/base";
+import { getRelativeRoute } from "@/app/utils";
 
 const getViewState = (
   sidePanelContent: SidePanelContent | null,

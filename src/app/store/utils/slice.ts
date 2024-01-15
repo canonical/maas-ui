@@ -5,25 +5,25 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import type { KeysOfUnion } from "app/base/types";
-import type { BootResourceMeta } from "app/store/bootresource/types";
-import type { ConfigMeta } from "app/store/config/types";
+import type { KeysOfUnion } from "@/app/base/types";
+import type { BootResourceMeta } from "@/app/store/bootresource/types";
+import type { ConfigMeta } from "@/app/store/config/types";
 import type {
   ControllerMeta,
   ControllerStatus,
-} from "app/store/controller/types";
-import type { DeviceMeta, DeviceStatus } from "app/store/device/types";
-import type { GeneralMeta } from "app/store/general/types";
-import type { MachineMeta, MachineStatus } from "app/store/machine/types";
-import type { MessageMeta } from "app/store/message/types";
-import type { NodeScriptResultMeta } from "app/store/nodescriptresult/types";
-import type { PodMeta, PodStatus } from "app/store/pod/types";
-import type { RootState } from "app/store/root/types";
-import type { StatusMeta } from "app/store/status/types";
-import type { SubnetMeta, SubnetStatus } from "app/store/subnet/types";
-import type { VLANMeta, VLANStatus } from "app/store/vlan/types";
-import type { ZoneMeta } from "app/store/zone/types";
-import { objectHasKey } from "app/utils";
+} from "@/app/store/controller/types";
+import type { DeviceMeta, DeviceStatus } from "@/app/store/device/types";
+import type { GeneralMeta } from "@/app/store/general/types";
+import type { MachineMeta, MachineStatus } from "@/app/store/machine/types";
+import type { MessageMeta } from "@/app/store/message/types";
+import type { NodeScriptResultMeta } from "@/app/store/nodescriptresult/types";
+import type { PodMeta, PodStatus } from "@/app/store/pod/types";
+import type { RootState } from "@/app/store/root/types";
+import type { StatusMeta } from "@/app/store/status/types";
+import type { SubnetMeta, SubnetStatus } from "@/app/store/subnet/types";
+import type { VLANMeta, VLANStatus } from "@/app/store/vlan/types";
+import type { ZoneMeta } from "@/app/store/zone/types";
+import { objectHasKey } from "@/app/utils";
 
 export type GenericItemMeta<I> = {
   item: I;

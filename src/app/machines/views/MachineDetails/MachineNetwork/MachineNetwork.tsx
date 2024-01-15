@@ -9,18 +9,18 @@ import AddInterface from "./AddInterface";
 import EditInterface from "./EditInterface";
 import MachineNetworkActions from "./MachineNetworkActions";
 
-import DHCPTable from "app/base/components/DHCPTable";
-import NodeNetworkTab from "app/base/components/NodeNetworkTab";
-import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
-import NetworkTable from "app/base/components/node/networking/NetworkTable";
-import type { Selected } from "app/base/components/node/networking/types";
-import { useWindowTitle } from "app/base/hooks";
-import type { MachineSetSidePanelContent } from "app/machines/types";
-import machineSelectors from "app/store/machine/selectors";
-import { MachineMeta } from "app/store/machine/types";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import DHCPTable from "@/app/base/components/DHCPTable";
+import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
+import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
+import type { Selected } from "@/app/base/components/node/networking/types";
+import { useWindowTitle } from "@/app/base/hooks";
+import type { MachineSetSidePanelContent } from "@/app/machines/types";
+import machineSelectors from "@/app/store/machine/selectors";
+import { MachineMeta } from "@/app/store/machine/types";
+import type { Machine } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
 
 type Props = {
   id: Machine[MachineMeta.PK];

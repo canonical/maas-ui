@@ -33,7 +33,7 @@ export default defineConfig({
   },
   env: {
     BASENAME: "/MAAS",
-    REACT_BASENAME: "/r",
+    VITE_BASENAME: "/r",
     nonAdminPassword: "test",
     nonAdminUsername: "user",
     password: "test",

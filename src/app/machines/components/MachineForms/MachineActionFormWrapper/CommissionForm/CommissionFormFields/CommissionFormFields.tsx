@@ -5,10 +5,10 @@ import { useFormikContext } from "formik";
 
 import type { CommissionFormValues, FormattedScript } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import TagSelector from "app/base/components/TagSelector";
-import type { Tag } from "app/base/components/TagSelector/TagSelector";
-import { getObjectString } from "app/store/script/utils";
+import FormikField from "@/app/base/components/FormikField";
+import TagSelector from "@/app/base/components/TagSelector";
+import type { Tag } from "@/app/base/components/TagSelector/TagSelector";
+import { getObjectString } from "@/app/store/script/utils";
 
 type Props = {
   preselectedTesting: FormattedScript[];

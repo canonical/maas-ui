@@ -6,12 +6,12 @@ import { useFormikContext } from "formik";
 
 import type { AddDeviceValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
-import MacAddressField from "app/base/components/MacAddressField";
-import SubnetSelect from "app/base/components/SubnetSelect";
-import { DeviceIpAssignment } from "app/store/device/types";
-import { getNextName } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import IpAssignmentSelect from "@/app/base/components/IpAssignmentSelect";
+import MacAddressField from "@/app/base/components/MacAddressField";
+import SubnetSelect from "@/app/base/components/SubnetSelect";
+import { DeviceIpAssignment } from "@/app/store/device/types";
+import { getNextName } from "@/app/utils";
 
 export const AddDeviceInterfaces = (): JSX.Element => {
   const currentId = useRef<number>(0);

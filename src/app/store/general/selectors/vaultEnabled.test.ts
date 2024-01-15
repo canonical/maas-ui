@@ -4,7 +4,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("get", () => {
   it("returns vaultEnabled", () => {

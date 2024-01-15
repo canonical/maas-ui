@@ -2,15 +2,12 @@ import { Formik } from "formik";
 
 import TagNameField from "./TagNameField";
 
-import { render, screen, userEvent } from "testing/utils";
+import { render, screen, userEvent } from "@/testing/utils";
 
 describe("FormikField", () => {
   it("maps the initial value to the tag format", () => {
     render(
-      <Formik
-        initialValues={{ tags: ["koala", "wallaby"] }}
-        onSubmit={jest.fn()}
-      >
+      <Formik initialValues={{ tags: ["koala", "wallaby"] }} onSubmit={vi.fn()}>
         <TagNameField />
       </Formik>
     );
@@ -20,7 +17,7 @@ describe("FormikField", () => {
 
   it("can override the field name", () => {
     render(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagNameField name="wombatTags" />
       </Formik>
     );
@@ -33,7 +30,7 @@ describe("FormikField", () => {
 
   it("can populate the list of tags", async () => {
     render(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
+      <Formik initialValues={{ tags: null }} onSubmit={vi.fn()}>
         <TagNameField tagList={["koala", "wallaby"]} />
       </Formik>
     );

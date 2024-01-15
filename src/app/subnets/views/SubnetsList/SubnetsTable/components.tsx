@@ -14,7 +14,7 @@ import type {
   SubnetsTableRow,
 } from "./types";
 
-import GroupRow from "app/base/components/GroupRow";
+import GroupRow from "@/app/base/components/GroupRow";
 
 export const SpaceCellContents = ({
   value,

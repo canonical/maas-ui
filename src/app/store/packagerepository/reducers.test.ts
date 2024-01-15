@@ -3,7 +3,7 @@ import reducers, { actions } from "./slice";
 import {
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 
 describe("packagerepository reducer", () => {
   it("should return the initial state", () => {

@@ -1,14 +1,14 @@
 import { UserForm } from "./UserForm";
 
-import type { RootState } from "app/store/root/types";
-import userSelectors from "app/store/user/selectors";
-import type { User } from "app/store/user/types";
+import type { RootState } from "@/app/store/root/types";
+import userSelectors from "@/app/store/user/selectors";
+import type { User } from "@/app/store/user/types";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
   user as userFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("UserForm", () => {
   let state: RootState;
@@ -30,11 +30,11 @@ describe("UserForm", () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("can render", () => {
-    renderWithBrowserRouter(<UserForm onSave={jest.fn()} />, {
+    renderWithBrowserRouter(<UserForm onSave={vi.fn()} />, {
       route: "/",
       state,
     });
@@ -53,7 +53,7 @@ describe("UserForm", () => {
   });
 
   it("can handle saving", async () => {
-    const onSave = jest.fn();
+    const onSave = vi.fn();
     renderWithBrowserRouter(<UserForm onSave={onSave} user={user} />, {
       state,
       route: "/",
@@ -87,7 +87,7 @@ describe("UserForm", () => {
   });
 
   it("hides the password fields when editing", async () => {
-    renderWithBrowserRouter(<UserForm onSave={jest.fn()} user={user} />, {
+    renderWithBrowserRouter(<UserForm onSave={vi.fn()} user={user} />, {
       state,
       route: "/settings/users",
     });
@@ -99,7 +99,7 @@ describe("UserForm", () => {
   });
 
   it("can toggle the password fields", async () => {
-    renderWithBrowserRouter(<UserForm onSave={jest.fn()} user={user} />, {
+    renderWithBrowserRouter(<UserForm onSave={vi.fn()} user={user} />, {
       state,
       route: "/settings/users",
     });
@@ -119,7 +119,7 @@ describe("UserForm", () => {
 
   it("can show the current password field", async () => {
     renderWithBrowserRouter(
-      <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />,
+      <UserForm includeCurrentPassword onSave={vi.fn()} user={user} />,
       {
         state,
         route: "/settings/users",
@@ -141,7 +141,7 @@ describe("UserForm", () => {
       password: ["Password too short"],
     };
     renderWithBrowserRouter(
-      <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />,
+      <UserForm includeCurrentPassword onSave={vi.fn()} user={user} />,
       {
         state,
         route: "/settings/users",
@@ -152,7 +152,7 @@ describe("UserForm", () => {
 
   it("disables fields when using external auth", () => {
     state.status.externalAuthURL = "http://login.example.com";
-    renderWithBrowserRouter(<UserForm onSave={jest.fn()} />, {
+    renderWithBrowserRouter(<UserForm onSave={vi.fn()} />, {
       state,
       route: "/settings/users",
     });
@@ -163,7 +163,7 @@ describe("UserForm", () => {
 
   it("hides the password fields on save", async () => {
     const { rerender } = renderWithBrowserRouter(
-      <UserForm onSave={jest.fn()} user={user} />,
+      <UserForm onSave={vi.fn()} user={user} />,
       {
         state,
         route: "/settings/users",
@@ -178,9 +178,9 @@ describe("UserForm", () => {
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
     expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();
 
-    jest.spyOn(userSelectors, "saved").mockReturnValue(true);
+    vi.spyOn(userSelectors, "saved").mockReturnValue(true);
 
-    rerender(<UserForm onSave={jest.fn()} user={user} />);
+    rerender(<UserForm onSave={vi.fn()} user={user} />);
 
     expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("Password (again)")).not.toBeInTheDocument();
@@ -189,7 +189,7 @@ describe("UserForm", () => {
   it("does not hides the password fields when there are save errors", async () => {
     state.user.errors = "oh no";
     const { rerender } = renderWithBrowserRouter(
-      <UserForm onSave={jest.fn()} user={user} />,
+      <UserForm onSave={vi.fn()} user={user} />,
       {
         state,
         route: "/settings/users",
@@ -204,9 +204,9 @@ describe("UserForm", () => {
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
     expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();
 
-    jest.spyOn(userSelectors, "saved").mockReturnValue(true);
+    vi.spyOn(userSelectors, "saved").mockReturnValue(true);
 
-    rerender(<UserForm onSave={jest.fn()} user={user} />);
+    rerender(<UserForm onSave={vi.fn()} user={user} />);
 
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
     expect(screen.getByLabelText("Password (again)")).toBeInTheDocument();

@@ -1,8 +1,10 @@
 import "@testing-library/react";
 import "@testing-library/jest-dom";
-import { enableFetchMocks } from "jest-fetch-mock";
+import { vi, beforeAll } from "vitest";
+import createFetchMock from "vitest-fetch-mock";
+const fetchMocker = createFetchMock(vi);
 
-enableFetchMocks();
+fetchMocker.enableMocks();
 const originalObserver = window.ResizeObserver;
 
 beforeAll(() => {
@@ -12,10 +14,10 @@ beforeAll(() => {
 
 // mock ResizeObserver for MainToolbar
 beforeEach(() => {
-  window.ResizeObserver = jest.fn(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
+  window.ResizeObserver = vi.fn(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
   }));
 });
 

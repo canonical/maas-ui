@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
 
-import { ConfigNames } from "app/store/config/types";
-import { actions as podActions } from "app/store/pod";
-import { PodType } from "app/store/pod/constants";
-import type { RootState } from "app/store/root/types";
+import { ConfigNames } from "@/app/store/config/types";
+import { actions as podActions } from "@/app/store/pod";
+import { PodType } from "@/app/store/pod/constants";
+import type { RootState } from "@/app/store/root/types";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -21,13 +21,13 @@ import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
-} from "testing/factories";
+} from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
   userEvent,
   waitFor,
-} from "testing/utils";
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -70,7 +70,7 @@ describe("AddLxd", () => {
   });
 
   it("shows the credentials form by default", () => {
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -94,7 +94,7 @@ describe("AddLxd", () => {
 
     state.general.generatedCertificate.data = certificate;
 
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -146,7 +146,7 @@ describe("AddLxd", () => {
       "192.168.1.1": [podProjectFactory()],
     };
 
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
@@ -187,7 +187,7 @@ describe("AddLxd", () => {
     const store = mockStore(state);
 
     const { unmount } = renderWithBrowserRouter(
-      <AddLxd clearSidePanelContent={jest.fn()} />,
+      <AddLxd clearSidePanelContent={vi.fn()} />,
       { route: "/kvm/add", store }
     );
 
@@ -210,7 +210,7 @@ describe("AddLxd", () => {
     state.pod.projects = {
       "192.168.1.1": [podProjectFactory()],
     };
-    renderWithBrowserRouter(<AddLxd clearSidePanelContent={jest.fn()} />, {
+    renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
     });
