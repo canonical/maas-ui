@@ -1,22 +1,19 @@
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import NetworkActionRow from "@/app/base/components/NetworkActionRow";
-import { NETWORK_DISABLED_MESSAGE } from "@/app/base/components/NetworkActionRow/NetworkActionRow";
-import type {
-  Expanded,
-  SetExpanded,
-} from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
-import type { Selected } from "@/app/base/components/node/networking/types";
-import { useIsAllNetworkingDisabled, useSendAnalytics } from "@/app/base/hooks";
-import { MachineSidePanelViews } from "@/app/machines/constants";
-import type { MachineSetSidePanelContent } from "@/app/machines/types";
-import machineSelectors from "@/app/store/machine/selectors";
-import type { Machine, MachineDetails } from "@/app/store/machine/types";
-import { isMachineDetails } from "@/app/store/machine/utils";
-import type { RootState } from "@/app/store/root/types";
-import { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import NetworkActionRow from "app/base/components/NetworkActionRow";
+import { NETWORK_DISABLED_MESSAGE } from "app/base/components/NetworkActionRow/NetworkActionRow";
+import type { Expanded } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { Selected } from "app/base/components/node/networking/types";
+import { useIsAllNetworkingDisabled, useSendAnalytics } from "app/base/hooks";
+import { MachineSidePanelViews } from "app/machines/constants";
+import type { MachineSetSidePanelContent } from "app/machines/types";
+import machineSelectors from "app/store/machine/selectors";
+import type { Machine, MachineDetails } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   getInterfaceType,
   getInterfaceById,
@@ -32,7 +29,6 @@ type Action = {
 type Props = {
   expanded: Expanded | null;
   selected: Selected[];
-  setExpanded: SetExpanded;
   setSidePanelContent: MachineSetSidePanelContent;
   setSelected: React.Dispatch<React.SetStateAction<Selected[]>>;
   systemId: Machine["system_id"];
@@ -80,7 +76,6 @@ const selectedDifferentVLANs = (
 };
 
 const MachineNetworkActions = ({
-  setExpanded,
   selected,
   setSidePanelContent,
   systemId,
@@ -160,7 +155,6 @@ const MachineNetworkActions = ({
         </Button>
       }
       selected={selected}
-      setExpanded={setExpanded}
       setSelected={setSelected}
     />
   );

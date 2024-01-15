@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { Button, Col, List, Row, Tooltip } from "@canonical/react-components";
 import { useLocation } from "react-router-dom";
 
-import type { SetExpanded } from "../NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "../NodeNetworkTab/NodeNetworkTab";
 
 import type {
@@ -26,7 +25,6 @@ type Props = {
   extraActions?: Action[];
   node: Node;
   rightContent?: ReactNode;
-  setExpanded: SetExpanded;
   selected?: Selected[];
   setSelected?: SetSelected;
 };
@@ -38,7 +36,6 @@ const NetworkActionRow = ({
   extraActions,
   node,
   rightContent,
-  setExpanded,
   selected,
   setSelected,
 }: Props): JSX.Element | null => {
@@ -57,28 +54,27 @@ const NetworkActionRow = ({
   ];
 
   const handleButtonClick = (state: ExpandedState) => {
-    if (state === ExpandedState.ADD_PHYSICAL) {
-      if (isMachinesPage) {
+    const expandedStateMap: Partial<Record<ExpandedState, () => void>> = {
+      [ExpandedState.ADD_PHYSICAL]: isMachinesPage
+        ? () =>
+            setSidePanelContent({
+              view: MachineSidePanelViews.ADD_INTERFACE,
+              extras: { systemId: node.system_id },
+            })
+        : () =>
+            setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE }),
+      [ExpandedState.ADD_BOND]: () =>
         setSidePanelContent({
-          view: MachineSidePanelViews.ADD_INTERFACE,
-          extras: { systemId: node.system_id },
-        });
-      } else {
-        setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE });
-      }
-    } else if (state === ExpandedState.ADD_BOND) {
-      setSidePanelContent({
-        view: MachineSidePanelViews.ADD_BOND,
-        extras: { systemId: node.system_id, selected: selected, setSelected },
-      });
-    } else if (state === ExpandedState.ADD_BRIDGE) {
-      setSidePanelContent({
-        view: MachineSidePanelViews.ADD_BRIDGE,
-        extras: { systemId: node.system_id, selected: selected, setSelected },
-      });
-    } else {
-      setExpanded({ content: state });
-    }
+          view: MachineSidePanelViews.ADD_BOND,
+          extras: { systemId: node.system_id, selected: selected, setSelected },
+        }),
+      [ExpandedState.ADD_BRIDGE]: () =>
+        setSidePanelContent({
+          view: MachineSidePanelViews.ADD_BRIDGE,
+          extras: { systemId: node.system_id, selected: selected, setSelected },
+        }),
+    };
+    return expandedStateMap[state]?.();
   };
 
   const buttons = actions.map((item) => {

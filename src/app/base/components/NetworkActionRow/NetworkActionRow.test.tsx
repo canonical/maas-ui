@@ -44,7 +44,6 @@ describe("NetworkActionRow", () => {
           },
         ]}
         node={state.machine.items[0]}
-        setExpanded={vi.fn()}
       />,
       { route: "/machine/abc123", store }
     );
@@ -56,10 +55,7 @@ describe("NetworkActionRow", () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <NetworkActionRow
-          node={state.machine.items[0]}
-          setExpanded={vi.fn()}
-        />,
+        <NetworkActionRow node={state.machine.items[0]} />,
         { route: "/machine/abc123", store }
       );
       const addInterfaceButton = screen.getByRole("button", {

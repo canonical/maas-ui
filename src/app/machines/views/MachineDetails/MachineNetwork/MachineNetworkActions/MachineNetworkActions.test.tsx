@@ -52,7 +52,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -72,7 +71,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
@@ -121,7 +119,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
@@ -147,7 +144,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -164,7 +160,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -198,7 +193,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -239,7 +233,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -275,7 +268,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -315,7 +307,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
@@ -340,7 +331,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -359,7 +349,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -393,7 +382,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -434,7 +422,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
@@ -469,7 +456,6 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
           setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
