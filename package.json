@@ -12,7 +12,7 @@
   "scripts": {
     "analyze": "npx -y source-map-explorer 'build/static/js/*.js'",
     "build-all": "yarn build",
-    "build": "CYPRESS_INSTALL_BINARY=0 yarn install && vite build",
+    "build": "CYPRESS_INSTALL_BINARY=0 yarn install && vite build --base=/MAAS/r",
     "clean-all": "yarn clean",
     "clean": "rm -rf node_modules build",
     "cleanbuild": "yarn clean-all && yarn build",

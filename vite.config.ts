@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     envDir: "./",
-    base: "/MAAS/r/",
+    base: "/",
     define: {
       "process.env": env,
     },
