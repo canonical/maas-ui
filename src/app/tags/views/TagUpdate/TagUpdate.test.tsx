@@ -129,43 +129,11 @@ it("can update the tag", async () => {
   );
 });
 
-it("can return to the previous page on save", async () => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.tags.index }],
-  });
-  history.push({
-    pathname: urls.tags.tag.update({ id: 1 }),
-    state: { canGoBack: true },
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <CompatRouter>
-          <Route
-            component={() => <TagUpdate id={1} onClose={jest.fn()} />}
-            exact
-            path={urls.tags.tag.update(null)}
-          />
-        </CompatRouter>
-      </Router>
-    </Provider>
-  );
-  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
-  await userEvent.type(
-    screen.getByRole("textbox", { name: Label.Name }),
-    "tag1"
-  );
-  mockFormikFormSaved();
-  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
-  await waitFor(() => expect(history.location.pathname).toBe(urls.tags.index));
-});
-
 it("goes to the tag details page if it can't go back", async () => {
   const history = createMemoryHistory({
     initialEntries: [
       {
-        pathname: urls.tags.tag.update({ id: 1 }),
+        pathname: urls.tags.tag.index({ id: 1 }),
       },
     ],
   });
@@ -177,13 +145,13 @@ it("goes to the tag details page if it can't go back", async () => {
           <Route
             component={() => <TagUpdate id={1} onClose={jest.fn()} />}
             exact
-            path={urls.tags.tag.update(null)}
+            path={urls.tags.tag.index(null)}
           />
         </CompatRouter>
       </Router>
     </Provider>
   );
-  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
+  expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"

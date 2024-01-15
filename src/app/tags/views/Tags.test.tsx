@@ -4,7 +4,6 @@ import { Label as TagsHeaderLabel } from "../components/TagsHeader/TagsHeader";
 
 import { Label as TagDetailsLabel } from "./TagDetails/TagDetails";
 import { Label as TagListLabel } from "./TagList/TagList";
-import { Label as TagUpdateLabel } from "./TagUpdate/TagUpdate";
 import Tags from "./Tags";
 
 import urls from "@/app/base/urls";
@@ -41,10 +40,6 @@ describe("Tags", () => {
     {
       label: TagDetailsLabel.Title,
       path: urls.tags.tag.index({ id: 1 }),
-    },
-    {
-      label: TagUpdateLabel.Form,
-      path: urls.tags.tag.update({ id: 1 }),
     },
     {
       label: TagListLabel.Title,

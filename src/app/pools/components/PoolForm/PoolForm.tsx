@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
@@ -14,6 +13,7 @@ import type { ResourcePool } from "app/store/resourcepool/types";
 
 type Props = {
   pool?: ResourcePool | null;
+  onClose?: () => void;
 };
 
 type PoolFormValues = {
@@ -34,9 +34,8 @@ const PoolSchema = Yup.object().shape({
   description: Yup.string(),
 });
 
-export const PoolForm = ({ pool, ...props }: Props): JSX.Element => {
+export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const saved = useSelector(poolSelectors.saved);
   const saving = useSelector(poolSelectors.saving);
   const errors = useSelector(poolSelectors.errors);
@@ -71,7 +70,7 @@ export const PoolForm = ({ pool, ...props }: Props): JSX.Element => {
       cleanup={poolActions.cleanup}
       errors={errors}
       initialValues={initialValues}
-      onCancel={() => navigate({ pathname: urls.pools.index })}
+      onCancel={onClose}
       onSaveAnalytics={{
         action: "Saved",
         category: "Resource pool",

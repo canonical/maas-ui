@@ -1,8 +1,16 @@
+import { useOnEscapePressed } from "@canonical/react-components";
+import { useNavigate } from "react-router-dom-v5-compat";
+
 import { useGetURLId } from "app/base/hooks";
+import urls from "app/base/urls";
 import APIKeyDeleteForm from "app/preferences/views/APIKeys/APIKeyDeleteForm/APIKeyDeleteForm";
 
 const APIKeyDelete = () => {
   const id = useGetURLId("id");
+  const navigate = useNavigate();
+  const onCancel = () => navigate({ pathname: urls.preferences.apiKeys.index });
+  useOnEscapePressed(() => onCancel());
+
   if (!id) {
     return <h4>API Key not found</h4>;
   }

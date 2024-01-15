@@ -1,3 +1,4 @@
+import { useOnEscapePressed } from "@canonical/react-components";
 import { useNavigate } from "react-router-dom-v5-compat";
 
 import SSHKeyForm from "app/base/components/SSHKeyForm";
@@ -10,12 +11,14 @@ export enum Label {
 
 export const AddSSHKey = (): JSX.Element => {
   const navigate = useNavigate();
+  const onCancel = () => navigate({ pathname: urls.preferences.sshKeys.index });
+  useOnEscapePressed(() => onCancel());
 
   return (
     <SSHKeyForm
       aria-label={Label.FormLabel}
       cols={12}
-      onCancel={() => navigate({ pathname: urls.preferences.sshKeys.index })}
+      onCancel={onCancel}
       onSaveAnalytics={{
         action: "Saved",
         category: "SSH keys preferences",

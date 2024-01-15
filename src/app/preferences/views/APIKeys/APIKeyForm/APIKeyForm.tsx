@@ -1,4 +1,4 @@
-import { Col, Row } from "@canonical/react-components";
+import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
@@ -41,6 +41,8 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
+  const onCancel = () => navigate({ pathname: urls.preferences.apiKeys.index });
+  useOnEscapePressed(() => onCancel());
 
   useAddMessage(
     saved,
@@ -57,7 +59,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
       initialValues={{
         name: token ? token.consumer.name : "",
       }}
-      onCancel={() => navigate({ pathname: urls.preferences.apiKeys.index })}
+      onCancel={onCancel}
       onSaveAnalytics={{
         action: "Saved",
         category: "API keys preferences",

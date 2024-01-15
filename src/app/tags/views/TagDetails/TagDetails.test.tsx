@@ -1,8 +1,6 @@
 import { Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { Label } from "../TagUpdate/TagUpdate";
-
 import TagDetails from "./TagDetails";
 
 import urls from "app/base/urls";
@@ -87,14 +85,4 @@ it("shows a spinner if the tag has not loaded yet", () => {
   );
 
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
-});
-
-it("can display the edit form", () => {
-  renderWithBrowserRouter(
-    <Routes>
-      <Route element={<TagDetails />} path={urls.tags.tag.update(null)} />
-    </Routes>,
-    { route: urls.tags.tag.update({ id: 1 }), state }
-  );
-  expect(screen.getByRole("form", { name: Label.Form })).toBeInTheDocument();
 });

@@ -1,4 +1,9 @@
-import { Col, Row, Textarea } from "@canonical/react-components";
+import {
+  Col,
+  Row,
+  Textarea,
+  useOnEscapePressed,
+} from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
@@ -34,6 +39,8 @@ export const AddSSLKey = (): JSX.Element => {
   const saving = useSelector(sslkeySelectors.saving);
   const saved = useSelector(sslkeySelectors.saved);
   const errors = useSelector(sslkeySelectors.errors);
+  const onCancel = () => navigate({ pathname: urls.preferences.sslKeys.index });
+  useOnEscapePressed(() => onCancel());
 
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key successfully added.");
 
@@ -43,7 +50,7 @@ export const AddSSLKey = (): JSX.Element => {
       cleanup={sslkeyActions.cleanup}
       errors={errors}
       initialValues={{ key: "" }}
-      onCancel={() => navigate({ pathname: urls.preferences.sslKeys.index })}
+      onCancel={onCancel}
       onSaveAnalytics={{
         action: "Saved",
         category: "SSL keys preferences",
