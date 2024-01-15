@@ -1,5 +1,5 @@
-const address = require("address");
-require("colors");
+import address from "address";
+import "colors";
 
 console.log("");
 console.log("*****************");
