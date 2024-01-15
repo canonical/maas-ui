@@ -4,19 +4,22 @@ import * as Yup from "yup";
 
 import { Labels } from "../StaticRoutes";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import SubnetSelect from "app/base/components/SubnetSelect";
-import { useFetchActions } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import type { RootState } from "app/store/root/types";
-import { actions as staticRouteActions } from "app/store/staticroute";
-import staticRouteSelectors from "app/store/staticroute/selectors";
-import type { StaticRoute, StaticRouteMeta } from "app/store/staticroute/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import { getIsDestinationForSource } from "app/store/subnet/utils";
-import { toFormikNumber } from "app/utils";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
+import SubnetSelect from "@/app/base/components/SubnetSelect";
+import { useFetchActions } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import type { RootState } from "@/app/store/root/types";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
+import staticRouteSelectors from "@/app/store/staticroute/selectors";
+import type {
+  StaticRoute,
+  StaticRouteMeta,
+} from "@/app/store/staticroute/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import { getIsDestinationForSource } from "@/app/store/subnet/utils";
+import { toFormikNumber } from "@/app/utils";
 
 export type EditStaticRouteValues = Pick<
   StaticRoute,

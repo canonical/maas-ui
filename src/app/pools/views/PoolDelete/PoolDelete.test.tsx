@@ -2,14 +2,14 @@ import configureStore from "redux-mock-store";
 
 import PoolDelete from "./PoolDelete";
 
-import { actions } from "app/store/resourcepool";
-import type { RootState } from "app/store/root/types";
+import { actions } from "@/app/store/resourcepool";
+import type { RootState } from "@/app/store/root/types";
 import {
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 let state: RootState;

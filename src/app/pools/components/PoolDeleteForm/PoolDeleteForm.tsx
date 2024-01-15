@@ -2,12 +2,12 @@ import { useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import ModelDeleteForm from "app/base/components/ModelDeleteForm";
-import { useAddMessage } from "app/base/hooks";
-import urls from "app/base/urls";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { RootState } from "app/store/root/types";
+import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import { useAddMessage } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
+import type { RootState } from "@/app/store/root/types";
 
 const PoolDeleteForm = ({ id }: { id: number }) => {
   const dispatch = useDispatch();

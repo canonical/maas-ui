@@ -4,14 +4,14 @@ import { Button, MainTable, Tooltip } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch } from "react-redux";
 
-import TableActionsDropdown from "app/base/components/TableActionsDropdown";
-import ActionConfirm from "app/base/components/node/ActionConfirm";
-import { useSidePanel } from "app/base/side-panel-context";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { ControllerDetails } from "app/store/controller/types";
-import { actions as machineActions } from "app/store/machine";
-import type { MachineDetails } from "app/store/machine/types";
-import type { Filesystem, Disk, Partition } from "app/store/types/node";
+import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
+import ActionConfirm from "@/app/base/components/node/ActionConfirm";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { ControllerDetails } from "@/app/store/controller/types";
+import { actions as machineActions } from "@/app/store/machine";
+import type { MachineDetails } from "@/app/store/machine/types";
+import type { Filesystem, Disk, Partition } from "@/app/store/types/node";
 import {
   formatSize,
   isMounted,

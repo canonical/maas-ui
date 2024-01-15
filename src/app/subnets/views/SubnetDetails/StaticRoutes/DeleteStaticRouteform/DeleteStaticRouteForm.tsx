@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "app/base/components/ModelDeleteForm";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import { actions as staticRouteActions } from "app/store/staticroute";
-import staticRouteSelectors from "app/store/staticroute/selectors";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
+import staticRouteSelectors from "@/app/store/staticroute/selectors";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 
 type Props = {
   id: Subnet[SubnetMeta.PK];

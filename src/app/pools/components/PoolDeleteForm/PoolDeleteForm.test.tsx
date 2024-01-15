@@ -1,6 +1,6 @@
 import PoolDeleteForm from "./PoolDeleteForm";
 
-import { renderWithBrowserRouter, screen } from "testing/utils";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("renders", () => {
   renderWithBrowserRouter(<PoolDeleteForm id={1} />);

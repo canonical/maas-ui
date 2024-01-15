@@ -2,18 +2,18 @@ import configureStore from "redux-mock-store";
 
 import ImagesForms from "./ImagesForms";
 
-import { ImageSidePanelViews } from "app/images/constants";
-import type { ImageSidePanelContent } from "app/images/types";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import { ImageSidePanelViews } from "@/app/images/constants";
+import type { ImageSidePanelContent } from "@/app/images/types";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResource as resourceFactory,
   config as configFactory,
   configState as configStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 let state: RootState;
@@ -49,7 +49,7 @@ it("renders a form when appropriate sidepanel view is provided", () => {
   };
   renderWithBrowserRouter(
     <ImagesForms
-      setSidePanelContent={jest.fn()}
+      setSidePanelContent={vi.fn()}
       sidePanelContent={sidePanelContent}
     />,
     { store }

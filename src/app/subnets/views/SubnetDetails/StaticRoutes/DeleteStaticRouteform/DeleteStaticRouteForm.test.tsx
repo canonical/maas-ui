@@ -2,8 +2,8 @@ import configureStore from "redux-mock-store";
 
 import DeleteStaticRouteForm from "./DeleteStaticRouteForm";
 
-import type { RootState } from "app/store/root/types";
-import { actions as staticRouteActions } from "app/store/staticroute";
+import type { RootState } from "@/app/store/root/types";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
 import {
   rootState as rootStateFactory,
   staticRouteState as staticRouteStateFactory,
@@ -12,8 +12,8 @@ import {
   authState as authStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
 const mockStore = configureStore<RootState>();
@@ -39,7 +39,7 @@ state = rootStateFactory({
 
 it("renders", () => {
   renderWithBrowserRouter(
-    <DeleteStaticRouteForm id={subnet.id} setActiveForm={jest.fn()} />,
+    <DeleteStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />,
     { state }
   );
 
@@ -49,7 +49,7 @@ it("renders", () => {
 it("dispatches the correct action to delete a static route", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <DeleteStaticRouteForm id={subnet.id} setActiveForm={jest.fn()} />,
+    <DeleteStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />,
     { store }
   );
 

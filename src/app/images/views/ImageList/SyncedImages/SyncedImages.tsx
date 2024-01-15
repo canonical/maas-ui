@@ -15,11 +15,11 @@ import OtherImages from "./OtherImages";
 import UbuntuCoreImages from "./UbuntuCoreImages";
 import UbuntuImages from "./UbuntuImages";
 
-import { useSidePanel } from "app/base/side-panel-context";
-import { ImageSidePanelViews } from "app/images/constants";
-import bootResourceSelectors from "app/store/bootresource/selectors";
-import type { BootResourceUbuntuSource } from "app/store/bootresource/types";
-import { BootResourceSourceType } from "app/store/bootresource/types";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
+import bootResourceSelectors from "@/app/store/bootresource/selectors";
+import type { BootResourceUbuntuSource } from "@/app/store/bootresource/types";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
 
 const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
   if (sources.length === 1) {

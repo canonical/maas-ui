@@ -3,14 +3,14 @@ import { useSelector } from "react-redux";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
 
-import DHCPTable from "app/base/components/DHCPTable";
-import NetworkActionRow from "app/base/components/NetworkActionRow";
-import NodeNetworkTab from "app/base/components/NodeNetworkTab";
-import { useWindowTitle } from "app/base/hooks";
-import deviceSelectors from "app/store/device/selectors";
-import { DeviceMeta } from "app/store/device/types";
-import type { Device } from "app/store/device/types";
-import type { RootState } from "app/store/root/types";
+import DHCPTable from "@/app/base/components/DHCPTable";
+import NetworkActionRow from "@/app/base/components/NetworkActionRow";
+import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
+import { useWindowTitle } from "@/app/base/hooks";
+import deviceSelectors from "@/app/store/device/selectors";
+import { DeviceMeta } from "@/app/store/device/types";
+import type { Device } from "@/app/store/device/types";
+import type { RootState } from "@/app/store/root/types";
 
 export enum Label {
   Title = "Device network",

@@ -13,16 +13,16 @@ import {
 
 import type { BridgeFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikForm from "@/app/base/components/FormikForm";
 import type {
   Selected,
   SetSelected,
-} from "app/base/components/node/networking/types";
-import { useFetchActions } from "app/base/hooks";
-import { MAC_ADDRESS_REGEX } from "app/base/validation";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+} from "@/app/base/components/node/networking/types";
+import { useFetchActions } from "@/app/base/hooks";
+import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import machineSelectors from "@/app/store/machine/selectors";
 import type {
   CreateBridgeParams,
   MachineDetails,

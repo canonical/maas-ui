@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 
-import type { SidePanelContentTypes } from "app/base/side-panel-context";
-import { DeviceSidePanelViews } from "app/devices/constants";
-import AddInterface from "app/devices/views/DeviceDetails/DeviceNetwork/AddInterface";
-import RemoveInterface from "app/devices/views/DeviceDetails/DeviceNetwork/DeviceNetworkTable/RemoveInterface";
-import EditInterface from "app/devices/views/DeviceDetails/DeviceNetwork/EditInterface";
-import type { Device } from "app/store/device/types";
+import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import AddInterface from "@/app/devices/views/DeviceDetails/DeviceNetwork/AddInterface";
+import RemoveInterface from "@/app/devices/views/DeviceDetails/DeviceNetwork/DeviceNetworkTable/RemoveInterface";
+import EditInterface from "@/app/devices/views/DeviceDetails/DeviceNetwork/EditInterface";
+import type { Device } from "@/app/store/device/types";
 
 type Props = SidePanelContentTypes & {
   systemId: Device["system_id"];

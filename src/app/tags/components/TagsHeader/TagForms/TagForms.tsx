@@ -1,9 +1,9 @@
 import AddTagForm from "../AddTagForm";
 import DeleteTagForm from "../DeleteTagForm";
 
-import type { SidePanelContentTypes } from "app/base/side-panel-context";
-import { TagSidePanelViews } from "app/tags/constants";
-import TagUpdate from "app/tags/views/TagUpdate";
+import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
+import { TagSidePanelViews } from "@/app/tags/constants";
+import TagUpdate from "@/app/tags/views/TagUpdate";
 
 type Props = SidePanelContentTypes;
 

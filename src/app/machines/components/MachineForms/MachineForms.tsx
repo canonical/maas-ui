@@ -6,25 +6,25 @@ import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
-import CreateDatastore from "app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateDatastore";
-import CreateRaid from "app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateRaid";
-import CreateVolumeGroup from "app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateVolumeGroup";
-import UpdateDatastore from "app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/UpdateDatastore";
-import AddSpecialFilesystem from "app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
-import type { SidePanelContentTypes } from "app/base/side-panel-context";
-import type { SetSearchFilter } from "app/base/types";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { MachineActionSidePanelViews } from "app/machines/constants";
+import CreateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateDatastore";
+import CreateRaid from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateRaid";
+import CreateVolumeGroup from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateVolumeGroup";
+import UpdateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/UpdateDatastore";
+import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
+import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
+import type { SetSearchFilter } from "@/app/base/types";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { MachineActionSidePanelViews } from "@/app/machines/constants";
 import type {
   MachineActionVariableProps,
   MachineSidePanelContent,
-} from "app/machines/types";
-import AddAliasOrVlan from "app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan";
-import AddBondForm from "app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
-import AddBridgeForm from "app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
-import AddInterface from "app/machines/views/MachineDetails/MachineNetwork/AddInterface";
-import ChangeStorageLayout from "app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+} from "@/app/machines/types";
+import AddAliasOrVlan from "@/app/machines/views/MachineDetails/MachineNetwork/AddAliasOrVlan";
+import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
+import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
+import AddInterface from "@/app/machines/views/MachineDetails/MachineNetwork/AddInterface";
+import ChangeStorageLayout from "@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
+import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 
 type Props = SidePanelContentTypes & {
   setSearchFilter?: SetSearchFilter;

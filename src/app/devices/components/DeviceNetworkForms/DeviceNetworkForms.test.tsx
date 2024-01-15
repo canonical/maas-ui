@@ -2,15 +2,15 @@ import configureStore from "redux-mock-store";
 
 import DeviceNetworkForms from "./DeviceNetworkForms";
 
-import { DeviceSidePanelViews } from "app/devices/constants";
-import type { DeviceSidePanelContent } from "app/devices/types";
-import type { RootState } from "app/store/root/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import type { DeviceSidePanelContent } from "@/app/devices/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 let state: RootState;
@@ -30,7 +30,7 @@ it("renders a form when appropriate sidepanel view is provided", () => {
   };
   renderWithBrowserRouter(
     <DeviceNetworkForms
-      setSidePanelContent={jest.fn()}
+      setSidePanelContent={vi.fn()}
       sidePanelContent={sidePanelContent}
       systemId="abc123"
     />,

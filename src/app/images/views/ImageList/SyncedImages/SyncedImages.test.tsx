@@ -1,8 +1,8 @@
 import SyncedImages, { Labels as SyncedImagesLabels } from "./SyncedImages";
 
-import * as sidePanelHooks from "app/base/side-panel-context";
-import { ImageSidePanelViews } from "app/images/constants";
-import { BootResourceSourceType } from "app/store/bootresource/types";
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
+import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
@@ -18,13 +18,13 @@ import {
 } from "@/testing/utils";
 
 describe("SyncedImages", () => {
-  const setSidePanelContent = jest.fn();
+  const setSidePanelContent = vi.fn();
 
   beforeEach(() => {
-    jest.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
       setSidePanelContent,
       sidePanelContent: null,
-      setSidePanelSize: jest.fn(),
+      setSidePanelSize: vi.fn(),
       sidePanelSize: "regular",
     });
   });

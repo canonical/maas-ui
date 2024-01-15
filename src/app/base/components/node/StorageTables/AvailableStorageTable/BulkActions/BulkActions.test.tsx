@@ -2,9 +2,9 @@ import { vi } from "vitest";
 
 import BulkActions from "./BulkActions";
 
-import * as sidePanelHooks from "app/base/side-panel-context";
-import { MachineSidePanelViews } from "app/machines/constants";
-import { DiskTypes, StorageLayout } from "app/store/types/enum";
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -20,7 +20,7 @@ import {
   renderWithBrowserRouter,
   screen,
   userEvent,
-} from "testing/utils";
+} from "@/testing/utils";
 
 describe("BulkActions", () => {
   const setSidePanelContent = vi.fn();
@@ -211,7 +211,7 @@ describe("BulkActions", () => {
     renderWithBrowserRouter(
       <BulkActions
         selected={[selected]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -255,7 +255,7 @@ describe("BulkActions", () => {
     renderWithBrowserRouter(
       <BulkActions
         selected={selected}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -297,7 +297,7 @@ describe("BulkActions", () => {
     renderWithBrowserRouter(
       <BulkActions
         selected={selected}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
@@ -336,7 +336,7 @@ describe("BulkActions", () => {
     renderWithBrowserRouter(
       <BulkActions
         selected={[selected]}
-        setBulkAction={jest.fn()}
+        setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }

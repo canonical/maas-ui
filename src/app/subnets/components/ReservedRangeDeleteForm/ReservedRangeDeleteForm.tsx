@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "app/base/components/ModelDeleteForm";
+import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
 import {
   useSidePanel,
   type SetSidePanelContent,
-} from "app/base/side-panel-context";
-import { actions as ipRangeActions } from "app/store/iprange";
-import ipRangeSelectors from "app/store/iprange/selectors";
+} from "@/app/base/side-panel-context";
+import { actions as ipRangeActions } from "@/app/store/iprange";
+import ipRangeSelectors from "@/app/store/iprange/selectors";
 
 type Props = {
   setActiveForm: SetSidePanelContent;

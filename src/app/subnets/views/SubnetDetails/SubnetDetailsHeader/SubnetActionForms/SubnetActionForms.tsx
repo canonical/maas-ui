@@ -6,9 +6,9 @@ import DeleteSubnet from "./components/DeleteSubnet";
 import EditBootArchitectures from "./components/EditBootArchitectures";
 import MapSubnet from "./components/MapSubnet";
 
-import ReservedRangeDeleteForm from "app/subnets/components/ReservedRangeDeleteForm";
-import ReservedRangeForm from "app/subnets/components/ReservedRangeForm";
-import { SubnetActionTypes } from "app/subnets/views/SubnetDetails/constants";
+import ReservedRangeDeleteForm from "@/app/subnets/components/ReservedRangeDeleteForm";
+import ReservedRangeForm from "@/app/subnets/components/ReservedRangeForm";
+import { SubnetActionTypes } from "@/app/subnets/views/SubnetDetails/constants";
 import type {
   SubnetAction,
   SubnetActionProps,

@@ -2,7 +2,7 @@ import type { ValueOf } from "@canonical/react-components";
 
 import type { ImageSidePanelViews } from "./constants";
 
-import type { SetSidePanelContent, SidePanelContent } from "app/base/types";
+import type { SetSidePanelContent, SidePanelContent } from "@/app/base/types";
 import type {
   BootResource,
   BootResourceMeta,

@@ -8,12 +8,12 @@ import { ExpandedState } from "../NodeNetworkTab/NodeNetworkTab";
 import type {
   Selected,
   SetSelected,
-} from "app/base/components/node/networking/types";
-import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import { useSidePanel } from "app/base/side-panel-context";
-import { DeviceSidePanelViews } from "app/devices/constants";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { Node } from "app/store/types/node";
+} from "@/app/base/components/node/networking/types";
+import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { Node } from "@/app/store/types/node";
 
 type Action = {
   disabled: [boolean, string?][];

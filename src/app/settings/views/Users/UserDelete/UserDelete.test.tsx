@@ -1,13 +1,13 @@
 import UserDelete from "./UserDelete";
 
-import type { RootState } from "app/store/root/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter, screen } from "testing/utils";
+} from "@/testing/factories";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 let state: RootState;
 

@@ -68,7 +68,7 @@ it("can display the update tag form", () => {
   });
   renderWithBrowserRouter(
     <TagForms
-      setSidePanelContent={jest.fn()}
+      setSidePanelContent={vi.fn()}
       sidePanelContent={{
         view: TagSidePanelViews.UpdateTag,
         extras: { id: 1 },

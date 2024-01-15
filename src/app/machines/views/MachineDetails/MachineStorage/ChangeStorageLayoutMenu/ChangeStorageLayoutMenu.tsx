@@ -1,9 +1,9 @@
 import { ContextualMenu } from "@canonical/react-components";
 
-import { useSidePanel } from "app/base/side-panel-context";
-import { MachineSidePanelViews } from "app/machines/constants";
-import type { Machine, StorageLayoutOption } from "app/store/machine/types";
-import { StorageLayout } from "app/store/types/enum";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
+import { StorageLayout } from "@/app/store/types/enum";
 
 // TODO: Once the API returns a list of allowed storage layouts for a given
 // machine we should either filter this list, or add a boolean e.g. "allowable"

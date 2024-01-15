@@ -35,7 +35,7 @@ describe("ChangeStorageLayout", () => {
     });
     renderWithBrowserRouter(
       <ChangeStorageLayout
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         selectedLayout={sampleStoragelayout}
         systemId="abc123"
       />,
@@ -73,7 +73,7 @@ describe("ChangeStorageLayout", () => {
     });
     renderWithBrowserRouter(
       <ChangeStorageLayout
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         selectedLayout={sampleStoragelayout}
         systemId="abc123"
       />,
@@ -97,7 +97,7 @@ describe("ChangeStorageLayout", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ChangeStorageLayout
-        clearSidePanelContent={jest.fn()}
+        clearSidePanelContent={vi.fn()}
         selectedLayout={sampleStoragelayout}
         systemId="abc123"
       />,

@@ -1,8 +1,8 @@
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import SSHKeyForm from "app/base/components/SSHKeyForm";
-import urls from "app/base/urls";
+import SSHKeyForm from "@/app/base/components/SSHKeyForm";
+import urls from "@/app/base/urls";
 
 export enum Label {
   Title = "Add SSH key",

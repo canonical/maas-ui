@@ -2,14 +2,14 @@ import { Spinner, useOnEscapePressed } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import ModelNotFound from "app/base/components/ModelNotFound";
-import { useGetURLId } from "app/base/hooks/urls";
-import urls from "app/base/urls";
-import PoolForm from "app/pools/components/PoolForm";
-import poolURLs from "app/pools/urls";
-import poolSelectors from "app/store/resourcepool/selectors";
-import { ResourcePoolMeta } from "app/store/resourcepool/types";
-import type { RootState } from "app/store/root/types";
+import ModelNotFound from "@/app/base/components/ModelNotFound";
+import { useGetURLId } from "@/app/base/hooks/urls";
+import urls from "@/app/base/urls";
+import PoolForm from "@/app/pools/components/PoolForm";
+import poolURLs from "@/app/pools/urls";
+import poolSelectors from "@/app/store/resourcepool/selectors";
+import { ResourcePoolMeta } from "@/app/store/resourcepool/types";
+import type { RootState } from "@/app/store/root/types";
 
 export enum Label {
   Title = "Edit pool form",

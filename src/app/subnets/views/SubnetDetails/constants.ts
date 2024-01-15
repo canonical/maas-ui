@@ -1,7 +1,7 @@
 import type { ValueOf } from "@canonical/react-components";
 
-import type { SidePanelContent } from "app/base/types";
-import type { IPRangeType } from "app/store/iprange/types";
+import type { SidePanelContent } from "@/app/base/types";
+import type { IPRangeType } from "@/app/store/iprange/types";
 
 export const SubnetActionTypes = {
   MapSubnet: "MapSubnet",

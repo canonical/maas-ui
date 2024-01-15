@@ -1,13 +1,13 @@
 import ModelDeleteForm from "./ModelDeleteForm";
 
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 it("renders", () => {
   renderWithBrowserRouter(
     <ModelDeleteForm
       initialValues={{}}
       modelType="machine"
-      onSubmit={jest.fn()}
+      onSubmit={vi.fn()}
       submitLabel="Delete"
     />
   );
@@ -18,7 +18,7 @@ it("renders", () => {
 });
 
 it("can confirm", async () => {
-  const onSubmit = jest.fn();
+  const onSubmit = vi.fn();
   renderWithBrowserRouter(
     <ModelDeleteForm
       initialValues={{}}
@@ -33,14 +33,14 @@ it("can confirm", async () => {
 });
 
 it("can cancel", async () => {
-  const onCancel = jest.fn();
+  const onCancel = vi.fn();
   renderWithBrowserRouter(
     <ModelDeleteForm
       cancelLabel="Cancel"
       initialValues={{}}
       modelType="machine"
       onCancel={onCancel}
-      onSubmit={jest.fn()}
+      onSubmit={vi.fn()}
     />
   );
   const cancelBtn = screen.getByRole("button", { name: /cancel/i });

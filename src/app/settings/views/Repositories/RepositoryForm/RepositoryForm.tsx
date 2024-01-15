@@ -9,10 +9,10 @@ import RepositoryFormFields from "../RepositoryFormFields";
 
 import type { RepositoryFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage } from "app/base/hooks";
-import settingsURLs from "app/settings/urls";
-import { actions as generalActions } from "app/store/general";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage } from "@/app/base/hooks";
+import settingsURLs from "@/app/settings/urls";
+import { actions as generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,

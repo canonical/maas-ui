@@ -3,10 +3,10 @@ import timezoneMock from "timezone-mock";
 
 import ImagesTable, { Labels as ImagesTableLabels } from "./ImagesTable";
 
-import * as sidePanelHooks from "app/base/side-panel-context";
-import { ImageSidePanelViews } from "app/images/constants";
-import { ConfigNames } from "app/store/config/types";
-import type { RootState } from "app/store/root/types";
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
+import { ConfigNames } from "@/app/store/config/types";
+import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as resourceFactory,
   bootResourceState as bootResourceStateFactory,
@@ -184,11 +184,11 @@ describe("ImagesTable", () => {
 
   it(`can open the delete image confirmation if the image does not use the
     default commissioning release`, async () => {
-    const setSidePanelContent = jest.fn();
-    jest.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+    const setSidePanelContent = vi.fn();
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
       setSidePanelContent,
       sidePanelContent: null,
-      setSidePanelSize: jest.fn(),
+      setSidePanelSize: vi.fn(),
       sidePanelSize: "regular",
     });
     const resources = [

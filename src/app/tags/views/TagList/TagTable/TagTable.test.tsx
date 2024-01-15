@@ -543,12 +543,13 @@ it("returns to the first page if the filter changes", () => {
   expect(setCurrentPage).toHaveBeenCalledWith(1);
 });
 
-it("can go to the tag edit page", async () => {
+it("can trigger the tag edit sidepanel", async () => {
   const path = urls.tags.tag.machines({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
   });
   const store = mockStore(state);
+  const onUpdate = vi.fn();
   render(
     <Provider store={store}>
       <Router history={history}>
@@ -559,7 +560,7 @@ it("can go to the tag edit page", async () => {
                 currentPage={1}
                 filter={TagSearchFilter.All}
                 onDelete={vi.fn()}
-                onUpdate={vi.fn()}
+                onUpdate={onUpdate}
                 searchText=""
                 setCurrentPage={vi.fn()}
                 tags={tags}
@@ -573,6 +574,5 @@ it("can go to the tag edit page", async () => {
     </Provider>
   );
   await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
-  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 2 }));
-  expect(history.location.state).toStrictEqual({ canGoBack: true });
+  expect(onUpdate).toHaveBeenCalled();
 });

@@ -1,13 +1,17 @@
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import TableActions from "app/base/components/TableActions";
-import { useFetchActions, useAddMessage, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import SettingsTable from "app/settings/components/SettingsTable";
-import { actions as tokenActions } from "app/store/token";
-import tokenSelectors from "app/store/token/selectors";
-import type { Token } from "app/store/token/types";
+import TableActions from "@/app/base/components/TableActions";
+import {
+  useFetchActions,
+  useAddMessage,
+  useWindowTitle,
+} from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import SettingsTable from "@/app/settings/components/SettingsTable";
+import { actions as tokenActions } from "@/app/store/token";
+import tokenSelectors from "@/app/store/token/selectors";
+import type { Token } from "@/app/store/token/types";
 
 export enum Label {
   Title = "API keys",

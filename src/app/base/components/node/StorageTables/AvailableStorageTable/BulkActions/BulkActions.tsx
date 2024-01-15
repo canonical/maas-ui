@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 
 import { BulkAction } from "../AvailableStorageTable";
 
-import { useSidePanel } from "app/base/side-panel-context";
-import { MachineSidePanelViews } from "app/machines/constants";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { Disk, Partition } from "app/store/types/node";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
+import machineSelectors from "@/app/store/machine/selectors";
+import type { Machine } from "@/app/store/machine/types";
+import { isMachineDetails } from "@/app/store/machine/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Disk, Partition } from "@/app/store/types/node";
 import {
   canCreateOrUpdateDatastore,
   canCreateRaid,

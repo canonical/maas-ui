@@ -15,8 +15,8 @@ import {
   authState as authStateFactory,
   user as userFactory,
   userState as userStateFactory,
-} from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+} from "@/testing/factories";
+import { render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 

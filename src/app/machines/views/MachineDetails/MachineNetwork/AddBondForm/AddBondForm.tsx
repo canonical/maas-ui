@@ -19,7 +19,7 @@ import {
   networkFieldsInitialValues,
 } from "../NetworkFields/NetworkFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikForm from "@/app/base/components/FormikForm";
 import type {
   Selected,
   SetSelected,

@@ -11,30 +11,30 @@ import type { MainTableCell } from "@canonical/react-components/dist/components/
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-import SubnetLink from "app/base/components/SubnetLink";
-import TableActions from "app/base/components/TableActions";
-import TitledSection from "app/base/components/TitledSection";
-import docsUrls from "app/base/docsUrls";
-import { useFetchActions } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import { useSidePanel } from "app/base/side-panel-context";
-import { actions as ipRangeActions } from "app/store/iprange";
-import ipRangeSelectors from "app/store/iprange/selectors";
-import type { IPRange } from "app/store/iprange/types";
-import { IPRangeType } from "app/store/iprange/types";
+import SubnetLink from "@/app/base/components/SubnetLink";
+import TableActions from "@/app/base/components/TableActions";
+import TitledSection from "@/app/base/components/TitledSection";
+import docsUrls from "@/app/base/docsUrls";
+import { useFetchActions } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { actions as ipRangeActions } from "@/app/store/iprange";
+import ipRangeSelectors from "@/app/store/iprange/selectors";
+import type { IPRange } from "@/app/store/iprange/types";
+import { IPRangeType } from "@/app/store/iprange/types";
 import {
   getCommentDisplay,
   getOwnerDisplay,
   getTypeDisplay,
-} from "app/store/iprange/utils";
-import type { RootState } from "app/store/root/types";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import type { VLAN, VLANMeta } from "app/store/vlan/types";
+} from "@/app/store/iprange/utils";
+import type { RootState } from "@/app/store/root/types";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import {
   SubnetActionTypes,
   SubnetDetailsSidePanelViews,
-} from "app/subnets/views/SubnetDetails/constants";
-import { generateEmptyStateMsg, getTableStatus, isId } from "app/utils";
+} from "@/app/subnets/views/SubnetDetails/constants";
+import { generateEmptyStateMsg, getTableStatus, isId } from "@/app/utils";
 
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;

@@ -45,10 +45,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm
-              ipRangeId={ipRange.id}
-              setActiveForm={vi.fn()}
-            />
+            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -80,10 +77,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm
-              ipRangeId={ipRange.id}
-              setActiveForm={vi.fn()}
-            />
+            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -110,10 +104,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm
-              ipRangeId={ipRange.id}
-              setActiveForm={vi.fn()}
-            />
+            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -178,10 +169,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm
-              ipRangeId={ipRange.id}
-              setActiveForm={vi.fn()}
-            />
+            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -213,10 +201,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm
-              ipRangeId={ipRange.id}
-              setActiveForm={vi.fn()}
-            />
+            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

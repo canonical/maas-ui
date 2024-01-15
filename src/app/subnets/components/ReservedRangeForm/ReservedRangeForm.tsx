@@ -4,19 +4,19 @@ import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikField from "@/app/base/components/FormikField";
+import FormikForm from "@/app/base/components/FormikForm";
 import {
   useSidePanel,
   type SetSidePanelContent,
-} from "app/base/side-panel-context";
-import { actions as ipRangeActions } from "app/store/iprange";
-import ipRangeSelectors from "app/store/iprange/selectors";
-import type { IPRange } from "app/store/iprange/types";
-import { IPRangeType, IPRangeMeta } from "app/store/iprange/types";
-import type { RootState } from "app/store/root/types";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import { isId } from "app/utils";
+} from "@/app/base/side-panel-context";
+import { actions as ipRangeActions } from "@/app/store/iprange";
+import ipRangeSelectors from "@/app/store/iprange/selectors";
+import type { IPRange } from "@/app/store/iprange/types";
+import { IPRangeType, IPRangeMeta } from "@/app/store/iprange/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import { isId } from "@/app/utils";
 
 type Props = {
   createType?: IPRangeType;

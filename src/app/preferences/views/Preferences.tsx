@@ -1,4 +1,4 @@
-import Routes from "app/preferences/components/Routes";
+import Routes from "@/app/preferences/components/Routes";
 
 export enum Labels {
   Title = "My preferences",

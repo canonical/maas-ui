@@ -4,9 +4,9 @@ import { useFormikContext } from "formik";
 
 import type { SSHKeyFormValues } from "../types";
 
-import FormikField from "app/base/components/FormikField";
-import TooltipButton from "app/base/components/TooltipButton";
-import docsUrls from "app/base/docsUrls";
+import FormikField from "@/app/base/components/FormikField";
+import TooltipButton from "@/app/base/components/TooltipButton";
+import docsUrls from "@/app/base/docsUrls";
 
 export const SSHKeyFormFields = (): JSX.Element => {
   const { values } = useFormikContext<SSHKeyFormValues>();

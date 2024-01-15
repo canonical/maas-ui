@@ -2,9 +2,9 @@ import { useCallback } from "react";
 
 import DeleteImageConfirm from "../ImagesTable/DeleteImageConfirm";
 
-import type { SidePanelContentTypes } from "app/base/side-panel-context";
-import { ImageSidePanelViews } from "app/images/constants";
-import ChangeSource from "app/images/views/ImageList/SyncedImages/ChangeSource";
+import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
+import ChangeSource from "@/app/images/views/ImageList/SyncedImages/ChangeSource";
 
 type Props = SidePanelContentTypes & {};
 

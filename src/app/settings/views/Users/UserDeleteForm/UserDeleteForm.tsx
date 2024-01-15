@@ -4,13 +4,13 @@ import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import FormikForm from "app/base/components/FormikForm";
-import { useAddMessage } from "app/base/hooks";
-import type { EmptyObject } from "app/base/types";
-import settingsURLs from "app/settings/urls";
-import { actions as userActions } from "app/store/user";
-import userSelectors from "app/store/user/selectors";
-import type { User } from "app/store/user/types";
+import FormikForm from "@/app/base/components/FormikForm";
+import { useAddMessage } from "@/app/base/hooks";
+import type { EmptyObject } from "@/app/base/types";
+import settingsURLs from "@/app/settings/urls";
+import { actions as userActions } from "@/app/store/user";
+import userSelectors from "@/app/store/user/selectors";
+import type { User } from "@/app/store/user/types";
 
 type UserDeleteProps = {
   user: User;

@@ -10,8 +10,8 @@ import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
-} from "testing/factories";
-import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
+} from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -44,8 +44,8 @@ describe("DeleteImageConfirm", () => {
     });
     const store = mockStore(state);
     const { unmount } = renderWithBrowserRouter(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-        <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+        <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
       </Formik>,
       { store }
     );
@@ -67,8 +67,8 @@ describe("DeleteImageConfirm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-        <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+        <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
       </Formik>,
       { store }
     );

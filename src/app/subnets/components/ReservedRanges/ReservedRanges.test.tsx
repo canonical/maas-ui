@@ -5,11 +5,11 @@ import configureStore from "redux-mock-store";
 
 import ReservedRanges, { Labels } from "./ReservedRanges";
 
-import type { IPRange } from "app/store/iprange/types";
-import { IPRangeType } from "app/store/iprange/types";
-import type { RootState } from "app/store/root/types";
-import type { Subnet } from "app/store/subnet/types";
-import type { VLAN } from "app/store/vlan/types";
+import type { IPRange } from "@/app/store/iprange/types";
+import { IPRangeType } from "@/app/store/iprange/types";
+import type { RootState } from "@/app/store/root/types";
+import type { Subnet } from "@/app/store/subnet/types";
+import type { VLAN } from "@/app/store/vlan/types";
 import {
   rootState as rootStateFactory,
   ipRange as ipRangeFactory,

@@ -1,17 +1,17 @@
 import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import DoubleRow from "app/base/components/DoubleRow";
-import TableActions from "app/base/components/TableActions";
-import TooltipButton from "app/base/components/TooltipButton/TooltipButton";
-import { useSidePanel } from "app/base/side-panel-context";
-import { ImageSidePanelViews } from "app/images/constants";
-import type { ImageSetSidePanelContent, ImageValue } from "app/images/types";
-import type { BootResource } from "app/store/bootresource/types";
-import { splitResourceName } from "app/store/bootresource/utils";
-import configSelectors from "app/store/config/selectors";
-import { sizeStringToNumber } from "app/utils/formatBytes";
-import { getTimeDistanceString, parseUtcDatetime } from "app/utils/time";
+import DoubleRow from "@/app/base/components/DoubleRow";
+import TableActions from "@/app/base/components/TableActions";
+import TooltipButton from "@/app/base/components/TooltipButton/TooltipButton";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
+import type { ImageSetSidePanelContent, ImageValue } from "@/app/images/types";
+import type { BootResource } from "@/app/store/bootresource/types";
+import { splitResourceName } from "@/app/store/bootresource/utils";
+import configSelectors from "@/app/store/config/selectors";
+import { sizeStringToNumber } from "@/app/utils/formatBytes";
+import { getTimeDistanceString, parseUtcDatetime } from "@/app/utils/time";
 
 type Props = {
   handleClear?: (image: ImageValue) => void;

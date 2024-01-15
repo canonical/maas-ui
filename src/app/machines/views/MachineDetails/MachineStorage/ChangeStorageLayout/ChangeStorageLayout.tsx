@@ -1,14 +1,14 @@
 import { Icon } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { ClearSidePanelContent, EmptyObject } from "app/base/types";
-import { useMachineDetailsForm } from "app/machines/hooks";
-import { actions as machineActions } from "app/store/machine";
-import type { Machine, StorageLayoutOption } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
-import { StorageLayout } from "app/store/types/enum";
-import { isVMWareLayout } from "app/store/utils";
+import FormikForm from "@/app/base/components/FormikForm";
+import type { ClearSidePanelContent, EmptyObject } from "@/app/base/types";
+import { useMachineDetailsForm } from "@/app/machines/hooks";
+import { actions as machineActions } from "@/app/store/machine";
+import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
+import type { MachineEventErrors } from "@/app/store/machine/types/base";
+import { StorageLayout } from "@/app/store/types/enum";
+import { isVMWareLayout } from "@/app/store/utils";
 
 type Props = {
   systemId: Machine["system_id"];

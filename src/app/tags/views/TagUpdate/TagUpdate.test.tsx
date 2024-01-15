@@ -45,7 +45,7 @@ it("dispatches actions to fetch necessary data", () => {
       >
         <CompatRouter>
           <Route
-            component={() => <TagUpdate id={1} onClose={jest.fn()} />}
+            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
             exact
             path={urls.tags.tag.index(null)}
           />
@@ -80,7 +80,7 @@ it("shows a spinner if the tag has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
-            component={() => <TagUpdate id={1} onClose={jest.fn()} />}
+            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
             exact
             path={urls.tags.tag.index(null)}
           />
@@ -98,7 +98,7 @@ it("can update the tag", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <TagUpdate id={1} onClose={jest.fn()} />
+          <TagUpdate id={1} onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -143,7 +143,7 @@ it("goes to the tag details page if it can't go back", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
-            component={() => <TagUpdate id={1} onClose={jest.fn()} />}
+            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
             exact
             path={urls.tags.tag.index(null)}
           />
@@ -171,7 +171,7 @@ it("shows a confirmation when a tag's definition is updated", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <TagUpdate id={1} onClose={jest.fn()} />
+          <TagUpdate id={1} onClose={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 
-import { useGetURLId } from "app/base/hooks";
-import UserDeleteForm from "app/settings/views/Users/UserDeleteForm";
-import type { RootState } from "app/store/root/types";
-import userSelectors from "app/store/user/selectors";
-import { UserMeta } from "app/store/user/types";
+import { useGetURLId } from "@/app/base/hooks";
+import UserDeleteForm from "@/app/settings/views/Users/UserDeleteForm";
+import type { RootState } from "@/app/store/root/types";
+import userSelectors from "@/app/store/user/selectors";
+import { UserMeta } from "@/app/store/user/types";
 
 const UserDelete = () => {
   const id = useGetURLId(UserMeta.PK);

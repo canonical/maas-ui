@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "app/base/components/ModelDeleteForm";
-import { useCycled, useSendAnalyticsWhen } from "app/base/hooks";
-import { actions as deviceActions } from "app/store/device";
-import deviceSelectors from "app/store/device/selectors";
+import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
+import { actions as deviceActions } from "@/app/store/device";
+import deviceSelectors from "@/app/store/device/selectors";
 import type {
   Device,
   DeviceMeta,

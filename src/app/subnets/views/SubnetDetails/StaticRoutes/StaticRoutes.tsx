@@ -3,20 +3,20 @@ import { useSelector } from "react-redux";
 
 import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
-import SubnetLink from "app/base/components/SubnetLink";
-import TableActions from "app/base/components/TableActions";
-import TitledSection from "app/base/components/TitledSection";
-import { useFetchActions } from "app/base/hooks";
-import type { SetSidePanelContent } from "app/base/side-panel-context";
-import { useSidePanel } from "app/base/side-panel-context";
-import authSelectors from "app/store/auth/selectors";
-import { actions as staticRouteActions } from "app/store/staticroute";
-import staticRouteSelectors from "app/store/staticroute/selectors";
-import type { StaticRoute } from "app/store/staticroute/types";
-import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
-import { getSubnetDisplay } from "app/store/subnet/utils";
+import SubnetLink from "@/app/base/components/SubnetLink";
+import TableActions from "@/app/base/components/TableActions";
+import TitledSection from "@/app/base/components/TitledSection";
+import { useFetchActions } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import authSelectors from "@/app/store/auth/selectors";
+import { actions as staticRouteActions } from "@/app/store/staticroute";
+import staticRouteSelectors from "@/app/store/staticroute/selectors";
+import type { StaticRoute } from "@/app/store/staticroute/types";
+import { actions as subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import { getSubnetDisplay } from "@/app/store/subnet/utils";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK];

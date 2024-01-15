@@ -5,8 +5,8 @@ import type { MachineSidePanelViews } from "./constants";
 import type {
   Selected,
   SetSelected,
-} from "app/base/components/node/networking/types";
-import type { HardwareType } from "app/base/enum";
+} from "@/app/base/components/node/networking/types";
+import type { HardwareType } from "@/app/base/enum";
 import type {
   CommonActionFormProps,
   SidePanelContent,
@@ -18,9 +18,9 @@ import type {
   MachineEventErrors,
   SelectedMachines,
   StorageLayoutOption,
-} from "app/store/machine/types";
-import type { Script } from "app/store/script/types";
-import type { Disk, NetworkInterface, Partition } from "app/store/types/node";
+} from "@/app/store/machine/types";
+import type { Script } from "@/app/store/script/types";
+import type { Disk, NetworkInterface, Partition } from "@/app/store/types/node";
 
 export type MachineSidePanelContent =
   | SidePanelContent<

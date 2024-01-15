@@ -1,8 +1,8 @@
 import { Col, Row } from "@canonical/react-components";
 
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
-import FormikForm from "app/base/components/FormikForm/FormikForm";
-import type { EmptyObject } from "app/base/types";
+import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
+import FormikForm from "@/app/base/components/FormikForm/FormikForm";
+import type { EmptyObject } from "@/app/base/types";
 
 type Props = {
   modelType: string;

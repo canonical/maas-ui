@@ -8,14 +8,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import TableActions from "app/base/components/TableActions";
-import { useFetchActions, useWindowTitle } from "app/base/hooks";
-import urls from "app/base/urls";
-import { FilterMachines } from "app/store/machine/utils";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import type { ResourcePool } from "app/store/resourcepool/types";
-import { formatErrors } from "app/utils";
+import TableActions from "@/app/base/components/TableActions";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import urls from "@/app/base/urls";
+import { FilterMachines } from "@/app/store/machine/utils";
+import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
+import type { ResourcePool } from "@/app/store/resourcepool/types";
+import { formatErrors } from "@/app/utils";
 
 export enum Label {
   Title = "Pool list",
