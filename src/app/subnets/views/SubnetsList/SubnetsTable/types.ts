@@ -59,6 +59,7 @@ export type SortDataKey =
 
 export type SubnetsTableRow = Record<SubnetsColumns, SubnetsTableColumn> & {
   sortData: SortData;
+  "aria-label"?: string;
 };
 
 export type FabricRowContent = {
