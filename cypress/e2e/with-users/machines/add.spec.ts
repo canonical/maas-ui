@@ -8,7 +8,7 @@ context("Machine add", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateMAASURL("/machines"));
-    cy.get("[data-testid='add-hardware-dropdown'] button").click();
+    cy.findByRole("button", { name: "Add hardware" }).click();
     cy.get(".p-contextual-menu__link").contains("Machine").click();
   });
 
