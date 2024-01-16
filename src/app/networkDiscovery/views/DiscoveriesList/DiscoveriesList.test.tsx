@@ -1,9 +1,10 @@
-import configureStore from "redux-mock-store";
+import { NetworkDiscoverySidePanelViews } from "../constants";
 
 import DiscoveriesList, {
   Labels as DiscoveriesListLabels,
 } from "./DiscoveriesList";
 
+import * as sidePanelHooks from "@/app/base/side-panel-context";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import {
@@ -35,12 +36,18 @@ import {
   renderWithBrowserRouter,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
 const route = "/network-discovery";
 describe("DiscoveriesList", () => {
   let state: RootState;
 
+  const setSidePanelContent = vi.fn();
   beforeEach(() => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
     vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     const machines = [
       machineFactory({
@@ -170,30 +177,26 @@ describe("DiscoveriesList", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("can display the add form", async () => {
+  it("can trigger the add form sidepanel", async () => {
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
       state,
     });
     const row = screen.getByRole("row", { name: "my-discovery-test" });
-    expect(
-      screen.queryByRole("form", { name: "Add discovery" })
-    ).not.toBeInTheDocument();
     await userEvent.click(
       within(within(row).getByTestId("row-menu")).getByRole("button")
     );
     await userEvent.click(
       screen.getByRole("button", { name: DiscoveriesListLabels.AddDiscovery })
     );
-
-    await vi.waitFor(() =>
-      expect(
-        screen.getByRole("form", { name: /Add discovery/ })
-      ).toBeInTheDocument()
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: NetworkDiscoverySidePanelViews.ADD_DISCOVERY,
+      })
     );
   });
 
-  it("can display the delete form", async () => {
+  it("can trigger the delete form sidepanel", async () => {
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
       state,
@@ -209,39 +212,10 @@ describe("DiscoveriesList", () => {
       })
     );
 
-    expect(
-      screen.getByText(
-        'Are you sure you want to delete discovery "my-discovery-test"?'
-      )
-    ).toBeInTheDocument();
-
-    expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
-  });
-
-  it("can delete a discovery", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<DiscoveriesList />, {
-      route: route,
-      store,
-    });
-    const row = screen.getByRole("row", { name: "my-discovery-test" });
-
-    // Open the action menu.
-    await userEvent.click(
-      within(within(row).getByTestId("row-menu")).getByRole("button")
-    );
-
-    // Click on the delete link.
-    await userEvent.click(
-      screen.getByRole("button", {
-        name: DiscoveriesListLabels.DeleteDiscovery,
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: NetworkDiscoverySidePanelViews.DELETE_DISCOVERY,
       })
     );
-
-    // Click on the confirm button.
-    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
-    expect(
-      store.getActions().some((action) => action.type === "discovery/delete")
-    ).toBe(true);
   });
 });

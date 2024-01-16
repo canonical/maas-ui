@@ -200,6 +200,8 @@ export const getSidePanelTitle = (
         return "Add controller";
       case SidePanelViews.ADD_CHASSIS[1]:
         return "Add chassis";
+      case SidePanelViews.ADD_DISCOVERY[1]:
+        return "Add discovery";
       case SidePanelViews.ADD_INTERFACE[1]:
         return "Add interface";
       case SidePanelViews.ADD_MACHINE[1]:
@@ -214,12 +216,16 @@ export const getSidePanelTitle = (
         return "Add VLAN";
       case SidePanelViews.CHANGE_SOURCE[1]:
         return "Change source";
+      case SidePanelViews.CLEAR_ALL_DISCOVERIES[1]:
+        return "Clear all discoveries";
       case SidePanelViews.CREATE_DATASTORE[1]:
         return "Create datastore";
       case SidePanelViews.CREATE_RAID[1]:
         return "Create raid";
       case SidePanelViews.CREATE_VOLUME_GROUP[1]:
         return "Create volume group";
+      case SidePanelViews.DELETE_DISCOVERY[1]:
+        return "Delete discovery";
       case SidePanelViews.DeleteTag[1]:
         return "Delete tag";
       case SidePanelViews.EDIT_INTERFACE[1]:

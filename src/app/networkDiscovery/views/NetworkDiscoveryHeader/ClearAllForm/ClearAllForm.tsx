@@ -63,6 +63,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
   }
   return (
     <FormikForm<EmptyObject>
+      aria-label="Clear all discoveries"
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}

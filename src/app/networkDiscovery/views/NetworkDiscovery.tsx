@@ -2,11 +2,11 @@ import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom-v5-compat";
 
+import NetworkForm from "../components/NetworkForm";
+
 import DiscoveriesList from "./DiscoveriesList";
 import NetworkDiscoveryConfigurationForm from "./NetworkDiscoveryConfigurationForm";
 import NetworkDiscoveryHeader from "./NetworkDiscoveryHeader";
-import ClearAllForm from "./NetworkDiscoveryHeader/ClearAllForm";
-import { NetworkDiscoverySidePanelViews } from "./constants";
 
 import PageContent from "@/app/base/components/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
@@ -15,6 +15,7 @@ import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
 import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
+import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute } from "@/app/utils";
 
 export enum Label {
@@ -37,29 +38,21 @@ const NetworkDiscovery = (): JSX.Element => {
     );
   }
 
-  let content: JSX.Element | null = null;
-
-  if (
-    sidePanelContent?.view ===
-    NetworkDiscoverySidePanelViews.CLEAR_ALL_DISCOVERIES
-  ) {
-    content = (
-      <ClearAllForm
-        closeForm={() => {
-          setSidePanelContent(null);
-        }}
-      />
-    );
-  }
-
   const base = urls.networkDiscovery.index;
   return (
     <PageContent
       header={
         <NetworkDiscoveryHeader setSidePanelContent={setSidePanelContent} />
       }
-      sidePanelContent={content}
-      sidePanelTitle="Clear all discoveries"
+      sidePanelContent={
+        sidePanelContent && (
+          <NetworkForm
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        )
+      }
+      sidePanelTitle={getSidePanelTitle("Network discovery", sidePanelContent)} // "Clear all discoveries"
     >
       {networkDiscovery === "disabled" && (
         <Notification severity="caution">{Label.Disabled}</Notification>
