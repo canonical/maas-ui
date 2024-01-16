@@ -1,10 +1,10 @@
-import ModelDeleteForm from "./ModelDeleteForm";
+import ModelActionForm from "./ModelActionForm";
 
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 it("renders", () => {
   renderWithBrowserRouter(
-    <ModelDeleteForm
+    <ModelActionForm
       initialValues={{}}
       modelType="machine"
       onSubmit={vi.fn()}
@@ -20,7 +20,7 @@ it("renders", () => {
 it("can confirm", async () => {
   const onSubmit = vi.fn();
   renderWithBrowserRouter(
-    <ModelDeleteForm
+    <ModelActionForm
       initialValues={{}}
       modelType="machine"
       onSubmit={onSubmit}
@@ -35,7 +35,7 @@ it("can confirm", async () => {
 it("can cancel", async () => {
   const onCancel = vi.fn();
   renderWithBrowserRouter(
-    <ModelDeleteForm
+    <ModelActionForm
       cancelLabel="Cancel"
       initialValues={{}}
       modelType="machine"

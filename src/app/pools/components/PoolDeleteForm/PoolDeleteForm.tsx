@@ -2,7 +2,7 @@ import { useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { actions as resourcePoolActions } from "@/app/store/resourcepool";
@@ -26,7 +26,7 @@ const PoolDeleteForm = ({ id }: { id: number }) => {
   );
 
   return (
-    <ModelDeleteForm
+    <ModelActionForm
       aria-label="Confirm pool deletion"
       initialValues={{}}
       modelType="resource pool"

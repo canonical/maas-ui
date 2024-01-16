@@ -7,14 +7,18 @@ import type { EmptyObject } from "@/app/base/types";
 type Props = {
   modelType: string;
   message?: string;
+  showSubtext?: boolean;
+  subtext?: string;
 } & FormikFormProps<EmptyObject>;
 
-const ModelDeleteForm = ({
+const ModelActionForm = ({
   modelType,
   message,
+  subtext,
   submitAppearance = "negative",
   submitLabel = "Delete",
   initialValues = {},
+  showSubtext = true,
   ...props
 }: Props) => {
   return (
@@ -31,13 +35,17 @@ const ModelDeleteForm = ({
               ? message
               : `Are you sure you want to delete this ${modelType}?`}
           </p>
-          <span className="u-text--light">
-            This action is permanent and can not be undone.
-          </span>
+          {showSubtext && (
+            <span className="u-text--light">
+              {subtext
+                ? subtext
+                : "This action is permanent and can not be undone."}
+            </span>
+          )}
         </Col>
       </Row>
     </FormikForm>
   );
 };
 
-export default ModelDeleteForm;
+export default ModelActionForm;

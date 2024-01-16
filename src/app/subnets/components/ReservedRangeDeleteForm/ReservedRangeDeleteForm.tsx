@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import ModelActionForm from "@/app/base/components/ModelActionForm";
 import {
   useSidePanel,
   type SetSidePanelContent,
@@ -27,7 +27,7 @@ const ReservedRangeDeleteForm = ({ setActiveForm }: Props) => {
   }
 
   return (
-    <ModelDeleteForm
+    <ModelActionForm
       aria-label="Confirm IP range deletion"
       initialValues={{}}
       message="Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?"
