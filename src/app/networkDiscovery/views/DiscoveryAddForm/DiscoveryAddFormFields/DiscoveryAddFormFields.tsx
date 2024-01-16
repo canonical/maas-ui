@@ -71,7 +71,7 @@ const DiscoveryAddFormFields = ({
   return (
     <>
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Select}
             label={Labels.Type}
@@ -148,7 +148,7 @@ const DiscoveryAddFormFields = ({
             />
           )}
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <IpAssignmentSelect
             includeStatic={includeStatic}
             name="ip_assignment"

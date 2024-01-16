@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { ReactNode } from "react";
 
 import {
   Col,
@@ -7,20 +6,19 @@ import {
   MainTable,
   Row,
 } from "@canonical/react-components";
-import classNames from "classnames";
-import { useSelector, useDispatch } from "react-redux";
-import type { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 
-import DiscoveryAddForm from "../DiscoveryAddForm";
+import { NetworkDiscoverySidePanelViews } from "../constants";
 
 import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
 import SearchBox from "@/app/base/components/SearchBox";
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { actions as discoveryActions } from "@/app/store/discovery";
 import discoverySelectors from "@/app/store/discovery/selectors";
 import type { Discovery } from "@/app/store/discovery/types";
@@ -38,67 +36,16 @@ export enum Labels {
   EmptyList = "No discoveries available.",
 }
 
-enum ExpandedType {
-  ADD = "add",
-  DELETE = "delete",
-}
-
-type ExpandedRow = {
-  id: Discovery[DiscoveryMeta.PK];
-  type: ExpandedType;
-};
-
 const generateRows = (
   discoveries: Discovery[],
-  expandedRow: ExpandedRow | null,
-  setExpandedRow: (expandedRow: ExpandedRow | null) => void,
-  saved: boolean,
-  saving: boolean,
-  dispatch: Dispatch
+  setSidePanelContent: SetSidePanelContent
 ) =>
   discoveries.map((discovery) => {
-    const isExpanded = expandedRow?.id === discovery[DiscoveryMeta.PK];
     const name = discovery.hostname || "Unknown";
-    let expandedContent: ReactNode = null;
-    if (isExpanded && expandedRow?.type === ExpandedType.ADD) {
-      expandedContent = (
-        <DiscoveryAddForm
-          data-testid="add-discovery"
-          discovery={discovery}
-          onClose={() => {
-            setExpandedRow(null);
-          }}
-        />
-      );
-    } else if (isExpanded && expandedRow?.type === ExpandedType.DELETE) {
-      expandedContent = (
-        <TableDeleteConfirm
-          data-testid="delete-discovery"
-          deleted={saved}
-          deleting={saving}
-          modelName={name}
-          modelType="discovery"
-          onClose={() => {
-            setExpandedRow(null);
-          }}
-          onConfirm={() => {
-            dispatch(
-              discoveryActions.delete({
-                ip: discovery.ip,
-                mac: discovery.mac_address,
-              })
-            );
-          }}
-          sidebar={false}
-        />
-      );
-    }
     return {
       key: discovery[DiscoveryMeta.PK],
       "aria-label": name,
-      className: classNames("p-table__row", {
-        "is-active": isExpanded,
-      }),
+      className: "p-table__row",
       columns: [
         {
           content: (
@@ -142,27 +89,28 @@ const generateRows = (
                 {
                   children: Labels.AddDiscovery,
                   "data-testid": "add-discovery-link",
-                  onClick: () => {
-                    setExpandedRow({
-                      id: discovery[DiscoveryMeta.PK],
-                      type: ExpandedType.ADD,
-                    });
-                  },
+                  onClick: () =>
+                    setSidePanelContent({
+                      view: NetworkDiscoverySidePanelViews.ADD_DISCOVERY,
+                      extras: {
+                        discovery,
+                      },
+                    }),
                 },
                 {
                   children: "Delete discovery...",
                   "data-testid": "delete-discovery-link",
-                  onClick: () => {
-                    setExpandedRow({
-                      id: discovery[DiscoveryMeta.PK],
-                      type: ExpandedType.DELETE,
-                    });
-                  },
+                  onClick: () =>
+                    setSidePanelContent({
+                      view: NetworkDiscoverySidePanelViews.DELETE_DISCOVERY,
+                      extras: {
+                        discovery,
+                      },
+                    }),
                 },
               ]}
               toggleAppearance="base"
               toggleClassName="row-menu-toggle u-no-margin--bottom"
-              toggleDisabled={isExpanded}
             />
           ),
           className: "u-align--right",
@@ -175,22 +123,17 @@ const generateRows = (
         macAddress: discovery.mac_address,
         rack: discovery.observer_hostname,
       },
-      expanded: isExpanded,
-      expandedContent,
     };
   });
 
 const DiscoveriesList = (): JSX.Element => {
-  const dispatch = useDispatch();
   const [searchString, setSearchString] = useState("");
-  const [expandedRow, setExpandedRow] = useState<ExpandedRow | null>(null);
   const discoveries = useSelector((state: RootState) =>
     discoverySelectors.search(state, searchString)
   );
+  const { setSidePanelContent } = useSidePanel();
   const loading = useSelector(discoverySelectors.loading);
   const loaded = useSelector(discoverySelectors.loaded);
-  const saving = useSelector(discoverySelectors.saving);
-  const saved = useSelector(discoverySelectors.saved);
 
   useWindowTitle("Network Discovery");
 
@@ -261,14 +204,7 @@ const DiscoveriesList = (): JSX.Element => {
         })}
         expanding
         headers={headers}
-        rows={generateRows(
-          discoveries,
-          expandedRow,
-          setExpandedRow,
-          saved,
-          saving,
-          dispatch
-        )}
+        rows={generateRows(discoveries, setSidePanelContent)}
         sortable
       />
     </div>
