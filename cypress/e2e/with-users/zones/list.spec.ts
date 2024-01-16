@@ -7,7 +7,7 @@ context("Zones", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains(
+    cy.get("[data-testid='main-toolbar-heading']").contains(
       "Availability zones"
     );
   });

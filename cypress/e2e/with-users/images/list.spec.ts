@@ -7,6 +7,6 @@ context("Images list", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains("Images");
+    cy.get("[data-testid='main-toolbar-heading']").contains("Images");
   });
 });
