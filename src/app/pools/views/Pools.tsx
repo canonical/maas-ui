@@ -4,6 +4,7 @@ import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link, Route, Routes } from "react-router-dom-v5-compat";
 
+import PoolDelete from "./PoolDelete";
 import PoolList from "./PoolList";
 
 import PageContent from "@/app/base/components/PageContent";
@@ -26,40 +27,83 @@ const Pools = (): JSX.Element => {
 
   const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
 
+  const PoolsHeader = () => (
+    <MainToolbar>
+      <MainToolbar.Title>
+        <Link to={urls.machines.index}>{machineCount} machines </Link>
+        in {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
+      </MainToolbar.Title>
+      <MainToolbar.Controls>
+        <Button data-testid="add-pool" element={Link} to={urls.pools.add}>
+          Add pool
+        </Button>
+      </MainToolbar.Controls>
+    </MainToolbar>
+  );
+
   return (
-    <PageContent
-      header={
-        <MainToolbar>
-          <MainToolbar.Title>
-            <Link to={urls.machines.index}>{machineCount} machines </Link>
-            in {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
-          </MainToolbar.Title>
-          <MainToolbar.Controls>
-            <Button data-testid="add-pool" element={Link} to={urls.pools.add}>
-              Add pool
-            </Button>
-          </MainToolbar.Controls>
-        </MainToolbar>
-      }
-      sidePanelContent={null}
-      sidePanelTitle={null}
-    >
-      <Routes>
-        <Route
-          element={<PoolList />}
-          path={getRelativeRoute(urls.pools.index, base)}
-        />
-        <Route
-          element={<PoolAdd />}
-          path={getRelativeRoute(urls.pools.add, base)}
-        />
-        <Route
-          element={<PoolEdit />}
-          path={getRelativeRoute(urls.pools.edit(null), base)}
-        />
-        <Route element={<NotFound />} path="*" />
-      </Routes>
-    </PageContent>
+    <Routes>
+      <Route
+        element={
+          <PageContent
+            header={<PoolsHeader />}
+            sidePanelContent={null}
+            sidePanelTitle={null}
+          >
+            <PoolList />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.pools.index, base)}
+      />
+      <Route
+        element={
+          <PageContent
+            header={<PoolsHeader />}
+            sidePanelContent={<PoolAdd />}
+            sidePanelTitle="Add pool"
+          >
+            <PoolList />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.pools.add, base)}
+      />
+      <Route
+        element={
+          <PageContent
+            header={<PoolsHeader />}
+            sidePanelContent={<PoolEdit />}
+            sidePanelTitle="Edit pool"
+          >
+            <PoolList />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.pools.edit(null), base)}
+      />
+      <Route
+        element={
+          <PageContent
+            header={<PoolsHeader />}
+            sidePanelContent={<PoolDelete />}
+            sidePanelTitle="Delete pool"
+          >
+            <PoolList />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.pools.delete(null), base)}
+      />
+      <Route
+        element={
+          <PageContent
+            header={<PoolsHeader />}
+            sidePanelContent={null}
+            sidePanelTitle={null}
+          >
+            <NotFound />
+          </PageContent>
+        }
+        path="*"
+      />
+    </Routes>
   );
 };
 

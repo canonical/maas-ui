@@ -371,3 +371,9 @@ export type MachineState = {
   selected: SelectedMachines | null;
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;
+
+export type StorageLayoutOption = {
+  label: string;
+  sentenceLabel: string;
+  value: StorageLayout;
+};

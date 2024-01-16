@@ -1,11 +1,7 @@
-import { useState } from "react";
-
 import { Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import type { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 
 import TableActions from "@/app/base/components/TableActions";
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import {
   useFetchActions,
   useAddMessage,
@@ -15,28 +11,18 @@ import urls from "@/app/base/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import { actions as tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
-import type { Token, TokenMeta, TokenState } from "@/app/store/token/types";
+import type { Token } from "@/app/store/token/types";
 
 export enum Label {
   Title = "API keys",
   EmptyList = "No API keys available.",
 }
 
-const generateRows = (
-  tokens: Token[],
-  expandedId: Token[TokenMeta.PK] | null,
-  setExpandedId: (id: Token[TokenMeta.PK] | null) => void,
-  hideExpanded: () => void,
-  dispatch: Dispatch,
-  saved: TokenState["saved"],
-  saving: TokenState["saving"]
-) =>
+const generateRows = (tokens: Token[]) =>
   tokens.map(({ consumer, id, key, secret }) => {
     const { name } = consumer;
-    const expanded = expandedId === id;
     const token = `${consumer.key}:${key}:${secret}`;
     return {
-      className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
           content: name,
@@ -49,26 +35,13 @@ const generateRows = (
           content: (
             <TableActions
               copyValue={token}
+              deletePath={urls.preferences.apiKeys.delete({ id })}
               editPath={urls.preferences.apiKeys.edit({ id })}
-              onDelete={() => setExpandedId(id)}
             />
           ),
           className: "u-align--right",
         },
       ],
-      expanded: expanded,
-      expandedContent: expanded && (
-        <TableDeleteConfirm
-          deleted={saved}
-          deleting={saving}
-          modelName={name}
-          modelType="API key"
-          onClose={hideExpanded}
-          onConfirm={() => {
-            dispatch(tokenActions.delete(id));
-          }}
-        />
-      ),
       key: id,
       sortData: {
         name: name,
@@ -77,20 +50,11 @@ const generateRows = (
   });
 
 const APIKeyList = (): JSX.Element => {
-  const [expandedId, setExpandedId] = useState<Token[TokenMeta.PK] | null>(
-    null
-  );
   const errors = useSelector(tokenSelectors.errors);
   const loading = useSelector(tokenSelectors.loading);
   const loaded = useSelector(tokenSelectors.loaded);
   const tokens = useSelector(tokenSelectors.all);
   const saved = useSelector(tokenSelectors.saved);
-  const saving = useSelector(tokenSelectors.saving);
-  const dispatch = useDispatch();
-
-  const hideExpanded = () => {
-    setExpandedId(null);
-  };
 
   useAddMessage(saved, tokenActions.cleanup, "API key deleted successfully.");
 
@@ -129,15 +93,7 @@ const APIKeyList = (): JSX.Element => {
         ]}
         loaded={loaded}
         loading={loading}
-        rows={generateRows(
-          tokens,
-          expandedId,
-          setExpandedId,
-          hideExpanded,
-          dispatch,
-          saved,
-          saving
-        )}
+        rows={generateRows(tokens)}
         tableClassName="apikey-list"
       />
     </>

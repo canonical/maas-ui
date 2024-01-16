@@ -1,16 +1,8 @@
 import { MainTable, Spinner } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
-import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-import RemoveInterface from "./RemoveInterface";
-
 import MacAddressDisplay from "@/app/base/components/MacAddressDisplay";
-import type {
-  Expanded,
-  SetExpanded,
-} from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableHeader from "@/app/base/components/TableHeader";
 import TableMenu from "@/app/base/components/TableMenu";
 import SubnetColumn from "@/app/base/components/node/networking/SubnetColumn";
@@ -19,7 +11,10 @@ import {
   useIsAllNetworkingDisabled,
   useTableSort,
 } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import { SortDirection } from "@/app/base/types";
+import { DeviceSidePanelViews } from "@/app/devices/constants";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";
@@ -59,8 +54,6 @@ type NetworkRow = Omit<MainTableRow, "sortData"> & {
 type SortKey = keyof NetworkRowSortData;
 
 type Props = {
-  expanded: Expanded | null;
-  setExpanded: SetExpanded;
   systemId: Device[DeviceMeta.PK];
 };
 
@@ -70,15 +63,14 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) => {
 };
 
 const generateRow = (
-  expanded: Expanded | null,
   fabrics: Fabric[],
   isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
   device: Device,
   nic: NetworkInterface | null,
-  setExpanded: SetExpanded,
   subnets: Subnet[],
-  vlans: VLAN[]
+  vlans: VLAN[],
+  setSidePanelContent: SetSidePanelContent
 ): NetworkRow | null => {
   if (link && !nic) {
     [nic] = getLinkInterface(device, link);
@@ -97,14 +89,9 @@ const generateRow = (
     link
   );
   const typeDisplay = getInterfaceTypeText(device, nic, link);
-  const isExpanded =
-    !!expanded &&
-    ((link && expanded.linkId === link.id) ||
-      (!link && expanded.nicId === nic?.id));
+
   return {
-    className: classNames("p-table__row", {
-      "is-active": isExpanded,
-    }),
+    className: "p-table__row",
     columns: [
       {
         content: <MacAddressDisplay>{nic.mac_address}</MacAddressDisplay>,
@@ -131,19 +118,17 @@ const generateRow = (
               {
                 children: `Edit ${typeDisplay}`,
                 onClick: () =>
-                  setExpanded({
-                    content: ExpandedState.EDIT,
-                    linkId: link?.id,
-                    nicId: nic?.id,
+                  setSidePanelContent({
+                    view: DeviceSidePanelViews.EDIT_INTERFACE,
+                    extras: { linkId: link?.id, nicId: nic?.id },
                   }),
               },
               {
                 children: `Remove ${typeDisplay}`,
                 onClick: () =>
-                  setExpanded({
-                    content: ExpandedState.REMOVE,
-                    linkId: link?.id,
-                    nicId: nic?.id,
+                  setSidePanelContent({
+                    view: DeviceSidePanelViews.REMOVE_INTERFACE,
+                    extras: { linkId: link?.id, nicId: nic?.id },
                   }),
               },
             ]}
@@ -153,18 +138,6 @@ const generateRow = (
         ),
       },
     ],
-    expanded: isExpanded,
-    expandedContent: (
-      <div className="u-flex--grow">
-        {expanded?.content === ExpandedState.REMOVE && (
-          <RemoveInterface
-            closeExpanded={() => setExpanded(null)}
-            nicId={nic?.id}
-            systemId={device.system_id}
-          />
-        )}
-      </div>
-    ),
     key: name,
     sortData: {
       ip_address:
@@ -177,13 +150,12 @@ const generateRow = (
 };
 
 const generateRows = (
-  expanded: Expanded | null,
   fabrics: Fabric[],
   isAllNetworkingDisabled: boolean,
   device: Device,
-  setExpanded: (expanded: Expanded | null) => void,
   subnets: Subnet[],
-  vlans: VLAN[]
+  vlans: VLAN[],
+  setSidePanelContent: SetSidePanelContent
 ): NetworkRow[] => {
   if (!isDeviceDetails(device)) {
     return [];
@@ -196,15 +168,14 @@ const generateRows = (
       nic: NetworkInterface | null
     ) =>
       generateRow(
-        expanded,
         fabrics,
         isAllNetworkingDisabled,
         link,
         device,
         nic,
-        setExpanded,
         subnets,
-        vlans
+        vlans,
+        setSidePanelContent
       );
     if (nic.links.length === 0) {
       const row = createRow(null, nic);
@@ -223,17 +194,14 @@ const generateRows = (
   return rows;
 };
 
-const DeviceNetworkTable = ({
-  expanded,
-  setExpanded,
-  systemId,
-}: Props): JSX.Element => {
+const DeviceNetworkTable = ({ systemId }: Props): JSX.Element => {
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, systemId)
   );
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
+  const { setSidePanelContent } = useSidePanel();
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(device);
   const { currentSort, sortRows, updateSort } = useTableSort<
     NetworkRow,
@@ -254,13 +222,12 @@ const DeviceNetworkTable = ({
   }
 
   const rows = generateRows(
-    expanded,
     fabrics,
     isAllNetworkingDisabled,
     device,
-    setExpanded,
     subnets,
-    vlans
+    vlans,
+    setSidePanelContent
   );
   const sortedRows = sortRows(rows);
   return (

@@ -3,11 +3,8 @@ import { useSelector } from "react-redux";
 
 import { BulkAction } from "../AvailableStorageTable";
 
-import CreateDatastore from "./CreateDatastore";
-import CreateRaid from "./CreateRaid";
-import CreateVolumeGroup from "./CreateVolumeGroup";
-import UpdateDatastore from "./UpdateDatastore";
-
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -22,14 +19,12 @@ import {
 } from "@/app/store/utils";
 
 type Props = {
-  bulkAction: BulkAction | null;
   selected: (Disk | Partition)[];
   setBulkAction: (bulkAction: BulkAction | null) => void;
   systemId: Machine["system_id"];
 };
 
 const BulkActions = ({
-  bulkAction,
   selected,
   setBulkAction,
   systemId,
@@ -37,49 +32,10 @@ const BulkActions = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
+  const { setSidePanelContent } = useSidePanel();
 
   if (!isMachineDetails(machine)) {
     return null;
-  }
-
-  if (bulkAction === BulkAction.CREATE_DATASTORE) {
-    return (
-      <CreateDatastore
-        closeForm={() => setBulkAction(null)}
-        selected={selected}
-        systemId={systemId}
-      />
-    );
-  }
-
-  if (bulkAction === BulkAction.CREATE_RAID) {
-    return (
-      <CreateRaid
-        closeForm={() => setBulkAction(null)}
-        selected={selected}
-        systemId={systemId}
-      />
-    );
-  }
-
-  if (bulkAction === BulkAction.CREATE_VOLUME_GROUP) {
-    return (
-      <CreateVolumeGroup
-        closeForm={() => setBulkAction(null)}
-        selected={selected}
-        systemId={systemId}
-      />
-    );
-  }
-
-  if (bulkAction === BulkAction.UPDATE_DATASTORE) {
-    return (
-      <UpdateDatastore
-        closeForm={() => setBulkAction(null)}
-        selected={selected}
-        systemId={systemId}
-      />
-    );
   }
 
   if (isVMWareLayout(machine.detected_storage_layout)) {
@@ -115,7 +71,13 @@ const BulkActions = ({
             <Button
               data-testid="create-datastore"
               disabled={!createDatastoreEnabled}
-              onClick={() => setBulkAction(BulkAction.CREATE_DATASTORE)}
+              onClick={() => {
+                setSidePanelContent({
+                  view: MachineSidePanelViews.CREATE_DATASTORE,
+                  extras: { bulkActionSelected: selected, systemId: systemId },
+                });
+                setBulkAction(BulkAction.CREATE_DATASTORE);
+              }}
             >
               Create datastore
             </Button>
@@ -128,7 +90,13 @@ const BulkActions = ({
             <Button
               data-testid="add-to-datastore"
               disabled={!updateDatastoreEnabled}
-              onClick={() => setBulkAction(BulkAction.UPDATE_DATASTORE)}
+              onClick={() => {
+                setSidePanelContent({
+                  view: MachineSidePanelViews.UPDATE_DATASTORE,
+                  extras: { bulkActionSelected: selected, systemId: systemId },
+                });
+                setBulkAction(BulkAction.UPDATE_DATASTORE);
+              }}
             >
               Add to existing datastore
             </Button>
@@ -158,7 +126,13 @@ const BulkActions = ({
           <Button
             data-testid="create-vg"
             disabled={!createVgEnabled}
-            onClick={() => setBulkAction(BulkAction.CREATE_VOLUME_GROUP)}
+            onClick={() => {
+              setSidePanelContent({
+                view: MachineSidePanelViews.CREATE_VOLUME_GROUP,
+                extras: { bulkActionSelected: selected, systemId: systemId },
+              });
+              setBulkAction(BulkAction.CREATE_VOLUME_GROUP);
+            }}
           >
             Create volume group
           </Button>
@@ -175,7 +149,13 @@ const BulkActions = ({
           <Button
             data-testid="create-raid"
             disabled={!createRaidEnabled}
-            onClick={() => setBulkAction(BulkAction.CREATE_RAID)}
+            onClick={() => {
+              setSidePanelContent({
+                view: MachineSidePanelViews.CREATE_RAID,
+                extras: { bulkActionSelected: selected, systemId: systemId },
+              });
+              setBulkAction(BulkAction.CREATE_RAID);
+            }}
           >
             Create RAID
           </Button>

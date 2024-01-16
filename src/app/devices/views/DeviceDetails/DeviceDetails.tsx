@@ -15,6 +15,7 @@ import { useGetURLId } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import DeviceHeaderForms from "@/app/devices/components/DeviceHeaderForms";
+import DeviceNetworkForms from "@/app/devices/components/DeviceNetworkForms";
 import { actions as deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import { DeviceMeta } from "@/app/store/device/types";
@@ -54,51 +55,90 @@ const DeviceDetails = (): JSX.Element => {
   }
 
   const base = urls.devices.device.index(null);
-  return (
-    <PageContent
-      header={
-        <DeviceDetailsHeader
-          setSidePanelContent={setSidePanelContent}
-          systemId={id}
-        />
-      }
-      sidePanelContent={
-        sidePanelContent &&
-        device && (
-          <DeviceHeaderForms
-            devices={[device]}
-            setSidePanelContent={setSidePanelContent}
-            sidePanelContent={sidePanelContent}
-            viewingDetails
-          />
-        )
-      }
-      sidePanelTitle={getSidePanelTitle(device?.fqdn || "", sidePanelContent)}
-    >
-      {device && (
-        <Routes>
-          <Route
-            element={<DeviceSummary systemId={id} />}
-            path={getRelativeRoute(urls.devices.device.summary(null), base)}
-          />
-          <Route
-            element={<DeviceNetwork systemId={id} />}
-            path={getRelativeRoute(urls.devices.device.network(null), base)}
-          />
-          <Route
-            element={<DeviceConfiguration systemId={id} />}
-            path={getRelativeRoute(
-              urls.devices.device.configuration(null),
-              base
+  return device ? (
+    <Routes>
+      <Route
+        element={
+          <PageContent
+            header={
+              <DeviceDetailsHeader
+                setSidePanelContent={setSidePanelContent}
+                systemId={id}
+              />
+            }
+            sidePanelContent={
+              sidePanelContent &&
+              device && (
+                <DeviceHeaderForms
+                  devices={[device]}
+                  setSidePanelContent={setSidePanelContent}
+                  sidePanelContent={sidePanelContent}
+                  viewingDetails
+                />
+              )
+            }
+            sidePanelTitle={getSidePanelTitle(
+              device?.fqdn || "",
+              sidePanelContent
             )}
-          />
-          <Route
-            element={<Redirect to={urls.devices.device.summary({ id })} />}
-            path="/"
-          />
-        </Routes>
-      )}
-    </PageContent>
+          >
+            <DeviceSummary systemId={id} />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.devices.device.summary(null), base)}
+      />
+      <Route
+        element={
+          <PageContent
+            header={
+              <DeviceDetailsHeader
+                setSidePanelContent={setSidePanelContent}
+                systemId={id}
+              />
+            }
+            sidePanelContent={
+              sidePanelContent && (
+                <DeviceNetworkForms
+                  setSidePanelContent={setSidePanelContent}
+                  sidePanelContent={sidePanelContent}
+                  systemId={id}
+                />
+              )
+            }
+            sidePanelTitle={getSidePanelTitle(
+              device?.fqdn || "",
+              sidePanelContent
+            )}
+          >
+            <DeviceNetwork systemId={id} />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.devices.device.network(null), base)}
+      />
+      <Route
+        element={
+          <PageContent
+            header={
+              <DeviceDetailsHeader
+                setSidePanelContent={setSidePanelContent}
+                systemId={id}
+              />
+            }
+            sidePanelContent={null}
+            sidePanelTitle={null}
+          >
+            <DeviceConfiguration systemId={id} />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.devices.device.configuration(null), base)}
+      />
+      <Route
+        element={<Redirect to={urls.devices.device.summary({ id })} />}
+        path="/"
+      />
+    </Routes>
+  ) : (
+    <></>
   );
 };
 

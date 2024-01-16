@@ -1,7 +1,9 @@
-import { BulkAction } from "../AvailableStorageTable";
+import { vi } from "vitest";
 
 import BulkActions from "./BulkActions";
 
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
@@ -17,9 +19,19 @@ import {
   expectTooltipOnHover,
   renderWithBrowserRouter,
   screen,
+  userEvent,
 } from "@/testing/utils";
 
 describe("BulkActions", () => {
+  const setSidePanelContent = vi.fn();
+  beforeAll(() => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
+  });
   it("disables create volume group button with tooltip if selected devices are not eligible", async () => {
     const selected = [
       diskFactory({
@@ -42,7 +54,6 @@ describe("BulkActions", () => {
     });
     renderWithBrowserRouter(
       <BulkActions
-        bulkAction={null}
         selected={selected}
         setBulkAction={vi.fn()}
         systemId="abc123"
@@ -78,7 +89,6 @@ describe("BulkActions", () => {
     });
     renderWithBrowserRouter(
       <BulkActions
-        bulkAction={null}
         selected={selected}
         setBulkAction={vi.fn()}
         systemId="abc123"
@@ -106,13 +116,10 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        bulkAction={null}
-        selected={[]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
-      { state }
+      <BulkActions selected={[]} setBulkAction={vi.fn()} systemId="abc123" />,
+      {
+        state,
+      }
     );
 
     expect(screen.getByTestId("vmware-bulk-actions")).toBeInTheDocument();
@@ -136,7 +143,6 @@ describe("BulkActions", () => {
     });
     renderWithBrowserRouter(
       <BulkActions
-        bulkAction={null}
         selected={selected}
         setBulkAction={vi.fn()}
         systemId="abc123"
@@ -171,7 +177,6 @@ describe("BulkActions", () => {
     });
     renderWithBrowserRouter(
       <BulkActions
-        bulkAction={null}
         selected={[selected]}
         setBulkAction={vi.fn()}
         systemId="abc123"
@@ -184,126 +189,18 @@ describe("BulkActions", () => {
     ).not.toBeDisabled();
   });
 
-  it("can render the create datastore form", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    renderWithBrowserRouter(
-      <BulkActions
-        bulkAction={BulkAction.CREATE_DATASTORE}
-        selected={[]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
-      { state }
-    );
-
-    // Ensure correct form inputs are shown
-    expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Size" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: "Filesystem" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Create datastore" })
-    ).toBeInTheDocument();
-  });
-
-  it("can render the create RAID form", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    renderWithBrowserRouter(
-      <BulkActions
-        bulkAction={BulkAction.CREATE_RAID}
-        selected={[]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
-      { state }
-    );
-
-    // Ensure the correct form inputs are shown
-    expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("combobox", { name: "RAID level" })
-    ).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Size" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("combobox", { name: "Filesystem" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: "Mount point" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: "Mount options" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Create RAID" })
-    ).toBeInTheDocument();
-  });
-
-  it("can render the create volume group form", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    renderWithBrowserRouter(
-      <BulkActions
-        bulkAction={BulkAction.CREATE_VOLUME_GROUP}
-        selected={[]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
-      { state }
-    );
-
-    // Ensure the correct form inputs are shown
-    expect(
-      screen.getByRole("button", { name: "Create volume group" })
-    ).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Size" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Type" })).toBeInTheDocument();
-  });
-
-  it("can render the update datastore form", () => {
+  it("can trigger the create datastore sidepanel", async () => {
     const datastore = diskFactory({
       filesystem: fsFactory({ fstype: "vmfs6" }),
     });
+    const selected = diskFactory({ filesystem: null, partitions: null });
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
+            detected_storage_layout: StorageLayout.VMFS6,
+            disks: [datastore, selected],
             system_id: "abc123",
-            disks: [datastore],
           }),
         ],
         statuses: machineStatusesFactory({
@@ -313,23 +210,145 @@ describe("BulkActions", () => {
     });
     renderWithBrowserRouter(
       <BulkActions
-        bulkAction={BulkAction.UPDATE_DATASTORE}
-        selected={[]}
+        selected={[selected]}
         setBulkAction={vi.fn()}
         systemId="abc123"
       />,
       { state }
     );
 
-    // Ensure the correct form inputs are shown
-    expect(
-      screen.getByRole("combobox", { name: "Datastore" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: "Mount point" })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: "Size to add" })
-    ).toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Create datastore" })
+    );
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.CREATE_DATASTORE,
+      })
+    );
+  });
+
+  it("can trigger the create RAID sidepanel", async () => {
+    const selected = [
+      diskFactory({
+        filesystem: null,
+        type: DiskTypes.VIRTUAL,
+      }),
+      diskFactory({
+        filesystem: null,
+        type: DiskTypes.VIRTUAL,
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            detected_storage_layout: StorageLayout.FLAT,
+            disks: selected,
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    renderWithBrowserRouter(
+      <BulkActions
+        selected={selected}
+        setBulkAction={vi.fn()}
+        systemId="abc123"
+      />,
+      { state }
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Create RAID" }));
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.CREATE_RAID,
+      })
+    );
+  });
+
+  it("can trigger the create volume group sidepanel", async () => {
+    const selected = [
+      diskFactory({
+        filesystem: null,
+        type: DiskTypes.VIRTUAL,
+      }),
+      diskFactory({
+        filesystem: null,
+        type: DiskTypes.VIRTUAL,
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            detected_storage_layout: StorageLayout.FLAT,
+            disks: selected,
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+    renderWithBrowserRouter(
+      <BulkActions
+        selected={selected}
+        setBulkAction={vi.fn()}
+        systemId="abc123"
+      />,
+      { state }
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Create volume group" })
+    );
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.CREATE_VOLUME_GROUP,
+      })
+    );
+  });
+
+  it("can trigger the update datastore sidepanel", async () => {
+    const datastore = diskFactory({
+      filesystem: fsFactory({ fstype: "vmfs6" }),
+    });
+    const selected = diskFactory({ filesystem: null, partitions: null });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [
+          machineDetailsFactory({
+            detected_storage_layout: StorageLayout.VMFS6,
+            disks: [datastore, selected],
+            system_id: "abc123",
+          }),
+        ],
+        statuses: machineStatusesFactory({
+          abc123: machineStatusFactory(),
+        }),
+      }),
+    });
+
+    renderWithBrowserRouter(
+      <BulkActions
+        selected={[selected]}
+        setBulkAction={vi.fn()}
+        systemId="abc123"
+      />,
+      { state }
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add to existing datastore" })
+    );
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.UPDATE_DATASTORE,
+      })
+    );
   });
 });

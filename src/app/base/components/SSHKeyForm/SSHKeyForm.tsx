@@ -61,7 +61,7 @@ export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
       validationSchema={SSHKeySchema}
       {...props}
     >
-      <SSHKeyFormFields cols={cols} />
+      <SSHKeyFormFields />
     </FormikForm>
   );
 };

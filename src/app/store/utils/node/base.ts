@@ -190,24 +190,54 @@ export const getSidePanelTitle = (
   if (sidePanelContent) {
     const [, name] = sidePanelContent.view;
     switch (name) {
+      case SidePanelViews.ADD_ALIAS[1]:
+        return "Add alias";
+      case SidePanelViews.ADD_BOND[1]:
+        return "Create bond";
+      case SidePanelViews.ADD_BRIDGE[1]:
+        return "Create bridge";
       case SidePanelViews.ADD_CONTROLLER[1]:
         return "Add controller";
       case SidePanelViews.ADD_CHASSIS[1]:
         return "Add chassis";
+      case SidePanelViews.ADD_INTERFACE[1]:
+        return "Add interface";
       case SidePanelViews.ADD_MACHINE[1]:
         return "Add machine";
       case SidePanelViews.ADD_DEVICE[1]:
         return "Add device";
+      case SidePanelViews.ADD_SPECIAL_FILESYSTEM[1]:
+        return "Add special filesystem";
       case SidePanelViews.AddTag[1]:
         return "Create new tag";
+      case SidePanelViews.ADD_VLAN[1]:
+        return "Add VLAN";
+      case SidePanelViews.CHANGE_SOURCE[1]:
+        return "Change source";
+      case SidePanelViews.CREATE_DATASTORE[1]:
+        return "Create datastore";
+      case SidePanelViews.CREATE_RAID[1]:
+        return "Create raid";
+      case SidePanelViews.CREATE_VOLUME_GROUP[1]:
+        return "Create volume group";
       case SidePanelViews.DeleteTag[1]:
         return "Delete tag";
+      case SidePanelViews.EDIT_INTERFACE[1]:
+        return "Edit interface";
       case SidePanelViews.CREATE_ZONE[1]:
         return "Add AZ";
+      case SidePanelViews.DELETE_IMAGE[1]:
+        return "Delete image";
       case SidePanelViews.DELETE_SPACE[1]:
         return "Delete space";
       case SidePanelViews.DELETE_FABRIC[1]:
         return "Delete fabric";
+      case SidePanelViews.REMOVE_INTERFACE[1]:
+        return "Remove interface";
+      case SidePanelViews.UPDATE_DATASTORE[1]:
+        return "Update datastore";
+      case SidePanelViews.UpdateTag[1]:
+        return "Update Tag";
       default:
         return name ? getNodeActionTitle(name as NodeActions) : defaultTitle;
     }

@@ -3,7 +3,6 @@ import * as Yup from "yup";
 
 import UpdateDatastoreFields from "./UpdateDatastoreFields";
 
-import FormCard from "@/app/base/components/FormCard";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
 import { actions as machineActions } from "@/app/store/machine";
@@ -58,42 +57,40 @@ export const UpdateDatastore = ({
     }
 
     return (
-      <FormCard sidebar={false}>
-        <FormikForm<UpdateDatastoreValues, MachineEventErrors>
-          allowUnchanged
-          cleanup={machineActions.cleanup}
-          errors={errors}
-          initialValues={{
-            datastore: datastores[0].id,
-          }}
-          onCancel={closeForm}
-          onSaveAnalytics={{
-            action: "Update datastore",
-            category: "Machine storage",
-            label: "Add to datastore",
-          }}
-          onSubmit={(values: UpdateDatastoreValues) => {
-            const [blockDeviceIds, partitionIds] =
-              splitDiskPartitionIds(selected);
-            const params = {
-              systemId,
-              vmfsDatastoreId: values.datastore,
-              ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
-              ...(partitionIds.length > 0 && { partitionIds }),
-            };
-            dispatch(machineActions.updateVmfsDatastore(params));
-          }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Add to datastore"
-          validationSchema={UpdateDatastoreSchema}
-        >
-          <UpdateDatastoreFields
-            datastores={datastores}
-            storageDevices={selected}
-          />
-        </FormikForm>
-      </FormCard>
+      <FormikForm<UpdateDatastoreValues, MachineEventErrors>
+        allowUnchanged
+        cleanup={machineActions.cleanup}
+        errors={errors}
+        initialValues={{
+          datastore: datastores[0].id,
+        }}
+        onCancel={closeForm}
+        onSaveAnalytics={{
+          action: "Update datastore",
+          category: "Machine storage",
+          label: "Add to datastore",
+        }}
+        onSubmit={(values: UpdateDatastoreValues) => {
+          const [blockDeviceIds, partitionIds] =
+            splitDiskPartitionIds(selected);
+          const params = {
+            systemId,
+            vmfsDatastoreId: values.datastore,
+            ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
+            ...(partitionIds.length > 0 && { partitionIds }),
+          };
+          dispatch(machineActions.updateVmfsDatastore(params));
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Add to datastore"
+        validationSchema={UpdateDatastoreSchema}
+      >
+        <UpdateDatastoreFields
+          datastores={datastores}
+          storageDevices={selected}
+        />
+      </FormikForm>
     );
   }
   return null;

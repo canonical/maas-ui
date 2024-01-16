@@ -4,7 +4,6 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddStaticRouteFormLabels } from "./AddStaticRouteForm/AddStaticRouteForm";
-import { EditStaticRouteFormLabels } from "./EditStaticRouteForm/EditStaticRouteForm";
 import StaticRoutes, { Labels } from "./StaticRoutes";
 
 import {
@@ -17,7 +16,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "@/testing/factories";
-import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
+import { render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -72,7 +71,7 @@ it("renders for a subnet", () => {
   ).toBeInTheDocument();
 });
 
-it("can open and close the add static route form", async () => {
+it("has a button to open the static route form", async () => {
   const subnet = subnetFactory({ id: 1 });
   const state = rootStateFactory({
     user: userStateFactory({
@@ -106,37 +105,9 @@ it("can open and close the add static route form", async () => {
       })
     ).toBeInTheDocument()
   );
-  await userEvent.click(
-    screen.getByRole("button", {
-      name: AddStaticRouteFormLabels.AddStaticRoute,
-    })
-  );
-  await waitFor(() =>
-    expect(
-      screen.getByRole("form", {
-        name: AddStaticRouteFormLabels.AddStaticRoute,
-      })
-    )
-  );
-
-  await userEvent.click(
-    within(
-      screen.getByRole("form", {
-        name: AddStaticRouteFormLabels.AddStaticRoute,
-      })
-    ).getByRole("button", { name: "Cancel" })
-  );
-
-  await waitFor(() =>
-    expect(
-      screen.queryByRole("form", {
-        name: AddStaticRouteFormLabels.AddStaticRoute,
-      })
-    ).not.toBeInTheDocument()
-  );
 });
 
-it("can open and close the edit static route form", async () => {
+it("has a button to open the edit static route form", async () => {
   const subnet = subnetFactory({ id: 1 });
   const state = rootStateFactory({
     staticroute: staticRouteStateFactory({
@@ -163,33 +134,9 @@ it("can open and close the edit static route form", async () => {
     </Provider>
   );
 
-  await userEvent.click(
+  expect(
     screen.getByRole("button", {
       name: "Edit",
     })
-  );
-
-  await waitFor(() =>
-    expect(
-      screen.getByRole("form", {
-        name: EditStaticRouteFormLabels.EditStaticRoute,
-      })
-    ).toBeInTheDocument()
-  );
-
-  await userEvent.click(
-    within(
-      screen.getByRole("form", {
-        name: EditStaticRouteFormLabels.EditStaticRoute,
-      })
-    ).getByRole("button", { name: "Cancel" })
-  );
-
-  await waitFor(() =>
-    expect(
-      screen.queryByRole("form", {
-        name: EditStaticRouteFormLabels.EditStaticRoute,
-      })
-    ).not.toBeInTheDocument()
-  );
+  ).toBeInTheDocument();
 });

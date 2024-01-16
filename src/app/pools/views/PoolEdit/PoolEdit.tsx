@@ -1,8 +1,10 @@
-import { Spinner } from "@canonical/react-components";
+import { Spinner, useOnEscapePressed } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId } from "@/app/base/hooks/urls";
+import urls from "@/app/base/urls";
 import PoolForm from "@/app/pools/components/PoolForm";
 import poolURLs from "@/app/pools/urls";
 import poolSelectors from "@/app/store/resourcepool/selectors";
@@ -16,6 +18,9 @@ export enum Label {
 export const PoolEdit = (): JSX.Element => {
   const id = useGetURLId(ResourcePoolMeta.PK);
   const loading = useSelector(poolSelectors.loading);
+  const navigate = useNavigate();
+  const onCancel = () => navigate({ pathname: urls.pools.index });
+  useOnEscapePressed(() => onCancel());
   const pool = useSelector((state: RootState) =>
     poolSelectors.getById(state, id)
   );
@@ -32,7 +37,7 @@ export const PoolEdit = (): JSX.Element => {
       />
     );
   }
-  return <PoolForm aria-label={Label.Title} pool={pool} />;
+  return <PoolForm aria-label={Label.Title} onClose={onCancel} pool={pool} />;
 };
 
 export default PoolEdit;

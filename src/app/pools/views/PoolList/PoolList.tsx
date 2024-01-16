@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   Col,
   Spinner,
@@ -9,23 +7,14 @@ import {
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
-import type { Dispatch } from "redux";
 
 import TableActions from "@/app/base/components/TableActions";
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import {
-  useFetchActions,
-  useAddMessage,
-  useWindowTitle,
-} from "@/app/base/hooks";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { actions as resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import type {
-  ResourcePool,
-  ResourcePoolState,
-} from "@/app/store/resourcepool/types";
+import type { ResourcePool } from "@/app/store/resourcepool/types";
 import { formatErrors } from "@/app/utils";
 
 export enum Label {
@@ -46,20 +35,10 @@ const getMachinesLabel = (row: ResourcePool) => {
   );
 };
 
-const generateRows = (
-  rows: ResourcePool[],
-  expandedId: ResourcePool["id"] | null,
-  setExpandedId: (expandedId: ResourcePool["id"] | null) => void,
-  dispatch: Dispatch,
-  setDeleting: (deleting: ResourcePool["name"] | null) => void,
-  saved: ResourcePoolState["saved"],
-  saving: ResourcePoolState["saving"]
-) =>
+const generateRows = (rows: ResourcePool[]) =>
   rows.map((row) => {
-    const expanded = expandedId === row.id;
     return {
       "aria-label": row.name,
-      className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
           content: row.name,
@@ -78,6 +57,7 @@ const generateRows = (
                 row.is_default ||
                 row.machine_total_count > 0
               }
+              deletePath={urls.pools.delete({ id: row.id })}
               deleteTooltip={
                 (row.is_default && "The default pool may not be deleted.") ||
                 (row.machine_total_count > 0 &&
@@ -86,28 +66,11 @@ const generateRows = (
               }
               editDisabled={!row.permissions.includes("edit")}
               editPath={urls.pools.edit({ id: row.id })}
-              onDelete={() => setExpandedId(row.id)}
             />
           ),
           className: "u-align--right",
         },
       ],
-      expanded: expanded,
-      expandedContent: expanded && (
-        <TableDeleteConfirm
-          aria-label="Confirm pool deletion"
-          deleted={saved}
-          deleting={saving}
-          modelName={row.name}
-          modelType="resourcepool"
-          onClose={() => setExpandedId(null)}
-          onConfirm={() => {
-            dispatch(resourcePoolActions.delete(row.id));
-            setDeleting(row.name);
-          }}
-          sidebar={false}
-        />
-      ),
       key: row.name,
       sortData: {
         name: row.name,
@@ -121,24 +84,10 @@ const Pools = (): JSX.Element => {
   useWindowTitle("Pools");
   const dispatch = useDispatch();
 
-  const [expandedId, setExpandedId] = useState<ResourcePool["id"] | null>(null);
-  const [deletingPool, setDeleting] = useState<ResourcePool["name"] | null>(
-    null
-  );
-
   const poolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const poolsLoading = useSelector(resourcePoolSelectors.loading);
-  const saved = useSelector(resourcePoolSelectors.saved);
-  const saving = useSelector(resourcePoolSelectors.saving);
   const errors = useSelector(resourcePoolSelectors.errors);
   const errorMessage = formatErrors(errors);
-
-  useAddMessage(
-    saved,
-    resourcePoolActions.cleanup,
-    `${deletingPool} removed successfully.`,
-    () => setDeleting(null)
-  );
 
   useFetchActions([resourcePoolActions.fetch]);
 
@@ -191,15 +140,7 @@ const Pools = (): JSX.Element => {
                   },
                 ]}
                 paginate={50}
-                rows={generateRows(
-                  resourcePools,
-                  expandedId,
-                  setExpandedId,
-                  dispatch,
-                  setDeleting,
-                  saved,
-                  saving
-                )}
+                rows={generateRows(resourcePools)}
                 sortable
               />
             )}

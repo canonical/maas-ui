@@ -30,12 +30,6 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
     <>
       <Row>
         <Col size={12}>
-          <h4 className="u-sv1">Update {tag.name}</h4>
-        </Col>
-      </Row>
-      <hr />
-      <Row>
-        <Col size={2}>
           <FormikField
             label={Label.Name}
             name="name"
@@ -44,15 +38,15 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
             type="text"
           />
         </Col>
-        <Col size={2}>
+        <Col size={12}>
           <Definition description={tag.updated} label={Label.Update} />
         </Col>
-        <Col size={2}>
+        <Col size={12}>
           <Definition label={Label.AppliedTo}>
             <AppliedTo id={id} />
           </Definition>
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             label={Label.Comment}
             name="comment"
@@ -63,10 +57,10 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
       </Row>
       <hr className="u-sv1" />
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <KernelOptionsField id={id} />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           {!tag.definition ? (
             <Definition label={Label.Definition}>
               <span className="p-form-help-text">

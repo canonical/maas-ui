@@ -93,7 +93,7 @@ describe("AddBondForm", () => {
       { route, state }
     );
     expect(
-      screen.getByRole("heading", { name: "Create bond" })
+      screen.getByRole("form", { name: "Create bond" })
     ).toBeInTheDocument();
     expect(screen.getByRole("grid")).toBeInTheDocument();
   });

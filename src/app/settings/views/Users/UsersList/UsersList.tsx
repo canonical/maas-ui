@@ -4,10 +4,8 @@ import { ContentSection } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
 import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import type { Dispatch } from "redux";
 
 import TableActions from "@/app/base/components/TableActions";
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import TableHeader from "@/app/base/components/TableHeader";
 import {
   useFetchActions,
@@ -24,7 +22,7 @@ import type { RootState } from "@/app/store/root/types";
 import statusSelectors from "@/app/store/status/selectors";
 import { actions as userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
-import type { User, UserMeta, UserState } from "@/app/store/user/types";
+import type { User } from "@/app/store/user/types";
 import { isComparable } from "@/app/utils";
 
 type SortKey = keyof User;
@@ -32,16 +30,9 @@ type SortKey = keyof User;
 const generateUserRows = (
   users: User[],
   authUser: User | null,
-  expandedId: User[UserMeta.PK] | null,
-  setExpandedId: (expandedId: User[UserMeta.PK] | null) => void,
-  dispatch: Dispatch,
-  displayUsername: boolean,
-  setDeleting: (deletingUser: User["username"] | null) => void,
-  saved: UserState["saved"],
-  saving: UserState["saving"]
+  displayUsername: boolean
 ) =>
   users.map((user) => {
-    const expanded = expandedId === user.id;
     const isAuthUser = user.id === authUser?.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const last_login = user.last_login
@@ -52,7 +43,7 @@ const generateUserRows = (
       : "Never";
     const fullName = user.last_name;
     return {
-      className: expanded ? "p-table__row is-active" : "p-table__row",
+      className: "p-table__row",
       columns: [
         {
           content: displayUsername ? user.username : fullName || <>&mdash;</>,
@@ -73,6 +64,7 @@ const generateUserRows = (
           content: (
             <TableActions
               deleteDisabled={isAuthUser}
+              deletePath={settingsURLs.users.delete({ id: user.id })}
               deleteTooltip={
                 isAuthUser ? "You cannot delete your own user." : null
               }
@@ -81,27 +73,12 @@ const generateUserRows = (
                   ? urls.preferences.details
                   : settingsURLs.users.edit({ id: user.id })
               }
-              onDelete={() => setExpandedId(user.id)}
             />
           ),
           className: "u-align--right",
         },
       ],
       "data-testid": "user-row",
-      expanded: expanded,
-      expandedContent: expanded && (
-        <TableDeleteConfirm
-          deleted={saved}
-          deleting={saving}
-          modelName={user.username}
-          modelType="user"
-          onClose={() => setExpandedId(null)}
-          onConfirm={() => {
-            dispatch(userActions.delete(user.id));
-            setDeleting(user.username);
-          }}
-        />
-      ),
       key: user.username,
       sortData: {
         username: user.username,
@@ -122,7 +99,6 @@ const getSortValue = (sortKey: SortKey, user: User) => {
 };
 
 const UsersList = (): JSX.Element => {
-  const [expandedId, setExpandedId] = useState<User[UserMeta.PK] | null>(null);
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
   const [deletingUser, setDeleting] = useState<User["username"] | null>(null);
@@ -133,7 +109,6 @@ const UsersList = (): JSX.Element => {
   const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
   const saved = useSelector(userSelectors.saved);
-  const saving = useSelector(userSelectors.saving);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
 
@@ -254,17 +229,7 @@ const UsersList = (): JSX.Element => {
           ]}
           loaded={loaded}
           loading={loading}
-          rows={generateUserRows(
-            sortedUsers,
-            authUser,
-            expandedId,
-            setExpandedId,
-            dispatch,
-            displayUsername,
-            setDeleting,
-            saved,
-            saving
-          )}
+          rows={generateUserRows(sortedUsers, authUser, displayUsername)}
           searchOnChange={setSearchText}
           searchPlaceholder="Search users"
           searchText={searchText}

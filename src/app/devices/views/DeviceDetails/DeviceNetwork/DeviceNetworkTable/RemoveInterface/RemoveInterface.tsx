@@ -1,14 +1,9 @@
 import { useEffect } from "react";
 
-import {
-  ActionButton,
-  Button,
-  Col,
-  Notification,
-  Row,
-} from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
 import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
 import { actions as deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -21,13 +16,13 @@ import type { RootState } from "@/app/store/root/types";
 import { formatErrors } from "@/app/utils";
 
 type Props = {
-  closeExpanded: () => void;
+  closeForm: () => void;
   nicId: DeviceNetworkInterface["id"];
   systemId: Device[DeviceMeta.PK];
 };
 
 const RemoveInterface = ({
-  closeExpanded,
+  closeForm,
   nicId,
   systemId,
 }: Props): JSX.Element => {
@@ -49,12 +44,12 @@ const RemoveInterface = ({
   );
   useEffect(() => {
     if (deletedInterface) {
-      closeExpanded();
+      closeForm();
     }
-  }, [closeExpanded, deletedInterface]);
+  }, [closeForm, deletedInterface]);
 
   return (
-    <Row>
+    <>
       {deleteInterfaceError ? (
         <Notification severity="negative">
           <span data-testid="error-message">
@@ -62,36 +57,24 @@ const RemoveInterface = ({
           </span>
         </Notification>
       ) : null}
-      <Col size={8}>
-        <p className="u-no-margin--bottom u-no-max-width">
-          <i className="p-icon--warning is-inline">Warning</i>
-          Are you sure you want to remove this interface?
-        </p>
-      </Col>
-      <Col className="u-align--right" size={4}>
-        <Button className="u-no-margin--bottom" onClick={closeExpanded}>
-          Cancel
-        </Button>
-        <ActionButton
-          appearance="negative"
-          className="u-no-margin--bottom"
-          data-testid="confirm-delete"
-          loading={deletingInterface}
-          onClick={() => {
-            dispatch(deviceActions.cleanup());
-            dispatch(
-              deviceActions.deleteInterface({
-                interface_id: nicId,
-                system_id: systemId,
-              })
-            );
-          }}
-          type="button"
-        >
-          Remove
-        </ActionButton>
-      </Col>
-    </Row>
+      <ModelDeleteForm
+        aria-label="Remove interface"
+        initialValues={{}}
+        modelType="interface"
+        onCancel={closeForm}
+        onSubmit={() => {
+          dispatch(deviceActions.cleanup());
+          dispatch(
+            deviceActions.deleteInterface({
+              interface_id: nicId,
+              system_id: systemId,
+            })
+          );
+        }}
+        saving={deletingInterface}
+        submitLabel="Remove"
+      />
+    </>
   );
 };
 

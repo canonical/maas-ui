@@ -1,3 +1,8 @@
+import type { ValueOf } from "@canonical/react-components";
+
+import type { ImageSidePanelViews } from "./constants";
+
+import type { SetSidePanelContent, SidePanelContent } from "@/app/base/types";
 import type {
   BootResource,
   BootResourceMeta,
@@ -11,3 +16,16 @@ export type ImageValue = {
   subArch?: string;
   title: string;
 };
+
+export type ImageSidePanelContent =
+  | SidePanelContent<
+      ValueOf<typeof ImageSidePanelViews>,
+      { hasSources?: boolean }
+    >
+  | SidePanelContent<
+      ValueOf<typeof ImageSidePanelViews>,
+      { bootResource?: BootResource }
+    >;
+
+export type ImageSetSidePanelContent =
+  SetSidePanelContent<ImageSidePanelContent>;

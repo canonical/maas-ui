@@ -10,9 +10,7 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
 
-import FormCard from "@/app/base/components/FormCard";
 import FormikForm from "@/app/base/components/FormikForm";
-import { useWindowTitle } from "@/app/base/hooks";
 import { actions as messageActions } from "@/app/store/message";
 import { actions as scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
@@ -37,10 +35,7 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
   const [script, setScript] = useState<ReadScriptResponse | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const title = `Upload ${type} script`;
   const listLocation = `/settings/scripts/${type}`;
-
-  useWindowTitle(title);
 
   useEffect(() => {
     if (hasErrors && errors && typeof errors === "object") {
@@ -127,7 +122,7 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
   const uploadedFile: FileWithPath = acceptedFiles[0];
 
   return (
-    <FormCard stacked title={title}>
+    <div className="u-nudge-down">
       <Row>
         <div
           {...getRootProps()}
@@ -182,7 +177,7 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
           ) : null}
         </FormikForm>
       </Row>
-    </FormCard>
+    </div>
   );
 };
 

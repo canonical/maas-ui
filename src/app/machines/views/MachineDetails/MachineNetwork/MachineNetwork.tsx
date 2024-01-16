@@ -41,11 +41,11 @@ const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
 
   return (
     <NodeNetworkTab
-      actions={(expanded, setExpanded) => (
+      actions={(expanded) => (
         <MachineNetworkActions
           expanded={expanded}
           selected={selected}
-          setExpanded={setExpanded}
+          setSelected={setSelected}
           setSidePanelContent={setSidePanelContent}
           systemId={id}
         />
@@ -93,6 +93,7 @@ const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
                 setSelected([]);
               }}
               selected={selected}
+              setSelected={setSelected}
               systemId={id}
             />
           );

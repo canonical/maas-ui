@@ -240,34 +240,6 @@ it("disables the action menu if node is a machine and storage can't be edited", 
   expect(screen.getByRole("button", { name: /Take action/ })).toBeDisabled();
 });
 
-it("can show an add special filesystem form if node is a machine", async () => {
-  const machine = machineDetailsFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
-      items: [machine],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
-      }),
-    }),
-  });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-
-  await userEvent.click(screen.getByTestId("add-special-fs-button"));
-
-  expect(
-    screen.getByRole("form", { name: "Add special filesystem" })
-  ).toBeInTheDocument();
-});
-
 it("can remove a disk's filesystem if node is a machine", async () => {
   const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
   const disk = diskFactory({ filesystem, partitions: [] });

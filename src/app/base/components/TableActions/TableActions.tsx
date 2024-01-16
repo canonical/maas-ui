@@ -9,6 +9,7 @@ type Props = {
   copyValue?: string;
   deleteDisabled?: boolean;
   deleteTooltip?: string | null;
+  deletePath?: string;
   editDisabled?: boolean;
   editPath?: string;
   editTooltip?: string | null;
@@ -22,6 +23,7 @@ const TableActions = ({
   clearTooltip,
   copyValue,
   deleteDisabled,
+  deletePath,
   deleteTooltip,
   editDisabled,
   editPath,
@@ -48,16 +50,18 @@ const TableActions = ({
         </Button>
       </Tooltip>
     )}
-    {onDelete && (
+    {(onDelete || deletePath) && (
       <Tooltip message={deleteTooltip} position="left">
         <Button
           appearance="base"
           className="is-dense u-table-cell-padding-overlap"
           data-testid="table-actions-delete"
           disabled={deleteDisabled}
+          element={deletePath ? Link : undefined}
           hasIcon
-          onClick={() => onDelete()}
-          type="button"
+          onClick={() => (onDelete ? onDelete() : null)}
+          to={deletePath || ""}
+          type={deletePath ? undefined : "button"}
         >
           <i className="p-icon--delete">Delete</i>
         </Button>

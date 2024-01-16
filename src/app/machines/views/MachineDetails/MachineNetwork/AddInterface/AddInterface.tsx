@@ -11,7 +11,6 @@ import {
 } from "../NetworkFields/NetworkFields";
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
-import FormCard from "@/app/base/components/FormCard";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import MacAddressField from "@/app/base/components/MacAddressField";
@@ -73,62 +72,60 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
   }
   return (
     <div ref={onRenderRef}>
-      <FormCard sidebar={false}>
-        <FormikForm<AddInterfaceValues, MachineEventErrors>
-          cleanup={cleanup}
-          errors={errors}
-          initialValues={{
-            ...networkFieldsInitialValues,
-            mac_address: "",
-            name: nextName || "",
-            tags: [],
-          }}
-          onCancel={close}
-          onSaveAnalytics={{
-            action: "Add interface",
-            category: "Machine details networking",
-            label: "Add interface form",
-          }}
-          onSubmit={(values) => {
-            // Clear the errors from the previous submission.
-            dispatch(cleanup());
-            const payload = preparePayload({
-              ...values,
-              system_id: systemId,
-            }) as CreatePhysicalParams;
-            dispatch(machineActions.createPhysical(payload));
-          }}
-          resetOnSave
-          saved={saved}
-          saving={saving}
-          submitLabel="Save interface"
-          validateOnMount
-          validationSchema={InterfaceSchema}
-        >
-          <Row>
-            <Col size={6}>
-              <FormikField label="Name" name="name" type="text" />
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <Col size={6}>
-              <Input
-                disabled
-                label="Type"
-                name="type"
-                type="text"
-                value="Physical"
-              />
-              <MacAddressField label="MAC address" name="mac_address" />
-              <TagNameField />
-            </Col>
-            <Col size={6}>
-              <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
-            </Col>
-          </Row>
-        </FormikForm>
-      </FormCard>
+      <FormikForm<AddInterfaceValues, MachineEventErrors>
+        cleanup={cleanup}
+        errors={errors}
+        initialValues={{
+          ...networkFieldsInitialValues,
+          mac_address: "",
+          name: nextName || "",
+          tags: [],
+        }}
+        onCancel={close}
+        onSaveAnalytics={{
+          action: "Add interface",
+          category: "Machine details networking",
+          label: "Add interface form",
+        }}
+        onSubmit={(values) => {
+          // Clear the errors from the previous submission.
+          dispatch(cleanup());
+          const payload = preparePayload({
+            ...values,
+            system_id: systemId,
+          }) as CreatePhysicalParams;
+          dispatch(machineActions.createPhysical(payload));
+        }}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitLabel="Save interface"
+        validateOnMount
+        validationSchema={InterfaceSchema}
+      >
+        <Row>
+          <Col size={12}>
+            <FormikField label="Name" name="name" type="text" />
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col size={12}>
+            <Input
+              disabled
+              label="Type"
+              name="type"
+              type="text"
+              value="Physical"
+            />
+            <MacAddressField label="MAC address" name="mac_address" />
+            <TagNameField />
+          </Col>
+          <Col size={12}>
+            <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
+          </Col>
+        </Row>
+      </FormikForm>
     </div>
   );
 };

@@ -1,15 +1,12 @@
-import { useState } from "react";
-
 import { Icon, MainTable, Spinner } from "@canonical/react-components";
-import classNames from "classnames";
 import { useSelector } from "react-redux";
-
-import DeleteImageConfirm from "./DeleteImageConfirm";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton/TooltipButton";
-import type { ImageValue } from "@/app/images/types";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
+import type { ImageSetSidePanelContent, ImageValue } from "@/app/images/types";
 import type { BootResource } from "@/app/store/bootresource/types";
 import { splitResourceName } from "@/app/store/bootresource/utils";
 import configSelectors from "@/app/store/config/selectors";
@@ -133,26 +130,22 @@ const generateImageRow = (
  * @param resource - the resource from which to generate the row.
  * @param commissioningRelease - the name of the default commissioning release.
  * @param expanded - the resource id of the expanded row.
- * @param setExpanded - function to expand the row of a resource.
  * @param unchecked - whether the resource checkbox is unchecked.
  * @returns row generated from resource.
  */
 const generateResourceRow = ({
   resource,
   commissioningRelease,
-  expanded,
-  setExpanded,
   unchecked,
+  setSidePanelContent,
 }: {
   resource: BootResource;
   commissioningRelease: string | null;
-  expanded: BootResource["id"] | null;
-  setExpanded: (id: BootResource["id"] | null) => void;
   unchecked: boolean;
+  setSidePanelContent: ImageSetSidePanelContent;
 }) => {
   const { os, release } = splitResourceName(resource.name);
   const canBeDeleted = !(os === "ubuntu" && release === commissioningRelease);
-  const isExpanded = expanded === resource.id;
   let statusIcon = <Spinner />;
   let statusText = resource.status;
 
@@ -164,9 +157,7 @@ const generateResourceRow = ({
   }
   return {
     "aria-label": resource.title,
-    className: classNames("p-table__row", {
-      "is-active": isExpanded,
-    }),
+    className: "p-table__row",
     columns: [
       { content: resource.title, className: "release-col" },
       { content: resource.arch, className: "arch-col" },
@@ -211,21 +202,19 @@ const generateResourceRow = ({
             data-testid="image-actions"
             deleteDisabled={!canBeDeleted}
             deleteTooltip={!canBeDeleted ? Labels.CannotDelete : null}
-            onDelete={() => setExpanded(resource.id)}
+            onDelete={() =>
+              setSidePanelContent({
+                view: ImageSidePanelViews.DELETE_IMAGE,
+                extras: {
+                  bootResource: resource,
+                },
+              })
+            }
           />
         ),
         className: "actions-col u-align--right",
       },
     ],
-    expanded: isExpanded,
-    expandedContent: isExpanded ? (
-      <div aria-label={Labels.DeleteImageConfirm}>
-        <DeleteImageConfirm
-          closeForm={() => setExpanded(null)}
-          resource={resource}
-        />
-      </div>
-    ) : null,
     key: `resource-${resource.id}`,
     sortData: {
       title: resource.title,
@@ -246,7 +235,7 @@ const ImagesTable = ({
   const commissioningRelease = useSelector(
     configSelectors.commissioningDistroSeries
   );
-  const [expanded, setExpanded] = useState<BootResource["id"] | null>(null);
+  const { setSidePanelContent } = useSidePanel();
   const isCommissioningImage = (image: ImageValue) =>
     image.os === "ubuntu" && image.release === commissioningRelease;
   // Resources set for deletion are those that exist in the database, but do not
@@ -263,9 +252,8 @@ const ImagesTable = ({
         return generateResourceRow({
           resource,
           commissioningRelease,
-          expanded,
-          setExpanded,
           unchecked: false,
+          setSidePanelContent: setSidePanelContent,
         });
       } else {
         const commissioningImages = images.filter(isCommissioningImage);
@@ -281,9 +269,8 @@ const ImagesTable = ({
         generateResourceRow({
           resource,
           commissioningRelease,
-          expanded,
-          setExpanded,
           unchecked: true,
+          setSidePanelContent: setSidePanelContent,
         })
       )
     );

@@ -13,6 +13,7 @@ type Props = {
   tags: Tag[];
   tableId: string;
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
+  onUpdate: (id: Tag[TagMeta.PK]) => void;
 };
 
 export enum Label {
@@ -27,6 +28,7 @@ const TagList = ({
   tags,
   tableId,
   onDelete,
+  onUpdate,
 }: Props): JSX.Element => {
   useWindowTitle("Tags");
 
@@ -46,6 +48,7 @@ const TagList = ({
         filter={filter}
         id={tableId}
         onDelete={onDelete}
+        onUpdate={onUpdate}
         searchText={searchText}
         setCurrentPage={setCurrentPage}
         tags={tags}

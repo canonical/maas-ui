@@ -7,6 +7,9 @@ export const DeviceActionHeaderViews = {
 
 export const DeviceNonActionHeaderViews = {
   ADD_DEVICE: ["deviceNonActionForm", "addDevice"],
+  ADD_INTERFACE: ["deviceNonActionForm", "addInterface"],
+  EDIT_INTERFACE: ["deviceNonActionForm", "editInterface"],
+  REMOVE_INTERFACE: ["deviceNonActionForm", "removeInterface"],
 } as const;
 
 export const DeviceSidePanelViews = {

@@ -1,5 +1,4 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import DeleteImageConfirm from "./DeleteImageConfirm";
@@ -12,12 +11,7 @@ import {
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "@/testing/factories";
-import {
-  userEvent,
-  screen,
-  render,
-  renderWithBrowserRouter,
-} from "@/testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -49,12 +43,11 @@ describe("DeleteImageConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const { unmount } = render(
-      <Provider store={store}>
-        <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-          <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
-        </Formik>
-      </Provider>
+    const { unmount } = renderWithBrowserRouter(
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+        <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
+      </Formik>,
+      { store }
     );
     unmount();
 
@@ -73,12 +66,11 @@ describe("DeleteImageConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
-          <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
-        </Formik>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
+        <DeleteImageConfirm closeForm={vi.fn()} resource={resource} />
+      </Formik>,
+      { store }
     );
 
     await userEvent.click(

@@ -3,11 +3,8 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { Labels as ReservedRangeFormLabels } from "../ReservedRangeForm/ReservedRangeForm";
-
 import ReservedRanges, { Labels } from "./ReservedRanges";
 
-import { actions as ipRangeActions } from "@/app/store/iprange";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
@@ -242,72 +239,6 @@ it("displays content when it is reserved", () => {
   ).toHaveTextContent("what a beaut");
 });
 
-it("displays an edit form", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-  await userEvent.click(screen.getByRole("button", { name: "Edit" }));
-
-  await waitFor(() =>
-    expect(
-      screen.getByRole("form", { name: ReservedRangeFormLabels.EditRange })
-    ).toBeInTheDocument()
-  );
-});
-
-it("displays confirm delete message", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-  await userEvent.click(screen.getByRole("button", { name: "Delete" }));
-
-  await waitFor(() => {
-    expect(
-      screen.getByText(
-        new RegExp("Are you sure you want to remove this IP range?")
-      )
-    ).toBeInTheDocument();
-  });
-});
-
-it("dispatches an action to delete a reserved range", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-  await userEvent.click(screen.getByTestId("table-actions-delete"));
-  await userEvent.click(screen.getByTestId("action-confirm"));
-
-  const expectedAction = ipRangeActions.delete(ipRange.id);
-
-  await waitFor(() => {
-    const actualAction = store
-      .getActions()
-      .find((action) => action.type === expectedAction.type);
-    expect(actualAction).toStrictEqual(expectedAction);
-  });
-});
-
 it("displays an add button when it is reserved", () => {
   ipRange.type = IPRangeType.Reserved;
   state.iprange.items = [ipRange];
@@ -373,33 +304,6 @@ it("disables the add button if there are no subnets in a VLAN", () => {
   expect(
     screen.getByRole("button", { name: Labels.ReserveRange })
   ).toHaveAttribute("disabled");
-});
-
-it("can display an add form", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-  await userEvent.click(
-    screen.queryAllByRole("button", {
-      name: Labels.ReserveRange,
-    })[0]
-  );
-  await userEvent.click(screen.getByTestId("reserve-range-menu-item"));
-
-  await waitFor(() => {
-    expect(
-      screen.getByRole("form", {
-        name: ReservedRangeFormLabels.CreateRange,
-      })
-    ).toBeInTheDocument();
-  });
 });
 
 it("displays the subnet column when the table is for a VLAN", () => {

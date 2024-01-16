@@ -37,7 +37,7 @@ const ImagesIntro = (): JSX.Element => {
   return (
     <IntroSection loading={!ubuntu} windowTitle="Images">
       <IntroCard complete={!incomplete} title="Images">
-        <SyncedImages className="u-no-padding--bottom" formInCard={false} />
+        <SyncedImages className="u-no-padding--bottom" />
       </IntroCard>
       <div className="u-align--right">
         <Button element={Link} to={urls.intro.index}>

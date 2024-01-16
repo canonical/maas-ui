@@ -3,10 +3,7 @@ import { useSelector } from "react-redux";
 
 import NetworkActionRow from "@/app/base/components/NetworkActionRow";
 import { NETWORK_DISABLED_MESSAGE } from "@/app/base/components/NetworkActionRow/NetworkActionRow";
-import type {
-  Expanded,
-  SetExpanded,
-} from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import type { Expanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "@/app/base/hooks";
@@ -32,8 +29,8 @@ type Action = {
 type Props = {
   expanded: Expanded | null;
   selected: Selected[];
-  setExpanded: SetExpanded;
   setSidePanelContent: MachineSetSidePanelContent;
+  setSelected: React.Dispatch<React.SetStateAction<Selected[]>>;
   systemId: Machine["system_id"];
 };
 
@@ -79,11 +76,10 @@ const selectedDifferentVLANs = (
 };
 
 const MachineNetworkActions = ({
-  expanded,
-  setExpanded,
   selected,
   setSidePanelContent,
   systemId,
+  setSelected,
 }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -137,7 +133,6 @@ const MachineNetworkActions = ({
 
   return (
     <NetworkActionRow
-      expanded={expanded}
       extraActions={actions}
       node={machine}
       rightContent={
@@ -159,7 +154,8 @@ const MachineNetworkActions = ({
           Validate network configuration
         </Button>
       }
-      setExpanded={setExpanded}
+      selected={selected}
+      setSelected={setSelected}
     />
   );
 };

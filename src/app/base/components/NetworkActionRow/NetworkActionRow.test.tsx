@@ -11,7 +11,6 @@ import {
   rootState as rootStateFactory,
 } from "@/testing/factories";
 import {
-  userEvent,
   screen,
   renderWithBrowserRouter,
   expectTooltipOnHover,
@@ -37,7 +36,6 @@ describe("NetworkActionRow", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <NetworkActionRow
-        expanded={null}
         extraActions={[
           {
             disabled: [[false]],
@@ -46,7 +44,6 @@ describe("NetworkActionRow", () => {
           },
         ]}
         node={state.machine.items[0]}
-        setExpanded={vi.fn()}
       />,
       { route: "/machine/abc123", store }
     );
@@ -54,34 +51,11 @@ describe("NetworkActionRow", () => {
   });
 
   describe("add physical", () => {
-    it("sets the state to show the form when clicking the button", async () => {
-      const store = mockStore(state);
-      const setExpanded = vi.fn();
-      renderWithBrowserRouter(
-        <NetworkActionRow
-          expanded={null}
-          node={state.machine.items[0]}
-          setExpanded={setExpanded}
-        />,
-        { route: "/machine/abc123", store }
-      );
-      await userEvent.click(
-        screen.getByRole("button", { name: "Add interface" })
-      );
-      expect(setExpanded).toHaveBeenCalledWith({
-        content: ExpandedState.ADD_PHYSICAL,
-      });
-    });
-
     it("disables the button when networking is disabled", async () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
       const store = mockStore(state);
       renderWithBrowserRouter(
-        <NetworkActionRow
-          expanded={null}
-          node={state.machine.items[0]}
-          setExpanded={vi.fn()}
-        />,
+        <NetworkActionRow node={state.machine.items[0]} />,
         { route: "/machine/abc123", store }
       );
       const addInterfaceButton = screen.getByRole("button", {
@@ -92,22 +66,6 @@ describe("NetworkActionRow", () => {
         addInterfaceButton,
         "Network can't be modified for this machine."
       );
-    });
-
-    it("disables the button when the form is expanded", () => {
-      state.machine.items[0].status = NodeStatus.DEPLOYED;
-      const store = mockStore(state);
-      renderWithBrowserRouter(
-        <NetworkActionRow
-          expanded={{ content: ExpandedState.ADD_PHYSICAL }}
-          node={state.machine.items[0]}
-          setExpanded={vi.fn()}
-        />,
-        { route: "/machine/abc123", store }
-      );
-      expect(
-        screen.getByRole("button", { name: "Add interface" })
-      ).toBeDisabled();
     });
   });
 });

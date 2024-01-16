@@ -8,6 +8,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
 import { useFetchActions } from "@/app/base/hooks";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import { actions as staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
@@ -38,22 +39,23 @@ const editStaticRouteSchema = Yup.object().shape({
 });
 
 export type Props = {
-  staticRouteId: StaticRoute[StaticRouteMeta.PK];
-  handleDismiss: () => void;
+  id: StaticRoute[StaticRouteMeta.PK];
+  setActiveForm: SetSidePanelContent;
 };
 const EditStaticRouteForm = ({
-  staticRouteId,
-  handleDismiss,
+  id,
+  setActiveForm,
 }: Props): JSX.Element | null => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);
   const dispatch = useDispatch();
+  const handleClose = () => setActiveForm(null);
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;
   const staticRoute = useSelector((state: RootState) =>
-    staticRouteSelectors.getById(state, staticRouteId)
+    staticRouteSelectors.getById(state, id)
   );
   const source = useSelector((state: RootState) =>
     subnetSelectors.getById(state, staticRoute?.source)
@@ -78,7 +80,7 @@ const EditStaticRouteForm = ({
         destination: staticRoute.destination,
         metric: staticRoute.metric,
       }}
-      onCancel={handleDismiss}
+      onCancel={handleClose}
       onSaveAnalytics={{
         action: EditStaticRouteFormLabels.Save,
         category: "Subnet",
@@ -88,7 +90,7 @@ const EditStaticRouteForm = ({
         dispatch(staticRouteActions.cleanup());
         dispatch(
           staticRouteActions.update({
-            id: staticRouteId,
+            id: id,
             source: staticRoute.source,
             gateway_ip,
             destination: toFormikNumber(destination) as number,
@@ -97,7 +99,7 @@ const EditStaticRouteForm = ({
         );
       }}
       onSuccess={() => {
-        handleDismiss();
+        handleClose();
       }}
       resetOnSave
       saved={saved}
@@ -106,10 +108,10 @@ const EditStaticRouteForm = ({
       validationSchema={editStaticRouteSchema}
     >
       <Row>
-        <Col size={4}>
+        <Col size={12}>
           <FormikField label={Labels.GatewayIp} name="gateway_ip" type="text" />
         </Col>
-        <Col size={4}>
+        <Col size={12}>
           <SubnetSelect
             defaultOption={{
               label: "Select destination",
@@ -123,7 +125,7 @@ const EditStaticRouteForm = ({
             name="destination"
           />
         </Col>
-        <Col size={4}>
+        <Col size={12}>
           <FormikField label={Labels.Metric} name="metric" type="text" />
         </Col>
       </Row>

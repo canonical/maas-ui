@@ -3,9 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InterfaceForm from "../InterfaceForm";
 
-import EditInterfaceTable from "./EditInterfaceTable";
-
-import FormCard from "@/app/base/components/FormCard";
 import { useCycled } from "@/app/base/hooks";
 import { actions as deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -57,33 +54,30 @@ const EditInterface = ({
     return <Spinner data-testid="loading-device-details" text="Loading..." />;
   }
   return (
-    <FormCard sidebar={false} stacked title="Edit physical">
-      <EditInterfaceTable linkId={linkId} nicId={nicId} systemId={systemId} />
-      <InterfaceForm
-        closeForm={closeForm}
-        linkId={linkId}
-        nicId={nicId}
-        onSaveAnalytics={{
-          action: "Update interface",
-          category: "Device details networking",
-          label: "Update interface form",
-        }}
-        onSubmit={(values) => {
-          resetUpdatedInterface();
-          dispatch(deviceActions.cleanup());
-          const payload = preparePayload({
-            ...values,
-            interface_id: nic.id,
-            system_id: device.system_id,
-          }) as UpdateInterfaceParams;
-          dispatch(deviceActions.updateInterface(payload));
-        }}
-        saved={saved}
-        saving={updatingInterface}
-        showTitles
-        systemId={systemId}
-      />
-    </FormCard>
+    <InterfaceForm
+      closeForm={closeForm}
+      linkId={linkId}
+      nicId={nicId}
+      onSaveAnalytics={{
+        action: "Update interface",
+        category: "Device details networking",
+        label: "Update interface form",
+      }}
+      onSubmit={(values) => {
+        resetUpdatedInterface();
+        dispatch(deviceActions.cleanup());
+        const payload = preparePayload({
+          ...values,
+          interface_id: nic.id,
+          system_id: device.system_id,
+        }) as UpdateInterfaceParams;
+        dispatch(deviceActions.updateInterface(payload));
+      }}
+      saved={saved}
+      saving={updatingInterface}
+      showTitles
+      systemId={systemId}
+    />
   );
 };
 

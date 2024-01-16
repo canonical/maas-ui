@@ -1,11 +1,6 @@
 import { useCallback } from "react";
 
-import {
-  Col,
-  Icon,
-  NotificationSeverity,
-  Strip,
-} from "@canonical/react-components";
+import { Col, Icon, NotificationSeverity } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
@@ -128,28 +123,26 @@ const DeleteForm = ({
       validationSchema={DeleteFormSchema}
     >
       {showRemoveMessage && (
-        <Strip shallow>
-          <Col size={6}>
-            <p>
-              <Icon className="is-inline" name="warning" />
-              Once a {pod ? "KVM host" : "cluster"} is removed, you can still
-              access all VMs in this {pod ? "project" : "cluster"} from the LXD
-              server.
-            </p>
-            <FormikField
-              label={
-                <>
-                  Selecting this option will delete all VMs in{" "}
-                  <strong>{pod?.name || cluster?.name}</strong> along with their
-                  storage.
-                </>
-              }
-              name="decompose"
-              type="checkbox"
-              wrapperClassName="u-nudge-right--large"
-            />
-          </Col>
-        </Strip>
+        <Col size={6}>
+          <p>
+            <Icon className="is-inline" name="warning" />
+            Once a {pod ? "KVM host" : "cluster"} is removed, you can still
+            access all VMs in this {pod ? "project" : "cluster"} from the LXD
+            server.
+          </p>
+          <FormikField
+            label={
+              <>
+                Selecting this option will delete all VMs in{" "}
+                <strong>{pod?.name || cluster?.name}</strong> along with their
+                storage.
+              </>
+            }
+            name="decompose"
+            type="checkbox"
+            wrapperClassName="u-nudge-right--large"
+          />
+        </Col>
       )}
     </ActionForm>
   );

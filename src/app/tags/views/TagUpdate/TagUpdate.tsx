@@ -1,14 +1,11 @@
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import urls from "@/app/base/urls";
 import { actions as messageActions } from "@/app/store/message";
 import type { RootState } from "@/app/store/root/types";
 import { actions as tagActions } from "@/app/store/tag";
@@ -18,6 +15,7 @@ import { NewDefinitionMessage } from "@/app/tags/constants";
 
 type Props = {
   id: Tag[TagMeta.PK];
+  onClose: () => void;
 };
 
 export enum Label {
@@ -39,10 +37,8 @@ const UpdateAutoTagFormSchema = Yup.object().shape({
   name: Yup.string().required("Name is required."),
 });
 
-const TagUpdate = ({ id }: Props): JSX.Element => {
+const TagUpdate = ({ id, onClose }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation<{ canGoBack?: boolean }>();
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
@@ -57,18 +53,6 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
   }
 
   const isAuto = !!tag.definition;
-  const onClose = () => {
-    if (location.state?.canGoBack) {
-      navigate(-1);
-    } else {
-      navigate(
-        {
-          pathname: urls.tags.tag.index({ id }),
-        },
-        { replace: true }
-      );
-    }
-  };
 
   return (
     <FormikForm<UpdateParams>

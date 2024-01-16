@@ -1,6 +1,6 @@
 import MachineNetworkActions from "./MachineNetworkActions";
 
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
@@ -52,7 +52,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -71,7 +71,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
@@ -107,14 +107,20 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setExpanded = vi.fn();
+      const setSidePanelContent = vi.fn();
+      vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+        setSidePanelContent,
+        sidePanelContent: null,
+        setSidePanelSize: vi.fn(),
+        sidePanelSize: "regular",
+      });
 
       renderWithBrowserRouter(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={setExpanded}
-          setSidePanelContent={vi.fn()}
+          setSelected={vi.fn()}
+          setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -124,9 +130,11 @@ describe("MachineNetworkActions", () => {
         screen.getByRole("button", { name: /Create bond/i })
       );
 
-      expect(setExpanded).toHaveBeenCalledWith({
-        content: ExpandedState.ADD_BOND,
-      });
+      expect(setSidePanelContent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          view: MachineSidePanelViews.ADD_BOND,
+        })
+      );
     });
 
     it("disables the button when networking is disabled", () => {
@@ -136,7 +144,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -152,7 +160,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -185,7 +193,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -225,7 +233,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -260,7 +268,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -287,14 +295,20 @@ describe("MachineNetworkActions", () => {
           system_id: "abc123",
         }),
       ];
-      const setExpanded = vi.fn();
+      const setSidePanelContent = vi.fn();
+      vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+        setSidePanelContent,
+        sidePanelContent: null,
+        setSidePanelSize: vi.fn(),
+        sidePanelSize: "regular",
+      });
 
       renderWithBrowserRouter(
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }]}
-          setExpanded={setExpanded}
-          setSidePanelContent={vi.fn()}
+          setSelected={vi.fn()}
+          setSidePanelContent={setSidePanelContent}
           systemId="abc123"
         />,
         { state, route: "/machine/abc123" }
@@ -303,9 +317,11 @@ describe("MachineNetworkActions", () => {
       await userEvent.click(
         screen.getByRole("button", { name: /create bridge/i })
       );
-      expect(setExpanded).toHaveBeenCalledWith({
-        content: ExpandedState.ADD_BRIDGE,
-      });
+      expect(setSidePanelContent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          view: MachineSidePanelViews.ADD_BRIDGE,
+        })
+      );
     });
 
     it("disables the button when networking is disabled", async () => {
@@ -315,7 +331,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -333,7 +349,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -366,7 +382,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -406,7 +422,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1, linkId: 2 }]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,
@@ -440,7 +456,7 @@ describe("MachineNetworkActions", () => {
         <MachineNetworkActions
           expanded={null}
           selected={[{ nicId: 1 }, { nicId: 2 }]}
-          setExpanded={vi.fn()}
+          setSelected={vi.fn()}
           setSidePanelContent={vi.fn()}
           systemId="abc123"
         />,

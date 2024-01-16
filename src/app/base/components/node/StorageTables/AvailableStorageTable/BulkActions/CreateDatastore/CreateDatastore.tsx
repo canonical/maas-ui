@@ -10,7 +10,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormCard from "@/app/base/components/FormCard";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
@@ -78,78 +77,76 @@ export const CreateDatastore = ({
 
   if (isMachineDetails(machine)) {
     return (
-      <FormCard sidebar={false}>
-        <FormikForm<CreateDatastoreValues, MachineEventErrors>
-          allowUnchanged
-          cleanup={machineActions.cleanup}
-          errors={errors}
-          initialValues={{
-            name: getInitialName(machine.disks),
-          }}
-          onCancel={closeForm}
-          onSaveAnalytics={{
-            action: "Create datastore",
-            category: "Machine storage",
-            label: "Create datastore",
-          }}
-          onSubmit={(values: CreateDatastoreValues) => {
-            const [blockDeviceIds, partitionIds] =
-              splitDiskPartitionIds(selected);
-            const params = {
-              name: values.name,
-              systemId,
-              ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
-              ...(partitionIds.length > 0 && { partitionIds }),
-            };
-            dispatch(machineActions.createVmfsDatastore(params));
-          }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Create datastore"
-          validationSchema={CreateDatastoreSchema}
-        >
-          <Row>
-            <Col medium={6} size={6} small={4}>
-              <Table>
-                <thead>
-                  <TableRow>
-                    <TableHeader>Name</TableHeader>
-                    <TableHeader>Size</TableHeader>
-                    <TableHeader>Device type</TableHeader>
+      <FormikForm<CreateDatastoreValues, MachineEventErrors>
+        allowUnchanged
+        cleanup={machineActions.cleanup}
+        errors={errors}
+        initialValues={{
+          name: getInitialName(machine.disks),
+        }}
+        onCancel={closeForm}
+        onSaveAnalytics={{
+          action: "Create datastore",
+          category: "Machine storage",
+          label: "Create datastore",
+        }}
+        onSubmit={(values: CreateDatastoreValues) => {
+          const [blockDeviceIds, partitionIds] =
+            splitDiskPartitionIds(selected);
+          const params = {
+            name: values.name,
+            systemId,
+            ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
+            ...(partitionIds.length > 0 && { partitionIds }),
+          };
+          dispatch(machineActions.createVmfsDatastore(params));
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Create datastore"
+        validationSchema={CreateDatastoreSchema}
+      >
+        <Row>
+          <Col size={12}>
+            <Table>
+              <thead>
+                <TableRow>
+                  <TableHeader>Name</TableHeader>
+                  <TableHeader>Size</TableHeader>
+                  <TableHeader>Device type</TableHeader>
+                </TableRow>
+              </thead>
+              <tbody>
+                {selected.map((device) => (
+                  <TableRow key={`${device.type}-${device.id}`}>
+                    <TableCell>{device.name}</TableCell>
+                    <TableCell>{formatSize(device.size)}</TableCell>
+                    <TableCell>{formatType(device)}</TableCell>
                   </TableRow>
-                </thead>
-                <tbody>
-                  {selected.map((device) => (
-                    <TableRow key={`${device.type}-${device.id}`}>
-                      <TableCell>{device.name}</TableCell>
-                      <TableCell>{formatSize(device.size)}</TableCell>
-                      <TableCell>{formatType(device)}</TableCell>
-                    </TableRow>
-                  ))}
-                </tbody>
-              </Table>
-            </Col>
-            <Col medium={6} size={6} small={4}>
-              <FormikField label="Name" name="name" required type="text" />
-              <Input
-                aria-label="Size"
-                data-testid="datastore-size"
-                disabled
-                label="Size"
-                type="text"
-                value={`${formatSize(totalSize)}`}
-              />
-              <Input
-                aria-label="Filesystem"
-                disabled
-                label="Filesystem"
-                type="text"
-                value="VMFS6"
-              />
-            </Col>
-          </Row>
-        </FormikForm>
-      </FormCard>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+          <Col size={12}>
+            <FormikField label="Name" name="name" required type="text" />
+            <Input
+              aria-label="Size"
+              data-testid="datastore-size"
+              disabled
+              label="Size"
+              type="text"
+              value={`${formatSize(totalSize)}`}
+            />
+            <Input
+              aria-label="Filesystem"
+              disabled
+              label="Filesystem"
+              type="text"
+              value="VMFS6"
+            />
+          </Col>
+        </Row>
+      </FormikForm>
     );
   }
   return null;

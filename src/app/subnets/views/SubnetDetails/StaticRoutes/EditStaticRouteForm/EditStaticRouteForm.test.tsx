@@ -36,7 +36,7 @@ it("displays loading text on load", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <EditStaticRouteForm handleDismiss={vi.fn()} staticRouteId={1} />
+          <EditStaticRouteForm id={1} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -79,10 +79,7 @@ it("dispatches a correct action on edit static route form submit", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <EditStaticRouteForm
-            handleDismiss={vi.fn()}
-            staticRouteId={staticRoute.id}
-          />
+          <EditStaticRouteForm id={staticRoute.id} setActiveForm={vi.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

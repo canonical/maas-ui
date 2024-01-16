@@ -3,6 +3,8 @@ import timezoneMock from "timezone-mock";
 
 import ImagesTable, { Labels as ImagesTableLabels } from "./ImagesTable";
 
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { ImageSidePanelViews } from "@/app/images/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import {
@@ -182,6 +184,13 @@ describe("ImagesTable", () => {
 
   it(`can open the delete image confirmation if the image does not use the
     default commissioning release`, async () => {
+    const setSidePanelContent = vi.fn();
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
     const resources = [
       resourceFactory({ arch: "amd64", name: "ubuntu/bionic" }),
     ];
@@ -218,11 +227,11 @@ describe("ImagesTable", () => {
 
     await userEvent.click(delete_button);
 
-    expect(
-      within(row).getByRole("gridcell", {
-        name: ImagesTableLabels.DeleteImageConfirm,
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: ImageSidePanelViews.DELETE_IMAGE,
       })
-    ).toBeInTheDocument();
+    );
   });
 
   it(`prevents opening the delete image confirmation if the image uses the

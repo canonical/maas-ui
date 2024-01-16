@@ -2,6 +2,7 @@ import type { HTMLProps, ReactNode } from "react";
 
 import { Col, Row } from "@canonical/react-components";
 import type { ColSize } from "@canonical/react-components";
+import classNames from "classnames";
 
 import NotificationList from "@/app/base/components/NotificationList";
 import { COL_SIZES } from "@/app/base/constants";
@@ -35,7 +36,12 @@ const MainContentSection = ({
               {sidebar}
             </Col>
           )}
-          <Col size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}>
+          <Col
+            className={classNames({
+              "u-nudge-down": !isNotificationListHidden,
+            })}
+            size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}
+          >
             {!isNotificationListHidden && <NotificationList />}
             {children}
           </Col>
