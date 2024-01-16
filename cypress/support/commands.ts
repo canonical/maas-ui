@@ -39,7 +39,7 @@ Cypress.Commands.add("loginNonAdmin", () => {
 
 Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.visit(generateMAASURL("/machines"));
-  cy.get("[data-testid='add-hardware-dropdown'] button").click();
+  cy.findByRole("button", { name: "Add hardware" }).click();
   cy.get(".p-contextual-menu__link").contains("Machine").click();
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
@@ -82,7 +82,7 @@ Cypress.Commands.add("deletePool", (pool: string) => {
 
 Cypress.Commands.add("addMachines", (hostnames: string[]) => {
   cy.visit(generateMAASURL("/machines"));
-  cy.get("[data-testid='add-hardware-dropdown'] button").click();
+  cy.findByRole("button", { name: "Add hardware" }).click();
   cy.get(".p-contextual-menu__link").contains("Machine").click();
   hostnames.forEach((hostname, index) => {
     cy.get("input[name='hostname']").type(hostname);
