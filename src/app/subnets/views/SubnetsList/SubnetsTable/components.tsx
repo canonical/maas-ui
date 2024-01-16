@@ -71,10 +71,12 @@ export const CellContents = ({
 );
 
 const generateSubnetRow = ({
+  label,
   content,
   classes,
   key,
 }: {
+  label?: string;
   content: FabricRowContent;
   key: string | number;
   classes?: string;
@@ -114,6 +116,7 @@ const generateSubnetRow = ({
   ];
 
   return {
+    "aria-label": label,
     key,
     className: classNames(classes),
     columns,
@@ -141,6 +144,7 @@ export const generateSubnetRows = (subnets: SubnetsTableRow[]) => {
       ),
     };
     return generateSubnetRow({
+      label: subnet["aria-label"],
       key: `${subnet.sortData.vlanId}-${subnet.sortData.fabricId}-${index}`,
       content,
       classes: "subnet-row truncated-border",

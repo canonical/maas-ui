@@ -55,10 +55,8 @@ context("Subnets - Add", () => {
     const name = `cypress-${generateId()}`;
     completeForm("Fabric", name);
 
-    cy.findByRole("table", { name: /Subnets/ }).within(() => {
-      cy.findByRole("row", { name }).within(() =>
-        cy.findByRole("link", { name }).click()
-      );
+    cy.findByRole("grid", { name: /Subnets/i }).within(() => {
+      cy.findByRole("link", { name }).click();
     });
 
     cy.url().should("include", generateMAASURL("/fabric"));
@@ -75,10 +73,8 @@ context("Subnets - Add", () => {
 
     cy.url().should("include", generateMAASURL("/networks?by=fabric"));
 
-    cy.findByRole("table", { name: /Subnets/ }).within(() => {
-      cy.findByRole("row", { name }).within(() =>
-        cy.findByRole("link", { name }).should("not.exist")
-      );
+    cy.findByRole("grid", { name: /Subnets/i }).within(() => {
+      cy.findByRole("link", { name }).should("not.exist");
     });
   });
 
@@ -86,7 +82,7 @@ context("Subnets - Add", () => {
     cy.visit(generateMAASURL("/networks?by=space"));
     const name = `cypress-${generateId()}`;
     completeForm("Space", name);
-    cy.findByRole("table", { name: /Subnets/ }).within(() => {
+    cy.findByRole("grid", { name: /Subnets/ }).within(() => {
       cy.findByRole("link", { name }).click();
     });
 
@@ -103,7 +99,7 @@ context("Subnets - Add", () => {
     );
 
     cy.url().should("include", generateMAASURL("/networks?by=fabric"));
-    cy.findByRole("table", { name: /Subnets/ }).within(() => {
+    cy.findByRole("grid", { name: /Subnets/ }).within(() => {
       cy.findByRole("link", { name }).should("not.exist");
     });
   });
@@ -121,28 +117,17 @@ context("Subnets - Add", () => {
     completeAddVlanForm(vid, vlanName, fabricName, spaceName);
     completeAddSubnetForm(subnetName, cidr, fabricName, vid, vlanName);
 
-    cy.findAllByRole("row", { name: fabricName }).should("have.length", 2);
-
-    cy.findAllByRole("row", { name: fabricName })
-      .first()
-      .within(() => {
-        cy.findByRole("rowheader").within(() =>
-          cy.findByText(fabricName).should("be.visible")
-        );
-      });
+    cy.findAllByRole("link", { name: fabricName }).should("have.length", 2);
 
     // Check it groups items added to the same fabric correctly
     cy.findAllByRole("row", { name: fabricName })
       .eq(1)
       .within(() => {
-        cy.findByRole("rowheader").within(() =>
-          cy.findByText(fabricName).should("not.be.visible")
-        );
         cy.findAllByRole("gridcell")
-          .eq(0)
+          .eq(1)
           .should("have.text", `${vid} (${vlanName})`);
-        cy.findAllByRole("gridcell").eq(2).should("contain.text", subnetName);
-        cy.findAllByRole("gridcell").eq(4).should("have.text", spaceName);
+        cy.findAllByRole("gridcell").eq(3).should("contain.text", subnetName);
+        cy.findAllByRole("gridcell").eq(5).should("have.text", spaceName);
       });
 
     // delete the subnet

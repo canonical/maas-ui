@@ -127,6 +127,7 @@ const getRowData = ({
   data?: SubnetsTableData;
 }): SubnetsTableRow => {
   return {
+    "aria-label": fabric?.name,
     fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
     vlan: getColumn(
       getVLANDisplay(vlan),
