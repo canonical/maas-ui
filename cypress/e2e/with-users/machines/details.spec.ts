@@ -21,14 +21,13 @@ context("Machine details", () => {
   };
 
   it("hides the subnet column on small screens", () => {
-    cy.waitForPageToLoad();
+    const { name } = completeAddMachineForm();
+
+    cy.findByRole("searchbox").type(name);
     cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
 
-    cy.findByRole("grid").within(() => {
-      cy.findAllByRole("gridcell", { name: /FQDN/i })
-        .first()
-        .within(() => cy.findByRole("link").click());
-    });
+    cy.findByRole("link", { name: new RegExp(name, "i") }).click();
+
     cy.findByRole("link", { name: "Network" }).click();
 
     cy.findAllByRole("columnheader", { name: /IP/i }).first().should("exist");
@@ -40,12 +39,20 @@ context("Machine details", () => {
 
     cy.findAllByRole("columnheader", { name: /IP/i }).first().should("exist");
     cy.findByRole("columnheader", { name: /subnet/i }).should("not.exist");
+
+    // delete the machine
+    cy.findByRole("button", { name: /Menu/i }).click();
+    cy.findByRole("button", { name: /Delete/i }).click();
+    cy.findByRole("button", { name: /Delete machine/i }).click();
+    cy.waitForPageToLoad();
+    // verify the user has been redirected to the machine list
+    cy.url().should("include", generateMAASURL("/machines"));
   });
 
   it("displays machine commissioning details", () => {
     const { name } = completeAddMachineForm();
 
-    cy.findByLabelText("Search").type(name);
+    cy.findByRole("searchbox").type(name);
     cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
 
     cy.findByRole("link", { name: new RegExp(name, "i") }).click();
