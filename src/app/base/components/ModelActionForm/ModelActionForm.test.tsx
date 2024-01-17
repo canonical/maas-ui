@@ -12,7 +12,9 @@ it("renders", () => {
     />
   );
   expect(
-    screen.getByText("Are you sure you want to delete this machine?")
+    screen.getByText(
+      "Are you sure you want to delete this machine? This action is permanent and can not be undone."
+    )
   ).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
 });

@@ -35,7 +35,6 @@ const SetDefaultForm = ({ id, onClose }: Props) => {
       }}
       saved={saved}
       saving={saving}
-      showSubtext={false}
       submitAppearance="positive"
       submitLabel={Labels.ConfirmSetDefault}
     />
