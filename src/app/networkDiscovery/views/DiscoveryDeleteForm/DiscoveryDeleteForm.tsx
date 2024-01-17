@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { actions as discoveryActions } from "@/app/store/discovery";
 import discoverySelectors from "@/app/store/discovery/selectors";
 import type { Discovery } from "@/app/store/discovery/types";
@@ -15,7 +15,7 @@ const DiscoveryDeleteForm = ({ discovery, onClose }: Props) => {
   const saving = useSelector(discoverySelectors.saving);
   const saved = useSelector(discoverySelectors.saved);
   return (
-    <ModelDeleteForm
+    <ModelActionForm
       aria-label="Delete discovery"
       initialValues={{}}
       message={`Are you sure you want to delete discovery "${

@@ -3,8 +3,11 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
+import { DomainListSidePanelViews } from "../constants";
+
 import DomainsTable, { Labels as DomainsTableLabels } from "./DomainsTable";
 
+import * as sidePanelHooks from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import {
   domain as domainFactory,
@@ -23,7 +26,14 @@ const mockStore = configureStore();
 
 describe("DomainsTable", () => {
   let state: RootState;
+  const setSidePanelContent = vi.fn();
   beforeEach(() => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
     state = rootStateFactory({
       domain: domainStateFactory({
         items: [
@@ -87,7 +97,7 @@ describe("DomainsTable", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls the setDefault action if set default is clicked", async () => {
+  it("triggers the setDefault sidepanel if set default is clicked", async () => {
     const store = mockStore(state);
 
     render(
@@ -116,29 +126,9 @@ describe("DomainsTable", () => {
       screen.getByRole("button", { name: DomainsTableLabels.SetDefault })
     );
 
-    row = screen.getByRole("row", { name: "a" });
-    await userEvent.click(
-      within(
-        within(row).getByRole("gridcell", {
-          name: DomainsTableLabels.TableAction,
-        })
-      ).getByRole("button", { name: DomainsTableLabels.ConfirmSetDefault })
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({ view: DomainListSidePanelViews.SET_DEFAULT })
     );
-
-    expect(
-      store.getActions().find((action) => action.type === "domain/setDefault")
-    ).toStrictEqual({
-      type: "domain/setDefault",
-      meta: {
-        method: "set_default",
-        model: "domain",
-      },
-      payload: {
-        params: {
-          domain: 3,
-        },
-      },
-    });
   });
 
   it("displays an empty table message", () => {

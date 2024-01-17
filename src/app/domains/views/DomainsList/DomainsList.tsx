@@ -1,31 +1,19 @@
 import { useSelector } from "react-redux";
 
 import DomainListHeader from "./DomainListHeader";
-import DomainListHeaderForm from "./DomainListHeaderForm";
 import DomainsTable from "./DomainsTable";
-import { DomainListSidePanelViews } from "./constants";
 
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import DomainForm from "@/app/domains/components/DomainForm";
 import { actions } from "@/app/store/domain";
 import domainsSelectors from "@/app/store/domain/selectors";
+import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
 const DomainsList = (): JSX.Element => {
   const domains = useSelector(domainsSelectors.all);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
-
-  let content: JSX.Element | null = null;
-
-  if (sidePanelContent?.view === DomainListSidePanelViews.ADD_DOMAIN) {
-    content = (
-      <DomainListHeaderForm
-        closeForm={() => {
-          setSidePanelContent(null);
-        }}
-      />
-    );
-  }
 
   useWindowTitle("DNS");
 
@@ -34,8 +22,15 @@ const DomainsList = (): JSX.Element => {
   return (
     <PageContent
       header={<DomainListHeader setSidePanelContent={setSidePanelContent} />}
-      sidePanelContent={content}
-      sidePanelTitle={"Add domains"}
+      sidePanelContent={
+        sidePanelContent && (
+          <DomainForm
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
+          />
+        )
+      }
+      sidePanelTitle={getSidePanelTitle("Domains", sidePanelContent)}
     >
       {domains.length > 0 && <DomainsTable />}
     </PageContent>

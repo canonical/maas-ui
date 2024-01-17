@@ -1,15 +1,13 @@
-import { useState } from "react";
-
 import { MainTable, ContextualMenu } from "@canonical/react-components";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import TableConfirm from "@/app/base/components/TableConfirm";
+import { DomainListSidePanelViews } from "../constants";
+
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import { actions as domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
-import type { Domain, DomainMeta } from "@/app/store/domain/types";
 
 export enum Labels {
   Domain = "Domain",
@@ -24,15 +22,13 @@ export enum Labels {
   ContextualMenu = "Actions",
   TableLable = "Domains table",
   EmptyList = "No domains available.",
+  FormTitle = "Set default",
 }
 
 const DomainsTable = (): JSX.Element => {
   const dispatch = useDispatch();
+  const { setSidePanelContent } = useSidePanel();
   const domains = useSelector(domainSelectors.all);
-  const errors = useSelector(domainSelectors.errors);
-  const saving = useSelector(domainSelectors.saving);
-  const saved = useSelector(domainSelectors.saved);
-  const [expandedID, setExpandedID] = useState<Domain[DomainMeta.PK] | null>();
   const headers = [
     {
       content: "Domain",
@@ -60,13 +56,12 @@ const DomainsTable = (): JSX.Element => {
   ];
 
   const rows = domains.map((domain) => {
-    const isActive = expandedID === domain.id;
     return {
       // making sure we don't pass id directly as a key because of
       // https://github.com/canonical/react-components/issues/476
       key: `domain-row-${domain.id}`,
       "aria-label": domain.name,
-      className: classNames("p-table__row", { "is-active": isActive }),
+      className: "p-table__row",
       columns: [
         {
           content: (
@@ -97,7 +92,12 @@ const DomainsTable = (): JSX.Element => {
                     children: Labels.SetDefault,
                     onClick: () => {
                       dispatch(domainActions.cleanup());
-                      setExpandedID(domain.id);
+                      setSidePanelContent({
+                        view: DomainListSidePanelViews.SET_DEFAULT,
+                        extras: {
+                          id: domain.id,
+                        },
+                      });
                     },
                   },
                 ]}
@@ -110,28 +110,6 @@ const DomainsTable = (): JSX.Element => {
           className: "u-align--right",
         },
       ],
-      expanded: isActive,
-      expandedContent: (
-        <div aria-label={Labels.TableAction}>
-          <TableConfirm
-            confirmAppearance="positive"
-            confirmLabel={Labels.ConfirmSetDefault}
-            errorKey="domain"
-            errors={errors}
-            finished={saved}
-            inProgress={saving}
-            message={<>{Labels.AreYouSure}</>}
-            onClose={() => {
-              dispatch(domainActions.cleanup());
-              setExpandedID(null);
-            }}
-            onConfirm={() => {
-              dispatch(domainActions.setDefault(domain.id));
-            }}
-            sidebar={false}
-          />
-        </div>
-      ),
       sortData: {
         name: domain.name,
         authoritative: domain.authoritative,
@@ -149,7 +127,6 @@ const DomainsTable = (): JSX.Element => {
       defaultSort="name"
       defaultSortDirection="ascending"
       emptyStateMsg={Labels.EmptyList}
-      expanding={true}
       headers={headers}
       paginate={50}
       rows={rows}
