@@ -123,9 +123,9 @@ it("displays a message when deleting a tag on a machine", async () => {
     </Provider>
   );
   expect(
-    screen.getByRole("heading", {
-      name: "tag1 will be deleted and unassigned from every tagged machine. Are you sure?",
-    })
+    screen.getByText(
+      "tag1 will be deleted and unassigned from every tagged machine. Are you sure?"
+    )
   ).toBeInTheDocument();
 });
 
@@ -148,9 +148,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
     </Provider>
   );
   expect(
-    screen.getByRole("heading", {
-      name: "tag1 will be deleted. Are you sure?",
-    })
+    screen.getByText("tag1 will be deleted. Are you sure?")
   ).toBeInTheDocument();
 });
 

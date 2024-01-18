@@ -86,15 +86,15 @@ export const DeleteTagForm = ({
     >
       <Row>
         <Col size={12}>
-          <h4 className="u-nudge-down--small">
+          <p className="u-nudge-down--small">
             {`${tag.name} will be deleted${
               tag.machine_count > 0
                 ? " and unassigned from every tagged machine"
                 : ""
             }. Are you sure?`}
-          </h4>
+          </p>
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <DeleteTagFormWarnings id={id} />
         </Col>
       </Row>
