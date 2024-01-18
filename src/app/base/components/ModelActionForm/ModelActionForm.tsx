@@ -9,7 +9,7 @@ type Props = {
   message?: string;
 } & FormikFormProps<EmptyObject>;
 
-const ModelDeleteForm = ({
+const ModelActionForm = ({
   modelType,
   message,
   submitAppearance = "negative",
@@ -29,15 +29,12 @@ const ModelDeleteForm = ({
           <p className="u-nudge-down--small">
             {message
               ? message
-              : `Are you sure you want to delete this ${modelType}?`}
+              : `Are you sure you want to delete this ${modelType}? This action is permanent and can not be undone.`}
           </p>
-          <span className="u-text--light">
-            This action is permanent and can not be undone.
-          </span>
         </Col>
       </Row>
     </FormikForm>
   );
 };
 
-export default ModelDeleteForm;
+export default ModelActionForm;

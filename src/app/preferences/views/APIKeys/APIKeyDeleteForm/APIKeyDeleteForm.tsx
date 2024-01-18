@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import ModelActionForm from "@/app/base/components/ModelActionForm";
 import urls from "@/app/base/urls";
 import { actions as tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
@@ -13,7 +13,7 @@ const APIKeyDeleteForm = ({ id }: { id: number }) => {
   const saving = useSelector(tokenSelectors.saving);
 
   return (
-    <ModelDeleteForm
+    <ModelActionForm
       aria-label="Delete API Key"
       initialValues={{}}
       modelType="API key"

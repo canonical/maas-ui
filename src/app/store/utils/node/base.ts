@@ -202,6 +202,8 @@ export const getSidePanelTitle = (
         return "Add chassis";
       case SidePanelViews.ADD_DISCOVERY[1]:
         return "Add discovery";
+      case SidePanelViews.ADD_DOMAIN[1]:
+        return "Add domains";
       case SidePanelViews.ADD_INTERFACE[1]:
         return "Add interface";
       case SidePanelViews.ADD_MACHINE[1]:
@@ -240,6 +242,8 @@ export const getSidePanelTitle = (
         return "Delete fabric";
       case SidePanelViews.REMOVE_INTERFACE[1]:
         return "Remove interface";
+      case SidePanelViews.SET_DEFAULT[1]:
+        return "Set default";
       case SidePanelViews.UPDATE_DATASTORE[1]:
         return "Update datastore";
       case SidePanelViews.UpdateTag[1]:

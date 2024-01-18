@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { actions as bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type { BootResource } from "@/app/store/bootresource/types";
@@ -38,7 +38,7 @@ const DeleteImageConfirm = ({
   }, [dispatch]);
 
   return (
-    <ModelDeleteForm
+    <ModelActionForm
       aria-label="Confirm image deletion"
       errors={error}
       initialValues={{}}

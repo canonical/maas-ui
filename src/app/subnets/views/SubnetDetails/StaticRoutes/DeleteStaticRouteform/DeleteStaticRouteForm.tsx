@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import ModelActionForm from "@/app/base/components/ModelActionForm";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { actions as staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
@@ -16,7 +16,7 @@ const DeleteStaticRouteForm = ({ id, setActiveForm }: Props) => {
   const saved = useSelector(staticRouteSelectors.saved);
   const saving = useSelector(staticRouteSelectors.saving);
   return (
-    <ModelDeleteForm
+    <ModelActionForm
       aria-label="Confirm static route deletion"
       initialValues={{}}
       modelType="static route"

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import ModelDeleteForm from "@/app/base/components/ModelDeleteForm";
+import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
 import { actions as deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
@@ -57,7 +57,7 @@ const RemoveInterface = ({
           </span>
         </Notification>
       ) : null}
-      <ModelDeleteForm
+      <ModelActionForm
         aria-label="Remove interface"
         initialValues={{}}
         modelType="interface"
