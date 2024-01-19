@@ -55,7 +55,7 @@ const UserIntro = (): JSX.Element => {
           Add multiple keys from Launchpad and Github or enter them manually.
         </p>
         <h4>Keys</h4>
-        {hasSSHKeys ? <SSHKeyList sidebar={false} /> : null}
+        {hasSSHKeys ? <SSHKeyList /> : null}
         <SSHKeyForm
           onSaveAnalytics={{
             action: "Import",

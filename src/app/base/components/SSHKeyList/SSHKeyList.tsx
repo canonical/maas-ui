@@ -1,26 +1,19 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
 
 import { Button, Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import type { Dispatch } from "redux";
+import { useSelector } from "react-redux";
+import type { NavigateFunction } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom-v5-compat";
 
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import { useFetchActions, useAddMessage } from "@/app/base/hooks";
+import { useFetchActions } from "@/app/base/hooks";
+import urls from "@/app/preferences/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import type { Props as SettingsTableProps } from "@/app/settings/components/SettingsTable/SettingsTable";
 import { actions as sshkeyActions } from "@/app/store/sshkey";
 import sshkeySelectors from "@/app/store/sshkey/selectors";
-import type {
-  KeySource,
-  SSHKey,
-  SSHKeyMeta,
-  SSHKeyState,
-} from "@/app/store/sshkey/types";
+import type { KeySource, SSHKey } from "@/app/store/sshkey/types";
 
-type Props = {
-  sidebar?: boolean;
-} & Partial<SettingsTableProps>;
+type Props = Partial<SettingsTableProps>;
 
 const formatKey = (key: SSHKey["key"]) => {
   const parts = key.split(" ");
@@ -79,21 +72,10 @@ const generateKeyCols = (keys: SSHKey[], deleteButton: ReactNode) => {
   );
 };
 
-const generateRows = (
-  sshkeys: SSHKey[],
-  expandedId: SSHKey[SSHKeyMeta.PK] | null,
-  setExpandedId: (id: SSHKey[SSHKeyMeta.PK] | null) => void,
-  hideExpanded: () => void,
-  dispatch: Dispatch,
-  saved: SSHKeyState["saved"],
-  saving: SSHKeyState["saving"],
-  sidebar: boolean,
-  setDeleting: (ids: SSHKey[SSHKeyMeta.PK][]) => void
-) =>
+const generateRows = (sshkeys: SSHKey[], navigate: NavigateFunction) =>
   groupBySource(sshkeys).map(([id, group]) => {
-    const expanded = expandedId === id;
+    const ids: number[] = group.keys.map((key: SSHKey) => key.id);
     return {
-      className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
           content: group.source,
@@ -108,9 +90,12 @@ const generateRows = (
               appearance="base"
               className="is-dense u-table-cell-padding-overlap"
               hasIcon
-              onClick={() => {
-                setExpandedId(id);
-              }}
+              onClick={() =>
+                navigate({
+                  pathname: urls.sshKeys.delete,
+                  search: `?ids=${ids.join()}`,
+                })
+              }
             >
               <i className="p-icon--delete">Delete</i>
             </Button>
@@ -118,24 +103,6 @@ const generateRows = (
         },
       ],
       "data-testid": "sshkey-row",
-      expanded: expanded,
-      expandedContent: expanded && (
-        <TableDeleteConfirm
-          deleted={saved}
-          deleting={saving}
-          message={`Are you sure you want to delete ${
-            group.keys.length > 1 ? "these SSH keys" : "this SSH key"
-          }?`}
-          onClose={hideExpanded}
-          onConfirm={() => {
-            group.keys.forEach((key: SSHKey) => {
-              dispatch(sshkeyActions.delete(key.id));
-            });
-            setDeleting(group.keys.map(({ id }: SSHKey) => id));
-          }}
-          sidebar={sidebar}
-        />
-      ),
       key: id,
       sortData: {
         source: group.source,
@@ -144,32 +111,12 @@ const generateRows = (
     };
   });
 
-const SSHKeyList = ({ sidebar = true, ...tableProps }: Props): JSX.Element => {
-  const [expandedId, setExpandedId] = useState<SSHKey[SSHKeyMeta.PK] | null>(
-    null
-  );
-  const [deleting, setDeleting] = useState<SSHKey[SSHKeyMeta.PK][]>([]);
+const SSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
   const sshkeyErrors = useSelector(sshkeySelectors.errors);
   const sshkeyLoading = useSelector(sshkeySelectors.loading);
   const sshkeyLoaded = useSelector(sshkeySelectors.loaded);
   const sshkeys = useSelector(sshkeySelectors.all);
-  const saved = useSelector(sshkeySelectors.saved);
-  const saving = useSelector(sshkeySelectors.saving);
-  const dispatch = useDispatch();
-  const sshKeysDeleted =
-    deleting.length > 0 &&
-    !deleting.some((id) => !sshkeys.find((key) => key.id === id));
-
-  useAddMessage(
-    saved && sshKeysDeleted,
-    sshkeyActions.cleanup,
-    "SSH key removed successfully.",
-    () => setDeleting([])
-  );
-
-  const hideExpanded = () => {
-    setExpandedId(null);
-  };
+  const navigate = useNavigate();
 
   useFetchActions([sshkeyActions.fetch]);
 
@@ -203,17 +150,7 @@ const SSHKeyList = ({ sidebar = true, ...tableProps }: Props): JSX.Element => {
         ]}
         loaded={sshkeyLoaded}
         loading={sshkeyLoading}
-        rows={generateRows(
-          sshkeys,
-          expandedId,
-          setExpandedId,
-          hideExpanded,
-          dispatch,
-          saved,
-          saving,
-          sidebar,
-          setDeleting
-        )}
+        rows={generateRows(sshkeys, navigate)}
         tableClassName="sshkey-list"
         {...tableProps}
       />
