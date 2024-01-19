@@ -2,6 +2,8 @@ import configureStore from "redux-mock-store";
 
 import SSHKeyList from "./SSHKeyList";
 
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import urls from "@/app/preferences/urls";
 import type { RootState } from "@/app/store/root/types";
 import {
   sshKey as sshKeyFactory,
@@ -19,8 +21,15 @@ const mockStore = configureStore<RootState>();
 
 describe("SSHKeyList", () => {
   let state: RootState;
+  const setSidePanelContent = vi.fn();
 
   beforeEach(() => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
     state = rootStateFactory({
       sshkey: sshKeyStateFactory({
         loading: false,
@@ -116,7 +125,7 @@ describe("SSHKeyList", () => {
     ).toBeInTheDocument();
   });
 
-  it("can show a delete confirmation", async () => {
+  it("can trigger a delete confirmation form", async () => {
     renderWithBrowserRouter(<SSHKeyList />, {
       route: "/account/prefs/ssh-keys",
       state,
@@ -125,71 +134,7 @@ describe("SSHKeyList", () => {
     expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
     await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    row = screen.getAllByTestId("sshkey-row")[0];
-    expect(row).toHaveClass("is-active");
-    expect(
-      screen.getByText("Are you sure you want to delete this SSH key?")
-    ).toBeInTheDocument();
-  });
-
-  it("can delete a SSH key", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
-      store,
-    });
-    // Click on the delete button:
-    await userEvent.click(screen.getAllByText("Delete")[0]);
-    // Click on the delete confirm button
-    await userEvent.click(screen.getByTestId("action-confirm"));
-    expect(
-      store.getActions().find((action) => action.type === "sshkey/delete")
-    ).toEqual({
-      type: "sshkey/delete",
-      payload: {
-        params: {
-          id: 1,
-        },
-      },
-      meta: {
-        model: "sshkey",
-        method: "delete",
-      },
-    });
-  });
-
-  it("can delete a group of SSH keys", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
-      store,
-    });
-    // Click on the delete button:
-    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[1]);
-    // Click on the delete confirm button
-    await userEvent.click(screen.getByTestId("action-confirm"));
-    expect(
-      store.getActions().filter((action) => action.type === "sshkey/delete")
-        .length
-    ).toEqual(2);
-  });
-
-  it("can add a message when a SSH key is deleted", async () => {
-    state.sshkey.saved = true;
-    const store = mockStore(state);
-    renderWithBrowserRouter(<SSHKeyList />, {
-      route: "/account/prefs/ssh-keys",
-      store,
-    });
-    // Click on the delete button:
-    await userEvent.click(screen.getAllByRole("button", { name: "Delete" })[0]);
-    // Simulate clicking on the delete confirm button.
-    await userEvent.click(screen.getByTestId("action-confirm"));
-    const actions = store.getActions();
-    expect(actions.some((action) => action.type === "sshkey/cleanup")).toBe(
-      true
-    );
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
+    expect(window.location.pathname).toBe(urls.sshKeys.delete);
   });
 
   it("displays a message if there are no SSH keys", () => {

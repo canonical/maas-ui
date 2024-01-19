@@ -12,6 +12,7 @@ const urls = {
   index: "/account/prefs",
   sshKeys: {
     add: "/account/prefs/ssh-keys/add",
+    delete: "/account/prefs/ssh-keys/delete",
     index: "/account/prefs/ssh-keys",
   },
   sslKeys: {

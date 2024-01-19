@@ -23,6 +23,8 @@ import {
   NetworkDiscoverySidePanelViews,
   type NetworkDiscoverySidePanelContent,
 } from "@/app/networkDiscovery/views/constants";
+import { PreferenceSidePanelViews } from "@/app/preferences/constants";
+import type { PreferenceSidePanelContent } from "@/app/preferences/types";
 import {
   SubnetSidePanelViews,
   type SubnetSidePanelContent,
@@ -64,6 +66,7 @@ export type SidePanelContent =
   | VLANDetailsSidePanelContent
   | FabricDetailsSidePanelContent
   | ImageSidePanelContent
+  | PreferenceSidePanelContent
   | SubnetDetailsSidePanelContent
   | SpaceDetailsSidePanelContent
   | null;
@@ -93,6 +96,7 @@ export const SidePanelViews = {
   ...VLANDetailsSidePanelViews,
   ...FabricDetailsSidePanelViews,
   ...ImageSidePanelViews,
+  ...PreferenceSidePanelViews,
   ...SubnetDetailsSidePanelViews,
   ...SpaceDetailsSidePanelViews,
 } as const;

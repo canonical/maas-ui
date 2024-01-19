@@ -19,3 +19,7 @@ export const preferencesNavItems: NavItem[] = [
     label: "SSL keys",
   },
 ];
+
+export const PreferenceSidePanelViews = {
+  DELETE_SSH_KEYS: ["", "deleteSSHKeys"],
+} as const;

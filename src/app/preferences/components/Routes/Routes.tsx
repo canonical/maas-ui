@@ -1,6 +1,8 @@
 import { Redirect } from "react-router";
 import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
+import DeleteSSHKey from "../../views/SSHKeys/DeleteSSHKey";
+
 import PageContent from "@/app/base/components/PageContent";
 import urls from "@/app/base/urls";
 import NotFound from "@/app/base/views/NotFound";
@@ -92,6 +94,17 @@ const Routes = (): JSX.Element => {
           </PageContent>
         }
         path={getRelativeRoute(urls.preferences.sshKeys.add, base)}
+      />
+      <Route
+        element={
+          <PageContent
+            sidePanelContent={<DeleteSSHKey />}
+            sidePanelTitle="Delete SSH key"
+          >
+            <SSHKeyList />
+          </PageContent>
+        }
+        path={getRelativeRoute(urls.preferences.sshKeys.delete, base)}
       />
       <Route
         element={
