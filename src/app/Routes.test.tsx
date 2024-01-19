@@ -194,7 +194,9 @@ describe("Routes", () => {
         route: path,
         state,
       });
-      expect(window.location.pathname).toBe(`${path}/summary`);
+      await waitFor(() =>
+        expect(window.location.pathname).toBe(`${path}/summary`)
+      );
     });
   });
 
@@ -206,19 +208,23 @@ describe("Routes", () => {
     expect(window.location.pathname).toBe(urls.machines.index);
   });
 
-  it("redirects from Settings base URL to configuration", () => {
+  it("redirects from Settings base URL to configuration", async () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.index,
       state,
     });
-    expect(window.location.pathname).toBe(urls.settings.configuration.index);
+    await waitFor(() =>
+      expect(window.location.pathname).toBe(urls.settings.configuration.index)
+    );
   });
 
-  it("redirects from Preferences base URL to Details", () => {
+  it("redirects from Preferences base URL to Details", async () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.preferences.index,
       state,
     });
-    expect(window.location.pathname).toBe(urls.preferences.details);
+    await waitFor(() =>
+      expect(window.location.pathname).toBe(urls.preferences.details)
+    );
   });
 });
