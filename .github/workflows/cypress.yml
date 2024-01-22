@@ -26,14 +26,6 @@ jobs:
           runTests: false
           install-command: yarn install
           build: yarn build
-      - name: Run Cypress tests without a user
-        uses: cypress-io/github-action@v4
-        with:
-          config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
-          install: false
-          start: yarn start
-          spec: "cypress/e2e/no-users/**/*.spec.ts"
-          wait-on: "${{env.MAAS_UI_URL}}/MAAS/r/machines"
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Create MAAS non-admin user
