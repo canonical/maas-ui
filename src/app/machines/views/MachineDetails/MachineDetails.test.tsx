@@ -109,14 +109,16 @@ describe("MachineDetails", () => {
       title: "configuration",
     },
   ].forEach(({ component, path, title }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
+    it(`Displays: ${component} at: ${path}`, async () => {
       renderWithBrowserRouter(<MachineDetails />, {
         route: path,
         state,
         routePattern: `${urls.machines.machine.index(null)}/*`,
       });
-      expect(document.title).toBe(
-        `${state.machine.items[0].fqdn} ${title} | MAAS`
+      await waitFor(() =>
+        expect(document.title).toBe(
+          `${state.machine.items[0].fqdn} ${title} | MAAS`
+        )
       );
     });
   });

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
@@ -197,7 +197,17 @@ export const App = (): JSX.Element => {
           </header>
         )}
 
-        {content}
+        <Suspense
+          fallback={
+            <PageContent
+              header={<SectionHeader loading />}
+              sidePanelContent={null}
+              sidePanelTitle={null}
+            />
+          }
+        >
+          {content}
+        </Suspense>
         <aside className="l-status">
           <StatusBar />
         </aside>
