@@ -10,7 +10,6 @@ import type { Script } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import type { SimpleNode } from "@/app/store/types/node";
 import { getCookie } from "@/app/utils";
-import bakery from "@/bakery";
 
 type CSRFToken = string;
 
@@ -102,17 +101,19 @@ export const api = {
     },
     externalLogin: (): Promise<XMLHttpRequest["response"]> => {
       return new Promise((resolve, reject) => {
-        bakery.get(
-          BAKERY_LOGIN_API,
-          DEFAULT_HEADERS,
-          (_: unknown, response: XMLHttpRequest["response"]) => {
-            if (response.currentTarget.status !== 200) {
-              localStorage.clear();
-              reject(Error(response.currentTarget.responseText));
-            } else {
-              resolve({ response });
+        import("@/bakery").then(({ default: bakery }) =>
+          bakery.get(
+            BAKERY_LOGIN_API,
+            DEFAULT_HEADERS,
+            (_: unknown, response: XMLHttpRequest["response"]) => {
+              if (response.currentTarget.status !== 200) {
+                localStorage.clear();
+                reject(Error(response.currentTarget.responseText));
+              } else {
+                resolve({ response });
+              }
             }
-          }
+          )
         );
       });
     },
