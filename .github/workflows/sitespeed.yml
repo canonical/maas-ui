@@ -21,6 +21,13 @@ jobs:
           maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Login to MAAS
+        run: |
+          export API_KEY=`sudo maas apikey --username=admin`
+          maas login admin http://localhost:5240/MAAS $API_KEY
+      - name: Wait for MAAS boot resources
+        shell: bash
+        run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Run sitespeed.io tests
         run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
       - name: Upload results
