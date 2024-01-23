@@ -6,65 +6,43 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
+  setup:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+      - name: Cache node modules
+
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
   lint:
-    name: Lint
+    needs: setup
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Restore node_modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Use Node.js from .nvmrc
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-      - name: Install
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn lint
-
   test:
-    name: Test
+    needs: setup
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Restore node_modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Use Node.js from .nvmrc
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-      - name: Install
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn test:ci
-
   build:
-    name: Build
-    timeout-minutes: 15
+    needs: setup
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Restore node_modules
-        id: yarn-cache
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Use Node.js from .nvmrc
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-      - name: Install
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build assets
         run: yarn build
       - name: Serve build
