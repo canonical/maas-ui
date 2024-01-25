@@ -61,7 +61,7 @@ jobs:
           path: cypress/screenshots
       - name: Create issue on failure
         # Create an issue if the job fails on push to main or 3.* branches
-        if: failure() && github.event_name == 'push' && contains(fromJson('["main", "3.*", "*cypress*"]'), env.BRANCH_NAME)
+        if: github.event_name == 'push' && contains(fromJson('["main", "3.*", "*cypress*"]'), env.BRANCH_NAME)
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
