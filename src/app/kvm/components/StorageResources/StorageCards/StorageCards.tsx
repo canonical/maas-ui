@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
+import { formatBytes } from "@canonical/maas-react-components";
 import { useListener } from "@canonical/react-components/dist/hooks";
 
 import { COLOURS } from "@/app/base/constants";
@@ -8,7 +9,6 @@ import StoragePopover from "@/app/kvm/components/StorageColumn/StoragePopover";
 import type { KVMStoragePoolResources } from "@/app/kvm/types";
 import { calcFreePoolStorage, getSortedPoolsArray } from "@/app/kvm/utils";
 import type { Pod } from "@/app/store/pod/types";
-import { formatBytes } from "@/app/utils";
 
 type Props = {
   defaultPoolId?: Pod["default_storage_pool"];
@@ -58,15 +58,17 @@ const StorageCards = ({ defaultPoolId, pools }: Props): JSX.Element | null => {
         const allocatedWidth = (pool.allocated_tracked / pool.total) * 100;
         const otherWidth =
           allocatedWidth + (pool.allocated_other / pool.total) * 100;
-        const total = formatBytes(pool.total, "B");
+        const total = formatBytes({ value: pool.total, unit: "B" });
         const allocated = formatBytes(
-          pool.allocated_tracked + pool.allocated_other,
-          "B",
+          { value: pool.allocated_tracked + pool.allocated_other, unit: "B" },
           { convertTo: total.unit }
         );
-        const free = formatBytes(calcFreePoolStorage(pool), "B", {
-          convertTo: total.unit,
-        });
+        const free = formatBytes(
+          { value: calcFreePoolStorage(pool), unit: "B" },
+          {
+            convertTo: total.unit,
+          }
+        );
 
         return (
           <StoragePopover

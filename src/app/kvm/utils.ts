@@ -1,10 +1,11 @@
+import { formatBytes } from "@canonical/maas-react-components";
+
 import { KVMSidePanelViews } from "./constants";
 import type { KVMStoragePoolResource, KVMStoragePoolResources } from "./types";
 
 import type { SidePanelContent } from "@/app/base/side-panel-context";
 import type { Pod } from "@/app/store/pod/types";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
-import { formatBytes } from "@/app/utils";
 
 /**
  * Returns a string with the formatted byte value and unit, e.g 1024 => "1KiB"
@@ -13,7 +14,7 @@ import { formatBytes } from "@/app/utils";
  * @returns formatted memory string with value and unit
  */
 export const memoryWithUnit = (memory: number): string => {
-  const formatted = formatBytes(memory, "B", { binary: true });
+  const formatted = formatBytes({ value: memory, unit: "B" }, { binary: true });
   return `${formatted.value}${formatted.unit}`;
 };
 

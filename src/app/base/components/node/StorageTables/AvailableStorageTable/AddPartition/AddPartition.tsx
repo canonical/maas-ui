@@ -1,3 +1,4 @@
+import { formatBytes } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -13,7 +14,6 @@ import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import type { Disk } from "@/app/store/types/node";
-import { formatBytes } from "@/app/utils";
 
 export type AddPartitionValues = {
   fstype?: string;
@@ -43,16 +43,22 @@ const generateSchema = (availableSize: number) =>
       .test("enoughSpace", "Not enough space", function test() {
         const values: AddPartitionValues = this.parent;
         const { partitionSize, unit } = values;
-        const sizeInBytes = formatBytes(partitionSize, unit, {
-          convertTo: "B",
-          roundFunc: "floor",
-        }).value;
+        const sizeInBytes = formatBytes(
+          { value: partitionSize, unit },
+          {
+            convertTo: "B",
+            roundFunc: "floor",
+          }
+        ).value;
 
         if (sizeInBytes < MIN_PARTITION_SIZE) {
-          const min = formatBytes(MIN_PARTITION_SIZE, "B", {
-            convertTo: unit,
-            roundFunc: "floor",
-          }).value;
+          const min = formatBytes(
+            { value: MIN_PARTITION_SIZE, unit: "B" },
+            {
+              convertTo: unit,
+              roundFunc: "floor",
+            }
+          ).value;
           return this.createError({
             message: `At least ${min}${unit} is required to partition this disk`,
             path: "partitionSize",
@@ -60,10 +66,13 @@ const generateSchema = (availableSize: number) =>
         }
 
         if (sizeInBytes > availableSize) {
-          const max = formatBytes(availableSize, "B", {
-            convertTo: unit,
-            roundFunc: "floor",
-          }).value;
+          const max = formatBytes(
+            { value: availableSize, unit: "B" },
+            {
+              convertTo: unit,
+              roundFunc: "floor",
+            }
+          ).value;
           return this.createError({
             message: `Only ${max}${unit} available in this disk`,
             path: "partitionSize",
@@ -107,10 +116,13 @@ export const AddPartition = ({
           fstype: "",
           mountOptions: "",
           mountPoint: "",
-          partitionSize: formatBytes(disk.available_size, "B", {
-            convertTo: "GB",
-            roundFunc: "floor",
-          }).value,
+          partitionSize: formatBytes(
+            { value: disk.available_size, unit: "B" },
+            {
+              convertTo: "GB",
+              roundFunc: "floor",
+            }
+          ).value,
           unit: "GB",
         }}
         onCancel={closeExpanded}
@@ -124,9 +136,12 @@ export const AddPartition = ({
           const { fstype, mountOptions, mountPoint, partitionSize, unit } =
             values;
           // Convert size into bytes before dispatching action
-          const size = formatBytes(partitionSize, unit, {
-            convertTo: "B",
-          })?.value;
+          const size = formatBytes(
+            { value: partitionSize, unit },
+            {
+              convertTo: "B",
+            }
+          )?.value;
           const params = {
             blockId: disk.id,
             partitionSize: size,

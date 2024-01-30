@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { formatBytes } from "@canonical/maas-react-components";
 import { Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
@@ -11,7 +12,7 @@ import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import type { NodeNumaNode } from "@/app/store/types/node";
-import { formatBytes, getRanges } from "@/app/utils";
+import { getRanges } from "@/app/utils";
 
 type Props = {
   isLast?: boolean;
@@ -50,11 +51,14 @@ const NumaCardDetails = ({
     (iface) => iface.numa_node === numaNode.index
   );
   const coresRanges = getRanges(numaNode.cores).join(", ");
-  const formattedMemory = formatBytes(numaNode.memory, "MiB", { binary: true });
-  const totalStorage = formatBytes(
-    numaDisks.reduce((acc, disk) => acc + disk.size, 0),
-    "B"
+  const formattedMemory = formatBytes(
+    { value: numaNode.memory, unit: "MiB" },
+    { binary: true }
   );
+  const totalStorage = formatBytes({
+    value: numaDisks.reduce((acc, disk) => acc + disk.size, 0),
+    unit: "B",
+  });
 
   return (
     <>

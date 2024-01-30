@@ -1,3 +1,4 @@
+import { formatBytes } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -13,7 +14,6 @@ import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
 import type { Disk } from "@/app/store/types/node";
-import { formatBytes } from "@/app/utils";
 
 export type AddLogicalVolumeValues = {
   fstype?: string;
@@ -47,16 +47,22 @@ const generateSchema = (availableSize: number) =>
       .test("enoughSpace", "Not enough space", function test() {
         const values: AddLogicalVolumeValues = this.parent;
         const { size, unit } = values;
-        const sizeInBytes = formatBytes(size, unit, {
-          convertTo: "B",
-          roundFunc: "floor",
-        }).value;
+        const sizeInBytes = formatBytes(
+          { value: size, unit: unit },
+          {
+            convertTo: "B",
+            roundFunc: "floor",
+          }
+        ).value;
 
         if (sizeInBytes < MIN_PARTITION_SIZE) {
-          const min = formatBytes(MIN_PARTITION_SIZE, "B", {
-            convertTo: unit,
-            roundFunc: "floor",
-          }).value;
+          const min = formatBytes(
+            { value: MIN_PARTITION_SIZE, unit: "B" },
+            {
+              convertTo: unit,
+              roundFunc: "floor",
+            }
+          ).value;
           return this.createError({
             message: `At least ${min}${unit} is required to add a logical volume`,
             path: "size",
@@ -64,10 +70,13 @@ const generateSchema = (availableSize: number) =>
         }
 
         if (sizeInBytes > availableSize) {
-          const max = formatBytes(availableSize, "B", {
-            convertTo: unit,
-            roundFunc: "floor",
-          }).value;
+          const max = formatBytes(
+            { value: availableSize, unit: "B" },
+            {
+              convertTo: unit,
+              roundFunc: "floor",
+            }
+          ).value;
           return this.createError({
             message: `Only ${max}${unit} available in this volume group`,
             path: "size",
@@ -114,10 +123,13 @@ export const AddLogicalVolume = ({
           mountOptions: "",
           mountPoint: "",
           name: initialName,
-          size: formatBytes(disk.available_size, "B", {
-            convertTo: "GB",
-            roundFunc: "floor",
-          }).value,
+          size: formatBytes(
+            { value: disk.available_size, unit: "B" },
+            {
+              convertTo: "GB",
+              roundFunc: "floor",
+            }
+          ).value,
           tags: [],
           unit: "GB",
         }}
@@ -131,9 +143,12 @@ export const AddLogicalVolume = ({
           const { fstype, mountOptions, mountPoint, name, size, tags, unit } =
             values;
           // Convert size into bytes before dispatching action
-          const convertedSize = formatBytes(size, unit, {
-            convertTo: "B",
-          })?.value;
+          const convertedSize = formatBytes(
+            { value: size, unit: unit },
+            {
+              convertTo: "B",
+            }
+          )?.value;
           const params = {
             name,
             size: convertedSize,

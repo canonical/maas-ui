@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { formatBytes } from "@canonical/maas-react-components";
 import {
   NotificationSeverity,
   Spinner,
@@ -46,8 +47,7 @@ import { actions as vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { actions as zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
-import { arrayFromRangesString, formatBytes, getRanges } from "@/app/utils";
-import type { Byte } from "@/app/utils/formatBytes";
+import { arrayFromRangesString, getRanges } from "@/app/utils";
 
 export type Disk = {
   location: string;
@@ -245,22 +245,27 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
     const available = {
       cores: availableCores,
       hugepages: availableHugepages,
-      memory: formatBytes(availableGeneral + availableHugepages, "B", {
-        binary: true,
-        convertTo: "MiB",
-      }).value,
+      memory: formatBytes(
+        { value: availableGeneral + availableHugepages, unit: "B" },
+        {
+          binary: true,
+          convertTo: "MiB",
+        }
+      ).value,
       pinnedCores: getCoreIndices(pod, "free"),
       storage:
-        pod.storage_pools?.reduce<Record<ResourcePool["name"], Byte["value"]>>(
-          (available, pool) => {
-            available[pool.name] = formatBytes(pool.available, "B", {
+        pod.storage_pools?.reduce<
+          Record<ResourcePool["name"], ReturnType<typeof formatBytes>["value"]>
+        >((available, pool) => {
+          available[pool.name] = formatBytes(
+            { value: pool.available, unit: "B" },
+            {
               convertTo: "GB",
               roundFunc: "floor",
-            }).value;
-            return available;
-          },
-          {}
-        ) || [],
+            }
+          ).value;
+          return available;
+        }, {}) || [],
     };
     const defaultPoolLocation = getDefaultPoolLocation(pod);
     const defaults = {

@@ -5,7 +5,6 @@ export { breakLines } from "./breakLines";
 export { capitaliseFirst } from "./capitaliseFirst";
 export { chunk } from "./chunk";
 export { extractPowerType } from "./extractPowerType";
-export { formatBytes } from "./formatBytes";
 export { formatErrors } from "./formatErrors";
 export { formatMacAddress } from "./formatMacAddress";
 export { formatSpeedUnits } from "./formatSpeedUnits";
