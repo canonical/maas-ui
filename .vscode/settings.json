@@ -1,6 +1,0 @@
-{
-  "cSpell.words": ["lifecycles", "unmount"],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }
-}
