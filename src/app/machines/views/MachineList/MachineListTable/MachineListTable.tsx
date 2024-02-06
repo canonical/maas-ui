@@ -4,7 +4,6 @@ import { MainTable } from "@canonical/react-components";
 import classNames from "classnames";
 
 import AllCheckbox from "./AllCheckbox";
-import MachineListDisplayCount from "./MachineListDisplayCount";
 import MachineListPagination from "./MachineListPagination";
 import MachineListSelectedCount from "./MachineListSelectedCount/MachineListSelectedCount";
 import PageSizeSelect from "./PageSizeSelect";
@@ -15,6 +14,7 @@ import {
 } from "./tableModels";
 import type { MachineListTableProps } from "./types";
 
+import ListDisplayCount from "@/app/base/components/ListDisplayCount";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useFetchActions, useSendAnalytics } from "@/app/base/hooks";
 import { SortDirection } from "@/app/base/types";
@@ -427,10 +427,11 @@ export const MachineListTable = ({
       {machineCount ? (
         <div className="u-flex--between u-flex--align-baseline u-flex--wrap">
           <hr />
-          <MachineListDisplayCount
+          <ListDisplayCount
+            count={machineCount}
             currentPage={currentPage}
-            machineCount={machineCount}
             pageSize={pageSize}
+            type="machine"
           />
           <span className="u-flex--end">
             <MachineListPagination
@@ -449,9 +450,9 @@ export const MachineListTable = ({
               />
             ) : null}
           </span>
-          <hr />
         </div>
       ) : null}
+      <hr />
       <MainTable
         aria-describedby="machine-list-description"
         aria-label={

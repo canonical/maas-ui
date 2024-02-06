@@ -91,6 +91,7 @@
 @import "@/app/base/components/LabelledList";
 @import "@/app/base/components/Login";
 @import "@/app/base/components/MachineSelectTable";
+@import "@/app/base/components/ListDisplayCount";
 @import "@/app/base/components/node/HardwareCard";
 @import "@/app/base/components/node/networking/NetworkTable";
 @import "@/app/base/components/node/NodeDevices";
@@ -241,13 +242,12 @@
 @import "@/app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "@/app/machines/views/MachineList";
 @import "@/app/machines/views/MachineList/MachineListControls";
-@import "@/app/machines/views/MachineList/MachineListTable/MachineListDisplayCount";
 @import "@/app/machines/views/MachineList/MachineListTable/MachineListPagination";
 @include CloneFormFields;
 @include CloneResults;
 @include MachineList;
 @include MachineListControls;
-@include MachineListDisplayCount;
+@include ListDisplayCount;
 @include MachineListPagination;
 @include MachineSummary;
 @include MarkBrokenFormFields;

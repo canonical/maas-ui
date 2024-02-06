@@ -14,6 +14,8 @@ export type Props = {
   isNotificationListHidden?: boolean;
 } & HTMLProps<HTMLDivElement>;
 
+export const MAIN_CONTENT_SECTION_ID = "main-content-section";
+
 const MainContentSection = ({
   children,
   header,
@@ -23,7 +25,7 @@ const MainContentSection = ({
 }: Props): JSX.Element => {
   const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
-    <div {...props} id="main-content-section">
+    <div {...props} id={MAIN_CONTENT_SECTION_ID}>
       <div>
         {header ? (
           <header aria-label="main content" className="row">

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Col, Link, Row, Select, Spinner } from "@canonical/react-components";
+import { Link, Select, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
 import EventLogsTable from "./EventLogsTable";
 
 import ArrowPagination from "@/app/base/components/ArrowPagination";
+import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/MainContentSection/MainContentSection";
 import SearchBox from "@/app/base/components/SearchBox";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { actions as eventActions } from "@/app/store/event";
@@ -142,68 +143,53 @@ const EventLogs = ({ node }: Props): JSX.Element => {
 
   return (
     <div aria-label={Label.Title}>
-      <Row className="u-nudge-down--small">
-        <Col size={6}>
+      <div className="u-flex">
+        <div className="u-flex--grow">
           <SearchBox
             onChange={setSearchText}
             placeholder="Search event logs"
             value={searchText}
           />
-        </Col>
-        <Col className="u-align--right" size={6}>
-          Show
-          <Select
-            className="u-auto-min-width"
-            defaultValue={pageSize.toString()}
-            name="page-size"
-            onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
-              setPageSize(Number(evt.target.value));
-            }}
-            options={[
-              {
-                value: "25",
-                label: "25",
-              },
-              {
-                value: "50",
-                label: "50",
-              },
-              {
-                value: "100",
-                label: "100",
-              },
-              {
-                value: "200",
-                label: "200",
-              },
-            ]}
-            wrapperClassName="u-display--inline-block u-nudge-right"
-          />
-          <ArrowPagination
-            className="u-display--inline-block u-nudge-right"
-            currentPage={currentPage}
-            itemCount={unpaginatedEvents.length}
-            pageSize={pageSize}
-            setCurrentPage={setCurrentPage}
-          />
-        </Col>
-      </Row>
+        </div>
+        <ArrowPagination
+          className="u-display--inline-block u-nudge-right"
+          currentPage={currentPage}
+          itemCount={unpaginatedEvents.length}
+          pageSize={pageSize}
+          setCurrentPage={setCurrentPage}
+        />
+        <Select
+          defaultValue={pageSize.toString()}
+          name="page-size"
+          onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
+            setPageSize(Number(evt.target.value));
+          }}
+          options={[
+            {
+              value: "25",
+              label: "25/page",
+            },
+            {
+              value: "50",
+              label: "50/page",
+            },
+            {
+              value: "100",
+              label: "100/page",
+            },
+            {
+              value: "200",
+              label: "200/page",
+            },
+          ]}
+          wrapperClassName="u-display--inline-block u-nudge-right"
+        />
+      </div>
       <hr />
       <EventLogsTable events={paginatedEvents} />
       {loading && <Spinner text="Loading..." />}
       {showBackToTop && (
-        <Link
-          data-testid="backToTop"
-          onClick={(evt: React.MouseEvent<HTMLAnchorElement>) => {
-            evt.preventDefault();
-            window.scrollTo({
-              top: 0,
-              left: 0,
-              behavior: "smooth",
-            });
-          }}
-          top
-        >
+        <Link data-testid="backToTop" href={`#${MAIN_CONTENT_SECTION_ID}`} top>
           {Label.BackToTop}
         </Link>
       )}
