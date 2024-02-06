@@ -31,6 +31,7 @@ it("displays the searchbox and group select when isDetails is false", () => {
       filter={TagSearchFilter.All}
       isDetails={false}
       onDelete={vi.fn()}
+      onUpdate={vi.fn()}
       searchText=""
       setFilter={vi.fn()}
       setSearchText={vi.fn()}
@@ -73,6 +74,7 @@ it("displays edit and delete buttons, and a return link when isDetails is true",
             filter={TagSearchFilter.All}
             isDetails={true}
             onDelete={vi.fn()}
+            onUpdate={vi.fn()}
             searchText=""
             setFilter={vi.fn()}
             setSearchText={vi.fn()}
@@ -100,7 +102,7 @@ it("displays edit and delete buttons, and a return link when isDetails is true",
     screen.getByRole("button", { name: Label.DeleteButton })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("link", { name: Label.EditButton })
+    screen.getByRole("button", { name: Label.EditButton })
   ).toBeInTheDocument();
 });
 
@@ -111,6 +113,7 @@ it("can call a function to display the add tag form", async () => {
       filter={TagSearchFilter.All}
       isDetails={false}
       onDelete={vi.fn()}
+      onUpdate={vi.fn()}
       searchText=""
       setFilter={vi.fn()}
       setSearchText={vi.fn()}
@@ -134,6 +137,7 @@ it("displays the default title", () => {
       filter={TagSearchFilter.All}
       isDetails={false}
       onDelete={vi.fn()}
+      onUpdate={vi.fn()}
       searchText=""
       setFilter={vi.fn()}
       setSearchText={vi.fn()}
@@ -157,6 +161,7 @@ it("can update the filter", async () => {
       filter={TagSearchFilter.All}
       isDetails={false}
       onDelete={vi.fn()}
+      onUpdate={vi.fn()}
       searchText=""
       setFilter={setFilter}
       setSearchText={vi.fn()}
@@ -172,7 +177,8 @@ it("can update the filter", async () => {
   expect(setFilter).toHaveBeenCalledWith(TagSearchFilter.Manual);
 });
 
-it("can go to the tag edit page", async () => {
+it("triggers onUpdate with the correct tag ID", async () => {
+  const onUpdate = vi.fn();
   const tag = tagFactory({ id: 1 });
   const state = rootStateFactory({
     tag: tagStateFactory({
@@ -189,6 +195,7 @@ it("can go to the tag edit page", async () => {
             filter={TagSearchFilter.All}
             isDetails={true}
             onDelete={vi.fn()}
+            onUpdate={onUpdate}
             searchText=""
             setFilter={vi.fn()}
             setSearchText={vi.fn()}
@@ -200,6 +207,6 @@ it("can go to the tag edit page", async () => {
     </Routes>,
     { route: urls.tags.tag.index({ id: 1 }), state }
   );
-  await userEvent.click(screen.getByRole("link", { name: "Edit" }));
-  expect(window.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
+  await userEvent.click(screen.getByRole("button", { name: "Edit" }));
+  expect(onUpdate).toBeCalledWith(1);
 });
