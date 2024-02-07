@@ -14,9 +14,3 @@ export type TagSidePanelContent =
   | SidePanelContent<HeaderViews["UpdateTag"], { id: Tag[TagMeta.PK] }>;
 
 export type TagSetSidePanelContent = SetSidePanelContent<TagSidePanelContent>;
-
-export enum TagViewState {
-  Creating = "creating",
-  Deleting = "deleting",
-  Updating = "updating",
-}

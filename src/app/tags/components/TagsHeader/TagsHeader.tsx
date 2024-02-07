@@ -13,7 +13,6 @@ import tagSelectors, { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import { TagMeta } from "@/app/store/tag/types";
 import { TagSidePanelViews } from "@/app/tags/constants";
-import { TagViewState } from "@/app/tags/types";
 
 export type Props = {
   filter: TagSearchFilter;
@@ -22,8 +21,8 @@ export type Props = {
   setSearchText: (searchText: string) => void;
   isDetails: boolean;
   setSidePanelContent: SetSidePanelContent;
-  tagViewState?: TagViewState | null;
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
+  onUpdate: (id: Tag[TagMeta.PK]) => void;
 };
 
 export enum Label {
@@ -43,11 +42,9 @@ export const TagsHeader = ({
   setSearchText,
   isDetails,
   setSidePanelContent,
-  tagViewState,
   onDelete,
+  onUpdate,
 }: Props): JSX.Element => {
-  // Don't show the buttons when any of the forms are visible.
-  const showButtons = !tagViewState;
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -62,71 +59,56 @@ export const TagsHeader = ({
         </Link>
       ) : null}
       <MainToolbar.Controls>
-        {tagViewState === TagViewState.Updating ? null : (
+        {isDetails && tag ? (
           <>
-            {isDetails && tag ? (
-              <>
-                {showButtons ? (
-                  <>
-                    <Button
-                      element={Link}
-                      hasIcon
-                      state={{ canGoBack: true }}
-                      to={{
-                        pathname: urls.tags.tag.update({ id: tag.id }),
-                      }}
-                    >
-                      <Icon name="edit" /> <span>{Label.EditButton}</span>
-                    </Button>
-                    <Button
-                      appearance="negative"
-                      hasIcon
-                      onClick={() => onDelete(tag[TagMeta.PK], true)}
-                    >
-                      <Icon className="is-light" name="delete" />{" "}
-                      <span>{Label.DeleteButton}</span>
-                    </Button>
-                  </>
-                ) : null}
-              </>
-            ) : (
-              <>
-                <SearchBox
-                  externallyControlled
-                  onChange={setSearchText}
-                  value={searchText}
-                />
-                <SegmentedControl
-                  aria-label="tag filter"
-                  onSelect={setFilter}
-                  options={[
-                    {
-                      label: Label.All,
-                      value: TagSearchFilter.All,
-                    },
-                    {
-                      label: Label.Manual,
-                      value: TagSearchFilter.Manual,
-                    },
-                    {
-                      label: Label.Auto,
-                      value: TagSearchFilter.Auto,
-                    },
-                  ]}
-                  selected={filter}
-                />
-              </>
-            )}
+            <Button hasIcon onClick={() => onUpdate(tag[TagMeta.PK])}>
+              <Icon name="edit" /> <span>{Label.EditButton}</span>
+            </Button>
             <Button
-              appearance="positive"
-              onClick={() =>
-                setSidePanelContent({ view: TagSidePanelViews.AddTag })
-              }
+              appearance="negative"
+              hasIcon
+              onClick={() => onDelete(tag[TagMeta.PK], true)}
             >
-              {Label.CreateButton}
+              <Icon className="is-light" name="delete" />{" "}
+              <span>{Label.DeleteButton}</span>
             </Button>
           </>
+        ) : (
+          <>
+            <SearchBox
+              externallyControlled
+              onChange={setSearchText}
+              value={searchText}
+            />
+            <SegmentedControl
+              aria-label="tag filter"
+              onSelect={setFilter}
+              options={[
+                {
+                  label: Label.All,
+                  value: TagSearchFilter.All,
+                },
+                {
+                  label: Label.Manual,
+                  value: TagSearchFilter.Manual,
+                },
+                {
+                  label: Label.Auto,
+                  value: TagSearchFilter.Auto,
+                },
+              ]}
+              selected={filter}
+            />
+          </>
         )}
+        <Button
+          appearance="positive"
+          onClick={() =>
+            setSidePanelContent({ view: TagSidePanelViews.AddTag })
+          }
+        >
+          {Label.CreateButton}
+        </Button>
       </MainToolbar.Controls>
     </MainToolbar>
   );

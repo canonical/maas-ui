@@ -78,7 +78,7 @@ describe("Tags", () => {
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: TagDetailsLabel.EditButton })
+      screen.getByRole("button", { name: TagDetailsLabel.EditButton })
     ).toBeInTheDocument();
   });
 });

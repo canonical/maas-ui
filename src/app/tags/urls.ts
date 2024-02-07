@@ -8,7 +8,6 @@ const urls = {
   tag: {
     index: withId("/tag/:id"),
     machines: withId("/tag/:id/machines"),
-    update: withId("/tag/:id/edit"),
   },
 } as const;
 
