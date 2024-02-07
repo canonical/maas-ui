@@ -1,7 +1,6 @@
-import { Meter } from "@canonical/maas-react-components";
+import { Meter, formatBytes } from "@canonical/maas-react-components";
 
 import { COLOURS } from "@/app/base/constants";
-import { formatBytes } from "@/app/utils";
 
 type Props = {
   allocated: number;
@@ -24,15 +23,18 @@ const KVMResourceMeter = ({
 }: Props): JSX.Element | null => {
   const total = allocated + free + other;
   const { value: formattedTotal, unit: formattedUnit } = unit
-    ? formatBytes(total, unit, { binary: binaryUnit, decimals: 1 })
+    ? formatBytes({ value: total, unit }, { binary: binaryUnit, decimals: 1 })
     : { value: Number(total.toFixed(1)), unit: "" };
   const formatResource = (resource: number) =>
     unit
-      ? formatBytes(resource, unit, {
-          binary: binaryUnit,
-          convertTo: formattedUnit,
-          decimals: 1,
-        }).value
+      ? formatBytes(
+          { value: resource, unit },
+          {
+            binary: binaryUnit,
+            convertTo: formattedUnit,
+            decimals: 1,
+          }
+        ).value
       : Number(resource.toFixed(1));
   const formattedAllocated = formatResource(allocated);
   const formattedFree = formatResource(free);

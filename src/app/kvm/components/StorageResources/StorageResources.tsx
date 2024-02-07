@@ -1,3 +1,4 @@
+import { formatBytes } from "@canonical/maas-react-components";
 import classNames from "classnames";
 
 import StorageCards from "./StorageCards";
@@ -5,7 +6,6 @@ import StorageMeter from "./StorageMeter";
 
 import type { KVMStoragePoolResources } from "@/app/kvm/types";
 import type { Pod } from "@/app/store/pod/types";
-import { formatBytes } from "@/app/utils";
 
 type Props = {
   allocated: number; // B
@@ -22,8 +22,11 @@ const StorageResources = ({
   other = 0,
   pools,
 }: Props): JSX.Element => {
-  const freeStorage = formatBytes(free, "B");
-  const totalStorage = formatBytes(allocated + other + free, "B");
+  const freeStorage = formatBytes({ value: free, unit: "B" });
+  const totalStorage = formatBytes({
+    value: allocated + other + free,
+    unit: "B",
+  });
   const singlePool = Object.keys(pools).length === 1;
   const noPool = Object.keys(pools).length === 0;
 

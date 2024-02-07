@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
+import { formatBytes } from "@canonical/maas-react-components";
 import type { TextareaProps } from "@canonical/react-components";
 import { Icon, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
@@ -9,7 +10,6 @@ import { useDropzone } from "react-dropzone";
 import FormikField from "@/app/base/components/FormikField";
 import { useId } from "@/app/base/hooks/base";
 import type { AnyObject } from "@/app/base/types";
-import { formatBytes } from "@/app/utils";
 
 type Props<V> = {
   label: string;
@@ -53,7 +53,7 @@ export const UploadTextArea = <V extends AnyObject>({
     }
     const file = files[0];
     if (file.size > maxSize) {
-      const byteSize = formatBytes(maxSize, "B");
+      const byteSize = formatBytes({ value: maxSize, unit: "B" });
       setFileErrors(
         `File cannot be larger than ${byteSize.value}${byteSize.unit}.`
       );

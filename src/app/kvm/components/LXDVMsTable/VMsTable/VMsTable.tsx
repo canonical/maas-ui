@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { formatBytes } from "@canonical/maas-react-components";
 import type { ValueOf } from "@canonical/react-components";
 import { MainTable, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
@@ -22,11 +23,7 @@ import type { Pod } from "@/app/store/pod/types";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import { getTagNamesForIds } from "@/app/store/tag/utils";
-import {
-  generateEmptyStateMsg,
-  formatBytes,
-  getTableStatus,
-} from "@/app/utils";
+import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
 
 export enum Label {
   Name = "Name",
@@ -170,8 +167,11 @@ const generateRows = ({
   callId?: string | null;
 }) =>
   vms.map((vm) => {
-    const memory = formatBytes(vm.memory, "GiB", { binary: true });
-    const storage = formatBytes(vm.storage, "GB");
+    const memory = formatBytes(
+      { value: vm.memory, unit: "GiB" },
+      { binary: true }
+    );
+    const storage = formatBytes({ value: vm.storage, unit: "GB" });
     const resources = getResources(vm);
     const tagString = getTagNamesForIds(vm.tags, tags).join(", ");
     return generateRow(

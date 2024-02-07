@@ -1,3 +1,5 @@
+import { formatBytes } from "@canonical/maas-react-components";
+
 import type { Controller } from "@/app/store/controller/types";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import type { Machine } from "@/app/store/machine/types";
@@ -5,7 +7,7 @@ import { StorageLayout, DiskTypes } from "@/app/store/types/enum";
 import type { Disk, Filesystem, Partition } from "@/app/store/types/node";
 import { NodeStatusCode } from "@/app/store/types/node";
 import { nodeIsMachine } from "@/app/store/utils/node/base";
-import { formatBytes, getNextName } from "@/app/utils";
+import { getNextName } from "@/app/utils";
 
 /**
  * Returns whether a disk can be deleted.
@@ -249,7 +251,8 @@ export const diskAvailable = (disk: Disk | null): boolean => {
  * @returns formatted size string.
  */
 export const formatSize = (size: number | null): string => {
-  const formatted = !!size && formatBytes(size, "B", { roundFunc: "floor" });
+  const formatted =
+    !!size && formatBytes({ value: size, unit: "B" }, { roundFunc: "floor" });
   return formatted ? `${formatted.value} ${formatted.unit}` : "—";
 };
 

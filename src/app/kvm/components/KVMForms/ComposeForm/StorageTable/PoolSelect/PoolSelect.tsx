@@ -1,4 +1,4 @@
-import { Meter } from "@canonical/maas-react-components";
+import { Meter, formatBytes } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import { getSortedPoolsArray } from "@/app/kvm/utils";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod, PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import { formatBytes } from "@/app/utils";
 
 type RequestMap = { [location: string]: number };
 
@@ -23,10 +22,13 @@ type Props = {
 };
 
 const byteDisplay = (bytes: number, roundDown = false): number =>
-  formatBytes(bytes, "B", {
-    convertTo: "GB",
-    roundFunc: roundDown ? "floor" : "round",
-  }).value;
+  formatBytes(
+    { value: bytes, unit: "B" },
+    {
+      convertTo: "GB",
+      roundFunc: roundDown ? "floor" : "round",
+    }
+  ).value;
 
 const generateDropdownContent = (
   pod: PodDetails,
@@ -68,19 +70,26 @@ const generateDropdownContent = (
 
         // Convert requests into bytes
         const requested = requests[name]
-          ? formatBytes(requests[name], "GB", { convertTo: "B" }).value
+          ? formatBytes(
+              { value: requests[name], unit: "GB" },
+              { convertTo: "B" }
+            ).value
           : 0;
         const pendingRequest = isSelected
           ? 0
-          : formatBytes(disk.size, "GB", { convertTo: "B" }).value;
+          : formatBytes({ value: disk.size, unit: "GB" }, { convertTo: "B" })
+              .value;
         // Free amount is the actual space available in the pool, less any
         // existing storage requests (including the current request).
         const freeBytes =
           pool.total - pool.allocated_tracked - pool.allocated_other;
-        const free = formatBytes(freeBytes - requested - pendingRequest, "B", {
-          convertTo: "B",
-          roundFunc: "floor",
-        }).value;
+        const free = formatBytes(
+          { value: freeBytes - requested - pendingRequest, unit: "B" },
+          {
+            convertTo: "B",
+            roundFunc: "floor",
+          }
+        ).value;
 
         return (
           <button

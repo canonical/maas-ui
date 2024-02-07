@@ -1,14 +1,13 @@
 import type { ReactNode } from "react";
 import { Fragment } from "react";
 
-import { Meter } from "@canonical/maas-react-components";
+import { Meter, formatBytes } from "@canonical/maas-react-components";
 
 import Popover from "@/app/base/components/Popover";
 import { COLOURS } from "@/app/base/constants";
 import type { KVMStoragePoolResources } from "@/app/kvm/types";
 import { getSortedPoolsArray } from "@/app/kvm/utils";
 import type { Pod } from "@/app/store/pod/types";
-import { formatBytes } from "@/app/utils";
 
 type Props = {
   children: ReactNode;
@@ -52,10 +51,16 @@ const StoragePopover = ({
             const isDefault = "id" in pool && pool.id === defaultPoolId;
             const freeBytes =
               pool.total - pool.allocated_tracked - pool.allocated_other;
-            const total = formatBytes(pool.total, "B");
-            const allocated = formatBytes(pool.allocated_tracked, "B");
-            const free = formatBytes(freeBytes, "B");
-            const other = formatBytes(pool.allocated_other, "B");
+            const total = formatBytes({ value: pool.total, unit: "B" });
+            const allocated = formatBytes({
+              value: pool.allocated_tracked,
+              unit: "B",
+            });
+            const free = formatBytes({ value: freeBytes, unit: "B" });
+            const other = formatBytes({
+              value: pool.allocated_other,
+              unit: "B",
+            });
 
             return (
               <Fragment key={`storage-pool-${name}`}>
