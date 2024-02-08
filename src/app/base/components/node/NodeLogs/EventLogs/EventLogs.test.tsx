@@ -6,6 +6,7 @@ import type { Mock } from "vitest";
 import EventLogs, { Label } from "./EventLogs";
 
 import { Labels as ArrowPaginationLabels } from "@/app/base/components/ArrowPagination";
+import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/MainContentSection";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import {
@@ -22,6 +23,7 @@ import {
   screen,
   within,
   renderWithMockStore,
+  renderWithBrowserRouter,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -314,11 +316,12 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs node={machine} />, {
+    renderWithBrowserRouter(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "50");
+    expect(window.location.hash).toBe("");
     await userEvent.click(screen.getByRole("link", { name: Label.BackToTop }));
-    expect(scrollToSpy).toHaveBeenCalled();
+    expect(window.location.hash).toBe(`#${MAIN_CONTENT_SECTION_ID}`);
   });
 });

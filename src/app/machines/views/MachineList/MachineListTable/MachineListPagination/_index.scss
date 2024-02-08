@@ -1,5 +1,5 @@
 @mixin MachineListPagination {
-  .p-pagination--items {
+  .p-pagination--machines .p-pagination--items {
     padding-bottom: $spv--small;
 
     .p-button {
