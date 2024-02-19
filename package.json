@@ -138,7 +138,7 @@
     "formik-devtools-extension": "0.1.8",
     "http-proxy-middleware": "2.0.6",
     "immer": "10.0.2",
-    "jsdom": "22.1.0",
+    "jsdom": "24.0.0",
     "mock-socket": "9.2.1",
     "mockdate": "3.0.5",
     "nanoid": "4.0.1",
