@@ -21,4 +21,18 @@ describe("messages", () => {
     expect(items.length).toEqual(1);
     expect(items[0].message).toEqual("User added");
   });
+
+  it("can get the count of messages", () => {
+    const state = rootStateFactory({
+      message: messageStateFactory({
+        items: [
+          messageFactory({
+            message: "User added",
+          }),
+        ],
+      }),
+    });
+    const count = messages.count(state);
+    expect(count).toEqual(1);
+  });
 });

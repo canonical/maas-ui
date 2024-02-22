@@ -29,7 +29,6 @@ const PageContent = ({
   children,
   header,
   sidebar,
-  isNotificationListHidden = false,
   sidePanelContent,
   sidePanelTitle,
   ...props
@@ -70,11 +69,7 @@ const PageContent = ({
           </div>
         ) : null}
         <div className="l-main__content" id="main-content">
-          <MainContentSection
-            header={header}
-            isNotificationListHidden={isNotificationListHidden}
-            {...props}
-          >
+          <MainContentSection header={header} {...props}>
             <ErrorBoundary>{children}</ErrorBoundary>
           </MainContentSection>
         </div>

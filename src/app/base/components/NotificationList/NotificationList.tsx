@@ -2,8 +2,8 @@ import {
   Notification,
   NotificationSeverity,
 } from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import type { Dispatch } from "redux";
 
 import NotificationGroup from "@/app/base/components/NotificationGroup";
 import NotificationGroupNotification from "@/app/base/components/NotificationGroup/Notification";
@@ -14,21 +14,28 @@ import type { Message } from "@/app/store/message/types";
 import { actions as notificationActions } from "@/app/store/notification";
 import notificationSelectors from "@/app/store/notification/selectors";
 
-const generateMessages = (messages: Message[], dispatch: Dispatch) =>
-  messages.map(({ id, message, severity, temporary }) => (
-    <Notification
-      data-testid="message"
-      key={id}
-      onDismiss={() => dispatch(messageActions.remove(id))}
-      severity={severity}
-      timeout={temporary ? 5000 : undefined}
-    >
-      {message}
-    </Notification>
-  ));
+const Messages = ({ messages }: { messages: Message[] }) => {
+  const dispatch = useDispatch();
 
-const NotificationList = (): JSX.Element => {
-  const messages = useSelector(messageSelectors.all);
+  return (
+    <>
+      {messages.map(({ id, message, severity, temporary }) => (
+        <Notification
+          data-testid="message"
+          key={id}
+          onDismiss={() => dispatch(messageActions.remove(id))}
+          severity={severity}
+          timeout={temporary ? 5000 : undefined}
+        >
+          {message}
+        </Notification>
+      ))}
+    </>
+  );
+};
+
+export const useNotifications = () => {
+  useFetchActions([notificationActions.fetch]);
 
   const notifications = {
     warnings: {
@@ -49,12 +56,18 @@ const NotificationList = (): JSX.Element => {
     },
   };
 
-  const dispatch = useDispatch();
+  return notifications;
+};
 
-  useFetchActions([notificationActions.fetch]);
+const NotificationList = (): JSX.Element => {
+  const notifications = useNotifications();
+  const messages = useSelector(messageSelectors.all);
+  const messageCount = useSelector(messageSelectors.count);
+  const notificationCount = useSelector(notificationSelectors.count);
+  const hasContent = messageCount > 0 || notificationCount > 0;
 
   return (
-    <>
+    <div className={classNames({ "u-nudge-down": hasContent })}>
       {Object.values(notifications).map((group) => {
         const items = group.items;
         const severity = group.severity;
@@ -77,8 +90,8 @@ const NotificationList = (): JSX.Element => {
         }
         return null;
       })}
-      {generateMessages(messages, dispatch)}
-    </>
+      <Messages messages={messages} />
+    </div>
   );
 };
 

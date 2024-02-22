@@ -208,4 +208,26 @@ describe("NotificationList", () => {
     ).not.toBeInTheDocument();
     expect(screen.queryByTestId("notification-count")).not.toBeInTheDocument();
   });
+
+  it("applies the correct className when has content", () => {
+    const notificationsWithContent = [
+      notificationFactory({
+        id: 1,
+        category: NotificationCategory.INFO,
+        message: "Informational message",
+      }),
+    ];
+    const stateWithContent = rootStateFactory({
+      notification: notificationStateFactory({
+        items: notificationsWithContent,
+      }),
+    });
+
+    const store = mockStore(stateWithContent);
+    const { container } = renderWithBrowserRouter(<NotificationList />, {
+      route: "/machines",
+      store,
+    });
+    expect(container.firstChild).toHaveClass("u-nudge-down");
+  });
 });
