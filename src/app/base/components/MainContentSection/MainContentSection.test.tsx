@@ -2,16 +2,7 @@ import MainContentSection from "./MainContentSection";
 
 import { renderWithMockStore, screen, within } from "@/testing/utils";
 
-it("renders sidebar", () => {
-  renderWithMockStore(
-    <MainContentSection header="Settings" sidebar={<div>Sidebar</div>}>
-      content
-    </MainContentSection>
-  );
-  expect(screen.getByRole("complementary")).toBeInTheDocument();
-});
-
-it("renders without a sidebar", () => {
+it("renders", () => {
   renderWithMockStore(
     <MainContentSection header="Settings">content</MainContentSection>
   );

@@ -8,6 +8,8 @@ import type { RootState } from "@/app/store/root/types";
  */
 const all = (state: RootState): Message[] => state.message.items;
 
-const messages = { all };
+const count = (state: RootState): number => state.message.items.length;
+
+const messages = { all, count };
 
 export default messages;

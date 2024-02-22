@@ -1,11 +1,8 @@
 import type { HTMLProps, ReactNode } from "react";
 
 import { Col, Row } from "@canonical/react-components";
-import type { ColSize } from "@canonical/react-components";
-import classNames from "classnames";
 
 import NotificationList from "@/app/base/components/NotificationList";
-import { COL_SIZES } from "@/app/base/constants";
 
 export type Props = {
   children?: ReactNode;
@@ -19,11 +16,8 @@ export const MAIN_CONTENT_SECTION_ID = "main-content-section";
 const MainContentSection = ({
   children,
   header,
-  sidebar,
-  isNotificationListHidden = false,
   ...props
 }: Props): JSX.Element => {
-  const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
     <div {...props} id={MAIN_CONTENT_SECTION_ID}>
       <div>
@@ -33,18 +27,8 @@ const MainContentSection = ({
           </header>
         ) : null}
         <Row>
-          {sidebar && (
-            <Col className="section__sidebar" element="aside" size={SIDEBAR}>
-              {sidebar}
-            </Col>
-          )}
-          <Col
-            className={classNames({
-              "u-nudge-down": !isNotificationListHidden,
-            })}
-            size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}
-          >
-            {!isNotificationListHidden && <NotificationList />}
+          <Col size={12}>
+            <NotificationList />
             {children}
           </Col>
         </Row>
