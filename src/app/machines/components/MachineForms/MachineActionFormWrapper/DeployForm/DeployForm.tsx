@@ -171,6 +171,7 @@ export const DeployForm = ({
       onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
+      showProcessingCount={false}
       validationSchema={DeploySchema}
     >
       <DeployFormFields />
