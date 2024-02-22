@@ -286,7 +286,6 @@ export const DeployFormFields = (): JSX.Element => {
             </Col>
           </Row>
         )}
-        <hr className="u-sv1" />
       </div>
     </>
   );
