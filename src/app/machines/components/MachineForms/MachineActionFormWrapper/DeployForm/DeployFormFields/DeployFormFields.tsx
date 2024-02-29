@@ -174,7 +174,11 @@ export const DeployFormFields = (): JSX.Element => {
                 <Input
                   checked={deployVmHost}
                   disabled={!canBeKVMHost || noImages}
-                  help="Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
+                  help={
+                    values.vmHostType === PodType.VIRSH
+                      ? "Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
+                      : undefined
+                  }
                   id="deployVmHost"
                   label={
                     <>

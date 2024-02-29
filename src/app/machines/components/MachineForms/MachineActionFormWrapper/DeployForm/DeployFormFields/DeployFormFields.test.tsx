@@ -364,6 +364,41 @@ describe("DeployFormFields", () => {
     expect(screen.getByRole("radio", { name: /libvirt/ })).toBeInTheDocument();
   });
 
+  it("displays support message only when 'virsh' is selected for KVM host type", async () => {
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+    }
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <DeployForm
+              clearSidePanelContent={vi.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const SUPPORT_MESSAGE =
+      "Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported.";
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
+    );
+    await userEvent.click(screen.getByRole("radio", { name: /libvirt/ }));
+    expect(screen.getByText(SUPPORT_MESSAGE)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("radio", { name: /LXD/ }));
+    expect(screen.queryByText(SUPPORT_MESSAGE)).not.toBeInTheDocument();
+  });
+
   it("displays a warning if user has no SSH keys", () => {
     if (state.user.auth.user) {
       state.user.auth.user.sshkeys_count = 0;
