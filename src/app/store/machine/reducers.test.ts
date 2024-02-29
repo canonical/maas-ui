@@ -418,6 +418,59 @@ describe("machine reducer", () => {
     );
   });
 
+  it("resets stale status on fetchSuccess", () => {
+    const initialState = machineStateFactory({
+      loading: false,
+      lists: {
+        [callId]: machineStateListFactory({ loaded: true, stale: true }),
+      },
+    });
+    const groups = [
+      { collapsed: true, count: 0, items: [], name: "admin", value: "admin1" },
+    ];
+    const fetchSuccessPayload = { count: 1, cur_page: 2, groups, num_pages: 3 };
+    const expectedState = {
+      lists: {
+        [callId]: {
+          ...machineStateListFactory(),
+          ...fetchSuccessPayload,
+          loaded: true,
+          loading: false,
+          stale: false,
+        },
+      },
+    };
+
+    expect(
+      reducers(initialState, actions.fetchSuccess(callId, fetchSuccessPayload))
+    ).toEqual(machineStateFactory(expectedState));
+  });
+
+  it("resets stale status on countSuccess", () => {
+    const initialState = machineStateFactory({
+      loading: false,
+      counts: {
+        [callId]: machineStateCountFactory({
+          loaded: true,
+          stale: true,
+        }),
+      },
+    });
+    expect(
+      reducers(initialState, actions.countSuccess(callId, { count: 1 }))
+    ).toEqual(
+      machineStateFactory({
+        counts: {
+          [callId]: machineStateCountFactory({
+            loaded: true,
+            stale: false,
+            count: 1,
+          }),
+        },
+      })
+    );
+  });
+
   it("updates selected machines on delete notify", () => {
     const initialState = machineStateFactory({
       selected: { items: ["abc123"] },
