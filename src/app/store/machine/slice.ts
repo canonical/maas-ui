@@ -474,6 +474,7 @@ const machineSlice = createSlice({
             ...(action.meta.callId in state.counts
               ? state.counts[action.meta.callId]
               : DEFAULT_COUNT_STATE),
+            stale: false,
             count: action.payload.count,
             loading: false,
             loaded: true,
@@ -979,6 +980,7 @@ const machineSlice = createSlice({
             });
           });
           const { payload } = action;
+          state.lists[callId].stale = false;
           state.lists[callId].count = payload.count;
           state.lists[callId].cur_page = payload.cur_page;
           state.lists[callId].groups = payload.groups.map((group) => ({

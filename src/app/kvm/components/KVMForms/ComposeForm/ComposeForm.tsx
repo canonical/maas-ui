@@ -24,6 +24,7 @@ import { actions as fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import { actions as generalActions } from "@/app/store/general";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
+import { actions as machineActions } from "@/app/store/machine";
 import { actions as messageActions } from "@/app/store/message";
 import { actions as podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
@@ -498,10 +499,12 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
               NotificationSeverity.INFORMATION
             )
           );
+          dispatch(machineActions.invalidateQueries());
           clearSidePanelContent();
         }}
         processingCount={composingPods.length}
         selectedCount={1}
+        showProcessingCount={false}
         validateOnMount
         validationSchema={ComposeFormSchema}
       >
