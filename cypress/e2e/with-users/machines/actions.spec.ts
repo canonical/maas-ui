@@ -133,9 +133,9 @@ context("Machine listing - actions", () => {
     cy.findByLabelText(/Name/i).type(poolName);
     cy.findByRole("button", { name: /Set pool for machine/i }).click();
     cy.findByRole("complementary", { name: /Set pool/i }).should("not.exist");
-    cy.findByRole("grid", { name: /Machines/i })
-      .within(() => cy.findByText(poolName))
-      .should("exist");
+    cy.findByRole("grid", { name: /Machines/i }).within(() => {
+      cy.findByText(poolName).should("exist");
+    });
     cy.deleteMachine(machineName);
     cy.deletePool(poolName);
   });
@@ -162,9 +162,9 @@ context("Machine listing - actions", () => {
       cy.findByRole("cell", { name: new RegExp(tagName, "i") }).should("exist");
     });
     cy.findByRole("button", { name: /Save/i }).click();
-    cy.findByRole("grid", { name: /Machines/i })
-      .within(() => cy.findByText(tagName))
-      .should("exist");
+    cy.findByRole("grid", { name: /Machines/i }).within(() => {
+      cy.findByText(tagName).should("exist");
+    });
     cy.deleteMachine(machineName);
   });
 

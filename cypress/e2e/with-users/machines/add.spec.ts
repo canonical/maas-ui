@@ -16,7 +16,8 @@ context("Machine add", () => {
     const hostname = `cypress-${nanoid()}`;
     cy.get("input[name='hostname']").type(hostname);
     cy.get("input[name='pxe_mac']").type(generateMac());
-    cy.get("select[name='power_type']").select("manual").blur();
+    cy.get("select[name='power_type']").select("manual");
+    cy.get("select[name='power_type']").blur();
     cy.get("button[type='submit']").click();
     cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
   });
