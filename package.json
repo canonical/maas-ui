@@ -59,7 +59,7 @@
     "js-file-download": "0.4.12",
     "path-parse": "1.0.7",
     "pluralize": "8.0.0",
-    "re-reselect": "4.0.1",
+    "re-reselect": "5.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "14.2.3",
