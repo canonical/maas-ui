@@ -78,7 +78,7 @@
     "typed-redux-saga": "1.5.0",
     "typescript": "5.3.3",
     "vanilla-framework": "4.0.0",
-    "vite": "5.1.4",
+    "vite": "5.1.5",
     "vite-plugin-svgr": "4.2.0",
     "vite-tsconfig-paths": "4.3.1",
     "yup": "0.32.11"
@@ -86,7 +86,7 @@
   "devDependencies": {
     "@percy/cli": "1.20.0",
     "@percy/cypress": "3.1.2",
-    "@playwright/test": "1.42.0",
+    "@playwright/test": "1.42.1",
     "@storybook/addon-a11y": "7.6.17",
     "@storybook/addon-essentials": "7.6.17",
     "@storybook/addon-interactions": "7.6.17",
@@ -131,7 +131,7 @@
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-plugin-cypress": "2.15.1",
     "eslint-plugin-no-only-tests": "3.1.0",
-    "eslint-plugin-playwright": "1.5.1",
+    "eslint-plugin-playwright": "1.5.2",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-storybook": "0.8.0",
     "eslint-plugin-unused-imports": "3.1.0",
