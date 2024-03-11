@@ -218,6 +218,8 @@ export const getSidePanelTitle = (
         return "Add VLAN";
       case SidePanelViews.CHANGE_SOURCE[1]:
         return "Change source";
+      case SidePanelViews.APPLY_STORAGE_LAYOUT[1]:
+        return "Change storage layout";
       case SidePanelViews.CLEAR_ALL_DISCOVERIES[1]:
         return "Clear all discoveries";
       case SidePanelViews.CREATE_DATASTORE[1]:

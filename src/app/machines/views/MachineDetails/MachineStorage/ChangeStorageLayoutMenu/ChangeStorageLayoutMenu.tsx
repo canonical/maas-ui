@@ -52,7 +52,7 @@ const ChangeStorageLayoutMenu = ({ systemId }: Props) => {
             children: option.label,
             onClick: () =>
               setSidePanelContent({
-                view: MachineSidePanelViews.CHANGE_STORAGE_LAYOUT,
+                view: MachineSidePanelViews.APPLY_STORAGE_LAYOUT,
                 extras: {
                   systemId,
                   selectedLayout: option,

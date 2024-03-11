@@ -49,6 +49,7 @@ export const ChangeStorageLayout = ({
             storageLayout: selectedLayout.value,
           })
         );
+        clearSidePanelContent();
       }}
       saved={saved}
       saving={saving}

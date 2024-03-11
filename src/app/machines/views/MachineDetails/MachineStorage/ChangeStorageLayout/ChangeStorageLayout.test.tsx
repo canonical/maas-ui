@@ -86,6 +86,7 @@ describe("ChangeStorageLayout", () => {
   });
 
   it("correctly dispatches an action to update a machine's storage layout", async () => {
+    const handleClearSidePanelContent = vi.fn();
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -97,7 +98,7 @@ describe("ChangeStorageLayout", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ChangeStorageLayout
-        clearSidePanelContent={vi.fn()}
+        clearSidePanelContent={handleClearSidePanelContent}
         selectedLayout={sampleStoragelayout}
         systemId="abc123"
       />,
@@ -128,5 +129,6 @@ describe("ChangeStorageLayout", () => {
       },
       type: "machine/applyStorageLayout",
     });
+    expect(handleClearSidePanelContent).toHaveBeenCalled();
   });
 });
