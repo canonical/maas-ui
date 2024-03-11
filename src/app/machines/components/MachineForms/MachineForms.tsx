@@ -69,7 +69,7 @@ export const MachineForms = ({
       return <AddChassisForm clearSidePanelContent={clearSidePanelContent} />;
     case MachineSidePanelViews.ADD_MACHINE:
       return <AddMachineForm clearSidePanelContent={clearSidePanelContent} />;
-    case MachineSidePanelViews.CHANGE_STORAGE_LAYOUT: {
+    case MachineSidePanelViews.APPLY_STORAGE_LAYOUT: {
       if (!systemId || !selectedLayout) {
         return null;
       }
