@@ -1,11 +1,16 @@
 import { useSelector } from "react-redux";
 
-import type { SetExpanded } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableMenu from "@/app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "@/app/base/components/TableMenu/TableMenu";
 import TooltipButton from "@/app/base/components/TooltipButton";
+import type {
+  Selected,
+  SetSelected,
+} from "@/app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";
+import { useSidePanel } from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import {
@@ -26,8 +31,9 @@ import {
 type Props = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  setExpanded: SetExpanded;
   systemId: Machine["system_id"];
+  selected?: Selected[];
+  setSelected?: SetSelected;
 };
 
 export enum Label {
@@ -37,9 +43,11 @@ export enum Label {
 const NetworkTableActions = ({
   link,
   nic,
-  setExpanded,
   systemId,
+  selected,
+  setSelected,
 }: Props): JSX.Element | null => {
+  const { setSidePanelContent } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -61,16 +69,19 @@ const NetworkTableActions = ({
   );
   let actions: TableMenuProps["links"] = [];
   if (machine && nic) {
+    const showDisconnectedWarning = isPhysical && !nic?.link_connected;
     actions = [
       {
         inMenu: !nic.link_connected && isPhysical,
         state: ExpandedState.MARK_CONNECTED,
         label: "Mark as connected",
+        view: MachineSidePanelViews.MARK_CONNECTED,
       },
       {
         inMenu: nic.link_connected && isPhysical,
         state: ExpandedState.MARK_DISCONNECTED,
         label: "Mark as disconnected",
+        view: MachineSidePanelViews.MARK_DISCONNECTED,
       },
       {
         disabled: !itCanAddAlias,
@@ -82,6 +93,7 @@ const NetworkTableActions = ({
           : "IP mode needs to be configured for this interface.",
         state: ExpandedState.ADD_ALIAS,
         label: "Add alias",
+        view: MachineSidePanelViews.ADD_ALIAS,
       },
       {
         disabled: !canAddVLAN,
@@ -98,19 +110,23 @@ const NetworkTableActions = ({
           ? null
           : "There are no unused VLANS for this interface.",
         label: "Add VLAN",
+        view: MachineSidePanelViews.ADD_VLAN,
       },
       {
         inMenu: true,
-        state:
-          isPhysical && !nic?.link_connected
-            ? ExpandedState.DISCONNECTED_WARNING
-            : ExpandedState.EDIT,
+        state: showDisconnectedWarning
+          ? ExpandedState.DISCONNECTED_WARNING
+          : ExpandedState.EDIT,
         label: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
+        view: showDisconnectedWarning
+          ? MachineSidePanelViews.MARK_CONNECTED
+          : MachineSidePanelViews.EDIT_PHYSICAL,
       },
       {
         inMenu: !isAllNetworkingDisabled,
         state: ExpandedState.REMOVE,
         label: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
+        view: MachineSidePanelViews.REMOVE_PHYSICAL,
       },
     ].reduce<TableMenuProps["links"]>((items, item) => {
       if (item.inMenu && item.state) {
@@ -132,11 +148,25 @@ const NetworkTableActions = ({
           ),
           disabled: item.disabled,
           onClick: () => {
-            setExpanded({
-              content: item.state,
-              linkId: link?.id,
-              nicId: link ? null : nic?.id,
-            });
+            item.state === ExpandedState.EDIT
+              ? setSidePanelContent({
+                  view: item.view,
+                  extras: {
+                    linkId: link?.id,
+                    nicId: nic?.id,
+                    selected,
+                    setSelected,
+                    systemId: machine.system_id,
+                  },
+                })
+              : setSidePanelContent({
+                  view: item.view,
+                  extras: {
+                    link,
+                    nic,
+                    systemId: machine.system_id,
+                  },
+                });
           },
         });
       }

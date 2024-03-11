@@ -108,6 +108,7 @@ const EditPhysicalForm = ({
 
   return (
     <FormikForm<EditPhysicalValues, MachineEventErrors>
+      aria-label="Edit physical"
       cleanup={cleanup}
       errors={errors}
       initialValues={{

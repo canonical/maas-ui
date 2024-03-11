@@ -1,6 +1,5 @@
 import NetworkTable, { Label } from "./NetworkTable";
 
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { Label as PXEColumnLabel } from "@/app/base/components/node/networking/NetworkTable/PXEColumn/PXEColumn";
 import { Label as NetworkTableActionsLabel } from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions";
 import type { MachineDetails } from "@/app/store/machine/types";
@@ -77,7 +76,6 @@ describe("NetworkTable", () => {
     state.machine.items = [machine];
     renderWithBrowserRouter(
       <NetworkTable
-        expanded={null}
         node={machine}
         selected={[]}
         setExpanded={vi.fn()}
@@ -119,7 +117,6 @@ describe("NetworkTable", () => {
     state.machine.items = [machine];
     renderWithBrowserRouter(
       <NetworkTable
-        expanded={null}
         node={machine}
         selected={[]}
         setExpanded={vi.fn()}
@@ -144,7 +141,6 @@ describe("NetworkTable", () => {
 
     renderWithBrowserRouter(
       <NetworkTable
-        expanded={null}
         node={machine}
         selected={[]}
         setExpanded={vi.fn()}
@@ -190,7 +186,6 @@ describe("NetworkTable", () => {
     state.machine.items = [machine];
     renderWithBrowserRouter(
       <NetworkTable
-        expanded={null}
         node={machine}
         selected={[]}
         setExpanded={vi.fn()}
@@ -209,61 +204,6 @@ describe("NetworkTable", () => {
     const ipCol = within(alias).getByRole("gridcell", { name: Label.IP });
     const ipPrimary = within(ipCol).getByTestId("primary");
     expect(within(ipPrimary).getByText("1.2.3.101")).toBeInTheDocument();
-  });
-
-  it("expands a row when a matching link is found", () => {
-    machine = machineDetailsFactory({
-      interfaces: [
-        machineInterfaceFactory({
-          discovered: null,
-          links: [networkLinkFactory(), networkLinkFactory({ id: 2 })],
-          name: "alias",
-          type: NetworkInterfaceTypes.ALIAS,
-        }),
-      ],
-      system_id: "abc123",
-    });
-    state.machine.items = [machine];
-    renderWithBrowserRouter(
-      <NetworkTable
-        expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-        node={machine}
-        selected={[]}
-        setExpanded={vi.fn()}
-        setSelected={vi.fn()}
-      />,
-      { state }
-    );
-    const alias = screen.getByTestId("alias:1");
-    expect(alias.className.includes("is-active")).toBe(true);
-  });
-
-  it("expands a row when a matching nic is found", () => {
-    machine = machineDetailsFactory({
-      interfaces: [
-        machineInterfaceFactory({
-          id: 2,
-          discovered: null,
-          links: [],
-          name: "eth0",
-          type: NetworkInterfaceTypes.PHYSICAL,
-        }),
-      ],
-      system_id: "abc123",
-    });
-    state.machine.items = [machine];
-    renderWithBrowserRouter(
-      <NetworkTable
-        expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-        node={machine}
-        selected={[]}
-        setExpanded={vi.fn()}
-        setSelected={vi.fn()}
-      />,
-      { state }
-    );
-    const alias = screen.getByTestId("eth0");
-    expect(alias.className.includes("is-active")).toBe(true);
   });
 
   it("displays actions", () => {
@@ -294,7 +234,6 @@ describe("NetworkTable", () => {
     state.machine.items = [machine];
     renderWithBrowserRouter(
       <NetworkTable
-        expanded={null}
         node={machine}
         selected={[]}
         setExpanded={vi.fn()}
@@ -398,7 +337,6 @@ describe("NetworkTable", () => {
     it("does not display a checkbox for parent interfaces", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -418,7 +356,6 @@ describe("NetworkTable", () => {
       const setSelected = vi.fn();
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -439,7 +376,6 @@ describe("NetworkTable", () => {
     it("does not display a boot icon for parent interfaces", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -456,7 +392,6 @@ describe("NetworkTable", () => {
     it("does not display a fabric column for parent interfaces", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -475,7 +410,6 @@ describe("NetworkTable", () => {
     it("does not display a DHCP column for parent interfaces", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -494,7 +428,6 @@ describe("NetworkTable", () => {
     it("does not display a subnet column for parent interfaces", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -513,7 +446,6 @@ describe("NetworkTable", () => {
     it("does not display an IP column for parent interfaces", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -532,7 +464,6 @@ describe("NetworkTable", () => {
     it("does not display an actions menu for parent interfaces", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -597,7 +528,6 @@ describe("NetworkTable", () => {
     it("groups the bonds and bridges", () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}
@@ -628,7 +558,6 @@ describe("NetworkTable", () => {
     it("groups the bonds and bridges when in reverse order", async () => {
       renderWithBrowserRouter(
         <NetworkTable
-          expanded={null}
           node={machine}
           selected={[]}
           setExpanded={vi.fn()}

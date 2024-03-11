@@ -1,6 +1,7 @@
 import NetworkTableActions from "./NetworkTableActions";
 
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
@@ -30,6 +31,15 @@ const openMenu = async () => {
 describe("NetworkTableActions", () => {
   let nic: NetworkInterface;
   let state: RootState;
+  const setSidePanelContent = vi.fn();
+  beforeAll(() => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
+  });
   beforeEach(() => {
     nic = machineInterfaceFactory();
     state = rootStateFactory({
@@ -46,10 +56,9 @@ describe("NetworkTableActions", () => {
   });
 
   it("can display the menu", () => {
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     expect(
       screen.getByRole("button", { name: "Take action:" })
     ).toBeInTheDocument();
@@ -60,10 +69,9 @@ describe("NetworkTableActions", () => {
     state.machine.items[0].status = NodeStatus.NEW;
     nic.type = NetworkInterfaceTypes.VLAN;
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     expect(screen.getByRole("button", { name: "Take action:" })).toBeDisabled();
   });
 
@@ -71,10 +79,9 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
 
@@ -87,10 +94,9 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = true;
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
 
@@ -106,12 +112,7 @@ describe("NetworkTableActions", () => {
     nic.links = [networkLinkFactory(), link];
 
     renderWithMockStore(
-      <NetworkTableActions
-        link={link}
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions link={link} nic={nic} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -128,12 +129,7 @@ describe("NetworkTableActions", () => {
     nic.links = [networkLinkFactory(), link];
 
     renderWithMockStore(
-      <NetworkTableActions
-        link={link}
-        nic={nic}
-        setExpanded={vi.fn()}
-        systemId="abc123"
-      />,
+      <NetworkTableActions link={link} nic={nic} systemId="abc123" />,
       { state }
     );
     // Open the menu:
@@ -146,10 +142,9 @@ describe("NetworkTableActions", () => {
   it("can display an item to remove the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     expect(
@@ -159,16 +154,10 @@ describe("NetworkTableActions", () => {
 
   it("can display an item to edit the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
-    const setExpanded = vi.fn();
 
-    renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={setExpanded}
-        systemId="abc123"
-      />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     const editBondButton = screen.getByRole("button", {
@@ -176,25 +165,20 @@ describe("NetworkTableActions", () => {
     });
     expect(editBondButton).toBeInTheDocument();
     await userEvent.click(editBondButton);
-    expect(setExpanded).toHaveBeenCalledWith({
-      content: ExpandedState.EDIT,
-      nicId: nic.id,
-    });
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.EDIT_PHYSICAL,
+      })
+    );
   });
 
   it("can display a warning when trying to edit a disconnected interface", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
-    const setExpanded = vi.fn();
 
-    renderWithMockStore(
-      <NetworkTableActions
-        nic={nic}
-        setExpanded={setExpanded}
-        systemId="abc123"
-      />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     const editPhysicalButton = screen.getByRole("button", {
@@ -202,20 +186,20 @@ describe("NetworkTableActions", () => {
     });
     expect(editPhysicalButton).toBeInTheDocument();
     await userEvent.click(editPhysicalButton);
-    expect(setExpanded).toHaveBeenCalledWith({
-      content: ExpandedState.DISCONNECTED_WARNING,
-      nicId: nic.id,
-    });
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.MARK_CONNECTED,
+      })
+    );
   });
 
   it("can display an action to add an alias", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.links = [networkLinkFactory()];
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     const addAlias = screen.getByRole("button", {
@@ -235,10 +219,9 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.links = [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })];
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     const addAlias = screen.getByRole("button", {
@@ -262,10 +245,9 @@ describe("NetworkTableActions", () => {
     state.vlan.items = [vlan];
     nic.vlan_id = vlan.id;
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
@@ -282,10 +264,9 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     state.vlan.items = [];
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
@@ -307,10 +288,9 @@ describe("NetworkTableActions", () => {
     state.machine.items[0].permissions = [];
     state.machine.items[0].status = NodeStatus.NEW;
 
-    renderWithMockStore(
-      <NetworkTableActions nic={nic} setExpanded={vi.fn()} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
+      state,
+    });
     // Open the menu:
     await openMenu();
     expect(

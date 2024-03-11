@@ -107,6 +107,7 @@ const EditAliasOrVlanForm = ({
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
     <FormikForm<EditAliasOrVlanValues, MachineEventErrors>
+      aria-label={isAlias ? "Edit alias" : "Edit VLAN"}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
@@ -142,12 +143,12 @@ const EditAliasOrVlanForm = ({
     >
       <Row>
         {isVLAN ? (
-          <Col size={6}>
+          <Col size={12}>
             <h3 className="p-heading--5 u-no-margin--bottom">VLAN details</h3>
             <TagNameField />
           </Col>
         ) : null}
-        <Col size={6}>
+        <Col size={12}>
           <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
           <NetworkFields
             fabricDisabled={true}
