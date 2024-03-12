@@ -27,7 +27,7 @@ const UserDeleteForm = ({ user }: UserDeleteProps) => {
   useAddMessage(
     saved && !errors,
     userActions.cleanup,
-    `Deleted ${deletedUser} from list`
+    `${deletedUser} removed successfully`
   );
 
   return (

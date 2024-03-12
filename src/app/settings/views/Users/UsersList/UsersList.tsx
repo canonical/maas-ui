@@ -9,7 +9,6 @@ import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
 import {
   useFetchActions,
-  useAddMessage,
   useTableSort,
   useWindowTitle,
 } from "@/app/base/hooks";
@@ -101,14 +100,12 @@ const getSortValue = (sortKey: SortKey, user: User) => {
 const UsersList = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
-  const [deletingUser, setDeleting] = useState<User["username"] | null>(null);
   const users = useSelector((state: RootState) =>
     userSelectors.search(state, searchText)
   );
   const loading = useSelector(userSelectors.loading);
   const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
-  const saved = useSelector(userSelectors.saved);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
 
@@ -123,13 +120,6 @@ const UsersList = (): JSX.Element => {
   const sortedUsers = sortRows(users);
 
   useWindowTitle("Users");
-
-  useAddMessage(
-    saved,
-    userActions.cleanup,
-    `${deletingUser} removed successfully.`,
-    () => setDeleting(null)
-  );
 
   useFetchActions([userActions.fetch]);
 
