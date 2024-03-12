@@ -1,42 +1,24 @@
-import { useState } from "react";
-
 import { Notification } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-import type { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 
 import TableActions from "@/app/base/components/TableActions";
-import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
-import {
-  useFetchActions,
-  useAddMessage,
-  useWindowTitle,
-} from "@/app/base/hooks";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import { actions as sslkeyActions } from "@/app/store/sslkey";
 import sslkeySelectors from "@/app/store/sslkey/selectors";
-import type { SSLKey, SSLKeyMeta, SSLKeyState } from "@/app/store/sslkey/types";
+import type { SSLKey } from "@/app/store/sslkey/types";
 
 export enum Label {
   Title = "SSL keys",
   DeleteConfirm = "Confirm or cancel deletion of SSL key",
 }
 
-const generateRows = (
-  sslkeys: SSLKey[],
-  expandedId: SSLKey[SSLKeyMeta.PK] | null,
-  setExpandedId: (id: SSLKey[SSLKeyMeta.PK] | null) => void,
-  hideExpanded: () => void,
-  dispatch: Dispatch,
-  saved: SSLKeyState["saved"],
-  saving: SSLKeyState["saving"],
-  setDeleting: (deleting: boolean) => void
-) =>
+const generateRows = (sslkeys: SSLKey[]) =>
   sslkeys.map(({ id, display, key }) => {
-    const expanded = expandedId === id;
     return {
       "aria-label": key,
-      className: expanded ? "p-table__row is-active" : null,
+      className: "p-table__row is-active",
       columns: [
         {
           className: "u-truncate",
@@ -45,28 +27,15 @@ const generateRows = (
         },
         {
           content: (
-            <TableActions copyValue={key} onDelete={() => setExpandedId(id)} />
+            <TableActions
+              copyValue={key}
+              deletePath={urls.preferences.sslKeys.delete({ id })}
+            />
           ),
           className: "u-align--right",
         },
       ],
       "data-testid": "sslkey-row",
-      expanded: expanded,
-      expandedContent: expanded && (
-        <div aria-label={Label.DeleteConfirm}>
-          <TableDeleteConfirm
-            deleted={saved}
-            deleting={saving}
-            modelName={display}
-            modelType="SSL key"
-            onClose={hideExpanded}
-            onConfirm={() => {
-              setDeleting(true);
-              dispatch(sslkeyActions.delete(id));
-            }}
-          />
-        </div>
-      ),
       key: id,
       sortData: {
         key: display,
@@ -75,30 +44,12 @@ const generateRows = (
   });
 
 const SSLKeyList = (): JSX.Element => {
-  const [expandedId, setExpandedId] = useState<SSLKey[SSLKeyMeta.PK] | null>(
-    null
-  );
   const sslkeyErrors = useSelector(sslkeySelectors.errors);
   const sslkeyLoading = useSelector(sslkeySelectors.loading);
   const sslkeyLoaded = useSelector(sslkeySelectors.loaded);
   const sslkeys = useSelector(sslkeySelectors.all);
-  const saved = useSelector(sslkeySelectors.saved);
-  const saving = useSelector(sslkeySelectors.saving);
-  const [deleting, setDeleting] = useState(false);
-  const dispatch = useDispatch();
 
   useWindowTitle(Label.Title);
-
-  useAddMessage(
-    saved && deleting,
-    sslkeyActions.cleanup,
-    "SSL key removed successfully.",
-    () => setDeleting(false)
-  );
-
-  const hideExpanded = () => {
-    setExpandedId(null);
-  };
 
   useFetchActions([sslkeyActions.fetch]);
 
@@ -125,16 +76,7 @@ const SSLKeyList = (): JSX.Element => {
         ]}
         loaded={sslkeyLoaded}
         loading={sslkeyLoading}
-        rows={generateRows(
-          sslkeys,
-          expandedId,
-          setExpandedId,
-          hideExpanded,
-          dispatch,
-          saved,
-          saving,
-          setDeleting
-        )}
+        rows={generateRows(sslkeys)}
         tableClassName="sslkey-list"
       />
     </>
