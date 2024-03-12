@@ -71,7 +71,7 @@ describe("EditInterface", () => {
       }
     );
     expect(
-      screen.getByRole("heading", { name: "Edit Physical" })
+      screen.getByRole("form", { name: "Edit physical" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save interface" })
@@ -105,7 +105,7 @@ describe("EditInterface", () => {
       }
     );
     expect(
-      screen.getByRole("heading", { name: "Edit Alias" })
+      screen.getByRole("form", { name: "Edit alias" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save Alias" })
@@ -135,9 +135,7 @@ describe("EditInterface", () => {
         state,
       }
     );
-    expect(
-      screen.getByRole("heading", { name: "Edit VLAN" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("form", { name: "Edit VLAN" })).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save VLAN" })
     ).toBeInTheDocument();
@@ -167,7 +165,7 @@ describe("EditInterface", () => {
       }
     );
     expect(
-      screen.getByRole("heading", { name: "Edit Bridge" })
+      screen.getByRole("form", { name: "Edit bridge" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save Bridge" })

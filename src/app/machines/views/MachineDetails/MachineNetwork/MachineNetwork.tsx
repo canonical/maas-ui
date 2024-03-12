@@ -3,15 +3,10 @@ import { useState } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import AddBondForm from "./AddBondForm";
-import AddBridgeForm from "./AddBridgeForm";
-import AddInterface from "./AddInterface";
-import EditInterface from "./EditInterface";
 import MachineNetworkActions from "./MachineNetworkActions";
 
 import DHCPTable from "@/app/base/components/DHCPTable";
 import NodeNetworkTab from "@/app/base/components/NodeNetworkTab";
-import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import NetworkTable from "@/app/base/components/node/networking/NetworkTable";
 import type { Selected } from "@/app/base/components/node/networking/types";
 import { useWindowTitle } from "@/app/base/hooks";
@@ -50,9 +45,6 @@ const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
           systemId={id}
         />
       )}
-      addInterface={(_, setExpanded) => (
-        <AddInterface close={() => setExpanded(null)} systemId={id} />
-      )}
       aria-label="Machine network"
       dhcpTable={() => (
         <DHCPTable
@@ -61,48 +53,8 @@ const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
           node={machine}
         />
       )}
-      expandedForm={(expanded, setExpanded) => {
-        if (expanded?.content === ExpandedState.EDIT) {
-          return (
-            <EditInterface
-              close={() => setExpanded(null)}
-              linkId={expanded?.linkId}
-              nicId={expanded?.nicId}
-              selected={selected}
-              setSelected={setSelected}
-              systemId={id}
-            />
-          );
-        } else if (expanded?.content === ExpandedState.ADD_BOND) {
-          return (
-            <AddBondForm
-              close={() => {
-                setExpanded(null);
-                setSelected([]);
-              }}
-              selected={selected}
-              setSelected={setSelected}
-              systemId={id}
-            />
-          );
-        } else if (expanded?.content === ExpandedState.ADD_BRIDGE) {
-          return (
-            <AddBridgeForm
-              close={() => {
-                setExpanded(null);
-                setSelected([]);
-              }}
-              selected={selected}
-              setSelected={setSelected}
-              systemId={id}
-            />
-          );
-        }
-        return null;
-      }}
-      interfaceTable={(expanded, setExpanded) => (
+      interfaceTable={(_, setExpanded) => (
         <NetworkTable
-          expanded={expanded}
           node={machine}
           selected={selected}
           setExpanded={setExpanded}

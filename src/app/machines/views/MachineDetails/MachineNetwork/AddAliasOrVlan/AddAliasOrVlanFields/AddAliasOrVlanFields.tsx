@@ -41,7 +41,7 @@ export const AddAliasOrVlanFields = ({
   const nextNicName = getNextNicName(machine, interfaceType, nic, vlan?.vid);
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <Input
           aria-label="Name"
           disabled
@@ -60,7 +60,7 @@ export const AddAliasOrVlanFields = ({
         />
         {isVLAN ? <TagNameField /> : null}
       </Col>
-      <Col size={6}>
+      <Col size={12}>
         <NetworkFields
           fabricDisabled={true}
           includeUnconfiguredSubnet={isVLAN}

@@ -2,6 +2,10 @@ import { useCallback } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 
+import MarkConnectedForm from "../../views/MachineDetails/MachineNetwork/MarkConnectedForm";
+import { ConnectionState } from "../../views/MachineDetails/MachineNetwork/MarkConnectedForm/MarkConnectedForm";
+import RemovePhysicalForm from "../../views/MachineDetails/MachineNetwork/RemovePhysicalForm";
+
 import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
@@ -13,8 +17,8 @@ import UpdateDatastore from "@/app/base/components/node/StorageTables/AvailableS
 import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
-import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineActionSidePanelViews } from "@/app/machines/constants";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import type {
   MachineActionVariableProps,
   MachineSidePanelContent,
@@ -23,6 +27,7 @@ import AddAliasOrVlan from "@/app/machines/views/MachineDetails/MachineNetwork/A
 import AddBondForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBondForm";
 import AddBridgeForm from "@/app/machines/views/MachineDetails/MachineNetwork/AddBridgeForm";
 import AddInterface from "@/app/machines/views/MachineDetails/MachineNetwork/AddInterface";
+import EditInterface from "@/app/machines/views/MachineDetails/MachineNetwork/EditInterface";
 import ChangeStorageLayout from "@/app/machines/views/MachineDetails/MachineStorage/ChangeStorageLayout";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 
@@ -58,11 +63,14 @@ export const MachineForms = ({
   const setSelected =
     extras && "setSelected" in extras ? extras.setSelected : undefined;
   const nic = extras && "nic" in extras ? extras.nic : undefined;
+  const link = extras && "link" in extras ? extras.link : undefined;
   const bulkActionSelected =
     extras && "bulkActionSelected" in extras
       ? extras.bulkActionSelected
       : undefined;
   const node = extras && "node" in extras ? extras.node : undefined;
+  const linkId = extras && "linkId" in extras ? extras.linkId : undefined;
+  const nicId = extras && "nicId" in extras ? extras.nicId : undefined;
 
   switch (sidePanelContent.view) {
     case MachineSidePanelViews.ADD_CHASSIS:
@@ -164,6 +172,54 @@ export const MachineForms = ({
         <CreateVolumeGroup
           closeForm={clearSidePanelContent}
           selected={bulkActionSelected}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.EDIT_PHYSICAL: {
+      if (!systemId || !selected || !setSelected) return null;
+      return (
+        <EditInterface
+          close={clearSidePanelContent}
+          linkId={linkId}
+          nicId={nicId}
+          selected={selected}
+          setSelected={setSelected}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.MARK_CONNECTED: {
+      if (!systemId) return null;
+      return (
+        <MarkConnectedForm
+          close={clearSidePanelContent}
+          connectionState={ConnectionState.MARK_CONNECTED}
+          link={link}
+          nic={nic}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.MARK_DISCONNECTED: {
+      if (!systemId) return null;
+      return (
+        <MarkConnectedForm
+          close={clearSidePanelContent}
+          connectionState={ConnectionState.MARK_DISCONNECTED}
+          link={link}
+          nic={nic}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.REMOVE_PHYSICAL: {
+      if (!systemId) return null;
+      return (
+        <RemovePhysicalForm
+          close={clearSidePanelContent}
+          link={link}
+          nic={nic}
           systemId={systemId}
         />
       );

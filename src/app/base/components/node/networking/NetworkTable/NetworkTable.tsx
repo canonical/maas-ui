@@ -30,7 +30,6 @@ import {
 import type { Sort } from "@/app/base/types";
 import { SortDirection } from "@/app/base/types";
 import NetworkTableActions from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
-import NetworkTableConfirmation from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableConfirmation";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { actions as fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
@@ -119,8 +118,8 @@ const generateRow = (
   vlans: VLAN[],
   vlansLoaded: boolean,
   hasActions: boolean,
-  setExpanded?: SetExpanded,
-  expanded?: Expanded | null
+  setSelected: Props["setSelected"],
+  setExpanded?: SetExpanded
 ): NetworkRow | null => {
   if (link && !nic) {
     [nic] = getLinkInterface(node, link);
@@ -148,10 +147,6 @@ const generateRow = (
     nic,
     link
   );
-  const isExpanded =
-    !!expanded &&
-    ((link && expanded.linkId === link.id) ||
-      (!link && expanded.nicId === nic?.id));
   const showCheckbox = !isABondOrBridgeParent && hasActions;
   const select = showCheckbox
     ? {
@@ -162,7 +157,6 @@ const generateRow = (
   return {
     className: classNames("p-table__row", {
       "truncated-border": isABondOrBridgeParent,
-      "is-active": isExpanded,
     }),
     columns: [
       {
@@ -231,7 +225,8 @@ const generateRow = (
                   <NetworkTableActions
                     link={link}
                     nic={nic}
-                    setExpanded={setExpanded}
+                    selected={selected}
+                    setSelected={setSelected}
                     systemId={node.system_id}
                   />
                 ) : null,
@@ -240,17 +235,6 @@ const generateRow = (
         : []),
     ],
     "data-testid": name,
-    expanded: isExpanded,
-    expandedContent:
-      hasActions && isExpanded && nodeIsMachine(node) && setExpanded ? (
-        <NetworkTableConfirmation
-          expanded={expanded}
-          link={link}
-          nic={nic}
-          setExpanded={setExpanded}
-          systemId={node.system_id}
-        />
-      ) : null,
     key: name,
     select,
     sortData: {
@@ -283,8 +267,8 @@ const generateRows = (
   vlans: VLAN[],
   vlansLoaded: boolean,
   hasActions: boolean,
-  setExpanded?: (expanded: Expanded | null) => void,
-  expanded?: Expanded | null
+  setSelected: Props["setSelected"],
+  setExpanded?: (expanded: Expanded | null) => void
 ): NetworkRow[] => {
   const rows: NetworkRow[] = [];
   // Create a list of interfaces and aliases to use to generate the table rows.
@@ -306,8 +290,8 @@ const generateRows = (
         vlans,
         vlansLoaded,
         hasActions,
-        setExpanded,
-        expanded
+        setSelected,
+        setExpanded
       );
     if (nic.links.length === 0) {
       const row = createRow(null, nic);
@@ -416,14 +400,12 @@ type BaseProps = {
 };
 
 type ActionProps = BaseProps & {
-  expanded?: Expanded | null;
   selected?: Selected[];
   setExpanded?: SetExpanded;
   setSelected?: SetSelected;
 };
 
 type WithoutActionProps = BaseProps & {
-  expanded?: never;
   selected?: never;
   setExpanded?: never;
   setSelected?: never;
@@ -432,7 +414,6 @@ type WithoutActionProps = BaseProps & {
 type Props = ActionProps | WithoutActionProps;
 
 const NetworkTable = ({
-  expanded,
   node,
   selected,
   setExpanded,
@@ -477,8 +458,8 @@ const NetworkTable = ({
     vlans,
     vlansLoaded,
     hasActions,
-    setExpanded,
-    expanded
+    setSelected,
+    setExpanded
   );
   const sortedRows = sortRows(rows);
   // Generate a list of ids for interfaces that have checkboxes.

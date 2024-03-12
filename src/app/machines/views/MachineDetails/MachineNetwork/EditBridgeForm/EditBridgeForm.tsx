@@ -78,6 +78,7 @@ const EditBridgeForm = ({
   return (
     <FormikForm<BridgeFormValues, MachineEventErrors>
       allowUnchanged
+      aria-label="Edit bridge"
       cleanup={cleanup}
       errors={errors}
       initialValues={{

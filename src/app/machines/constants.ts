@@ -42,6 +42,10 @@ export const MachineNonActionSidePanelViews = {
   CREATE_DATASTORE: ["machineNonActionForm", "createDatastore"],
   CREATE_RAID: ["machineNonActionForm", "createRaid"],
   CREATE_VOLUME_GROUP: ["machineNonActionForm", "createVolumeGroup"],
+  EDIT_PHYSICAL: ["machineNonActionForm", "editPhysical"],
+  MARK_CONNECTED: ["machineNonActionForm", "markConnected"],
+  MARK_DISCONNECTED: ["machineNonActionForm", "markDisconnected"],
+  REMOVE_PHYSICAL: ["machineNonActionForm", "removePhysical"],
   UPDATE_DATASTORE: ["machineNonActionForm", "updateDatastore"],
 } as const;
 

@@ -236,14 +236,22 @@ export const getSidePanelTitle = (
         return "Edit interface";
       case SidePanelViews.CREATE_ZONE[1]:
         return "Add AZ";
+      case SidePanelViews.EDIT_PHYSICAL[1]:
+        return "Edit physical";
       case SidePanelViews.DELETE_IMAGE[1]:
         return "Delete image";
       case SidePanelViews.DELETE_SPACE[1]:
         return "Delete space";
       case SidePanelViews.DELETE_FABRIC[1]:
         return "Delete fabric";
+      case SidePanelViews.MARK_CONNECTED[1]:
+        return "Mark as connected";
+      case SidePanelViews.MARK_DISCONNECTED[1]:
+        return "Mark as disconnected";
       case SidePanelViews.REMOVE_INTERFACE[1]:
         return "Remove interface";
+      case SidePanelViews.REMOVE_PHYSICAL[1]:
+        return "Remove physical";
       case SidePanelViews.SET_DEFAULT[1]:
         return "Set default";
       case SidePanelViews.UPDATE_DATASTORE[1]:
