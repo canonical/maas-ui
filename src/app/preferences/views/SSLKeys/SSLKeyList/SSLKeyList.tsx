@@ -29,7 +29,8 @@ const generateRows = (
   hideExpanded: () => void,
   dispatch: Dispatch,
   saved: SSLKeyState["saved"],
-  saving: SSLKeyState["saving"]
+  saving: SSLKeyState["saving"],
+  setDeleting: (deleting: boolean) => void
 ) =>
   sslkeys.map(({ id, display, key }) => {
     const expanded = expandedId === id;
@@ -60,6 +61,7 @@ const generateRows = (
             modelType="SSL key"
             onClose={hideExpanded}
             onConfirm={() => {
+              setDeleting(true);
               dispatch(sslkeyActions.delete(id));
             }}
           />
@@ -82,11 +84,17 @@ const SSLKeyList = (): JSX.Element => {
   const sslkeys = useSelector(sslkeySelectors.all);
   const saved = useSelector(sslkeySelectors.saved);
   const saving = useSelector(sslkeySelectors.saving);
+  const [deleting, setDeleting] = useState(false);
   const dispatch = useDispatch();
 
   useWindowTitle(Label.Title);
 
-  useAddMessage(saved, sslkeyActions.cleanup, "SSL key removed successfully.");
+  useAddMessage(
+    saved && deleting,
+    sslkeyActions.cleanup,
+    "SSL key removed successfully.",
+    () => setDeleting(false)
+  );
 
   const hideExpanded = () => {
     setExpandedId(null);
@@ -124,7 +132,8 @@ const SSLKeyList = (): JSX.Element => {
           hideExpanded,
           dispatch,
           saved,
-          saving
+          saving,
+          setDeleting
         )}
         tableClassName="sslkey-list"
       />
