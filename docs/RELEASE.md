@@ -1,5 +1,11 @@
 # Release Process
 
+## MAAS UI Integration with MAAS
+
+- Whenever changes are pushed to `main` or `3.x` branch, a new JavaScript bundle is automatically created and pushed to the [Ubuntu assets server](https://assets.ubuntu.com/manager?tag=auto-upload&q=maas&type=tar.gz). This process is managed by the [upload.yml](https://github.com/canonical/maas-ui/blob/main/.github/workflows/upload.yml) GitHub Action.
+
+- MAAS integrates the MAAS UI using this JavaScript bundle. For the main development branch (latest/edge), MAAS automatically pulls the latest bundle and creates a commit, triggering a new MAAS release.
+
 ## Tracking MAAS core
 
 When MAAS core releases an initial release candidate (e.g. `2.8.0-rc1`), a corresponding branch of maas-ui named after the MAAS
