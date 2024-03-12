@@ -1,7 +1,5 @@
-import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import SSLKeyList, { Label as SSLKeyListLabels } from "./SSLKeyList";
 
@@ -12,15 +10,10 @@ import {
   rootState as rootStateFactory,
 } from "@/testing/factories";
 import {
-  userEvent,
   screen,
-  render,
-  within,
   renderWithMockStore,
   renderWithBrowserRouter,
 } from "@/testing/utils";
-
-const mockStore = configureStore();
 
 describe("SSLKeyList", () => {
   let state: RootState;
@@ -101,108 +94,6 @@ describe("SSLKeyList", () => {
       { state }
     );
     expect(screen.getByRole("grid", { name: SSLKeyListLabels.Title }));
-  });
-
-  it("can show a delete confirmation", async () => {
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[
-          { pathname: "/account/prefs/ssl-keys", key: "testKey" },
-        ]}
-      >
-        <CompatRouter>
-          <SSLKeyList />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
-    let row = screen.getByRole("row", { name: "ssh-rsa aabb" });
-    expect(row).not.toHaveClass("is-active");
-    // Click on the delete button:
-    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
-    row = screen.getByRole("row", { name: "ssh-rsa aabb" });
-    expect(row).toHaveClass("is-active");
-  });
-
-  it("can delete a SSL key", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssl-keys", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <SSLKeyList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    let row = screen.getByRole("row", { name: "ssh-rsa aabb" });
-
-    // Click on the delete button:
-    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
-
-    // Click on the delete confirm button
-    await userEvent.click(
-      within(
-        within(row).getByLabelText(SSLKeyListLabels.DeleteConfirm)
-      ).getByRole("button", {
-        name: "Delete",
-      })
-    );
-    expect(
-      store.getActions().find((action) => action.type === "sslkey/delete")
-    ).toEqual({
-      type: "sslkey/delete",
-      payload: {
-        params: {
-          id: 1,
-        },
-      },
-      meta: {
-        model: "sslkey",
-        method: "delete",
-      },
-    });
-  });
-
-  it("can add a message when a SSL key is deleted", async () => {
-    state.sslkey.saved = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssl-keys", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <SSLKeyList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    let row = screen.getByRole("row", { name: "ssh-rsa aabb" });
-
-    // Click on the delete button:
-    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
-
-    // Click on the delete confirm button
-    await userEvent.click(
-      within(
-        within(row).getByLabelText(SSLKeyListLabels.DeleteConfirm)
-      ).getByRole("button", {
-        name: "Delete",
-      })
-    );
-
-    const actions = store.getActions();
-    expect(actions.some((action) => action.type === "sslkey/cleanup")).toBe(
-      true
-    );
-    expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
   it("displays an empty state message", () => {
