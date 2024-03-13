@@ -7,6 +7,7 @@ import AvailableStorageTable from "./AvailableStorageTable";
 
 import { actions as machineActions } from "@/app/store/machine";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
+import type { RootState } from "@/app/store/root/types";
 import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import {
   controllerDetails as controllerDetailsFactory,
@@ -19,9 +20,14 @@ import {
   nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 const getAvailableDisk = (name = "available-disk") =>
   diskFactory({
@@ -443,14 +449,9 @@ describe("performing machine actions", () => {
       }),
     });
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { store }
     );
 
     await userEvent.click(

@@ -1,8 +1,6 @@
 import { Button, List, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { BulkAction } from "../AvailableStorageTable";
-
 import { useSidePanel } from "@/app/base/side-panel-context";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import machineSelectors from "@/app/store/machine/selectors";
@@ -20,15 +18,10 @@ import {
 
 type Props = {
   selected: (Disk | Partition)[];
-  setBulkAction: (bulkAction: BulkAction | null) => void;
   systemId: Machine["system_id"];
 };
 
-const BulkActions = ({
-  selected,
-  setBulkAction,
-  systemId,
-}: Props): JSX.Element | null => {
+const BulkActions = ({ selected, systemId }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -76,7 +69,6 @@ const BulkActions = ({
                   view: MachineSidePanelViews.CREATE_DATASTORE,
                   extras: { bulkActionSelected: selected, systemId: systemId },
                 });
-                setBulkAction(BulkAction.CREATE_DATASTORE);
               }}
             >
               Create datastore
@@ -95,7 +87,6 @@ const BulkActions = ({
                   view: MachineSidePanelViews.UPDATE_DATASTORE,
                   extras: { bulkActionSelected: selected, systemId: systemId },
                 });
-                setBulkAction(BulkAction.UPDATE_DATASTORE);
               }}
             >
               Add to existing datastore
@@ -131,7 +122,6 @@ const BulkActions = ({
                 view: MachineSidePanelViews.CREATE_VOLUME_GROUP,
                 extras: { bulkActionSelected: selected, systemId: systemId },
               });
-              setBulkAction(BulkAction.CREATE_VOLUME_GROUP);
             }}
           >
             Create volume group
@@ -154,7 +144,6 @@ const BulkActions = ({
                 view: MachineSidePanelViews.CREATE_RAID,
                 extras: { bulkActionSelected: selected, systemId: systemId },
               });
-              setBulkAction(BulkAction.CREATE_RAID);
             }}
           >
             Create RAID
