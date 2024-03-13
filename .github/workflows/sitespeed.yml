@@ -41,14 +41,7 @@ jobs:
         shell: bash
         run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Run sitespeed.io tests
-        run: |
-          yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}} \
-            --browsertime.timeouts.pageLoad=300000 \
-            --browsertime.timeouts.script=300000 \
-            --browsertime.visualMetrics=true \
-            --browsertime.video=true \
-            --browsertime.screenshot=true
-        continue-on-error: true
+        run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
