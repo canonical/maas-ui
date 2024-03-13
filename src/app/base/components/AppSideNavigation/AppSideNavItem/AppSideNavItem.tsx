@@ -38,7 +38,6 @@ export const AppSideNavItem = ({
           e.currentTarget.blur();
 
           if (window.innerWidth < 620) {
-            console.log("we small");
             setIsCollapsed(true);
           }
         }}
