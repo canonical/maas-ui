@@ -13,7 +13,7 @@ module.exports = async function (context, commands) {
     name: "skipintro",
     value: "true",
   });
-  await commands.navigate(constructURL(context, "/network-discovery"));
+  await commands.navigate(constructURL(context, "/"));
   await commands.wait.bySelector("input[name='username']", TIMEOUT);
   await commands.addText.byName("admin", "username");
   await commands.addText.byName("test", "password");
