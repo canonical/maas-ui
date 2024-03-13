@@ -86,7 +86,7 @@ context("Navigation - admin - collapse", () => {
     );
     cy.getMainNavigation()
       .should("be.visible")
-      .within(() => cy.findByRole("button", { name: /devices/i }).click());
+      .within(() => cy.findByRole("link", { name: /devices/i }).click());
     cy.getMainNavigation().should("not.be.visible");
   });
 });
