@@ -4,6 +4,7 @@ import { Navigation } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
 
 import AppSideNavItem from "../AppSideNavItem";
+import type { SideNavigationProps } from "../AppSideNavigation";
 import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
@@ -18,6 +19,7 @@ type Props = {
   isAuthenticated: boolean;
   logout: () => void;
   path: string;
+  setIsCollapsed: SideNavigationProps["setIsCollapsed"];
   showLinks: boolean;
   vaultIncomplete: boolean;
 };
@@ -27,9 +29,10 @@ const AppSideNavItemGroup = ({
   isAdmin,
   vaultIncomplete,
   path,
+  setIsCollapsed,
 }: { group: NavGroup } & Pick<
   Props,
-  "isAdmin" | "vaultIncomplete" | "path"
+  "isAdmin" | "vaultIncomplete" | "path" | "setIsCollapsed"
 >) => {
   const id = useId();
   const hasActiveChild = useMemo(() => {
@@ -67,6 +70,7 @@ const AppSideNavItemGroup = ({
                   key={navLink.label}
                   navLink={navLink}
                   path={path}
+                  setIsCollapsed={setIsCollapsed}
                 />
               );
             } else return null;
@@ -84,6 +88,7 @@ export const AppSideNavItems = ({
   isAuthenticated,
   logout,
   path,
+  setIsCollapsed,
   showLinks,
   vaultIncomplete,
 }: Props): JSX.Element => {
@@ -97,6 +102,7 @@ export const AppSideNavItems = ({
               isAdmin={isAdmin}
               key={`${i}-${group.groupTitle}`}
               path={path}
+              setIsCollapsed={setIsCollapsed}
               vaultIncomplete={vaultIncomplete}
             />
           ))}
@@ -111,6 +117,7 @@ export const AppSideNavItems = ({
                   icon="settings"
                   navLink={{ label: "Settings", url: urls.settings.index }}
                   path={path}
+                  setIsCollapsed={setIsCollapsed}
                 />
               </>
             </ul>
@@ -123,6 +130,7 @@ export const AppSideNavItems = ({
                 url: urls.preferences.index,
               }}
               path={path}
+              setIsCollapsed={setIsCollapsed}
             />
 
             <ul className="p-side-navigation__list">
