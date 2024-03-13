@@ -13,9 +13,15 @@ type Props = {
   navLink: NavItem;
   icon?: string | ReactNode;
   path: string;
+  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const AppSideNavItem = ({ navLink, icon, path }: Props): JSX.Element => {
+export const AppSideNavItem = ({
+  navLink,
+  icon,
+  path,
+  setIsCollapsed,
+}: Props): JSX.Element => {
   const id = useId();
   return (
     <Navigation.Item
@@ -30,6 +36,11 @@ export const AppSideNavItem = ({ navLink, icon, path }: Props): JSX.Element => {
           // removing the focus from the link element after click
           // this allows the side navigation to collapse on mouseleave
           e.currentTarget.blur();
+
+          if (window.innerWidth < 620) {
+            console.log("we small");
+            setIsCollapsed(true);
+          }
         }}
         to={navLink.url}
       >

@@ -96,6 +96,7 @@ export const AppSideNavigation = ({
             isAuthenticated={isAuthenticated}
             logout={logout}
             path={path}
+            setIsCollapsed={setIsCollapsed}
             showLinks={showLinks}
             vaultIncomplete={vaultIncomplete}
           />
