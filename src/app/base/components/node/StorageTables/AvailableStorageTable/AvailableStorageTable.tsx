@@ -20,6 +20,7 @@ import ActionConfirm from "@/app/base/components/node/ActionConfirm";
 import DiskBootStatus from "@/app/base/components/node/DiskBootStatus";
 import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
 import DiskTestStatus from "@/app/base/components/node/DiskTestStatus";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { FilterControllers } from "@/app/store/controller/utils";
@@ -286,8 +287,8 @@ const AvailableStorageTable = ({
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const [selected, setSelected] = useState<(Disk | Partition)[]>([]);
-  const [bulkAction, setBulkAction] = useState<BulkAction | null>(null);
   const isMachine = nodeIsMachine(node);
+  const { sidePanelContent } = useSidePanel();
 
   const closeExpanded = () => setExpanded(null);
   const handleRowCheckbox = (storageDevice: Disk | Partition) => {
@@ -319,7 +320,7 @@ const AvailableStorageTable = ({
       setSelected(newSelected);
     }
   };
-  const actionsDisabled = !canEditStorage || Boolean(bulkAction);
+  const actionsDisabled = !canEditStorage || Boolean(sidePanelContent?.view);
 
   // To prevent selected state from becoming stale, set it directly from the
   // machine object when it changes (e.g. when a disk is deleted or updated).
@@ -651,11 +652,7 @@ const AvailableStorageTable = ({
         </div>
       )}
       {isMachine && canEditStorage && (
-        <BulkActions
-          selected={selected}
-          setBulkAction={setBulkAction}
-          systemId={node.system_id}
-        />
+        <BulkActions selected={selected} systemId={node.system_id} />
       )}
     </>
   );

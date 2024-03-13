@@ -53,11 +53,7 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
     const createVolumeGroupButton = screen.getByRole("button", {
@@ -88,11 +84,7 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -115,12 +107,9 @@ describe("BulkActions", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <BulkActions selected={[]} setBulkAction={vi.fn()} systemId="abc123" />,
-      {
-        state,
-      }
-    );
+    renderWithBrowserRouter(<BulkActions selected={[]} systemId="abc123" />, {
+      state,
+    });
 
     expect(screen.getByTestId("vmware-bulk-actions")).toBeInTheDocument();
   });
@@ -142,11 +131,7 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -176,11 +161,7 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={[selected]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
 
@@ -209,11 +190,7 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={[selected]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
 
@@ -253,11 +230,7 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -295,11 +268,7 @@ describe("BulkActions", () => {
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -334,11 +303,7 @@ describe("BulkActions", () => {
     });
 
     renderWithBrowserRouter(
-      <BulkActions
-        selected={[selected]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
 
