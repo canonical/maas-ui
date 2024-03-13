@@ -4,16 +4,18 @@ import { Navigation } from "@canonical/maas-react-components";
 import classNames from "classnames";
 import { Link } from "react-router-dom-v5-compat";
 
+import type { SideNavigationProps } from "../AppSideNavigation";
 import type { NavItem } from "../types";
 import { isSelected } from "../utils";
 
 import { useId } from "@/app/base/hooks/base";
+import { MOBILE_VIEW_MAX_WIDTH } from "@/app/constants";
 
 type Props = {
   navLink: NavItem;
   icon?: string | ReactNode;
   path: string;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCollapsed: SideNavigationProps["setIsCollapsed"];
 };
 
 export const AppSideNavItem = ({
@@ -37,7 +39,7 @@ export const AppSideNavItem = ({
           // this allows the side navigation to collapse on mouseleave
           e.currentTarget.blur();
 
-          if (window.innerWidth < 620) {
+          if (window.innerWidth < MOBILE_VIEW_MAX_WIDTH) {
             setIsCollapsed(true);
           }
         }}

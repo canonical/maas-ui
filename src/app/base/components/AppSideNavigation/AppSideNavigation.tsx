@@ -27,7 +27,7 @@ import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { actions as statusActions } from "@/app/store/status";
 
-type SideNavigationProps = {
+export type SideNavigationProps = {
   authUser: ReturnType<typeof authSelectors.get>;
   filteredGroups: typeof navGroups;
   isAdmin: boolean;

@@ -4,6 +4,7 @@ import { Navigation } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
 
 import AppSideNavItem from "../AppSideNavItem";
+import type { SideNavigationProps } from "../AppSideNavigation";
 import type { NavGroup } from "../types";
 import { isSelected } from "../utils";
 
@@ -18,7 +19,7 @@ type Props = {
   isAuthenticated: boolean;
   logout: () => void;
   path: string;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCollapsed: SideNavigationProps["setIsCollapsed"];
   showLinks: boolean;
   vaultIncomplete: boolean;
 };
