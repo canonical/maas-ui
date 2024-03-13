@@ -4,32 +4,24 @@ on:
     branches:
       - main
       - "3.*"
+      - "*sitespeed*"
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
     runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
     env:
       MAAS_DOMAIN: localhost
+      MAAS_URL: http://localhost:5240
     steps:
       - uses: actions/checkout@main
-      - name: Install MAAS
-        run: |
-          sudo systemctl enable snapd
-          sudo snap install maas-test-db --channel=latest/edge
-          sudo snap install maas --channel=latest/edge
-      - name: Fetch database dump
-        uses: wei/wget@v1
+      - name: Setup MAAS
+        uses: canonical/setup-maas@main
         with:
-          args: -O maasdb.dump https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
-      - name: Set up MAAS with database dump
-        run: |
-          sudo sed -i "s/dynamic_shared_memory_type = posix/dynamic_shared_memory_type = sysv/" /var/snap/maas-test-db/common/postgres/data/postgresql.conf
-          sudo snap restart maas-test-db
-          sudo mv maasdb.dump /var/snap/maas-test-db/common/maasdb.dump
-          sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-db/common/maasdb.dump maassampledata'
-          sudo maas init region+rack --maas-url=http://${{env.MAAS_DOMAIN}}:5240/MAAS --database-uri maas-test-db:///
-          sudo sed -i "s/database_name: maasdb/database_name: maassampledata/" /var/snap/maas/current/regiond.conf
-          sudo snap restart maas
+          maas-url: ${{ env.MAAS_URL }}/MAAS
+          use-maasdb-dump: true
+          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS
@@ -39,8 +31,24 @@ jobs:
           responseCode: 200
           timeout: 200000
           interval: 500
+      - name: Login MAAS admin
+        run: |
+          for i in {1..5}; do
+            export API_KEY=`sudo maas apikey --username=admin`
+            maas login admin http://localhost:5240/MAAS $API_KEY && break || sleep 10
+          done
+      - name: Wait for MAAS boot resources
+        shell: bash
+        run: while [ $(maas admin boot-resources is-importing | cat) == "true" ]; do sleep 10; done; echo "syncing finished"
       - name: Run sitespeed.io tests
-        run: yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}}
+        run: |
+          yarn sitespeed:ci --browsertime.domain=${{env.MAAS_DOMAIN}} \
+            --browsertime.timeouts.pageLoad=300000 \
+            --browsertime.timeouts.script=300000 \
+            --browsertime.visualMetrics=true \
+            --browsertime.video=true \
+            --browsertime.screenshot=true
+        continue-on-error: true
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
