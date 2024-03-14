@@ -32,9 +32,16 @@ jobs:
           interval: 500
       - name: Login MAAS admin
         run: |
-          for i in {1..5}; do
-            export API_KEY=`sudo maas apikey --username=admin`
-            maas login admin http://localhost:5240/MAAS $API_KEY && break || sleep 10
+          # Retry admin login up to 5 times with 10s intervals to account for delays in MAAS becoming fully operational
+          for attempt in {1..5}; do
+            export API_KEY=$(sudo maas apikey --username=admin)
+            if maas login admin http://localhost:5240/MAAS $API_KEY; then
+              echo "Login successful."
+              break
+            else
+              echo "Login attempt $attempt failed. Retrying in 10 seconds..."
+              sleep 10
+            fi
           done
       - name: Wait for MAAS boot resources
         shell: bash
