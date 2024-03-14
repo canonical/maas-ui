@@ -4,7 +4,6 @@ on:
     branches:
       - main
       - "3.*"
-      - "*sitespeed*"
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
