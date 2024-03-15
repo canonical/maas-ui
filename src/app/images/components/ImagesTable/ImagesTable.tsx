@@ -87,6 +87,7 @@ const generateImageRow = (
       },
       { content: image.arch, className: "arch-col" },
       { content: "—", className: "size-col" },
+      { content: "—", className: "diskless-col" },
       {
         content: (
           <DoubleRow
