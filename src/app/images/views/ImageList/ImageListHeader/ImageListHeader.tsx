@@ -75,11 +75,7 @@ const ImageListHeader = (): JSX.Element => {
                 <TooltipButton
                   className="u-nudge-right--small"
                   iconName="help"
-                  message={`Enables automatic image updates (sync). The
-                            region controller will check for new images every hour
-                            and automatically sync them, if available, from the
-                            stream configured below. Syncing at the rack controller
-                            level occurs every 5 minutes and cannot be disabled.`}
+                  message={`Enables hourly image updates (sync) from the source configured below.`}
                 />
               </span>
             }
