@@ -94,6 +94,7 @@ const FormikFormContent = <V extends object, E = null>({
   saving,
   submitDisabled,
   "aria-label": ariaLabel,
+  buttonsBehavior = "coupled",
   ...buttonsProps
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
@@ -191,6 +192,7 @@ const FormikFormContent = <V extends object, E = null>({
           {editable && (
             <FormikFormButtons
               {...buttonsProps}
+              buttonsBehavior={buttonsBehavior}
               cancelDisabled={cancelDisabled === false ? false : saving}
               inline={inline}
               saved={saved}

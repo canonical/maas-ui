@@ -45,6 +45,7 @@ const FormikForm = <V extends object, E = null>({
   submitDisabled,
   submitLabel,
   "aria-label": ariaLabel,
+  buttonsBehavior = "coupled",
   ...formikProps
 }: Props<V, E>): JSX.Element => {
   return (
@@ -53,6 +54,7 @@ const FormikForm = <V extends object, E = null>({
         allowAllEmpty={allowAllEmpty}
         allowUnchanged={allowUnchanged}
         aria-label={ariaLabel}
+        buttonsBehavior={buttonsBehavior}
         buttonsClassName={buttonsClassName}
         buttonsHelp={buttonsHelp}
         buttonsHelpClassName={buttonsHelpClassName}

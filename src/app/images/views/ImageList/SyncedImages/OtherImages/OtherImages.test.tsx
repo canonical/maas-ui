@@ -11,6 +11,7 @@ import {
   bootResource as bootResourceFactory,
   bootResourceOtherImage as otherImageFactory,
   bootResourceState as bootResourceStateFactory,
+  bootResourceStatuses as bootResourceStatusesFactory,
   rootState as rootStateFactory,
 } from "@/testing/factories";
 import {
@@ -114,6 +115,21 @@ describe("OtherImages", () => {
     expect(
       screen.queryByRole("button", { name: OtherImagesLabels.StopImport })
     ).not.toBeInTheDocument();
+  });
+
+  it("enables 'Stop import' button if images are saving", async () => {
+    const otherImages = [otherImageFactory()];
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        otherImages,
+        statuses: bootResourceStatusesFactory({ savingOther: true }),
+      }),
+    });
+    renderWithBrowserRouter(<OtherImages />, { state });
+    const stopImportButton = screen.getByRole("button", {
+      name: OtherImagesLabels.StopImport,
+    });
+    expect(stopImportButton).toBeEnabled();
   });
 
   it(`can dispatch an action to stop importing other images if at least one is

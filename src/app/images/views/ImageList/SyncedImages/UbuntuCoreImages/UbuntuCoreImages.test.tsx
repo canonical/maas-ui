@@ -13,6 +13,7 @@ import {
   bootResource as bootResourceFactory,
   bootResourceUbuntuCoreImage as ubuntuCoreImageFactory,
   bootResourceState as bootResourceStateFactory,
+  bootResourceStatuses as bootResourceStatusesFactory,
   rootState as rootStateFactory,
 } from "@/testing/factories";
 import {
@@ -145,6 +146,20 @@ describe("UbuntuCoreImages", () => {
     expect(
       screen.queryByRole("button", { name: UbuntuCoreImagesLabels.StopImport })
     ).not.toBeInTheDocument();
+  });
+
+  it("enables 'Stop import' button if images are saving", async () => {
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        ubuntuCoreImages: [ubuntuCoreImageFactory()],
+        statuses: bootResourceStatusesFactory({ savingUbuntuCore: true }),
+      }),
+    });
+    renderWithBrowserRouter(<UbuntuCoreImages />, { state });
+    const stopImportButton = screen.getByRole("button", {
+      name: UbuntuCoreImagesLabels.StopImport,
+    });
+    expect(stopImportButton).toBeEnabled();
   });
 
   it(`can dispatch an action to stop importing Ubuntu core images if at least
