@@ -87,6 +87,13 @@ export type MachineSidePanelContent =
         linkId?: NetworkLink["id"];
         nicId?: NetworkInterface["id"];
       }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        disk?: Disk;
+      }
     >;
 
 export type MachineSetSidePanelContent =

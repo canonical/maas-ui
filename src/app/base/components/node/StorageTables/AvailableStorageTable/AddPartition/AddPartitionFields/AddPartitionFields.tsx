@@ -21,7 +21,7 @@ export const AddPartitionFields = ({
 
   return (
     <Row>
-      <Col size={5}>
+      <Col size={12}>
         <Input
           aria-label="Name"
           disabled
@@ -67,7 +67,7 @@ export const AddPartitionFields = ({
           ]}
         />
       </Col>
-      <Col emptyLarge={7} size={5}>
+      <Col size={12}>
         <FilesystemFields systemId={systemId} />
       </Col>
     </Row>
