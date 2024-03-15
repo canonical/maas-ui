@@ -27,7 +27,8 @@ export enum Labels {
   Selected = "Selected for download",
   CannotBeCleared = "At least one architecture must be selected for the default commissioning release.",
   WillBeDeleted = "Will be deleted",
-  CannotDelete = "Cannot delete images of the default commissioning release.",
+  CannotDeleteDefault = "Cannot delete images of the default commissioning release.",
+  CannotDeleteImporting = "Cannot delete images that are currently being imported.",
   EmptyState = "No images have been selected.",
   DeleteImageConfirm = "Confirm image deletion",
   LastDeployed = "Last deployed",
@@ -145,7 +146,9 @@ const generateResourceRow = ({
   setSidePanelContent: ImageSetSidePanelContent;
 }) => {
   const { os, release } = splitResourceName(resource.name);
-  const canBeDeleted = !(os === "ubuntu" && release === commissioningRelease);
+  const isCommissioningImage =
+    os === "ubuntu" && release === commissioningRelease;
+  const canBeDeleted = !isCommissioningImage && resource.complete;
   let statusIcon = <Spinner />;
   let statusText = resource.status;
 
@@ -201,7 +204,13 @@ const generateResourceRow = ({
           <TableActions
             data-testid="image-actions"
             deleteDisabled={!canBeDeleted}
-            deleteTooltip={!canBeDeleted ? Labels.CannotDelete : null}
+            deleteTooltip={
+              !canBeDeleted
+                ? isCommissioningImage
+                  ? Labels.CannotDeleteDefault
+                  : Labels.CannotDeleteImporting
+                : null
+            }
             onDelete={() =>
               setSidePanelContent({
                 view: ImageSidePanelViews.DELETE_IMAGE,
