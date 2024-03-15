@@ -29,6 +29,12 @@ export type Props<V> = {
   submitAppearance?: ActionButtonProps["appearance"];
   submitDisabled?: boolean;
   submitLabel?: string;
+  /**
+   * Determines the behavior of the primary and secondary submit buttons.
+   * - "coupled" (default): The secondary submit button is disabled if the primary submit button is disabled.
+   * - "independent": The secondary submit button's disabled state is controlled independently.
+   */
+  buttonsBehavior?: "coupled" | "independent";
 };
 
 export enum TestIds {
@@ -62,6 +68,7 @@ export const FormikFormButtons = <V,>({
   submitAppearance = "positive",
   submitDisabled,
   submitLabel = "Save",
+  buttonsBehavior = "coupled",
 }: Props<V>): JSX.Element => {
   const formikContext = useFormikContext<V>();
   const { values } = formikContext;
@@ -77,7 +84,11 @@ export const FormikFormButtons = <V,>({
       <Button
         className="formik-form-buttons__button"
         data-testid={TestIds.SecondarySubmit}
-        disabled={secondarySubmitDisabled || submitDisabled}
+        disabled={
+          buttonsBehavior === "coupled"
+            ? secondarySubmitDisabled || submitDisabled
+            : secondarySubmitDisabled
+        }
         onClick={
           secondarySubmit
             ? () => secondarySubmit(values, formikContext)

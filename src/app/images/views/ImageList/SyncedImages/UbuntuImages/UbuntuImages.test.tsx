@@ -11,6 +11,7 @@ import type { RootState } from "@/app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
+  bootResourceStatuses as bootResourceStatusesFactory,
   bootResourceUbuntu as bootResourceUbuntuFactory,
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
   bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
@@ -227,6 +228,24 @@ describe("UbuntuImages", () => {
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
+  });
+
+  it("enables 'Stop import' button if images are saving", async () => {
+    const source = sourceFactory();
+    const state = rootStateFactory({
+      bootresource: bootResourceStateFactory({
+        resources: [
+          bootResourceFactory({ downloading: true, name: "ubuntu/focal" }),
+        ],
+        ubuntu: bootResourceUbuntuFactory(),
+        statuses: bootResourceStatusesFactory({ savingUbuntu: true }),
+      }),
+    });
+    renderWithBrowserRouter(<UbuntuImages sources={[source]} />, { state });
+    const stopImportButton = screen.getByRole("button", {
+      name: UbuntuImagesLabels.StopImport,
+    });
+    expect(stopImportButton).toBeEnabled();
   });
 
   it("disables form with a notification if more than one source detected", () => {

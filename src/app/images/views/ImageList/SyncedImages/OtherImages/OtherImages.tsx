@@ -85,7 +85,7 @@ const OtherImages = (): JSX.Element | null => {
     return images;
   }, []);
   const imagesDownloading = resources.some((resource) => resource.downloading);
-  const canStopImport = imagesDownloading && !stoppingImport;
+  const canStopImport = (saving || imagesDownloading) && !stoppingImport;
 
   return (
     <>
@@ -94,6 +94,7 @@ const OtherImages = (): JSX.Element | null => {
         <h4>{Labels.OtherImages}</h4>
         <FormikForm<OtherImagesValues>
           allowUnchanged
+          buttonsBehavior="independent"
           cleanup={cleanup}
           enableReinitialize
           errors={error}
@@ -120,7 +121,14 @@ const OtherImages = (): JSX.Element | null => {
             dispatch(cleanup());
             dispatch(bootResourceActions.stopImport());
           }}
-          secondarySubmitLabel={canStopImport ? Labels.StopImport : null}
+          secondarySubmitDisabled={stoppingImport}
+          secondarySubmitLabel={
+            canStopImport
+              ? stoppingImport
+                ? "Stopping image import..."
+                : Labels.StopImport
+              : null
+          }
           submitLabel={Labels.SubmitLabel}
           validationSchema={OtherImagesSchema}
         >
