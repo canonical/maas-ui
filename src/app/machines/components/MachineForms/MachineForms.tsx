@@ -10,10 +10,15 @@ import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
+import AddPartition from "@/app/base/components/node/StorageTables/AvailableStorageTable/AddPartition";
 import CreateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateDatastore";
 import CreateRaid from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateRaid";
 import CreateVolumeGroup from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateVolumeGroup";
 import UpdateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/UpdateDatastore";
+import CreateCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/CreateCacheSet";
+import DeleteDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteDisk";
+import EditDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/EditDisk";
+import SetBootDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/SetBootDisk";
 import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
@@ -71,6 +76,7 @@ export const MachineForms = ({
   const node = extras && "node" in extras ? extras.node : undefined;
   const linkId = extras && "linkId" in extras ? extras.linkId : undefined;
   const nicId = extras && "nicId" in extras ? extras.nicId : undefined;
+  const disk = extras && "disk" in extras ? extras.disk : undefined;
 
   switch (sidePanelContent.view) {
     case MachineSidePanelViews.ADD_CHASSIS:
@@ -146,12 +152,32 @@ export const MachineForms = ({
         />
       );
     }
+    case MachineSidePanelViews.CREATE_CACHE_SET: {
+      if (!systemId || !disk) return null;
+      return (
+        <CreateCacheSet
+          close={clearSidePanelContent}
+          diskId={disk.id}
+          systemId={systemId}
+        />
+      );
+    }
     case MachineSidePanelViews.CREATE_DATASTORE: {
       if (!bulkActionSelected || !systemId) return null;
       return (
         <CreateDatastore
           closeForm={clearSidePanelContent}
           selected={bulkActionSelected}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.CREATE_PARTITION: {
+      if (!systemId || !disk) return null;
+      return (
+        <AddPartition
+          closeExpanded={clearSidePanelContent}
+          disk={disk}
           systemId={systemId}
         />
       );
@@ -172,6 +198,26 @@ export const MachineForms = ({
         <CreateVolumeGroup
           closeForm={clearSidePanelContent}
           selected={bulkActionSelected}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.DELETE_DISK: {
+      if (!disk || !systemId) return null;
+      return (
+        <DeleteDisk
+          close={clearSidePanelContent}
+          disk={disk}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.EDIT_DISK: {
+      if (!disk || !systemId) return null;
+      return (
+        <EditDisk
+          closeExpanded={clearSidePanelContent}
+          disk={disk}
           systemId={systemId}
         />
       );
@@ -220,6 +266,16 @@ export const MachineForms = ({
           close={clearSidePanelContent}
           link={link}
           nic={nic}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.SET_BOOT_DISK: {
+      if (!systemId || !disk) return null;
+      return (
+        <SetBootDisk
+          close={clearSidePanelContent}
+          diskId={disk.id}
           systemId={systemId}
         />
       );

@@ -59,6 +59,6 @@ describe("TableActionsDropdown", () => {
     // Open menu and click the actions
     await userEvent.click(screen.getByRole("button"));
     await userEvent.click(screen.getByRole("button", { name: "Action 1" }));
-    expect(onActionClick).toHaveBeenCalledWith("action-1");
+    expect(onActionClick).toHaveBeenCalledWith("action-1", undefined);
   });
 });

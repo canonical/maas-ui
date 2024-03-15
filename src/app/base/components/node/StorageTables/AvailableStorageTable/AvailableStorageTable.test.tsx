@@ -5,10 +5,12 @@ import configureStore from "redux-mock-store";
 
 import AvailableStorageTable from "./AvailableStorageTable";
 
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import { actions as machineActions } from "@/app/store/machine";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import type { RootState } from "@/app/store/root/types";
-import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
+import { DiskTypes } from "@/app/store/types/enum";
 import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
@@ -36,6 +38,11 @@ const getAvailableDisk = (name = "available-disk") =>
     filesystem: null,
     type: DiskTypes.PHYSICAL,
   });
+
+const setSidePanelContent = vi.fn();
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 it("can show an empty message", () => {
   const machine = machineDetailsFactory({
@@ -251,6 +258,12 @@ describe("performing machine actions", () => {
   });
 
   it("can open the add partition form if disk can be partitioned", async () => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
     const disk = getAvailableDisk();
     const machine = machineDetailsFactory({
       disks: [disk],
@@ -264,15 +277,10 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -280,7 +288,9 @@ describe("performing machine actions", () => {
       screen.getByRole("button", { name: /Add partition/ })
     );
 
-    expect(screen.getByLabelText("Add partition form")).toBeInTheDocument();
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({ view: MachineSidePanelViews.CREATE_PARTITION })
+    );
   });
 
   it("can open the edit partition form if partition can be edited", async () => {
@@ -301,15 +311,10 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -359,6 +364,12 @@ describe("performing machine actions", () => {
   });
 
   it("can open the edit disk form if the disk is not a volume group", async () => {
+    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+      setSidePanelContent,
+      sidePanelContent: null,
+      setSidePanelSize: vi.fn(),
+      sidePanelSize: "regular",
+    });
     const disk = diskFactory({ type: DiskTypes.PHYSICAL });
     const machine = machineDetailsFactory({
       disks: [disk],
@@ -372,15 +383,10 @@ describe("performing machine actions", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <AvailableStorageTable canEditStorage node={machine} />,
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
@@ -388,7 +394,9 @@ describe("performing machine actions", () => {
       screen.getByRole("button", { name: /Edit physical disk/ })
     );
 
-    expect(screen.getByLabelText("Edit disk form")).toBeInTheDocument();
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({ view: MachineSidePanelViews.EDIT_DISK })
+    );
   });
 
   it("can open the create bcache form if the machine has at least one cache set", async () => {
@@ -469,52 +477,6 @@ describe("performing machine actions", () => {
     ).toBeDisabled();
   });
 
-  it("can create a cache set from a disk", async () => {
-    const disk = diskFactory({
-      available_size: MIN_PARTITION_SIZE + 1,
-      partitions: [],
-      type: DiskTypes.PHYSICAL,
-    });
-    const machine = machineDetailsFactory({
-      disks: [disk],
-      system_id: "abc123",
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    await userEvent.click(
-      screen.getByRole("button", { name: /Create cache set/ })
-    );
-    await userEvent.click(
-      screen.getByRole("button", { name: /Create cache set/ })
-    );
-
-    const expectedAction = machineActions.createCacheSet({
-      blockId: disk.id,
-      systemId: machine.system_id,
-    });
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
-  });
-
   it("can create a cache set from a partition", async () => {
     const partition = partitionFactory({ filesystem: null });
     const machine = machineDetailsFactory({
@@ -557,111 +519,6 @@ describe("performing machine actions", () => {
       partitionId: partition.id,
       systemId: machine.system_id,
     });
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
-  });
-
-  it("can set the boot disk", async () => {
-    const [nonBootDisk, bootDisk] = [
-      diskFactory({
-        available_size: MIN_PARTITION_SIZE + 1,
-        is_boot: false,
-        type: DiskTypes.PHYSICAL,
-      }),
-      diskFactory({
-        available_size: MIN_PARTITION_SIZE + 1,
-        is_boot: true,
-        type: DiskTypes.PHYSICAL,
-      }),
-    ];
-    const machine = machineDetailsFactory({
-      detected_storage_layout: StorageLayout.BLANK,
-      disks: [nonBootDisk, bootDisk],
-      system_id: "abc123",
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(
-      screen.getAllByRole("button", { name: /Take action/ })[0]
-    );
-    await userEvent.click(
-      screen.getByRole("button", { name: /Set boot disk/ })
-    );
-    await userEvent.click(
-      screen.getByRole("button", { name: /Set boot disk/ })
-    );
-
-    const expectedAction = machineActions.setBootDisk({
-      blockId: nonBootDisk.id,
-      systemId: machine.system_id,
-    });
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
-  });
-
-  it("can delete a disk", async () => {
-    const disk = diskFactory({
-      available_size: MIN_PARTITION_SIZE + 1,
-      partitions: [],
-      type: DiskTypes.PHYSICAL,
-    });
-    const machine = machineDetailsFactory({
-      disks: [disk],
-      system_id: "abc123",
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    await userEvent.click(
-      screen.getByRole("button", { name: /Remove physical disk/ })
-    );
-    await userEvent.click(
-      screen.getByRole("button", { name: /Remove physical disk/ })
-    );
-
-    const expectedAction = machineActions.deleteDisk({
-      blockId: disk.id,
-      systemId: machine.system_id,
-    });
-    expect(
-      screen.getByText("Are you sure you want to remove this physical disk?")
-    ).toBeInTheDocument();
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);

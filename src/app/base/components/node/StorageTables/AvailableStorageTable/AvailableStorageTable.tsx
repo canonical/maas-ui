@@ -20,6 +20,7 @@ import ActionConfirm from "@/app/base/components/node/ActionConfirm";
 import DiskBootStatus from "@/app/base/components/node/DiskBootStatus";
 import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
 import DiskTestStatus from "@/app/base/components/node/DiskTestStatus";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import type { ControllerDetails } from "@/app/store/controller/types";
@@ -131,7 +132,8 @@ const normaliseRowData = (
   expanded: Expanded | null,
   setExpanded: (expanded: Expanded | null) => void,
   selected: (Disk | Partition)[],
-  handleRowCheckbox: (storageDevice: Disk | Partition) => void
+  handleRowCheckbox: (storageDevice: Disk | Partition) => void,
+  setSidePanelContent: SetSidePanelContent
 ) => {
   const rowId = uniqueId(storageDevice);
   const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
@@ -264,9 +266,21 @@ const normaliseRowData = (
               content: (
                 <StorageDeviceActions
                   disabled={actionsDisabled}
-                  onActionClick={(action: StorageDeviceAction) =>
-                    setExpanded({ content: action, id: rowId })
-                  }
+                  onActionClick={(action: StorageDeviceAction, view) => {
+                    if (view) {
+                      setSidePanelContent({
+                        view,
+                        extras: {
+                          systemId,
+                          disk: isDisk(storageDevice)
+                            ? storageDevice
+                            : undefined,
+                        },
+                      });
+                    } else {
+                      setExpanded({ content: action, id: rowId });
+                    }
+                  }}
                   storageDevice={storageDevice}
                   systemId={systemId}
                 />
@@ -288,7 +302,7 @@ const AvailableStorageTable = ({
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const [selected, setSelected] = useState<(Disk | Partition)[]>([]);
   const isMachine = nodeIsMachine(node);
-  const { sidePanelContent } = useSidePanel();
+  const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   const closeExpanded = () => setExpanded(null);
   const handleRowCheckbox = (storageDevice: Disk | Partition) => {
@@ -358,7 +372,8 @@ const AvailableStorageTable = ({
           expanded,
           setExpanded,
           selected,
-          handleRowCheckbox
+          handleRowCheckbox,
+          setSidePanelContent
         ),
         expandedContent: isMachine ? (
           <div className="u-flex--grow">
@@ -504,7 +519,8 @@ const AvailableStorageTable = ({
               expanded,
               setExpanded,
               selected,
-              handleRowCheckbox
+              handleRowCheckbox,
+              setSidePanelContent
             ),
             expandedContent: isMachine ? (
               <div className="u-flex--grow">

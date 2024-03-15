@@ -39,13 +39,18 @@ export const MachineNonActionSidePanelViews = {
   ADD_SPECIAL_FILESYSTEM: ["machineNonActionForm", "addSpecialFilesystem"],
   ADD_VLAN: ["machineNonActionForm", "addVlan"],
   APPLY_STORAGE_LAYOUT: ["machineNonActionForm", "applyStorageLayout"],
+  CREATE_CACHE_SET: ["machineNonActionForm", "createCacheSet"],
   CREATE_DATASTORE: ["machineNonActionForm", "createDatastore"],
+  CREATE_PARTITION: ["machineNonActionForm", "createPartition"],
   CREATE_RAID: ["machineNonActionForm", "createRaid"],
   CREATE_VOLUME_GROUP: ["machineNonActionForm", "createVolumeGroup"],
+  DELETE_DISK: ["machineNonActionForm", "deleteDisk"],
+  EDIT_DISK: ["machineNonActionForm", "editDisk"],
   EDIT_PHYSICAL: ["machineNonActionForm", "editPhysical"],
   MARK_CONNECTED: ["machineNonActionForm", "markConnected"],
   MARK_DISCONNECTED: ["machineNonActionForm", "markDisconnected"],
   REMOVE_PHYSICAL: ["machineNonActionForm", "removePhysical"],
+  SET_BOOT_DISK: ["machineNonActionForm", "setBootDisk"],
   UPDATE_DATASTORE: ["machineNonActionForm", "updateDatastore"],
 } as const;
 
