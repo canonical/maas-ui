@@ -82,7 +82,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                 help="Contents on the keyring to validate the mirror path."
                 label={Labels.KeyringData}
                 name="keyring_data"
-                placeholder="Contents of GPG key"
+                placeholder="Contents of GPG key (base64 encoded)"
               />
             </ShowAdvanced>
           </>
