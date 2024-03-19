@@ -14,7 +14,13 @@ import {
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,
 } from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -245,5 +251,23 @@ describe("ReservedRangeForm", () => {
     expect(
       screen.queryByRole("textbox", { name: Labels.Comment })
     ).not.toBeInTheDocument();
+  });
+
+  it("displays an error when start and end IP addresses are not provided", async () => {
+    renderWithBrowserRouter(<ReservedRangeForm setActiveForm={vi.fn()} />, {
+      state,
+      route: "/machines",
+    });
+    await userEvent.click(
+      screen.getByRole("textbox", { name: Labels.StartIp })
+    );
+    await userEvent.click(screen.getByRole("textbox", { name: Labels.EndIp }));
+    await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
+    expect(
+      await screen.findByLabelText(Labels.StartIp)
+    ).toHaveAccessibleErrorMessage(/Start IP is required/);
+    expect(
+      await screen.findByLabelText(Labels.EndIp)
+    ).toHaveAccessibleErrorMessage(/End IP is required/);
   });
 });

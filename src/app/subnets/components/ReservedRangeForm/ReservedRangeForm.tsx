@@ -41,8 +41,8 @@ export enum Labels {
 
 const Schema = Yup.object().shape({
   comment: Yup.string(),
-  end_ip: Yup.string().required("Start IP is required"),
-  start_ip: Yup.string().required("End IP is required"),
+  start_ip: Yup.string().required("Start IP is required"),
+  end_ip: Yup.string().required("End IP is required"),
 });
 
 const ReservedRangeForm = ({
