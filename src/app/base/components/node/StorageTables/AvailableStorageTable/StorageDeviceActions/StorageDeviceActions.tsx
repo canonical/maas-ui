@@ -51,6 +51,7 @@ const StorageDeviceActions = ({
           label: "Add logical volume...",
           show: canCreateLogicalVolume(storageDevice),
           type: StorageDeviceAction.CREATE_LOGICAL_VOLUME,
+          view: MachineSidePanelViews.CREATE_LOGICAL_VOLUME,
         },
         {
           label: "Add partition...",
@@ -62,6 +63,7 @@ const StorageDeviceActions = ({
           label: "Create bcache...",
           show: canCreateBcache(machine.disks, storageDevice),
           type: StorageDeviceAction.CREATE_BCACHE,
+          view: MachineSidePanelViews.CREATE_BCACHE,
         },
         {
           label: "Create cache set...",
@@ -85,6 +87,7 @@ const StorageDeviceActions = ({
           label: "Remove volume group...",
           show: canBeDeleted(storageDevice) && isVolumeGroup(storageDevice),
           type: StorageDeviceAction.DELETE_VOLUME_GROUP,
+          view: MachineSidePanelViews.DELETE_VOLUME_GROUP,
         },
         {
           label: `Remove ${formatType(storageDevice, true)}...`,
@@ -99,20 +102,24 @@ const StorageDeviceActions = ({
         {
           label: "Edit partition...",
           type: StorageDeviceAction.EDIT_PARTITION,
+          view: MachineSidePanelViews.EDIT_PARTITION,
         },
         {
           label: "Create bcache...",
           show: canCreateBcache(machine.disks, storageDevice),
           type: StorageDeviceAction.CREATE_BCACHE,
+          view: MachineSidePanelViews.CREATE_BCACHE,
         },
         {
           label: "Create cache set...",
           show: canCreateCacheSet(storageDevice),
           type: StorageDeviceAction.CREATE_CACHE_SET,
+          view: MachineSidePanelViews.CREATE_CACHE_SET,
         },
         {
           label: "Remove partition...",
           type: StorageDeviceAction.DELETE_PARTITION,
+          view: MachineSidePanelViews.REMOVE_PARTITION,
         },
       ];
     }

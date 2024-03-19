@@ -3,16 +3,18 @@ import { useDispatch } from "react-redux";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { actions as machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
-import type { Disk } from "@/app/store/types/node";
+import type { Disk, Partition } from "@/app/store/types/node";
 
 type Props = {
   close: () => void;
   systemId: Machine["system_id"];
-  diskId: Disk["id"];
+  diskId?: Disk["id"];
+  partitionId?: Partition["id"];
 };
 
-const CreateCacheSet = ({ systemId, diskId, close }: Props) => {
+const CreateCacheSet = ({ systemId, diskId, partitionId, close }: Props) => {
   const dispatch = useDispatch();
+  const isDiskCacheSet = !!diskId;
   return (
     <ModelActionForm
       aria-label="Create cache set"
@@ -21,7 +23,9 @@ const CreateCacheSet = ({ systemId, diskId, close }: Props) => {
       modelType="cache set"
       onCancel={close}
       onSaveAnalytics={{
-        action: "Create cache set from disk",
+        action: `Create cache set from ${
+          isDiskCacheSet ? "disk" : "partition"
+        }`,
         category: "Machine storage",
         label: "Create cache set",
       }}
@@ -29,7 +33,7 @@ const CreateCacheSet = ({ systemId, diskId, close }: Props) => {
         dispatch(machineActions.cleanup());
         dispatch(
           machineActions.createCacheSet({
-            blockId: diskId,
+            blockId: isDiskCacheSet ? diskId : partitionId,
             systemId: systemId,
           })
         );

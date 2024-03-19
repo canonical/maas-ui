@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import CreateCacheSet from "./CreateCacheSet";
+import DeletePartition from ".";
 
 import type { RootState } from "@/app/store/root/types";
 import {
@@ -33,37 +33,23 @@ const state = rootStateFactory({
 
 it("should render the form", () => {
   renderWithBrowserRouter(
-    <CreateCacheSet close={vi.fn()} diskId={disk.id} systemId="abc123" />,
+    <DeletePartition
+      close={vi.fn()}
+      partitionId={partition.id}
+      systemId="abc123"
+    />,
     { state }
   );
 
   expect(
-    screen.getByRole("form", { name: "Create cache set" })
+    screen.getByRole("form", { name: "Delete partition" })
   ).toBeInTheDocument();
 });
 
-it("should fire an action to create cache set", async () => {
+it("should fire an action to delete a partition", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <CreateCacheSet close={vi.fn()} diskId={disk.id} systemId="abc123" />,
-    { store }
-  );
-
-  await userEvent.click(
-    screen.getByRole("button", { name: "Create cache set" })
-  );
-
-  expect(
-    store
-      .getActions()
-      .some((action) => action.type === "machine/createCacheSet")
-  ).toBe(true);
-});
-
-it("should fire an action to create a cache set given a partition ID", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <CreateCacheSet
+    <DeletePartition
       close={vi.fn()}
       partitionId={partition.id}
       systemId="abc123"
@@ -72,12 +58,12 @@ it("should fire an action to create a cache set given a partition ID", async () 
   );
 
   await userEvent.click(
-    screen.getByRole("button", { name: "Create cache set" })
+    screen.getByRole("button", { name: "Remove partition" })
   );
 
   expect(
     store
       .getActions()
-      .some((action) => action.type === "machine/createCacheSet")
+      .some((action) => action.type === "machine/deletePartition")
   ).toBe(true);
 });
