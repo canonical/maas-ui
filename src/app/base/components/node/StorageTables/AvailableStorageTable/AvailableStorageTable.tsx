@@ -2,30 +2,23 @@ import { useEffect, useState } from "react";
 
 import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
-import { useDispatch } from "react-redux";
 
-import AddLogicalVolume from "./AddLogicalVolume";
-import AddPartition from "./AddPartition";
 import BulkActions from "./BulkActions";
-import CreateBcache from "./CreateBcache";
-import EditDisk from "./EditDisk";
-import EditPartition from "./EditPartition";
 import StorageDeviceActions from "./StorageDeviceActions";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import GroupCheckbox from "@/app/base/components/GroupCheckbox";
 import RowCheckbox from "@/app/base/components/RowCheckbox";
 import TagLinks from "@/app/base/components/TagLinks";
-import ActionConfirm from "@/app/base/components/node/ActionConfirm";
 import DiskBootStatus from "@/app/base/components/node/DiskBootStatus";
 import DiskNumaNodes from "@/app/base/components/node/DiskNumaNodes";
 import DiskTestStatus from "@/app/base/components/node/DiskTestStatus";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import { FilterControllers } from "@/app/store/controller/utils";
-import { actions as machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import type { Disk, Node, Partition } from "@/app/store/types/node";
@@ -63,11 +56,6 @@ export enum StorageDeviceAction {
   EDIT_PARTITION = "editPartition",
   SET_BOOT_DISK = "setBootDisk",
 }
-
-type Expanded = {
-  content: StorageDeviceAction;
-  id: string;
-};
 
 type Props = {
   canEditStorage: boolean;
@@ -118,10 +106,10 @@ const isSelected = (
  * @param systemId - the system_id of the machine
  * @param storageDevice - the disk or partition to normalise.
  * @param actionsDisabled - whether actions should be disabled.
- * @param expanded - the currently expanded row and content.
- * @param setExpanded - function to set the expanded table row and content.
  * @param selected - the currently selected storage devices.
  * @param handleRowCheckbox - row checkbox handler function.
+ * @param setSidePanelContent - function to display the required sidepanel form
+ * @param parentDisk - the parent disk of the partition for editing a partition
  * @returns normalised row data
  */
 const normaliseRowData = (
@@ -129,17 +117,14 @@ const normaliseRowData = (
   isMachine: boolean,
   storageDevice: Disk | Partition,
   actionsDisabled: boolean,
-  expanded: Expanded | null,
-  setExpanded: (expanded: Expanded | null) => void,
   selected: (Disk | Partition)[],
   handleRowCheckbox: (storageDevice: Disk | Partition) => void,
-  setSidePanelContent: SetSidePanelContent
+  setSidePanelContent: SetSidePanelContent,
+  parentDisk?: Disk
 ) => {
   const rowId = uniqueId(storageDevice);
-  const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
 
   return {
-    className: isExpanded ? "p-table__row is-active" : null,
     columns: [
       {
         "aria-label": "Name & Serial",
@@ -266,8 +251,19 @@ const normaliseRowData = (
               content: (
                 <StorageDeviceActions
                   disabled={actionsDisabled}
-                  onActionClick={(action: StorageDeviceAction, view) => {
+                  onActionClick={(_: StorageDeviceAction, view) => {
                     if (view) {
+                      if (view === MachineSidePanelViews.EDIT_PARTITION) {
+                        setSidePanelContent({
+                          view,
+                          extras: {
+                            systemId,
+                            disk: parentDisk,
+                            partition: storageDevice,
+                          },
+                        });
+                        return;
+                      }
                       setSidePanelContent({
                         view,
                         extras: {
@@ -275,10 +271,11 @@ const normaliseRowData = (
                           disk: isDisk(storageDevice)
                             ? storageDevice
                             : undefined,
+                          partition: isPartition(storageDevice)
+                            ? storageDevice
+                            : undefined,
                         },
                       });
-                    } else {
-                      setExpanded({ content: action, id: rowId });
                     }
                   }}
                   storageDevice={storageDevice}
@@ -289,7 +286,6 @@ const normaliseRowData = (
           ]
         : []),
     ],
-    expanded: isExpanded,
     key: rowId,
   };
 };
@@ -298,13 +294,10 @@ const AvailableStorageTable = ({
   canEditStorage,
   node,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
   const [selected, setSelected] = useState<(Disk | Partition)[]>([]);
   const isMachine = nodeIsMachine(node);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
-  const closeExpanded = () => setExpanded(null);
   const handleRowCheckbox = (storageDevice: Disk | Partition) => {
     const newSelected = isSelected(storageDevice, selected)
       ? selected.filter((item) => item !== storageDevice)
@@ -361,149 +354,16 @@ const AvailableStorageTable = ({
   const rows: MainTableRow[] = [];
   node.disks.forEach((disk) => {
     if (isAvailable(disk)) {
-      const diskType = formatType(disk, true);
-
       rows.push({
         ...normaliseRowData(
           node.system_id,
           isMachine,
           disk,
           actionsDisabled,
-          expanded,
-          setExpanded,
           selected,
           handleRowCheckbox,
           setSidePanelContent
         ),
-        expandedContent: isMachine ? (
-          <div className="u-flex--grow">
-            {expanded?.content === StorageDeviceAction.CREATE_BCACHE && (
-              <CreateBcache
-                closeExpanded={() => setExpanded(null)}
-                storageDevice={disk}
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content === StorageDeviceAction.CREATE_CACHE_SET && (
-              <ActionConfirm
-                closeExpanded={closeExpanded}
-                confirmLabel="Create cache set"
-                eventName="createCacheSet"
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.createCacheSet({
-                      blockId: disk.id,
-                      systemId: node.system_id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: "Create cache set from disk",
-                  category: "Machine storage",
-                  label: "Create cache set",
-                }}
-                statusKey="creatingCacheSet"
-                submitAppearance="positive"
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content ===
-              StorageDeviceAction.CREATE_LOGICAL_VOLUME && (
-              <AddLogicalVolume
-                closeExpanded={closeExpanded}
-                disk={disk}
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content === StorageDeviceAction.CREATE_PARTITION && (
-              <AddPartition
-                closeExpanded={closeExpanded}
-                disk={disk}
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content === StorageDeviceAction.DELETE_DISK && (
-              <ActionConfirm
-                closeExpanded={closeExpanded}
-                confirmLabel={`Remove ${diskType}`}
-                eventName="deleteDisk"
-                message={`Are you sure you want to remove this ${diskType}?`}
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.deleteDisk({
-                      blockId: disk.id,
-                      systemId: node.system_id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: `Delete ${diskType}`,
-                  category: "Machine storage",
-                  label: `Remove ${diskType}`,
-                }}
-                statusKey="deletingDisk"
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content === StorageDeviceAction.DELETE_VOLUME_GROUP && (
-              <ActionConfirm
-                closeExpanded={closeExpanded}
-                confirmLabel="Remove volume group"
-                eventName="deleteVolumeGroup"
-                message="Are you sure you want to remove this volume group?"
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.deleteVolumeGroup({
-                      systemId: node.system_id,
-                      volumeGroupId: disk.id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: "Delete volume group",
-                  category: "Machine storage",
-                  label: "Remove volume group",
-                }}
-                statusKey="deletingVolumeGroup"
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content === StorageDeviceAction.EDIT_DISK && (
-              <EditDisk
-                closeExpanded={closeExpanded}
-                disk={disk}
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content === StorageDeviceAction.SET_BOOT_DISK && (
-              <ActionConfirm
-                closeExpanded={closeExpanded}
-                confirmLabel="Set boot disk"
-                eventName="setBootDisk"
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.setBootDisk({
-                      blockId: disk.id,
-                      systemId: node.system_id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: "Set boot disk",
-                  category: "Machine storage",
-                  label: "Set boot disk",
-                }}
-                statusKey="settingBootDisk"
-                submitAppearance="positive"
-                systemId={node.system_id}
-              />
-            )}
-          </div>
-        ) : null,
       });
     }
 
@@ -516,79 +376,11 @@ const AvailableStorageTable = ({
               isMachine,
               partition,
               actionsDisabled,
-              expanded,
-              setExpanded,
               selected,
               handleRowCheckbox,
-              setSidePanelContent
+              setSidePanelContent,
+              disk
             ),
-            expandedContent: isMachine ? (
-              <div className="u-flex--grow">
-                {expanded?.content === StorageDeviceAction.CREATE_BCACHE && (
-                  <CreateBcache
-                    closeExpanded={() => setExpanded(null)}
-                    storageDevice={partition}
-                    systemId={node.system_id}
-                  />
-                )}
-                {expanded?.content === StorageDeviceAction.CREATE_CACHE_SET && (
-                  <ActionConfirm
-                    closeExpanded={closeExpanded}
-                    confirmLabel="Create cache set"
-                    eventName="createCacheSet"
-                    onConfirm={() => {
-                      dispatch(machineActions.cleanup());
-                      dispatch(
-                        machineActions.createCacheSet({
-                          partitionId: partition.id,
-                          systemId: node.system_id,
-                        })
-                      );
-                    }}
-                    onSaveAnalytics={{
-                      action: "Create cache set from partition",
-                      category: "Machine storage",
-                      label: "Create cache set",
-                    }}
-                    statusKey="creatingCacheSet"
-                    submitAppearance="positive"
-                    systemId={node.system_id}
-                  />
-                )}
-                {expanded?.content === StorageDeviceAction.DELETE_PARTITION && (
-                  <ActionConfirm
-                    closeExpanded={closeExpanded}
-                    confirmLabel="Remove partition"
-                    eventName="deletePartition"
-                    message="Are you sure you want to remove this partition?"
-                    onConfirm={() => {
-                      dispatch(machineActions.cleanup());
-                      dispatch(
-                        machineActions.deletePartition({
-                          partitionId: partition.id,
-                          systemId: node.system_id,
-                        })
-                      );
-                    }}
-                    onSaveAnalytics={{
-                      action: "Delete partition",
-                      category: "Machine storage",
-                      label: "Remove partition",
-                    }}
-                    statusKey="deletingPartition"
-                    systemId={node.system_id}
-                  />
-                )}
-                {expanded?.content === StorageDeviceAction.EDIT_PARTITION && (
-                  <EditPartition
-                    closeExpanded={() => setExpanded(null)}
-                    disk={disk}
-                    partition={partition}
-                    systemId={node.system_id}
-                  />
-                )}
-              </div>
-            ) : null,
           });
         }
       });

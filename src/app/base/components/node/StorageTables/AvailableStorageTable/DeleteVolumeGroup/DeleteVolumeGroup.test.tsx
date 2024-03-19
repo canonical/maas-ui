@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import CreateCacheSet from "./CreateCacheSet";
+import DeleteVolumeGroup from ".";
 
 import type { RootState } from "@/app/store/root/types";
 import {
@@ -15,11 +15,10 @@ import {
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const partition = partitionFactory();
 const disk = diskFactory({
   id: 1,
   name: "floppy-disk",
-  partitions: [partition, partitionFactory()],
+  partitions: [partitionFactory(), partitionFactory()],
 });
 
 const state = rootStateFactory({
@@ -33,51 +32,29 @@ const state = rootStateFactory({
 
 it("should render the form", () => {
   renderWithBrowserRouter(
-    <CreateCacheSet close={vi.fn()} diskId={disk.id} systemId="abc123" />,
+    <DeleteVolumeGroup close={vi.fn()} diskId={disk.id} systemId="abc123" />,
     { state }
   );
 
   expect(
-    screen.getByRole("form", { name: "Create cache set" })
+    screen.getByRole("form", { name: "Delete volume group" })
   ).toBeInTheDocument();
 });
 
-it("should fire an action to create cache set", async () => {
+it("should fire an action to delete a volume group", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <CreateCacheSet close={vi.fn()} diskId={disk.id} systemId="abc123" />,
+    <DeleteVolumeGroup close={vi.fn()} diskId={disk.id} systemId="abc123" />,
     { store }
   );
 
   await userEvent.click(
-    screen.getByRole("button", { name: "Create cache set" })
+    screen.getByRole("button", { name: "Remove volume group" })
   );
 
   expect(
     store
       .getActions()
-      .some((action) => action.type === "machine/createCacheSet")
-  ).toBe(true);
-});
-
-it("should fire an action to create a cache set given a partition ID", async () => {
-  const store = mockStore(state);
-  renderWithBrowserRouter(
-    <CreateCacheSet
-      close={vi.fn()}
-      partitionId={partition.id}
-      systemId="abc123"
-    />,
-    { store }
-  );
-
-  await userEvent.click(
-    screen.getByRole("button", { name: "Create cache set" })
-  );
-
-  expect(
-    store
-      .getActions()
-      .some((action) => action.type === "machine/createCacheSet")
+      .some((action) => action.type === "machine/deleteVolumeGroup")
   ).toBe(true);
 });

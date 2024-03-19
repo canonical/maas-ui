@@ -10,14 +10,19 @@ import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
+import AddLogicalVolume from "@/app/base/components/node/StorageTables/AvailableStorageTable/AddLogicalVolume";
 import AddPartition from "@/app/base/components/node/StorageTables/AvailableStorageTable/AddPartition";
 import CreateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateDatastore";
 import CreateRaid from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateRaid";
 import CreateVolumeGroup from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/CreateVolumeGroup";
 import UpdateDatastore from "@/app/base/components/node/StorageTables/AvailableStorageTable/BulkActions/UpdateDatastore";
+import CreateBcache from "@/app/base/components/node/StorageTables/AvailableStorageTable/CreateBcache";
 import CreateCacheSet from "@/app/base/components/node/StorageTables/AvailableStorageTable/CreateCacheSet";
 import DeleteDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteDisk";
+import DeletePartition from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeletePartition";
+import DeleteVolumeGroup from "@/app/base/components/node/StorageTables/AvailableStorageTable/DeleteVolumeGroup";
 import EditDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/EditDisk";
+import EditPartition from "@/app/base/components/node/StorageTables/AvailableStorageTable/EditPartition";
 import SetBootDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/SetBootDisk";
 import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
@@ -77,6 +82,8 @@ export const MachineForms = ({
   const linkId = extras && "linkId" in extras ? extras.linkId : undefined;
   const nicId = extras && "nicId" in extras ? extras.nicId : undefined;
   const disk = extras && "disk" in extras ? extras.disk : undefined;
+  const partition =
+    extras && "partition" in extras ? extras.partition : undefined;
 
   switch (sidePanelContent.view) {
     case MachineSidePanelViews.ADD_CHASSIS:
@@ -152,12 +159,23 @@ export const MachineForms = ({
         />
       );
     }
+    case MachineSidePanelViews.CREATE_BCACHE: {
+      if (!systemId || (!disk && !partition)) return null;
+      return (
+        <CreateBcache
+          closeExpanded={clearSidePanelContent}
+          storageDevice={disk ? disk : partition!}
+          systemId={systemId}
+        />
+      );
+    }
     case MachineSidePanelViews.CREATE_CACHE_SET: {
-      if (!systemId || !disk) return null;
+      if (!systemId || (!disk && !partition)) return null;
       return (
         <CreateCacheSet
           close={clearSidePanelContent}
-          diskId={disk.id}
+          diskId={disk?.id}
+          partitionId={partition?.id}
           systemId={systemId}
         />
       );
@@ -168,6 +186,16 @@ export const MachineForms = ({
         <CreateDatastore
           closeForm={clearSidePanelContent}
           selected={bulkActionSelected}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.CREATE_LOGICAL_VOLUME: {
+      if (!systemId || !disk) return null;
+      return (
+        <AddLogicalVolume
+          closeExpanded={clearSidePanelContent}
+          disk={disk}
           systemId={systemId}
         />
       );
@@ -212,12 +240,33 @@ export const MachineForms = ({
         />
       );
     }
+    case MachineSidePanelViews.DELETE_VOLUME_GROUP: {
+      if (!disk || !systemId) return null;
+      return (
+        <DeleteVolumeGroup
+          close={clearSidePanelContent}
+          diskId={disk.id}
+          systemId={systemId}
+        />
+      );
+    }
     case MachineSidePanelViews.EDIT_DISK: {
       if (!disk || !systemId) return null;
       return (
         <EditDisk
           closeExpanded={clearSidePanelContent}
           disk={disk}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.EDIT_PARTITION: {
+      if (!disk || !partition || !systemId) return null;
+      return (
+        <EditPartition
+          closeExpanded={clearSidePanelContent}
+          disk={disk}
+          partition={partition}
           systemId={systemId}
         />
       );
@@ -255,6 +304,16 @@ export const MachineForms = ({
           connectionState={ConnectionState.MARK_DISCONNECTED}
           link={link}
           nic={nic}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.REMOVE_PARTITION: {
+      if (!partition || !systemId) return null;
+      return (
+        <DeletePartition
+          close={clearSidePanelContent}
+          partitionId={partition.id}
           systemId={systemId}
         />
       );

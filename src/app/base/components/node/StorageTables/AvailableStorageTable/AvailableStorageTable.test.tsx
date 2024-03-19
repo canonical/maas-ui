@@ -7,7 +7,6 @@ import AvailableStorageTable from "./AvailableStorageTable";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { MachineSidePanelViews } from "@/app/machines/constants";
-import { actions as machineActions } from "@/app/store/machine";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
@@ -40,6 +39,15 @@ const getAvailableDisk = (name = "available-disk") =>
   });
 
 const setSidePanelContent = vi.fn();
+
+beforeEach(() => {
+  vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+    setSidePanelContent,
+    sidePanelContent: null,
+    setSidePanelSize: vi.fn(),
+    sidePanelSize: "regular",
+  });
+});
 afterEach(() => {
   vi.restoreAllMocks();
 });
@@ -258,12 +266,6 @@ describe("performing machine actions", () => {
   });
 
   it("can open the add partition form if disk can be partitioned", async () => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
     const disk = getAvailableDisk();
     const machine = machineDetailsFactory({
       disks: [disk],
@@ -293,7 +295,7 @@ describe("performing machine actions", () => {
     );
   });
 
-  it("can open the edit partition form if partition can be edited", async () => {
+  it("can trigger the edit partition form if partition can be edited", async () => {
     const partition = partitionFactory({ filesystem: null });
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE - 1,
@@ -322,10 +324,12 @@ describe("performing machine actions", () => {
       screen.getByRole("button", { name: /Edit partition/ })
     );
 
-    expect(screen.getByLabelText("Edit partition form")).toBeInTheDocument();
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({ view: MachineSidePanelViews.EDIT_PARTITION })
+    );
   });
 
-  it("can open the add logical volume form if disk can have one added", async () => {
+  it("can trigger the add logical volume form if disk can have one added", async () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.VOLUME_GROUP,
@@ -358,18 +362,14 @@ describe("performing machine actions", () => {
       screen.getByRole("button", { name: /Add logical volume/ })
     );
 
-    expect(
-      screen.getByLabelText("Add logical volume form")
-    ).toBeInTheDocument();
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.CREATE_LOGICAL_VOLUME,
+      })
+    );
   });
 
   it("can open the edit disk form if the disk is not a volume group", async () => {
-    vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
-      setSidePanelContent,
-      sidePanelContent: null,
-      setSidePanelSize: vi.fn(),
-      sidePanelSize: "regular",
-    });
     const disk = diskFactory({ type: DiskTypes.PHYSICAL });
     const machine = machineDetailsFactory({
       disks: [disk],
@@ -430,10 +430,13 @@ describe("performing machine actions", () => {
       screen.getByRole("button", { name: /Create bcache/ })
     );
 
-    expect(screen.getByLabelText("Create bcache form")).toBeInTheDocument();
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({ view: MachineSidePanelViews.CREATE_BCACHE })
+    );
   });
 
   it("disables actions if a bulk action has been selected", async () => {
+    vi.restoreAllMocks();
     const partitions = [
       partitionFactory({ filesystem: null, name: "part-1" }),
       partitionFactory({ filesystem: null, name: "part-2" }),
@@ -477,7 +480,7 @@ describe("performing machine actions", () => {
     ).toBeDisabled();
   });
 
-  it("can create a cache set from a partition", async () => {
+  it("can trigger a create cache set form for a partition", async () => {
     const partition = partitionFactory({ filesystem: null });
     const machine = machineDetailsFactory({
       disks: [
@@ -511,20 +514,13 @@ describe("performing machine actions", () => {
     await userEvent.click(
       screen.getByRole("button", { name: /Create cache set/ })
     );
-    await userEvent.click(
-      screen.getByRole("button", { name: /Create cache set/ })
-    );
 
-    const expectedAction = machineActions.createCacheSet({
-      partitionId: partition.id,
-      systemId: machine.system_id,
-    });
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({ view: MachineSidePanelViews.CREATE_CACHE_SET })
+    );
   });
 
-  it("can delete a volume group", async () => {
+  it("can trigger a form to delete a volume group", async () => {
     const disk = diskFactory({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.VOLUME_GROUP,
@@ -557,20 +553,12 @@ describe("performing machine actions", () => {
     await userEvent.click(
       screen.getByRole("button", { name: /Remove volume group/ })
     );
-    await userEvent.click(
-      screen.getByRole("button", { name: /Remove volume group/ })
-    );
 
-    const expectedAction = machineActions.deleteVolumeGroup({
-      systemId: machine.system_id,
-      volumeGroupId: disk.id,
-    });
-    expect(
-      screen.getByText("Are you sure you want to remove this volume group?")
-    ).toBeInTheDocument();
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        view: MachineSidePanelViews.DELETE_VOLUME_GROUP,
+      })
+    );
   });
 
   it("can delete a partition", async () => {
@@ -608,19 +596,9 @@ describe("performing machine actions", () => {
     await userEvent.click(
       screen.getByRole("button", { name: /Remove partition/ })
     );
-    await userEvent.click(
-      screen.getByRole("button", { name: /Remove partition/ })
-    );
 
-    const expectedAction = machineActions.deletePartition({
-      partitionId: partition.id,
-      systemId: machine.system_id,
-    });
-    expect(
-      screen.getByText("Are you sure you want to remove this partition?")
-    ).toBeInTheDocument();
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+    expect(setSidePanelContent).toHaveBeenCalledWith(
+      expect.objectContaining({ view: MachineSidePanelViews.REMOVE_PARTITION })
+    );
   });
 });

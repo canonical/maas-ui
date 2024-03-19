@@ -222,10 +222,14 @@ export const getSidePanelTitle = (
         return "Change storage layout";
       case SidePanelViews.CLEAR_ALL_DISCOVERIES[1]:
         return "Clear all discoveries";
+      case SidePanelViews.CREATE_BCACHE[1]:
+        return "Create bcache";
       case SidePanelViews.CREATE_CACHE_SET[1]:
         return "Create cache set";
       case SidePanelViews.CREATE_DATASTORE[1]:
         return "Create datastore";
+      case SidePanelViews.CREATE_LOGICAL_VOLUME[1]:
+        return "Create logical volume";
       case SidePanelViews.CREATE_PARTITION[1]:
         return "Create partition";
       case SidePanelViews.CREATE_RAID[1]:
@@ -238,12 +242,16 @@ export const getSidePanelTitle = (
         return "Delete disk";
       case SidePanelViews.DeleteTag[1]:
         return "Delete tag";
+      case SidePanelViews.DELETE_VOLUME_GROUP[1]:
+        return "Delete volume group";
       case SidePanelViews.EDIT_INTERFACE[1]:
         return "Edit interface";
       case SidePanelViews.CREATE_ZONE[1]:
         return "Add AZ";
       case SidePanelViews.EDIT_DISK[1]:
         return "Edit disk";
+      case SidePanelViews.EDIT_PARTITION[1]:
+        return "Edit partition";
       case SidePanelViews.EDIT_PHYSICAL[1]:
         return "Edit physical";
       case SidePanelViews.DELETE_IMAGE[1]:
@@ -258,6 +266,8 @@ export const getSidePanelTitle = (
         return "Mark as disconnected";
       case SidePanelViews.REMOVE_INTERFACE[1]:
         return "Remove interface";
+      case SidePanelViews.REMOVE_PARTITION[1]:
+        return "Remove partition";
       case SidePanelViews.REMOVE_PHYSICAL[1]:
         return "Remove physical";
       case SidePanelViews.SET_BOOT_DISK[1]:

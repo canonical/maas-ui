@@ -93,6 +93,7 @@ export type MachineSidePanelContent =
       {
         systemId?: Machine["system_id"];
         disk?: Disk;
+        partition?: Partition;
       }
     >;
 
