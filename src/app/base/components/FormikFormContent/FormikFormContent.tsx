@@ -142,6 +142,7 @@ const FormikFormContent = <V extends object, E = null>({
   }, [onSuccess, hasErrors, hasSaved, values]);
 
   // Send an analytics event when form is saved.
+
   useSendAnalyticsWhen(
     saved,
     onSaveAnalytics.category,
@@ -167,6 +168,29 @@ const FormikFormContent = <V extends object, E = null>({
     }
   }, [navigate, savedRedirect, saved]);
 
+  const renderFormContent = () => (
+    <>
+      {!!nonFieldError && (
+        <Notification severity="negative" title="Error:">
+          {nonFieldError}
+        </Notification>
+      )}
+      {typeof children === "function" ? children(formikContext) : children}
+    </>
+  );
+
+  const renderFormButtons = () => (
+    <FormikFormButtons
+      {...buttonsProps}
+      buttonsBehavior={buttonsBehavior}
+      cancelDisabled={cancelDisabled === false ? false : saving}
+      inline={inline}
+      saved={saved}
+      saving={saving}
+      submitDisabled={loading || saving || formDisabled || submitDisabled}
+    />
+  );
+
   return (
     <Form
       aria-label={ariaLabel}
@@ -174,37 +198,23 @@ const FormikFormContent = <V extends object, E = null>({
       inline={inline}
       onSubmit={handleSubmit}
     >
-      {/* collapse content section when there's no content */}
-      <ContentSection className={!children ? "u-no-padding--top" : undefined}>
-        <ContentSection.Content>
-          {!!nonFieldError && (
-            <Notification severity="negative" title="Error:">
-              {nonFieldError}
-            </Notification>
-          )}
-          {typeof children === "function"
-            ? children({ ...formikContext })
-            : children}
-        </ContentSection.Content>
-        <ContentSection.Footer
-          className={!children ? "u-no-margin--top" : undefined}
-        >
-          {editable && (
-            <FormikFormButtons
-              {...buttonsProps}
-              buttonsBehavior={buttonsBehavior}
-              cancelDisabled={cancelDisabled === false ? false : saving}
-              inline={inline}
-              saved={saved}
-              saving={saving}
-              submitDisabled={
-                loading || saving || formDisabled || submitDisabled
-              }
-            />
-          )}
+      {inline ? (
+        <>
+          {renderFormContent()}
+          {editable && renderFormButtons()}
           {footer}
-        </ContentSection.Footer>
-      </ContentSection>
+        </>
+      ) : (
+        <ContentSection className={!children ? "u-no-padding--top" : undefined}>
+          <ContentSection.Content>{renderFormContent()}</ContentSection.Content>
+          <ContentSection.Footer
+            className={!children ? "u-no-margin--top" : undefined}
+          >
+            {editable && renderFormButtons()}
+            {footer}
+          </ContentSection.Footer>
+        </ContentSection>
+      )}
     </Form>
   );
 };

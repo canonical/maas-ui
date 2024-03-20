@@ -1,4 +1,7 @@
 @mixin KVMDetailsHeader {
+  .kvm-details-header {
+      margin-bottom: $spv--medium;
+  }
   .kvm-details-header__title-block {
     border-left: $border;
     padding-left: $sph--large;

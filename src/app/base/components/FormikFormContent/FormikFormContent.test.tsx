@@ -21,6 +21,7 @@ import {
   render,
   screen,
   renderWithBrowserRouter,
+  renderWithMockStore,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -496,5 +497,22 @@ describe("FormikFormContent", () => {
     );
 
     expect(screen.getByTestId("footer")).toBeInTheDocument();
+  });
+
+  it("renders inline form correctly when inline prop is true", () => {
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <FormikFormContent aria-label="inline form" inline>
+          <Field aria-label="test field" name="testField" />
+        </FormikFormContent>
+      </Formik>
+    );
+
+    expect(screen.getByRole("form", { name: "inline form" })).toHaveClass(
+      "p-form--inline"
+    );
+    expect(
+      screen.getByRole("textbox", { name: "test field" })
+    ).toBeInTheDocument();
   });
 });

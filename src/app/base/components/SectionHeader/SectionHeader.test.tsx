@@ -19,14 +19,17 @@ describe("SectionHeader", () => {
     renderWithBrowserRouter(<SectionHeader title="Title" />);
     const title = screen.getByRole("heading", { level: 1, name: "Title" });
     expect(title).toBeInTheDocument();
-    expect(title.classList.contains("p-heading--4")).toBe(true);
+    expect(title).toHaveClass("p-heading--4");
   });
 
   it("can change the title element", () => {
     renderWithBrowserRouter(<SectionHeader title="Title" titleElement="div" />);
     const title = screen.getByTestId("section-header-title");
+    expect(
+      screen.queryByRole("heading", { name: "Title" })
+    ).not.toBeInTheDocument();
     expect(title).toBeInTheDocument();
-    expect(title.classList.contains("p-heading--4")).toBe(false);
+    expect(title).toHaveTextContent("Title");
   });
 
   it("shows a spinner instead of title if loading", () => {
@@ -56,7 +59,12 @@ describe("SectionHeader", () => {
       <button key="button-2">Button 2</button>,
     ];
     renderWithBrowserRouter(<SectionHeader buttons={buttons} title="Title" />);
-    expect(screen.getByTestId("section-header-buttons")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Button 1" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Button 2" })
+    ).toBeInTheDocument();
   });
 
   it("can render tabs", () => {
