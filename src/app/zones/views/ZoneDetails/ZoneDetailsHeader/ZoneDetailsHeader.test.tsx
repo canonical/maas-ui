@@ -110,7 +110,9 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByTestId("delete-zone")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Delete AZ" })
+    ).toBeInTheDocument();
   });
 
   it("hides delete button when zone id is 1 (as this is the default)", () => {
