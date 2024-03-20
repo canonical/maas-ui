@@ -4,14 +4,14 @@ import configureStore from "redux-mock-store";
 
 import MacAddressField from "./MacAddressField";
 
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("MacAddressField", () => {
   it("formats text as it is typed", async () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     render(
       <Provider store={store}>
         <Formik initialValues={{ mac_address: "" }} onSubmit={vi.fn()}>

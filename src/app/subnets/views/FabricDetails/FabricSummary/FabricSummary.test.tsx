@@ -5,38 +5,29 @@ import configureStore from "redux-mock-store";
 
 import FabricSummary from "./FabricSummary";
 
-import {
-  rootState as rootStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  vlanState as vlanStateFactory,
-  vlan as vlanFactory,
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  modelRef as modelRefFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("renders correct details", () => {
-  const controller = controllerFactory({
+  const controller = factory.controller({
     hostname: "bolla",
     system_id: "1234",
-    domain: modelRefFactory({ name: "maas" }),
+    domain: factory.modelRef({ name: "maas" }),
   });
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
+  const state = factory.rootState({
+    vlan: factory.vlanState({
       loaded: true,
-      items: [vlanFactory({ fabric: 2, rack_sids: ["system-id"] })],
+      items: [factory.vlan({ fabric: 2, rack_sids: ["system-id"] })],
     }),
-    controller: controllerStateFactory({
+    controller: factory.controllerState({
       loaded: true,
       items: [controller],
     }),
   });
   const store = mockStore(state);
-  const fabric = fabricFactory({ id: 1, name: "test-fabric" });
+  const fabric = factory.fabric({ id: 1, name: "test-fabric" });
 
   render(
     <Provider store={store}>
@@ -55,12 +46,12 @@ it("renders correct details", () => {
 });
 
 it("can open and close the Edit fabric summary form", async () => {
-  const fabric = fabricFactory({
+  const fabric = factory.fabric({
     name: "fabric-1",
     description: "fabric-1 description",
   });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({
       items: [fabric],
       loading: false,
     }),

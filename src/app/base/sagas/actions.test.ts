@@ -16,7 +16,7 @@ import {
 import { actions as domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
 import { actions as resourcePoolActions } from "@/app/store/resourcepool";
-import { domainResource as resourceFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 vi.mock("../../../websocket-client");
 
@@ -74,7 +74,7 @@ describe("websocket sagas", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
-    const resource = resourceFactory({
+    const resource = factory.domainResource({
       dnsdata_id: 1,
       dnsresource_id: 2,
       name: "old-name",
@@ -113,7 +113,7 @@ describe("websocket sagas", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
-    const resource = resourceFactory({
+    const resource = factory.domainResource({
       dnsdata_id: 1,
       dnsresource_id: 2,
       name: "old-name",
@@ -149,7 +149,7 @@ describe("websocket sagas", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
-    const resource = resourceFactory({
+    const resource = factory.domainResource({
       dnsdata_id: 1,
       dnsresource_id: 2,
       name: "old-name",
@@ -187,7 +187,7 @@ describe("websocket sagas", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
-    const resource = resourceFactory({
+    const resource = factory.domainResource({
       dnsdata_id: 1,
       dnsresource_id: 2,
       name: "name",
@@ -221,7 +221,7 @@ describe("websocket sagas", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = vi.fn();
     const actionCreators = [vi.fn()];
-    const resource = resourceFactory({
+    const resource = factory.domainResource({
       dnsdata_id: 1,
       dnsresource_id: 2,
       name: "name",

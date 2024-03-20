@@ -1,9 +1,6 @@
 import reducers, { actions } from "./slice";
 
-import {
-  discovery as discoveryFactory,
-  discoveryState as discoveryStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("discovery reducers", () => {
   it("should return the initial state", () => {
@@ -18,20 +15,20 @@ describe("discovery reducers", () => {
   });
 
   it("reduces fetchStart", () => {
-    const initialState = discoveryStateFactory({ loading: false });
+    const initialState = factory.discoveryState({ loading: false });
     expect(reducers(initialState, actions.fetchStart())).toEqual(
-      discoveryStateFactory({ loading: true })
+      factory.discoveryState({ loading: true })
     );
   });
 
   it("reduces fetchSuccess", () => {
-    const discoveries = [discoveryFactory()];
-    const initialState = discoveryStateFactory({
+    const discoveries = [factory.discovery()];
+    const initialState = factory.discoveryState({
       items: [],
       loading: true,
     });
     expect(reducers(initialState, actions.fetchSuccess(discoveries))).toEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         loading: false,
         loaded: true,
         items: discoveries,
@@ -40,20 +37,20 @@ describe("discovery reducers", () => {
   });
 
   it("reduces fetchError", () => {
-    const initialState = discoveryStateFactory({ errors: null });
+    const initialState = factory.discoveryState({ errors: null });
     expect(
       reducers(initialState, actions.fetchError("Could not fetch discoveries"))
     ).toEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         errors: "Could not fetch discoveries",
       })
     );
   });
 
   it("reduces deleteStart", () => {
-    const initialState = discoveryStateFactory({ saved: true, saving: false });
+    const initialState = factory.discoveryState({ saved: true, saving: false });
     expect(reducers(initialState, actions.deleteStart())).toEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         saved: false,
         saving: true,
       })
@@ -62,16 +59,16 @@ describe("discovery reducers", () => {
 
   it("reduces deleteSuccess", () => {
     const [deleteDiscovery, keepDiscovery] = [
-      discoveryFactory({
+      factory.discovery({
         ip: "192.168.1.1",
         mac_address: "00:00:00:00:00:00",
       }),
-      discoveryFactory({
+      factory.discovery({
         ip: "172.0.0.1",
         mac_address: "12:34:56:78:90:12",
       }),
     ];
-    const initialState = discoveryStateFactory({
+    const initialState = factory.discoveryState({
       items: [deleteDiscovery, keepDiscovery],
       saved: false,
       saving: true,
@@ -85,7 +82,7 @@ describe("discovery reducers", () => {
         })
       )
     ).toStrictEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         items: [keepDiscovery],
         saved: true,
         saving: false,
@@ -95,12 +92,12 @@ describe("discovery reducers", () => {
 
   it("reduces deleteError", () => {
     const discoveries = [
-      discoveryFactory({
+      factory.discovery({
         ip: "192.168.1.1",
         mac_address: "00:00:00:00:00:00",
       }),
     ];
-    const initialState = discoveryStateFactory({
+    const initialState = factory.discoveryState({
       errors: null,
       items: discoveries,
       saved: false,
@@ -109,7 +106,7 @@ describe("discovery reducers", () => {
     expect(
       reducers(initialState, actions.deleteError("Could not delete discovery"))
     ).toEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         errors: "Could not delete discovery",
         items: discoveries,
         saved: false,
@@ -119,9 +116,9 @@ describe("discovery reducers", () => {
   });
 
   it("reduces clearStart", () => {
-    const initialState = discoveryStateFactory({ saved: true, saving: false });
+    const initialState = factory.discoveryState({ saved: true, saving: false });
     expect(reducers(initialState, actions.clearStart())).toEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         saved: false,
         saving: true,
       })
@@ -129,14 +126,14 @@ describe("discovery reducers", () => {
   });
 
   it("reduces clearSuccess", () => {
-    const discoveries = [discoveryFactory(), discoveryFactory()];
-    const initialState = discoveryStateFactory({
+    const discoveries = [factory.discovery(), factory.discovery()];
+    const initialState = factory.discoveryState({
       items: discoveries,
       saved: false,
       saving: true,
     });
     expect(reducers(initialState, actions.clearSuccess())).toEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         items: [],
         saved: true,
         saving: false,
@@ -145,8 +142,8 @@ describe("discovery reducers", () => {
   });
 
   it("reduces clearError", () => {
-    const discoveries = [discoveryFactory(), discoveryFactory()];
-    const initialState = discoveryStateFactory({
+    const discoveries = [factory.discovery(), factory.discovery()];
+    const initialState = factory.discoveryState({
       errors: null,
       items: discoveries,
       saved: false,
@@ -155,7 +152,7 @@ describe("discovery reducers", () => {
     expect(
       reducers(initialState, actions.clearError("Could not clear discoveries"))
     ).toEqual(
-      discoveryStateFactory({
+      factory.discoveryState({
         errors: "Could not clear discoveries",
         items: discoveries,
         saved: false,

@@ -1,15 +1,11 @@
 import service from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  service as serviceFactory,
-  serviceState as serviceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 it("can get all items", () => {
-  const items = [serviceFactory(), serviceFactory()];
-  const state = rootStateFactory({
-    service: serviceStateFactory({
+  const items = [factory.service(), factory.service()];
+  const state = factory.rootState({
+    service: factory.serviceState({
       items,
     }),
   });
@@ -17,8 +13,8 @@ it("can get all items", () => {
 });
 
 it("can get the loading state", () => {
-  const state = rootStateFactory({
-    service: serviceStateFactory({
+  const state = factory.rootState({
+    service: factory.serviceState({
       loading: true,
     }),
   });
@@ -26,8 +22,8 @@ it("can get the loading state", () => {
 });
 
 it("can get the loaded state", () => {
-  const state = rootStateFactory({
-    service: serviceStateFactory({
+  const state = factory.rootState({
+    service: factory.serviceState({
       loaded: true,
     }),
   });
@@ -35,8 +31,8 @@ it("can get the loaded state", () => {
 });
 
 it("can get the errors state", () => {
-  const state = rootStateFactory({
-    service: serviceStateFactory({
+  const state = factory.rootState({
+    service: factory.serviceState({
       errors: "Data is incorrect",
     }),
   });
@@ -45,12 +41,12 @@ it("can get the errors state", () => {
 
 it("can get a list of services by their IDs", () => {
   const services = [
-    serviceFactory({ id: 0 }),
-    serviceFactory({ id: 1 }),
-    serviceFactory({ id: 2 }),
+    factory.service({ id: 0 }),
+    factory.service({ id: 1 }),
+    factory.service({ id: 2 }),
   ];
-  const state = rootStateFactory({
-    service: serviceStateFactory({
+  const state = factory.rootState({
+    service: factory.serviceState({
       items: services,
     }),
   });

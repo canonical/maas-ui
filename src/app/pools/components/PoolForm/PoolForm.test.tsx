@@ -8,11 +8,7 @@ import { PoolForm, Labels as PoolFormLabels } from "./PoolForm";
 import urls from "@/app/base/urls";
 import { actions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -25,12 +21,12 @@ const mockStore = configureStore();
 describe("PoolForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [
-          resourcePoolFactory({ name: "default", is_default: true }),
-          resourcePoolFactory({ name: "backup", is_default: false }),
+          factory.resourcePool({ name: "default", is_default: true }),
+          factory.resourcePool({ name: "backup", is_default: false }),
         ],
       }),
     });
@@ -111,7 +107,7 @@ describe("PoolForm", () => {
 
   it("can update a resource pool", async () => {
     const store = mockStore(state);
-    const pool = resourcePoolFactory({ id: 1 });
+    const pool = factory.resourcePool({ id: 1 });
 
     render(
       <Provider store={store}>

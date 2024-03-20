@@ -1,11 +1,11 @@
 import { getDiscoveryValue } from "./search";
 
-import { discovery as discoveryFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("search", () => {
   describe("getDiscoveryValue", () => {
     it("can get an attribute directly from the discovery", () => {
-      const discovery = discoveryFactory({ id: 808 });
+      const discovery = factory.discovery({ id: 808 });
       expect(getDiscoveryValue(discovery, "id")).toBe(808);
     });
   });

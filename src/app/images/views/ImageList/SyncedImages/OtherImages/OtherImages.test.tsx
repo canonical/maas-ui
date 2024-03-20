@@ -7,13 +7,7 @@ import OtherImages, { Labels as OtherImagesLabels } from "./OtherImages";
 
 import { actions as bootResourceActions } from "@/app/store/bootresource";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResource as bootResourceFactory,
-  bootResourceOtherImage as otherImageFactory,
-  bootResourceState as bootResourceStateFactory,
-  bootResourceStatuses as bootResourceStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -25,8 +19,8 @@ const mockStore = configureStore<RootState, {}>();
 
 describe("OtherImages", () => {
   it("does not render if there is no other image data", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({ otherImages: [] }),
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({ otherImages: [] }),
     });
     renderWithBrowserRouter(<OtherImages />, { state });
     expect(
@@ -36,30 +30,30 @@ describe("OtherImages", () => {
 
   it("correctly sets initial values based on resources", () => {
     const otherImages = [
-      otherImageFactory({
+      factory.bootResourceOtherImage({
         name: "centos/amd64/generic/centos70",
         title: "CentOS 7",
       }),
     ];
     const resources = [
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu-core/20",
         arch: "amd64",
         title: "Ubuntu Core 20",
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu/focal",
         arch: "amd64",
         title: "20.04 LTS",
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "centos/centos70",
         arch: "amd64",
         title: "CentOS 7",
       }), // only this resource is an "other image"
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         otherImages,
         resources,
       }),
@@ -70,9 +64,9 @@ describe("OtherImages", () => {
   });
 
   it("can dispatch an action to save other images", async () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        otherImages: [otherImageFactory()],
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        otherImages: [factory.bootResourceOtherImage()],
       }),
     });
     const store = mockStore(state);
@@ -101,12 +95,12 @@ describe("OtherImages", () => {
 
   it(`does not show a button to stop importing other images if none are
     downloading`, () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        otherImages: [otherImageFactory()],
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        otherImages: [factory.bootResourceOtherImage()],
         resources: [
-          bootResourceFactory({ downloading: true, name: "ubuntu/focal" }),
-          bootResourceFactory({ downloading: false, name: "centos/centos70" }),
+          factory.bootResource({ downloading: true, name: "ubuntu/focal" }),
+          factory.bootResource({ downloading: false, name: "centos/centos70" }),
         ],
       }),
     });
@@ -118,11 +112,11 @@ describe("OtherImages", () => {
   });
 
   it("enables 'Stop import' button if images are saving", async () => {
-    const otherImages = [otherImageFactory()];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const otherImages = [factory.bootResourceOtherImage()];
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         otherImages,
-        statuses: bootResourceStatusesFactory({ savingOther: true }),
+        statuses: factory.bootResourceStatuses({ savingOther: true }),
       }),
     });
     renderWithBrowserRouter(<OtherImages />, { state });
@@ -134,11 +128,11 @@ describe("OtherImages", () => {
 
   it(`can dispatch an action to stop importing other images if at least one is
     downloading`, async () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        otherImages: [otherImageFactory()],
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        otherImages: [factory.bootResourceOtherImage()],
         resources: [
-          bootResourceFactory({ downloading: true, name: "centos/centos70" }),
+          factory.bootResource({ downloading: true, name: "centos/centos70" }),
         ],
       }),
     });

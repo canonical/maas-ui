@@ -1,19 +1,13 @@
 import user from "./selectors";
 
-import {
-  user as userFactory,
-  userState as userStateFactory,
-  userEventError as userEventErrorFactory,
-  userStatuses as userStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("users selectors", () => {
   it("can get items", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         items: [
-          userFactory({
+          factory.user({
             username: "default",
           }),
         ],
@@ -25,8 +19,8 @@ describe("users selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         loading: true,
       }),
     });
@@ -34,8 +28,8 @@ describe("users selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         loaded: true,
       }),
     });
@@ -43,8 +37,8 @@ describe("users selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         saving: true,
       }),
     });
@@ -52,8 +46,8 @@ describe("users selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         saved: true,
       }),
     });
@@ -61,11 +55,11 @@ describe("users selectors", () => {
   });
 
   it("can get the count", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         items: [
-          userFactory({ username: "foo" }),
-          userFactory({ username: "bar" }),
+          factory.user({ username: "foo" }),
+          factory.user({ username: "bar" }),
         ],
       }),
     });
@@ -73,9 +67,9 @@ describe("users selectors", () => {
   });
 
   it("can get a user by id", () => {
-    const items = [userFactory({ id: 808 }), userFactory({ id: 909 })];
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const items = [factory.user({ id: 808 }), factory.user({ id: 909 })];
+    const state = factory.rootState({
+      user: factory.userState({
         items,
       }),
     });
@@ -84,11 +78,11 @@ describe("users selectors", () => {
 
   it("can get a user by username", () => {
     const items = [
-      userFactory({ username: "maas-user", id: 808 }),
-      userFactory({ username: "maas-user-1", id: 909 }),
+      factory.user({ username: "maas-user", id: 808 }),
+      factory.user({ username: "maas-user-1", id: 909 }),
     ];
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         items,
       }),
     });
@@ -96,25 +90,25 @@ describe("users selectors", () => {
   });
 
   it("can search items", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         items: [
-          userFactory({
+          factory.user({
             username: "admin",
             email: "test@example.com",
             last_name: "",
           }),
-          userFactory({
+          factory.user({
             username: "me",
             email: "minnie@example.com",
             last_name: "",
           }),
-          userFactory({
+          factory.user({
             username: "richie",
             email: "richie@example.com",
             last_name: "",
           }),
-          userFactory({
+          factory.user({
             username: "adam",
             email: "adam@example.com",
             last_name: "minichiello",
@@ -133,8 +127,8 @@ describe("users selectors", () => {
   });
 
   it("can get user errors", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
         errors: { username: "Username already exists" },
       }),
     });
@@ -144,9 +138,9 @@ describe("users selectors", () => {
   });
 
   it("can get the markingIntroComplete status", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        statuses: userStatusesFactory({
+    const state = factory.rootState({
+      user: factory.userState({
+        statuses: factory.userStatuses({
           markingIntroComplete: true,
         }),
       }),
@@ -155,9 +149,9 @@ describe("users selectors", () => {
   });
 
   it("can get markingIntroComplete errors", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        eventErrors: [userEventErrorFactory({ error: "Uh oh" })],
+    const state = factory.rootState({
+      user: factory.userState({
+        eventErrors: [factory.userEventError({ error: "Uh oh" })],
       }),
     });
     expect(user.markingIntroCompleteErrors(state)).toBe("Uh oh");

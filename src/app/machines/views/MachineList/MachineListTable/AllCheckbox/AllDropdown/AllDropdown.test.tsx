@@ -5,12 +5,7 @@ import AllDropdown, { AllDropdownLabel } from "./AllDropdown";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus } from "@/app/store/types/node";
-import {
-  rootState as rootStateFactory,
-  machineStateList as machineStateListFactory,
-  machineState as machineStateFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -19,10 +14,10 @@ let state: RootState;
 const callId = "123456";
 
 beforeEach(() => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       lists: {
-        [callId]: machineStateListFactory(),
+        [callId]: factory.machineStateList(),
       },
     }),
   });
@@ -57,13 +52,13 @@ it("can dispatch an action to select all machines using a dropdown", async () =>
 
 it("can dispatch an action to select all machines on current page using a dropdown", async () => {
   state.machine.lists[callId].groups = [
-    machineStateListGroupFactory({
+    factory.machineStateListGroup({
       count: 1,
       items: ["abc123"],
       name: "Deployed",
       value: FetchNodeStatus.DEPLOYED,
     }),
-    machineStateListGroupFactory({
+    factory.machineStateListGroup({
       count: 2,
       collapsed: true,
       name: "Failed testing",

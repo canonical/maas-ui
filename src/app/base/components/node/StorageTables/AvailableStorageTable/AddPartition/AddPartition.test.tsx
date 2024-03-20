@@ -3,31 +3,23 @@ import configureStore from "redux-mock-store";
 import AddPartition from "./AddPartition";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("AddPartition", () => {
   it("sets the partition name correctly", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       id: 1,
       name: "floppy-disk",
-      partitions: [partitionFactory(), partitionFactory()],
+      partitions: [factory.nodePartition(), factory.nodePartition()],
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -42,17 +34,17 @@ describe("AddPartition", () => {
   });
 
   it("sets the initial size to the available space", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: 8000000000,
       id: 1,
       name: "floppy-disk",
-      partitions: [partitionFactory(), partitionFactory()],
+      partitions: [factory.nodePartition(), factory.nodePartition()],
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -64,14 +56,14 @@ describe("AddPartition", () => {
   });
 
   it("can validate if the size meets the minimum requirement", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: 1000000000, // 1GB
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -95,15 +87,15 @@ describe("AddPartition", () => {
   });
 
   it("can validate if the size is less than available disk space", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: 1000000000, // 1GB
       id: 1,
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -124,18 +116,18 @@ describe("AddPartition", () => {
   });
 
   it("correctly dispatches an action to create a partition", async () => {
-    const disk = diskFactory({ id: 1 });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const disk = factory.nodeDisk({ id: 1 });
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [disk],
             system_id: "abc123",
             supported_filesystems: [{ key: "fat32", ui: "FAT32" }],
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

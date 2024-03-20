@@ -7,19 +7,15 @@ import VLANDetails from "./VLANDetails";
 
 import urls from "@/app/base/urls";
 import { actions as vlanActions } from "@/app/store/vlan";
-import {
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("dispatches actions to fetch necessary data and set vlan as active on mount", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
-      items: [vlanFactory({ id: 1, space: 3 })],
+  const state = factory.rootState({
+    vlan: factory.vlanState({
+      items: [factory.vlan({ id: 1, space: 3 })],
     }),
   });
   const store = mockStore(state);
@@ -52,7 +48,7 @@ it("dispatches actions to fetch necessary data and set vlan as active on mount",
 });
 
 it("dispatches actions to unset active vlan and clean up on unmount", () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   const { unmount } = render(
     <Provider store={store}>
@@ -88,8 +84,8 @@ it("dispatches actions to unset active vlan and clean up on unmount", () => {
 });
 
 it("displays a message if the vlan does not exist", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
+  const state = factory.rootState({
+    vlan: factory.vlanState({
       items: [],
       loading: false,
     }),
@@ -116,8 +112,8 @@ it("displays a message if the vlan does not exist", () => {
 });
 
 it("shows a spinner if the vlan has not loaded yet", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
+  const state = factory.rootState({
+    vlan: factory.vlanState({
       items: [],
       loading: true,
     }),

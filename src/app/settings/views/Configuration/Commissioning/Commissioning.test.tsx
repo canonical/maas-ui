@@ -9,12 +9,7 @@ import Commissioning, { Labels as CommissioningLabels } from "./Commissioning";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -23,8 +18,8 @@ describe("Commissioning", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
           {
             name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
@@ -38,8 +33,8 @@ describe("Commissioning", () => {
           },
         ],
       }),
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loaded: true,
         }),
       }),

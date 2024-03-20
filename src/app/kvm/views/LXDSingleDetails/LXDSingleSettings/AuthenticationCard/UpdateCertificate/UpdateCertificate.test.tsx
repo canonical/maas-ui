@@ -6,14 +6,7 @@ import { actions as generalActions } from "@/app/store/general";
 import { actions as podActions } from "@/app/store/pod";
 import type { PodDetails } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  generatedCertificate as generatedCertificateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  podDetails as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -23,14 +16,14 @@ describe("UpdateCertificate", () => {
   let pod: PodDetails;
 
   beforeEach(() => {
-    pod = podFactory({ id: 1, name: "my-pod" });
-    state = rootStateFactory({
-      general: generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+    pod = factory.podDetails({ id: 1, name: "my-pod" });
+    state = factory.rootState({
+      general: factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           data: null,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [pod],
         loaded: true,
       }),
@@ -83,7 +76,7 @@ describe("UpdateCertificate", () => {
   });
 
   it("can dispatch an action to update pod with generated certificate and key", async () => {
-    const generatedCertificate = generatedCertificateFactory({
+    const generatedCertificate = factory.generatedCertificate({
       certificate: "generated-certificate",
       private_key: "private-key",
     });
@@ -169,7 +162,7 @@ describe("UpdateCertificate", () => {
   it(`clears generated certificate on cancel if pod has no certificate and a
       certificate has been generated`, async () => {
     const closeForm = vi.fn();
-    state.general.generatedCertificate.data = generatedCertificateFactory();
+    state.general.generatedCertificate.data = factory.generatedCertificate();
     const store = mockStore(state);
 
     renderWithBrowserRouter(

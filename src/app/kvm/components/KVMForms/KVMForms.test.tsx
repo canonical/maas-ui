@@ -4,25 +4,7 @@ import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { PodType } from "@/app/store/pod/constants";
 import zoneSelectors from "@/app/store/zone/selectors";
-import {
-  generalState as generalStateFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  powerTypesState as powerTypesStateFactory,
-  powerType as powerTypeFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-  domainState as domainStateFactory,
-  fabricState as fabricStateFactory,
-  spaceState as spaceStateFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  podDetails as podDetailsFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmCluster as vmClusterFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
@@ -30,53 +12,53 @@ import {
 } from "@/testing/utils";
 
 describe("KVMForms", () => {
-  let state = rootStateFactory();
+  let state = factory.rootState();
 
   beforeEach(() => {
     // "loaded" doesn't exist on ZoneState type, so we have to mock the return value here
     vi.spyOn(zoneSelectors, "loaded").mockReturnValue(true);
 
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
           loaded: true,
-          data: [powerTypeFactory({ name: PodType.VIRSH })],
+          data: [factory.powerType({ name: PodType.VIRSH })],
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [
-          podDetailsFactory({ id: 1, name: "pod-1", type: PodType.LXD }),
-          podDetailsFactory({ id: 2, name: "pod-2", type: PodType.VIRSH }),
+          factory.podDetails({ id: 1, name: "pod-1", type: PodType.LXD }),
+          factory.podDetails({ id: 2, name: "pod-2", type: PodType.VIRSH }),
         ],
         statuses: {
-          1: podStatusFactory(),
-          2: podStatusFactory(),
+          1: factory.podStatus(),
+          2: factory.podStatus(),
         },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      space: spaceStateFactory({
+      space: factory.spaceState({
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vmcluster: vmClusterStateFactory({
+      vmcluster: factory.vmClusterState({
         loaded: true,
-        items: [vmClusterFactory({ id: 1, name: "cluster-1" })],
+        items: [factory.vmCluster({ id: 1, name: "cluster-1" })],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        items: [zoneFactory({ id: 1 })],
+      zone: factory.zoneState({
+        items: [factory.zone({ id: 1 })],
       }),
     });
   });

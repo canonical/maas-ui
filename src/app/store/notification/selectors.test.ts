@@ -2,21 +2,13 @@ import notification from "./selectors";
 
 import { ConfigNames } from "@/app/store/config/types";
 import { NotificationIdent } from "@/app/store/notification/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  locationState as locationStateFactory,
-  notification as notificationFactory,
-  notificationState as notificationStateFactory,
-  rootState as rootStateFactory,
-  routerState as routerStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("notification selectors", () => {
   it("can get all items", () => {
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
-        items: [notificationFactory({ message: "Test message" })],
+    const state = factory.rootState({
+      notification: factory.notificationState({
+        items: [factory.notification({ message: "Test message" })],
       }),
     });
     const items = notification.all(state);
@@ -25,23 +17,23 @@ describe("notification selectors", () => {
   });
 
   it("can get all enabled items", () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: false,
           }),
         ],
       }),
-      notification: notificationStateFactory({
+      notification: factory.notificationState({
         items: [
-          notificationFactory({ message: "Test message" }),
-          notificationFactory({ ident: NotificationIdent.RELEASE }),
+          factory.notification({ message: "Test message" }),
+          factory.notification({ ident: NotificationIdent.RELEASE }),
         ],
       }),
-      router: routerStateFactory({
-        location: locationStateFactory({
+      router: factory.routerState({
+        location: factory.locationState({
           pathname: "/kvm",
         }),
       }),
@@ -52,23 +44,23 @@ describe("notification selectors", () => {
   });
 
   it("does not include release notifications if the config is off", () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: false,
           }),
         ],
       }),
-      notification: notificationStateFactory({
+      notification: factory.notificationState({
         items: [
-          notificationFactory({ message: "Test message" }),
-          notificationFactory({ ident: NotificationIdent.RELEASE }),
+          factory.notification({ message: "Test message" }),
+          factory.notification({ ident: NotificationIdent.RELEASE }),
         ],
       }),
-      router: routerStateFactory({
-        location: locationStateFactory({
+      router: factory.routerState({
+        location: factory.locationState({
           pathname: "/machines",
         }),
       }),
@@ -79,23 +71,23 @@ describe("notification selectors", () => {
   });
 
   it("does not include release notifications for some paths", () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: true,
           }),
         ],
       }),
-      notification: notificationStateFactory({
+      notification: factory.notificationState({
         items: [
-          notificationFactory({ message: "Test message" }),
-          notificationFactory({ ident: NotificationIdent.RELEASE }),
+          factory.notification({ message: "Test message" }),
+          factory.notification({ ident: NotificationIdent.RELEASE }),
         ],
       }),
-      router: routerStateFactory({
-        location: locationStateFactory({
+      router: factory.routerState({
+        location: factory.locationState({
           pathname: "/kvm",
         }),
       }),
@@ -107,23 +99,23 @@ describe("notification selectors", () => {
 
   it("can include release notifications", () => {
     const notifications = [
-      notificationFactory({ message: "Test message" }),
-      notificationFactory({ ident: NotificationIdent.RELEASE }),
+      factory.notification({ message: "Test message" }),
+      factory.notification({ ident: NotificationIdent.RELEASE }),
     ];
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: true,
           }),
         ],
       }),
-      notification: notificationStateFactory({
+      notification: factory.notificationState({
         items: notifications,
       }),
-      router: routerStateFactory({
-        location: locationStateFactory({
+      router: factory.routerState({
+        location: factory.locationState({
           pathname: "/machines",
         }),
       }),
@@ -134,8 +126,8 @@ describe("notification selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         loading: true,
       }),
     });
@@ -143,8 +135,8 @@ describe("notification selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         loaded: true,
       }),
     });
@@ -153,11 +145,11 @@ describe("notification selectors", () => {
 
   it("can get a notification by id", () => {
     const items = [
-      notificationFactory({ id: 808 }),
-      notificationFactory({ id: 909 }),
+      factory.notification({ id: 808 }),
+      factory.notification({ id: 909 }),
     ];
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items,
       }),
     });

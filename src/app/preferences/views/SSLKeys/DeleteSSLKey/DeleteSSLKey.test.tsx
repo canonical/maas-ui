@@ -4,11 +4,7 @@ import DeleteSSLKey from "./DeleteSSLKey";
 
 import { Label as SSLKeyListLabels } from "@/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
 import type { RootState } from "@/app/store/root/types";
-import {
-  sslKey as sslKeyFactory,
-  sslKeyState as sslKeyStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -16,28 +12,28 @@ const mockStore = configureStore<RootState>();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    sslkey: sslKeyStateFactory({
+  state = factory.rootState({
+    sslkey: factory.sslKeyState({
       loading: false,
       loaded: true,
       items: [
-        sslKeyFactory({
+        factory.sslKey({
           id: 1,
           key: "ssh-rsa aabb",
         }),
-        sslKeyFactory({
+        factory.sslKey({
           id: 2,
           key: "ssh-rsa ccdd",
         }),
-        sslKeyFactory({
+        factory.sslKey({
           id: 3,
           key: "ssh-rsa eeff",
         }),
-        sslKeyFactory({
+        factory.sslKey({
           id: 4,
           key: "ssh-rsa gghh",
         }),
-        sslKeyFactory({ id: 5, key: "ssh-rsa gghh" }),
+        factory.sslKey({ id: 5, key: "ssh-rsa gghh" }),
       ],
     }),
   });

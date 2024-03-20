@@ -3,38 +3,29 @@ import configureStore from "redux-mock-store";
 import DeviceName from "./DeviceName";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  generalState as generalStateFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceState as deviceStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("DeviceName", () => {
   let state: RootState;
-  const domain = domainFactory({ id: 99 });
+  const domain = factory.domain({ id: 99 });
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [domain],
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
         }),
       }),
-      device: deviceStateFactory({
+      device: factory.deviceState({
         loaded: true,
         items: [
-          deviceDetailsFactory({
+          factory.deviceDetails({
             domain,
             locked: false,
             permissions: ["edit"],

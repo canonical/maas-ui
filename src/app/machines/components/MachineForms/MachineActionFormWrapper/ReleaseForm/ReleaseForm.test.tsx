@@ -6,14 +6,7 @@ import ReleaseForm from "./ReleaseForm";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -21,32 +14,32 @@ const mockStore = configureStore<RootState>();
 describe("ReleaseForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         loaded: true,
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
             value: false,
           }),
-          configFactory({
+          factory.config({
             name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
             value: false,
           }),
-          configFactory({
+          factory.config({
             name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
             value: false,
           }),
         ],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: machineStatusFactory({ releasing: false }),
-          def456: machineStatusFactory({ releasing: false }),
+          abc123: factory.machineStatus({ releasing: false }),
+          def456: factory.machineStatus({ releasing: false }),
         },
       }),
     });
@@ -55,15 +48,15 @@ describe("ReleaseForm", () => {
   it("sets the initial disk erase behaviour from global config", () => {
     state.machine.selected = { items: ["abc123", "def456"] };
     state.config.items = [
-      configFactory({
+      factory.config({
         name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
         value: true,
       }),
-      configFactory({
+      factory.config({
         name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
         value: false,
       }),
-      configFactory({
+      factory.config({
         name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
         value: true,
       }),

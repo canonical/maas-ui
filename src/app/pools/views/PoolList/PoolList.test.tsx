@@ -4,11 +4,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import PoolList from "./PoolList";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   within,
@@ -20,10 +16,10 @@ describe("PoolList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
-        items: [resourcePoolFactory({ name: "default" })],
+        items: [factory.resourcePool({ name: "default" })],
       }),
     });
   });
@@ -43,7 +39,7 @@ describe("PoolList", () => {
   });
 
   it("disables the edit button without permissions", () => {
-    state.resourcepool.items = [resourcePoolFactory({ permissions: [] })];
+    state.resourcepool.items = [factory.resourcePool({ permissions: [] })];
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <CompatRouter>
@@ -59,7 +55,9 @@ describe("PoolList", () => {
   });
 
   it("enables the edit button with correct permissions", () => {
-    state.resourcepool.items = [resourcePoolFactory({ permissions: ["edit"] })];
+    state.resourcepool.items = [
+      factory.resourcePool({ permissions: ["edit"] }),
+    ];
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
         <CompatRouter>
@@ -76,7 +74,7 @@ describe("PoolList", () => {
 
   it("displays a link to delete confirmation", async () => {
     state.resourcepool.items = [
-      resourcePoolFactory({
+      factory.resourcePool({
         id: 0,
         name: "squambo",
         description: "a pool",
@@ -105,7 +103,7 @@ describe("PoolList", () => {
 
   it("disables the delete button for default pools", () => {
     state.resourcepool.items = [
-      resourcePoolFactory({
+      factory.resourcePool({
         id: 0,
         name: "default",
         description: "default",
@@ -129,7 +127,7 @@ describe("PoolList", () => {
 
   it("disables the delete button for pools that contain machines", () => {
     state.resourcepool.items = [
-      resourcePoolFactory({
+      factory.resourcePool({
         id: 0,
         name: "machines",
         description: "has machines",

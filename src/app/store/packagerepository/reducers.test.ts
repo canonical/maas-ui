@@ -1,35 +1,32 @@
 import reducers, { actions } from "./slice";
 
-import {
-  packageRepository as packageRepositoryFactory,
-  packageRepositoryState as packageRepositoryStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("packagerepository reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual(
-      packageRepositoryStateFactory()
+      factory.packageRepositoryState()
     );
   });
 
   it("reduces fetchStart", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({ loading: false }),
+        factory.packageRepositoryState({ loading: false }),
         actions.fetchStart()
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         loading: true,
       })
     );
   });
 
   it("reduces fetchSuccess", () => {
-    const items = [packageRepositoryFactory(), packageRepositoryFactory()];
+    const items = [factory.packageRepository(), factory.packageRepository()];
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           items: [],
           loaded: false,
           loading: true,
@@ -37,7 +34,7 @@ describe("packagerepository reducer", () => {
         actions.fetchSuccess(items)
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         items,
         loaded: true,
         loading: false,
@@ -48,14 +45,14 @@ describe("packagerepository reducer", () => {
   it("reduces createStart", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           saved: true,
           saving: false,
         }),
         actions.createStart()
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         saved: false,
         saving: true,
       })
@@ -65,7 +62,7 @@ describe("packagerepository reducer", () => {
   it("reduces createSuccess", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           errors: { name: "Name already exists" },
           saved: false,
           saving: true,
@@ -73,7 +70,7 @@ describe("packagerepository reducer", () => {
         actions.createSuccess()
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         errors: null,
         saved: true,
         saving: false,
@@ -84,14 +81,14 @@ describe("packagerepository reducer", () => {
   it("reduces createError", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           errors: null,
           saving: true,
         }),
         actions.createError("Could not create repository")
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         errors: "Could not create repository",
         saving: false,
       })
@@ -99,16 +96,16 @@ describe("packagerepository reducer", () => {
   });
 
   it("reduces createNotify", () => {
-    const items = [packageRepositoryFactory(), packageRepositoryFactory()];
+    const items = [factory.packageRepository(), factory.packageRepository()];
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           items: [items[0]],
         }),
         actions.createNotify(items[1])
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         items,
       })
     );
@@ -117,14 +114,14 @@ describe("packagerepository reducer", () => {
   it("reduces updateStart", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           saved: true,
           saving: false,
         }),
         actions.updateStart()
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         saved: false,
         saving: true,
       })
@@ -134,7 +131,7 @@ describe("packagerepository reducer", () => {
   it("reduces updateSuccess", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           errors: { name: "Name already exists" },
           saved: false,
           saving: true,
@@ -142,7 +139,7 @@ describe("packagerepository reducer", () => {
         actions.updateSuccess()
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         errors: null,
         saved: true,
         saving: false,
@@ -153,14 +150,14 @@ describe("packagerepository reducer", () => {
   it("reduces updateError", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           errors: null,
           saving: true,
         }),
         actions.updateError("Could not update repository")
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         errors: "Could not update repository",
         saving: false,
       })
@@ -168,17 +165,17 @@ describe("packagerepository reducer", () => {
   });
 
   it("reduces updateNotify", () => {
-    const items = [packageRepositoryFactory(), packageRepositoryFactory()];
+    const items = [factory.packageRepository(), factory.packageRepository()];
     const updated = { ...items[1], name: "newName" };
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           items,
         }),
         actions.updateNotify(updated)
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         items: [items[0], updated],
       })
     );
@@ -187,14 +184,14 @@ describe("packagerepository reducer", () => {
   it("reduces deleteStart", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           saved: true,
           saving: false,
         }),
         actions.deleteStart()
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         saved: false,
         saving: true,
       })
@@ -204,7 +201,7 @@ describe("packagerepository reducer", () => {
   it("reduces deleteSuccess", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           errors: { name: "Name already exists" },
           saved: false,
           saving: true,
@@ -212,7 +209,7 @@ describe("packagerepository reducer", () => {
         actions.deleteSuccess()
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         errors: null,
         saved: true,
         saving: false,
@@ -223,14 +220,14 @@ describe("packagerepository reducer", () => {
   it("reduces deleteError", () => {
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           errors: null,
           saving: true,
         }),
         actions.deleteError("Could not delete repository")
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         errors: "Could not delete repository",
         saving: false,
       })
@@ -238,10 +235,10 @@ describe("packagerepository reducer", () => {
   });
 
   it("reduces deleteNotify", () => {
-    const items = [packageRepositoryFactory(), packageRepositoryFactory()];
+    const items = [factory.packageRepository(), factory.packageRepository()];
     expect(
       reducers(
-        packageRepositoryStateFactory({
+        factory.packageRepositoryState({
           items,
           loaded: false,
           loading: false,
@@ -251,7 +248,7 @@ describe("packagerepository reducer", () => {
         actions.deleteNotify(items[1].id)
       )
     ).toEqual(
-      packageRepositoryStateFactory({
+      factory.packageRepositoryState({
         items: [items[0]],
       })
     );

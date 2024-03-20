@@ -6,14 +6,7 @@ import configureStore from "redux-mock-store";
 import LicenseKeyList from ".";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  licenseKeys as licenseKeysFactory,
-  licenseKeysState as licenseKeysStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,11 +15,11 @@ describe("LicenseKeyList", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+    initialState = factory.rootState({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loaded: true,
-          data: osInfoFactory({
+          data: factory.osInfo({
             osystems: [
               ["ubuntu", "Ubuntu"],
               ["windows", "Windows"],
@@ -38,9 +31,9 @@ describe("LicenseKeyList", () => {
           }),
         }),
       }),
-      licensekeys: licenseKeysStateFactory({
+      licensekeys: factory.licenseKeysState({
         loaded: true,
-        items: [licenseKeysFactory()],
+        items: [factory.licenseKeys()],
       }),
     });
   });

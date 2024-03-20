@@ -2,25 +2,20 @@ import { DisksColumn } from "./DisksColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { TestStatusStatus } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  testStatus as testStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("DisksColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
             physical_disk_count: 1,
-            storage_test_status: testStatusFactory({
+            storage_test_status: factory.testStatus({
               status: 2,
             }),
           }),
@@ -40,7 +35,7 @@ describe("DisksColumn", () => {
   });
 
   it("correctly shows error icon and tooltip if storage tests failed", async () => {
-    state.machine.items[0].storage_test_status = testStatusFactory({
+    state.machine.items[0].storage_test_status = factory.testStatus({
       status: TestStatusStatus.FAILED,
     });
 

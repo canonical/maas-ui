@@ -4,28 +4,21 @@ import NonUbuntuImageSelect from "./NonUbuntuImageSelect";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResource as bootResourceFactory,
-  bootResourceState as bootResourceStateFactory,
-  bootResourceOtherImage as otherImageFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("NonUbuntuImageSelect", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    state = factory.rootState({
+      bootresource: factory.bootResourceState({
         otherImages: [],
         resources: [],
       }),
-      config: configStateFactory({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
@@ -36,13 +29,16 @@ describe("NonUbuntuImageSelect", () => {
 
   it("correctly shows when an image checkbox is checked", () => {
     const otherImages = [
-      otherImageFactory({
+      factory.bootResourceOtherImage({
         name: "centos/amd64/generic/centos7",
         title: "CentOS 7",
       }),
-      otherImageFactory({ name: "centos/amd64/generic/8", title: "CentOS 8" }),
+      factory.bootResourceOtherImage({
+        name: "centos/amd64/generic/8",
+        title: "CentOS 8",
+      }),
     ];
-    const resources = [bootResourceFactory()];
+    const resources = [factory.bootResource()];
     state.bootresource.otherImages = otherImages;
     state.bootresource.resources = resources;
     renderWithMockStore(

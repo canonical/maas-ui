@@ -1,17 +1,13 @@
 import LxdTable from "./LxdTable";
 
 import { PodType } from "@/app/store/pod/constants";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("LxdTable", () => {
   it("displays a spinner while loading", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         loading: true,
       }),
     });
@@ -21,10 +17,10 @@ describe("LxdTable", () => {
   });
 
   it("displays the table when loaded", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             type: PodType.LXD,
           }),
         ],

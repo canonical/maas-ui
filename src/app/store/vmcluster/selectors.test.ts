@@ -1,18 +1,16 @@
 import selectors from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterEventError as vmClusterEventErrorFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmClusterStatuses as vmClusterStatusesFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("vmcluster selectors", () => {
   it("can get the items", () => {
-    const items = [vmClusterFactory(), vmClusterFactory(), vmClusterFactory()];
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    const items = [
+      factory.vmCluster(),
+      factory.vmCluster(),
+      factory.vmCluster(),
+    ];
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         items,
       }),
     });
@@ -20,9 +18,9 @@ describe("vmcluster selectors", () => {
   });
 
   it("can get the statuses", () => {
-    const statuses = vmClusterStatusesFactory();
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    const statuses = factory.vmClusterStatuses();
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         statuses,
       }),
     });
@@ -30,11 +28,11 @@ describe("vmcluster selectors", () => {
   });
 
   it("can get a status", () => {
-    const statuses = vmClusterStatusesFactory({
+    const statuses = factory.vmClusterStatuses({
       getting: true,
     });
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         statuses,
       }),
     });
@@ -42,9 +40,9 @@ describe("vmcluster selectors", () => {
   });
 
   it("can get the event errors", () => {
-    const eventErrors = [vmClusterEventErrorFactory()];
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    const eventErrors = [factory.vmClusterEventError()];
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         eventErrors,
       }),
     });
@@ -52,11 +50,11 @@ describe("vmcluster selectors", () => {
   });
 
   it("can get an event error", () => {
-    const eventError = vmClusterEventErrorFactory({
+    const eventError = factory.vmClusterEventError({
       event: "listByPhysicalCluster",
     });
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         eventErrors: [eventError],
       }),
     });

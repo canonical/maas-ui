@@ -4,14 +4,7 @@ import { ImageStatus } from "./ImageStatus";
 
 import { ImageSyncStatus } from "@/app/store/controller/types/enum";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controller as controllerFactory,
-  controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
-  controllerState as controllerStateFactory,
-  controllerStatus as controllerStatusFactory,
-  controllerStatuses as controllerStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -19,11 +12,11 @@ const mockStore = configureStore<RootState>();
 describe("ImageStatus", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         items: [
-          controllerFactory({
+          factory.controller({
             system_id: "abc123",
           }),
         ],
@@ -59,8 +52,8 @@ describe("ImageStatus", () => {
   });
 
   it("shows a spinner when polling", () => {
-    state.controller.statuses = controllerStatusesFactory({
-      abc123: controllerStatusFactory({ checkingImages: true }),
+    state.controller.statuses = factory.controllerStatuses({
+      abc123: factory.controllerStatus({ checkingImages: true }),
     });
     renderWithBrowserRouter(<ImageStatus systemId="abc123" />, {
       route: "/controllers",
@@ -70,7 +63,7 @@ describe("ImageStatus", () => {
   });
 
   it("shows the synced state", () => {
-    state.controller.imageSyncStatuses = controllerImageSyncStatusesFactory({
+    state.controller.imageSyncStatuses = factory.controllerImageSyncStatuses({
       abc123: ImageSyncStatus.Synced,
     });
     const store = mockStore(state);
@@ -87,7 +80,7 @@ describe("ImageStatus", () => {
   });
 
   it("shows a state that is not synced", () => {
-    state.controller.imageSyncStatuses = controllerImageSyncStatusesFactory({
+    state.controller.imageSyncStatuses = factory.controllerImageSyncStatuses({
       abc123: ImageSyncStatus.Syncing,
     });
     const store = mockStore(state);

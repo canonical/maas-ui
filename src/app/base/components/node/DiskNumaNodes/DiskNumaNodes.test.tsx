@@ -1,11 +1,11 @@
 import DiskNumaNodes from "./DiskNumaNodes";
 
-import { nodeDisk as diskFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { expectTooltipOnHover, render, screen } from "@/testing/utils";
 
 describe("DiskNumaNodes", () => {
   it("can show a single numa node", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       numa_node: 5,
       numa_nodes: undefined,
     });
@@ -14,7 +14,7 @@ describe("DiskNumaNodes", () => {
   });
 
   it("can show multiple numa nodes with a warning", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       numa_node: undefined,
       numa_nodes: [0, 1],
     });

@@ -1,18 +1,15 @@
 import { isDomainDetails } from "./utils";
 
-import {
-  domain as domainFactory,
-  domainDetails as domainDetailsFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("domain utils", () => {
   describe("isDomainDetails", () => {
     it("identifies domain details", () => {
-      expect(isDomainDetails(domainDetailsFactory())).toBe(true);
+      expect(isDomainDetails(factory.domainDetails())).toBe(true);
     });
 
     it("handles a base domain", () => {
-      expect(isDomainDetails(domainFactory())).toBe(false);
+      expect(isDomainDetails(factory.domain())).toBe(false);
     });
 
     it("handles no domain", () => {

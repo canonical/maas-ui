@@ -4,27 +4,23 @@ import { Label as EventLogsLabel } from "@/app/base/components/node/NodeLogs/Eve
 import { Label as InstallationOutputLabel } from "@/app/base/components/node/NodeLogs/InstallationOutput/InstallationOutput";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ControllerLogs", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
-        items: [controllerDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      controller: factory.controllerState({
+        items: [factory.controllerDetails({ system_id: "abc123" })],
       }),
     });
   });
 
   it("displays a spinner if controller is loading", () => {
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items: [],
       }),
     });

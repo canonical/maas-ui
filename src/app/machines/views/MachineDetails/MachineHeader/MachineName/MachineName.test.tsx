@@ -3,37 +3,28 @@ import configureStore from "redux-mock-store";
 import MachineName from "./MachineName";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("MachineName", () => {
   let state: RootState;
-  const domain = domainFactory({ id: 99 });
+  const domain = factory.domain({ id: 99 });
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         items: [domain],
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             domain,
             locked: false,
             permissions: ["edit"],

@@ -4,15 +4,7 @@ import CreateVolumeGroup from "./CreateVolumeGroup";
 
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -25,23 +17,23 @@ const mockStore = configureStore<RootState>();
 describe("CreateVolumeGroup", () => {
   it("sets the initial name correctly", () => {
     const vgs = [
-      diskFactory({ type: DiskTypes.VOLUME_GROUP }),
-      diskFactory({ type: DiskTypes.VOLUME_GROUP }),
+      factory.nodeDisk({ type: DiskTypes.VOLUME_GROUP }),
+      factory.nodeDisk({ type: DiskTypes.VOLUME_GROUP }),
     ];
-    const physicalDisk = diskFactory({
+    const physicalDisk = factory.nodeDisk({
       partitions: null,
       type: DiskTypes.PHYSICAL,
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [...vgs, physicalDisk],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -61,22 +53,22 @@ describe("CreateVolumeGroup", () => {
 
   it("shows the details of the selected storage devices", () => {
     const [selectedDisk, selectedPartition] = [
-      diskFactory({
+      factory.nodeDisk({
         name: "floppy",
         partitions: null,
         type: DiskTypes.PHYSICAL,
       }),
-      partitionFactory({ filesystem: null, name: "flippy" }),
+      factory.nodePartition({ filesystem: null, name: "flippy" }),
     ];
     const disks = [
       selectedDisk,
-      diskFactory({ partitions: [selectedPartition] }),
+      factory.nodeDisk({ partitions: [selectedPartition] }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: disks, system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -103,18 +95,18 @@ describe("CreateVolumeGroup", () => {
 
   it("correctly dispatches an action to create a volume group", async () => {
     const [selectedDisk, selectedPartition] = [
-      diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
-      partitionFactory({ filesystem: null }),
+      factory.nodeDisk({ partitions: null, type: DiskTypes.PHYSICAL }),
+      factory.nodePartition({ filesystem: null }),
     ];
     const disks = [
       selectedDisk,
-      diskFactory({ partitions: [selectedPartition] }),
+      factory.nodeDisk({ partitions: [selectedPartition] }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: disks, system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

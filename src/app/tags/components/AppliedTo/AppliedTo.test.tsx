@@ -7,21 +7,17 @@ import AppliedTo from "./AppliedTo";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           name: "rad",
         }),
       ],
@@ -31,7 +27,7 @@ beforeEach(() => {
 
 it("links to nodes", () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       machine_count: 1,
       device_count: 2,
@@ -79,7 +75,7 @@ it("links to nodes", () => {
 
 it("displays a message if there are no nodes", () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       machine_count: 0,
       device_count: 0,

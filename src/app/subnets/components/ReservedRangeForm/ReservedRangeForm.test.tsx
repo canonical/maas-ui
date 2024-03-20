@@ -9,11 +9,7 @@ import { actions as ipRangeActions } from "@/app/store/iprange";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  ipRange as ipRangeFactory,
-  ipRangeState as ipRangeStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
@@ -29,14 +25,14 @@ describe("ReservedRangeForm", () => {
   let ipRange: IPRange;
 
   beforeEach(() => {
-    ipRange = ipRangeFactory({
+    ipRange = factory.ipRange({
       comment: "what a beaut",
       start_ip: "11.1.1.1",
       type: IPRangeType.Reserved,
       user: "wombat",
     });
-    state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    state = factory.rootState({
+      iprange: factory.ipRangeState({
         items: [ipRange],
       }),
     });

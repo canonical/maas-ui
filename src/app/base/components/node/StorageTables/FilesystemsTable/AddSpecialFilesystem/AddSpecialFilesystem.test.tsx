@@ -6,31 +6,24 @@ import configureStore from "redux-mock-store";
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
 import { actions as machineActions } from "@/app/store/machine";
-import {
-  machineDetails as machineDetailsFactory,
-  machineEventError as machineEventErrorFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("only shows filesystems that do not require a storage device", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     supported_filesystems: [
       { key: "fat32", ui: "fat32" }, // requires storage
       { key: "ramfs", ui: "ramfs" }, // does not require storage
     ],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
-      statuses: machineStatusesFactory({
-        [machine.system_id]: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        [machine.system_id]: factory.machineStatus(),
       }),
     }),
   });
@@ -52,19 +45,19 @@ it("only shows filesystems that do not require a storage device", () => {
 });
 
 it("can show errors", () => {
-  const machine = machineDetailsFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const machine = factory.machineDetails({ system_id: "abc123" });
+  const state = factory.rootState({
+    machine: factory.machineState({
       eventErrors: [
-        machineEventErrorFactory({
+        factory.machineEventError({
           error: "you can't do that",
           event: "mountSpecial",
           id: machine.system_id,
         }),
       ],
       items: [machine],
-      statuses: machineStatusesFactory({
-        [machine.system_id]: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        [machine.system_id]: factory.machineStatus(),
       }),
     }),
   });
@@ -83,15 +76,15 @@ it("can show errors", () => {
 });
 
 it("correctly dispatches an action to mount a special filesystem", async () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     supported_filesystems: [{ key: "ramfs", ui: "ramfs" }],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
-      statuses: machineStatusesFactory({
-        [machine.system_id]: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        [machine.system_id]: factory.machineStatus(),
       }),
     }),
   });

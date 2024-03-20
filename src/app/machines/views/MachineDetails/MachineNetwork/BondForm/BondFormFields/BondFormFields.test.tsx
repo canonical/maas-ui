@@ -12,15 +12,7 @@ import {
 } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  generalState as generalStateFactory,
-  bondOptions as bondOptionsFactory,
-  bondOptionsState as bondOptionsStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const route = urls.machines.index;
@@ -47,10 +39,10 @@ describe("BondFormFields", () => {
     vlan: "",
   };
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        bondOptions: bondOptionsStateFactory({
-          data: bondOptionsFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        bondOptions: factory.bondOptionsState({
+          data: factory.bondOptions({
             lacp_rates: [
               [BondLacpRate.FAST, BondLacpRate.FAST],
               [BondLacpRate.SLOW, BondLacpRate.SLOW],
@@ -75,12 +67,12 @@ describe("BondFormFields", () => {
           loaded: true,
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 id: 17,
                 type: NetworkInterfaceTypes.PHYSICAL,
                 mac_address: "6a:6e:4a:29:a5:42",

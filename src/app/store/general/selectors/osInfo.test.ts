@@ -1,20 +1,15 @@
 import osInfo from "./osInfo";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  osInfoState as osInfoStateFactory,
-  osInfo as osInfoFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("osInfo selectors", () => {
   describe("get", () => {
     it("returns osInfo", () => {
-      const data = osInfoFactory();
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const data = factory.osInfo();
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             data,
           }),
         }),
@@ -25,9 +20,9 @@ describe("osInfo selectors", () => {
 
   describe("loading", () => {
     it("returns osInfo loading state", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             loading: true,
           }),
         }),
@@ -38,9 +33,9 @@ describe("osInfo selectors", () => {
 
   describe("loaded", () => {
     it("returns osInfo loaded state", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             loaded: true,
           }),
         }),
@@ -52,9 +47,9 @@ describe("osInfo selectors", () => {
   describe("errors", () => {
     it("returns osInfo errors state", () => {
       const errors = "Cannot fetch os info.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             errors,
           }),
         }),
@@ -65,7 +60,7 @@ describe("osInfo selectors", () => {
 
   describe("getUbuntuKernelOptions", () => {
     it("returns options for supplied key", () => {
-      const data = osInfoFactory({
+      const data = factory.osInfo({
         kernels: {
           ubuntu: {
             precise: [
@@ -79,9 +74,9 @@ describe("osInfo selectors", () => {
           },
         },
       });
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             data,
           }),
         }),
@@ -94,9 +89,9 @@ describe("osInfo selectors", () => {
     });
 
     it("handles no kernels", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             data: null,
           }),
         }),
@@ -107,12 +102,12 @@ describe("osInfo selectors", () => {
     });
 
     it("handles no ubuntu releases", () => {
-      const data = osInfoFactory({
+      const data = factory.osInfo({
         kernels: {},
       });
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             data,
           }),
         }),
@@ -125,7 +120,7 @@ describe("osInfo selectors", () => {
 
   describe("getAllUbuntuKernelOptions", () => {
     it("returns all ubuntu kernel options", () => {
-      const data = osInfoFactory({
+      const data = factory.osInfo({
         kernels: {
           ubuntu: {
             precise: [
@@ -139,9 +134,9 @@ describe("osInfo selectors", () => {
           },
         },
       });
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             data,
           }),
         }),
@@ -161,9 +156,9 @@ describe("osInfo selectors", () => {
     });
 
     it("handles no data", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             data: null,
           }),
         }),
@@ -173,7 +168,7 @@ describe("osInfo selectors", () => {
   });
 
   describe("getOsReleases", () => {
-    const data = osInfoFactory({
+    const data = factory.osInfo({
       releases: [
         ["centos/centos66", "CentOS 6"],
         ["centos/centos70", "CentOS 7"],
@@ -184,9 +179,9 @@ describe("osInfo selectors", () => {
     let state: RootState;
 
     beforeEach(() => {
-      state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             data,
           }),
         }),
@@ -217,7 +212,7 @@ describe("osInfo selectors", () => {
   });
 
   describe("getAllOsReleases", () => {
-    const data = osInfoFactory({
+    const data = factory.osInfo({
       osystems: [
         ["ubuntu", "Ubuntu"],
         ["centos", "CentOS"],
@@ -232,9 +227,9 @@ describe("osInfo selectors", () => {
     let state: RootState;
 
     beforeEach(() => {
-      state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             loading: false,
             loaded: true,
             data,
@@ -263,7 +258,7 @@ describe("osInfo selectors", () => {
   });
 
   describe("getLicensedOsReleases", () => {
-    const data = osInfoFactory({
+    const data = factory.osInfo({
       osystems: [
         ["ubuntu", "Ubuntu"],
         ["windows", "Windows"],
@@ -277,9 +272,9 @@ describe("osInfo selectors", () => {
     let state: RootState;
 
     beforeEach(() => {
-      state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             loading: false,
             loaded: true,
             data,
@@ -301,7 +296,7 @@ describe("osInfo selectors", () => {
   });
 
   describe("getLicensedOsystems", () => {
-    const data = osInfoFactory({
+    const data = factory.osInfo({
       osystems: [
         ["ubuntu", "Ubuntu"],
         ["windows", "Windows"],
@@ -315,9 +310,9 @@ describe("osInfo selectors", () => {
     let state: RootState;
 
     beforeEach(() => {
-      state = rootStateFactory({
-        general: generalStateFactory({
-          osInfo: osInfoStateFactory({
+      state = factory.rootState({
+        general: factory.generalState({
+          osInfo: factory.osInfoState({
             loading: false,
             loaded: true,
             data,

@@ -4,21 +4,16 @@ import BondModeSelect from "./BondModeSelect";
 
 import { BondMode } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  bondOptions as bondOptionsFactory,
-  bondOptionsState as bondOptionsStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("BondModeSelect", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        bondOptions: bondOptionsStateFactory({
-          data: bondOptionsFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        bondOptions: factory.bondOptionsState({
+          data: factory.bondOptions({
             modes: [
               [BondMode.BALANCE_RR, BondMode.BALANCE_RR],
               [BondMode.ACTIVE_BACKUP, BondMode.ACTIVE_BACKUP],
@@ -114,7 +109,7 @@ describe("BondModeSelect", () => {
   });
 
   it("can hide the default option", () => {
-    state.general.bondOptions = bondOptionsStateFactory({
+    state.general.bondOptions = factory.bondOptionsState({
       data: undefined,
       loaded: true,
     });

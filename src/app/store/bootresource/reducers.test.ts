@@ -1,18 +1,7 @@
 import reducers, { actions } from "./slice";
 import { BootResourceAction } from "./types";
 
-import {
-  bootResource as bootResourceFactory,
-  bootResourceEventError as bootResourceEventErrorFactory,
-  bootResourceFetchedArch as bootResourceFetchedArchFactory,
-  bootResourceFetchedImages as bootResourceFetchedImagesFactory,
-  bootResourceFetchedRelease as bootResourceFetchedReleaseFactory,
-  bootResourceOtherImage as bootResourceOtherImageFactory,
-  bootResourceState as bootResourceStateFactory,
-  bootResourceStatuses as bootResourceStatusesFactory,
-  bootResourceUbuntu as bootResourceUbuntuFactory,
-  bootResourceUbuntuCoreImage as bootResourceUbuntuCoreImageFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("bootresource reducers", () => {
   it("returns the initial state", () => {
@@ -42,16 +31,16 @@ describe("bootresource reducers", () => {
     it("reduces deleteImageStart", () => {
       expect(
         reducers(
-          bootResourceStateFactory({
-            statuses: bootResourceStatusesFactory({
+          factory.bootResourceState({
+            statuses: factory.bootResourceStatuses({
               deletingImage: false,
             }),
           }),
           actions.deleteImageStart()
         )
       ).toEqual(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             deletingImage: true,
           }),
         })
@@ -61,16 +50,16 @@ describe("bootresource reducers", () => {
     it("reduces deleteImageSuccess", () => {
       expect(
         reducers(
-          bootResourceStateFactory({
-            statuses: bootResourceStatusesFactory({
+          factory.bootResourceState({
+            statuses: factory.bootResourceStatuses({
               deletingImage: true,
             }),
           }),
           actions.deleteImageSuccess()
         )
       ).toEqual(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             deletingImage: false,
           }),
         })
@@ -80,22 +69,22 @@ describe("bootresource reducers", () => {
     it("reduces deleteImageError", () => {
       expect(
         reducers(
-          bootResourceStateFactory({
-            statuses: bootResourceStatusesFactory({
+          factory.bootResourceState({
+            statuses: factory.bootResourceStatuses({
               deletingImage: true,
             }),
           }),
           actions.deleteImageError("Could not delete image")
         )
       ).toEqual(
-        bootResourceStateFactory({
+        factory.bootResourceState({
           eventErrors: [
-            bootResourceEventErrorFactory({
+            factory.bootResourceEventError({
               error: "Could not delete image",
               event: BootResourceAction.DELETE_IMAGE,
             }),
           ],
-          statuses: bootResourceStatusesFactory({
+          statuses: factory.bootResourceStatuses({
             deletingImage: false,
           }),
         })
@@ -105,16 +94,16 @@ describe("bootresource reducers", () => {
     it("reduces fetchStart", () => {
       expect(
         reducers(
-          bootResourceStateFactory({
-            statuses: bootResourceStatusesFactory({
+          factory.bootResourceState({
+            statuses: factory.bootResourceStatuses({
               fetching: false,
             }),
           }),
           actions.fetchStart()
         )
       ).toEqual(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             fetching: true,
           }),
         })
@@ -122,23 +111,23 @@ describe("bootresource reducers", () => {
     });
 
     it("reduces fetchSuccess", () => {
-      const fetchedImages = bootResourceFetchedImagesFactory({
-        arches: [bootResourceFetchedArchFactory()],
-        releases: [bootResourceFetchedReleaseFactory()],
+      const fetchedImages = factory.bootResourceFetchedImages({
+        arches: [factory.bootResourceFetchedArch()],
+        releases: [factory.bootResourceFetchedRelease()],
       });
       expect(
         reducers(
-          bootResourceStateFactory({
-            statuses: bootResourceStatusesFactory({
+          factory.bootResourceState({
+            statuses: factory.bootResourceStatuses({
               fetching: true,
             }),
           }),
           actions.fetchSuccess(fetchedImages)
         )
       ).toEqual(
-        bootResourceStateFactory({
+        factory.bootResourceState({
           fetchedImages,
-          statuses: bootResourceStatusesFactory({
+          statuses: factory.bootResourceStatuses({
             fetching: false,
           }),
         })
@@ -148,22 +137,22 @@ describe("bootresource reducers", () => {
     it("reduces fetchError", () => {
       expect(
         reducers(
-          bootResourceStateFactory({
-            statuses: bootResourceStatusesFactory({
+          factory.bootResourceState({
+            statuses: factory.bootResourceStatuses({
               fetching: true,
             }),
           }),
           actions.fetchError("Could not fetch images")
         )
       ).toEqual(
-        bootResourceStateFactory({
+        factory.bootResourceState({
           eventErrors: [
-            bootResourceEventErrorFactory({
+            factory.bootResourceEventError({
               error: "Could not fetch images",
               event: BootResourceAction.FETCH,
             }),
           ],
-          statuses: bootResourceStatusesFactory({
+          statuses: factory.bootResourceStatuses({
             fetching: false,
           }),
         })
@@ -173,16 +162,16 @@ describe("bootresource reducers", () => {
     it("reduces pollStart", () => {
       expect(
         reducers(
-          bootResourceStateFactory({
-            statuses: bootResourceStatusesFactory({
+          factory.bootResourceState({
+            statuses: factory.bootResourceStatuses({
               polling: false,
             }),
           }),
           actions.pollStart()
         )
       ).toEqual(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             polling: true,
           }),
         })
@@ -190,15 +179,15 @@ describe("bootresource reducers", () => {
     });
 
     it("reduces pollSuccess", () => {
-      const bootResourceState = bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      const bootResourceState = factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           polling: true,
         }),
       });
-      const resources = [bootResourceFactory()];
-      const ubuntu = bootResourceUbuntuFactory();
-      const ubuntuCoreImages = [bootResourceUbuntuCoreImageFactory()];
-      const otherImages = [bootResourceOtherImageFactory()];
+      const resources = [factory.bootResource()];
+      const ubuntu = factory.bootResourceUbuntu();
+      const ubuntuCoreImages = [factory.bootResourceUbuntuCoreImage()];
+      const otherImages = [factory.bootResourceOtherImage()];
       expect(
         reducers(
           bootResourceState,
@@ -213,7 +202,7 @@ describe("bootresource reducers", () => {
           })
         )
       ).toEqual(
-        bootResourceStateFactory({
+        factory.bootResourceState({
           connectionError: false,
           otherImages,
           rackImportRunning: false,
@@ -221,7 +210,7 @@ describe("bootresource reducers", () => {
           resources,
           ubuntuCoreImages,
           ubuntu,
-          statuses: bootResourceStatusesFactory({
+          statuses: factory.bootResourceStatuses({
             polling: false,
           }),
         })
@@ -229,22 +218,22 @@ describe("bootresource reducers", () => {
     });
 
     it("reduces pollError", () => {
-      const bootResourceState = bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      const bootResourceState = factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           polling: true,
         }),
       });
       expect(
         reducers(bootResourceState, actions.pollError("Could not poll"))
       ).toEqual(
-        bootResourceStateFactory({
+        factory.bootResourceState({
           eventErrors: [
-            bootResourceEventErrorFactory({
+            factory.bootResourceEventError({
               error: "Could not poll",
               event: BootResourceAction.POLL,
             }),
           ],
-          statuses: bootResourceStatusesFactory({
+          statuses: factory.bootResourceStatuses({
             polling: false,
           }),
         })
@@ -255,16 +244,16 @@ describe("bootresource reducers", () => {
   it("reduces saveOtherStart", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingOther: false,
           }),
         }),
         actions.saveOtherStart()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingOther: true,
         }),
       })
@@ -274,16 +263,16 @@ describe("bootresource reducers", () => {
   it("reduces saveOtherSuccess", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingOther: true,
           }),
         }),
         actions.saveOtherSuccess()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingOther: false,
         }),
       })
@@ -293,22 +282,22 @@ describe("bootresource reducers", () => {
   it("reduces saveOtherError", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingOther: true,
           }),
         }),
         actions.saveOtherError("Could not save other images")
       )
     ).toEqual(
-      bootResourceStateFactory({
+      factory.bootResourceState({
         eventErrors: [
-          bootResourceEventErrorFactory({
+          factory.bootResourceEventError({
             error: "Could not save other images",
             event: BootResourceAction.SAVE_OTHER,
           }),
         ],
-        statuses: bootResourceStatusesFactory({
+        statuses: factory.bootResourceStatuses({
           savingOther: false,
         }),
       })
@@ -318,16 +307,16 @@ describe("bootresource reducers", () => {
   it("reduces saveUbuntuStart", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingUbuntu: false,
           }),
         }),
         actions.saveUbuntuStart()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingUbuntu: true,
         }),
       })
@@ -337,16 +326,16 @@ describe("bootresource reducers", () => {
   it("reduces saveUbuntuSuccess", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingUbuntu: true,
           }),
         }),
         actions.saveUbuntuSuccess()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingUbuntu: false,
         }),
       })
@@ -356,22 +345,22 @@ describe("bootresource reducers", () => {
   it("reduces saveUbuntuError", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingUbuntu: true,
           }),
         }),
         actions.saveUbuntuError("Could not save Ubuntu images")
       )
     ).toEqual(
-      bootResourceStateFactory({
+      factory.bootResourceState({
         eventErrors: [
-          bootResourceEventErrorFactory({
+          factory.bootResourceEventError({
             error: "Could not save Ubuntu images",
             event: BootResourceAction.SAVE_UBUNTU,
           }),
         ],
-        statuses: bootResourceStatusesFactory({
+        statuses: factory.bootResourceStatuses({
           savingUbuntu: false,
         }),
       })
@@ -381,16 +370,16 @@ describe("bootresource reducers", () => {
   it("reduces saveUbuntuCoreStart", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingUbuntuCore: false,
           }),
         }),
         actions.saveUbuntuCoreStart()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingUbuntuCore: true,
         }),
       })
@@ -400,16 +389,16 @@ describe("bootresource reducers", () => {
   it("reduces saveUbuntuCoreSuccess", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingUbuntuCore: true,
           }),
         }),
         actions.saveUbuntuCoreSuccess()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingUbuntuCore: false,
         }),
       })
@@ -419,22 +408,22 @@ describe("bootresource reducers", () => {
   it("reduces saveUbuntuCoreError", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             savingUbuntuCore: true,
           }),
         }),
         actions.saveUbuntuCoreError("Could not save Ubuntu core images")
       )
     ).toEqual(
-      bootResourceStateFactory({
+      factory.bootResourceState({
         eventErrors: [
-          bootResourceEventErrorFactory({
+          factory.bootResourceEventError({
             error: "Could not save Ubuntu core images",
             event: BootResourceAction.SAVE_UBUNTU_CORE,
           }),
         ],
-        statuses: bootResourceStatusesFactory({
+        statuses: factory.bootResourceStatuses({
           savingUbuntuCore: false,
         }),
       })
@@ -444,16 +433,16 @@ describe("bootresource reducers", () => {
   it("reduces stopImportStart", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             stoppingImport: false,
           }),
         }),
         actions.stopImportStart()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           stoppingImport: true,
         }),
       })
@@ -463,16 +452,16 @@ describe("bootresource reducers", () => {
   it("reduces stopImportSuccess", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             stoppingImport: true,
           }),
         }),
         actions.stopImportSuccess()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           stoppingImport: false,
         }),
       })
@@ -482,22 +471,22 @@ describe("bootresource reducers", () => {
   it("reduces stopImportError", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             stoppingImport: true,
           }),
         }),
         actions.stopImportError("Could not stop importing images")
       )
     ).toEqual(
-      bootResourceStateFactory({
+      factory.bootResourceState({
         eventErrors: [
-          bootResourceEventErrorFactory({
+          factory.bootResourceEventError({
             error: "Could not stop importing images",
             event: BootResourceAction.STOP_IMPORT,
           }),
         ],
-        statuses: bootResourceStatusesFactory({
+        statuses: factory.bootResourceStatuses({
           stoppingImport: false,
         }),
       })
@@ -507,16 +496,16 @@ describe("bootresource reducers", () => {
   it("reduces pollStop", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          statuses: bootResourceStatusesFactory({
+        factory.bootResourceState({
+          statuses: factory.bootResourceStatuses({
             polling: true,
           }),
         }),
         actions.pollStop()
       )
     ).toEqual(
-      bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+      factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           polling: false,
         }),
       })
@@ -526,13 +515,13 @@ describe("bootresource reducers", () => {
   it("reduces clearFetchedImages", () => {
     expect(
       reducers(
-        bootResourceStateFactory({
-          fetchedImages: bootResourceFetchedImagesFactory(),
+        factory.bootResourceState({
+          fetchedImages: factory.bootResourceFetchedImages(),
         }),
         actions.clearFetchedImages()
       )
     ).toEqual(
-      bootResourceStateFactory({
+      factory.bootResourceState({
         fetchedImages: null,
       })
     );

@@ -1,14 +1,11 @@
 import reducers from "./slice";
 
-import {
-  licenseKeys as licenseKeysFactory,
-  licenseKeysState as licenseKeysStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("licenseKeys reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [],
         loaded: false,
@@ -22,7 +19,7 @@ describe("licenseKeys reducer", () => {
   it("should correctly reduce licensekeys/createStart", () => {
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items: [],
           loaded: false,
@@ -35,7 +32,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [],
         loaded: false,
@@ -49,7 +46,7 @@ describe("licenseKeys reducer", () => {
   it("should correctly reduce licensekeys/createSuccess", () => {
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items: [],
           loaded: false,
@@ -62,7 +59,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [],
         loaded: false,
@@ -76,7 +73,7 @@ describe("licenseKeys reducer", () => {
   it("should correctly reduce licensekeys/createError", () => {
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items: [],
           loaded: false,
@@ -91,7 +88,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: { error: "Invalid license key." },
         items: [],
         loaded: false,
@@ -108,7 +105,7 @@ describe("licenseKeys reducer", () => {
         type: "licensekeys/fetchStart",
       })
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [],
         loaded: false,
@@ -125,7 +122,7 @@ describe("licenseKeys reducer", () => {
         type: "licensekeys/fetchError",
       })
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         items: [],
         errors: { error: "Unable to fetch license keys" },
         loaded: false,
@@ -136,12 +133,12 @@ describe("licenseKeys reducer", () => {
 
   it("should correctly reduce licensekeys/fetchSuccess", () => {
     const items = [
-      licenseKeysFactory({ osystem: "windows", license_key: "foo" }),
-      licenseKeysFactory({ osystem: "redhat", license_key: "bar" }),
+      factory.licenseKeys({ osystem: "windows", license_key: "foo" }),
+      factory.licenseKeys({ osystem: "redhat", license_key: "bar" }),
     ];
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           items: [],
           loaded: false,
           loading: true,
@@ -152,7 +149,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         items,
         loaded: true,
         loading: false,
@@ -163,7 +160,7 @@ describe("licenseKeys reducer", () => {
   it("should correctly reduce licensekeys/updateStart", () => {
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items: [],
           loaded: false,
@@ -176,7 +173,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [],
         loaded: false,
@@ -189,12 +186,12 @@ describe("licenseKeys reducer", () => {
 
   it("should correctly reduce licensekeys/updateSuccess", () => {
     const items = [
-      licenseKeysFactory({
+      factory.licenseKeys({
         osystem: "windows",
         distro_series: "2012",
         license_key: "foo",
       }),
-      licenseKeysFactory({
+      factory.licenseKeys({
         id: 1,
         osystem: "windows",
         distro_series: "2019",
@@ -203,7 +200,7 @@ describe("licenseKeys reducer", () => {
     ];
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items,
           loaded: false,
@@ -222,11 +219,11 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [
           items[0],
-          licenseKeysFactory({
+          factory.licenseKeys({
             ...items[1],
             osystem: "windows",
             distro_series: "2019",
@@ -244,7 +241,7 @@ describe("licenseKeys reducer", () => {
   it("should correctly reduce licensekeys/updateError", () => {
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items: [],
           loaded: false,
@@ -259,7 +256,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: { error: "Not found" },
         items: [],
         loaded: false,
@@ -273,7 +270,7 @@ describe("licenseKeys reducer", () => {
   it("should correctly reduce licensekeys/deleteStart", () => {
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items: [],
           loaded: false,
@@ -286,7 +283,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [],
         loaded: false,
@@ -299,12 +296,12 @@ describe("licenseKeys reducer", () => {
 
   it("should correctly reduce licensekeys/deleteSuccess", () => {
     const items = [
-      licenseKeysFactory({
+      factory.licenseKeys({
         osystem: "windows",
         distro_series: "2012",
         license_key: "foo",
       }),
-      licenseKeysFactory({
+      factory.licenseKeys({
         osystem: "windows",
         distro_series: "2019",
         license_key: "bar",
@@ -312,7 +309,7 @@ describe("licenseKeys reducer", () => {
     ];
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items,
           loaded: false,
@@ -330,7 +327,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: null,
         items: [items[0]],
         loaded: false,
@@ -344,7 +341,7 @@ describe("licenseKeys reducer", () => {
   it("should correctly reduce licensekeys/deleteError", () => {
     expect(
       reducers(
-        licenseKeysStateFactory({
+        factory.licenseKeysState({
           errors: null,
           items: [],
           loaded: false,
@@ -359,7 +356,7 @@ describe("licenseKeys reducer", () => {
         }
       )
     ).toEqual(
-      licenseKeysStateFactory({
+      factory.licenseKeysState({
         errors: { error: "Not found" },
         items: [],
         loaded: false,

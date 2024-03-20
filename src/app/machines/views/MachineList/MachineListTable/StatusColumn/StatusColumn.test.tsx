@@ -11,14 +11,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  generalState as generalStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   userEvent,
@@ -33,7 +26,7 @@ describe("StatusColumn", () => {
   let machine: Machine;
 
   beforeEach(() => {
-    machine = machineFactory({
+    machine = factory.machine({
       actions: [],
       distro_series: "bionic",
       osystem: "ubuntu",
@@ -42,10 +35,10 @@ describe("StatusColumn", () => {
       status_message: "",
       system_id: "abc123",
     });
-    state = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
-          data: osInfoFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
+          data: factory.osInfo({
             osystems: [
               ["centos", "CentOS"],
               ["ubuntu", "Ubuntu"],
@@ -61,7 +54,7 @@ describe("StatusColumn", () => {
           loading: false,
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
         errors: {},
         loaded: true,

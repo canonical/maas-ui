@@ -1,6 +1,6 @@
 import StoragePopover from "./StoragePopover";
 
-import { podStoragePoolResource as podStoragePoolResourceFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { fireEvent, render, screen } from "@/testing/utils";
 
 describe("StoragePopover", () => {
@@ -13,7 +13,7 @@ describe("StoragePopover", () => {
 
   it("correctly displays storage data", () => {
     const pools = {
-      poolio: podStoragePoolResourceFactory({
+      poolio: factory.podStoragePoolResource({
         allocated_other: 2000,
         allocated_tracked: 5000,
         backend: "zfs",
@@ -35,7 +35,7 @@ describe("StoragePopover", () => {
 
   it("does not display others data if none present", () => {
     const pools = {
-      poolio: podStoragePoolResourceFactory({
+      poolio: factory.podStoragePoolResource({
         allocated_other: 0,
         allocated_tracked: 5000,
         backend: "zfs",
@@ -51,7 +51,7 @@ describe("StoragePopover", () => {
 
   it("shows whether a pool is the default pool", () => {
     const pools = {
-      poolio: podStoragePoolResourceFactory({ id: "abc123" }),
+      poolio: factory.podStoragePoolResource({ id: "abc123" }),
     };
 
     render(

@@ -1,15 +1,11 @@
 import ControllerNetwork from "./ControllerNetwork";
 
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("displays a spinner if controller is loading", () => {
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [],
     }),
   });
@@ -21,9 +17,9 @@ it("displays a spinner if controller is loading", () => {
 });
 
 it("displays the network tab when loaded", () => {
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
-      items: [controllerDetailsFactory({ system_id: "abc123" })],
+  const state = factory.rootState({
+    controller: factory.controllerState({
+      items: [factory.controllerDetails({ system_id: "abc123" })],
     }),
   });
   renderWithBrowserRouter(<ControllerNetwork systemId="abc123" />, {

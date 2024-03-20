@@ -11,21 +11,7 @@ import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
 import type { Space } from "@/app/store/space/types";
 import type { VLAN } from "@/app/store/vlan/types";
-import {
-  authState as authStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  modelRef as modelRefFactory,
-  rootState as rootStateFactory,
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -37,14 +23,14 @@ let state: RootState;
 let vlan: VLAN;
 
 beforeEach(() => {
-  fabric = fabricFactory({ id: 1, name: "fabric-1" });
-  space = spaceFactory({ id: 22, name: "outer" });
-  controller = controllerFactory({
-    domain: modelRefFactory({ name: "domain" }),
+  fabric = factory.fabric({ id: 1, name: "fabric-1" });
+  space = factory.space({ id: 22, name: "outer" });
+  controller = factory.controller({
+    domain: factory.modelRef({ name: "domain" }),
     hostname: "controller-abc",
     system_id: "abc123",
   });
-  vlan = vlanFactory({
+  vlan = factory.vlan({
     description: "I'm a little VLAN",
     fabric: fabric.id,
     mtu: 5432,
@@ -53,14 +39,14 @@ beforeEach(() => {
     space: space.id,
     vid: 1010,
   });
-  state = rootStateFactory({
-    controller: controllerStateFactory({ items: [controller] }),
-    fabric: fabricStateFactory({ items: [fabric] }),
-    space: spaceStateFactory({ items: [space] }),
-    user: userStateFactory({
-      auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
+  state = factory.rootState({
+    controller: factory.controllerState({ items: [controller] }),
+    fabric: factory.fabricState({ items: [fabric] }),
+    space: factory.spaceState({ items: [space] }),
+    user: factory.userState({
+      auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
     }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
 });
 

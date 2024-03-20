@@ -1,9 +1,6 @@
 import reducers, { actions } from "./slice";
 
-import {
-  nodeDevice as nodeDeviceFactory,
-  nodeDeviceState as nodeDeviceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("node device reducer", () => {
   it("returns the initial state", () => {
@@ -18,21 +15,21 @@ describe("node device reducer", () => {
   });
 
   it("reduces getByNodeIdStart", () => {
-    const state = nodeDeviceStateFactory({
+    const state = factory.nodeDeviceState({
       loading: false,
     });
 
     expect(reducers(state, actions.getByNodeIdStart(null))).toEqual(
-      nodeDeviceStateFactory({ loading: true })
+      factory.nodeDeviceState({ loading: true })
     );
   });
 
   it("reduces getByNodeIdSuccess", () => {
-    const existingNodeDevice = nodeDeviceFactory();
-    const newNodeDevice = nodeDeviceFactory();
-    const newNodeDevice2 = nodeDeviceFactory();
+    const existingNodeDevice = factory.nodeDevice();
+    const newNodeDevice = factory.nodeDevice();
+    const newNodeDevice2 = factory.nodeDevice();
 
-    const nodeDeviceState = nodeDeviceStateFactory({
+    const nodeDeviceState = factory.nodeDeviceState({
       items: [existingNodeDevice],
       loading: true,
     });
@@ -43,7 +40,7 @@ describe("node device reducer", () => {
         actions.getByNodeIdSuccess("abc123", [newNodeDevice, newNodeDevice2])
       )
     ).toEqual(
-      nodeDeviceStateFactory({
+      factory.nodeDeviceState({
         items: [existingNodeDevice, newNodeDevice, newNodeDevice2],
         loading: false,
         loaded: true,
@@ -52,7 +49,7 @@ describe("node device reducer", () => {
   });
 
   it("reduces getByNodeIdError", () => {
-    const nodeDeviceState = nodeDeviceStateFactory({ loading: true });
+    const nodeDeviceState = factory.nodeDeviceState({ loading: true });
 
     expect(
       reducers(
@@ -60,7 +57,7 @@ describe("node device reducer", () => {
         actions.getByNodeIdError("Could not get node device")
       )
     ).toEqual(
-      nodeDeviceStateFactory({
+      factory.nodeDeviceState({
         errors: "Could not get node device",
         loading: false,
       })

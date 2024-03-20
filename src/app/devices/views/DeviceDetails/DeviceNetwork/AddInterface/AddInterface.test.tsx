@@ -6,17 +6,7 @@ import { actions as deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceEventError as deviceEventErrorFactory,
-  deviceState as deviceStateFactory,
-  deviceStatus as deviceStatusFactory,
-  deviceStatuses as deviceStatusesFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
@@ -59,20 +49,20 @@ const createNewInterface = async () => {
 describe("AddInterface", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({
+    state = factory.rootState({
+      device: factory.deviceState({
         items: [
-          deviceDetailsFactory({
+          factory.deviceDetails({
             system_id: "abc123",
           }),
         ],
         loaded: true,
-        statuses: deviceStatusesFactory({
-          abc123: deviceStatusFactory(),
+        statuses: factory.deviceStatuses({
+          abc123: factory.deviceStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 1 }), subnetFactory({ id: 2 })],
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 1 }), factory.subnet({ id: 2 })],
         loaded: true,
       }),
     });
@@ -83,7 +73,7 @@ describe("AddInterface", () => {
   });
 
   it("displays a spinner if device is not detailed version", () => {
-    state.device.items[0] = deviceFactory({ system_id: "abc123" });
+    state.device.items[0] = factory.device({ system_id: "abc123" });
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddInterface closeForm={vi.fn()} systemId="abc123" />,
@@ -143,7 +133,7 @@ describe("AddInterface", () => {
     await createNewInterface();
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         event: "createInterface",
       }),
     ]);
@@ -166,7 +156,7 @@ describe("AddInterface", () => {
     await createNewInterface();
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         event: "createInterface",
       }),
     ]);
@@ -185,7 +175,7 @@ describe("AddInterface", () => {
 
     // Mock an error for the second submission.
     errors.mockReturnValue([
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         event: "createInterface",
       }),
     ]);

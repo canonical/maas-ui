@@ -1,16 +1,12 @@
 import NameColumn from "./NameColumn";
 
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NameColumn", () => {
   it("shows a spinner if the machine is still loading", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [],
       }),
     });
@@ -23,10 +19,10 @@ describe("NameColumn", () => {
   });
 
   it("shows a link to the VM's details page", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineFactory({ hostname: "test-machine-1", system_id: "abc123" }),
+          factory.machine({ hostname: "test-machine-1", system_id: "abc123" }),
         ],
       }),
     });

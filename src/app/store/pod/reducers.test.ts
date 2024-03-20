@@ -1,13 +1,7 @@
 import { PodType } from "./constants";
 import reducers, { actions } from "./slice";
 
-import {
-  pod as podFactory,
-  podDetails as podDetailsFactory,
-  podProject as podProjectFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("pod reducer", () => {
   it("returns the initial state", () => {
@@ -25,62 +19,62 @@ describe("pod reducer", () => {
   });
 
   it("reduces fetch", () => {
-    const podState = podStateFactory();
+    const podState = factory.podState();
 
-    expect(reducers(podState, actions.fetch())).toEqual(podStateFactory());
+    expect(reducers(podState, actions.fetch())).toEqual(factory.podState());
   });
 
   it("reduces fetchStart", () => {
-    const podState = podStateFactory({ loading: false });
+    const podState = factory.podState({ loading: false });
 
     expect(reducers(podState, actions.fetchStart())).toEqual(
-      podStateFactory({
+      factory.podState({
         loading: true,
       })
     );
   });
 
   it("reduces fetchSuccess", () => {
-    const pods = [podFactory()];
-    const podState = podStateFactory({
+    const pods = [factory.pod()];
+    const podState = factory.podState({
       items: [],
       loaded: false,
       loading: true,
     });
     expect(reducers(podState, actions.fetchSuccess(pods))).toEqual(
-      podStateFactory({
+      factory.podState({
         loading: false,
         loaded: true,
-        statuses: { 1: podStatusFactory() },
+        statuses: { 1: factory.podStatus() },
         items: pods,
       })
     );
   });
 
   it("does not override the active pod when reducing fetchSuccess", () => {
-    const activePod = podDetailsFactory();
-    const podState = podStateFactory({
+    const activePod = factory.podDetails();
+    const podState = factory.podState({
       active: activePod.id,
       items: [activePod],
       statuses: {
-        [activePod.id]: podStatusFactory({ refreshing: true }),
+        [activePod.id]: factory.podStatus({ refreshing: true }),
       },
     });
     const pods = [
       // The fetch response will include the non-details version of the pod.
-      podFactory({ id: activePod.id }),
-      podFactory(),
-      podFactory(),
+      factory.pod({ id: activePod.id }),
+      factory.pod(),
+      factory.pod(),
     ];
     expect(reducers(podState, actions.fetchSuccess(pods))).toEqual(
-      podStateFactory({
+      factory.podState({
         active: activePod.id,
         loading: false,
         loaded: true,
         statuses: {
-          [activePod.id]: podStatusFactory({ refreshing: true }),
-          [pods[1].id]: podStatusFactory(),
-          [pods[2].id]: podStatusFactory(),
+          [activePod.id]: factory.podStatus({ refreshing: true }),
+          [pods[1].id]: factory.podStatus(),
+          [pods[2].id]: factory.podStatus(),
         },
         items: [activePod, pods[1], pods[2]],
       })
@@ -88,7 +82,7 @@ describe("pod reducer", () => {
   });
 
   it("reduces fetchError", () => {
-    const podState = podStateFactory({
+    const podState = factory.podState({
       errors: null,
       loaded: false,
       loading: true,
@@ -97,7 +91,7 @@ describe("pod reducer", () => {
     expect(
       reducers(podState, actions.fetchError("Could not fetch pods"))
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: "Could not fetch pods",
         loaded: false,
         loading: false,
@@ -106,34 +100,34 @@ describe("pod reducer", () => {
   });
 
   it("reduces getStart", () => {
-    const podState = podStateFactory({ items: [], loading: false });
+    const podState = factory.podState({ items: [], loading: false });
 
     expect(reducers(podState, actions.getStart())).toEqual(
-      podStateFactory({ loading: true })
+      factory.podState({ loading: true })
     );
   });
 
   it("reduces getSuccess", () => {
-    const newPod = podDetailsFactory();
-    const podState = podStateFactory({
+    const newPod = factory.podDetails();
+    const podState = factory.podState({
       items: [],
       loading: true,
     });
 
     expect(reducers(podState, actions.getSuccess(newPod))).toEqual(
-      podStateFactory({
+      factory.podState({
         items: [newPod],
         loading: false,
-        statuses: { [newPod.id]: podStatusFactory() },
+        statuses: { [newPod.id]: factory.podStatus() },
       })
     );
   });
 
   it("reduces getError", () => {
-    const podState = podStateFactory({ loading: true });
+    const podState = factory.podState({ loading: true });
 
     expect(reducers(podState, actions.getError("Could not get pod"))).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: "Could not get pod",
         loading: false,
       })
@@ -141,10 +135,10 @@ describe("pod reducer", () => {
   });
 
   it("reduces createStart", () => {
-    const podState = podStateFactory({ saved: true, saving: false });
+    const podState = factory.podState({ saved: true, saving: false });
 
     expect(reducers(podState, actions.createStart())).toEqual(
-      podStateFactory({
+      factory.podState({
         saved: false,
         saving: true,
       })
@@ -152,7 +146,7 @@ describe("pod reducer", () => {
   });
 
   it("reduces createError", () => {
-    const podState = podStateFactory({ errors: null, saving: true });
+    const podState = factory.podState({ errors: null, saving: true });
 
     expect(
       reducers(
@@ -160,7 +154,7 @@ describe("pod reducer", () => {
         actions.createError({ name: "Pod name already exists" })
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: { name: "Pod name already exists" },
         saving: false,
       })
@@ -168,66 +162,66 @@ describe("pod reducer", () => {
   });
 
   it("updates pods on createNotify", () => {
-    const pods = [podFactory({ id: 1 })];
-    const newPod = podFactory({ id: 2 });
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const newPod = factory.pod({ id: 2 });
+    const podState = factory.podState({
       items: pods,
       statuses: {
-        1: podStatusFactory(),
+        1: factory.podStatus(),
       },
     });
 
     expect(reducers(podState, actions.createNotify(newPod))).toEqual(
-      podStateFactory({
+      factory.podState({
         items: [...pods, newPod],
-        statuses: { 1: podStatusFactory(), 2: podStatusFactory() },
+        statuses: { 1: factory.podStatus(), 2: factory.podStatus() },
       })
     );
   });
 
   it("reduces composeStart", () => {
-    const pods = [podFactory({ id: 1 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const podState = factory.podState({
       items: pods,
       statuses: {
-        1: podStatusFactory({ composing: false }),
+        1: factory.podStatus({ composing: false }),
       },
     });
 
     expect(reducers(podState, actions.composeStart({ item: pods[0] }))).toEqual(
-      podStateFactory({
+      factory.podState({
         items: pods,
-        statuses: { 1: podStatusFactory({ composing: true }) },
+        statuses: { 1: factory.podStatus({ composing: true }) },
       })
     );
   });
 
   it("reduces composeSuccess", () => {
-    const pods = [podFactory({ id: 1 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const podState = factory.podState({
       items: pods,
       statuses: {
-        1: podStatusFactory({ composing: true }),
+        1: factory.podStatus({ composing: true }),
       },
     });
 
     expect(
       reducers(podState, actions.composeSuccess({ item: pods[0] }))
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         items: pods,
-        statuses: { 1: podStatusFactory({ composing: false }) },
+        statuses: { 1: factory.podStatus({ composing: false }) },
       })
     );
   });
 
   it("reduces composeError", () => {
-    const pods = [podFactory({ id: 1 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const podState = factory.podState({
       errors: null,
       items: pods,
       statuses: {
-        1: podStatusFactory({ composing: true }),
+        1: factory.podStatus({ composing: true }),
       },
     });
 
@@ -237,52 +231,52 @@ describe("pod reducer", () => {
         actions.composeError({ item: pods[0], payload: "You dun goofed" })
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: "You dun goofed",
         items: pods,
-        statuses: { 1: podStatusFactory({ composing: false }) },
+        statuses: { 1: factory.podStatus({ composing: false }) },
       })
     );
   });
 
   it("reduces deleteStart", () => {
-    const pods = [podFactory({ id: 1 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const podState = factory.podState({
       items: pods,
-      statuses: { 1: podStatusFactory({ deleting: false }) },
+      statuses: { 1: factory.podStatus({ deleting: false }) },
     });
 
     expect(reducers(podState, actions.deleteStart({ item: pods[0] }))).toEqual(
-      podStateFactory({
+      factory.podState({
         items: pods,
-        statuses: { 1: podStatusFactory({ deleting: true }) },
+        statuses: { 1: factory.podStatus({ deleting: true }) },
       })
     );
   });
 
   it("reduces deleteSuccess", () => {
-    const pods = [podFactory({ id: 1 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const podState = factory.podState({
       items: pods,
-      statuses: { 1: podStatusFactory({ deleting: true }) },
+      statuses: { 1: factory.podStatus({ deleting: true }) },
     });
 
     expect(
       reducers(podState, actions.deleteSuccess({ item: pods[0] }))
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         items: pods,
-        statuses: { 1: podStatusFactory({ deleting: false }) },
+        statuses: { 1: factory.podStatus({ deleting: false }) },
       })
     );
   });
 
   it("reduces deleteError", () => {
-    const pods = [podFactory({ id: 1 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const podState = factory.podState({
       errors: null,
       items: pods,
-      statuses: { 1: podStatusFactory({ deleting: true }) },
+      statuses: { 1: factory.podStatus({ deleting: true }) },
     });
 
     expect(
@@ -291,56 +285,56 @@ describe("pod reducer", () => {
         actions.deleteError({ item: pods[0], payload: "Pod cannot be deleted" })
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: "Pod cannot be deleted",
         items: pods,
-        statuses: { 1: podStatusFactory({ deleting: false }) },
+        statuses: { 1: factory.podStatus({ deleting: false }) },
       })
     );
   });
 
   it("reduces deleteNotify", () => {
-    const pods = [podFactory({ id: 1 }), podFactory({ id: 2 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 }), factory.pod({ id: 2 })];
+    const podState = factory.podState({
       items: pods,
       statuses: {
-        1: podStatusFactory({ deleting: true }),
-        2: podStatusFactory(),
+        1: factory.podStatus({ deleting: true }),
+        2: factory.podStatus(),
       },
     });
 
     expect(reducers(podState, actions.deleteNotify(1))).toEqual(
-      podStateFactory({
+      factory.podState({
         items: [pods[1]],
-        statuses: { 2: podStatusFactory() },
+        statuses: { 2: factory.podStatus() },
       })
     );
   });
 
   it("reduces refreshStart", () => {
-    const pods = [podFactory({ id: 1 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1 })];
+    const podState = factory.podState({
       items: pods,
       statuses: {
-        1: podStatusFactory({ refreshing: false }),
+        1: factory.podStatus({ refreshing: false }),
       },
     });
 
     expect(reducers(podState, actions.refreshStart({ item: pods[0] }))).toEqual(
-      podStateFactory({
+      factory.podState({
         items: pods,
-        statuses: { 1: podStatusFactory({ refreshing: true }) },
+        statuses: { 1: factory.podStatus({ refreshing: true }) },
       })
     );
   });
 
   it("reduces refreshSuccess", () => {
-    const pods = [podFactory({ id: 1, cpu_speed: 100 })];
-    const updatedPod = podFactory({ id: 1, cpu_speed: 100 });
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1, cpu_speed: 100 })];
+    const updatedPod = factory.pod({ id: 1, cpu_speed: 100 });
+    const podState = factory.podState({
       items: pods,
       statuses: {
-        1: podStatusFactory({ refreshing: true }),
+        1: factory.podStatus({ refreshing: true }),
       },
     });
 
@@ -350,20 +344,20 @@ describe("pod reducer", () => {
         actions.refreshSuccess({ item: pods[0], payload: updatedPod })
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         items: [updatedPod],
-        statuses: { 1: podStatusFactory({ refreshing: false }) },
+        statuses: { 1: factory.podStatus({ refreshing: false }) },
       })
     );
   });
 
   it("reduces refreshError", () => {
-    const pods = [podFactory({ id: 1, cpu_speed: 100 })];
-    const podState = podStateFactory({
+    const pods = [factory.pod({ id: 1, cpu_speed: 100 })];
+    const podState = factory.podState({
       errors: null,
       items: pods,
       statuses: {
-        1: podStatusFactory({ refreshing: true }),
+        1: factory.podStatus({ refreshing: true }),
       },
     });
 
@@ -373,16 +367,16 @@ describe("pod reducer", () => {
         actions.refreshError({ item: pods[0], payload: "You dun goofed" })
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: "You dun goofed",
         items: pods,
-        statuses: { 1: podStatusFactory({ refreshing: false }) },
+        statuses: { 1: factory.podStatus({ refreshing: false }) },
       })
     );
   });
 
   it("reduces setActiveError", () => {
-    const podState = podStateFactory({
+    const podState = factory.podState({
       active: 1,
       errors: null,
     });
@@ -393,7 +387,7 @@ describe("pod reducer", () => {
         actions.setActiveError("Pod with this id does not exist")
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         active: null,
         errors: "Pod with this id does not exist",
       })
@@ -401,14 +395,14 @@ describe("pod reducer", () => {
   });
 
   it("reduces setActiveSuccess", () => {
-    const podState = podStateFactory({
+    const podState = factory.podState({
       active: null,
     });
 
     expect(
-      reducers(podState, actions.setActiveSuccess(podFactory({ id: 101 })))
+      reducers(podState, actions.setActiveSuccess(factory.pod({ id: 101 })))
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         active: 101,
       })
     );
@@ -416,8 +410,8 @@ describe("pod reducer", () => {
 
   it("reduces getProjectsSuccess", () => {
     const serverAddress = "192.168.1.1";
-    const newProjects = [podProjectFactory()];
-    const podState = podStateFactory({
+    const newProjects = [factory.podProject()];
+    const podState = factory.podState({
       items: [],
       projects: {},
     });
@@ -431,19 +425,19 @@ describe("pod reducer", () => {
         )
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         projects: { [serverAddress]: newProjects },
       })
     );
   });
 
   it("reduces getProjectsError", () => {
-    const podState = podStateFactory();
+    const podState = factory.podState();
 
     expect(
       reducers(podState, actions.getProjectsError("Could not get projects"))
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: "Could not get projects",
         loading: false,
       })
@@ -451,14 +445,14 @@ describe("pod reducer", () => {
   });
 
   it("reduces clearProjects", () => {
-    const podState = podStateFactory({
+    const podState = factory.podState({
       projects: {
-        "192.168.1.1": [podProjectFactory()],
+        "192.168.1.1": [factory.podProject()],
       },
     });
 
     expect(reducers(podState, actions.clearProjects())).toEqual(
-      podStateFactory({
+      factory.podState({
         projects: {},
       })
     );
@@ -466,8 +460,8 @@ describe("pod reducer", () => {
 
   it("reduces pollLxdServerSuccess", () => {
     const serverAddress = "192.168.1.1";
-    const newProjects = [podProjectFactory()];
-    const podState = podStateFactory({
+    const newProjects = [factory.podProject()];
+    const podState = factory.podState({
       errors: "it's not working",
       items: [],
       projects: {},
@@ -482,7 +476,7 @@ describe("pod reducer", () => {
         )
       )
     ).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: null,
         projects: { [serverAddress]: newProjects },
       })
@@ -490,12 +484,12 @@ describe("pod reducer", () => {
   });
 
   it("reduces pollLxdServerError", () => {
-    const podState = podStateFactory({
+    const podState = factory.podState({
       errors: null,
     });
 
     expect(reducers(podState, actions.pollLxdServerError("Error!"))).toEqual(
-      podStateFactory({
+      factory.podState({
         errors: "Error!",
       })
     );

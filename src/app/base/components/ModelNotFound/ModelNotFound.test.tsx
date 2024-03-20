@@ -5,14 +5,14 @@ import configureStore from "redux-mock-store";
 
 import ModelNotFound from "./ModelNotFound";
 
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("ModelNotFound", () => {
   it("renders the correct heading", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -28,7 +28,7 @@ describe("ModelNotFound", () => {
   });
 
   it("renders the default link correctly", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -46,7 +46,7 @@ describe("ModelNotFound", () => {
   });
 
   it("can be given customised link text", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>

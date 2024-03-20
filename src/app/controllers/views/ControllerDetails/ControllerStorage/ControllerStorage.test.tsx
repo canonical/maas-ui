@@ -5,17 +5,14 @@ import configureStore from "redux-mock-store";
 
 import ControllerStorage from "./ControllerStorage";
 
-import {
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("displays a spinner if controller is loading", () => {
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [],
     }),
   });

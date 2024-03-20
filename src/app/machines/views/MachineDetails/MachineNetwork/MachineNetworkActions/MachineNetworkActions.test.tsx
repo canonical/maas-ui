@@ -5,13 +5,7 @@ import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const expectDisabledButtonWithTooltip = async (
@@ -33,10 +27,10 @@ const expectDisabledButtonWithTooltip = async (
 describe("MachineNetworkActions", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
           }),
         ],
@@ -91,14 +85,14 @@ describe("MachineNetworkActions", () => {
   describe("create bond", () => {
     it("sets the state to show the form when clicking the button", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 1,
             }),
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 2,
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 1,
@@ -174,13 +168,13 @@ describe("MachineNetworkActions", () => {
 
     it("disables the create bond button when only 1 interface is selected", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               type: NetworkInterfaceTypes.PHYSICAL,
             }),
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 2,
               type: NetworkInterfaceTypes.PHYSICAL,
             }),
@@ -208,18 +202,18 @@ describe("MachineNetworkActions", () => {
 
     it("disables the button when some selected interfaces are not physical", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               links: [
-                networkLinkFactory({ id: 1 }),
-                networkLinkFactory({ id: 2 }),
+                factory.networkLink({ id: 1 }),
+                factory.networkLink({ id: 2 }),
               ],
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 1,
             }),
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 2,
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 1,
@@ -247,14 +241,14 @@ describe("MachineNetworkActions", () => {
 
     it("disables the button when selected interfaces have different VLANS", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 1,
             }),
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 2,
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 2,
@@ -285,9 +279,9 @@ describe("MachineNetworkActions", () => {
   describe("create bridge", () => {
     it("sets the state to show the form when clicking the button", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               type: NetworkInterfaceTypes.PHYSICAL,
             }),
@@ -363,13 +357,13 @@ describe("MachineNetworkActions", () => {
 
     it("disables the button when more than 1 interface is selected", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               type: NetworkInterfaceTypes.PHYSICAL,
             }),
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 2,
               type: NetworkInterfaceTypes.PHYSICAL,
             }),
@@ -397,18 +391,18 @@ describe("MachineNetworkActions", () => {
 
     it("disables the button when an alias is selected", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               links: [
-                networkLinkFactory({ id: 1 }),
-                networkLinkFactory({ id: 2 }),
+                factory.networkLink({ id: 1 }),
+                factory.networkLink({ id: 2 }),
               ],
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 1,
             }),
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 2,
               type: NetworkInterfaceTypes.PHYSICAL,
               vlan_id: 1,
@@ -437,13 +431,13 @@ describe("MachineNetworkActions", () => {
 
     it("disables the button when a bridge is selected", async () => {
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 1,
               type: NetworkInterfaceTypes.BRIDGE,
             }),
-            machineInterfaceFactory({
+            factory.machineInterface({
               id: 2,
               type: NetworkInterfaceTypes.PHYSICAL,
             }),

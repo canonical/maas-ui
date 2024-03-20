@@ -4,24 +4,20 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("PowerColumn", () => {
   let state: RootState;
   let machine;
   beforeEach(() => {
-    machine = machineFactory();
+    machine = factory.machine();
     machine.system_id = "abc123";
     machine.power_state = PowerState.ON;
     machine.power_type = PowerTypeNames.VIRSH;
 
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [machine],
       }),

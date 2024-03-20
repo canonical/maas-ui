@@ -8,29 +8,7 @@ import ComposeForm, {
 
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  fabricState as fabricStateFactory,
-  generalState as generalStateFactory,
-  podDetails as podDetailsFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  podStoragePool as podStoragePoolFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -39,48 +17,48 @@ describe("ComposeForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainFactory({
+          factory.domain({
             id: 0,
             name: "unimaginative-name",
           }),
         ],
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({ loaded: true }),
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({ loaded: true }),
       }),
-      pod: podStateFactory({
-        items: [podDetailsFactory({ id: 1, name: "blablabla" })],
+      pod: factory.podState({
+        items: [factory.podDetails({ id: 1, name: "blablabla" })],
         loaded: true,
-        statuses: { 1: podStatusFactory() },
+        statuses: { 1: factory.podStatus() },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [
-          resourcePoolFactory({
+          factory.resourcePool({
             id: 2,
             name: "olympic",
           }),
         ],
       }),
-      space: spaceStateFactory({
+      space: factory.spaceState({
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-        items: [zoneFactory({ id: 3, name: "danger-zone" })],
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
+        items: [factory.zone({ id: 3, name: "danger-zone" })],
       }),
     });
   });
@@ -118,13 +96,13 @@ describe("ComposeForm", () => {
   });
 
   it("can compose a machine without pinned cores", async () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       name: "podpodpodpodpod",
       id: 1,
       default_storage_pool: "1",
       memory_over_commit_ratio: 1,
       cpu_over_commit_ratio: 1,
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         cores: {
           allocated_other: 0,
           allocated_tracked: 0,
@@ -144,17 +122,17 @@ describe("ComposeForm", () => {
         },
       }),
       storage_pools: [
-        podStoragePoolFactory({
+        factory.podStoragePool({
           id: "1",
           name: "pool-1",
           available: 80000000000,
         }),
-        podStoragePoolFactory({ name: "pool-2", available: 20000000000 }),
+        factory.podStoragePool({ name: "pool-2", available: 20000000000 }),
       ],
       type: "lxd",
     });
-    const space = spaceFactory({ id: 1, name: "outer" });
-    const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
+    const space = factory.space({ id: 1, name: "outer" });
+    const subnet = factory.subnet({ id: 10, cidr: "192.168.1.1/24" });
     state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnet];
@@ -234,13 +212,13 @@ describe("ComposeForm", () => {
   });
 
   it("can compose a machine with pinned cores", async () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       name: "podpodpodpodpod",
       id: 1,
       default_storage_pool: "1",
       memory_over_commit_ratio: 1,
       cpu_over_commit_ratio: 1,
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         cores: {
           allocated_other: 0,
           allocated_tracked: 0,
@@ -260,17 +238,17 @@ describe("ComposeForm", () => {
         },
       }),
       storage_pools: [
-        podStoragePoolFactory({
+        factory.podStoragePool({
           id: "1",
           name: "pool-1",
           available: 80000000000,
         }),
-        podStoragePoolFactory({ name: "pool-2", available: 20000000000 }),
+        factory.podStoragePool({ name: "pool-2", available: 20000000000 }),
       ],
       type: "lxd",
     });
-    const space = spaceFactory({ id: 1, name: "outer" });
-    const subnet = subnetFactory({ id: 10, cidr: "192.168.1.1/24" });
+    const space = factory.space({ id: 1, name: "outer" });
+    const subnet = factory.subnet({ id: 10, cidr: "192.168.1.1/24" });
     state.pod.items = [pod];
     state.space.items = [space];
     state.subnet.items = [subnet];
@@ -370,8 +348,8 @@ describe("ComposeForm", () => {
     });
 
     it("can create a single interface constraint", () => {
-      const space = spaceFactory();
-      const subnet = subnetFactory();
+      const space = factory.space();
+      const subnet = factory.subnet();
       const interfaceFields = [
         {
           id: 1,
@@ -389,8 +367,8 @@ describe("ComposeForm", () => {
     });
 
     it("can create multiple interface constraints", () => {
-      const [space1, space2] = [spaceFactory(), spaceFactory()];
-      const [subnet1, subnet2] = [subnetFactory(), subnetFactory()];
+      const [space1, space2] = [factory.space(), factory.space()];
+      const [subnet1, subnet2] = [factory.subnet(), factory.subnet()];
       const [interface1, interface2] = [
         {
           id: 1,
@@ -428,8 +406,8 @@ describe("ComposeForm", () => {
 
     it("correctly returns storage constraint for pod compose action", () => {
       const [pool1, pool2] = [
-        podStoragePoolFactory({ name: "pool-1" }),
-        podStoragePoolFactory({ name: "pool-2" }),
+        factory.podStoragePool({ name: "pool-1" }),
+        factory.podStoragePool({ name: "pool-2" }),
       ];
       const [bootDisk, otherDisk] = [
         { id: 1, location: pool1.name, size: 16, tags: ["tag1", "tag2"] },
@@ -451,10 +429,10 @@ describe("ComposeForm", () => {
   describe("getDefaultPoolLocation", () => {
     it("correctly returns default pool name", () => {
       const [defaultPool, otherPool] = [
-        podStoragePoolFactory(),
-        podStoragePoolFactory(),
+        factory.podStoragePool(),
+        factory.podStoragePool(),
       ];
-      const pod = podDetailsFactory({
+      const pod = factory.podDetails({
         default_storage_pool: defaultPool.id,
         storage_pools: [defaultPool, otherPool],
         type: PodType.LXD,

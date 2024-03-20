@@ -7,13 +7,7 @@ import UsersList from "./UsersList";
 
 import type { RootState } from "@/app/store/root/types";
 import type { User } from "@/app/store/user/types";
-import {
-  authState as authStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -31,7 +25,7 @@ describe("UsersList", () => {
 
   beforeEach(() => {
     users = [
-      userFactory({
+      factory.user({
         email: "admin@example.com",
         global_permissions: ["machine_create"],
         id: 1,
@@ -40,7 +34,7 @@ describe("UsersList", () => {
         sshkeys_count: 0,
         username: "admin",
       }),
-      userFactory({
+      factory.user({
         email: "user@example.com",
         global_permissions: ["machine_create"],
         id: 2,
@@ -50,15 +44,15 @@ describe("UsersList", () => {
         username: "user1",
       }),
     ];
-    state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
+    state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
           user: users[0],
         }),
         loaded: true,
         items: users,
       }),
-      status: statusStateFactory({ externalAuthURL: null }),
+      status: factory.statusState({ externalAuthURL: null }),
     });
   });
 

@@ -7,14 +7,7 @@ import reducers, {
 import { ZoneMeta } from "./types";
 
 import { ACTION_STATUS } from "@/app/base/constants";
-import {
-  zone as zoneFactory,
-  zoneError as zoneErrorFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneModelAction as zoneModelActionFactory,
-  zoneModelActions as zoneModelActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 it("returns the initial state", () => {
   expect(reducers(undefined, { type: "" })).toEqual({
@@ -28,16 +21,16 @@ it("returns the initial state", () => {
 describe("cleanup", () => {
   it("clears errors and statuses for given action names", () => {
     const [deleteError, fetchError] = [
-      zoneErrorFactory({ action: ZONE_ACTIONS.delete }),
-      zoneErrorFactory({ action: ZONE_ACTIONS.fetch }),
+      factory.zoneError({ action: ZONE_ACTIONS.delete }),
+      factory.zoneError({ action: ZONE_ACTIONS.fetch }),
     ];
-    const initialState = zoneStateFactory({
+    const initialState = factory.zoneState({
       errors: [deleteError, fetchError],
-      genericActions: zoneGenericActionsFactory({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
       }),
-      modelActions: zoneModelActionsFactory({
-        [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+      modelActions: factory.zoneModelActions({
+        [ZONE_ACTIONS.delete]: factory.zoneModelAction({
           [ACTION_STATUS.error]: [1],
           [ACTION_STATUS.loading]: [2],
           [ACTION_STATUS.success]: [3],
@@ -49,13 +42,13 @@ describe("cleanup", () => {
       // Only clear delete errors and statuses
       reducers(initialState, actions.cleanup([ZONE_ACTIONS.delete]))
     ).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         errors: [fetchError],
-        genericActions: zoneGenericActionsFactory({
+        genericActions: factory.zoneGenericActions({
           [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
         }),
-        modelActions: zoneModelActionsFactory({
-          [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+        modelActions: factory.zoneModelActions({
+          [ZONE_ACTIONS.delete]: factory.zoneModelAction({
             [ACTION_STATUS.error]: [],
             [ACTION_STATUS.loading]: [],
             [ACTION_STATUS.success]: [],
@@ -68,15 +61,15 @@ describe("cleanup", () => {
 
 describe("create", () => {
   it("reduces createStart", () => {
-    const initialState = zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+    const initialState = factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.create]: ACTION_STATUS.idle,
       }),
     });
 
     expect(reducers(initialState, actions.createStart())).toEqual(
-      zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({
+      factory.zoneState({
+        genericActions: factory.zoneGenericActions({
           [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
         }),
       })
@@ -84,15 +77,15 @@ describe("create", () => {
   });
 
   it("reduces createSuccess", () => {
-    const initialState = zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+    const initialState = factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
       }),
     });
 
     expect(reducers(initialState, actions.createSuccess())).toEqual(
-      zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({
+      factory.zoneState({
+        genericActions: factory.zoneGenericActions({
           [ZONE_ACTIONS.create]: ACTION_STATUS.success,
         }),
       })
@@ -100,23 +93,23 @@ describe("create", () => {
   });
 
   it("reduces createError", () => {
-    const initialState = zoneStateFactory({
+    const initialState = factory.zoneState({
       errors: [],
-      genericActions: zoneGenericActionsFactory({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
       }),
     });
     const errorMessage = "Unable to create zone";
 
     expect(reducers(initialState, actions.createError(errorMessage))).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         errors: [
-          zoneErrorFactory({
+          factory.zoneError({
             action: ZONE_ACTIONS.create,
             error: errorMessage,
           }),
         ],
-        genericActions: zoneGenericActionsFactory({
+        genericActions: factory.zoneGenericActions({
           [ZONE_ACTIONS.create]: ACTION_STATUS.error,
         }),
       })
@@ -124,13 +117,13 @@ describe("create", () => {
   });
 
   it("reduces createNotify", () => {
-    const initialState = zoneStateFactory({
-      items: [zoneFactory()],
+    const initialState = factory.zoneState({
+      items: [factory.zone()],
     });
-    const createdZone = zoneFactory();
+    const createdZone = factory.zone();
 
     expect(reducers(initialState, actions.createNotify(createdZone))).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         items: [...initialState.items, createdZone],
       })
     );
@@ -139,15 +132,15 @@ describe("create", () => {
 
 describe("fetch", () => {
   it("reduces fetchStart", () => {
-    const initialState = zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+    const initialState = factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.fetch]: ACTION_STATUS.idle,
       }),
     });
 
     expect(reducers(initialState, actions.fetchStart())).toEqual(
-      zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({
+      factory.zoneState({
+        genericActions: factory.zoneGenericActions({
           [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
         }),
       })
@@ -155,17 +148,17 @@ describe("fetch", () => {
   });
 
   it("reduces fetchSuccess", () => {
-    const initialState = zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+    const initialState = factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
       }),
       items: [],
     });
-    const fetchedZones = [zoneFactory(), zoneFactory()];
+    const fetchedZones = [factory.zone(), factory.zone()];
 
     expect(reducers(initialState, actions.fetchSuccess(fetchedZones))).toEqual(
-      zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({
+      factory.zoneState({
+        genericActions: factory.zoneGenericActions({
           [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
         }),
         items: fetchedZones,
@@ -174,23 +167,23 @@ describe("fetch", () => {
   });
 
   it("reduces fetchError", () => {
-    const initialState = zoneStateFactory({
+    const initialState = factory.zoneState({
       errors: [],
-      genericActions: zoneGenericActionsFactory({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
       }),
     });
     const errorMessage = "Unable to fetch zones";
 
     expect(reducers(initialState, actions.fetchError(errorMessage))).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         errors: [
-          zoneErrorFactory({
+          factory.zoneError({
             action: ZONE_ACTIONS.fetch,
             error: errorMessage,
           }),
         ],
-        genericActions: zoneGenericActionsFactory({
+        genericActions: factory.zoneGenericActions({
           [ZONE_ACTIONS.fetch]: ACTION_STATUS.error,
         }),
       })
@@ -200,9 +193,9 @@ describe("fetch", () => {
 
 describe("update", () => {
   it("reduces updateStart", () => {
-    const initialState = zoneStateFactory({
-      modelActions: zoneModelActionsFactory({
-        [ZONE_ACTIONS.update]: zoneModelActionFactory({
+    const initialState = factory.zoneState({
+      modelActions: factory.zoneModelActions({
+        [ZONE_ACTIONS.update]: factory.zoneModelAction({
           [ACTION_STATUS.loading]: [],
         }),
       }),
@@ -218,9 +211,9 @@ describe("update", () => {
         })
       )
     ).toEqual(
-      zoneStateFactory({
-        modelActions: zoneModelActionsFactory({
-          [ZONE_ACTIONS.update]: zoneModelActionFactory({
+      factory.zoneState({
+        modelActions: factory.zoneModelActions({
+          [ZONE_ACTIONS.update]: factory.zoneModelAction({
             [ACTION_STATUS.loading]: [123],
           }),
         }),
@@ -229,11 +222,11 @@ describe("update", () => {
   });
 
   it("reduces updateSuccess", () => {
-    const zone = zoneFactory({ id: 123 });
-    const initialState = zoneStateFactory({
+    const zone = factory.zone({ id: 123 });
+    const initialState = factory.zoneState({
       items: [],
-      modelActions: zoneModelActionsFactory({
-        [ZONE_ACTIONS.update]: zoneModelActionFactory({
+      modelActions: factory.zoneModelActions({
+        [ZONE_ACTIONS.update]: factory.zoneModelAction({
           [ACTION_STATUS.loading]: [123],
           [ACTION_STATUS.success]: [],
         }),
@@ -250,9 +243,9 @@ describe("update", () => {
         })
       )
     ).toEqual(
-      zoneStateFactory({
-        modelActions: zoneModelActionsFactory({
-          [ZONE_ACTIONS.update]: zoneModelActionFactory({
+      factory.zoneState({
+        modelActions: factory.zoneModelActions({
+          [ZONE_ACTIONS.update]: factory.zoneModelAction({
             [ACTION_STATUS.loading]: [],
             [ACTION_STATUS.success]: [123],
           }),
@@ -262,10 +255,10 @@ describe("update", () => {
   });
 
   it("reduces updateError", () => {
-    const initialState = zoneStateFactory({
+    const initialState = factory.zoneState({
       errors: [],
-      modelActions: zoneModelActionsFactory({
-        [ZONE_ACTIONS.update]: zoneModelActionFactory({
+      modelActions: factory.zoneModelActions({
+        [ZONE_ACTIONS.update]: factory.zoneModelAction({
           [ACTION_STATUS.error]: [],
           [ACTION_STATUS.loading]: [123],
         }),
@@ -283,16 +276,16 @@ describe("update", () => {
         })
       )
     ).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         errors: [
-          zoneErrorFactory({
+          factory.zoneError({
             action: ZONE_ACTIONS.update,
             error: errorMessage,
             identifier: 123,
           }),
         ],
-        modelActions: zoneModelActionsFactory({
-          [ZONE_ACTIONS.update]: zoneModelActionFactory({
+        modelActions: factory.zoneModelActions({
+          [ZONE_ACTIONS.update]: factory.zoneModelAction({
             [ACTION_STATUS.error]: [123],
             [ACTION_STATUS.loading]: [],
           }),
@@ -302,13 +295,13 @@ describe("update", () => {
   });
 
   it("reduces updateNotify", () => {
-    const initialState = zoneStateFactory({
-      items: [zoneFactory({ [ZoneMeta.PK]: 123, name: "danger" })],
+    const initialState = factory.zoneState({
+      items: [factory.zone({ [ZoneMeta.PK]: 123, name: "danger" })],
     });
-    const updatedZone = zoneFactory({ [ZoneMeta.PK]: 123, name: "twilight" });
+    const updatedZone = factory.zone({ [ZoneMeta.PK]: 123, name: "twilight" });
 
     expect(reducers(initialState, actions.updateNotify(updatedZone))).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         items: [updatedZone],
       })
     );
@@ -317,9 +310,9 @@ describe("update", () => {
 
 describe("delete", () => {
   it("reduces deleteStart", () => {
-    const initialState = zoneStateFactory({
-      modelActions: zoneModelActionsFactory({
-        [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+    const initialState = factory.zoneState({
+      modelActions: factory.zoneModelActions({
+        [ZONE_ACTIONS.delete]: factory.zoneModelAction({
           [ACTION_STATUS.loading]: [],
         }),
       }),
@@ -335,9 +328,9 @@ describe("delete", () => {
         })
       )
     ).toEqual(
-      zoneStateFactory({
-        modelActions: zoneModelActionsFactory({
-          [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+      factory.zoneState({
+        modelActions: factory.zoneModelActions({
+          [ZONE_ACTIONS.delete]: factory.zoneModelAction({
             [ACTION_STATUS.loading]: [123],
           }),
         }),
@@ -346,9 +339,9 @@ describe("delete", () => {
   });
 
   it("reduces deleteSuccess", () => {
-    const initialState = zoneStateFactory({
-      modelActions: zoneModelActionsFactory({
-        [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+    const initialState = factory.zoneState({
+      modelActions: factory.zoneModelActions({
+        [ZONE_ACTIONS.delete]: factory.zoneModelAction({
           [ACTION_STATUS.loading]: [123],
           [ACTION_STATUS.success]: [],
         }),
@@ -365,9 +358,9 @@ describe("delete", () => {
         })
       )
     ).toEqual(
-      zoneStateFactory({
-        modelActions: zoneModelActionsFactory({
-          [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+      factory.zoneState({
+        modelActions: factory.zoneModelActions({
+          [ZONE_ACTIONS.delete]: factory.zoneModelAction({
             [ACTION_STATUS.loading]: [],
             [ACTION_STATUS.success]: [123],
           }),
@@ -377,10 +370,10 @@ describe("delete", () => {
   });
 
   it("reduces deleteError", () => {
-    const initialState = zoneStateFactory({
+    const initialState = factory.zoneState({
       errors: [],
-      modelActions: zoneModelActionsFactory({
-        [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+      modelActions: factory.zoneModelActions({
+        [ZONE_ACTIONS.delete]: factory.zoneModelAction({
           [ACTION_STATUS.error]: [],
           [ACTION_STATUS.loading]: [123],
         }),
@@ -398,16 +391,16 @@ describe("delete", () => {
         })
       )
     ).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         errors: [
-          zoneErrorFactory({
+          factory.zoneError({
             action: ZONE_ACTIONS.delete,
             error: errorMessage,
             identifier: 123,
           }),
         ],
-        modelActions: zoneModelActionsFactory({
-          [ZONE_ACTIONS.delete]: zoneModelActionFactory({
+        modelActions: factory.zoneModelActions({
+          [ZONE_ACTIONS.delete]: factory.zoneModelAction({
             [ACTION_STATUS.error]: [123],
             [ACTION_STATUS.loading]: [],
           }),
@@ -417,12 +410,12 @@ describe("delete", () => {
   });
 
   it("reduces deleteNotify", () => {
-    const initialState = zoneStateFactory({
-      items: [zoneFactory({ [ZoneMeta.PK]: 123 })],
+    const initialState = factory.zoneState({
+      items: [factory.zone({ [ZoneMeta.PK]: 123 })],
     });
 
     expect(reducers(initialState, actions.deleteNotify(123))).toEqual(
-      zoneStateFactory({
+      factory.zoneState({
         items: [],
       })
     );

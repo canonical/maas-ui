@@ -5,21 +5,7 @@ import EditAliasOrVlanForm from "./EditAliasOrVlanForm";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -29,31 +15,31 @@ describe("EditAliasOrVlanForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    nic = machineInterfaceFactory({
+    nic = factory.machineInterface({
       id: 1,
     });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
-        items: [fabricFactory({ id: 69 }), fabricFactory({ id: 420 })],
+    state = factory.rootState({
+      fabric: factory.fabricState({
+        items: [factory.fabric({ id: 69 }), factory.fabric({ id: 420 })],
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory(), subnetFactory()],
+      subnet: factory.subnetState({
+        items: [factory.subnet(), factory.subnet()],
         loaded: true,
       }),
-      vlan: vlanStateFactory({
-        items: [vlanFactory({ fabric: 69, id: 1 })],
+      vlan: factory.vlanState({
+        items: [factory.vlan({ fabric: 69, id: 1 })],
         loaded: true,
       }),
     });
@@ -110,8 +96,8 @@ describe("EditAliasOrVlanForm", () => {
   });
 
   it("dispatches an action to update an alias", async () => {
-    const link = networkLinkFactory({});
-    nic.links = [networkLinkFactory(), link];
+    const link = factory.networkLink({});
+    nic.links = [factory.networkLink(), link];
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm
@@ -149,8 +135,8 @@ describe("EditAliasOrVlanForm", () => {
   });
 
   it("dispatches an action to update a VLAN", async () => {
-    const link = networkLinkFactory({ id: 101 });
-    nic.links = [networkLinkFactory(), link];
+    const link = factory.networkLink({ id: 101 });
+    nic.links = [factory.networkLink(), link];
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditAliasOrVlanForm

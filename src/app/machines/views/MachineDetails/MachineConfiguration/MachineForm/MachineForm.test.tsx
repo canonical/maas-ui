@@ -8,15 +8,7 @@ import MachineForm from "./MachineForm";
 import { Labels } from "@/app/base/components/EditableSection";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  architecturesState as architecturesStateFactory,
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -25,21 +17,21 @@ describe("MachineForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        architectures: architecturesStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        architectures: factory.architecturesState({
           data: ["amd64"],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             permissions: ["edit"],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -103,7 +95,7 @@ describe("MachineForm", () => {
   });
 
   it("correctly dispatches an action to update a machine", async () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       architecture: "amd64",
       permissions: ["edit"],
       system_id: "abc123",

@@ -6,23 +6,17 @@ import { ImageSidePanelViews } from "@/app/images/constants";
 import type { ImageSidePanelContent } from "@/app/images/types";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResourceState as bootResourceStateFactory,
-  bootResource as resourceFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources: [
-        resourceFactory({
+        factory.bootResource({
           arch: "amd64",
           complete: true,
           name: "ubuntu/focal",
@@ -30,9 +24,9 @@ beforeEach(() => {
         }),
       ],
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),

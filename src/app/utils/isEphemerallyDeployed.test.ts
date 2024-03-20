@@ -1,10 +1,10 @@
 import { isEphemerallyDeployed } from "./IsEphemerallyDeployed";
 
 import { NodeStatusCode } from "@/app/store/types/node";
-import { machine as machineFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 it("returns true if a machine is deployed ephemerally", () => {
-  const machine = machineFactory({
+  const machine = factory.machine({
     system_id: "abc123",
     status_code: NodeStatusCode.DEPLOYED,
     ephemeral_deploy: true,
@@ -14,7 +14,7 @@ it("returns true if a machine is deployed ephemerally", () => {
 });
 
 it("returns false if a machine is not deployed ephemerally", () => {
-  const machine = machineFactory({
+  const machine = factory.machine({
     system_id: "abc123",
     status_code: NodeStatusCode.DEPLOYED,
     ephemeral_deploy: false,

@@ -4,11 +4,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import SSLKeyList, { Label as SSLKeyListLabels } from "./SSLKeyList";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  sslKey as sslKeyFactory,
-  sslKeyState as sslKeyStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   renderWithMockStore,
@@ -19,28 +15,28 @@ describe("SSLKeyList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      sslkey: sslKeyStateFactory({
+    state = factory.rootState({
+      sslkey: factory.sslKeyState({
         loading: false,
         loaded: true,
         items: [
-          sslKeyFactory({
+          factory.sslKey({
             id: 1,
             key: "ssh-rsa aabb",
           }),
-          sslKeyFactory({
+          factory.sslKey({
             id: 2,
             key: "ssh-rsa ccdd",
           }),
-          sslKeyFactory({
+          factory.sslKey({
             id: 3,
             key: "ssh-rsa eeff",
           }),
-          sslKeyFactory({
+          factory.sslKey({
             id: 4,
             key: "ssh-rsa gghh",
           }),
-          sslKeyFactory({ id: 5, key: "ssh-rsa gghh" }),
+          factory.sslKey({ id: 5, key: "ssh-rsa gghh" }),
         ],
       }),
     });

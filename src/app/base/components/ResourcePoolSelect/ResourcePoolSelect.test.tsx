@@ -4,22 +4,18 @@ import configureStore from "redux-mock-store";
 import ResourcePoolSelect from "./ResourcePoolSelect";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("ResourcePoolSelect", () => {
   it("renders a list of all resource pools in state", () => {
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         items: [
-          resourcePoolFactory({ id: 101, name: "Pool 1" }),
-          resourcePoolFactory({ id: 202, name: "Pool 2" }),
+          factory.resourcePool({ id: 101, name: "Pool 1" }),
+          factory.resourcePool({ id: 202, name: "Pool 2" }),
         ],
         loaded: true,
       }),
@@ -38,7 +34,7 @@ describe("ResourcePoolSelect", () => {
   });
 
   it("dispatches action to fetch resource pools on load", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     renderWithMockStore(
       <Formik initialValues={{ pool: "" }} onSubmit={vi.fn()}>
@@ -53,8 +49,8 @@ describe("ResourcePoolSelect", () => {
   });
 
   it("disables select if resource pools have not loaded", () => {
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         loaded: false,
       }),
     });

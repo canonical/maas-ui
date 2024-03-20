@@ -5,21 +5,15 @@ import LXDHostVMs from "./LXDHostVMs";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podNuma as podNumaFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
 describe("LXDHostVMs", () => {
   it("shows a spinner if pod has not loaded yet", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [],
         loaded: false,
       }),
@@ -40,12 +34,12 @@ describe("LXDHostVMs", () => {
   });
 
   it("can view resources by NUMA node", async () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             id: 1,
-            resources: podResourcesFactory({ numa: [podNumaFactory()] }),
+            resources: factory.podResources({ numa: [factory.podNuma()] }),
           }),
         ],
       }),
@@ -69,9 +63,9 @@ describe("LXDHostVMs", () => {
   });
 
   it("displays the host name when in a cluster", async () => {
-    const pod = podFactory({ id: 1, name: "cluster host" });
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const pod = factory.pod({ id: 1, name: "cluster host" });
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
       }),
     });
@@ -91,9 +85,9 @@ describe("LXDHostVMs", () => {
   });
 
   it("does not display the host name when in a single host", async () => {
-    const pod = podFactory({ id: 1, name: "cluster host" });
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const pod = factory.pod({ id: 1, name: "cluster host" });
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
       }),
     });
@@ -112,9 +106,9 @@ describe("LXDHostVMs", () => {
   });
 
   it("can open the compose VM form", async () => {
-    const pod = podFactory({ id: 1 });
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const pod = factory.pod({ id: 1 });
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
       }),
     });
@@ -141,9 +135,9 @@ describe("LXDHostVMs", () => {
   });
 
   it("fetches VMs for the host", async () => {
-    const pod = podFactory({ id: 1, name: "cluster host" });
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const pod = factory.pod({ id: 1, name: "cluster host" });
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
       }),
     });

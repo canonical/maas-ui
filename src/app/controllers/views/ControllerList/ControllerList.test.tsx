@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 import ControllerList from "./ControllerList";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -15,7 +15,7 @@ const mockStore = configureStore();
 describe("ControllerList", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("sets the search text from the URL on load", () => {

@@ -6,24 +6,18 @@ import configureStore from "redux-mock-store";
 import AddSubnet from "./AddSubnet";
 
 import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  fabric as fabricFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  fabricState as fabricSpaceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("correctly dispatches subnet cleanup and create actions on form submit", async () => {
-  const vlan1 = vlanFactory({ id: 111, fabric: 5 });
-  const vlan2 = vlanFactory({
+  const vlan1 = factory.vlan({ id: 111, fabric: 5 });
+  const vlan2 = factory.vlan({
     id: 222,
     vid: 333,
     name: "",
     fabric: 5,
   });
-  const fabric = fabricFactory({
+  const fabric = factory.fabric({
     id: 5,
     name: "space1",
     vlan_ids: [vlan1.id, vlan2.vid],
@@ -31,12 +25,12 @@ it("correctly dispatches subnet cleanup and create actions on form submit", asyn
   });
 
   const store = configureStore()(
-    rootStateFactory({
-      fabric: fabricSpaceFactory({
+    factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
         items: [fabric],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
         items: [vlan1, vlan2],
       }),

@@ -8,34 +8,26 @@ import { Labels } from "../StaticRoutes";
 import AddStaticRouteForm from "./AddStaticRouteForm";
 
 import { actions as staticRouteActions } from "@/app/store/staticroute";
-import {
-  rootState as rootStateFactory,
-  staticRouteState as staticRouteStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  authState as authStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("dispatches a correct action on add static route form submit", async () => {
-  const subnet = subnetFactory({ id: 1, cidr: "172.16.1.0/24" });
-  const destinationSubnet = subnetFactory({ id: 2, cidr: "223.16.1.0/24" });
-  const state = rootStateFactory({
-    user: userStateFactory({
-      auth: authStateFactory({
-        user: userFactory(),
+  const subnet = factory.subnet({ id: 1, cidr: "172.16.1.0/24" });
+  const destinationSubnet = factory.subnet({ id: 2, cidr: "223.16.1.0/24" });
+  const state = factory.rootState({
+    user: factory.userState({
+      auth: factory.authState({
+        user: factory.user(),
       }),
-      items: [userFactory(), userFactory(), userFactory()],
+      items: [factory.user(), factory.user(), factory.user()],
     }),
-    staticroute: staticRouteStateFactory({
+    staticroute: factory.staticRouteState({
       loaded: true,
       items: [],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       loaded: true,
       items: [subnet, destinationSubnet],
     }),

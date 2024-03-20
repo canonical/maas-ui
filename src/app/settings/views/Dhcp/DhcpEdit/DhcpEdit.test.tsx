@@ -5,24 +5,20 @@ import { DhcpEdit } from "./DhcpEdit";
 
 import { Labels as DhcpFormFieldsLabels } from "@/app/base/components/DhcpFormFields/DhcpFormFields";
 import type { RootState } from "@/app/store/root/types";
-import {
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("DhcpEdit", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items: [
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             id: 1,
           }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             id: 2,
           }),
         ],

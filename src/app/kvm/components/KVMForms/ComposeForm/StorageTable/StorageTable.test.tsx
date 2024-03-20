@@ -3,24 +3,7 @@ import ComposeForm from "../ComposeForm";
 import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainState as domainStateFactory,
-  fabricState as fabricStateFactory,
-  generalState as generalStateFactory,
-  podDetails as podDetailsFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  podStoragePool as podStoragePoolFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  spaceState as spaceStateFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -38,59 +21,59 @@ describe("StorageTable", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    const pod = podDetailsFactory({ id: 1 });
+    const pod = factory.podDetails({ id: 1 });
 
-    initialState = rootStateFactory({
-      domain: domainStateFactory({
+    initialState = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [pod],
         loaded: true,
-        statuses: { [pod.id]: podStatusFactory() },
+        statuses: { [pod.id]: factory.podStatus() },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      space: spaceStateFactory({
+      space: factory.spaceState({
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });
 
   it("disables add disk button if pod is composing a machine", () => {
-    const pod = podDetailsFactory({ id: 1 });
+    const pod = factory.podDetails({ id: 1 });
     const state = { ...initialState };
     state.pod.items = [pod];
-    state.pod.statuses = { [pod.id]: podStatusFactory({ composing: true }) };
+    state.pod.statuses = { [pod.id]: factory.podStatus({ composing: true }) };
     generateWrapper(state, pod);
 
     expect(screen.getByRole("button", { name: /add disk/i })).toBeDisabled();
   });
 
   it("can add disks and remove all but last disk", async () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       default_storage_pool: "pool-1",
       id: 1,
-      storage_pools: [podStoragePoolFactory({ id: "pool-1" })],
+      storage_pools: [factory.podStoragePool({ id: "pool-1" })],
       type: PodType.VIRSH,
     });
     const state = { ...initialState };
@@ -119,10 +102,10 @@ describe("StorageTable", () => {
   });
 
   it("displays a caution message if the boot disk size is less than 8GB", async () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       default_storage_pool: "pool-1",
       id: 1,
-      storage_pools: [podStoragePoolFactory({ id: "pool-1" })],
+      storage_pools: [factory.podStoragePool({ id: "pool-1" })],
     });
     const state = { ...initialState };
     state.pod.items = [pod];
@@ -139,10 +122,10 @@ describe("StorageTable", () => {
   });
 
   it("doesn't display a caution message if it isn't a boot disk and size is less than 8GB", async () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       default_storage_pool: "pool-1",
       id: 1,
-      storage_pools: [podStoragePoolFactory({ id: "pool-1" })],
+      storage_pools: [factory.podStoragePool({ id: "pool-1" })],
     });
     const state = { ...initialState };
     state.pod.items = [pod];
@@ -161,8 +144,8 @@ describe("StorageTable", () => {
   });
 
   it("displays an error message if disk size is higher than available storage in pool", async () => {
-    const pool = podStoragePoolFactory({ available: 20000000000 }); // 20GB
-    const pod = podDetailsFactory({
+    const pool = factory.podStoragePool({ available: 20000000000 }); // 20GB
+    const pod = factory.podDetails({
       id: 1,
       default_storage_pool: pool.id,
       storage_pools: [pool],
@@ -183,8 +166,8 @@ describe("StorageTable", () => {
 
   it(`displays an error message if the sum of disk sizes from a pool is higher
     than the available storage in that pool`, async () => {
-    const pool = podStoragePoolFactory({ available: 25000000000 }); // 25GB
-    const pod = podDetailsFactory({
+    const pool = factory.podStoragePool({ available: 25000000000 }); // 25GB
+    const pod = factory.podDetails({
       id: 1,
       default_storage_pool: pool.id,
       storage_pools: [pool],
@@ -216,8 +199,8 @@ describe("StorageTable", () => {
   });
 
   it("displays an error message on render if not enough space", async () => {
-    const pool = podStoragePoolFactory({ available: 0, name: "pool" });
-    const pod = podDetailsFactory({
+    const pool = factory.podStoragePool({ available: 0, name: "pool" });
+    const pod = factory.podDetails({
       id: 1,
       default_storage_pool: pool.id,
       storage_pools: [pool],

@@ -3,14 +3,7 @@ import { FabricDetailsSidePanelViews } from "./constants";
 
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
@@ -18,18 +11,18 @@ let fabric: Fabric;
 
 describe("FabricDetailsHeader", () => {
   beforeEach(() => {
-    fabric = fabricFactory({ id: 1, name: "fabric1" });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    fabric = factory.fabric({ id: 1, name: "fabric1" });
+    state = factory.rootState({
+      fabric: factory.fabricState({
         items: [fabric],
       }),
     });
   });
 
   it("shows the delete button when the user is an admin", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ is_superuser: true }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ is_superuser: true }),
       }),
     });
     renderWithBrowserRouter(
@@ -46,9 +39,9 @@ describe("FabricDetailsHeader", () => {
   });
 
   it("does not show the delete button if the user is not an admin", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ is_superuser: false }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ is_superuser: false }),
       }),
     });
     renderWithBrowserRouter(
@@ -64,9 +57,9 @@ describe("FabricDetailsHeader", () => {
 
   it("calls a function to open the Delete form when the button is clicked", async () => {
     const setSidePanelContent = vi.fn();
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ is_superuser: true }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ is_superuser: true }),
       }),
     });
     renderWithBrowserRouter(

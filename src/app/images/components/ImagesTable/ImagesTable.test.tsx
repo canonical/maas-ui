@@ -7,13 +7,7 @@ import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { ImageSidePanelViews } from "@/app/images/constants";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResource as resourceFactory,
-  bootResourceState as bootResourceStateFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -33,13 +27,13 @@ afterEach(() => {
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources: [],
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),
@@ -49,7 +43,7 @@ beforeEach(() => {
 });
 
 it("renders the correct status for a downloaded image that is selected", () => {
-  const resource = resourceFactory({
+  const resource = factory.bootResource({
     arch: "amd64",
     complete: true,
     name: "ubuntu/focal",
@@ -81,7 +75,7 @@ it("renders the correct status for a downloaded image that is selected", () => {
 });
 
 it("renders the correct status for a downloaded image that is not selected", () => {
-  const resource = resourceFactory({
+  const resource = factory.bootResource({
     arch: "amd64",
     complete: true,
     name: "ubuntu/focal",
@@ -104,7 +98,7 @@ it("renders the correct status for a downloaded image that is not selected", () 
 
 it("renders the time of last update", () => {
   const lastUpdate = "Mon, 30 Jan. 2023 15:54:44";
-  const resource = resourceFactory({
+  const resource = factory.bootResource({
     arch: "amd64",
     complete: true,
     name: "ubuntu/focal",
@@ -189,7 +183,11 @@ it(`can open the delete image confirmation if the image does not use the
     sidePanelSize: "regular",
   });
   const resources = [
-    resourceFactory({ arch: "amd64", name: "ubuntu/bionic", complete: true }),
+    factory.bootResource({
+      arch: "amd64",
+      name: "ubuntu/bionic",
+      complete: true,
+    }),
   ];
   const image = {
     arch: "amd64",
@@ -197,13 +195,13 @@ it(`can open the delete image confirmation if the image does not use the
     release: "bionic",
     title: "18.04 LTS",
   };
-  const state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  const state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources,
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),
@@ -229,20 +227,22 @@ it(`can open the delete image confirmation if the image does not use the
 });
 
 it("disables delete for default commissioning release images", async () => {
-  const resources = [resourceFactory({ arch: "amd64", name: "ubuntu/focal" })];
+  const resources = [
+    factory.bootResource({ arch: "amd64", name: "ubuntu/focal" }),
+  ];
   const image = {
     arch: "amd64",
     os: "ubuntu",
     release: "focal",
     title: "20.04 LTS",
   };
-  const state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  const state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources,
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),
@@ -267,7 +267,7 @@ it("disables delete for default commissioning release images", async () => {
 
 it("disables delete action for images being downloaded", async () => {
   const resources = [
-    resourceFactory({
+    factory.bootResource({
       arch: "amd64",
       name: "ubuntu/bionic",
       title: "18.04 LTS",
@@ -304,7 +304,7 @@ it("disables delete action for images being downloaded", async () => {
 it("displays a correct last deployed time and machine count", () => {
   const lastDeployed = "Fri, 18 Nov. 2022 09:55:21";
   const resources = [
-    resourceFactory({
+    factory.bootResource({
       arch: "amd64",
       name: "ubuntu/focal",
       lastDeployed,
@@ -317,13 +317,13 @@ it("displays a correct last deployed time and machine count", () => {
     release: "focal",
     title: "20.04 LTS",
   };
-  const state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  const state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources,
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),
@@ -353,7 +353,7 @@ it("displays a correct last deployed time and machine count", () => {
 
 it("can handle empty string for last deployed time", () => {
   const resources = [
-    resourceFactory({
+    factory.bootResource({
       arch: "amd64",
       name: "ubuntu/focal",
       lastDeployed: "",
@@ -366,13 +366,13 @@ it("can handle empty string for last deployed time", () => {
     release: "focal",
     title: "20.04 LTS",
   };
-  const state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  const state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources,
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),
@@ -397,33 +397,33 @@ it("can handle empty string for last deployed time", () => {
 it("can sort by last deployed time", async () => {
   // resources sorted by last deployed time
   const resourcesByLastDeployed = [
-    resourceFactory({
+    factory.bootResource({
       name: "ubuntu/xenial",
       arch: "amd64",
       title: "16.04 LTS",
       lastDeployed: "Tue, 16 Nov. 2022 09:55:21",
     }),
-    resourceFactory({
+    factory.bootResource({
       arch: "amd64",
       name: "ubuntu/focal",
       title: "20.04 LTS",
       lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
       machineCount: 768,
     }),
-    resourceFactory({
+    factory.bootResource({
       name: "ubuntu/bionic",
       arch: "i386",
       title: "18.04 LTS",
       lastDeployed: "Wed, 18 Nov. 2022 08:55:21",
     }),
   ];
-  const state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  const state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources: resourcesByLastDeployed,
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),
@@ -459,33 +459,33 @@ it("can sort by last deployed time", async () => {
 it("sorts by release by default", () => {
   // resources sorted by release
   const resourcesByReleaseTitle = [
-    resourceFactory({
+    factory.bootResource({
       arch: "amd64",
       name: "ubuntu/focal",
       title: "20.04 LTS",
       lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
       machineCount: 768,
     }),
-    resourceFactory({
+    factory.bootResource({
       name: "ubuntu/bionic",
       arch: "i386",
       title: "18.04 LTS",
       lastDeployed: "Wed, 18 Nov. 2022 08:55:21",
     }),
-    resourceFactory({
+    factory.bootResource({
       name: "ubuntu/xenial",
       arch: "amd64",
       title: "16.04 LTS",
       lastDeployed: "Tue, 16 Nov. 2022 09:55:21",
     }),
   ];
-  const state = rootStateFactory({
-    bootresource: bootResourceStateFactory({
+  const state = factory.rootState({
+    bootresource: factory.bootResourceState({
       resources: resourcesByReleaseTitle,
     }),
-    config: configStateFactory({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
           value: "focal",
         }),
@@ -512,8 +512,10 @@ it("sorts by release by default", () => {
 });
 
 it("can show support for deploying to memory", async () => {
-  const supported_resource = resourceFactory({ canDeployToMemory: true });
-  const unsupported_resource = resourceFactory({ canDeployToMemory: false });
+  const supported_resource = factory.bootResource({ canDeployToMemory: true });
+  const unsupported_resource = factory.bootResource({
+    canDeployToMemory: false,
+  });
   renderWithMockStore(
     <ImagesTable
       handleClear={vi.fn()}

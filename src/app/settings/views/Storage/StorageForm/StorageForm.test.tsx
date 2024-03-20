@@ -7,10 +7,7 @@ import StorageForm from "./StorageForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -19,8 +16,8 @@ describe("StorageForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         loaded: true,
         items: [
           {

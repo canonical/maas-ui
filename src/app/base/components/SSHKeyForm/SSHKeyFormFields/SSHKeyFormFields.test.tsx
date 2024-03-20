@@ -3,18 +3,15 @@ import { Formik } from "formik";
 import SSHKeyFormFields from "./SSHKeyFormFields";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  sshKeyState as sshKeyStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("SSHKeyFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      sshkey: sshKeyStateFactory({
+    state = factory.rootState({
+      sshkey: factory.sshKeyState({
         loading: false,
         loaded: true,
         items: [],

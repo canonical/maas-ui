@@ -2,40 +2,33 @@ import MarkConnectedForm, { ConnectionState } from "./MarkConnectedForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: [
-        machineDetailsFactory({
+        factory.machineDetails({
           system_id: "abc123",
         }),
       ],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        abc123: factory.machineStatus(),
       }),
     }),
   });
 });
 
 it("renders a mark connected form", () => {
-  const nic = machineInterfaceFactory({
+  const nic = factory.machineInterface({
     type: NetworkInterfaceTypes.PHYSICAL,
     link_connected: false,
   });
   state.machine.items = [
-    machineDetailsFactory({
+    factory.machineDetails({
       system_id: "abc123",
       interfaces: [nic],
     }),
@@ -59,12 +52,12 @@ it("renders a mark connected form", () => {
 });
 
 it("renders a mark disconnected form", () => {
-  const nic = machineInterfaceFactory({
+  const nic = factory.machineInterface({
     type: NetworkInterfaceTypes.PHYSICAL,
     link_connected: true,
   });
   state.machine.items = [
-    machineDetailsFactory({
+    factory.machineDetails({
       system_id: "abc123",
       interfaces: [nic],
     }),
@@ -88,12 +81,12 @@ it("renders a mark disconnected form", () => {
 });
 
 it("displays a disconnected warning", () => {
-  const nic = machineInterfaceFactory({
+  const nic = factory.machineInterface({
     type: NetworkInterfaceTypes.PHYSICAL,
     link_connected: false,
   });
   state.machine.items = [
-    machineDetailsFactory({
+    factory.machineDetails({
       system_id: "abc123",
       interfaces: [nic],
     }),

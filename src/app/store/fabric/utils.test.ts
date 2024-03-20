@@ -1,6 +1,6 @@
 import { getFabricDisplay } from "./utils";
 
-import { fabric as fabricFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("fabric utils", () => {
   describe("getFabricDisplay", function () {
@@ -9,12 +9,12 @@ describe("fabric utils", () => {
     });
 
     it("returns name if name exists", function () {
-      const fabric = fabricFactory({ name: "fabric-name" });
+      const fabric = factory.fabric({ name: "fabric-name" });
       expect(getFabricDisplay(fabric)).toBe("fabric-name");
     });
 
     it("returns name if name is null", function () {
-      const fabric = fabricFactory({ id: 99, name: "" });
+      const fabric = factory.fabric({ id: 99, name: "" });
       expect(getFabricDisplay(fabric)).toBe("fabric-99");
     });
   });

@@ -6,26 +6,7 @@ import ComposeForm from "../../ComposeForm";
 
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainState as domainStateFactory,
-  fabricState as fabricStateFactory,
-  generalState as generalStateFactory,
-  podDetails as podDetailsFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  podStoragePool as podStoragePoolFactory,
-  podStoragePoolResource as podStoragePoolResourceFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  spaceState as spaceStateFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -45,54 +26,54 @@ describe("PoolSelect", () => {
   let state: RootState;
 
   beforeEach(() => {
-    const pod = podDetailsFactory({ id: 1 });
+    const pod = factory.podDetails({ id: 1 });
 
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [pod],
         loaded: true,
-        statuses: { [pod.id]: podStatusFactory() },
+        statuses: { [pod.id]: factory.podStatus() },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      space: spaceStateFactory({
+      space: factory.spaceState({
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });
 
   it(`correctly calculates allocated, requested, free and total space, where
     free space is rounded down`, async () => {
-    const pool = podStoragePoolFactory({ name: "pool" });
-    const pod = podDetailsFactory({
+    const pool = factory.podStoragePool({ name: "pool" });
+    const pod = factory.podDetails({
       id: 1,
       default_storage_pool: pool.id,
       storage_pools: [pool],
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         storage_pools: {
-          [pool.name]: podStoragePoolResourceFactory({
+          [pool.name]: factory.podStoragePoolResource({
             allocated_other: 4000000000, // 4GB
             allocated_tracked: 6000000000, // 6GB
             total: 19999000000, // 19.999GB
@@ -122,20 +103,20 @@ describe("PoolSelect", () => {
 
   it("shows a tick next to the selected pool", async () => {
     const [defaultPool, otherPool] = [
-      podStoragePoolFactory({ name: "default" }),
-      podStoragePoolFactory({ name: "other" }),
+      factory.podStoragePool({ name: "default" }),
+      factory.podStoragePool({ name: "other" }),
     ];
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       id: 1,
       default_storage_pool: defaultPool.id,
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         storage_pools: {
-          [defaultPool.name]: podStoragePoolResourceFactory({
+          [defaultPool.name]: factory.podStoragePoolResource({
             allocated_other: 1000000000000,
             allocated_tracked: 2000000000000,
             total: 6000000000000,
           }),
-          [otherPool.name]: podStoragePoolResourceFactory({
+          [otherPool.name]: factory.podStoragePoolResource({
             allocated_other: 1000000000000,
             allocated_tracked: 2000000000000,
             total: 6000000000000,
@@ -178,20 +159,20 @@ describe("PoolSelect", () => {
 
   it("disables a pool that does not have enough space for disk, with warning", async () => {
     const [poolWithSpace, poolWithoutSpace] = [
-      podStoragePoolFactory({ name: "pool-without-space" }),
-      podStoragePoolFactory({ name: "pool-with-space" }),
+      factory.podStoragePool({ name: "pool-without-space" }),
+      factory.podStoragePool({ name: "pool-with-space" }),
     ];
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       id: 1,
       default_storage_pool: poolWithSpace.id,
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         storage_pools: {
-          [poolWithoutSpace.name]: podStoragePoolResourceFactory({
+          [poolWithoutSpace.name]: factory.podStoragePoolResource({
             allocated_other: 0,
             allocated_tracked: 0,
             total: 100000000000, // 100GB free
           }),
-          [poolWithSpace.name]: podStoragePoolResourceFactory({
+          [poolWithSpace.name]: factory.podStoragePoolResource({
             allocated_other: 0,
             allocated_tracked: 90000000000,
             total: 100000000000, // 10GB free

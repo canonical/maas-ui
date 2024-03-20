@@ -9,11 +9,7 @@ import Tags from "./Tags";
 import urls from "@/app/base/urls";
 import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("Tags", () => {
@@ -21,10 +17,10 @@ describe("Tags", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      tag: tagStateFactory({
+    state = factory.rootState({
+      tag: factory.tagState({
         loaded: true,
-        items: [tagFactory({ id: 1 }), tagFactory()],
+        items: [factory.tag({ id: 1 }), factory.tag()],
       }),
     });
     // Mock the scrollTo method as jsdom doesn't support this and will error.

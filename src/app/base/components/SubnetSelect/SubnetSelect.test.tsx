@@ -6,27 +6,23 @@ import configureStore from "redux-mock-store";
 import SubnetSelect from "./SubnetSelect";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
 describe("SubnetSelect", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      subnet: subnetStateFactory({
+    state = factory.rootState({
+      subnet: factory.subnetState({
         items: [
-          subnetFactory({
+          factory.subnet({
             id: 1,
             name: "sub1",
             cidr: "172.16.1.0/24",
             vlan: 3,
           }),
-          subnetFactory({
+          factory.subnet({
             id: 2,
             name: "sub2",
             cidr: "172.16.2.0/24",
@@ -141,13 +137,13 @@ describe("SubnetSelect", () => {
 
   it("orders the subnets by name", () => {
     state.subnet.items = [
-      subnetFactory({
+      factory.subnet({
         id: 1,
         name: "sub1",
         cidr: "1.1.1.1/24",
         vlan: 3,
       }),
-      subnetFactory({
+      factory.subnet({
         id: 2,
         name: "sub2",
         cidr: "0.0.0.0/24",

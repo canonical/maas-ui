@@ -2,46 +2,34 @@ import SubnetColumn from "./SubnetColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceInterface as deviceInterfaceFactory,
-  fabric as fabricFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  networkDiscoveredIP as networkDiscoveredIPFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("SubnetColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      subnet: subnetStateFactory({
+    state = factory.rootState({
+      subnet: factory.subnetState({
         loaded: true,
       }),
     });
   });
 
   it("can display subnet links", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const subnet = factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" });
     state.vlan.items = [vlan];
     state.subnet.items = [subnet];
-    const link = networkLinkFactory({ subnet_id: subnet.id });
-    const nic = machineInterfaceFactory({
+    const link = factory.networkLink({ subnet_id: subnet.id });
+    const nic = factory.machineInterface({
       discovered: null,
       links: [link],
       vlan_id: vlan.id,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -60,20 +48,20 @@ describe("SubnetColumn", () => {
   });
 
   it("can display subnet links if the node is a device", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const subnet = factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" });
     state.vlan.items = [vlan];
     state.subnet.items = [subnet];
-    const link = networkLinkFactory({ subnet_id: subnet.id });
-    const nic = deviceInterfaceFactory({
+    const link = factory.networkLink({ subnet_id: subnet.id });
+    const nic = factory.deviceInterface({
       discovered: null,
       links: [link],
       vlan_id: vlan.id,
     });
     state.device.items = [
-      deviceDetailsFactory({
+      factory.deviceDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -92,18 +80,18 @@ describe("SubnetColumn", () => {
   });
 
   it("can display an unconfigured subnet", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
-    const link = networkLinkFactory();
-    const nic = machineInterfaceFactory({
+    const link = factory.networkLink();
+    const nic = factory.machineInterface({
       discovered: null,
       links: [link],
       vlan_id: vlan.id,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -117,20 +105,20 @@ describe("SubnetColumn", () => {
   });
 
   it("can display the subnet name only", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const subnet = factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" });
     state.vlan.items = [vlan];
     state.subnet.items = [subnet];
-    const discovered = [networkDiscoveredIPFactory({ subnet_id: subnet.id })];
-    const nic = machineInterfaceFactory({
+    const discovered = [factory.networkDiscoveredIP({ subnet_id: subnet.id })];
+    const nic = factory.machineInterface({
       discovered,
       links: [],
       vlan_id: vlan.id,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         status: NodeStatus.DEPLOYING,
         system_id: "abc123",

@@ -6,40 +6,29 @@ import configureStore from "redux-mock-store";
 import SpaceSubnets from "./SpaceSubnets";
 
 import urls from "@/app/base/urls";
-import {
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  fabric as fabricFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  subnetStatistics,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 const getRootState = () =>
-  rootStateFactory({
-    vlan: vlanStateFactory({
+  factory.rootState({
+    vlan: factory.vlanState({
       loaded: true,
       loading: false,
-      items: [vlanFactory({ id: 2, fabric: 1 })],
+      items: [factory.vlan({ id: 2, fabric: 1 })],
     }),
-    space: spaceStateFactory({
+    space: factory.spaceState({
       loaded: true,
       loading: false,
-      items: [spaceFactory({ id: 3 })],
+      items: [factory.space({ id: 3 })],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       loaded: true,
       loading: false,
-      items: [subnetFactory({ id: 4, vlan: 2 })],
+      items: [factory.subnet({ id: 4, vlan: 2 })],
     }),
-    fabric: fabricStateFactory({
-      items: [fabricFactory({ vlan_ids: [2] })],
+    fabric: factory.fabricState({
+      items: [factory.fabric({ vlan_ids: [2] })],
       loaded: true,
       loading: false,
     }),
@@ -47,7 +36,7 @@ const getRootState = () =>
 
 it("displays a message when there are no subnets", async () => {
   const state = getRootState();
-  const space = spaceFactory({ id: 1, subnet_ids: [4], vlan_ids: [2] });
+  const space = factory.space({ id: 1, subnet_ids: [4], vlan_ids: [2] });
   state.space.items = [space];
 
   render(
@@ -72,19 +61,19 @@ it("displays a message when there are no subnets", async () => {
 });
 
 it("displays subnet details correctly", async () => {
-  const space = spaceFactory({ id: 1, subnet_ids: [4], vlan_ids: [2] });
+  const space = factory.space({ id: 1, subnet_ids: [4], vlan_ids: [2] });
   const state = getRootState();
   state.subnet.items = [
-    subnetFactory({
+    factory.subnet({
       id: 4,
       vlan: 2,
       space: 1,
       name: "test-subnet",
-      statistics: subnetStatistics({ available_string: "50%" }),
+      statistics: factory.subnetStatistics({ available_string: "50%" }),
     }),
   ];
   state.fabric.items = [
-    fabricFactory({ id: 1, name: "test-fabric", vlan_ids: [2] }),
+    factory.fabric({ id: 1, name: "test-fabric", vlan_ids: [2] }),
   ];
   const store = mockStore(state);
 

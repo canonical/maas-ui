@@ -1,9 +1,6 @@
 import reducers, { actions } from "./slice";
 
-import {
-  eventRecord as eventRecordFactory,
-  eventState as eventStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("eventRecord reducer", () => {
   it("should return the initial state", () => {
@@ -30,11 +27,11 @@ describe("eventRecord reducer", () => {
     });
 
     it("reduces fetchSuccess", () => {
-      const eventState = eventStateFactory({
+      const eventState = factory.eventState({
         items: [],
         loading: true,
       });
-      const eventRecords = [eventRecordFactory()];
+      const eventRecords = [factory.eventRecord()];
       expect(reducers(eventState, actions.fetchSuccess(eventRecords))).toEqual({
         errors: null,
         items: eventRecords,
@@ -46,12 +43,12 @@ describe("eventRecord reducer", () => {
     });
 
     it("appends new items when reducing fetchSuccess", () => {
-      const items = [eventRecordFactory()];
-      const eventState = eventStateFactory({
+      const items = [factory.eventRecord()];
+      const eventState = factory.eventState({
         items,
         loading: true,
       });
-      const eventRecords = [eventRecordFactory()];
+      const eventRecords = [factory.eventRecord()];
       expect(reducers(eventState, actions.fetchSuccess(eventRecords))).toEqual({
         errors: null,
         items: items.concat(eventRecords),
@@ -63,12 +60,12 @@ describe("eventRecord reducer", () => {
     });
 
     it("deduplicates when reducing fetchSuccess", () => {
-      const items = [eventRecordFactory(), eventRecordFactory()];
-      const eventState = eventStateFactory({
+      const items = [factory.eventRecord(), factory.eventRecord()];
+      const eventState = factory.eventState({
         items,
         loading: true,
       });
-      const eventRecords = [items[0], eventRecordFactory()];
+      const eventRecords = [items[0], factory.eventRecord()];
       expect(reducers(eventState, actions.fetchSuccess(eventRecords))).toEqual({
         errors: null,
         items: [...items, eventRecords[1]],
@@ -80,7 +77,7 @@ describe("eventRecord reducer", () => {
     });
 
     it("reduces fetchError", () => {
-      const eventState = eventStateFactory();
+      const eventState = factory.eventState();
       expect(
         reducers(eventState, actions.fetchError("Could not fetch events"))
       ).toEqual({

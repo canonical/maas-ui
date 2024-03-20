@@ -3,11 +3,7 @@ import configureStore from "redux-mock-store";
 
 import VMsActionBar from "./VMsActionBar";
 
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -15,7 +11,7 @@ const mockStore = configureStore();
 describe("VMsActionBar", () => {
   it("executes onAddVMClick on add VM button click", async () => {
     const onAddVMClick = vi.fn();
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -38,8 +34,8 @@ describe("VMsActionBar", () => {
   });
 
   it("disables VM actions if none are selected", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         selected: null,
       }),
     });
@@ -66,9 +62,9 @@ describe("VMsActionBar", () => {
   });
 
   it("enables VM actions if at least one is selected", () => {
-    const vms = [machineFactory({ system_id: "abc123" })];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const vms = [factory.machine({ system_id: "abc123" })];
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: vms,
         selected: { items: ["abc123"] },
       }),

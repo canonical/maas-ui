@@ -12,27 +12,23 @@ import {
   BondXmitHashPolicy,
 } from "@/app/store/general/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  networkLink as networkLinkFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("BondForm utils", () => {
   describe("getFirstSelected", () => {
     it("sorts the nics by name and gets the first interface", () => {
       const interfaces = [
-        machineInterfaceFactory({
+        factory.machineInterface({
           name: "bbb",
         }),
-        machineInterfaceFactory({
+        factory.machineInterface({
           name: "ccc",
         }),
-        machineInterfaceFactory({
+        factory.machineInterface({
           name: "aaa",
         }),
       ];
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         interfaces,
       });
       expect(
@@ -48,40 +44,40 @@ describe("BondForm utils", () => {
   describe("getValidNics", () => {
     it("finds valid interfaces for a new bond", () => {
       const interfaces = [
-        machineInterfaceFactory({
+        factory.machineInterface({
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 1,
         }),
         // Invalid because it has a different VLAN.
-        machineInterfaceFactory({
+        factory.machineInterface({
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 2,
         }),
-        machineInterfaceFactory({
+        factory.machineInterface({
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 1,
         }),
         // Invalid because it is not physical.
-        machineInterfaceFactory({
+        factory.machineInterface({
           type: NetworkInterfaceTypes.VLAN,
           vlan_id: 1,
         }),
         // Invalid because it is already in a bond
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 2200,
           children: [900],
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 1,
         }),
         // Invalid because it is a bond
-        machineInterfaceFactory({
+        factory.machineInterface({
           parents: [2200],
           id: 900,
           type: NetworkInterfaceTypes.BOND,
           vlan_id: 1,
         }),
       ];
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         interfaces,
       });
       expect(getValidNics(machine, 1)).toStrictEqual([
@@ -93,40 +89,40 @@ describe("BondForm utils", () => {
     it("finds valid interfaces for an existing bond", () => {
       const interfaces = [
         // This is the bond
-        machineInterfaceFactory({
+        factory.machineInterface({
           children: [900],
           id: 800,
           type: NetworkInterfaceTypes.BOND,
           vlan_id: 1,
         }),
         // Valid because it is not in a bond.
-        machineInterfaceFactory({
+        factory.machineInterface({
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 1,
         }),
         // Valid because it is in the bond.
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 900,
           parents: [800],
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 1,
         }),
         // Invalid because it is in a different bond.
-        machineInterfaceFactory({
+        factory.machineInterface({
           children: [2300],
           id: 2200,
           type: NetworkInterfaceTypes.PHYSICAL,
           vlan_id: 1,
         }),
         // Invalid because it is a different bond.
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 2300,
           parents: [2200],
           type: NetworkInterfaceTypes.BOND,
           vlan_id: 1,
         }),
       ];
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         interfaces,
       });
       expect(getValidNics(machine, 1, interfaces[0])).toStrictEqual([
@@ -146,8 +142,8 @@ describe("BondForm utils", () => {
 
   describe("prepareBondPayload", () => {
     it("cleans and prepares the payload with a nic and link", () => {
-      const nic = machineInterfaceFactory();
-      const link = networkLinkFactory();
+      const nic = factory.machineInterface();
+      const link = factory.networkLink();
       const values = {
         // Should be removed.
         linkMonitoring: LinkMonitoring.MII,

@@ -5,16 +5,12 @@ import DomainForm from "./DomainForm";
 
 import { Labels as AddDomainLabels } from "@/app/domains/views/DomainsList/DomainListHeaderForm/DomainListHeaderForm";
 import { Labels as DomainTableLabels } from "@/app/domains/views/DomainsList/DomainsTable/DomainsTable";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
-const domain = domainFactory({ name: "test" });
-const state = rootStateFactory({
-  domain: domainStateFactory({
+const domain = factory.domain({ name: "test" });
+const state = factory.rootState({
+  domain: factory.domainState({
     items: [domain],
   }),
 });

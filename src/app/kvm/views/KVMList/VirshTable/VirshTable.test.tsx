@@ -1,15 +1,7 @@
 import VirshTable from "./VirshTable";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("VirshTable", () => {
@@ -17,22 +9,22 @@ describe("VirshTable", () => {
 
   beforeEach(() => {
     const pods = [
-      podFactory({ pool: 1, zone: 1 }),
-      podFactory({ pool: 2, zone: 2 }),
+      factory.pod({ pool: 1, zone: 1 }),
+      factory.pod({ pool: 2, zone: 2 }),
     ];
-    state = rootStateFactory({
-      pod: podStateFactory({ items: pods, loaded: true }),
-      resourcepool: resourcePoolStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({ items: pods, loaded: true }),
+      resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [
-          resourcePoolFactory({ id: pods[0].pool }),
-          resourcePoolFactory({ id: pods[1].pool }),
+          factory.resourcePool({ id: pods[0].pool }),
+          factory.resourcePool({ id: pods[1].pool }),
         ],
       }),
-      zone: zoneStateFactory({
+      zone: factory.zoneState({
         items: [
-          zoneFactory({ id: pods[0].zone }),
-          zoneFactory({ id: pods[1].zone }),
+          factory.zone({ id: pods[0].zone }),
+          factory.zone({ id: pods[1].zone }),
         ],
       }),
     });
@@ -81,11 +73,11 @@ describe("VirshTable", () => {
 
   it("can sort by pod resource pool", async () => {
     const pools = [
-      resourcePoolFactory({
+      factory.resourcePool({
         id: 1,
         name: "first-pool",
       }),
-      resourcePoolFactory({
+      factory.resourcePool({
         id: 2,
         name: "second-pool",
       }),

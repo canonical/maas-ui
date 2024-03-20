@@ -8,12 +8,7 @@ import {
   ScriptResultStatus,
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  machineDetails as machineDetailsFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultResult as scriptResultResultFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const openMenu = async () => {
@@ -37,8 +32,8 @@ describe("TestActions", () => {
   });
 
   it("can display an action to view machine commissioning script details", async () => {
-    const machine = machineDetailsFactory();
-    const scriptResult = scriptResultFactory({
+    const machine = factory.machineDetails();
+    const scriptResult = factory.scriptResult({
       status: ScriptResultStatus.PASSED,
     });
     renderWithBrowserRouter(
@@ -62,8 +57,8 @@ describe("TestActions", () => {
   });
 
   it("can display an action to view controller commissioning script details", async () => {
-    const controller = controllerDetailsFactory();
-    const scriptResult = scriptResultFactory({
+    const controller = factory.controllerDetails();
+    const scriptResult = factory.scriptResult({
       status: ScriptResultStatus.PASSED,
     });
     renderWithBrowserRouter(
@@ -86,8 +81,8 @@ describe("TestActions", () => {
   });
 
   it("can display an action to view machine testing script details", async () => {
-    const machine = machineDetailsFactory();
-    const scriptResult = scriptResultFactory({
+    const machine = factory.machineDetails();
+    const scriptResult = factory.scriptResult({
       status: ScriptResultStatus.PASSED,
     });
     renderWithBrowserRouter(
@@ -111,9 +106,9 @@ describe("TestActions", () => {
   });
 
   it("displays an action to view metrics if the test has its own results", async () => {
-    const machine = machineDetailsFactory();
-    const scriptResult = scriptResultFactory({
-      results: [scriptResultResultFactory()],
+    const machine = factory.machineDetails();
+    const scriptResult = factory.scriptResult({
+      results: [factory.scriptResultResult()],
     });
     renderWithBrowserRouter(
       <TestActions
@@ -131,8 +126,8 @@ describe("TestActions", () => {
   });
 
   it("sends an analytics event when clicking the 'View previous tests' button", async () => {
-    const machine = machineDetailsFactory();
-    const scriptResult = scriptResultFactory();
+    const machine = factory.machineDetails();
+    const scriptResult = factory.scriptResult();
     renderWithBrowserRouter(
       <TestActions
         node={machine}
@@ -156,8 +151,8 @@ describe("TestActions", () => {
   });
 
   it("sends an analytics event when clicking the 'View metrics' button", async () => {
-    const machine = machineDetailsFactory();
-    const scriptResult = scriptResultFactory();
+    const machine = factory.machineDetails();
+    const scriptResult = factory.scriptResult();
     renderWithBrowserRouter(
       <TestActions
         node={machine}

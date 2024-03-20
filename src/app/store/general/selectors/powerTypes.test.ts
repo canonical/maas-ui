@@ -1,19 +1,14 @@
 import powerTypes from "./powerTypes";
 
-import {
-  generalState as generalStateFactory,
-  powerTypesState as powerTypesStateFactory,
-  powerType as powerTypeFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("powerTypes selectors", () => {
   describe("get", () => {
     it("returns powerTypes", () => {
-      const data = [powerTypeFactory()];
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          powerTypes: powerTypesStateFactory({
+      const data = [factory.powerType()];
+      const state = factory.rootState({
+        general: factory.generalState({
+          powerTypes: factory.powerTypesState({
             data,
           }),
         }),
@@ -25,9 +20,9 @@ describe("powerTypes selectors", () => {
   describe("loading", () => {
     it("returns powerTypes loading state", () => {
       const loading = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          powerTypes: powerTypesStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          powerTypes: factory.powerTypesState({
             loading,
           }),
         }),
@@ -39,9 +34,9 @@ describe("powerTypes selectors", () => {
   describe("loaded", () => {
     it("returns powerTypes loaded state", () => {
       const loaded = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          powerTypes: powerTypesStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          powerTypes: factory.powerTypesState({
             loaded,
           }),
         }),
@@ -53,9 +48,9 @@ describe("powerTypes selectors", () => {
   describe("errors", () => {
     it("returns powerTypes errors state", () => {
       const errors = "Cannot fetch powerTypes.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          powerTypes: powerTypesStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          powerTypes: factory.powerTypesState({
             errors,
           }),
         }),
@@ -67,13 +62,13 @@ describe("powerTypes selectors", () => {
   describe("canProbe", () => {
     it("returns powerTypes that can be used with add_chassis", () => {
       const probePowerTypes = [
-        powerTypeFactory({ can_probe: true }),
-        powerTypeFactory({ can_probe: true }),
+        factory.powerType({ can_probe: true }),
+        factory.powerType({ can_probe: true }),
       ];
-      const nonProbePowerType = powerTypeFactory({ can_probe: false });
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          powerTypes: powerTypesStateFactory({
+      const nonProbePowerType = factory.powerType({ can_probe: false });
+      const state = factory.rootState({
+        general: factory.generalState({
+          powerTypes: factory.powerTypesState({
             data: [...probePowerTypes, nonProbePowerType],
           }),
         }),

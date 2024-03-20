@@ -7,14 +7,7 @@ import SubnetsTable from "./SubnetsTable";
 import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 
 import urls from "@/app/subnets/urls";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  vlanState as vlanStateFactory,
-  subnetState as subnetStateFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
@@ -28,17 +21,17 @@ const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
     ...new Array(numberOfFabrics)
       .fill(null)
       .map((_value, index) =>
-        fabricFactory({ id: index + 1, name: `fabric-${index + 1}` })
+        factory.fabric({ id: index + 1, name: `fabric-${index + 1}` })
       ),
   ];
-  return rootStateFactory({
-    fabric: fabricStateFactory({
+  return factory.rootState({
+    fabric: factory.fabricState({
       loaded: true,
       items: fabrics,
     }),
-    vlan: vlanStateFactory({ loaded: true }),
-    subnet: subnetStateFactory({ loaded: true }),
-    space: spaceStateFactory({ loaded: true }),
+    vlan: factory.vlanState({ loaded: true }),
+    subnet: factory.subnetState({ loaded: true }),
+    space: factory.spaceState({ loaded: true }),
   });
 };
 

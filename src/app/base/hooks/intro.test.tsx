@@ -7,14 +7,7 @@ import { useCompletedIntro, useCompletedUserIntro } from "./intro";
 
 import { ConfigNames } from "@/app/store/config/types";
 import { getCookie } from "@/app/utils";
-import {
-  authState as authStateFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -26,10 +19,10 @@ vi.mock("@/app/utils", async () => {
 describe("intro hooks", () => {
   describe("useCompletedIntro", () => {
     it("gets whether the intro has been completed", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+            factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
           ],
         }),
       });
@@ -45,10 +38,10 @@ describe("intro hooks", () => {
     it("gets whether the intro has been skipped", () => {
       const getCookieMock = getCookie as Mock;
       getCookieMock.mockImplementation(() => "true");
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+            factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
           ],
         }),
       });
@@ -65,10 +58,10 @@ describe("intro hooks", () => {
 
   describe("useCompletedUserIntro", () => {
     it("gets whether the user intro has been completed", () => {
-      const state = rootStateFactory({
-        user: userStateFactory({
-          auth: authStateFactory({
-            user: userFactory({ completed_intro: true }),
+      const state = factory.rootState({
+        user: factory.userState({
+          auth: factory.authState({
+            user: factory.user({ completed_intro: true }),
           }),
         }),
       });
@@ -84,10 +77,10 @@ describe("intro hooks", () => {
     it("gets whether the user intro has been skipped", () => {
       const getCookieMock = getCookie as Mock;
       getCookieMock.mockImplementation(() => "true");
-      const state = rootStateFactory({
-        user: userStateFactory({
-          auth: authStateFactory({
-            user: userFactory({ completed_intro: false }),
+      const state = factory.rootState({
+        user: factory.userState({
+          auth: factory.authState({
+            user: factory.user({ completed_intro: false }),
           }),
         }),
       });

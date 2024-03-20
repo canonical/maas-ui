@@ -4,20 +4,7 @@ import EditPhysicalFields from "./EditPhysicalFields";
 
 import type { RootState } from "@/app/store/root/types";
 import type { NetworkInterface } from "@/app/store/types/node";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
@@ -30,31 +17,31 @@ describe("EditPhysicalFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    nic = machineInterfaceFactory({
+    nic = factory.machineInterface({
       id: 1,
     });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
-        items: [fabricFactory({}), fabricFactory()],
+    state = factory.rootState({
+      fabric: factory.fabricState({
+        items: [factory.fabric({}), factory.fabric()],
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory(), subnetFactory()],
+      subnet: factory.subnetState({
+        items: [factory.subnet(), factory.subnet()],
         loaded: true,
       }),
-      vlan: vlanStateFactory({
-        items: [vlanFactory(), vlanFactory()],
+      vlan: factory.vlanState({
+        items: [factory.vlan(), factory.vlan()],
         loaded: true,
       }),
     });

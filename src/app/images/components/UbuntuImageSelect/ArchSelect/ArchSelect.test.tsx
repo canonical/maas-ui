@@ -4,13 +4,7 @@ import ArchSelect, { Labels as ArchSelectLabels } from "./ArchSelect";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
-  bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   renderWithMockStore,
@@ -20,10 +14,10 @@ import {
 describe("ArchSelect", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "bionic",
           }),
@@ -38,7 +32,7 @@ describe("ArchSelect", () => {
     renderWithMockStore(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <ArchSelect
-          arches={[bootResourceUbuntuArchFactory()]}
+          arches={[factory.bootResourceUbuntuArch()]}
           release={null}
           resources={[]}
         />
@@ -52,10 +46,10 @@ describe("ArchSelect", () => {
   });
 
   it("correctly shows when an arch checkbox is checked", () => {
-    const release = bootResourceUbuntuReleaseFactory({ name: "focal" });
+    const release = factory.bootResourceUbuntuRelease({ name: "focal" });
     const arches = [
-      bootResourceUbuntuArchFactory({ name: "amd64" }),
-      bootResourceUbuntuArchFactory({ name: "arm64" }),
+      factory.bootResourceUbuntuArch({ name: "amd64" }),
+      factory.bootResourceUbuntuArch({ name: "arm64" }),
     ];
     renderWithMockStore(
       <Formik
@@ -81,14 +75,14 @@ describe("ArchSelect", () => {
   });
 
   it("disables a checkbox with tooltip if release does not support arch", async () => {
-    const release = bootResourceUbuntuReleaseFactory({
+    const release = factory.bootResourceUbuntuRelease({
       name: "focal",
       title: "20.04 LTS",
       unsupported_arches: ["i386"],
     });
     const arches = [
-      bootResourceUbuntuArchFactory({ name: "amd64" }),
-      bootResourceUbuntuArchFactory({ name: "i386" }),
+      factory.bootResourceUbuntuArch({ name: "amd64" }),
+      factory.bootResourceUbuntuArch({ name: "i386" }),
     ];
 
     renderWithMockStore(
@@ -113,18 +107,18 @@ describe("ArchSelect", () => {
   it(`disables a checkbox if it's the last checked arch for the default
     commissioning release`, async () => {
     state.config.items = [
-      configFactory({
+      factory.config({
         name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
         value: "focal",
       }),
     ];
-    const release = bootResourceUbuntuReleaseFactory({
+    const release = factory.bootResourceUbuntuRelease({
       name: "focal",
       title: "20.04 LTS",
     });
     const arches = [
-      bootResourceUbuntuArchFactory({ name: "amd64" }),
-      bootResourceUbuntuArchFactory({ name: "arm64" }),
+      factory.bootResourceUbuntuArch({ name: "amd64" }),
+      factory.bootResourceUbuntuArch({ name: "arm64" }),
     ];
 
     renderWithMockStore(

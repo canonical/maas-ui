@@ -4,28 +4,22 @@ import configureStore from "redux-mock-store";
 
 import SubnetSummaryFormFields from "./SubnetSummaryFormFields";
 
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("updates to use the fabric's default VLAN on fabric change", async () => {
   const fabrics = [
-    fabricFactory({ default_vlan_id: 3, id: 1, vlan_ids: [3] }),
-    fabricFactory({ default_vlan_id: 5, id: 2, vlan_ids: [4, 5] }),
+    factory.fabric({ default_vlan_id: 3, id: 1, vlan_ids: [3] }),
+    factory.fabric({ default_vlan_id: 5, id: 2, vlan_ids: [4, 5] }),
   ];
   const vlans = [
-    vlanFactory({ fabric: 1, id: 3 }),
-    vlanFactory({ fabric: 2, id: 4 }),
-    vlanFactory({ fabric: 2, id: 5 }),
+    factory.vlan({ fabric: 1, id: 3 }),
+    factory.vlan({ fabric: 2, id: 4 }),
+    factory.vlan({ fabric: 2, id: 5 }),
   ];
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: fabrics, loaded: true }),
-    vlan: vlanStateFactory({ items: vlans, loaded: true }),
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: fabrics, loaded: true }),
+    vlan: factory.vlanState({ items: vlans, loaded: true }),
   });
   const store = configureStore()(state);
   render(

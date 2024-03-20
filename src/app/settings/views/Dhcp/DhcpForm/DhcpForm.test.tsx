@@ -6,28 +6,24 @@ import { DhcpForm } from "./DhcpForm";
 
 import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("DhcpForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items: [
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 1,
             name: "lease",
             updated: "Thu, 15 Aug. 2019 06:21:39",
             value: "lease 10",
           }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 2,
             name: "class",

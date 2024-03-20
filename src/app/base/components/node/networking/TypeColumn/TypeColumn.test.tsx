@@ -2,39 +2,33 @@ import TypeColumn from "./TypeColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("TypeColumn", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });
   });
 
   it("displays an icon when bond is over multiple numa nodes", () => {
-    const interfaces = [machineInterfaceFactory({ numa_node: 1 })];
-    const nic = machineInterfaceFactory({
+    const interfaces = [factory.machineInterface({ numa_node: 1 })];
+    const nic = factory.machineInterface({
       numa_node: 2,
       parents: [interfaces[0].id],
     });
     interfaces.push(nic);
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces,
         system_id: "abc123",
       }),
@@ -49,11 +43,11 @@ describe("TypeColumn", () => {
   });
 
   it("does not display an icon for single numa nodes", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       numa_node: 2,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -67,14 +61,14 @@ describe("TypeColumn", () => {
 
   it("displays the full type for parent interfaces", () => {
     const interfaces = [
-      machineInterfaceFactory({ type: NetworkInterfaceTypes.BOND }),
+      factory.machineInterface({ type: NetworkInterfaceTypes.BOND }),
     ];
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       children: [interfaces[0].id],
     });
     interfaces.push(nic);
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces,
         system_id: "abc123",
       }),

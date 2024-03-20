@@ -7,14 +7,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useIsDHCPEnabled, useCanBeDeleted } from "./hooks";
 
-import {
-  subnetDetails as subnetFactory,
-  subnetIP as subnetIPFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  vlan as vlanFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -25,16 +18,16 @@ const generateWrapper =
 
 describe("useCanBeDeleted", () => {
   it("can be deleted if DHCP is disabled and the subnet has no ips", () => {
-    const vlan = vlanFactory({ dhcp_on: false });
-    const subnet = subnetFactory({
+    const vlan = factory.vlan({ dhcp_on: false });
+    const subnet = factory.subnetDetails({
       ip_addresses: [],
       vlan: vlan.id,
     });
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: [subnet],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
       }),
     });
@@ -46,15 +39,15 @@ describe("useCanBeDeleted", () => {
   });
 
   it("cannot be deleted if DHCP is enabled", () => {
-    const vlan = vlanFactory({ dhcp_on: true });
-    const subnet = subnetFactory({
+    const vlan = factory.vlan({ dhcp_on: true });
+    const subnet = factory.subnetDetails({
       vlan: vlan.id,
     });
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: [subnet],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
       }),
     });
@@ -66,16 +59,16 @@ describe("useCanBeDeleted", () => {
   });
 
   it("cannot be deleted if DHCP is disabled but the subnet has ips", () => {
-    const vlan = vlanFactory({ dhcp_on: false });
-    const subnet = subnetFactory({
-      ip_addresses: [subnetIPFactory()],
+    const vlan = factory.vlan({ dhcp_on: false });
+    const subnet = factory.subnetDetails({
+      ip_addresses: [factory.subnetIP()],
       vlan: vlan.id,
     });
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: [subnet],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
       }),
     });
@@ -89,15 +82,15 @@ describe("useCanBeDeleted", () => {
 
 describe("useIsDHCPEnabled", () => {
   it("is enabled if the subnet's VLAN has DHCP turned on", () => {
-    const vlan = vlanFactory({ dhcp_on: true });
-    const subnet = subnetFactory({
+    const vlan = factory.vlan({ dhcp_on: true });
+    const subnet = factory.subnetDetails({
       vlan: vlan.id,
     });
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: [subnet],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
       }),
     });
@@ -109,15 +102,15 @@ describe("useIsDHCPEnabled", () => {
   });
 
   it("is disabled if the subnet's VLAN has DHCP turned off", () => {
-    const vlan = vlanFactory({ dhcp_on: false });
-    const subnet = subnetFactory({
+    const vlan = factory.vlan({ dhcp_on: false });
+    const subnet = factory.subnetDetails({
       vlan: vlan.id,
     });
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: [subnet],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
       }),
     });

@@ -1,16 +1,12 @@
 import resourcepool from "./selectors";
 
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("resourcepool selectors", () => {
   it("can get all items", () => {
-    const items = [resourcePoolFactory(), resourcePoolFactory()];
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const items = [factory.resourcePool(), factory.resourcePool()];
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
     });
@@ -36,8 +32,8 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         saving: true,
       }),
     });
@@ -45,8 +41,8 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         saved: true,
       }),
     });
@@ -54,8 +50,8 @@ describe("resourcepool selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         errors: "Data is incorrect",
       }),
     });
@@ -64,11 +60,11 @@ describe("resourcepool selectors", () => {
 
   it("can get a pool by id", () => {
     const items = [
-      resourcePoolFactory({ id: 101 }),
-      resourcePoolFactory({ id: 123 }),
+      factory.resourcePool({ id: 101 }),
+      factory.resourcePool({ id: 123 }),
     ];
-    const state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    const state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         items,
       }),
     });

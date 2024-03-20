@@ -3,12 +3,12 @@ import SourceMachineDetails, {
 } from "./SourceMachineDetails";
 
 import { NodeStatus } from "@/app/store/types/node";
-import { machineDetails as machineDetailsFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 describe("SourceMachineDetails", () => {
   it("renders a list of the source machine's details", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       architecture: "",
       cpu_count: 2,
       cpu_speed: 2000,

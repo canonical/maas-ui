@@ -2,36 +2,27 @@ import NetworkNotifications from "./NetworkNotifications";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  architecturesState as architecturesStateFactory,
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineEvent as machineEventFactory,
-  machineState as machineStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("NetworkNotifications", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        architectures: architecturesStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        architectures: factory.architecturesState({
           data: ["amd64"],
           loaded: true,
         }),
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             architecture: "amd64",
-            events: [machineEventFactory()],
+            events: [factory.machineEvent()],
             system_id: "abc123",
           }),
         ],
@@ -41,7 +32,7 @@ describe("NetworkNotifications", () => {
 
   it("handles no notifications", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         on_network: true,
         osystem: "ubuntu",
         status: NodeStatus.NEW,
@@ -57,7 +48,7 @@ describe("NetworkNotifications", () => {
 
   it("can show a network connection message", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         on_network: false,
         system_id: "abc123",
       }),

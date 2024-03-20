@@ -4,17 +4,13 @@ import SetDefaultForm from "./SetDefaultForm";
 
 import { Labels as DomainTableLabels } from "@/app/domains/views/DomainsList/DomainsTable/DomainsTable";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const domain = domainFactory({ name: "test" });
-const state = rootStateFactory({
-  domain: domainStateFactory({
+const domain = factory.domain({ name: "test" });
+const state = factory.rootState({
+  domain: factory.domainState({
     items: [domain],
   }),
 });

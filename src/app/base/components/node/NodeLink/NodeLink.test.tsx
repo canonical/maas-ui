@@ -6,27 +6,21 @@ import configureStore from "redux-mock-store";
 import NodeLink from "./NodeLink";
 
 import { NodeType } from "@/app/store/types/node";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("can render a controller link", () => {
-  const controller = controllerFactory({
-    domain: modelRefFactory({ name: "c" }),
+  const controller = factory.controller({
+    domain: factory.modelRef({ name: "c" }),
     hostname: "controller",
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({ items: [controller], loading: false }),
+  const state = factory.rootState({
+    controller: factory.controllerState({
+      items: [controller],
+      loading: false,
+    }),
   });
   const store = mockStore(state);
   render(
@@ -46,12 +40,12 @@ it("can render a controller link", () => {
 });
 
 it("can render a device link", () => {
-  const device = deviceFactory({
-    domain: modelRefFactory({ name: "d" }),
+  const device = factory.device({
+    domain: factory.modelRef({ name: "d" }),
     hostname: "device",
   });
-  const state = rootStateFactory({
-    device: deviceStateFactory({ items: [device], loading: false }),
+  const state = factory.rootState({
+    device: factory.deviceState({ items: [device], loading: false }),
   });
   const store = mockStore(state);
   render(
@@ -68,12 +62,12 @@ it("can render a device link", () => {
 });
 
 it("can render a machine link", () => {
-  const machine = machineFactory({
-    domain: modelRefFactory({ name: "m" }),
+  const machine = factory.machine({
+    domain: factory.modelRef({ name: "m" }),
     hostname: "machine",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({ items: [machine], loading: false }),
+  const state = factory.rootState({
+    machine: factory.machineState({ items: [machine], loading: false }),
   });
   const store = mockStore(state);
   render(

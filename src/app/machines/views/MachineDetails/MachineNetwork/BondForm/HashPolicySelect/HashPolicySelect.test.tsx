@@ -4,21 +4,16 @@ import HashPolicySelect from "./HashPolicySelect";
 
 import { BondXmitHashPolicy } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  bondOptions as bondOptionsFactory,
-  bondOptionsState as bondOptionsStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("HashPolicySelect", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        bondOptions: bondOptionsStateFactory({
-          data: bondOptionsFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        bondOptions: factory.bondOptionsState({
+          data: factory.bondOptions({
             xmit_hash_policies: [
               [BondXmitHashPolicy.LAYER2, BondXmitHashPolicy.LAYER2],
               [BondXmitHashPolicy.LAYER2_3, BondXmitHashPolicy.LAYER2_3],
@@ -106,7 +101,7 @@ describe("HashPolicySelect", () => {
   });
 
   it("can hide the default option", () => {
-    state.general.bondOptions = bondOptionsStateFactory({
+    state.general.bondOptions = factory.bondOptionsState({
       data: undefined,
       loaded: true,
     });

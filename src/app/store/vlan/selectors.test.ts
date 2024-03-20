@@ -1,25 +1,13 @@
 import vlan from "./selectors";
 
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  vlanEventError as vlanEventErrorFactory,
-  vlanState as vlanStateFactory,
-  vlanStatus as vlanStatusFactory,
-  vlanStatuses as vlanStatusesFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("vlan selectors", () => {
   it("can get all items", () => {
-    const items = [vlanFactory()];
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const items = [factory.vlan()];
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         items,
       }),
     });
@@ -27,8 +15,8 @@ describe("vlan selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         loading: true,
       }),
     });
@@ -36,8 +24,8 @@ describe("vlan selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         loaded: true,
       }),
     });
@@ -45,8 +33,8 @@ describe("vlan selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         saving: true,
       }),
     });
@@ -54,8 +42,8 @@ describe("vlan selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         saved: true,
       }),
     });
@@ -63,8 +51,8 @@ describe("vlan selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         errors: "errors!",
       }),
     });
@@ -72,9 +60,9 @@ describe("vlan selectors", () => {
   });
 
   it("can get a vlan by id", () => {
-    const items = [vlanFactory({ id: 10 }), vlanFactory({ id: 42 })];
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const items = [factory.vlan({ id: 10 }), factory.vlan({ id: 42 })];
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         items,
       }),
     });
@@ -83,12 +71,12 @@ describe("vlan selectors", () => {
 
   it("can get VLANs in a fabric", () => {
     const vlans = [
-      vlanFactory({ fabric: 1 }),
-      vlanFactory({ fabric: 2 }),
-      vlanFactory({ fabric: 1 }),
+      factory.vlan({ fabric: 1 }),
+      factory.vlan({ fabric: 2 }),
+      factory.vlan({ fabric: 1 }),
     ];
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         items: vlans,
       }),
     });
@@ -97,12 +85,12 @@ describe("vlan selectors", () => {
 
   it("can get VLAN with DHCP", () => {
     const vlans = [
-      vlanFactory({ dhcp_on: true }),
-      vlanFactory({ dhcp_on: false }),
-      vlanFactory({ dhcp_on: true }),
+      factory.vlan({ dhcp_on: true }),
+      factory.vlan({ dhcp_on: false }),
+      factory.vlan({ dhcp_on: true }),
     ];
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         items: vlans,
       }),
     });
@@ -110,9 +98,12 @@ describe("vlan selectors", () => {
   });
 
   it("can filter vlans by name", () => {
-    const items = [vlanFactory({ name: "abc" }), vlanFactory({ name: "def" })];
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const items = [
+      factory.vlan({ name: "abc" }),
+      factory.vlan({ name: "def" }),
+    ];
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         items,
       }),
     });
@@ -121,25 +112,25 @@ describe("vlan selectors", () => {
 
   describe("getUnusedForInterface", () => {
     it("does not include the default vlan", () => {
-      const fabric = fabricFactory();
+      const fabric = factory.fabric();
       const items = [
-        vlanFactory({ fabric: fabric.id, vid: 0 }),
-        vlanFactory({ fabric: fabric.id }),
+        factory.vlan({ fabric: fabric.id, vid: 0 }),
+        factory.vlan({ fabric: fabric.id }),
       ];
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         vlan_id: items[0].id,
       });
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         interfaces: [nic],
       });
-      const state = rootStateFactory({
-        fabric: fabricStateFactory({
+      const state = factory.rootState({
+        fabric: factory.fabricState({
           items: [fabric],
         }),
-        machine: machineStateFactory({
+        machine: factory.machineState({
           items: [machine],
         }),
-        vlan: vlanStateFactory({
+        vlan: factory.vlanState({
           items,
         }),
       });
@@ -149,33 +140,33 @@ describe("vlan selectors", () => {
     });
 
     it("does not include vlans used by a child", () => {
-      const fabric = fabricFactory();
+      const fabric = factory.fabric();
       const items = [
-        vlanFactory({ fabric: fabric.id, vid: 0 }),
-        vlanFactory({ fabric: fabric.id }),
-        vlanFactory({ fabric: fabric.id }),
+        factory.vlan({ fabric: fabric.id, vid: 0 }),
+        factory.vlan({ fabric: fabric.id }),
+        factory.vlan({ fabric: fabric.id }),
       ];
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         vlan_id: items[0].id,
       });
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         interfaces: [
           nic,
-          machineInterfaceFactory({
+          factory.machineInterface({
             type: NetworkInterfaceTypes.VLAN,
             parents: [nic.id],
             vlan_id: items[2].id,
           }),
         ],
       });
-      const state = rootStateFactory({
-        fabric: fabricStateFactory({
+      const state = factory.rootState({
+        fabric: factory.fabricState({
           items: [fabric],
         }),
-        machine: machineStateFactory({
+        machine: factory.machineState({
           items: [machine],
         }),
-        vlan: vlanStateFactory({
+        vlan: factory.vlanState({
           items,
         }),
       });
@@ -185,25 +176,25 @@ describe("vlan selectors", () => {
     });
 
     it("does not include vlans on another fabric", () => {
-      const fabric = fabricFactory({ id: 1 });
+      const fabric = factory.fabric({ id: 1 });
       const items = [
-        vlanFactory({ fabric: fabric.id, vid: 0 }),
-        vlanFactory({ fabric: 2 }),
+        factory.vlan({ fabric: fabric.id, vid: 0 }),
+        factory.vlan({ fabric: 2 }),
       ];
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         vlan_id: items[0].id,
       });
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         interfaces: [nic],
       });
-      const state = rootStateFactory({
-        fabric: fabricStateFactory({
+      const state = factory.rootState({
+        fabric: factory.fabricState({
           items: [fabric],
         }),
-        machine: machineStateFactory({
+        machine: factory.machineState({
           items: [machine],
         }),
-        vlan: vlanStateFactory({
+        vlan: factory.vlanState({
           items,
         }),
       });
@@ -212,8 +203,8 @@ describe("vlan selectors", () => {
   });
 
   it("can get the active vlan's id", () => {
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         active: 0,
       }),
     });
@@ -221,9 +212,9 @@ describe("vlan selectors", () => {
   });
 
   it("can get the active vlan", () => {
-    const activeFabric = vlanFactory();
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const activeFabric = factory.vlan();
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         active: activeFabric.id,
         items: [activeFabric],
       }),
@@ -232,11 +223,11 @@ describe("vlan selectors", () => {
   });
 
   it("can get a status for a vlan", () => {
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
-        items: [vlanFactory({ id: 0 })],
-        statuses: vlanStatusesFactory({
-          0: vlanStatusFactory({ configuringDHCP: true }),
+    const state = factory.rootState({
+      vlan: factory.vlanState({
+        items: [factory.vlan({ id: 0 })],
+        statuses: factory.vlanStatuses({
+          0: factory.vlanStatus({ configuringDHCP: true }),
         }),
       }),
     });
@@ -245,11 +236,11 @@ describe("vlan selectors", () => {
 
   it("can get event errors for a vlan", () => {
     const vlanEventErrors = [
-      vlanEventErrorFactory({ id: 123 }),
-      vlanEventErrorFactory(),
+      factory.vlanEventError({ id: 123 }),
+      factory.vlanEventError(),
     ];
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         eventErrors: vlanEventErrors,
       }),
     });
@@ -260,11 +251,11 @@ describe("vlan selectors", () => {
 
   it("can get event errors for a vlan and a provided event", () => {
     const vlanEventErrors = [
-      vlanEventErrorFactory({ id: 123, event: "configureDHCP" }),
-      vlanEventErrorFactory({ id: 123, event: "something-else" }),
+      factory.vlanEventError({ id: 123, event: "configureDHCP" }),
+      factory.vlanEventError({ id: 123, event: "something-else" }),
     ];
-    const state = rootStateFactory({
-      vlan: vlanStateFactory({
+    const state = factory.rootState({
+      vlan: factory.vlanState({
         eventErrors: vlanEventErrors,
       }),
     });

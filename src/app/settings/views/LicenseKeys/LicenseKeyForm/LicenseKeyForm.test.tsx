@@ -13,14 +13,7 @@ import {
 
 import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  licenseKeys as licenseKeysFactory,
-  licenseKeysState as licenseKeysStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -29,11 +22,11 @@ describe("LicenseKeyForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loaded: true,
-          data: osInfoFactory({
+          data: factory.osInfo({
             osystems: [
               ["ubuntu", "Ubuntu"],
               ["windows", "Windows"],
@@ -45,7 +38,7 @@ describe("LicenseKeyForm", () => {
           }),
         }),
       }),
-      licensekeys: licenseKeysStateFactory({
+      licensekeys: factory.licenseKeysState({
         loaded: true,
       }),
     });
@@ -188,7 +181,7 @@ describe("LicenseKeyForm", () => {
 
   it("can update a key", async () => {
     const store = mockStore(state);
-    const licenseKey = licenseKeysFactory({
+    const licenseKey = factory.licenseKeys({
       id: 1,
       osystem: "windows",
       distro_series: "win2012",

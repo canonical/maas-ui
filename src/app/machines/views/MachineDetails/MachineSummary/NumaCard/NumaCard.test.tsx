@@ -2,22 +2,17 @@ import NumaCard, { Labels as NumaCardLabels } from "./NumaCard";
 import { Labels as NumaCardDetailsLabels } from "./NumaCardDetails/NumaCardDetails";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineNumaNode as machineNumaNodeFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, within, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NumaCard", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
-            numa_nodes: [machineNumaNodeFactory()],
+          factory.machineDetails({
+            numa_nodes: [factory.machineNumaNode()],
             system_id: "abc123",
           }),
         ],
@@ -27,7 +22,7 @@ describe("NumaCard", () => {
 
   it("renders when there are no numa nodes", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         numa_nodes: [],
         system_id: "abc123",
       }),

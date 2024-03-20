@@ -5,14 +5,7 @@ import { storageLayoutOptions } from "../ChangeStorageLayoutMenu/ChangeStorageLa
 import ChangeStorageLayout from "./ChangeStorageLayout";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineEventError as machineEventErrorFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -25,11 +18,11 @@ const mockStore = configureStore<RootState>();
 describe("ChangeStorageLayout", () => {
   const sampleStoragelayout = storageLayoutOptions[0][0];
   it("shows a confirmation form if a storage layout is selected", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -56,18 +49,18 @@ describe("ChangeStorageLayout", () => {
   });
 
   it("can show errors", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: "not possible",
             event: "applyStorageLayout",
             id: "abc123",
           }),
         ],
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -87,11 +80,11 @@ describe("ChangeStorageLayout", () => {
 
   it("correctly dispatches an action to update a machine's storage layout", async () => {
     const handleClearSidePanelContent = vi.fn();
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

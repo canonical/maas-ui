@@ -1,24 +1,19 @@
 import { VLANsColumn } from "./VLANsColumn";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  controllerVlansHA as controllerVlansHAFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("VLANsColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         items: [
-          controllerFactory({
+          factory.controller({
             system_id: "abc123",
-            vlans_ha: controllerVlansHAFactory({
+            vlans_ha: factory.controllerVlansHA({
               true: 2,
               false: 1,
             }),

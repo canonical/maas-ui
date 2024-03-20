@@ -6,11 +6,7 @@ import NetworkDiscoveryHeader, {
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  discovery as discoveryFactory,
-  discoveryState as discoveryStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -19,14 +15,14 @@ describe("NetworkDiscoveryHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    state = factory.rootState({
+      discovery: factory.discoveryState({
         loaded: true,
         items: [
-          discoveryFactory({
+          factory.discovery({
             hostname: "my-discovery-test",
           }),
-          discoveryFactory({
+          factory.discovery({
             hostname: "another-test",
           }),
         ],

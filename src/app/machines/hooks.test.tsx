@@ -9,13 +9,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { useMachineDetailsForm } from "./hooks";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineEventError as machineEventErrorFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -32,30 +26,30 @@ describe("machine utils", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             id: "abc123",
             event: "markFixed",
             error: "uh oh",
           }),
-          machineEventErrorFactory({
+          factory.machineEventError({
             id: "def456",
             event: "markFixed",
             error: "bananas",
           }),
-          machineEventErrorFactory({ event: "markFixed" }),
+          factory.machineEventError({ event: "markFixed" }),
         ],
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: machineStatusFactory({
+          abc123: factory.machineStatus({
             tagging: true,
           }),
-          def456: machineStatusFactory({
+          def456: factory.machineStatus({
             tagging: true,
           }),
         },
@@ -88,7 +82,7 @@ describe("machine utils", () => {
 
     it("can return error state for a machine performing an action", () => {
       state.machine.eventErrors = [
-        machineEventErrorFactory({
+        factory.machineEventError({
           error: "front fell off",
           event: "deleteFilesystem",
           id: "abc123",
@@ -161,7 +155,7 @@ describe("machine utils", () => {
         () => true
       );
       state.machine.eventErrors = [
-        machineEventErrorFactory({
+        factory.machineEventError({
           error: "front fell off",
           event: "deleteFilesystem",
           id: "abc123",

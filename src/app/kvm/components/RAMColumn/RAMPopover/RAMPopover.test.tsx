@@ -1,22 +1,17 @@
 import RAMPopover from "./RAMPopover";
 
-import {
-  podMemoryResource as podMemoryResourceFactory,
-  podResource as podResourceFactory,
-  vmClusterResource as vmClusterResourceFactory,
-  vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { fireEvent, render, screen } from "@/testing/utils";
 
 describe("RAMPopover", () => {
   it("shows if memory is used by any other projects in the group", () => {
     render(
       <RAMPopover
-        memory={podMemoryResourceFactory({
-          general: podResourceFactory({
+        memory={factory.podMemoryResource({
+          general: factory.podResource({
             allocated_other: 1,
           }),
-          hugepages: podResourceFactory({
+          hugepages: factory.podResource({
             allocated_other: 1,
           }),
         })}
@@ -33,9 +28,9 @@ describe("RAMPopover", () => {
   it("does not show other memory if no other projects in the group use them", () => {
     render(
       <RAMPopover
-        memory={podMemoryResourceFactory({
-          general: podResourceFactory({ allocated_other: 0 }),
-          hugepages: podResourceFactory({ allocated_other: 0 }),
+        memory={factory.podMemoryResource({
+          general: factory.podResource({ allocated_other: 0 }),
+          hugepages: factory.podResource({ allocated_other: 0 }),
         })}
         overCommit={1}
       >
@@ -49,7 +44,7 @@ describe("RAMPopover", () => {
 
   it("shows memory over-commit ratio if it is not equal to 1", () => {
     render(
-      <RAMPopover memory={podMemoryResourceFactory()} overCommit={2}>
+      <RAMPopover memory={factory.podMemoryResource()} overCommit={2}>
         Child
       </RAMPopover>
     );
@@ -60,7 +55,7 @@ describe("RAMPopover", () => {
 
   it("does not show memory over-commit ratio if it is equal to 1", () => {
     render(
-      <RAMPopover memory={podMemoryResourceFactory()} overCommit={1}>
+      <RAMPopover memory={factory.podMemoryResource()} overCommit={1}>
         Child
       </RAMPopover>
     );
@@ -69,13 +64,13 @@ describe("RAMPopover", () => {
   });
 
   it("displays memory for a vmcluster", () => {
-    const memory = vmClusterResourcesMemoryFactory({
-      general: vmClusterResourceFactory({
+    const memory = factory.vmClusterResourcesMemory({
+      general: factory.vmClusterResource({
         allocated_other: 1,
         allocated_tracked: 2,
         free: 3,
       }),
-      hugepages: vmClusterResourceFactory({
+      hugepages: factory.vmClusterResource({
         allocated_other: 4,
         allocated_tracked: 5,
         free: 6,

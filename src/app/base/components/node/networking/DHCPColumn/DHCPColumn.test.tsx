@@ -5,25 +5,18 @@ import configureStore from "redux-mock-store";
 import DHCPColumn from "./DHCPColumn";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineInterface as machineInterfaceFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
 describe("DHCPColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    state = factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
     });
@@ -32,7 +25,7 @@ describe("DHCPColumn", () => {
   it("displays a spinner if the data is loading", () => {
     state.fabric.loaded = false;
     state.vlan.loaded = false;
-    const nic = machineInterfaceFactory();
+    const nic = factory.machineInterface();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -43,9 +36,9 @@ describe("DHCPColumn", () => {
   });
 
   it("can display the dhcp status", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({
+    const vlan = factory.vlan({
       fabric: fabric.id,
       vid: 2,
       name: "vlan-name",
@@ -53,7 +46,7 @@ describe("DHCPColumn", () => {
       dhcp_on: true,
     });
     state.vlan.items = [vlan];
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       vlan_id: vlan.id,
     });
     const store = mockStore(state);
@@ -66,16 +59,16 @@ describe("DHCPColumn", () => {
   });
 
   it("can display an icon if the vlan is relayed", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({
+    const vlan = factory.vlan({
       fabric: fabric.id,
       vid: 2,
       name: "vlan-name",
       relay_vlan: 3,
     });
-    state.vlan.items = [vlan, vlanFactory({ fabric: 1, id: 3 })];
-    const nic = machineInterfaceFactory({
+    state.vlan.items = [vlan, factory.vlan({ fabric: 1, id: 3 })];
+    const nic = factory.machineInterface({
       vlan_id: vlan.id,
     });
     const store = mockStore(state);

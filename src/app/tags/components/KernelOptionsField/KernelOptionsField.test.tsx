@@ -10,33 +10,25 @@ import type { FetchFilters } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus, NodeStatus } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStateCount as machineStateCountFactory,
-  machineStateCounts as machineStateCountsFactory,
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
-  state = rootStateFactory({
-    machine: machineStateFactory({
-      counts: machineStateCountsFactory({
-        "mocked-nanoid": machineStateCountFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
+      counts: factory.machineStateCounts({
+        "mocked-nanoid": factory.machineStateCount({
           count: 1,
           loaded: true,
         }),
       }),
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           name: "rad",
         }),
@@ -66,24 +58,24 @@ it("does not display a deployed machines message if a tag is not supplied", () =
 });
 
 it("displays a deployed machines message when updating a tag", async () => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: [
-        machineFactory({
+        factory.machine({
           status: NodeStatus.DEPLOYED,
           tags: [1],
         }),
       ],
-      counts: machineStateCountsFactory({
-        "mocked-nanoid": machineStateCountFactory({
+      counts: factory.machineStateCounts({
+        "mocked-nanoid": factory.machineStateCount({
           count: 1,
           loaded: true,
           loading: false,
         }),
       }),
     }),
-    tag: tagStateFactory({
-      items: [tagFactory({ id: 1, machine_count: 1 })],
+    tag: factory.tagState({
+      items: [factory.tag({ id: 1, machine_count: 1 })],
     }),
   });
   const store = mockStore(state);

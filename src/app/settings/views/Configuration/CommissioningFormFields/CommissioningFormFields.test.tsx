@@ -7,13 +7,7 @@ import CommissioningForm from "../CommissioningForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,8 +16,8 @@ describe("CommissioningFormFields", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      config: configStateFactory({
+    initialState = factory.rootState({
+      config: factory.configState({
         loaded: true,
         items: [
           {
@@ -50,11 +44,11 @@ describe("CommissioningFormFields", () => {
           },
         ],
       }),
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loaded: true,
           loading: false,
-          data: osInfoFactory({
+          data: factory.osInfo({
             kernels: {
               ubuntu: {
                 trusty: [

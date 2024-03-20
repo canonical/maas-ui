@@ -4,12 +4,7 @@ import MarkBrokenForm from "./MarkBrokenForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  rootState as rootStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -18,15 +13,15 @@ describe("MarkBrokenForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: machineStatusFactory({ markingBroken: false }),
-          def456: machineStatusFactory({ markingBroken: false }),
+          abc123: factory.machineStatus({ markingBroken: false }),
+          def456: factory.machineStatus({ markingBroken: false }),
         },
       }),
     });

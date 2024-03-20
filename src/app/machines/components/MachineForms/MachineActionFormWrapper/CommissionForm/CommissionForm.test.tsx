@@ -7,15 +7,7 @@ import type { RootState } from "@/app/store/root/types";
 import { ScriptName, ScriptType } from "@/app/store/script/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatusCode } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-  script as scriptFactory,
-  scriptState as scriptStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -24,22 +16,22 @@ describe("CommissionForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         }),
       }),
-      script: scriptStateFactory({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -50,12 +42,12 @@ describe("CommissionForm", () => {
             },
             script_type: ScriptType.TESTING,
           }),
-          scriptFactory({
+          factory.script({
             name: "custom-commissioning-script",
             tags: ["node"],
             script_type: ScriptType.COMMISSIONING,
           }),
-          scriptFactory({
+          factory.script({
             name: "custom-testing-script",
             tags: ["node"],
             parameters: {

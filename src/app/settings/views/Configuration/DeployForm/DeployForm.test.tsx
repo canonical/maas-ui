@@ -7,13 +7,7 @@ import DeployForm from "./DeployForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,8 +16,8 @@ describe("DeployFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         loading: false,
         loaded: true,
         items: [
@@ -47,10 +41,10 @@ describe("DeployFormFields", () => {
           },
         ],
       }),
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loaded: true,
-          data: osInfoFactory({
+          data: factory.osInfo({
             releases: [
               ["centos/centos66", "CentOS 6"],
               ["centos/centos70", "CentOS 7"],

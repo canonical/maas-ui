@@ -1,18 +1,12 @@
 import { getCoreIndices, resourceWithOverCommit } from "./utils";
 
-import {
-  pod as podFactory,
-  podNuma as podNumaFactory,
-  podNumaCores as podNumaCoresFactory,
-  podResource as podResourceFactory,
-  podResources as podResourcesFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("pod utils", () => {
   describe("getCoreIndices", () => {
     it("handles pods without numa data", () => {
-      const pod = podFactory({
-        resources: podResourcesFactory({
+      const pod = factory.pod({
+        resources: factory.podResources({
           numa: [],
         }),
       });
@@ -20,14 +14,14 @@ describe("pod utils", () => {
     });
 
     it("can collate the indices of the pod's allocated cores", () => {
-      const pod = podFactory({
-        resources: podResourcesFactory({
+      const pod = factory.pod({
+        resources: factory.podResources({
           numa: [
-            podNumaFactory({
-              cores: podNumaCoresFactory({ allocated: [3] }),
+            factory.podNuma({
+              cores: factory.podNumaCores({ allocated: [3] }),
             }),
-            podNumaFactory({
-              cores: podNumaCoresFactory({ allocated: [1, 5] }),
+            factory.podNuma({
+              cores: factory.podNumaCores({ allocated: [1, 5] }),
             }),
           ],
         }),
@@ -36,14 +30,14 @@ describe("pod utils", () => {
     });
 
     it("can collate the indices of the pod's free cores", () => {
-      const pod = podFactory({
-        resources: podResourcesFactory({
+      const pod = factory.pod({
+        resources: factory.podResources({
           numa: [
-            podNumaFactory({
-              cores: podNumaCoresFactory({ free: [0, 4] }),
+            factory.podNuma({
+              cores: factory.podNumaCores({ free: [0, 4] }),
             }),
-            podNumaFactory({
-              cores: podNumaCoresFactory({ free: [1, 2] }),
+            factory.podNuma({
+              cores: factory.podNumaCores({ free: [1, 2] }),
             }),
           ],
         }),
@@ -55,7 +49,7 @@ describe("pod utils", () => {
   describe("resourceWithOverCommit", () => {
     it("handles resources without any over-commit", () => {
       const overCommit = 1;
-      const resource = podResourceFactory({
+      const resource = factory.podResource({
         allocated_other: 1,
         allocated_tracked: 2,
         free: 3,
@@ -69,7 +63,7 @@ describe("pod utils", () => {
 
     it("handles resources that are under-committed", () => {
       const overCommit = 0.5;
-      const resource = podResourceFactory({
+      const resource = factory.podResource({
         allocated_other: 1,
         allocated_tracked: 2,
         free: 3,
@@ -85,7 +79,7 @@ describe("pod utils", () => {
 
     it("handles resources that are over-committed", () => {
       const overCommit = 2;
-      const resource = podResourceFactory({
+      const resource = factory.podResource({
         allocated_other: 1,
         allocated_tracked: 2,
         free: 3,

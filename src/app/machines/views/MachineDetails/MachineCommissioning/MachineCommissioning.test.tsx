@@ -11,14 +11,7 @@ import { HardwareType } from "@/app/base/enum";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
 import { TestStatusStatus } from "@/app/store/types/node";
-import {
-  machineState as machineStateFactory,
-  machineDetails as machineDetailsFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultState as scriptResultStateFactory,
-  testStatus as testStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 vi.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = vi.importActual("@canonical/react-components/dist/hooks");
@@ -32,18 +25,18 @@ const mockStore = configureStore();
 describe("MachineCommissioning", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",
           }),
         ],
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         loaded: true,
       }),
     });
@@ -130,8 +123,8 @@ describe("MachineCommissioning", () => {
       () => TestStatusStatus.PASSED
     );
     state.machine.items = [
-      machineDetailsFactory({
-        commissioning_status: testStatusFactory({
+      factory.machineDetails({
+        commissioning_status: factory.testStatus({
           status: TestStatusStatus.PENDING,
         }),
         locked: false,
@@ -141,7 +134,7 @@ describe("MachineCommissioning", () => {
     ];
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.CPU,

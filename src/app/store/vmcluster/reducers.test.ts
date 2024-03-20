@@ -1,11 +1,6 @@
 import reducers, { actions } from "./slice";
 
-import {
-  vmCluster as vmClusterFactory,
-  vmClusterEventError as vmClusterEventErrorFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmClusterStatuses as vmClusterStatusesFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("vmCluster reducers", () => {
   it("returns the initial state", () => {
@@ -29,35 +24,35 @@ describe("vmCluster reducers", () => {
     it("reduces fetchStart", () => {
       expect(
         reducers(
-          vmClusterStateFactory({
+          factory.vmClusterState({
             loading: false,
           }),
           actions.fetchStart()
         )
       ).toEqual(
-        vmClusterStateFactory({
+        factory.vmClusterState({
           loading: true,
         })
       );
     });
 
     it("reduces fetchSuccess", () => {
-      const items = [vmClusterFactory()];
+      const items = [factory.vmCluster()];
       expect(
         reducers(
-          vmClusterStateFactory({
+          factory.vmClusterState({
             loaded: false,
             loading: true,
           }),
           actions.fetchSuccess([items])
         )
       ).toEqual(
-        vmClusterStateFactory({
+        factory.vmClusterState({
           items,
           loading: false,
           loaded: true,
           physicalClusters: [[items[0].id]],
-          statuses: vmClusterStatusesFactory({
+          statuses: factory.vmClusterStatuses({
             getting: false,
           }),
         })
@@ -67,15 +62,15 @@ describe("vmCluster reducers", () => {
     it("reduces fetchError", () => {
       expect(
         reducers(
-          vmClusterStateFactory({
+          factory.vmClusterState({
             loading: true,
           }),
           actions.fetchError("Could not fetch")
         )
       ).toEqual(
-        vmClusterStateFactory({
+        factory.vmClusterState({
           eventErrors: [
-            vmClusterEventErrorFactory({
+            factory.vmClusterEventError({
               error: "Could not fetch",
               event: "fetch",
             }),
@@ -91,16 +86,16 @@ describe("vmCluster reducers", () => {
     it("reduces getStart", () => {
       expect(
         reducers(
-          vmClusterStateFactory({
-            statuses: vmClusterStatusesFactory({
+          factory.vmClusterState({
+            statuses: factory.vmClusterStatuses({
               getting: false,
             }),
           }),
           actions.getStart()
         )
       ).toEqual(
-        vmClusterStateFactory({
-          statuses: vmClusterStatusesFactory({
+        factory.vmClusterState({
+          statuses: factory.vmClusterStatuses({
             getting: true,
           }),
         })
@@ -108,21 +103,21 @@ describe("vmCluster reducers", () => {
     });
 
     it("reduces getSuccess", () => {
-      const cluster = vmClusterFactory();
+      const cluster = factory.vmCluster();
       expect(
         reducers(
-          vmClusterStateFactory({
+          factory.vmClusterState({
             items: [],
-            statuses: vmClusterStatusesFactory({
+            statuses: factory.vmClusterStatuses({
               getting: true,
             }),
           }),
           actions.getSuccess(cluster)
         )
       ).toEqual(
-        vmClusterStateFactory({
+        factory.vmClusterState({
           items: [cluster],
-          statuses: vmClusterStatusesFactory({
+          statuses: factory.vmClusterStatuses({
             getting: false,
           }),
         })
@@ -132,23 +127,23 @@ describe("vmCluster reducers", () => {
     it("reduces getError", () => {
       expect(
         reducers(
-          vmClusterStateFactory({
-            statuses: vmClusterStatusesFactory({
+          factory.vmClusterState({
+            statuses: factory.vmClusterStatuses({
               getting: true,
             }),
           }),
           actions.getError("Could not get")
         )
       ).toEqual(
-        vmClusterStateFactory({
+        factory.vmClusterState({
           eventErrors: [
-            vmClusterEventErrorFactory({
+            factory.vmClusterEventError({
               error: "Could not get",
               event: "get",
             }),
           ],
           errors: "Could not get",
-          statuses: vmClusterStatusesFactory({
+          statuses: factory.vmClusterStatuses({
             getting: false,
           }),
         })
@@ -157,71 +152,71 @@ describe("vmCluster reducers", () => {
   });
 
   it("reduces deleteStart", () => {
-    const vmclusters = [vmClusterFactory({ id: 1 })];
-    const state = vmClusterStateFactory({
+    const vmclusters = [factory.vmCluster({ id: 1 })];
+    const state = factory.vmClusterState({
       items: vmclusters,
-      statuses: vmClusterStatusesFactory({ deleting: false }),
+      statuses: factory.vmClusterStatuses({ deleting: false }),
     });
 
     expect(reducers(state, actions.deleteStart())).toEqual(
-      vmClusterStateFactory({
+      factory.vmClusterState({
         items: vmclusters,
-        statuses: vmClusterStatusesFactory({ deleting: true }),
+        statuses: factory.vmClusterStatuses({ deleting: true }),
       })
     );
   });
 
   it("reduces deleteSuccess", () => {
-    const vmclusters = [vmClusterFactory({ id: 1 })];
-    const state = vmClusterStateFactory({
+    const vmclusters = [factory.vmCluster({ id: 1 })];
+    const state = factory.vmClusterState({
       items: vmclusters,
-      statuses: vmClusterStatusesFactory({ deleting: true }),
+      statuses: factory.vmClusterStatuses({ deleting: true }),
     });
 
     expect(reducers(state, actions.deleteSuccess())).toEqual(
-      vmClusterStateFactory({
+      factory.vmClusterState({
         items: vmclusters,
-        statuses: vmClusterStatusesFactory({ deleting: false }),
+        statuses: factory.vmClusterStatuses({ deleting: false }),
       })
     );
   });
 
   it("reduces deleteError", () => {
-    const vmclusters = [vmClusterFactory({ id: 1 })];
-    const state = vmClusterStateFactory({
+    const vmclusters = [factory.vmCluster({ id: 1 })];
+    const state = factory.vmClusterState({
       errors: null,
       items: vmclusters,
-      statuses: vmClusterStatusesFactory({ deleting: true }),
+      statuses: factory.vmClusterStatuses({ deleting: true }),
     });
 
     expect(
       reducers(state, actions.deleteError("VMCluster cannot be deleted"))
     ).toEqual(
-      vmClusterStateFactory({
+      factory.vmClusterState({
         errors: "VMCluster cannot be deleted",
         eventErrors: [
-          vmClusterEventErrorFactory({
+          factory.vmClusterEventError({
             error: "VMCluster cannot be deleted",
             event: "delete",
           }),
         ],
         items: vmclusters,
-        statuses: vmClusterStatusesFactory({ deleting: false }),
+        statuses: factory.vmClusterStatuses({ deleting: false }),
       })
     );
   });
 
   it("reduces deleteNotify", () => {
     const vmclusters = [
-      vmClusterFactory({ id: 1 }),
-      vmClusterFactory({ id: 2 }),
+      factory.vmCluster({ id: 1 }),
+      factory.vmCluster({ id: 2 }),
     ];
-    const state = vmClusterStateFactory({
+    const state = factory.vmClusterState({
       items: vmclusters,
     });
 
     expect(reducers(state, actions.deleteNotify(1))).toEqual(
-      vmClusterStateFactory({
+      factory.vmClusterState({
         items: [vmclusters[1]],
       })
     );

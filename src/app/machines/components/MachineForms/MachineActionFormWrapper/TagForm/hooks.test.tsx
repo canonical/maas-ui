@@ -10,20 +10,16 @@ import { useFetchTags, useSelectedTags, useUnchangedTags } from "./hooks";
 
 import * as query from "@/app/store/machine/utils/query";
 import { actions as tagActions } from "@/app/store/tag";
-import {
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("useSelectedTags", () => {
   it("gets tags that have been added", () => {
-    const tags = [tagFactory(), tagFactory(), tagFactory()];
-    const state = rootStateFactory({
-      tag: tagStateFactory({
+    const tags = [factory.tag(), factory.tag(), factory.tag()];
+    const state = factory.rootState({
+      tag: factory.tagState({
         items: tags,
         loading: false,
       }),
@@ -45,9 +41,9 @@ describe("useSelectedTags", () => {
   });
 
   it("gets tags that have been removed", () => {
-    const tags = [tagFactory(), tagFactory(), tagFactory()];
-    const state = rootStateFactory({
-      tag: tagStateFactory({
+    const tags = [factory.tag(), factory.tag(), factory.tag()];
+    const state = factory.rootState({
+      tag: factory.tagState({
         items: tags,
         loading: false,
       }),
@@ -72,9 +68,9 @@ describe("useSelectedTags", () => {
 describe("useUnchangedTags", () => {
   it("gets tags that have been added", () => {
     const tags = [
-      tagFactory({ id: 1 }),
-      tagFactory({ id: 2 }),
-      tagFactory({ id: 3 }),
+      factory.tag({ id: 1 }),
+      factory.tag({ id: 2 }),
+      factory.tag({ id: 3 }),
     ];
     const { result } = renderHook(() => useUnchangedTags(tags), {
       wrapper: ({ children }: { children: ReactNode }) => (
@@ -109,9 +105,9 @@ describe("useFetchTags", () => {
   });
 
   it("cleans up request on unmount", async () => {
-    const tags = [tagFactory(), tagFactory(), tagFactory()];
-    const state = rootStateFactory({
-      tag: tagStateFactory({
+    const tags = [factory.tag(), factory.tag(), factory.tag()];
+    const state = factory.rootState({
+      tag: factory.tagState({
         items: tags,
         loading: false,
       }),

@@ -1,16 +1,12 @@
 import eventSelectors from "./selectors";
 
-import {
-  eventRecord as eventRecordFactory,
-  eventState as eventStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("eventSelectors selectors", () => {
   it("can get all items", () => {
-    const items = [eventRecordFactory(), eventRecordFactory()];
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const items = [factory.eventRecord(), factory.eventRecord()];
+    const state = factory.rootState({
+      event: factory.eventState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("eventSelectors selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const state = factory.rootState({
+      event: factory.eventState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("eventSelectors selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const state = factory.rootState({
+      event: factory.eventState({
         loaded: true,
       }),
     });
@@ -36,8 +32,8 @@ describe("eventSelectors selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const state = factory.rootState({
+      event: factory.eventState({
         saving: true,
       }),
     });
@@ -45,8 +41,8 @@ describe("eventSelectors selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const state = factory.rootState({
+      event: factory.eventState({
         saved: true,
       }),
     });
@@ -54,8 +50,8 @@ describe("eventSelectors selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const state = factory.rootState({
+      event: factory.eventState({
         errors: "Unable to get events",
       }),
     });
@@ -64,11 +60,11 @@ describe("eventSelectors selectors", () => {
 
   it("can get an event by id", () => {
     const items = [
-      eventRecordFactory({ id: 101 }),
-      eventRecordFactory({ id: 123 }),
+      factory.eventRecord({ id: 101 }),
+      factory.eventRecord({ id: 123 }),
     ];
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const state = factory.rootState({
+      event: factory.eventState({
         items,
       }),
     });
@@ -77,12 +73,12 @@ describe("eventSelectors selectors", () => {
 
   it("can get events for a node", () => {
     const items = [
-      eventRecordFactory({ id: 101, node_id: 1 }),
-      eventRecordFactory({ id: 123, node_id: 2 }),
-      eventRecordFactory({ id: 124, node_id: 1 }),
+      factory.eventRecord({ id: 101, node_id: 1 }),
+      factory.eventRecord({ id: 123, node_id: 2 }),
+      factory.eventRecord({ id: 124, node_id: 1 }),
     ];
-    const state = rootStateFactory({
-      event: eventStateFactory({
+    const state = factory.rootState({
+      event: factory.eventState({
         items,
       }),
     });

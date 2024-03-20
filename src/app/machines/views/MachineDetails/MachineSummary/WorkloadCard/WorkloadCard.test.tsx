@@ -1,18 +1,14 @@
 import WorkloadCard from "./WorkloadCard";
 
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 describe("WorkloadCard", () => {
   it("displays a message if the machine has no workload annotations", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
             workload_annotations: {},
           }),
@@ -27,10 +23,10 @@ describe("WorkloadCard", () => {
   });
 
   it("can display a list of workload annotations", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
             workload_annotations: {
               key1: "value1",
@@ -57,10 +53,10 @@ describe("WorkloadCard", () => {
   });
 
   it("displays comma-separated values on new lines", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
             workload_annotations: {
               separated: "comma,separated,value",
@@ -84,10 +80,10 @@ describe("WorkloadCard", () => {
   });
 
   it("displays links to filter machine list by workload annotation", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
             workload_annotations: {
               key: "value",

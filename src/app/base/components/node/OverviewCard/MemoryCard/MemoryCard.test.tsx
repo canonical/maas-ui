@@ -8,31 +8,24 @@ import configureStore from "redux-mock-store";
 import MemoryCard from "./MemoryCard";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  testStatus as testStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
 let state: RootState;
 beforeEach(() => {
-  state = rootStateFactory({
-    controller: controllerStateFactory({
+  state = factory.rootState({
+    controller: factory.controllerState({
       items: [],
     }),
-    machine: machineStateFactory({
+    machine: factory.machineState({
       items: [],
     }),
   });
 });
 
 it("does not render test info if node is a controller", () => {
-  const controller = controllerDetailsFactory();
+  const controller = factory.controllerDetails();
   state.controller.items = [controller];
 
   const store = mockStore(state);
@@ -52,7 +45,7 @@ it("does not render test info if node is a controller", () => {
 });
 
 it("renders test info if node is a machine", async () => {
-  const machine = machineDetailsFactory();
+  const machine = factory.machineDetails();
   state.machine.items = [machine];
 
   const store = mockStore(state);
@@ -73,8 +66,8 @@ it("renders test info if node is a machine", async () => {
 
 describe("node is a machine", () => {
   it("renders a link with a count of passed tests", () => {
-    const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory({
+    const machine = factory.machineDetails();
+    machine.memory_test_status = factory.testStatus({
       passed: 2,
     });
     state.machine.items = [machine];
@@ -97,8 +90,8 @@ describe("node is a machine", () => {
   });
 
   it("renders a link with a count of pending and running tests", () => {
-    const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory({
+    const machine = factory.machineDetails();
+    machine.memory_test_status = factory.testStatus({
       running: 1,
       pending: 2,
     });
@@ -122,8 +115,8 @@ describe("node is a machine", () => {
   });
 
   it("renders a link with a count of failed tests", () => {
-    const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory({
+    const machine = factory.machineDetails();
+    machine.memory_test_status = factory.testStatus({
       failed: 5,
     });
     state.machine.items = [machine];
@@ -146,8 +139,8 @@ describe("node is a machine", () => {
   });
 
   it("renders a results link", () => {
-    const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory({
+    const machine = factory.machineDetails();
+    machine.memory_test_status = factory.testStatus({
       failed: 5,
     });
     state.machine.items = [machine];
@@ -172,8 +165,8 @@ describe("node is a machine", () => {
   });
 
   it("renders a test cpu link if no tests run", () => {
-    const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory();
+    const machine = factory.machineDetails();
+    machine.memory_test_status = factory.testStatus();
     state.machine.items = [machine];
 
     const store = mockStore(state);

@@ -1,13 +1,10 @@
 import SubnetDetailsHeader from "./SubnetDetailsHeader";
 
-import {
-  subnet as subnetFactory,
-  subnetDetails as subnetDetailsFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("shows the subnet name as the section title", () => {
-  const subnet = subnetFactory({ id: 1, name: "subnet-1" });
+  const subnet = factory.subnet({ id: 1, name: "subnet-1" });
   renderWithBrowserRouter(<SubnetDetailsHeader subnet={subnet} />);
 
   expect(screen.getByTestId("section-header-title")).toHaveTextContent(
@@ -16,7 +13,7 @@ it("shows the subnet name as the section title", () => {
 });
 
 it("shows a spinner subtitle if the subnet is loading details", () => {
-  const subnet = subnetFactory({ id: 1, name: "subnet-1" });
+  const subnet = factory.subnet({ id: 1, name: "subnet-1" });
   renderWithBrowserRouter(<SubnetDetailsHeader subnet={subnet} />);
 
   expect(
@@ -25,14 +22,14 @@ it("shows a spinner subtitle if the subnet is loading details", () => {
 });
 
 it("does not show a spinner subtitle if the subnet is detailed", () => {
-  const subnet = subnetDetailsFactory({ id: 1, name: "subnet-1" });
+  const subnet = factory.subnetDetails({ id: 1, name: "subnet-1" });
   renderWithBrowserRouter(<SubnetDetailsHeader subnet={subnet} />);
 
   expect(screen.queryByTestId("section-header-subtitle-spinner")).toBeNull();
 });
 
 it("displays available actions", async () => {
-  const subnet = subnetDetailsFactory({ id: 1, name: "subnet-1" });
+  const subnet = factory.subnetDetails({ id: 1, name: "subnet-1" });
   renderWithBrowserRouter(<SubnetDetailsHeader subnet={subnet} />);
 
   ["Map subnet", "Edit boot architectures", "Delete subnet"].forEach((name) => {

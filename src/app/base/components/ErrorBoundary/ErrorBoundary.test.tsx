@@ -6,11 +6,7 @@ import ErrorBoundary, { Labels } from "./ErrorBoundary";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-  versionState as versionStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -23,9 +19,9 @@ describe("ErrorBoundary", () => {
   });
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        version: versionStateFactory({ data: "2.7.0" }),
+    state = factory.rootState({
+      general: factory.generalState({
+        version: factory.versionState({ data: "2.7.0" }),
       }),
     });
   });

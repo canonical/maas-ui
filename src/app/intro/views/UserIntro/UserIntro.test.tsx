@@ -9,15 +9,7 @@ import * as baseHooks from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { actions as userActions } from "@/app/store/user";
-import {
-  authState as authStateFactory,
-  sshKey as sshKeyFactory,
-  sshKeyState as sshKeyStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userEventError as userEventErrorFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -37,13 +29,13 @@ describe("UserIntro", () => {
       .mockImplementation(
         () => [false, () => null] as ReturnType<typeof baseHooks.useCycled>
       );
-    state = rootStateFactory({
-      sshkey: sshKeyStateFactory({
-        items: [sshKeyFactory()],
+    state = factory.rootState({
+      sshkey: factory.sshKeyState({
+        items: [factory.sshKey()],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ completed_intro: false, is_superuser: true }),
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ completed_intro: false, is_superuser: true }),
         }),
       }),
     });
@@ -71,9 +63,9 @@ describe("UserIntro", () => {
   });
 
   it("redirects if the user has already completed the intro", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: true }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ completed_intro: true }),
       }),
     });
     renderWithBrowserRouter(<UserIntro />, {
@@ -136,8 +128,8 @@ describe("UserIntro", () => {
   });
 
   it("can show errors when trying to update the user", () => {
-    state.user = userStateFactory({
-      eventErrors: [userEventErrorFactory()],
+    state.user = factory.userState({
+      eventErrors: [factory.userEventError()],
     });
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",

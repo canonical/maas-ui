@@ -1,27 +1,17 @@
 import LXDClusterSummaryCard from "./LXDClusterSummaryCard";
 
 import { PodType } from "@/app/store/pod/constants";
-import {
-  pod as podFactory,
-  podResource as podResourceFactory,
-  podNetworkInterface as interfaceFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmHost as vmHostFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 describe("LXDClusterSummaryCard", () => {
   it("can show the section for storage", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         loaded: true,
       }),
-      vmcluster: vmClusterStateFactory({
-        items: [vmClusterFactory({ id: 1 })],
+      vmcluster: factory.vmClusterState({
+        items: [factory.vmCluster({ id: 1 })],
       }),
     });
     renderWithMockStore(<LXDClusterSummaryCard clusterId={1} showStorage />, {
@@ -32,8 +22,8 @@ describe("LXDClusterSummaryCard", () => {
   });
 
   it("displays a spinner when loading pods", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         loading: true,
       }),
     });
@@ -45,12 +35,12 @@ describe("LXDClusterSummaryCard", () => {
   });
 
   it("can hide the section for storage", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         loaded: true,
       }),
-      vmcluster: vmClusterStateFactory({
-        items: [vmClusterFactory({ id: 1 })],
+      vmcluster: factory.vmClusterState({
+        items: [factory.vmCluster({ id: 1 })],
       }),
     });
     renderWithMockStore(
@@ -63,36 +53,36 @@ describe("LXDClusterSummaryCard", () => {
 
   it("aggregates the interfaces in the cluster hosts", () => {
     const interfaces = [
-      interfaceFactory({
-        virtual_functions: podResourceFactory({
+      factory.podNetworkInterface({
+        virtual_functions: factory.podResource({
           allocated_other: 2,
           allocated_tracked: 1,
           free: 3,
         }),
       }),
-      interfaceFactory({
-        virtual_functions: podResourceFactory({
+      factory.podNetworkInterface({
+        virtual_functions: factory.podResource({
           allocated_other: 2,
           allocated_tracked: 1,
           free: 3,
         }),
       }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             cluster: 1,
             id: 11,
-            resources: podResourcesFactory({
+            resources: factory.podResources({
               interfaces: [interfaces[0]],
             }),
             type: PodType.LXD,
           }),
-          podFactory({
+          factory.pod({
             cluster: 1,
             id: 22,
-            resources: podResourcesFactory({
+            resources: factory.podResources({
               interfaces: [interfaces[1]],
             }),
             type: PodType.LXD,
@@ -100,11 +90,11 @@ describe("LXDClusterSummaryCard", () => {
         ],
         loaded: true,
       }),
-      vmcluster: vmClusterStateFactory({
+      vmcluster: factory.vmClusterState({
         items: [
-          vmClusterFactory({
+          factory.vmCluster({
             id: 1,
-            hosts: [vmHostFactory({ id: 11 }), vmHostFactory({ id: 22 })],
+            hosts: [factory.vmHost({ id: 11 }), factory.vmHost({ id: 22 })],
           }),
         ],
       }),

@@ -6,17 +6,13 @@ import NodeDevicesWarning from "./NodeDevicesWarning";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { NodeDeviceBus } from "@/app/store/nodedevice/types";
 import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
-import {
-  controllerDetails as controllerDetailsFactory,
-  machineDetails as machineDetailsFactory,
-  nodeDevice as nodeDeviceFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("node is machine", () => {
   it(`prompts user to commission machine if no devices found and machine can be
     commissioned`, async () => {
     const setSidePanelContent = vi.fn();
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       actions: [NodeActions.COMMISSION],
     });
 
@@ -41,7 +37,7 @@ describe("node is machine", () => {
   });
 
   it("shows a message if the machine has no node devices and is locked", () => {
-    const machine = machineDetailsFactory({ locked: true });
+    const machine = factory.machineDetails({ locked: true });
 
     render(
       <NodeDevicesWarning
@@ -56,7 +52,7 @@ describe("node is machine", () => {
   });
 
   it("shows a message if the machine has no node devices and is in failed testing state", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       status_code: NodeStatusCode.FAILED_TESTING,
     });
 
@@ -73,7 +69,7 @@ describe("node is machine", () => {
   });
 
   it("shows a message if the machine has no node devices and is deployed", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       status_code: NodeStatusCode.DEPLOYED,
     });
 
@@ -90,7 +86,7 @@ describe("node is machine", () => {
   });
 
   it("shows a message if the machine has no node devices and is commissioning", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       locked: false,
       status_code: NodeStatusCode.COMMISSIONING,
     });
@@ -110,7 +106,7 @@ describe("node is machine", () => {
   });
 
   it("shows a generic message if the machine has no node devices and cannot be commissioned", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       actions: [],
       locked: false,
       status_code: NodeStatusCode.NEW,
@@ -131,14 +127,14 @@ describe("node is machine", () => {
   });
 
   it("shows a message if the machine has PCI devices but no USB devices", () => {
-    const machine = machineDetailsFactory();
+    const machine = factory.machineDetails();
 
     render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.USB}
         node={machine}
         nodeDevices={[
-          nodeDeviceFactory({ bus: NodeDeviceBus.PCIE, node_id: machine.id }),
+          factory.nodeDevice({ bus: NodeDeviceBus.PCIE, node_id: machine.id }),
         ]}
         setSidePanelContent={vi.fn()}
       />
@@ -150,7 +146,7 @@ describe("node is machine", () => {
 
 describe("node is controller", () => {
   it("only shows the header without additional commissioning information", () => {
-    const controller = controllerDetailsFactory();
+    const controller = factory.controllerDetails();
 
     render(
       <NodeDevicesWarning

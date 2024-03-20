@@ -11,12 +11,7 @@ import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFie
 import { actions as domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainDetails as domainFactory,
-  domainState as domainStateFactory,
-  domainResource as resourceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -28,14 +23,14 @@ const mockStore = configureStore();
 
 describe("EditRecordForm", () => {
   let state: RootState;
-  const resourceA = resourceFactory({
+  const resourceA = factory.domainResource({
     dnsdata_id: null,
     dnsresource_id: 11,
     name: "test-resource-A",
     rrdata: "0.0.0.0",
     rrtype: RecordType.A,
   });
-  const resourceTXT = resourceFactory({
+  const resourceTXT = factory.domainResource({
     dnsdata_id: 22,
     dnsresource_id: 33,
     name: "test-resource-TXT",
@@ -44,10 +39,10 @@ describe("EditRecordForm", () => {
   });
 
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         items: [
-          domainFactory({
+          factory.domainDetails({
             id: 1,
             name: "test",
             rrsets: [resourceA, resourceTXT],

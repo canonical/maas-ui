@@ -9,11 +9,7 @@ import Windows, { Labels as WindowsLabels } from "./Windows";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,12 +18,12 @@ describe("Windows", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         loading: false,
         loaded: true,
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.WINDOWS_KMS_HOST,
             value: "127.0.0.1",
           }),

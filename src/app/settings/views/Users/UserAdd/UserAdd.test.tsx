@@ -4,18 +4,15 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import { UserAdd } from "./UserAdd";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("UserAdd", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
     });

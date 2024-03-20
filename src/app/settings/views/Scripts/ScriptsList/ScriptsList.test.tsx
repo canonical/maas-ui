@@ -10,11 +10,7 @@ import ScriptsList from ".";
 import { fileContextStore } from "@/app/base/file-context";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
-import {
-  script as scriptFactory,
-  scriptState as scriptStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -37,23 +33,23 @@ describe("ScriptsList", () => {
 
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      script: scriptStateFactory({
+    state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             id: 1,
             name: "commissioning-script",
             description: "a commissioning script",
             script_type: ScriptType.COMMISSIONING,
           }),
-          scriptFactory({
+          factory.script({
             id: 2,
             name: "testing-script",
             description: "a testing script",
             script_type: ScriptType.TESTING,
           }),
-          scriptFactory({
+          factory.script({
             id: 3,
             name: "testing-script-2",
             description: "another testing script",
@@ -185,15 +181,15 @@ describe("ScriptsList", () => {
   });
 
   it("disables the delete button if a default script", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             default: true,
             script_type: ScriptType.TESTING,
           }),
-          scriptFactory({
+          factory.script({
             default: false,
             script_type: ScriptType.TESTING,
           }),
@@ -318,11 +314,11 @@ describe("ScriptsList", () => {
   });
 
   it("correctly formats script creation date", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             created: "Thu, 31 Dec. 2020 22:59:00",
             script_type: ScriptType.TESTING,
           }),
@@ -346,11 +342,11 @@ describe("ScriptsList", () => {
   });
 
   it("formats script creation date as 'Never' if date cannot be parsed", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             created: "",
             script_type: ScriptType.TESTING,
           }),
@@ -374,8 +370,8 @@ describe("ScriptsList", () => {
   });
 
   it("displays a message if there are no scripts", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [],
       }),

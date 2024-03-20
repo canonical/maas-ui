@@ -2,7 +2,7 @@ import NodeActionMenu, { Label } from "./NodeActionMenu";
 
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
-import { machine as machineFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within } from "@/testing/utils";
 
 describe("NodeActionMenu", () => {
@@ -40,7 +40,7 @@ describe("NodeActionMenu", () => {
   });
 
   it("is enabled if nodes are selected", async () => {
-    const nodes = [machineFactory()];
+    const nodes = [factory.machine()];
     render(
       <NodeActionMenu
         hasSelection
@@ -57,8 +57,8 @@ describe("NodeActionMenu", () => {
 
   it("can only shows actions that can be performed by the nodes", async () => {
     const nodes = [
-      machineFactory({ actions: [NodeActions.DELETE] }),
-      machineFactory({ actions: [NodeActions.SET_ZONE] }),
+      factory.machine({ actions: [NodeActions.DELETE] }),
+      factory.machine({ actions: [NodeActions.SET_ZONE] }),
     ];
     render(
       <NodeActionMenu
@@ -79,7 +79,7 @@ describe("NodeActionMenu", () => {
 
   it(`can be made to always show lifecycle actions, disabling the actions that
       cannot be performed`, async () => {
-    const nodes = [machineFactory({ actions: [NodeActions.DEPLOY] })];
+    const nodes = [factory.machine({ actions: [NodeActions.DEPLOY] })];
     render(
       <NodeActionMenu
         alwaysShowLifecycle
@@ -99,7 +99,7 @@ describe("NodeActionMenu", () => {
   });
 
   it(`disables the actions that cannot be performed when nodes are provided`, async () => {
-    const nodes = [machineFactory({ actions: [NodeActions.DEPLOY] })];
+    const nodes = [factory.machine({ actions: [NodeActions.DEPLOY] })];
     render(
       <NodeActionMenu
         alwaysShowLifecycle
@@ -131,17 +131,17 @@ describe("NodeActionMenu", () => {
 
   it("correctly calculates number of nodes that can perform each action", async () => {
     const nodes = [
-      machineFactory({
+      factory.machine({
         actions: [
           NodeActions.COMMISSION,
           NodeActions.RELEASE,
           NodeActions.DEPLOY,
         ],
       }),
-      machineFactory({
+      factory.machine({
         actions: [NodeActions.COMMISSION, NodeActions.RELEASE],
       }),
-      machineFactory({
+      factory.machine({
         actions: [NodeActions.COMMISSION],
       }),
     ];
@@ -169,7 +169,7 @@ describe("NodeActionMenu", () => {
 
   it("fires onActionClick function on action button click", async () => {
     const nodes = [
-      machineFactory({
+      factory.machine({
         actions: [NodeActions.DEPLOY],
       }),
     ];
@@ -191,7 +191,7 @@ describe("NodeActionMenu", () => {
 
   it("can exclude actions from being shown", async () => {
     const nodes = [
-      machineFactory({
+      factory.machine({
         actions: [NodeActions.DEPLOY, NodeActions.DELETE],
       }),
     ];
@@ -248,7 +248,7 @@ describe("NodeActionMenu", () => {
 
   it("can override action titles", async () => {
     const nodes = [
-      machineFactory({
+      factory.machine({
         actions: [NodeActions.TAG],
       }),
     ];

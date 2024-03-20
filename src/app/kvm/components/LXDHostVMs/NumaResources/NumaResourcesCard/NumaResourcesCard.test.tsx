@@ -4,19 +4,7 @@ import NumaResourcesCard from "./NumaResourcesCard";
 
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  pod as podFactory,
-  podNetworkInterface as podInterfaceFactory,
-  podNuma as podNumaFactory,
-  podNumaMemory as podNumaMemoryFactory,
-  podNumaHugepageMemory as podNumaHugepageFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podVM as podVmFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -27,15 +15,15 @@ describe("NumaResourcesCard", () => {
   });
 
   it("fetches machines on load", () => {
-    const numaNode = podNumaFactory({ node_id: 111 });
-    const pod = podFactory({
+    const numaNode = factory.podNuma({ node_id: 111 });
+    const pod = factory.pod({
       id: 1,
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         numa: [numaNode],
       }),
     });
-    const state = rootStateFactory({
-      pod: podStateFactory({ items: [pod] }),
+    const state = factory.rootState({
+      pod: factory.podState({ items: [pod] }),
     });
     const store = mockStore(state);
 
@@ -50,19 +38,19 @@ describe("NumaResourcesCard", () => {
   });
 
   it("aggregates the individual NUMA hugepages memory", () => {
-    const pod = podFactory({
+    const pod = factory.pod({
       id: 1,
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         numa: [
-          podNumaFactory({
-            memory: podNumaMemoryFactory({
+          factory.podNuma({
+            memory: factory.podNumaMemory({
               hugepages: [
-                podNumaHugepageFactory({
+                factory.podNumaHugepageMemory({
                   allocated: 1,
                   free: 2,
                   page_size: 1024,
                 }),
-                podNumaHugepageFactory({
+                factory.podNumaHugepageMemory({
                   allocated: 4,
                   free: 5,
                   page_size: 1024,
@@ -74,8 +62,8 @@ describe("NumaResourcesCard", () => {
         ],
       }),
     });
-    const state = rootStateFactory({
-      pod: podStateFactory({ items: [pod] }),
+    const state = factory.rootState({
+      pod: factory.podState({ items: [pod] }),
     });
 
     renderWithMockStore(<NumaResourcesCard numaId={11} podId={1} />, { state });
@@ -92,20 +80,20 @@ describe("NumaResourcesCard", () => {
 
   it("filters interface resources to those that belong to the NUMA node", () => {
     const podInterfaces = [
-      podInterfaceFactory({ id: 11, name: "eth0" }),
-      podInterfaceFactory({ id: 22, name: "eth1" }),
-      podInterfaceFactory({ id: 33, name: "eth2" }),
+      factory.podNetworkInterface({ id: 11, name: "eth0" }),
+      factory.podNetworkInterface({ id: 22, name: "eth1" }),
+      factory.podNetworkInterface({ id: 33, name: "eth2" }),
     ];
-    const numaNode = podNumaFactory({ interfaces: [11, 33], node_id: 111 });
-    const pod = podFactory({
+    const numaNode = factory.podNuma({ interfaces: [11, 33], node_id: 111 });
+    const pod = factory.pod({
       id: 1,
-      resources: podResourcesFactory({
+      resources: factory.podResources({
         interfaces: podInterfaces,
         numa: [numaNode],
       }),
     });
-    const state = rootStateFactory({
-      pod: podStateFactory({ items: [pod] }),
+    const state = factory.rootState({
+      pod: factory.podState({ items: [pod] }),
     });
 
     renderWithMockStore(<NumaResourcesCard numaId={111} podId={1} />, {
@@ -121,34 +109,34 @@ describe("NumaResourcesCard", () => {
     const podID = 1;
     const podName = "pod";
     const machines = [
-      machineFactory({
+      factory.machine({
         pod: { id: podID, name: podName },
         system_id: "abc123",
       }),
-      machineFactory({
+      factory.machine({
         pod: { id: podID, name: podName },
         system_id: "def456",
       }),
-      machineFactory({
+      factory.machine({
         pod: { id: podID, name: podName },
         system_id: "ghi789",
       }),
     ];
-    const pod = podFactory({
+    const pod = factory.pod({
       id: podID,
       name: podName,
-      resources: podResourcesFactory({
-        numa: [podNumaFactory({ node_id: 11, vms: [111, 333] })],
+      resources: factory.podResources({
+        numa: [factory.podNuma({ node_id: 11, vms: [111, 333] })],
         vms: [
-          podVmFactory({ id: 111, system_id: "abc123" }),
-          podVmFactory({ id: 222, system_id: "def456" }),
-          podVmFactory({ id: 333, system_id: "ghi789" }),
+          factory.podVM({ id: 111, system_id: "abc123" }),
+          factory.podVM({ id: 222, system_id: "def456" }),
+          factory.podVM({ id: 333, system_id: "ghi789" }),
         ],
       }),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({ items: machines }),
-      pod: podStateFactory({ items: [pod] }),
+    const state = factory.rootState({
+      machine: factory.machineState({ items: machines }),
+      pod: factory.podState({ items: [pod] }),
     });
     const store = mockStore(state);
 

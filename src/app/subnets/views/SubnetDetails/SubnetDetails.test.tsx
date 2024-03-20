@@ -8,16 +8,13 @@ import SubnetDetails from "./SubnetDetails";
 import urls from "@/app/base/urls";
 import { actions as staticRouteActions } from "@/app/store/staticroute";
 import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("dispatches actions to fetch necessary data and set subnet as active on mount", () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -52,7 +49,7 @@ it("dispatches actions to fetch necessary data and set subnet as active on mount
 });
 
 it("dispatches actions to unset active subnet and clean up on unmount", () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   const { unmount } = render(
     <Provider store={store}>
@@ -91,8 +88,8 @@ it("dispatches actions to unset active subnet and clean up on unmount", () => {
 });
 
 it("displays a message if the subnet does not exist", () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
+  const state = factory.rootState({
+    subnet: factory.subnetState({
       items: [],
       loading: false,
     }),
@@ -119,8 +116,8 @@ it("displays a message if the subnet does not exist", () => {
 });
 
 it("shows a spinner if the subnet has not loaded yet", () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
+  const state = factory.rootState({
+    subnet: factory.subnetState({
       items: [],
       loading: true,
     }),

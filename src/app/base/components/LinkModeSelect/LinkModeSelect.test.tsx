@@ -6,14 +6,14 @@ import LinkModeSelect, { Label } from "./LinkModeSelect";
 
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import { LINK_MODE_DISPLAY } from "@/app/store/utils";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("LinkModeSelect", () => {
   it("only displays LINK_UP if a subnet is not provided", () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
@@ -36,7 +36,7 @@ describe("LinkModeSelect", () => {
   });
 
   it("can display all options", () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
@@ -73,7 +73,7 @@ describe("LinkModeSelect", () => {
   });
 
   it("only displays auto or static for an alias", () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>
@@ -110,7 +110,7 @@ describe("LinkModeSelect", () => {
   });
 
   it("can display a default option", () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     const defaultOption = {
       label: "Default",
       value: "99",
@@ -131,7 +131,7 @@ describe("LinkModeSelect", () => {
   });
 
   it("can hide the default option", () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={vi.fn()}>

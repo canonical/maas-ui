@@ -3,36 +3,29 @@ import { StatusColumn } from "./StatusColumn";
 import { ControllerVersionIssues } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import { ServiceStatus } from "@/app/store/service/types";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  controllerVersions as controllerVersionsFactory,
-  rootState as rootStateFactory,
-  service as serviceFactory,
-  serviceState as serviceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         items: [
-          controllerFactory({
+          factory.controller({
             system_id: "abc123",
             service_ids: [1, 2],
           }),
         ],
       }),
-      service: serviceStateFactory({
+      service: factory.serviceState({
         items: [
-          serviceFactory({
+          factory.service({
             id: 1,
             status: ServiceStatus.RUNNING,
           }),
-          serviceFactory({
+          factory.service({
             id: 2,
             status: ServiceStatus.RUNNING,
           }),
@@ -42,7 +35,7 @@ describe("StatusColumn", () => {
   });
 
   it("displays a warning if there is a version error", () => {
-    state.controller.items[0].versions = controllerVersionsFactory({
+    state.controller.items[0].versions = factory.controllerVersions({
       issues: [ControllerVersionIssues.DIFFERENT_CHANNEL],
     });
     renderWithBrowserRouter(<StatusColumn systemId="abc123" />, {

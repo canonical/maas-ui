@@ -7,15 +7,7 @@ import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  fabric as fabricFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineInterface as machineInterfaceFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithMockStore,
@@ -41,11 +33,11 @@ describe("NetworkTableActions", () => {
     });
   });
   beforeEach(() => {
-    nic = machineInterfaceFactory();
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    nic = factory.machineInterface();
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
@@ -108,8 +100,8 @@ describe("NetworkTableActions", () => {
   it("does not display an item to mark an alias as connected", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
-    const link = networkLinkFactory();
-    nic.links = [networkLinkFactory(), link];
+    const link = factory.networkLink();
+    nic.links = [factory.networkLink(), link];
 
     renderWithMockStore(
       <NetworkTableActions link={link} nic={nic} systemId="abc123" />,
@@ -125,8 +117,8 @@ describe("NetworkTableActions", () => {
   it("does not display an item to mark an alias as disconnected", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = true;
-    const link = networkLinkFactory();
-    nic.links = [networkLinkFactory(), link];
+    const link = factory.networkLink();
+    nic.links = [factory.networkLink(), link];
 
     renderWithMockStore(
       <NetworkTableActions link={link} nic={nic} systemId="abc123" />,
@@ -195,7 +187,7 @@ describe("NetworkTableActions", () => {
 
   it("can display an action to add an alias", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
-    nic.links = [networkLinkFactory()];
+    nic.links = [factory.networkLink()];
 
     renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
@@ -217,7 +209,7 @@ describe("NetworkTableActions", () => {
 
   it("can display a disabled action to add an alias", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
-    nic.links = [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })];
+    nic.links = [factory.networkLink({ mode: NetworkLinkMode.LINK_UP })];
 
     renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
@@ -239,9 +231,9 @@ describe("NetworkTableActions", () => {
 
   it("can display an action to add a VLAN", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
-    const fabric = fabricFactory();
+    const fabric = factory.fabric();
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id });
+    const vlan = factory.vlan({ fabric: fabric.id });
     state.vlan.items = [vlan];
     nic.vlan_id = vlan.id;
 

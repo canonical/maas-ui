@@ -1,61 +1,58 @@
 import reducers, { actions } from "./slice";
 
-import {
-  sslKey as sslKeyFactory,
-  sslKeyState as sslKeyStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("sslkey reducer", () => {
   it("should return the initial state", () => {
-    expect(reducers(undefined, { type: "" })).toEqual(sslKeyStateFactory());
+    expect(reducers(undefined, { type: "" })).toEqual(factory.sslKeyState());
   });
 
   it("reduces fetchStart", () => {
-    const initialState = sslKeyStateFactory({ loading: false });
+    const initialState = factory.sslKeyState({ loading: false });
     expect(reducers(initialState, actions.fetchStart())).toEqual(
-      sslKeyStateFactory({ loading: true })
+      factory.sslKeyState({ loading: true })
     );
   });
 
   it("reduces fetchSuccess", () => {
-    const initialState = sslKeyStateFactory({ loading: true });
-    const items = [sslKeyFactory(), sslKeyFactory()];
+    const initialState = factory.sslKeyState({ loading: true });
+    const items = [factory.sslKey(), factory.sslKey()];
     expect(reducers(initialState, actions.fetchSuccess(items))).toEqual(
-      sslKeyStateFactory({ loaded: true, items })
+      factory.sslKeyState({ loaded: true, items })
     );
   });
 
   it("reduces fetchError", () => {
-    const initialState = sslKeyStateFactory({ errors: null });
+    const initialState = factory.sslKeyState({ errors: null });
     expect(
       reducers(initialState, actions.fetchError("Unable to list SSL keys"))
-    ).toEqual(sslKeyStateFactory({ errors: "Unable to list SSL keys" }));
+    ).toEqual(factory.sslKeyState({ errors: "Unable to list SSL keys" }));
   });
 
   it("reduces createStart", () => {
-    const initialState = sslKeyStateFactory({ saving: false });
+    const initialState = factory.sslKeyState({ saving: false });
     expect(reducers(initialState, actions.createStart())).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         saving: true,
       })
     );
   });
 
   it("reduces createError", () => {
-    const initialState = sslKeyStateFactory({ saving: true });
+    const initialState = factory.sslKeyState({ saving: true });
     expect(
       reducers(initialState, actions.createError({ key: "Key already exists" }))
     ).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         errors: { key: "Key already exists" },
       })
     );
   });
 
   it("reduces createSuccess", () => {
-    const initialState = sslKeyStateFactory({ saved: false, saving: true });
+    const initialState = factory.sslKeyState({ saved: false, saving: true });
     expect(reducers(initialState, actions.createSuccess())).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         saved: true,
         saving: false,
       })
@@ -63,20 +60,20 @@ describe("sslkey reducer", () => {
   });
 
   it("reduces deleteStart", () => {
-    const initialState = sslKeyStateFactory({ saved: true });
+    const initialState = factory.sslKeyState({ saved: true });
     expect(reducers(initialState, actions.deleteStart())).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         saving: true,
       })
     );
   });
 
   it("reduces deleteError", () => {
-    const initialState = sslKeyStateFactory({ saving: true });
+    const initialState = factory.sslKeyState({ saving: true });
     expect(
       reducers(initialState, actions.deleteError("Could not delete"))
     ).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         errors: "Could not delete",
         saving: false,
       })
@@ -84,42 +81,42 @@ describe("sslkey reducer", () => {
   });
 
   it("reduces deleteSuccess", () => {
-    const initialState = sslKeyStateFactory({ saved: false });
+    const initialState = factory.sslKeyState({ saved: false });
     expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         saved: true,
       })
     );
   });
 
   it("reduces createNotify", () => {
-    const initialState = sslKeyStateFactory({});
-    const item = sslKeyFactory();
+    const initialState = factory.sslKeyState({});
+    const item = factory.sslKey();
     expect(reducers(initialState, actions.createNotify(item))).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         items: [item],
       })
     );
   });
 
   it("reduces deleteNotify", () => {
-    const items = [sslKeyFactory(), sslKeyFactory()];
-    const initialState = sslKeyStateFactory({ items });
+    const items = [factory.sslKey(), factory.sslKey()];
+    const initialState = factory.sslKeyState({ items });
     expect(reducers(initialState, actions.deleteNotify(items[0].id))).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         items: [items[1]],
       })
     );
   });
 
   it("reduces cleanup", () => {
-    const initialState = sslKeyStateFactory({
+    const initialState = factory.sslKeyState({
       errors: { key: "Key already exists" },
       saved: true,
       saving: true,
     });
     expect(reducers(initialState, actions.cleanup())).toEqual(
-      sslKeyStateFactory({
+      factory.sslKeyState({
         errors: null,
         saved: false,
         saving: false,

@@ -3,22 +3,18 @@ import NameColumn from "./NameColumn";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podPowerParameters as powerParametersFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("can display a link to Virsh pod's details page", () => {
-    const pod = podFactory({ id: 1, name: "pod-1", type: PodType.VIRSH });
+    const pod = factory.pod({ id: 1, name: "pod-1", type: PodType.VIRSH });
     state.pod.items = [pod];
 
     renderWithBrowserRouter(
@@ -38,7 +34,7 @@ describe("NameColumn", () => {
   });
 
   it("can display a link to a LXD pod's details page", () => {
-    const pod = podFactory({ id: 1, name: "pod-1", type: PodType.LXD });
+    const pod = factory.pod({ id: 1, name: "pod-1", type: PodType.LXD });
     state.pod.items = [pod];
 
     renderWithBrowserRouter(
@@ -58,10 +54,10 @@ describe("NameColumn", () => {
   });
 
   it("can show a secondary row", () => {
-    const pod = podFactory({
+    const pod = factory.pod({
       id: 1,
       name: "pod-1",
-      power_parameters: powerParametersFactory({
+      power_parameters: factory.podPowerParameters({
         project: "group-project",
       }),
       type: PodType.LXD,

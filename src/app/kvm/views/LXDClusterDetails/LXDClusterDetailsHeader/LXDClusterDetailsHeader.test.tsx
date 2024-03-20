@@ -8,15 +8,7 @@ import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 import urls from "@/app/base/urls";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmHost as vmHostFactory,
-  vmClusterState as vmClusterStateFactory,
-  virtualMachine as virtualMachineFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -25,18 +17,18 @@ describe("LXDClusterDetailsHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    const zone = zoneFactory({ id: 111, name: "danger" });
-    const cluster = vmClusterFactory({
+    const zone = factory.zone({ id: 111, name: "danger" });
+    const cluster = factory.vmCluster({
       availability_zone: zone.id,
       id: 1,
       name: "vm-cluster",
       project: "cluster-project",
     });
-    state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         items: [cluster],
       }),
-      zone: zoneStateFactory({
+      zone: factory.zoneState({
         items: [zone],
       }),
     });
@@ -68,7 +60,7 @@ describe("LXDClusterDetailsHeader", () => {
   });
 
   it("displays the cluster member count", () => {
-    state.vmcluster.items[0].hosts = [vmHostFactory(), vmHostFactory()];
+    state.vmcluster.items[0].hosts = [factory.vmHost(), factory.vmHost()];
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -97,9 +89,9 @@ describe("LXDClusterDetailsHeader", () => {
 
   it("displays the tracked VMs count", () => {
     state.vmcluster.items[0].virtual_machines = [
-      virtualMachineFactory(),
-      virtualMachineFactory(),
-      virtualMachineFactory(),
+      factory.virtualMachine(),
+      factory.virtualMachine(),
+      factory.virtualMachine(),
     ];
     const store = mockStore(state);
     render(
@@ -182,7 +174,7 @@ describe("LXDClusterDetailsHeader", () => {
   });
 
   it("can open the refresh cluster form if it has hosts", async () => {
-    const hosts = [vmHostFactory(), vmHostFactory()];
+    const hosts = [factory.vmHost(), factory.vmHost()];
     state.vmcluster.items[0].hosts = hosts;
     const setSidePanelContent = vi.fn();
     const store = mockStore(state);

@@ -25,12 +25,7 @@ import {
 
 import { actions as machineActions } from "@/app/store/machine";
 import { getCookie } from "@/app/utils";
-import {
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import WebSocketClient, {
   WebSocketMessageType,
   WebSocketResponseType,
@@ -634,12 +629,12 @@ describe("websocket sagas", () => {
   });
 
   it("can unsubscribe from unused machines", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          123456: machineStateListFactory({
+          123456: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["abc123"],
               }),
             ],
@@ -658,12 +653,12 @@ describe("websocket sagas", () => {
   });
 
   it("removes request when machines are in use", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          123456: machineStateListFactory({
+          123456: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["abc123"],
               }),
             ],

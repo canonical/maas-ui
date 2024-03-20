@@ -1,11 +1,11 @@
 import reducers from "./slice";
 
-import { statusState as statusStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("status", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticated: false,
         authenticating: true,
         authenticationError: null,
@@ -22,7 +22,7 @@ describe("status", () => {
   it("should correctly reduce status/websocketConnect", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           connected: true,
           connecting: false,
           error: null,
@@ -32,7 +32,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         connected: true,
         connecting: true,
         connectedCount: 0,
@@ -44,7 +44,7 @@ describe("status", () => {
   it("should correctly reduce status/websocketConnect on initial connection", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           connected: false,
           connecting: false,
           error: null,
@@ -54,7 +54,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         connected: false,
         connecting: true,
         error: null,
@@ -65,7 +65,7 @@ describe("status", () => {
   it("should correctly reduce status/websocketDisconnected", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           connected: true,
         }),
         {
@@ -73,7 +73,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         connected: false,
       })
     );
@@ -82,7 +82,7 @@ describe("status", () => {
   it("should correctly reduce status/websocketConnected on initial connection", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           connected: false,
           connecting: true,
         }),
@@ -91,7 +91,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         connected: true,
         connecting: false,
         connectedCount: 1,
@@ -102,7 +102,7 @@ describe("status", () => {
   it("should correctly reduce status/websocketConnected on error", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticationError: null,
           connected: false,
           connecting: true,
@@ -113,7 +113,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticationError: null,
         connected: true,
         connecting: false,
@@ -126,7 +126,7 @@ describe("status", () => {
   it("status/websocketConnected should increment connectedCount on reconnect", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           connected: true,
           connectedCount: 1,
         }),
@@ -135,7 +135,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         connected: true,
         connecting: false,
         connectedCount: 2,
@@ -145,13 +145,13 @@ describe("status", () => {
 
   it("should correctly reduce status/websocketError", () => {
     expect(
-      reducers(statusStateFactory({ error: null }), {
+      reducers(factory.statusState({ error: null }), {
         error: true,
         payload: "Error!",
         type: "status/websocketError",
       })
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         connected: false,
         connecting: false,
         error: "Error!",
@@ -162,7 +162,7 @@ describe("status", () => {
   it("should correctly reduce status/checkAuthenticatedStart", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticating: false,
         }),
         {
@@ -170,7 +170,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticating: true,
       })
     );
@@ -179,7 +179,7 @@ describe("status", () => {
   it("should correctly reduce status/checkAuthenticatedSuccess", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticating: true,
           authenticated: false,
           noUsers: false,
@@ -194,7 +194,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticating: false,
         authenticated: true,
         externalAuthURL: "http://login.example.com",
@@ -206,7 +206,7 @@ describe("status", () => {
   it("should correctly reduce status/loginStart", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticating: false,
         }),
         {
@@ -214,7 +214,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticating: true,
       })
     );
@@ -223,7 +223,7 @@ describe("status", () => {
   it("should correctly reduce status/loginSuccess", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticationError: null,
           authenticated: false,
           authenticating: true,
@@ -233,7 +233,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticationError: null,
         authenticated: true,
         authenticating: false,
@@ -245,7 +245,7 @@ describe("status", () => {
   it("should correctly reduce status/externalLoginSuccess", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticationError: null,
           authenticated: false,
           authenticating: true,
@@ -255,7 +255,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticationError: null,
         authenticated: true,
         authenticating: false,
@@ -267,7 +267,7 @@ describe("status", () => {
   it("should correctly reduce status/loginError", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticationError: null,
           error: null,
         }),
@@ -278,7 +278,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticating: false,
         authenticationError: "Username not provided",
         error: null,
@@ -289,7 +289,7 @@ describe("status", () => {
   it("should correctly reduce status/externalLoginError", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           error: null,
         }),
         {
@@ -299,7 +299,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticating: false,
         authenticationError: "Username not provided",
         error: null,
@@ -310,7 +310,7 @@ describe("status", () => {
   it("should correctly reduce status/checkAuthenticatedError", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticating: true,
           authenticated: true,
         }),
@@ -321,7 +321,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticating: false,
         authenticated: false,
         error: "Gateway Timeout",
@@ -332,7 +332,7 @@ describe("status", () => {
   it("should correctly reduce LOGOUT_SUCCESS", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           authenticated: true,
         }),
         {
@@ -340,7 +340,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         authenticated: false,
       })
     );
@@ -349,7 +349,7 @@ describe("status", () => {
   it("should correctly reduce status/externalLoginUrl", () => {
     expect(
       reducers(
-        statusStateFactory({
+        factory.statusState({
           externalLoginURL: null,
         }),
         {
@@ -358,7 +358,7 @@ describe("status", () => {
         }
       )
     ).toStrictEqual(
-      statusStateFactory({
+      factory.statusState({
         externalLoginURL: "http://login.example.com",
       })
     );

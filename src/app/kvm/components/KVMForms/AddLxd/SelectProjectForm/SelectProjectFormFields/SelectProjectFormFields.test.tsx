@@ -7,13 +7,7 @@ import SelectProjectFormFields from "./SelectProjectFormFields";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podPowerParameters as powerParametersFactory,
-  podProject as podProjectFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -26,8 +20,8 @@ describe("SelectProjectFormFields", () => {
   let newPodValues: NewPodValues;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         loaded: true,
       }),
     });
@@ -43,7 +37,7 @@ describe("SelectProjectFormFields", () => {
   });
 
   it("shows a warning if an existing project is selected", async () => {
-    const project = podProjectFactory();
+    const project = factory.podProject();
     state.pod.projects = {
       "192.168.1.1": [project],
     };
@@ -69,10 +63,10 @@ describe("SelectProjectFormFields", () => {
   });
 
   it("selects the first available project when switching to existing projects", async () => {
-    state.pod = podStateFactory({
+    state.pod = factory.podState({
       items: [
-        podFactory({
-          power_parameters: powerParametersFactory({
+        factory.pod({
+          power_parameters: factory.podPowerParameters({
             power_address: "192.168.1.1",
             project: "default",
           }),
@@ -82,8 +76,8 @@ describe("SelectProjectFormFields", () => {
       loaded: true,
       projects: {
         "192.168.1.1": [
-          podProjectFactory({ name: "default" }), // default is in use
-          podProjectFactory({ name: "other" }), // other is not
+          factory.podProject({ name: "default" }), // default is in use
+          factory.podProject({ name: "other" }), // other is not
         ],
       },
     });
@@ -109,17 +103,17 @@ describe("SelectProjectFormFields", () => {
   });
 
   it("disables the existing project radio button if no existing projects are free", async () => {
-    state.pod = podStateFactory({
+    state.pod = factory.podState({
       items: [
-        podFactory({
-          power_parameters: powerParametersFactory({
+        factory.pod({
+          power_parameters: factory.podPowerParameters({
             power_address: "192.168.1.1",
             project: "default",
           }),
           type: PodType.LXD,
         }),
-        podFactory({
-          power_parameters: powerParametersFactory({
+        factory.pod({
+          power_parameters: factory.podPowerParameters({
             power_address: "192.168.1.1",
             project: "other",
           }),
@@ -129,8 +123,8 @@ describe("SelectProjectFormFields", () => {
       loaded: true,
       projects: {
         "192.168.1.1": [
-          podProjectFactory({ name: "default" }),
-          podProjectFactory({ name: "other" }),
+          factory.podProject({ name: "default" }),
+          factory.podProject({ name: "other" }),
         ],
       },
     });
@@ -150,20 +144,20 @@ describe("SelectProjectFormFields", () => {
   });
 
   it("disables radio and shows a link to an existing LXD project", async () => {
-    const pod = podFactory({
-      power_parameters: powerParametersFactory({
+    const pod = factory.pod({
+      power_parameters: factory.podPowerParameters({
         power_address: "192.168.1.1",
         project: "default",
       }),
       type: PodType.LXD,
     });
-    state.pod = podStateFactory({
+    state.pod = factory.podState({
       items: [pod],
       loaded: true,
       projects: {
         "192.168.1.1": [
-          podProjectFactory({ name: "default" }),
-          podProjectFactory({ name: "other" }),
+          factory.podProject({ name: "default" }),
+          factory.podProject({ name: "other" }),
         ],
       },
     });

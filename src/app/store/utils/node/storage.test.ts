@@ -39,13 +39,7 @@ import {
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
 import { NodeStatusCode } from "@/app/store/types/node";
-import {
-  controller as controllerFactory,
-  machineDetails as machineDetailsFactory,
-  nodeDisk as diskFactory,
-  nodeFilesystem as fsFactory,
-  nodePartition as partitionFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("canBeDeleted", () => {
   it("handles null case", () => {
@@ -53,11 +47,11 @@ describe("canBeDeleted", () => {
   });
 
   it("returns whether a volume group can be deleted", () => {
-    const deletable = diskFactory({
+    const deletable = factory.nodeDisk({
       type: DiskTypes.VOLUME_GROUP,
       used_size: 0,
     });
-    const nonDeletable = diskFactory({
+    const nonDeletable = factory.nodeDisk({
       type: DiskTypes.VOLUME_GROUP,
       used_size: 1000,
     });
@@ -66,13 +60,13 @@ describe("canBeDeleted", () => {
   });
 
   it("returns whether a non-volume group disk can be deleted", () => {
-    const deletable = diskFactory({
+    const deletable = factory.nodeDisk({
       type: DiskTypes.PHYSICAL,
       partitions: [],
     });
-    const nonDeletable = diskFactory({
+    const nonDeletable = factory.nodeDisk({
       type: DiskTypes.PHYSICAL,
-      partitions: [partitionFactory()],
+      partitions: [factory.nodePartition()],
     });
     expect(canBeDeleted(deletable)).toBe(true);
     expect(canBeDeleted(nonDeletable)).toBe(false);
@@ -85,8 +79,8 @@ describe("canBeFormatted", () => {
   });
 
   it("returns whether a filesystem can be formatted", () => {
-    const formattable = fsFactory({ is_format_fstype: true });
-    const notFormattable = fsFactory({ is_format_fstype: false });
+    const formattable = factory.nodeFilesystem({ is_format_fstype: true });
+    const notFormattable = factory.nodeFilesystem({ is_format_fstype: false });
     expect(canBeFormatted(formattable)).toBe(true);
     expect(canBeFormatted(notFormattable)).toBe(false);
   });
@@ -98,7 +92,7 @@ describe("canBePartitioned", () => {
   });
 
   it("handles physical disks with available space", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.PHYSICAL,
     });
@@ -106,12 +100,14 @@ describe("canBePartitioned", () => {
   });
 
   it("handles formatted disks", () => {
-    const disk = diskFactory({ filesystem: fsFactory({ fstype: "fat32" }) });
+    const disk = factory.nodeDisk({
+      filesystem: factory.nodeFilesystem({ fstype: "fat32" }),
+    });
     expect(canBePartitioned(disk)).toBe(false);
   });
 
   it("handles volume groups", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.VOLUME_GROUP,
     });
@@ -119,7 +115,7 @@ describe("canBePartitioned", () => {
   });
 
   it("handles logical volumes", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       parent: {
         id: 1,
@@ -132,7 +128,7 @@ describe("canBePartitioned", () => {
   });
 
   it("handles bcaches", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       parent: {
         id: 1,
@@ -147,24 +143,24 @@ describe("canBePartitioned", () => {
 
 describe("canCreateBcache", () => {
   it("handles machines with cache sets", () => {
-    const backingDevice = diskFactory({
+    const backingDevice = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.PHYSICAL,
     });
-    const noCacheSet = [diskFactory({ type: DiskTypes.PHYSICAL })];
-    const hasCacheSet = [diskFactory({ type: DiskTypes.CACHE_SET })];
+    const noCacheSet = [factory.nodeDisk({ type: DiskTypes.PHYSICAL })];
+    const hasCacheSet = [factory.nodeDisk({ type: DiskTypes.CACHE_SET })];
     expect(canCreateBcache(noCacheSet, backingDevice)).toBe(false);
     expect(canCreateBcache(hasCacheSet, backingDevice)).toBe(true);
   });
 
   it("handles volume groups", () => {
-    const volumeGroup = diskFactory({ type: DiskTypes.VOLUME_GROUP });
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+    const volumeGroup = factory.nodeDisk({ type: DiskTypes.VOLUME_GROUP });
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
     expect(canCreateBcache([cacheSet], volumeGroup)).toBe(false);
   });
 
   it("handles bcaches", () => {
-    const bcache = diskFactory({
+    const bcache = factory.nodeDisk({
       name: "bcache0",
       parent: {
         id: 0,
@@ -173,25 +169,25 @@ describe("canCreateBcache", () => {
       },
       type: DiskTypes.VIRTUAL,
     });
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
     expect(canCreateBcache([cacheSet], bcache)).toBe(false);
   });
 
   it("handles formatted storage devices", () => {
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
     const [formattedDisk, unformattedDisk] = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
-        filesystem: fsFactory(),
+        filesystem: factory.nodeFilesystem(),
       }),
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         filesystem: null,
       }),
     ];
     const [formattedPartition, unformattedPartition] = [
-      partitionFactory({ filesystem: fsFactory() }),
-      partitionFactory({ filesystem: null }),
+      factory.nodePartition({ filesystem: factory.nodeFilesystem() }),
+      factory.nodePartition({ filesystem: null }),
     ];
     expect(canCreateBcache([cacheSet], formattedDisk)).toBe(false);
     expect(canCreateBcache([cacheSet], unformattedDisk)).toBe(true);
@@ -207,12 +203,12 @@ describe("canCreateCacheSet", () => {
 
   it("handles disks that have been partitioned", () => {
     const [partitioned, unpartitioned] = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
-        partitions: [partitionFactory(), partitionFactory()],
+        partitions: [factory.nodePartition(), factory.nodePartition()],
         type: DiskTypes.PHYSICAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         partitions: [],
         type: DiskTypes.PHYSICAL,
@@ -223,7 +219,7 @@ describe("canCreateCacheSet", () => {
   });
 
   it("handles volume groups", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       partitions: [],
       type: DiskTypes.VOLUME_GROUP,
@@ -233,18 +229,18 @@ describe("canCreateCacheSet", () => {
 
   it("handles formatted storage devices", () => {
     const [formattedDisk, unformattedDisk] = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
-        filesystem: fsFactory(),
+        filesystem: factory.nodeFilesystem(),
       }),
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         filesystem: null,
       }),
     ];
     const [formattedPartition, unformattedPartition] = [
-      partitionFactory({ filesystem: fsFactory() }),
-      partitionFactory({ filesystem: null }),
+      factory.nodePartition({ filesystem: factory.nodeFilesystem() }),
+      factory.nodePartition({ filesystem: null }),
     ];
     expect(canCreateCacheSet(formattedDisk)).toBe(false);
     expect(canCreateCacheSet(unformattedDisk)).toBe(true);
@@ -259,7 +255,7 @@ describe("canCreateLogicalVolume", () => {
   });
 
   it("handles disks that are not volume groups", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.PHYSICAL,
     });
@@ -267,16 +263,16 @@ describe("canCreateLogicalVolume", () => {
   });
 
   it("handles mounted volume groups with available space", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
-      filesystem: fsFactory(),
+      filesystem: factory.nodeFilesystem(),
       type: DiskTypes.VOLUME_GROUP,
     });
     expect(canCreateLogicalVolume(disk)).toBe(false);
   });
 
   it("handles unmounted volume groups with available space", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.VOLUME_GROUP,
     });
@@ -290,7 +286,7 @@ describe("canCreateOrUpdateDatastore", () => {
   });
 
   it("handles volume groups", () => {
-    const volumeGroup = diskFactory({
+    const volumeGroup = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       partitions: null,
       type: DiskTypes.VOLUME_GROUP,
@@ -299,8 +295,8 @@ describe("canCreateOrUpdateDatastore", () => {
   });
 
   it("handles bcaches", () => {
-    const parent = diskFactory({ type: DiskTypes.BCACHE });
-    const bcache = diskFactory({
+    const parent = factory.nodeDisk({ type: DiskTypes.BCACHE });
+    const bcache = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       parent: {
         id: parent.id,
@@ -314,8 +310,8 @@ describe("canCreateOrUpdateDatastore", () => {
   });
 
   it("handles logical volumes", () => {
-    const parent = diskFactory({ type: DiskTypes.VOLUME_GROUP });
-    const logicalVolume = diskFactory({
+    const parent = factory.nodeDisk({ type: DiskTypes.VOLUME_GROUP });
+    const logicalVolume = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       parent: {
         id: parent.id,
@@ -329,7 +325,7 @@ describe("canCreateOrUpdateDatastore", () => {
   });
 
   it("handles unpartitioned disks", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       partitions: null,
       type: DiskTypes.PHYSICAL,
@@ -338,7 +334,7 @@ describe("canCreateOrUpdateDatastore", () => {
   });
 
   it("handles unformatted partitions", () => {
-    const partition = partitionFactory({
+    const partition = factory.nodePartition({
       filesystem: null,
     });
     expect(canCreateOrUpdateDatastore([partition])).toBe(true);
@@ -351,7 +347,7 @@ describe("canCreateRaid", () => {
   });
 
   it("handles arrays with length === 1", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       partitions: null,
     });
@@ -360,12 +356,12 @@ describe("canCreateRaid", () => {
 
   it("handles unpartitioned disks", () => {
     const disks = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         partitions: null,
         type: DiskTypes.PHYSICAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         partitions: null,
         type: DiskTypes.PHYSICAL,
@@ -376,10 +372,10 @@ describe("canCreateRaid", () => {
 
   it("handles unformatted partitions", () => {
     const partitions = [
-      partitionFactory({
+      factory.nodePartition({
         filesystem: null,
       }),
-      partitionFactory({
+      factory.nodePartition({
         filesystem: null,
       }),
     ];
@@ -388,14 +384,14 @@ describe("canCreateRaid", () => {
 
   it("handles formatted filesystems", () => {
     const devices = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
-        filesystem: fsFactory({ fstype: "ext4", mount_point: "" }),
+        filesystem: factory.nodeFilesystem({ fstype: "ext4", mount_point: "" }),
         partitions: null,
         type: DiskTypes.PHYSICAL,
       }),
-      partitionFactory({
-        filesystem: fsFactory({ fstype: "ext4", mount_point: "" }),
+      factory.nodePartition({
+        filesystem: factory.nodeFilesystem({ fstype: "ext4", mount_point: "" }),
       }),
     ];
     expect(canCreateRaid(devices)).toBe(false);
@@ -408,7 +404,7 @@ describe("canCreateVolumeGroup", () => {
   });
 
   it("handles volume groups", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       partitions: null,
       type: DiskTypes.VOLUME_GROUP,
@@ -417,7 +413,7 @@ describe("canCreateVolumeGroup", () => {
   });
 
   it("handles unpartitioned disks", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       partitions: null,
       type: DiskTypes.PHYSICAL,
@@ -426,7 +422,7 @@ describe("canCreateVolumeGroup", () => {
   });
 
   it("handles unformatted partitions", () => {
-    const partition = partitionFactory({
+    const partition = factory.nodePartition({
       filesystem: null,
     });
     expect(canCreateVolumeGroup([partition])).toBe(true);
@@ -434,12 +430,12 @@ describe("canCreateVolumeGroup", () => {
 
   it("handles a mix of disks and partitions", () => {
     const devices = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         partitions: null,
         type: DiskTypes.PHYSICAL,
       }),
-      partitionFactory({
+      factory.nodePartition({
         filesystem: null,
       }),
     ];
@@ -450,13 +446,13 @@ describe("canCreateVolumeGroup", () => {
 describe("canOsSupportBcacheZFS", () => {
   it("handles a machine that supports bcache and ZFS", () => {
     expect(
-      canOsSupportBcacheZFS(machineDetailsFactory({ osystem: "ubuntu" }))
+      canOsSupportBcacheZFS(factory.machineDetails({ osystem: "ubuntu" }))
     ).toBe(true);
   });
 
   it("handles a machine that does not support bcache and ZFS", () => {
     expect(
-      canOsSupportBcacheZFS(machineDetailsFactory({ osystem: "centos" }))
+      canOsSupportBcacheZFS(factory.machineDetails({ osystem: "centos" }))
     ).toBe(false);
   });
 });
@@ -464,30 +460,30 @@ describe("canOsSupportBcacheZFS", () => {
 describe("canOsSupportStorageConfig", () => {
   it("handles a machine that supports configurating storage layout", () => {
     expect(
-      canOsSupportStorageConfig(machineDetailsFactory({ osystem: "ubuntu" }))
+      canOsSupportStorageConfig(factory.machineDetails({ osystem: "ubuntu" }))
     ).toBe(true);
   });
 
   it("handles a machine that does not support configurating storage layout", () => {
     expect(
-      canOsSupportStorageConfig(machineDetailsFactory({ osystem: "windows" }))
+      canOsSupportStorageConfig(factory.machineDetails({ osystem: "windows" }))
     ).toBe(false);
   });
 });
 
 describe("canSetBootDisk", () => {
   it("handles vmfs6 storage layout", () => {
-    const disk = diskFactory({ is_boot: false, type: DiskTypes.PHYSICAL });
+    const disk = factory.nodeDisk({ is_boot: false, type: DiskTypes.PHYSICAL });
     expect(canSetBootDisk(StorageLayout.VMFS6, disk)).toBe(false);
     expect(canSetBootDisk(StorageLayout.BLANK, disk)).toBe(true);
   });
 
   it("handles non-physical disks", () => {
-    const physicalDisk = diskFactory({
+    const physicalDisk = factory.nodeDisk({
       is_boot: false,
       type: DiskTypes.PHYSICAL,
     });
-    const nonPhysicalDisk = diskFactory({
+    const nonPhysicalDisk = factory.nodeDisk({
       is_boot: false,
       type: DiskTypes.VIRTUAL,
     });
@@ -496,8 +492,11 @@ describe("canSetBootDisk", () => {
   });
 
   it("handles boot disks", () => {
-    const bootDisk = diskFactory({ is_boot: true, type: DiskTypes.PHYSICAL });
-    const nonBootDisk = diskFactory({
+    const bootDisk = factory.nodeDisk({
+      is_boot: true,
+      type: DiskTypes.PHYSICAL,
+    });
+    const nonBootDisk = factory.nodeDisk({
       is_boot: false,
       type: DiskTypes.PHYSICAL,
     });
@@ -512,7 +511,7 @@ describe("diskAvailable", () => {
   });
 
   it("handles disks with available space", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.PHYSICAL,
     });
@@ -520,12 +519,12 @@ describe("diskAvailable", () => {
   });
 
   it("handles cache sets", () => {
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
     expect(diskAvailable(cacheSet)).toBe(false);
   });
 
   it("handles unmounted RAIDs", () => {
-    const raid0 = diskFactory({
+    const raid0 = factory.nodeDisk({
       available_size: 0,
       filesystem: null,
       type: DiskTypes.RAID_0,
@@ -534,8 +533,8 @@ describe("diskAvailable", () => {
   });
 
   it("handles mounted disks", () => {
-    const mounted = diskFactory({
-      filesystem: fsFactory({ mount_point: "/path" }),
+    const mounted = factory.nodeDisk({
+      filesystem: factory.nodeFilesystem({ mount_point: "/path" }),
     });
     expect(diskAvailable(mounted)).toBe(false);
   });
@@ -559,18 +558,18 @@ describe("formatType", () => {
   });
 
   it("handles cache sets", () => {
-    const disk = diskFactory({ type: DiskTypes.CACHE_SET });
+    const disk = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
     expect(formatType(disk)).toBe("Cache set");
     expect(formatType(disk, true)).toBe("cache set");
   });
 
   it("handles ISCSIs", () => {
-    const disk = diskFactory({ type: DiskTypes.ISCSI });
+    const disk = factory.nodeDisk({ type: DiskTypes.ISCSI });
     expect(formatType(disk)).toBe("ISCSI");
   });
 
   it("handles logical volumes", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       parent: {
         id: 1,
         type: DiskTypes.VOLUME_GROUP,
@@ -583,19 +582,19 @@ describe("formatType", () => {
   });
 
   it("handles partitions", () => {
-    const partition = partitionFactory({ type: "partition" });
+    const partition = factory.nodePartition({ type: "partition" });
     expect(formatType(partition)).toBe("Partition");
     expect(formatType(partition, true)).toBe("partition");
   });
 
   it("handles physical disks", () => {
-    const disk = diskFactory({ type: DiskTypes.PHYSICAL });
+    const disk = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
     expect(formatType(disk)).toBe("Physical");
     expect(formatType(disk, true)).toBe("physical disk");
   });
 
   it("handles RAIDs", () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       parent: {
         id: 1,
         type: DiskTypes.RAID_0,
@@ -607,18 +606,18 @@ describe("formatType", () => {
   });
 
   it("handles VMFS6 datastores", () => {
-    const partition = partitionFactory({ type: "vmfs6" });
+    const partition = factory.nodePartition({ type: "vmfs6" });
     expect(formatType(partition)).toBe("VMFS6");
   });
 
   it("handles virtual disks", () => {
-    const disk = diskFactory({ type: DiskTypes.VIRTUAL });
+    const disk = factory.nodeDisk({ type: DiskTypes.VIRTUAL });
     expect(formatType(disk)).toBe("Virtual");
     expect(formatType(disk, true)).toBe("virtual disk");
   });
 
   it("handles volume groups", () => {
-    const disk = diskFactory({ type: DiskTypes.VOLUME_GROUP });
+    const disk = factory.nodeDisk({ type: DiskTypes.VOLUME_GROUP });
     expect(formatType(disk)).toBe("Volume group");
     expect(formatType(disk, true)).toBe("volume group");
   });
@@ -626,10 +625,10 @@ describe("formatType", () => {
 
 describe("getDiskById", () => {
   it("returns a machine's disk given the disk's id", () => {
-    const disk1 = diskFactory({ id: 1 });
-    const disk2 = diskFactory({
+    const disk1 = factory.nodeDisk({ id: 1 });
+    const disk2 = factory.nodeDisk({
       id: 2,
-      partitions: [partitionFactory({ id: 1 })],
+      partitions: [factory.nodePartition({ id: 1 })],
     });
     expect(getDiskById([disk1, disk2], 1)).toBe(disk1);
     expect(getDiskById([disk1, disk2], 2)).toBe(disk2);
@@ -639,11 +638,11 @@ describe("getDiskById", () => {
 
 describe("getPartitionById", () => {
   it("returns a machine's disk partition given the partition's id", () => {
-    const partition1 = partitionFactory({ id: 1 });
-    const partition2 = partitionFactory({ id: 2 });
+    const partition1 = factory.nodePartition({ id: 1 });
+    const partition2 = factory.nodePartition({ id: 2 });
     const disks = [
-      diskFactory({ id: 1, partitions: [partition1] }),
-      diskFactory({ id: 2, partitions: [partition2] }),
+      factory.nodeDisk({ id: 1, partitions: [partition1] }),
+      factory.nodeDisk({ id: 2, partitions: [partition2] }),
     ];
     expect(getPartitionById(disks, 1)).toBe(partition1);
     expect(getPartitionById(disks, 2)).toBe(partition2);
@@ -653,7 +652,7 @@ describe("getPartitionById", () => {
 
 describe("isBcache", () => {
   it("returns whether a disk is a bcache", () => {
-    const bcache = diskFactory({
+    const bcache = factory.nodeDisk({
       parent: {
         id: 1,
         type: DiskTypes.BCACHE,
@@ -661,7 +660,7 @@ describe("isBcache", () => {
       },
       type: DiskTypes.VIRTUAL,
     });
-    const notBcache = diskFactory({ type: DiskTypes.PHYSICAL });
+    const notBcache = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
     expect(isBcache(null)).toBe(false);
     expect(isBcache(notBcache)).toBe(false);
     expect(isBcache(bcache)).toBe(true);
@@ -670,8 +669,8 @@ describe("isBcache", () => {
 
 describe("isCacheSet", () => {
   it("returns whether a disk is a cache set", () => {
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
-    const notCacheSet = diskFactory({ type: DiskTypes.PHYSICAL });
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
+    const notCacheSet = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
     expect(isCacheSet(null)).toBe(false);
     expect(isCacheSet(notCacheSet)).toBe(false);
     expect(isCacheSet(cacheSet)).toBe(true);
@@ -680,8 +679,8 @@ describe("isCacheSet", () => {
 
 describe("isDatastore", () => {
   it("returns whether a filesystem is a datastore", () => {
-    const datastore = fsFactory({ fstype: "vmfs6" });
-    const notDatastore = fsFactory({ fstype: "fat32" });
+    const datastore = factory.nodeFilesystem({ fstype: "vmfs6" });
+    const notDatastore = factory.nodeFilesystem({ fstype: "fat32" });
     expect(isDatastore(null)).toBe(false);
     expect(isDatastore(notDatastore)).toBe(false);
     expect(isDatastore(datastore)).toBe(true);
@@ -690,8 +689,8 @@ describe("isDatastore", () => {
 
 describe("isDisk", () => {
   it("returns whether a storage device is a disk", () => {
-    const disk = diskFactory({ type: DiskTypes.PHYSICAL });
-    const partition = partitionFactory({ type: "partition" });
+    const disk = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
+    const partition = factory.nodePartition({ type: "partition" });
     expect(isDisk(null)).toBe(false);
     expect(isDisk(partition)).toBe(false);
     expect(isDisk(disk)).toBe(true);
@@ -700,8 +699,8 @@ describe("isDisk", () => {
 
 describe("isFormatted", () => {
   it("returns whether a filesystem has been formatted", () => {
-    const formatted = fsFactory({ fstype: "vmfs6" });
-    const unformatted = fsFactory({ fstype: "" });
+    const formatted = factory.nodeFilesystem({ fstype: "vmfs6" });
+    const unformatted = factory.nodeFilesystem({ fstype: "" });
     expect(isFormatted(null)).toBe(false);
     expect(isFormatted(unformatted)).toBe(false);
     expect(isFormatted(formatted)).toBe(true);
@@ -710,7 +709,7 @@ describe("isFormatted", () => {
 
 describe("isLogicalVolume", () => {
   it("returns whether a disk is a logical volume", () => {
-    const logicalVolume = diskFactory({
+    const logicalVolume = factory.nodeDisk({
       parent: {
         id: 1,
         type: DiskTypes.VOLUME_GROUP,
@@ -718,7 +717,7 @@ describe("isLogicalVolume", () => {
       },
       type: DiskTypes.VIRTUAL,
     });
-    const notLogicalVolume = diskFactory({ type: DiskTypes.PHYSICAL });
+    const notLogicalVolume = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
     expect(isLogicalVolume(null)).toBe(false);
     expect(isLogicalVolume(notLogicalVolume)).toBe(false);
     expect(isLogicalVolume(logicalVolume)).toBe(true);
@@ -729,7 +728,7 @@ describe("isNodeStorageConfigurable", () => {
   it("handles a machine in a configurable state", () => {
     expect(
       isNodeStorageConfigurable(
-        machineDetailsFactory({ status_code: NodeStatusCode.READY })
+        factory.machineDetails({ status_code: NodeStatusCode.READY })
       )
     ).toBe(true);
   });
@@ -737,12 +736,12 @@ describe("isNodeStorageConfigurable", () => {
   it("handles a machine in a non-configurable state", () => {
     expect(
       isNodeStorageConfigurable(
-        machineDetailsFactory({ status_code: NodeStatusCode.ALLOCATED })
+        factory.machineDetails({ status_code: NodeStatusCode.ALLOCATED })
       )
     ).toBe(false);
     expect(
       isNodeStorageConfigurable(
-        machineDetailsFactory({ status_code: NodeStatusCode.NEW })
+        factory.machineDetails({ status_code: NodeStatusCode.NEW })
       )
     ).toBe(false);
   });
@@ -750,7 +749,7 @@ describe("isNodeStorageConfigurable", () => {
   it("handles a controller", () => {
     expect(
       isNodeStorageConfigurable(
-        controllerFactory({ status_code: NodeStatusCode.READY })
+        factory.controller({ status_code: NodeStatusCode.READY })
       )
     ).toBe(false);
   });
@@ -758,23 +757,23 @@ describe("isNodeStorageConfigurable", () => {
 
 describe("isMounted", () => {
   it("returns whether a filesystem is mounted", () => {
-    const mounted = fsFactory({ mount_point: "/" });
-    const notMounted = fsFactory({ mount_point: "" });
+    const mounted = factory.nodeFilesystem({ mount_point: "/" });
+    const notMounted = factory.nodeFilesystem({ mount_point: "" });
     expect(isMounted(null)).toBe(false);
     expect(isMounted(notMounted)).toBe(false);
     expect(isMounted(mounted)).toBe(true);
   });
 
   it("handles reserved filesystems", () => {
-    const reserved = fsFactory({ mount_point: "RESERVED" });
+    const reserved = factory.nodeFilesystem({ mount_point: "RESERVED" });
     expect(isMounted(reserved)).toBe(false);
   });
 });
 
 describe("isPartition", () => {
   it("returns whether a storage device is a partition", () => {
-    const disk = diskFactory({ type: DiskTypes.PHYSICAL });
-    const partition = partitionFactory({ type: "partition" });
+    const disk = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
+    const partition = factory.nodePartition({ type: "partition" });
     expect(isPartition(null)).toBe(false);
     expect(isPartition(disk)).toBe(false);
     expect(isPartition(partition)).toBe(true);
@@ -783,7 +782,7 @@ describe("isPartition", () => {
 
 describe("isRaid", () => {
   it("returns whether a disk is a RAID", () => {
-    const raid = diskFactory({
+    const raid = factory.nodeDisk({
       parent: {
         id: 1,
         type: DiskTypes.RAID_0,
@@ -791,7 +790,7 @@ describe("isRaid", () => {
       },
       type: DiskTypes.VIRTUAL,
     });
-    const notRaid = diskFactory({ type: DiskTypes.PHYSICAL });
+    const notRaid = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
     expect(isRaid(null)).toBe(false);
     expect(isRaid(notRaid)).toBe(false);
     expect(isRaid(raid)).toBe(true);
@@ -800,8 +799,8 @@ describe("isRaid", () => {
 
 describe("isPhysical", () => {
   it("returns whether a disk is a physical disk", () => {
-    const physical = diskFactory({ type: DiskTypes.PHYSICAL });
-    const notPhysical = diskFactory({ type: DiskTypes.VIRTUAL });
+    const physical = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
+    const notPhysical = factory.nodeDisk({ type: DiskTypes.VIRTUAL });
     expect(isPhysical(null)).toBe(false);
     expect(isPhysical(notPhysical)).toBe(false);
     expect(isPhysical(physical)).toBe(true);
@@ -810,7 +809,7 @@ describe("isPhysical", () => {
 
 describe("isVirtual", () => {
   it("returns whether a disk is a virtual disk", () => {
-    const virtual = diskFactory({
+    const virtual = factory.nodeDisk({
       parent: {
         id: 1,
         type: DiskTypes.RAID_0,
@@ -818,7 +817,7 @@ describe("isVirtual", () => {
       },
       type: DiskTypes.VIRTUAL,
     });
-    const notVirtual = diskFactory({ type: DiskTypes.PHYSICAL });
+    const notVirtual = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
     expect(isVirtual(null)).toBe(false);
     expect(isVirtual(notVirtual)).toBe(false);
     expect(isVirtual(virtual)).toBe(true);
@@ -835,10 +834,10 @@ describe("isVMWareLayout", () => {
 
 describe("isVolumeGroup", () => {
   it("returns whether a disk is a volume group", () => {
-    const vg = diskFactory({
+    const vg = factory.nodeDisk({
       type: DiskTypes.VOLUME_GROUP,
     });
-    const notVg = diskFactory({ type: DiskTypes.PHYSICAL });
+    const notVg = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
     expect(isVolumeGroup(null)).toBe(false);
     expect(isVolumeGroup(notVg)).toBe(false);
     expect(isVolumeGroup(vg)).toBe(true);
@@ -851,15 +850,18 @@ describe("partitionAvailable", () => {
   });
 
   it("handles mounted partitions", () => {
-    const partition = partitionFactory({
-      filesystem: fsFactory({ mount_point: "/path" }),
+    const partition = factory.nodePartition({
+      filesystem: factory.nodeFilesystem({ mount_point: "/path" }),
     });
     expect(partitionAvailable(partition)).toBe(false);
   });
 
   it("handles unmounted partitions that can be formatted", () => {
-    const partition = partitionFactory({
-      filesystem: fsFactory({ is_format_fstype: true, mount_point: "" }),
+    const partition = factory.nodePartition({
+      filesystem: factory.nodeFilesystem({
+        is_format_fstype: true,
+        mount_point: "",
+      }),
     });
     expect(partitionAvailable(partition)).toBe(true);
   });
@@ -871,8 +873,8 @@ describe("splitDiskPartitionIds", () => {
   });
 
   it("can split a list of storage devices into disk ids and partition ids", () => {
-    const disks = [diskFactory(), diskFactory()];
-    const partitions = [partitionFactory(), partitionFactory()];
+    const disks = [factory.nodeDisk(), factory.nodeDisk()];
+    const partitions = [factory.nodePartition(), factory.nodePartition()];
     const combined = [...disks, ...partitions];
     expect(splitDiskPartitionIds(combined)).toStrictEqual([
       [disks[0].id, disks[1].id],
@@ -900,7 +902,7 @@ describe("getNextStorageName", () => {
   describe("volume group", () => {
     it("can get the next name", () => {
       const disks = [
-        diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
       ];
       expect(getNextStorageName(disks, "vg")).toStrictEqual("vg1");
     });
@@ -911,33 +913,33 @@ describe("getNextStorageName", () => {
 
     it("can get the next name when the names are out of order", () => {
       const disks = [
-        diskFactory({ name: "vg1", type: DiskTypes.VOLUME_GROUP }),
-        diskFactory({ name: "vg2", type: DiskTypes.VOLUME_GROUP }),
-        diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg1", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg2", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
       ];
       expect(getNextStorageName(disks, "vg")).toStrictEqual("vg3");
     });
 
     it("can get the name when there are non sequential names", () => {
       const disks = [
-        diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
-        diskFactory({ name: "vg2", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg2", type: DiskTypes.VOLUME_GROUP }),
       ];
       expect(getNextStorageName(disks, "vg")).toStrictEqual("vg3");
     });
 
     it("can get the next name when there are partial names", () => {
       const disks = [
-        diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
-        diskFactory({ name: "vg", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg", type: DiskTypes.VOLUME_GROUP }),
       ];
       expect(getNextStorageName(disks, "vg")).toStrictEqual("vg1");
     });
 
     it("can get the next name when there are partial similar names", () => {
       const disks = [
-        diskFactory({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
-        diskFactory({ name: "vg2vg1", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg0", type: DiskTypes.VOLUME_GROUP }),
+        factory.nodeDisk({ name: "vg2vg1", type: DiskTypes.VOLUME_GROUP }),
       ];
       expect(getNextStorageName(disks, "vg")).toStrictEqual("vg1");
     });
@@ -946,7 +948,7 @@ describe("getNextStorageName", () => {
   describe("raid", () => {
     it("can get the next name", () => {
       const disks = [
-        diskFactory({
+        factory.nodeDisk({
           name: "md0",
           parent: {
             id: 1,
@@ -967,7 +969,7 @@ describe("getNextStorageName", () => {
   describe("bcache", () => {
     it("can get the next name", () => {
       const disks = [
-        diskFactory({
+        factory.nodeDisk({
           name: "bcache0",
           parent: {
             id: 1,
@@ -988,8 +990,8 @@ describe("getNextStorageName", () => {
   describe("datastore", () => {
     it("can get the next name", () => {
       const disks = [
-        diskFactory({
-          filesystem: fsFactory({ fstype: "vmfs6" }),
+        factory.nodeDisk({
+          filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
           name: "datastore1",
         }),
       ];

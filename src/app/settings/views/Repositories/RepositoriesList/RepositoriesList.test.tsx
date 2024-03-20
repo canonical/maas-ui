@@ -8,11 +8,7 @@ import RepositoriesList, {
 } from "./RepositoriesList";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  packageRepository as packageRepositoryFactory,
-  packageRepositoryState as packageRepositoryStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -28,32 +24,32 @@ describe("RepositoriesList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         loaded: true,
         items: [
-          packageRepositoryFactory({
+          factory.packageRepository({
             id: 1,
             name: "main_archive",
             url: "http://archive.ubuntu.com/ubuntu",
             default: true,
             enabled: true,
           }),
-          packageRepositoryFactory({
+          factory.packageRepository({
             id: 2,
             name: "ports_archive",
             url: "http://ports.ubuntu.com/ubuntu-ports",
             default: true,
             enabled: true,
           }),
-          packageRepositoryFactory({
+          factory.packageRepository({
             id: 3,
             name: "extra_archive",
             url: "http://maas.io",
             default: false,
             enabled: true,
           }),
-          packageRepositoryFactory({
+          factory.packageRepository({
             id: 4,
             name: "secret_archive",
             url: "http://www.website.com",

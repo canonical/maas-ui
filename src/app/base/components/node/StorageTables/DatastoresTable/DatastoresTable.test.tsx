@@ -4,29 +4,21 @@ import configureStore from "redux-mock-store";
 import DatastoresTable from "./DatastoresTable";
 
 import { actions as machineActions } from "@/app/store/machine";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodeFilesystem as fsFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("shows a message if no datastores are detected", () => {
-  const notDatastore = fsFactory({ fstype: "fat32" });
-  const machine = machineDetailsFactory({
-    disks: [diskFactory({ name: "not-datastore", filesystem: notDatastore })],
+  const notDatastore = factory.nodeFilesystem({ fstype: "fat32" });
+  const machine = factory.machineDetails({
+    disks: [
+      factory.nodeDisk({ name: "not-datastore", filesystem: notDatastore }),
+    ],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -43,19 +35,19 @@ it("shows a message if no datastores are detected", () => {
 
 it("only shows filesystems that are VMFS6 datastores", () => {
   const [datastore, notDatastore] = [
-    fsFactory({ fstype: "vmfs6" }),
-    fsFactory({ fstype: "fat32" }),
+    factory.nodeFilesystem({ fstype: "vmfs6" }),
+    factory.nodeFilesystem({ fstype: "fat32" }),
   ];
   const [dsDisk, notDsDisk] = [
-    diskFactory({ name: "datastore", filesystem: datastore }),
-    diskFactory({ name: "not-datastore", filesystem: notDatastore }),
+    factory.nodeDisk({ name: "datastore", filesystem: datastore }),
+    factory.nodeDisk({ name: "not-datastore", filesystem: notDatastore }),
   ];
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     disks: [dsDisk, notDsDisk],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -73,17 +65,17 @@ it("only shows filesystems that are VMFS6 datastores", () => {
 });
 
 it("does not show an action column if node is a controller", () => {
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     disks: [
-      diskFactory({
+      factory.nodeDisk({
         name: "datastore",
-        filesystem: fsFactory({ fstype: "vmfs6" }),
+        filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
       }),
     ],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
   });
@@ -100,17 +92,17 @@ it("does not show an action column if node is a controller", () => {
 });
 
 it("shows an action column if node is a machine", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     disks: [
-      diskFactory({
+      factory.nodeDisk({
         name: "datastore",
-        filesystem: fsFactory({ fstype: "vmfs6" }),
+        filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
       }),
     ],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -127,14 +119,17 @@ it("shows an action column if node is a machine", () => {
 });
 
 it("can remove a datastore if node is a machine", async () => {
-  const datastore = fsFactory({ fstype: "vmfs6" });
-  const disk = diskFactory({ filesystem: datastore });
-  const machine = machineDetailsFactory({ disks: [disk], system_id: "abc123" });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const datastore = factory.nodeFilesystem({ fstype: "vmfs6" });
+  const disk = factory.nodeDisk({ filesystem: datastore });
+  const machine = factory.machineDetails({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        abc123: factory.machineStatus(),
       }),
     }),
   });

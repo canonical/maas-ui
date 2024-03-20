@@ -11,10 +11,7 @@ import KernelParameters, {
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -23,8 +20,8 @@ describe("KernelParameters", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      config: configStateFactory({
+    initialState = factory.rootState({
+      config: factory.configState({
         items: [
           {
             name: ConfigNames.KERNEL_OPTS,

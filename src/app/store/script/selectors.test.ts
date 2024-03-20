@@ -1,18 +1,14 @@
 import script from "./selectors";
 
 import { ScriptType } from "@/app/store/script/types";
-import {
-  script as scriptFactory,
-  scriptState as scriptStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("script selectors", () => {
   describe("all", () => {
     it("returns all script", () => {
-      const items = [scriptFactory(), scriptFactory()];
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const items = [factory.script(), factory.script()];
+      const state = factory.rootState({
+        script: factory.scriptState({
           items,
         }),
       });
@@ -23,8 +19,8 @@ describe("script selectors", () => {
 
   describe("loading", () => {
     it("returns script loading state", () => {
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           loading: true,
         }),
       });
@@ -34,8 +30,8 @@ describe("script selectors", () => {
 
   describe("hasErrors", () => {
     it("can identify errors from a string", () => {
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           errors: "Uh oh!",
         }),
       });
@@ -43,8 +39,8 @@ describe("script selectors", () => {
     });
 
     it("can identify errors from an object", () => {
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           errors: { name: "Name is required" },
         }),
       });
@@ -52,8 +48,8 @@ describe("script selectors", () => {
     });
 
     it("does not identify errors from an empty object", () => {
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           errors: {},
         }),
       });
@@ -63,8 +59,8 @@ describe("script selectors", () => {
 
   describe("loaded", () => {
     it("returns script loaded state", () => {
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           loaded: true,
         }),
       });
@@ -75,12 +71,12 @@ describe("script selectors", () => {
   describe("commissioning", () => {
     it("returns all commissioning script", () => {
       const items = [
-        scriptFactory({ script_type: ScriptType.COMMISSIONING }),
-        scriptFactory({ script_type: ScriptType.TESTING }),
-        scriptFactory({ script_type: ScriptType.COMMISSIONING }),
+        factory.script({ script_type: ScriptType.COMMISSIONING }),
+        factory.script({ script_type: ScriptType.TESTING }),
+        factory.script({ script_type: ScriptType.COMMISSIONING }),
       ];
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           items,
         }),
       });
@@ -92,20 +88,23 @@ describe("script selectors", () => {
   describe("preselected", () => {
     it("returns all preselected commissioning script", () => {
       const preselectedItems = [
-        scriptFactory({ script_type: ScriptType.COMMISSIONING, default: true }),
-        scriptFactory({
+        factory.script({
+          script_type: ScriptType.COMMISSIONING,
+          default: true,
+        }),
+        factory.script({
           script_type: ScriptType.COMMISSIONING,
           default: false,
         }),
       ];
       const nonPreselectedItems = [
-        scriptFactory({
+        factory.script({
           script_type: ScriptType.COMMISSIONING,
           tags: ["noauto"],
         }),
       ];
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           items: [...preselectedItems, ...nonPreselectedItems],
         }),
       });
@@ -117,12 +116,12 @@ describe("script selectors", () => {
   describe("testing", () => {
     it("returns all testing script", () => {
       const items = [
-        scriptFactory({ script_type: ScriptType.COMMISSIONING }),
-        scriptFactory({ script_type: ScriptType.TESTING }),
-        scriptFactory({ script_type: ScriptType.TESTING }),
+        factory.script({ script_type: ScriptType.COMMISSIONING }),
+        factory.script({ script_type: ScriptType.TESTING }),
+        factory.script({ script_type: ScriptType.TESTING }),
       ];
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           items,
         }),
       });
@@ -134,12 +133,12 @@ describe("script selectors", () => {
   describe("defaultTesting", () => {
     it("returns all default testing script", () => {
       const items = [
-        scriptFactory({ script_type: ScriptType.TESTING, default: true }),
-        scriptFactory({ script_type: ScriptType.TESTING, default: false }),
-        scriptFactory({ script_type: ScriptType.TESTING, tags: ["noauto"] }),
+        factory.script({ script_type: ScriptType.TESTING, default: true }),
+        factory.script({ script_type: ScriptType.TESTING, default: false }),
+        factory.script({ script_type: ScriptType.TESTING, tags: ["noauto"] }),
       ];
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           items,
         }),
       });
@@ -151,9 +150,9 @@ describe("script selectors", () => {
   describe("testingWithUrl", () => {
     it("returns testing script that contain a url parameter", () => {
       const items = [
-        scriptFactory(),
-        scriptFactory(),
-        scriptFactory({
+        factory.script(),
+        factory.script(),
+        factory.script({
           parameters: {
             url: {
               default: "www.website.come",
@@ -163,8 +162,8 @@ describe("script selectors", () => {
           script_type: ScriptType.TESTING,
         }),
       ];
-      const state = rootStateFactory({
-        script: scriptStateFactory({
+      const state = factory.rootState({
+        script: factory.scriptState({
           items,
         }),
       });

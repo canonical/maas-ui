@@ -10,12 +10,7 @@ import type {
   BondModeOptions,
   BondXmitHashPolicyOptions,
 } from "@/app/store/general/types";
-import {
-  generalState as generalStateFactory,
-  bondOptions as bondOptionsFactory,
-  bondOptionsState as bondOptionsStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const lacpRates: BondLacpRateOptions = [
   [BondLacpRate.FAST, BondLacpRate.FAST],
@@ -48,9 +43,9 @@ describe("bondOptions selectors", () => {
         modes,
         xmit_hash_policies: xmitHashPolicies,
       };
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          bondOptions: bondOptionsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          bondOptions: factory.bondOptionsState({
             data,
           }),
         }),
@@ -62,9 +57,9 @@ describe("bondOptions selectors", () => {
   describe("loading", () => {
     it("returns bond options loading state", () => {
       const loading = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          bondOptions: bondOptionsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          bondOptions: factory.bondOptionsState({
             loading,
           }),
         }),
@@ -76,9 +71,9 @@ describe("bondOptions selectors", () => {
   describe("loaded", () => {
     it("returns bond options loaded state", () => {
       const loaded = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          bondOptions: bondOptionsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          bondOptions: factory.bondOptionsState({
             loaded,
           }),
         }),
@@ -90,9 +85,9 @@ describe("bondOptions selectors", () => {
   describe("errors", () => {
     it("returns bond options errors state", () => {
       const errors = "Cannot fetch bondOptions.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          bondOptions: bondOptionsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          bondOptions: factory.bondOptionsState({
             errors,
           }),
         }),
@@ -103,10 +98,10 @@ describe("bondOptions selectors", () => {
 
   describe("lacpRates", () => {
     it("returns LACP rates with the nested arrays removed", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          bondOptions: bondOptionsStateFactory({
-            data: bondOptionsFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          bondOptions: factory.bondOptionsState({
+            data: factory.bondOptions({
               lacp_rates: lacpRates,
             }),
           }),
@@ -118,10 +113,10 @@ describe("bondOptions selectors", () => {
 
   describe("modes", () => {
     it("returns modes with the nested arrays removed", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          bondOptions: bondOptionsStateFactory({
-            data: bondOptionsFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          bondOptions: factory.bondOptionsState({
+            data: factory.bondOptions({
               modes,
             }),
           }),
@@ -141,10 +136,10 @@ describe("bondOptions selectors", () => {
 
   describe("xmitHashPolicies", () => {
     it("returns XMIT hash policies with the nested arrays removed", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          bondOptions: bondOptionsStateFactory({
-            data: bondOptionsFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          bondOptions: factory.bondOptionsState({
+            data: factory.bondOptions({
               xmit_hash_policies: xmitHashPolicies,
             }),
           }),

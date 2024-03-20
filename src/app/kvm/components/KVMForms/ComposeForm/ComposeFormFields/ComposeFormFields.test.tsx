@@ -8,28 +8,7 @@ import ComposeFormFields from "./ComposeFormFields";
 import { DriverType } from "@/app/store/general/types";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainState as domainStateFactory,
-  fabricState as fabricStateFactory,
-  generalState as generalStateFactory,
-  podDetails as podDetailsFactory,
-  podMemoryResource as podMemoryResourceFactory,
-  podNuma as podNumaFactory,
-  podNumaCores as podNumaCoresFactory,
-  podResource as podResourceFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  spaceState as spaceStateFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
@@ -44,38 +23,38 @@ describe("ComposeFormFields", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      domain: domainStateFactory({
+    initialState = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
-        items: [podDetailsFactory({ id: 1, type: "lxd" })],
+      pod: factory.podState({
+        items: [factory.podDetails({ id: 1, type: "lxd" })],
         loaded: true,
-        statuses: { 1: podStatusFactory() },
+        statuses: { 1: factory.podStatus() },
       }),
-      resourcepool: resourcePoolStateFactory({
-        loaded: true,
-      }),
-      space: spaceStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      space: factory.spaceState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      vlan: factory.vlanState({
+        loaded: true,
+      }),
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });
@@ -83,8 +62,8 @@ describe("ComposeFormFields", () => {
   it("correctly displays the available cores", () => {
     const state = { ...initialState };
     const pod = state.pod.items[0];
-    pod.resources = podResourcesFactory({
-      cores: podResourceFactory({
+    pod.resources = factory.podResources({
+      cores: factory.podResource({
         allocated_other: 1,
         allocated_tracked: 2,
         free: 3,
@@ -109,14 +88,14 @@ describe("ComposeFormFields", () => {
     const state = { ...initialState };
     const pod = state.pod.items[0];
     const toMiB = (num: number) => num * 1024 ** 2;
-    pod.resources = podResourcesFactory({
-      memory: podMemoryResourceFactory({
-        general: podResourceFactory({
+    pod.resources = factory.podResources({
+      memory: factory.podMemoryResource({
+        general: factory.podResource({
           allocated_other: toMiB(1000),
           allocated_tracked: toMiB(2000),
           free: toMiB(3000),
         }),
-        hugepages: podResourceFactory({
+        hugepages: factory.podResource({
           allocated_other: toMiB(4000),
           allocated_tracked: toMiB(5000),
           free: toMiB(6000),
@@ -141,31 +120,31 @@ describe("ComposeFormFields", () => {
 
   it("shows warnings if available cores/memory is less than the default", () => {
     const state = { ...initialState };
-    const powerType = powerTypeFactory({
+    const powerType = factory.powerType({
       defaults: { cores: 2, memory: 2, storage: 2 },
       driver_type: DriverType.POD,
       name: PodType.VIRSH,
     });
     state.general.powerTypes.data = [powerType];
     state.pod.items = [
-      podDetailsFactory({
+      factory.podDetails({
         cpu_over_commit_ratio: 1,
         id: 1,
         memory_over_commit_ratio: 1,
         type: PodType.VIRSH,
-        resources: podResourcesFactory({
-          cores: podResourceFactory({
+        resources: factory.podResources({
+          cores: factory.podResource({
             allocated_other: 0,
             allocated_tracked: 0,
             free: 1,
           }),
-          memory: podMemoryResourceFactory({
-            general: podResourceFactory({
+          memory: factory.podMemoryResource({
+            general: factory.podResource({
               allocated_other: 0,
               allocated_tracked: 0,
               free: 1,
             }),
-            hugepages: podResourceFactory({
+            hugepages: factory.podResource({
               allocated_other: 0,
               allocated_tracked: 0,
               free: 0,
@@ -419,8 +398,8 @@ describe("ComposeFormFields", () => {
 
   it("shows an error if there are no cores available to pin", async () => {
     const state = { ...initialState };
-    state.pod.items[0].resources = podResourcesFactory({
-      cores: podResourceFactory({ free: 0 }),
+    state.pod.items[0].resources = factory.podResources({
+      cores: factory.podResource({ free: 0 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
@@ -441,8 +420,8 @@ describe("ComposeFormFields", () => {
 
   it("shows an error if trying to pin more cores than are available", async () => {
     const state = { ...initialState };
-    state.pod.items[0].resources = podResourcesFactory({
-      cores: podResourceFactory({ free: 1 }),
+    state.pod.items[0].resources = factory.podResources({
+      cores: factory.podResource({ free: 1 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
@@ -471,16 +450,16 @@ describe("ComposeFormFields", () => {
 
   it("shows a warning if some of the selected pinned cores are already pinned", async () => {
     const state = { ...initialState };
-    state.pod.items[0].resources = podResourcesFactory({
+    state.pod.items[0].resources = factory.podResources({
       numa: [
-        podNumaFactory({
-          cores: podNumaCoresFactory({
+        factory.podNuma({
+          cores: factory.podNumaCores({
             allocated: [0],
             free: [2], // Only core index available
           }),
         }),
-        podNumaFactory({
-          cores: podNumaCoresFactory({
+        factory.podNuma({
+          cores: factory.podNumaCores({
             allocated: [1, 3],
             free: [],
           }),

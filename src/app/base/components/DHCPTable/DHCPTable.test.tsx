@@ -9,15 +9,7 @@ import { Labels as FormLabels } from "@/app/base/components/DhcpForm";
 import { MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineEvent as machineEventFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -25,21 +17,21 @@ const mockStore = configureStore();
 describe("DHCPTable", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         loaded: true,
         loading: false,
         items: [
-          dhcpSnippetFactory({ node: "abc123" }),
-          dhcpSnippetFactory({ node: "abc123" }),
-          dhcpSnippetFactory(),
+          factory.dhcpSnippet({ node: "abc123" }),
+          factory.dhcpSnippet({ node: "abc123" }),
+          factory.dhcpSnippet(),
         ],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             architecture: "amd64",
-            events: [machineEventFactory()],
+            events: [factory.machineEvent()],
             system_id: "abc123",
           }),
         ],
@@ -74,7 +66,7 @@ describe("DHCPTable", () => {
 
   it("shows snippets for a machine", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         on_network: true,
         osystem: "ubuntu",
         status: NodeStatus.NEW,
@@ -102,13 +94,13 @@ describe("DHCPTable", () => {
 
   it("shows snippets for subnets", () => {
     const subnets = [
-      subnetFactory({ name: "subnet-name1" }),
-      subnetFactory({ name: "subnet-name2" }),
+      factory.subnet({ name: "subnet-name1" }),
+      factory.subnet({ name: "subnet-name2" }),
     ];
     state.dhcpsnippet.items = [
-      dhcpSnippetFactory({ subnet: subnets[0].id }),
-      dhcpSnippetFactory(),
-      dhcpSnippetFactory({ subnet: subnets[1].id }),
+      factory.dhcpSnippet({ subnet: subnets[0].id }),
+      factory.dhcpSnippet(),
+      factory.dhcpSnippet({ subnet: subnets[1].id }),
     ];
     const store = mockStore(state);
     render(
@@ -134,7 +126,7 @@ describe("DHCPTable", () => {
     state.device.loaded = true;
     state.machine.loaded = true;
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         on_network: true,
         osystem: "ubuntu",
         status: NodeStatus.NEW,

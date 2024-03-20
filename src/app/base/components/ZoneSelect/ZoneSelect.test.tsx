@@ -4,24 +4,19 @@ import configureStore from "redux-mock-store";
 import ZoneSelect from "./ZoneSelect";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("ZoneSelect", () => {
   it("renders a list of all zones in state", () => {
-    const state = rootStateFactory({
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+    const state = factory.rootState({
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
         items: [
-          zoneFactory({ id: 101, name: "Pool 1" }),
-          zoneFactory({ id: 202, name: "Pool 2" }),
+          factory.zone({ id: 101, name: "Pool 1" }),
+          factory.zone({ id: 202, name: "Pool 2" }),
         ],
       }),
     });
@@ -37,7 +32,7 @@ describe("ZoneSelect", () => {
   });
 
   it("dispatches action to fetch zones on load", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
 
     renderWithMockStore(
@@ -52,9 +47,9 @@ describe("ZoneSelect", () => {
   });
 
   it("disables select if zones have not loaded", () => {
-    const state = rootStateFactory({
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "idle" }),
+    const state = factory.rootState({
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "idle" }),
       }),
     });
     const store = mockStore(state);

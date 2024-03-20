@@ -1,28 +1,22 @@
 import EventLogsTable, { Label } from "./EventLogsTable";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  eventRecord as eventRecordFactory,
-  eventState as eventStateFactory,
-  machineState as machineStateFactory,
-  machineDetails as machineDetailsFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("EventLogsTable", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      event: eventStateFactory({
+    state = factory.rootState({
+      event: factory.eventState({
         items: [
-          eventRecordFactory({ id: 101, node_id: 1 }),
-          eventRecordFactory({ id: 123, node_id: 2 }),
+          factory.eventRecord({ id: 101, node_id: 1 }),
+          factory.eventRecord({ id: 123, node_id: 2 }),
         ],
       }),
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ id: 1, system_id: "abc123" })],
+      machine: factory.machineState({
+        items: [factory.machineDetails({ id: 1, system_id: "abc123" })],
       }),
     });
   });

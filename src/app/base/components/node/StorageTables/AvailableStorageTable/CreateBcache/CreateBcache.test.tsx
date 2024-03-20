@@ -6,23 +6,16 @@ import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import { BcacheModes } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("CreateBcache", () => {
   it("sets the initial name correctly", () => {
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
     const bcaches = [
-      diskFactory({
+      factory.nodeDisk({
         name: "bcache0",
         parent: {
           id: 0,
@@ -31,7 +24,7 @@ describe("CreateBcache", () => {
         },
         type: DiskTypes.VIRTUAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         name: "bcache1",
         parent: {
           id: 1,
@@ -41,16 +34,16 @@ describe("CreateBcache", () => {
         type: DiskTypes.VIRTUAL,
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [cacheSet, ...bcaches],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -58,7 +51,7 @@ describe("CreateBcache", () => {
     renderWithBrowserRouter(
       <CreateBcache
         closeExpanded={vi.fn()}
-        storageDevice={diskFactory()}
+        storageDevice={factory.nodeDisk()}
         systemId="abc123"
       />,
       { state }
@@ -71,22 +64,22 @@ describe("CreateBcache", () => {
   });
 
   it("correctly dispatches an action to create a bcache", async () => {
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
-    const backingDevice = diskFactory({
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
+    const backingDevice = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.PHYSICAL,
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [backingDevice, cacheSet],
             system_id: "abc123",
             supported_filesystems: [{ key: "fat32", ui: "FAT32" }],
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

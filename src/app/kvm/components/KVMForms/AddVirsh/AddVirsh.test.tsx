@@ -8,20 +8,7 @@ import { PodType } from "@/app/store/pod/constants";
 import { actions as resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
 import { actions as zoneActions } from "@/app/store/zone";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  powerField as powerFieldFactory,
-  powerTypesState as powerTypesStateFactory,
-  powerType as powerTypeFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -30,34 +17,34 @@ describe("AddVirsh", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [{ name: ConfigNames.MAAS_NAME, value: "MAAS" }],
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
           data: [
-            powerTypeFactory({
+            factory.powerType({
               name: PodType.VIRSH,
               fields: [
-                powerFieldFactory({ name: "power_address" }),
-                powerFieldFactory({ name: "power_pass" }),
+                factory.powerField({ name: "power_address" }),
+                factory.powerField({ name: "power_pass" }),
               ],
             }),
           ],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory({ id: 0 })],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool({ id: 0 })],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-        items: [zoneFactory({ id: 0 })],
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
+        items: [factory.zone({ id: 0 })],
       }),
     });
   });

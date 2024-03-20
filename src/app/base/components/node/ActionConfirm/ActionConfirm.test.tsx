@@ -5,14 +5,7 @@ import ActionConfirm from "./ActionConfirm";
 
 import * as maasUiHooks from "@/app/base/hooks/analytics";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineEventError as machineEventErrorFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -23,11 +16,11 @@ vi.mock("@canonical/react-components/dist/hooks", () => ({
 
 describe("ActionConfirm", () => {
   it("can show saving state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory({ deletingFilesystem: true }),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus({ deletingFilesystem: true }),
         }),
       }),
     });
@@ -58,18 +51,18 @@ describe("ActionConfirm", () => {
   });
 
   it("can show errors", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             id: "abc123",
             event: "deleteFilesystem",
             error: "uh oh",
           }),
         ],
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory({ deletingFilesystem: false }),
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus({ deletingFilesystem: false }),
         }),
       }),
     });
@@ -96,11 +89,11 @@ describe("ActionConfirm", () => {
   });
 
   it("can change the submit appearance", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory({ creatingCacheSet: false }),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus({ creatingCacheSet: false }),
         }),
       }),
     });
@@ -138,11 +131,11 @@ describe("ActionConfirm", () => {
     const useSendMock = vi.spyOn(maasUiHooks, "useSendAnalyticsWhen");
     // Mock saved state by simulating "deletingFilesystem" changing from true to false
     vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(() => true);
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory({ deletingFilesystem: false }),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus({ deletingFilesystem: false }),
         }),
       }),
     });
@@ -175,11 +168,11 @@ describe("ActionConfirm", () => {
   it("closes the form when saved", () => {
     // Mock saved state by simulating "deletingFilesystem" changing from true to false
     vi.spyOn(reactComponentHooks, "usePrevious").mockImplementation(() => true);
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory({ deletingFilesystem: false }),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus({ deletingFilesystem: false }),
         }),
       }),
     });

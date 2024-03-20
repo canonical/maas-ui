@@ -6,18 +6,7 @@ import CloneForm from "./CloneForm";
 import { actions as machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as nicFactory,
-  machineState as machineStateFactory,
-  machineStateList,
-  machineStateListGroup,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   renderWithBrowserRouter,
@@ -48,32 +37,32 @@ describe("CloneForm", () => {
 
   it("should be submittable only when a machine and cloning config are selected", async () => {
     const machines = [
-      machineFactory({ system_id: "abc123" }),
-      machineDetailsFactory({
-        disks: [diskFactory()],
-        interfaces: [nicFactory()],
+      factory.machine({ system_id: "abc123" }),
+      factory.machineDetails({
+        disks: [factory.nodeDisk()],
+        interfaces: [factory.machineInterface()],
         system_id: "def456",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         active: null,
         items: machines,
         loaded: true,
         selected: { items: ["abc123"] },
         lists: {
-          "123456": machineStateList({
+          "123456": factory.machineStateList({
             groups: [
-              machineStateListGroup({
+              factory.machineStateListGroup({
                 items: [machines[1].system_id],
               }),
             ],
             loaded: true,
           }),
         },
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         }),
       }),
     });
@@ -128,33 +117,33 @@ describe("CloneForm", () => {
 
   it("shows cloning results when the form is successfully submitted", async () => {
     const machines = [
-      machineFactory({ system_id: "abc123", hostname: "a-machine-name" }),
-      machineDetailsFactory({
-        disks: [diskFactory()],
-        interfaces: [nicFactory()],
+      factory.machine({ system_id: "abc123", hostname: "a-machine-name" }),
+      factory.machineDetails({
+        disks: [factory.nodeDisk()],
+        interfaces: [factory.machineInterface()],
         system_id: "def456",
         hostname: "another-machine",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         active: null,
         items: machines,
         loaded: true,
         selected: { items: ["abc123"] },
         lists: {
-          "123456": machineStateList({
+          "123456": factory.machineStateList({
             groups: [
-              machineStateListGroup({
+              factory.machineStateListGroup({
                 items: [machines[1].system_id],
               }),
             ],
             loaded: true,
           }),
         },
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         }),
       }),
     });
@@ -203,35 +192,35 @@ describe("CloneForm", () => {
 
   it("can dispatch an action to clone to the given machines", async () => {
     const machines = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
-      machineDetailsFactory({
-        disks: [diskFactory()],
-        interfaces: [nicFactory()],
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
+      factory.machineDetails({
+        disks: [factory.nodeDisk()],
+        interfaces: [factory.machineInterface()],
         system_id: "ghi789",
         hostname: "another-machine",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         active: null,
         items: machines,
         loaded: true,
         selected: { items: ["abc123", "def456"] },
         lists: {
-          "123456": machineStateList({
+          "123456": factory.machineStateList({
             groups: [
-              machineStateListGroup({
+              factory.machineStateListGroup({
                 items: [machines[2].system_id],
               }),
             ],
             loaded: true,
           }),
         },
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
-          ghi789: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
+          ghi789: factory.machineStatus(),
         }),
       }),
     });

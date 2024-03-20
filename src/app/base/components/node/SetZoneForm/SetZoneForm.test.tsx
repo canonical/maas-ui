@@ -6,33 +6,26 @@ import configureStore from "redux-mock-store";
 import SetZoneForm from "./SetZoneForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  modelRef as modelRefFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 let state: RootState;
 beforeEach(() => {
-  state = rootStateFactory({
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+  state = factory.rootState({
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({ fetch: "success" }),
       items: [
-        zoneFactory({ id: 0, name: "default" }),
-        zoneFactory({ id: 1, name: "zone-1" }),
+        factory.zone({ id: 0, name: "default" }),
+        factory.zone({ id: 1, name: "zone-1" }),
       ],
     }),
   });
 });
 
 it("initialises zone value if exactly one node provided", () => {
-  const nodes = [machineFactory({ zone: modelRefFactory({ id: 1 }) })];
+  const nodes = [factory.machine({ zone: factory.modelRef({ id: 1 }) })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -56,8 +49,8 @@ it("initialises zone value if exactly one node provided", () => {
 
 it("does not initialise zone value if more than one node provided", () => {
   const nodes = [
-    machineFactory({ zone: modelRefFactory({ id: 0 }) }),
-    machineFactory({ zone: modelRefFactory({ id: 1 }) }),
+    factory.machine({ zone: factory.modelRef({ id: 0 }) }),
+    factory.machine({ zone: factory.modelRef({ id: 1 }) }),
   ];
   const store = mockStore(state);
   render(
@@ -83,8 +76,8 @@ it("does not initialise zone value if more than one node provided", () => {
 it("correctly runs function to set zones of given nodes", async () => {
   const onSubmit = vi.fn();
   const nodes = [
-    machineFactory({ system_id: "abc123" }),
-    machineFactory({ system_id: "def456" }),
+    factory.machine({ system_id: "abc123" }),
+    factory.machine({ system_id: "def456" }),
   ];
   const store = mockStore(state);
   render(

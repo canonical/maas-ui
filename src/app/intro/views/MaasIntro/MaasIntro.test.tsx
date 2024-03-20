@@ -10,16 +10,7 @@ import { actions as configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import { actions as repoActions } from "@/app/store/packagerepository";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  packageRepository as repoFactory,
-  packageRepositoryState as repoStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -31,36 +22,36 @@ const mockStore = configureStore<RootState, {}>();
 
 describe("MaasIntro", () => {
   let state: RootState;
-  const mainArchive = repoFactory({
+  const mainArchive = factory.packageRepository({
     default: true,
     name: "main_archive",
     url: "http://www.mainarchive.com",
   });
-  const portsArchive = repoFactory({
+  const portsArchive = factory.packageRepository({
     default: true,
     name: "ports_archive",
     url: "http://www.portsarchive.com",
   });
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
-          configFactory({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
-          configFactory({
+          factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+          factory.config({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
+          factory.config({
             name: ConfigNames.HTTP_PROXY,
             value: "http://www.site.com",
           }),
-          configFactory({ name: ConfigNames.UPSTREAM_DNS, value: "8.8.8.8" }),
+          factory.config({ name: ConfigNames.UPSTREAM_DNS, value: "8.8.8.8" }),
         ],
       }),
-      packagerepository: repoStateFactory({
+      packagerepository: factory.packageRepositoryState({
         items: [mainArchive, portsArchive],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ completed_intro: false, is_superuser: true }),
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ completed_intro: false, is_superuser: true }),
         }),
       }),
     });

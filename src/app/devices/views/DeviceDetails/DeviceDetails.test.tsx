@@ -8,30 +8,24 @@ import { Label as DeviceSummaryLabel } from "./DeviceSummary/DeviceSummary";
 import urls from "@/app/base/urls";
 import { actions as deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("DeviceDetails", () => {
-  const device = deviceDetailsFactory({ system_id: "abc123" });
+  const device = factory.deviceDetails({ system_id: "abc123" });
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({
+    state = factory.rootState({
+      device: factory.deviceState({
         items: [device],
         loaded: true,
         loading: false,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });

@@ -12,23 +12,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import {
-  discovery as discoveryFactory,
-  domain as domainFactory,
-  device as deviceFactory,
-  machine as machineFactory,
-  testStatus as testStatusFactory,
-  modelRef as modelRefFactory,
-  discoveryState as discoveryStateFactory,
-  deviceState as deviceStateFactory,
-  domainState as domainStateFactory,
-  machineState as machineStateFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  rootState as rootStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -50,15 +34,15 @@ describe("DiscoveriesList", () => {
     });
     vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     const machines = [
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 4,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.RUNNING,
         }),
         distro_series: "bionic",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -66,49 +50,49 @@ describe("DiscoveriesList", () => {
         hostname: "koala",
         ip_addresses: [],
         memory: 8,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         osystem: "ubuntu",
         owner: "admin",
         permissions: ["edit", "delete"],
         physical_disk_count: 1,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "00:11:22:33:44:55",
         spaces: [],
         status: NodeStatus.DEPLOYED,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 8,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
     ];
-    state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    state = factory.rootState({
+      discovery: factory.discoveryState({
         loaded: true,
         items: [
-          discoveryFactory({
+          factory.discovery({
             hostname: "my-discovery-test",
           }),
-          discoveryFactory({
+          factory.discovery({
             hostname: "another-test",
           }),
         ],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: machines,
         lists: {
-          123456: machineStateListFactory({
+          123456: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machines[0].system_id],
               }),
             ],
@@ -118,15 +102,17 @@ describe("DiscoveriesList", () => {
         },
         loaded: true,
       }),
-      device: deviceStateFactory({
+      device: factory.deviceState({
         loaded: true,
-        items: [deviceFactory({ system_id: "abc123", fqdn: "abc123.example" })],
+        items: [
+          factory.device({ system_id: "abc123", fqdn: "abc123.example" }),
+        ],
       }),
-      subnet: subnetStateFactory({ loaded: true }),
-      vlan: vlanStateFactory({ loaded: true }),
-      domain: domainStateFactory({
+      subnet: factory.subnetState({ loaded: true }),
+      vlan: factory.vlanState({ loaded: true }),
+      domain: factory.domainState({
         loaded: true,
-        items: [domainFactory({ name: "local" })],
+        items: [factory.domain({ name: "local" })],
       }),
     });
   });
@@ -146,8 +132,8 @@ describe("DiscoveriesList", () => {
   });
 
   it("displays a spinner within table when loading", () => {
-    state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    state = factory.rootState({
+      discovery: factory.discoveryState({
         loading: true,
       }),
     });
@@ -159,8 +145,8 @@ describe("DiscoveriesList", () => {
   });
 
   it("displays a message when there are no discoveries", () => {
-    state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    state = factory.rootState({
+      discovery: factory.discoveryState({
         loaded: true,
         items: [],
       }),

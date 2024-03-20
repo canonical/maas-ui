@@ -2,14 +2,7 @@ import reducers, { actions } from "./slice";
 import { ControllerMeta } from "./types";
 import { ImageSyncStatus } from "./types/enum";
 
-import {
-  controller as controllerFactory,
-  controllerDetails as controllerDetailsFactory,
-  controllerEventError as controllerEventErrorFactory,
-  controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
-  controllerStatus as controllerStatusFactory,
-  controllerState as controllerStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("controller reducers", () => {
   it("should return the initial state", () => {
@@ -31,10 +24,10 @@ describe("controller reducers", () => {
   it("reduces checkImagesStart", () => {
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           statuses: {
-            abc123: controllerStatusFactory({ checkingImages: false }),
-            def456: controllerStatusFactory({ checkingImages: false }),
+            abc123: factory.controllerStatus({ checkingImages: false }),
+            def456: factory.controllerStatus({ checkingImages: false }),
           },
         }),
         actions.checkImagesStart([
@@ -43,26 +36,26 @@ describe("controller reducers", () => {
         ])
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         statuses: {
-          abc123: controllerStatusFactory({ checkingImages: true }),
-          def456: controllerStatusFactory({ checkingImages: true }),
+          abc123: factory.controllerStatus({ checkingImages: true }),
+          def456: factory.controllerStatus({ checkingImages: true }),
         },
       })
     );
   });
 
   it("reduces checkImagesError", () => {
-    const items = [controllerFactory({ system_id: "abc123" })];
+    const items = [factory.controller({ system_id: "abc123" })];
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           errors: "It's realllll bad",
           eventErrors: [],
           items,
           statuses: {
-            abc123: controllerStatusFactory({ checkingImages: true }),
-            def456: controllerStatusFactory({ checkingImages: true }),
+            abc123: factory.controllerStatus({ checkingImages: true }),
+            def456: factory.controllerStatus({ checkingImages: true }),
           },
         }),
         actions.checkImagesError(
@@ -74,15 +67,15 @@ describe("controller reducers", () => {
         )
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         errors: "It's realllll bad",
         eventErrors: [
-          controllerEventErrorFactory({
+          factory.controllerEventError({
             error: "It's realllll bad",
             event: "checkImages",
             id: "abc123",
           }),
-          controllerEventErrorFactory({
+          factory.controllerEventError({
             error: "It's realllll bad",
             event: "checkImages",
             id: "def456",
@@ -90,8 +83,8 @@ describe("controller reducers", () => {
         ],
         items,
         statuses: {
-          abc123: controllerStatusFactory({ checkingImages: false }),
-          def456: controllerStatusFactory({ checkingImages: false }),
+          abc123: factory.controllerStatus({ checkingImages: false }),
+          def456: factory.controllerStatus({ checkingImages: false }),
         },
       })
     );
@@ -100,14 +93,14 @@ describe("controller reducers", () => {
   it("reduces checkImagesSuccess", () => {
     expect(
       reducers(
-        controllerStateFactory({
-          imageSyncStatuses: controllerImageSyncStatusesFactory({
+        factory.controllerState({
+          imageSyncStatuses: factory.controllerImageSyncStatuses({
             abc123: ImageSyncStatus.Synced,
             ghi789: ImageSyncStatus.Synced,
           }),
           statuses: {
-            abc123: controllerStatusFactory({ checkingImages: true }),
-            def456: controllerStatusFactory({ checkingImages: true }),
+            abc123: factory.controllerStatus({ checkingImages: true }),
+            def456: factory.controllerStatus({ checkingImages: true }),
           },
         }),
         actions.checkImagesSuccess(
@@ -115,22 +108,22 @@ describe("controller reducers", () => {
             { [ControllerMeta.PK]: "abc123" },
             { [ControllerMeta.PK]: "def456" },
           ],
-          controllerImageSyncStatusesFactory({
+          factory.controllerImageSyncStatuses({
             abc123: ImageSyncStatus.OutOfSync,
             def456: ImageSyncStatus.Syncing,
           })
         )
       )
     ).toEqual(
-      controllerStateFactory({
-        imageSyncStatuses: controllerImageSyncStatusesFactory({
+      factory.controllerState({
+        imageSyncStatuses: factory.controllerImageSyncStatuses({
           abc123: ImageSyncStatus.OutOfSync,
           def456: ImageSyncStatus.Syncing,
           ghi789: ImageSyncStatus.Synced,
         }),
         statuses: {
-          abc123: controllerStatusFactory({ checkingImages: false }),
-          def456: controllerStatusFactory({ checkingImages: false }),
+          abc123: factory.controllerStatus({ checkingImages: false }),
+          def456: factory.controllerStatus({ checkingImages: false }),
         },
       })
     );
@@ -139,10 +132,10 @@ describe("controller reducers", () => {
   it("reduces pollCheckImagesStart", () => {
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           statuses: {
-            abc123: controllerStatusFactory({ checkingImages: false }),
-            def456: controllerStatusFactory({ checkingImages: false }),
+            abc123: factory.controllerStatus({ checkingImages: false }),
+            def456: factory.controllerStatus({ checkingImages: false }),
           },
         }),
         actions.pollCheckImagesStart([
@@ -151,10 +144,10 @@ describe("controller reducers", () => {
         ])
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         statuses: {
-          abc123: controllerStatusFactory({ checkingImages: true }),
-          def456: controllerStatusFactory({ checkingImages: true }),
+          abc123: factory.controllerStatus({ checkingImages: true }),
+          def456: factory.controllerStatus({ checkingImages: true }),
         },
       })
     );
@@ -163,12 +156,12 @@ describe("controller reducers", () => {
   it("reduces pollCheckImagesError", () => {
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: controllerStatusFactory({ checkingImages: true }),
-            def456: controllerStatusFactory({ checkingImages: true }),
+            abc123: factory.controllerStatus({ checkingImages: true }),
+            def456: factory.controllerStatus({ checkingImages: true }),
           },
         }),
         actions.pollCheckImagesError(
@@ -180,23 +173,23 @@ describe("controller reducers", () => {
         )
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         errors: "It's realllll bad",
         eventErrors: [
-          controllerEventErrorFactory({
+          factory.controllerEventError({
             error: "It's realllll bad",
             event: "checkImages",
             id: "abc123",
           }),
-          controllerEventErrorFactory({
+          factory.controllerEventError({
             error: "It's realllll bad",
             event: "checkImages",
             id: "def456",
           }),
         ],
         statuses: {
-          abc123: controllerStatusFactory({ checkingImages: false }),
-          def456: controllerStatusFactory({ checkingImages: false }),
+          abc123: factory.controllerStatus({ checkingImages: false }),
+          def456: factory.controllerStatus({ checkingImages: false }),
         },
       })
     );
@@ -205,14 +198,14 @@ describe("controller reducers", () => {
   it("reduces pollCheckImagesSuccess", () => {
     expect(
       reducers(
-        controllerStateFactory({
-          imageSyncStatuses: controllerImageSyncStatusesFactory({
+        factory.controllerState({
+          imageSyncStatuses: factory.controllerImageSyncStatuses({
             abc123: ImageSyncStatus.Synced,
             ghi789: ImageSyncStatus.Synced,
           }),
           statuses: {
-            abc123: controllerStatusFactory({ checkingImages: true }),
-            def456: controllerStatusFactory({ checkingImages: true }),
+            abc123: factory.controllerStatus({ checkingImages: true }),
+            def456: factory.controllerStatus({ checkingImages: true }),
           },
         }),
         actions.pollCheckImagesSuccess(
@@ -220,22 +213,22 @@ describe("controller reducers", () => {
             { [ControllerMeta.PK]: "abc123" },
             { [ControllerMeta.PK]: "def456" },
           ],
-          controllerImageSyncStatusesFactory({
+          factory.controllerImageSyncStatuses({
             abc123: ImageSyncStatus.OutOfSync,
             def456: ImageSyncStatus.Syncing,
           })
         )
       )
     ).toEqual(
-      controllerStateFactory({
-        imageSyncStatuses: controllerImageSyncStatusesFactory({
+      factory.controllerState({
+        imageSyncStatuses: factory.controllerImageSyncStatuses({
           abc123: ImageSyncStatus.OutOfSync,
           def456: ImageSyncStatus.Syncing,
           ghi789: ImageSyncStatus.Synced,
         }),
         statuses: {
-          abc123: controllerStatusFactory({ checkingImages: false }),
-          def456: controllerStatusFactory({ checkingImages: false }),
+          abc123: factory.controllerStatus({ checkingImages: false }),
+          def456: factory.controllerStatus({ checkingImages: false }),
         },
       })
     );
@@ -243,7 +236,7 @@ describe("controller reducers", () => {
 
   it("reduces fetchStart", () => {
     expect(reducers(undefined, actions.fetchStart())).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         loaded: false,
         loading: true,
       })
@@ -251,10 +244,10 @@ describe("controller reducers", () => {
   });
 
   it("reduces fetchSuccess", () => {
-    const controllers = [controllerFactory(), controllerFactory()];
+    const controllers = [factory.controller(), factory.controller()];
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           items: [],
           loaded: false,
           loading: true,
@@ -262,44 +255,44 @@ describe("controller reducers", () => {
         actions.fetchSuccess(controllers)
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         loading: false,
         loaded: true,
         items: controllers,
         statuses: {
-          [controllers[0][ControllerMeta.PK]]: controllerStatusFactory(),
-          [controllers[1][ControllerMeta.PK]]: controllerStatusFactory(),
+          [controllers[0][ControllerMeta.PK]]: factory.controllerStatus(),
+          [controllers[1][ControllerMeta.PK]]: factory.controllerStatus(),
         },
       })
     );
   });
 
   it("reduces createNotify", () => {
-    const initialState = controllerStateFactory({
-      items: [controllerFactory({ system_id: "abc123" })],
-      statuses: { abc123: controllerStatusFactory() },
+    const initialState = factory.controllerState({
+      items: [factory.controller({ system_id: "abc123" })],
+      statuses: { abc123: factory.controllerStatus() },
     });
-    const newController = controllerFactory({ system_id: "def456" });
+    const newController = factory.controller({ system_id: "def456" });
 
     expect(reducers(initialState, actions.createNotify(newController))).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         items: [...initialState.items, newController],
         statuses: {
-          abc123: controllerStatusFactory(),
-          def456: controllerStatusFactory(),
+          abc123: factory.controllerStatus(),
+          def456: factory.controllerStatus(),
         },
       })
     );
   });
 
   it("should update if controller exists on createNotify", () => {
-    const initialState = controllerStateFactory({
+    const initialState = factory.controllerState({
       items: [
-        controllerFactory({ hostname: "controller1", system_id: "abc123" }),
+        factory.controller({ hostname: "controller1", system_id: "abc123" }),
       ],
-      statuses: { abc123: controllerStatusFactory() },
+      statuses: { abc123: factory.controllerStatus() },
     });
-    const updatedController = controllerFactory({
+    const updatedController = factory.controller({
       hostname: "controller1-newname",
       system_id: "abc123",
     });
@@ -307,23 +300,23 @@ describe("controller reducers", () => {
     expect(
       reducers(initialState, actions.createNotify(updatedController))
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         items: [updatedController],
         statuses: {
-          abc123: controllerStatusFactory(),
+          abc123: factory.controllerStatus(),
         },
       })
     );
   });
 
   it("reduces updateNotify", () => {
-    const initialState = controllerStateFactory({
+    const initialState = factory.controllerState({
       items: [
-        controllerFactory({ system_id: "abc123", hostname: "controller1" }),
-        controllerFactory({ system_id: "def456", hostname: "controller2" }),
+        factory.controller({ system_id: "abc123", hostname: "controller1" }),
+        factory.controller({ system_id: "def456", hostname: "controller2" }),
       ],
     });
-    const updatedController = controllerFactory({
+    const updatedController = factory.controller({
       system_id: "abc123",
       hostname: "controller1-new",
     });
@@ -331,44 +324,44 @@ describe("controller reducers", () => {
     expect(
       reducers(initialState, actions.updateNotify(updatedController))
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         items: [updatedController, initialState.items[1]],
       })
     );
   });
 
   it("reduces deleteNotify", () => {
-    const initialState = controllerStateFactory({
+    const initialState = factory.controllerState({
       items: [
-        controllerFactory({ system_id: "abc123" }),
-        controllerFactory({ system_id: "def456" }),
+        factory.controller({ system_id: "abc123" }),
+        factory.controller({ system_id: "def456" }),
       ],
       selected: ["abc123"],
       statuses: {
-        abc123: controllerStatusFactory(),
-        def456: controllerStatusFactory(),
+        abc123: factory.controllerStatus(),
+        def456: factory.controllerStatus(),
       },
     });
 
     expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         items: [initialState.items[1]],
         selected: [],
-        statuses: { def456: controllerStatusFactory() },
+        statuses: { def456: factory.controllerStatus() },
       })
     );
   });
 
   it("reduces getStart", () => {
-    const initialState = controllerStateFactory({ loading: false });
+    const initialState = factory.controllerState({ loading: false });
 
     expect(reducers(initialState, actions.getStart())).toEqual(
-      controllerStateFactory({ loading: true })
+      factory.controllerState({ loading: true })
     );
   });
 
   it("reduces getError", () => {
-    const initialState = controllerStateFactory({
+    const initialState = factory.controllerState({
       errors: null,
       loading: true,
     });
@@ -379,10 +372,10 @@ describe("controller reducers", () => {
         actions.getError({ system_id: "id was not supplied" })
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         errors: { system_id: "id was not supplied" },
         eventErrors: [
-          controllerEventErrorFactory({
+          factory.controllerEventError({
             error: { system_id: "id was not supplied" },
             event: "get",
             id: null,
@@ -394,16 +387,16 @@ describe("controller reducers", () => {
   });
 
   it("should update if controller exists on getSuccess", () => {
-    const initialState = controllerStateFactory({
+    const initialState = factory.controllerState({
       items: [
-        controllerFactory({ system_id: "abc123", hostname: "controller1" }),
+        factory.controller({ system_id: "abc123", hostname: "controller1" }),
       ],
       loading: false,
       statuses: {
-        abc123: controllerStatusFactory(),
+        abc123: factory.controllerStatus(),
       },
     });
-    const updatedController = controllerDetailsFactory({
+    const updatedController = factory.controllerDetails({
       system_id: "abc123",
       hostname: "controller1-newname",
     });
@@ -411,53 +404,53 @@ describe("controller reducers", () => {
     expect(
       reducers(initialState, actions.getSuccess(updatedController))
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         items: [updatedController],
         loading: false,
         statuses: {
-          abc123: controllerStatusFactory(),
+          abc123: factory.controllerStatus(),
         },
       })
     );
   });
 
   it("reduces getSuccess", () => {
-    const initialState = controllerStateFactory({
-      items: [controllerFactory({ system_id: "abc123" })],
+    const initialState = factory.controllerState({
+      items: [factory.controller({ system_id: "abc123" })],
       loading: true,
       statuses: {
-        abc123: controllerStatusFactory(),
+        abc123: factory.controllerStatus(),
       },
     });
-    const newController = controllerDetailsFactory({ system_id: "def456" });
+    const newController = factory.controllerDetails({ system_id: "def456" });
 
     expect(reducers(initialState, actions.getSuccess(newController))).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         items: [...initialState.items, newController],
         loading: false,
         statuses: {
-          abc123: controllerStatusFactory(),
-          def456: controllerStatusFactory(),
+          abc123: factory.controllerStatus(),
+          def456: factory.controllerStatus(),
         },
       })
     );
   });
 
   it("reduces setActiveSuccess", () => {
-    const initialState = controllerStateFactory({ active: null });
+    const initialState = factory.controllerState({ active: null });
 
     expect(
       reducers(
         initialState,
         actions.setActiveSuccess(
-          controllerDetailsFactory({ system_id: "abc123" })
+          factory.controllerDetails({ system_id: "abc123" })
         )
       )
-    ).toEqual(controllerStateFactory({ active: "abc123" }));
+    ).toEqual(factory.controllerState({ active: "abc123" }));
   });
 
   it("reduces setActiveError", () => {
-    const initialState = controllerStateFactory({
+    const initialState = factory.controllerState({
       active: "abc123",
       errors: null,
     });
@@ -468,11 +461,11 @@ describe("controller reducers", () => {
         actions.setActiveError("Controller does not exist")
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         active: null,
         errors: "Controller does not exist",
         eventErrors: [
-          controllerEventErrorFactory({
+          factory.controllerEventError({
             error: "Controller does not exist",
             event: "setActive",
             id: null,
@@ -485,9 +478,9 @@ describe("controller reducers", () => {
   it("reduces deleteStart", () => {
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           statuses: {
-            abc123: controllerStatusFactory({ deleting: false }),
+            abc123: factory.controllerStatus({ deleting: false }),
           },
         }),
         actions.deleteStart({
@@ -497,9 +490,9 @@ describe("controller reducers", () => {
         })
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         statuses: {
-          abc123: controllerStatusFactory({ deleting: true }),
+          abc123: factory.controllerStatus({ deleting: true }),
         },
       })
     );
@@ -508,11 +501,11 @@ describe("controller reducers", () => {
   it("reduces deleteError", () => {
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: controllerStatusFactory({ deleting: true }),
+            abc123: factory.controllerStatus({ deleting: true }),
           },
         }),
         actions.deleteError({
@@ -524,17 +517,17 @@ describe("controller reducers", () => {
         })
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         errors: "It's realllll bad",
         eventErrors: [
-          controllerEventErrorFactory({
+          factory.controllerEventError({
             error: "It's realllll bad",
             event: "delete",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: controllerStatusFactory({ deleting: false }),
+          abc123: factory.controllerStatus({ deleting: false }),
         },
       })
     );
@@ -543,9 +536,9 @@ describe("controller reducers", () => {
   it("reduces deleteSuccess", () => {
     expect(
       reducers(
-        controllerStateFactory({
+        factory.controllerState({
           statuses: {
-            abc123: controllerStatusFactory({ deleting: true }),
+            abc123: factory.controllerStatus({ deleting: true }),
           },
         }),
         actions.deleteSuccess({
@@ -555,9 +548,9 @@ describe("controller reducers", () => {
         })
       )
     ).toEqual(
-      controllerStateFactory({
+      factory.controllerState({
         statuses: {
-          abc123: controllerStatusFactory({ deleting: false }),
+          abc123: factory.controllerStatus({ deleting: false }),
         },
       })
     );

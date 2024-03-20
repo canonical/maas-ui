@@ -4,11 +4,7 @@ import urls from "@/app/base/urls";
 import type { Device } from "@/app/store/device/types";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceListTable", () => {
@@ -16,7 +12,7 @@ describe("DeviceListTable", () => {
   let state: RootState;
 
   beforeEach(() => {
-    device = deviceFactory({
+    device = factory.device({
       domain: { id: 1, name: "domain" },
       fqdn: "device.domain",
       hostname: "device",
@@ -28,8 +24,8 @@ describe("DeviceListTable", () => {
       tags: [1, 2],
       zone: { id: 2, name: "zone" },
     });
-    state = rootStateFactory({
-      device: deviceStateFactory({ items: [device] }),
+    state = factory.rootState({
+      device: factory.deviceState({ items: [device] }),
     });
   });
 
@@ -90,9 +86,9 @@ describe("DeviceListTable", () => {
 
     it("can sort by FQDN", async () => {
       const devices = [
-        deviceFactory({ fqdn: "b", system_id: "b" }),
-        deviceFactory({ fqdn: "c", system_id: "c" }),
-        deviceFactory({ fqdn: "a", system_id: "a" }),
+        factory.device({ fqdn: "b", system_id: "b" }),
+        factory.device({ fqdn: "c", system_id: "c" }),
+        factory.device({ fqdn: "a", system_id: "a" }),
       ];
       renderWithBrowserRouter(
         <DeviceListTable
@@ -119,15 +115,15 @@ describe("DeviceListTable", () => {
 
     it("can sort by IP assignment", async () => {
       const devices = [
-        deviceFactory({
+        factory.device({
           ip_assignment: DeviceIpAssignment.EXTERNAL,
           system_id: "b",
         }),
-        deviceFactory({
+        factory.device({
           ip_assignment: DeviceIpAssignment.DYNAMIC,
           system_id: "a",
         }),
-        deviceFactory({
+        factory.device({
           ip_assignment: "",
           system_id: "c",
         }),
@@ -160,9 +156,9 @@ describe("DeviceListTable", () => {
 
     it("can sort by zone", async () => {
       const devices = [
-        deviceFactory({ system_id: "c", zone: { id: 1, name: "twilight" } }),
-        deviceFactory({ system_id: "a", zone: { id: 2, name: "danger" } }),
-        deviceFactory({ system_id: "b", zone: { id: 3, name: "forbidden" } }),
+        factory.device({ system_id: "c", zone: { id: 1, name: "twilight" } }),
+        factory.device({ system_id: "a", zone: { id: 2, name: "danger" } }),
+        factory.device({ system_id: "b", zone: { id: 3, name: "forbidden" } }),
       ];
       renderWithBrowserRouter(
         <DeviceListTable
@@ -190,9 +186,9 @@ describe("DeviceListTable", () => {
 
     it("can sort by owner", async () => {
       const devices = [
-        deviceFactory({ owner: "user", system_id: "c" }),
-        deviceFactory({ owner: "admin", system_id: "a" }),
-        deviceFactory({ owner: "bob", system_id: "b" }),
+        factory.device({ owner: "user", system_id: "c" }),
+        factory.device({ owner: "admin", system_id: "a" }),
+        factory.device({ owner: "bob", system_id: "b" }),
       ];
       renderWithBrowserRouter(
         <DeviceListTable
@@ -221,7 +217,7 @@ describe("DeviceListTable", () => {
 
   describe("device selection", () => {
     it("handles selecting a single device", async () => {
-      const devices = [deviceFactory({ system_id: "abc123" })];
+      const devices = [factory.device({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <DeviceListTable
@@ -238,7 +234,7 @@ describe("DeviceListTable", () => {
     });
 
     it("handles unselecting a single device", async () => {
-      const devices = [deviceFactory({ system_id: "abc123" })];
+      const devices = [factory.device({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <DeviceListTable
@@ -256,8 +252,8 @@ describe("DeviceListTable", () => {
 
     it("handles selecting all devices", async () => {
       const devices = [
-        deviceFactory({ system_id: "abc123" }),
-        deviceFactory({ system_id: "def456" }),
+        factory.device({ system_id: "abc123" }),
+        factory.device({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
@@ -276,8 +272,8 @@ describe("DeviceListTable", () => {
 
     it("handles unselecting all devices", async () => {
       const devices = [
-        deviceFactory({ system_id: "abc123" }),
-        deviceFactory({ system_id: "def456" }),
+        factory.device({ system_id: "abc123" }),
+        factory.device({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(

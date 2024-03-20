@@ -9,14 +9,7 @@ import { Labels as ArrowPaginationLabels } from "@/app/base/components/ArrowPagi
 import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/MainContentSection";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  eventRecord as eventRecordFactory,
-  eventType as eventTypeFactory,
-  eventState as eventStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
@@ -36,15 +29,15 @@ describe("EventLogs", () => {
   beforeEach(() => {
     scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
-    machine = machineDetailsFactory({ id: 1, system_id: "abc123" });
-    state = rootStateFactory({
-      event: eventStateFactory({
+    machine = factory.machineDetails({ id: 1, system_id: "abc123" });
+    state = factory.rootState({
+      event: factory.eventState({
         items: [
-          eventRecordFactory({ node_id: 1 }),
-          eventRecordFactory({ node_id: 2 }),
+          factory.eventRecord({ node_id: 1 }),
+          factory.eventRecord({ node_id: 2 }),
         ],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
       }),
     });
@@ -65,7 +58,7 @@ describe("EventLogs", () => {
     // Create more than the preload amount of events.
     for (let i = 0; i < 203; i++) {
       state.event.items.push(
-        eventRecordFactory({
+        factory.eventRecord({
           node_id: 1,
           created: "Tue, 16 Mar. 2021 03:04:00",
         })
@@ -121,7 +114,7 @@ describe("EventLogs", () => {
     state.event.items = [];
     for (let i = 0; i < 203; i++) {
       state.event.items.push(
-        eventRecordFactory({
+        factory.eventRecord({
           node_id: 1,
           created: "Tue, 16 Mar. 2021 03:04:00",
         })
@@ -162,8 +155,14 @@ describe("EventLogs", () => {
 
   it("orders the rows by most recent first", () => {
     state.event.items = [
-      eventRecordFactory({ created: "Tue, 16 Mar. 2021 03:04:00", node_id: 1 }),
-      eventRecordFactory({ created: "Tue, 17 Mar. 2021 03:04:00", node_id: 1 }),
+      factory.eventRecord({
+        created: "Tue, 16 Mar. 2021 03:04:00",
+        node_id: 1,
+      }),
+      factory.eventRecord({
+        created: "Tue, 17 Mar. 2021 03:04:00",
+        node_id: 1,
+      }),
     ];
     renderWithMockStore(<EventLogs node={machine} />, {
       state,
@@ -183,20 +182,20 @@ describe("EventLogs", () => {
 
   it("can filter the events", async () => {
     state.event.items = [
-      eventRecordFactory({
+      factory.eventRecord({
         description: "Failed commissioning",
         node_id: 1,
-        type: eventTypeFactory({ description: undefined }),
+        type: factory.eventType({ description: undefined }),
       }),
-      eventRecordFactory({
+      factory.eventRecord({
         description: "Didn't fail",
         node_id: 1,
-        type: eventTypeFactory({ description: undefined }),
+        type: factory.eventType({ description: undefined }),
       }),
-      eventRecordFactory({
+      factory.eventRecord({
         description: "Failed install",
         node_id: 1,
-        type: eventTypeFactory({ description: undefined }),
+        type: factory.eventType({ description: undefined }),
       }),
     ];
     renderWithMockStore(<EventLogs node={machine} />, {
@@ -220,7 +219,7 @@ describe("EventLogs", () => {
   it("can update the number of events per page", async () => {
     for (let i = 0; i < 203; i++) {
       state.event.items.push(
-        eventRecordFactory({
+        factory.eventRecord({
           node_id: 1,
           created: "Tue, 16 Mar. 2021 03:04:00",
         })
@@ -238,7 +237,7 @@ describe("EventLogs", () => {
   it("can restore the events per page from local storage", async () => {
     for (let i = 0; i < 203; i++) {
       state.event.items.push(
-        eventRecordFactory({
+        factory.eventRecord({
           node_id: 1,
           created: "Tue, 16 Mar. 2021 03:04:00",
         })
@@ -272,7 +271,7 @@ describe("EventLogs", () => {
     state.event.items = [];
     for (let i = 0; i < 5; i++) {
       state.event.items.push(
-        eventRecordFactory({
+        factory.eventRecord({
           node_id: 1,
           created: "Tue, 16 Mar. 2021 03:04:00",
         })
@@ -291,7 +290,7 @@ describe("EventLogs", () => {
     state.event.items = [];
     for (let i = 0; i < 50; i++) {
       state.event.items.push(
-        eventRecordFactory({
+        factory.eventRecord({
           node_id: 1,
           created: "Tue, 16 Mar. 2021 03:04:00",
         })
@@ -310,7 +309,7 @@ describe("EventLogs", () => {
     state.event.items = [];
     for (let i = 0; i < 50; i++) {
       state.event.items.push(
-        eventRecordFactory({
+        factory.eventRecord({
           node_id: 1,
           created: "Tue, 16 Mar. 2021 03:04:00",
         })

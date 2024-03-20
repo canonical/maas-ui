@@ -12,13 +12,7 @@ import TagFormFields, { Label } from "./TagFormFields";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
 import {
   userEvent,
@@ -50,20 +44,20 @@ beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
   vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
-    tagFactory({ id: 1, name: "tag1" }),
-    tagFactory({ id: 2, name: "tag2" }),
-    tagFactory({ id: 3, name: "tag3" }),
+    factory.tag({ id: 1, name: "tag1" }),
+    factory.tag({ id: 2, name: "tag2" }),
+    factory.tag({ id: 3, name: "tag3" }),
   ];
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: [
-        machineFactory({
+        factory.machine({
           system_id: "abc123",
           tags: [3],
         }),
       ],
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: tags,
       lists: {
         "mocked-nanoid": tagStateListFactory({
@@ -151,7 +145,7 @@ it("displays the tags to be added", () => {
 });
 
 it("updates the new tags after creating a tag", async () => {
-  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
   const setNewTags = vi.fn();
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
@@ -182,7 +176,7 @@ it("updates the new tags after creating a tag", async () => {
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
   });
-  const newTag = tagFactory({ id: 8, name: "new-tag" });
+  const newTag = factory.tag({ id: 8, name: "new-tag" });
   state.tag.saved = true;
   state.tag.items.push(newTag);
   expect(

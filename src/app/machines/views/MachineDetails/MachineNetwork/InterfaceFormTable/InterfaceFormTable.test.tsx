@@ -1,24 +1,18 @@
 import InterfaceFormTable from "./InterfaceFormTable";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("InterfaceFormTable", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });
@@ -35,9 +29,9 @@ describe("InterfaceFormTable", () => {
   });
 
   it("displays a table when loaded", () => {
-    const nic = machineInterfaceFactory();
+    const nic = factory.machineInterface();
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -51,9 +45,9 @@ describe("InterfaceFormTable", () => {
   });
 
   it("displays a PXE column by default", () => {
-    const nic = machineInterfaceFactory();
+    const nic = factory.machineInterface();
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -69,9 +63,9 @@ describe("InterfaceFormTable", () => {
   });
 
   it("can show checkboxes to update the selection", () => {
-    const nic = machineInterfaceFactory();
+    const nic = factory.machineInterface();
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -92,9 +86,9 @@ describe("InterfaceFormTable", () => {
   });
 
   it("mutes a row if its not selected", () => {
-    const nic = machineInterfaceFactory();
+    const nic = factory.machineInterface();
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),

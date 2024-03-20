@@ -4,65 +4,52 @@ import { ConfigNames } from "@/app/store/config/types";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  podState as podStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("AddVirshFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [{ name: ConfigNames.MAAS_NAME, value: "MAAS" }],
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
           data: [],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [],
         loaded: true,
         loading: false,
         saved: false,
         saving: false,
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory()],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-        items: [zoneFactory()],
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
+        items: [factory.zone()],
       }),
     });
   });
 
   it("does not show power type fields that are scoped to nodes", () => {
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         description: "Virsh (virtual systems)",
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             name: "field1",
             scope: PowerFieldScope.BMC,
             label: "test-powerfield-label-1",
           }),
-          powerFieldFactory({
+          factory.powerField({
             name: "field2",
             scope: PowerFieldScope.NODE,
             label: "test-powerfield-label-2",

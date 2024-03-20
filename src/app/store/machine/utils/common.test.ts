@@ -15,20 +15,16 @@ import { PowerFieldScope } from "@/app/store/general/types";
 import { FetchSortDirection, FetchGroupKey } from "@/app/store/machine/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-  modelRef as modelRefFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("common machine utils", () => {
   describe("isMachineDetails", () => {
     it("identifies machine details", () => {
-      expect(isMachineDetails(machineDetailsFactory())).toBe(true);
+      expect(isMachineDetails(factory.machineDetails())).toBe(true);
     });
 
     it("handles a machine", () => {
-      expect(isMachineDetails(machineFactory())).toBe(false);
+      expect(isMachineDetails(factory.machine())).toBe(false);
     });
 
     it("handles no machine", () => {
@@ -43,8 +39,8 @@ describe("common machine utils", () => {
   describe("getTagCountsForMachines", () => {
     it("gets the tag ids and counts", () => {
       const machines = [
-        machineFactory({ tags: [1, 2, 3] }),
-        machineFactory({ tags: [3, 1, 4] }),
+        factory.machine({ tags: [1, 2, 3] }),
+        factory.machine({ tags: [3, 1, 4] }),
       ];
       expect(getTagCountsForMachines(machines)).toStrictEqual(
         new Map([
@@ -59,7 +55,7 @@ describe("common machine utils", () => {
 
   describe("getMachineFieldScopes", () => {
     it("gets the field scopes for a machine in a pod", () => {
-      const machine = machineFactory({ pod: modelRefFactory() });
+      const machine = factory.machine({ pod: factory.modelRef() });
 
       expect(getMachineFieldScopes(machine)).toStrictEqual([
         PowerFieldScope.NODE,
@@ -67,7 +63,7 @@ describe("common machine utils", () => {
     });
 
     it("gets the field scopes for a machine not in a pod", () => {
-      const machine = machineFactory({ pod: undefined });
+      const machine = factory.machine({ pod: undefined });
 
       expect(getMachineFieldScopes(machine)).toStrictEqual([
         PowerFieldScope.BMC,
@@ -79,15 +75,15 @@ describe("common machine utils", () => {
   describe("getHasSyncFailed", () => {
     it("returns false if is_sync_healthy is true or undefined", () => {
       expect(
-        getHasSyncFailed(machineDetailsFactory({ is_sync_healthy: true }))
+        getHasSyncFailed(factory.machineDetails({ is_sync_healthy: true }))
       ).toBe(false);
       expect(
-        getHasSyncFailed(machineDetailsFactory({ is_sync_healthy: undefined }))
+        getHasSyncFailed(factory.machineDetails({ is_sync_healthy: undefined }))
       ).toBe(false);
     });
     it("returns true if is_sync_healthy is false", () => {
       expect(
-        getHasSyncFailed(machineDetailsFactory({ is_sync_healthy: false }))
+        getHasSyncFailed(factory.machineDetails({ is_sync_healthy: false }))
       ).toBe(true);
     });
   });
@@ -96,7 +92,7 @@ describe("common machine utils", () => {
     it("returns false for deploying machines", () => {
       expect(
         isDeployedWithHardwareSync(
-          machineDetailsFactory({
+          factory.machineDetails({
             status: NodeStatus.DEPLOYING,
             enable_hw_sync: true,
           })
@@ -107,7 +103,7 @@ describe("common machine utils", () => {
     it("returns true for deployed machines with hardware sync enabled", () => {
       expect(
         isDeployedWithHardwareSync(
-          machineDetailsFactory({
+          factory.machineDetails({
             status: NodeStatus.DEPLOYED,
             enable_hw_sync: true,
           })
@@ -118,7 +114,7 @@ describe("common machine utils", () => {
     it("returns false for deployed machines with hardware sync disabled", () => {
       expect(
         isDeployedWithHardwareSync(
-          machineDetailsFactory({
+          factory.machineDetails({
             status: NodeStatus.DEPLOYED,
             enable_hw_sync: false,
           })
@@ -179,7 +175,7 @@ describe("common machine utils", () => {
 
   describe("isUnconfiguredPowerType", () => {
     it("returns true for unknown power state and new status code", () => {
-      const machine = machineFactory({
+      const machine = factory.machine({
         power_state: PowerState.UNKNOWN,
         status_code: NodeStatusCode.NEW,
       });
@@ -188,11 +184,11 @@ describe("common machine utils", () => {
     });
 
     it("returns false if either power state or status criteria are not met", () => {
-      const machine1 = machineFactory({
+      const machine1 = factory.machine({
         power_state: PowerState.UNKNOWN,
         status_code: NodeStatusCode.READY,
       });
-      const machine2 = machineFactory({
+      const machine2 = factory.machine({
         power_state: PowerState.OFF,
         status_code: NodeStatusCode.NEW,
       });

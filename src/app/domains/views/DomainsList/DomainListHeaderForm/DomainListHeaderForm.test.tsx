@@ -8,7 +8,7 @@ import DomainListHeaderForm, {
 } from "./DomainListHeaderForm";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -21,7 +21,7 @@ const mockStore = configureStore();
 describe("DomainListHeaderForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("runs closeForm function when the cancel button is clicked", async () => {

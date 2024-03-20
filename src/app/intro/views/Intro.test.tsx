@@ -3,26 +3,20 @@ import Intro from "./Intro";
 import urls from "@/app/base/urls";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("Intro", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [{ name: ConfigNames.COMPLETED_INTRO, value: false }],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ completed_intro: false, is_superuser: true }),
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ completed_intro: false, is_superuser: true }),
         }),
       }),
     });
@@ -38,9 +32,9 @@ describe("Intro", () => {
   });
 
   it("displays a message if the user is not an admin", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: false, is_superuser: false }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ completed_intro: false, is_superuser: false }),
       }),
     });
     renderWithBrowserRouter(<Intro />, {
@@ -55,12 +49,12 @@ describe("Intro", () => {
   });
 
   it("exits the intro if both intros have been completed", () => {
-    state.config = configStateFactory({
+    state.config = factory.configState({
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: true, is_superuser: true }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ completed_intro: true, is_superuser: true }),
       }),
     });
     renderWithBrowserRouter(<Intro />, {
@@ -79,7 +73,7 @@ describe("Intro", () => {
   });
 
   it("skips to the user intro when loading the main intro when it is complete", () => {
-    state.config = configStateFactory({
+    state.config = factory.configState({
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     renderWithBrowserRouter(<Intro />, {

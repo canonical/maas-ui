@@ -1,9 +1,6 @@
 import reducers, { actions } from "./slice";
 
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("resourcePool reducer", () => {
   it("should return the initial state", () => {
@@ -30,11 +27,11 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces fetchSuccess", () => {
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePoolState = factory.resourcePoolState({
         items: [],
         loading: true,
       });
-      const resourcePools = [resourcePoolFactory()];
+      const resourcePools = [factory.resourcePool()];
       expect(
         reducers(resourcePoolState, actions.fetchSuccess(resourcePools))
       ).toEqual({
@@ -48,7 +45,7 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces fetchError", () => {
-      const resourcePoolState = resourcePoolStateFactory();
+      const resourcePoolState = factory.resourcePoolState();
       expect(
         reducers(
           resourcePoolState,
@@ -67,7 +64,7 @@ describe("resourcePool reducer", () => {
 
   describe("create", () => {
     it("reduces createStart", () => {
-      const resourcePoolState = resourcePoolStateFactory({ saved: true });
+      const resourcePoolState = factory.resourcePoolState({ saved: true });
       expect(reducers(resourcePoolState, actions.createStart())).toEqual({
         errors: {},
         items: [],
@@ -79,7 +76,7 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces createError", () => {
-      const resourcePoolState = resourcePoolStateFactory({ saving: true });
+      const resourcePoolState = factory.resourcePoolState({ saving: true });
       expect(
         reducers(
           resourcePoolState,
@@ -96,9 +93,9 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces createNotify", () => {
-      const resourcePools = [resourcePoolFactory({ id: 1 })];
-      const newResourcePool = resourcePoolFactory({ id: 2 });
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePools = [factory.resourcePool({ id: 1 })];
+      const newResourcePool = factory.resourcePool({ id: 2 });
+      const resourcePoolState = factory.resourcePoolState({
         items: resourcePools,
       });
 
@@ -117,7 +114,7 @@ describe("resourcePool reducer", () => {
 
   describe("update", () => {
     it("reduces updateStart", () => {
-      const resourcePoolState = resourcePoolStateFactory({ saved: true });
+      const resourcePoolState = factory.resourcePoolState({ saved: true });
 
       expect(reducers(resourcePoolState, actions.updateStart())).toEqual({
         errors: {},
@@ -130,7 +127,7 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces updateSuccess", () => {
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePoolState = factory.resourcePoolState({
         saving: true,
       });
 
@@ -145,7 +142,7 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces updateError", () => {
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePoolState = factory.resourcePoolState({
         saving: true,
       });
 
@@ -165,14 +162,14 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces updateNotify", () => {
-      const resourcePools = [resourcePoolFactory({ id: 1 })];
-      const updatedResourcePool = resourcePoolFactory({
+      const resourcePools = [factory.resourcePool({ id: 1 })];
+      const updatedResourcePool = factory.resourcePool({
         id: 1,
         name: "newName",
         description: "newDescription",
       });
 
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePoolState = factory.resourcePoolState({
         items: resourcePools,
       });
 
@@ -191,8 +188,8 @@ describe("resourcePool reducer", () => {
 
   describe("delete", () => {
     it("reduces deleteStart", () => {
-      const resourcePools = [resourcePoolFactory({ id: 1 })];
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePools = [factory.resourcePool({ id: 1 })];
+      const resourcePoolState = factory.resourcePoolState({
         items: resourcePools,
       });
 
@@ -207,8 +204,8 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces deleteSuccess", () => {
-      const resourcePools = [resourcePoolFactory({ id: 1 })];
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePools = [factory.resourcePool({ id: 1 })];
+      const resourcePoolState = factory.resourcePoolState({
         items: resourcePools,
       });
 
@@ -223,8 +220,8 @@ describe("resourcePool reducer", () => {
     });
 
     it("reduces deleteError", () => {
-      const resourcePools = [resourcePoolFactory({ id: 1 })];
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePools = [factory.resourcePool({ id: 1 })];
+      const resourcePoolState = factory.resourcePoolState({
         items: resourcePools,
       });
 
@@ -245,10 +242,10 @@ describe("resourcePool reducer", () => {
 
     it("reduces deleteNotify", () => {
       const resourcePools = [
-        resourcePoolFactory({ id: 1 }),
-        resourcePoolFactory({ id: 2 }),
+        factory.resourcePool({ id: 1 }),
+        factory.resourcePool({ id: 2 }),
       ];
-      const resourcePoolState = resourcePoolStateFactory({
+      const resourcePoolState = factory.resourcePoolState({
         items: resourcePools,
       });
 
@@ -299,7 +296,7 @@ describe("resourcePool reducer", () => {
             saving: true,
           },
           actions.createWithMachines({
-            pool: resourcePoolFactory(),
+            pool: factory.resourcePool(),
             machineIDs: ["abc123"],
           })
         )

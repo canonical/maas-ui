@@ -4,26 +4,21 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import { UserEdit } from "./UserEdit";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("UserEdit", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
-      user: userStateFactory({
+      user: factory.userState({
         loaded: true,
         items: [
-          userFactory({
+          factory.user({
             email: "admin@example.com",
             global_permissions: ["machine_create"],
             id: 1,
@@ -32,7 +27,7 @@ describe("UserEdit", () => {
             sshkeys_count: 0,
             username: "admin",
           }),
-          userFactory({
+          factory.user({
             email: "user@example.com",
             global_permissions: ["machine_create"],
             id: 2,

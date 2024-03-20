@@ -6,11 +6,7 @@ import type { AddDeviceInterface } from "../types";
 
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -35,9 +31,9 @@ describe("AddDeviceInterfaces", () => {
         subnet: "",
       },
     ];
-    state = rootStateFactory({
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 0, name: "default" })],
+    state = factory.rootState({
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 0, name: "default" })],
         loaded: true,
       }),
     });

@@ -1,18 +1,13 @@
 import tlsCertificate from "./tlsCertificate";
 
-import {
-  generalState as generalStateFactory,
-  tlsCertificate as tlsCertificateFactory,
-  tlsCertificateState as tlsCertificateStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("get", () => {
   it("returns tlsCertificate", () => {
-    const data = tlsCertificateFactory();
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        tlsCertificate: tlsCertificateStateFactory({
+    const data = factory.tlsCertificate();
+    const state = factory.rootState({
+      general: factory.generalState({
+        tlsCertificate: factory.tlsCertificateState({
           data,
         }),
       }),
@@ -23,9 +18,9 @@ describe("get", () => {
 
 describe("loading", () => {
   it("returns tlsCertificate loading state", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        tlsCertificate: tlsCertificateStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        tlsCertificate: factory.tlsCertificateState({
           loading: true,
         }),
       }),
@@ -36,9 +31,9 @@ describe("loading", () => {
 
 describe("loaded", () => {
   it("returns tlsCertificate loaded state", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        tlsCertificate: tlsCertificateStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        tlsCertificate: factory.tlsCertificateState({
           loaded: true,
         }),
       }),
@@ -50,9 +45,9 @@ describe("loaded", () => {
 describe("errors", () => {
   it("returns tlsCertificate errors state", () => {
     const errors = "Cannot fetch TLS certificate";
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        tlsCertificate: tlsCertificateStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        tlsCertificate: factory.tlsCertificateState({
           errors,
         }),
       }),

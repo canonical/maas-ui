@@ -8,25 +8,21 @@ import TagDetails from "./TagDetails";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { actions as tagActions } from "@/app/store/tag";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           name: "rad",
         }),
-        tagFactory({
+        factory.tag({
           id: 2,
           name: "cool",
         }),
@@ -65,8 +61,8 @@ it("dispatches actions to fetch necessary data", () => {
 });
 
 it("displays a message if the tag does not exist", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: false,
     }),
@@ -92,8 +88,8 @@ it("displays a message if the tag does not exist", () => {
 });
 
 it("shows a spinner if the tag has not loaded yet", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: true,
     }),

@@ -7,29 +7,23 @@ import { Label as LXDSingleDetailsLabel } from "@/app/kvm/views/LXDSingleDetails
 import { Label as VirshDetailsLabel } from "@/app/kvm/views/VirshDetails/VirshDetails";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    pod: podStateFactory({
+  state = factory.rootState({
+    pod: factory.podState({
       items: [
-        podFactory({ id: 2, type: PodType.LXD, cluster: 1 }),
-        podFactory({ id: 4, type: PodType.LXD }),
-        podFactory({ id: 3, type: PodType.VIRSH }),
+        factory.podDetails({ id: 2, type: PodType.LXD, cluster: 1 }),
+        factory.podDetails({ id: 4, type: PodType.LXD }),
+        factory.podDetails({ id: 3, type: PodType.VIRSH }),
       ],
       loaded: true,
     }),
-    vmcluster: vmClusterStateFactory({
-      items: [vmClusterFactory({ id: 1 })],
+    vmcluster: factory.vmClusterState({
+      items: [factory.vmCluster({ id: 1 })],
       loaded: true,
     }),
   });

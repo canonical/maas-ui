@@ -6,25 +6,19 @@ import urls from "@/app/base/urls";
 import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NetworkDiscovery", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
+      user: factory.userState({
+        auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
       }),
     });
   });
@@ -54,7 +48,7 @@ describe("NetworkDiscovery", () => {
   });
 
   it("displays a notification when discovery is disabled", () => {
-    state.config = configStateFactory({
+    state.config = factory.configState({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "disabled" }],
     });
     renderWithBrowserRouter(<NetworkDiscovery />, {
@@ -65,7 +59,7 @@ describe("NetworkDiscovery", () => {
   });
 
   it("does not display a notification when discovery is enabled", () => {
-    state.config = configStateFactory({
+    state.config = factory.configState({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
     });
     renderWithBrowserRouter(<NetworkDiscovery />, {
@@ -76,8 +70,8 @@ describe("NetworkDiscovery", () => {
   });
 
   it("displays a message if not an admin", () => {
-    state.user.auth = authStateFactory({
-      user: userFactory({ is_superuser: false }),
+    state.user.auth = factory.authState({
+      user: factory.user({ is_superuser: false }),
     });
     renderWithBrowserRouter(<NetworkDiscovery />, {
       route: urls.networkDiscovery.index,

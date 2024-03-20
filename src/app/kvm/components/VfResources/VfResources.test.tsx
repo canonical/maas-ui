@@ -1,6 +1,6 @@
 import VfResources from "./VfResources";
 
-import { podNetworkInterface as interfaceFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within } from "@/testing/utils";
 
 describe("VfResources", () => {
@@ -14,14 +14,14 @@ describe("VfResources", () => {
 
   it("shows whether an interface has virtual functions or not", () => {
     const [hasVfs, noVfs] = [
-      interfaceFactory({
+      factory.podNetworkInterface({
         virtual_functions: {
           allocated_tracked: 1,
           allocated_other: 2,
           free: 3,
         },
       }),
-      interfaceFactory({
+      factory.podNetworkInterface({
         virtual_functions: {
           allocated_tracked: 0,
           allocated_other: 0,
@@ -56,7 +56,7 @@ describe("VfResources", () => {
     render(
       <VfResources
         interfaces={[
-          interfaceFactory({
+          factory.podNetworkInterface({
             name: "bbb",
             virtual_functions: {
               allocated_tracked: 1,
@@ -64,7 +64,7 @@ describe("VfResources", () => {
               free: 3,
             },
           }),
-          interfaceFactory({
+          factory.podNetworkInterface({
             name: "aaa",
             virtual_functions: {
               allocated_tracked: 1,
@@ -72,7 +72,7 @@ describe("VfResources", () => {
               free: 3,
             },
           }),
-          interfaceFactory({
+          factory.podNetworkInterface({
             name: "ccc",
             virtual_functions: {
               allocated_tracked: 1,

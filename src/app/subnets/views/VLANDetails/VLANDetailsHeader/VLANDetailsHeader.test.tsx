@@ -3,17 +3,7 @@ import VLANDetailsHeader from "./VLANDetailsHeader";
 import type { RootState } from "@/app/store/root/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import { VlanVid } from "@/app/store/vlan/types";
-import {
-  authState as authStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-  vlan as vlanFactory,
-  vlanDetails as vlanDetailsFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("VLANDetailsHeader", () => {
@@ -21,19 +11,19 @@ describe("VLANDetailsHeader", () => {
   let vlan: VLAN;
 
   beforeEach(() => {
-    vlan = vlanDetailsFactory({ fabric: 2 });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
-        items: [fabricFactory({ id: 2, name: "fabric1" })],
+    vlan = factory.vlanDetails({ fabric: 2 });
+    state = factory.rootState({
+      fabric: factory.fabricState({
+        items: [factory.fabric({ id: 2, name: "fabric1" })],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
       }),
     });
   });
 
   it("shows the title when the vlan has a name", () => {
-    vlan = vlanDetailsFactory({ name: "vlan-1", fabric: 2 });
+    vlan = factory.vlanDetails({ name: "vlan-1", fabric: 2 });
     state.vlan.items = [vlan];
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
       route: "/vlan/1234",
@@ -45,14 +35,14 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("shows the title when it is the default for the fabric", () => {
-    vlan = vlanDetailsFactory({
+    vlan = factory.vlanDetails({
       fabric: 2,
       name: undefined,
       vid: VlanVid.UNTAGGED,
     });
     state.vlan.items = [vlan];
     state.fabric.items = [
-      fabricFactory({ id: 2, name: "fabric1", default_vlan_id: vlan.id }),
+      factory.fabric({ id: 2, name: "fabric1", default_vlan_id: vlan.id }),
     ];
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
       route: "/vlan/1234",
@@ -64,10 +54,10 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("shows the title when it is not the default for the fabric", () => {
-    vlan = vlanDetailsFactory({ fabric: 2, name: undefined, vid: 3 });
+    vlan = factory.vlanDetails({ fabric: 2, name: undefined, vid: 3 });
     state.vlan.items = [vlan];
     state.fabric.items = [
-      fabricFactory({ id: 2, name: "fabric1", default_vlan_id: 99 }),
+      factory.fabric({ id: 2, name: "fabric1", default_vlan_id: 99 }),
     ];
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
       route: "/vlan/1234",
@@ -79,7 +69,7 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("shows a spinner subtitle if the vlan is loading details", () => {
-    vlan = vlanFactory({ name: "vlan-1" });
+    vlan = factory.vlan({ name: "vlan-1" });
     state.vlan.items = [vlan];
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
       route: "/vlan/1234",
@@ -101,9 +91,9 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("shows the delete button when the user is an admin", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ is_superuser: true }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ is_superuser: true }),
       }),
     });
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {
@@ -116,9 +106,9 @@ describe("VLANDetailsHeader", () => {
   });
 
   it("does not show the delete button if the user is not an admin", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ is_superuser: false }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ is_superuser: false }),
       }),
     });
     renderWithBrowserRouter(<VLANDetailsHeader id={vlan.id} />, {

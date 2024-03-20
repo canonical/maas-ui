@@ -1,18 +1,14 @@
 import architectures from "./architectures";
 
-import {
-  generalState as generalStateFactory,
-  architecturesState as architecturesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("architectures selectors", () => {
   describe("get", () => {
     it("returns architectures", () => {
       const data = ["amd64/generic"];
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          architectures: architecturesStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          architectures: factory.architecturesState({
             data,
           }),
         }),
@@ -24,9 +20,9 @@ describe("architectures selectors", () => {
   describe("loading", () => {
     it("returns architectures loading state", () => {
       const loading = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          architectures: architecturesStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          architectures: factory.architecturesState({
             loading,
           }),
         }),
@@ -38,9 +34,9 @@ describe("architectures selectors", () => {
   describe("loaded", () => {
     it("returns architectures loaded state", () => {
       const loaded = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          architectures: architecturesStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          architectures: factory.architecturesState({
             loaded,
           }),
         }),
@@ -52,9 +48,9 @@ describe("architectures selectors", () => {
   describe("errors", () => {
     it("returns architectures errors state", () => {
       const errors = "Cannot fetch architectures.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          architectures: architecturesStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          architectures: factory.architecturesState({
             errors,
           }),
         }),

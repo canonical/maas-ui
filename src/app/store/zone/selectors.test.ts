@@ -2,20 +2,12 @@ import { ZONE_ACTIONS } from "./constants";
 import zone from "./selectors";
 
 import { ACTION_STATUS } from "@/app/base/constants";
-import {
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneError as zoneErrorFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneModelAction as zoneModelActionFactory,
-  zoneModelActions as zoneModelActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 it("can get all zones", () => {
-  const items = [zoneFactory(), zoneFactory()];
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const items = [factory.zone(), factory.zone()];
+  const state = factory.rootState({
+    zone: factory.zoneState({
       items,
     }),
   });
@@ -24,9 +16,9 @@ it("can get all zones", () => {
 });
 
 it("can get zone errors", () => {
-  const errors = [zoneErrorFactory(), zoneErrorFactory()];
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const errors = [factory.zoneError(), factory.zoneError()];
+  const state = factory.rootState({
+    zone: factory.zoneState({
       errors,
     }),
   });
@@ -35,9 +27,9 @@ it("can get zone errors", () => {
 });
 
 it("can get zone generic actions", () => {
-  const genericActions = zoneGenericActionsFactory();
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const genericActions = factory.zoneGenericActions();
+  const state = factory.rootState({
+    zone: factory.zoneState({
       genericActions,
     }),
   });
@@ -46,9 +38,9 @@ it("can get zone generic actions", () => {
 });
 
 it("can get zone model actions", () => {
-  const modelActions = zoneModelActionsFactory();
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const modelActions = factory.zoneModelActions();
+  const state = factory.rootState({
+    zone: factory.zoneState({
       modelActions,
     }),
   });
@@ -57,9 +49,9 @@ it("can get zone model actions", () => {
 });
 
 it("can get the zone count", () => {
-  const items = [zoneFactory(), zoneFactory()];
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const items = [factory.zone(), factory.zone()];
+  const state = factory.rootState({
+    zone: factory.zoneState({
       items,
     }),
   });
@@ -69,11 +61,11 @@ it("can get the zone count", () => {
 
 it("can get a zone by id", () => {
   const [thisZone, otherZone] = [
-    zoneFactory({ id: 1 }),
-    zoneFactory({ id: 2 }),
+    factory.zone({ id: 1 }),
+    factory.zone({ id: 2 }),
   ];
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
       items: [thisZone, otherZone],
     }),
   });
@@ -82,11 +74,11 @@ it("can get a zone by id", () => {
 });
 
 it("can get a zone generic action's status", () => {
-  const genericActions = zoneGenericActionsFactory({
+  const genericActions = factory.zoneGenericActions({
     [ZONE_ACTIONS.fetch]: ACTION_STATUS.error,
   });
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
       genericActions,
     }),
   });
@@ -97,13 +89,13 @@ it("can get a zone generic action's status", () => {
 });
 
 it("can get a zone's model action status", () => {
-  const modelActions = zoneModelActionsFactory({
-    [ZONE_ACTIONS.update]: zoneModelActionFactory({
+  const modelActions = factory.zoneModelActions({
+    [ZONE_ACTIONS.update]: factory.zoneModelAction({
       [ACTION_STATUS.loading]: [123],
     }),
   });
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
       modelActions,
     }),
   });
@@ -114,9 +106,9 @@ it("can get a zone's model action status", () => {
 });
 
 it("can get the zone loading state", () => {
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
       }),
     }),
@@ -126,9 +118,9 @@ it("can get the zone loading state", () => {
 });
 
 it("can get the zone loaded state", () => {
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
       }),
     }),
@@ -138,9 +130,9 @@ it("can get the zone loaded state", () => {
 });
 
 it("can get the zone creating state", () => {
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
       }),
     }),
@@ -150,9 +142,9 @@ it("can get the zone creating state", () => {
 });
 
 it("can get the zone created state", () => {
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({
         [ZONE_ACTIONS.create]: ACTION_STATUS.success,
       }),
     }),
@@ -169,17 +161,17 @@ it("can get the latest error for an action", () => {
     latestActionError,
     nonLatestActionError,
   ] = [
-    zoneErrorFactory({ action: ZONE_ACTIONS.update, identifier: 123 }),
-    zoneErrorFactory({ action: ZONE_ACTIONS.delete, identifier: 321 }),
-    zoneErrorFactory({
+    factory.zoneError({ action: ZONE_ACTIONS.update, identifier: 123 }),
+    factory.zoneError({ action: ZONE_ACTIONS.delete, identifier: 321 }),
+    factory.zoneError({
       action: ZONE_ACTIONS.delete,
       identifier: 123,
       error: latestErrorMessage,
     }),
-    zoneErrorFactory({ action: ZONE_ACTIONS.delete, identifier: 123 }),
+    factory.zoneError({ action: ZONE_ACTIONS.delete, identifier: 123 }),
   ];
-  const state = rootStateFactory({
-    zone: zoneStateFactory({
+  const state = factory.rootState({
+    zone: factory.zoneState({
       errors: [
         otherActionError,
         otherModelError,

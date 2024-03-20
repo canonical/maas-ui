@@ -7,21 +7,14 @@ import TLSEnabled, { Labels } from "./TLSEnabled";
 
 import { actions as configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-  tlsCertificate as tlsCertificateFactory,
-  tlsCertificateState as tlsCertificateStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("displays a spinner while loading config", () => {
-  const state = rootStateFactory({
-    config: configStateFactory({
+  const state = factory.rootState({
+    config: factory.configState({
       loading: true,
     }),
   });
@@ -40,9 +33,9 @@ it("displays a spinner while loading config", () => {
 });
 
 it("displays a spinner while loading the certificate", () => {
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+  const state = factory.rootState({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         loading: true,
       }),
     }),
@@ -62,10 +55,10 @@ it("displays a spinner while loading the certificate", () => {
 });
 
 it("renders certificate content", () => {
-  const tlsCertificate = tlsCertificateFactory();
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+  const tlsCertificate = factory.tlsCertificate();
+  const state = factory.rootState({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: tlsCertificate,
         loaded: true,
       }),
@@ -88,22 +81,22 @@ it("renders certificate content", () => {
 });
 
 it("disables the interval field if notification is not enabled", async () => {
-  const tlsCertificate = tlsCertificateFactory();
-  const state = rootStateFactory({
-    config: configStateFactory({
+  const tlsCertificate = factory.tlsCertificate();
+  const state = factory.rootState({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: false,
         }),
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 45,
         }),
       ],
     }),
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: tlsCertificate,
         loaded: true,
       }),
@@ -132,22 +125,22 @@ it("disables the interval field if notification is not enabled", async () => {
 });
 
 it("shows an error if TLS notification is enabled but interval is invalid", async () => {
-  const tlsCertificate = tlsCertificateFactory();
-  const state = rootStateFactory({
-    config: configStateFactory({
+  const tlsCertificate = factory.tlsCertificate();
+  const state = factory.rootState({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: true,
         }),
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 45,
         }),
       ],
     }),
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: tlsCertificate,
         loaded: true,
       }),
@@ -178,22 +171,22 @@ it("shows an error if TLS notification is enabled but interval is invalid", asyn
 });
 
 it("dispatches an action to update TLS notification config with notification enabled", async () => {
-  const tlsCertificate = tlsCertificateFactory();
-  const state = rootStateFactory({
-    config: configStateFactory({
+  const tlsCertificate = factory.tlsCertificate();
+  const state = factory.rootState({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: false,
         }),
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 60,
         }),
       ],
     }),
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: tlsCertificate,
         loaded: true,
       }),
@@ -231,22 +224,22 @@ it("dispatches an action to update TLS notification config with notification ena
 });
 
 it("dispatches an action to update TLS notification config with notification disabled", async () => {
-  const tlsCertificate = tlsCertificateFactory();
-  const state = rootStateFactory({
-    config: configStateFactory({
+  const tlsCertificate = factory.tlsCertificate();
+  const state = factory.rootState({
+    config: factory.configState({
       items: [
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: true,
         }),
-        configFactory({
+        factory.config({
           name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 45,
         }),
       ],
     }),
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: tlsCertificate,
         loaded: true,
       }),

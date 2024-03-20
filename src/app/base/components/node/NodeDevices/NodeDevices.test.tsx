@@ -7,14 +7,7 @@ import urls from "@/app/base/urls";
 import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
 import { NodeDeviceBus } from "@/app/store/nodedevice/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  machineDetails as machineDetailsFactory,
-  machineNumaNode as numaNodeFactory,
-  nodeDevice as nodeDeviceFactory,
-  nodeDeviceState as nodeDeviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   renderWithMockStore,
@@ -25,9 +18,9 @@ const mockStore = configureStore<RootState>();
 
 describe("NodeDevices", () => {
   it("fetches node devices by node id if not already loaded", () => {
-    const machine = machineDetailsFactory();
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const machine = factory.machineDetails();
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items: [],
       }),
     });
@@ -48,10 +41,10 @@ describe("NodeDevices", () => {
   });
 
   it("does not fetch node devices if already loaded", () => {
-    const machine = machineDetailsFactory();
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
-        items: [nodeDeviceFactory({ node_id: machine.id })],
+    const machine = factory.machineDetails();
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
+        items: [factory.nodeDevice({ node_id: machine.id })],
       }),
     });
     const store = mockStore(state);
@@ -71,9 +64,9 @@ describe("NodeDevices", () => {
   });
 
   it("shows placeholder rows while node devices are loading", () => {
-    const machine = machineDetailsFactory();
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const machine = factory.machineDetails();
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         loading: true,
       }),
     });
@@ -94,8 +87,8 @@ describe("NodeDevices", () => {
   });
 
   it("shows a PCI address column if showing PCI devices", () => {
-    const machine = machineDetailsFactory();
-    const state = rootStateFactory();
+    const machine = factory.machineDetails();
+    const state = factory.rootState();
     renderWithMockStore(
       <NodeDevices
         bus={NodeDeviceBus.PCIE}
@@ -109,8 +102,8 @@ describe("NodeDevices", () => {
   });
 
   it("shows bus and device address columns if showing USB devices", () => {
-    const machine = machineDetailsFactory();
-    const state = rootStateFactory();
+    const machine = factory.machineDetails();
+    const state = factory.rootState();
     renderWithMockStore(
       <NodeDevices
         bus={NodeDeviceBus.USB}
@@ -125,23 +118,23 @@ describe("NodeDevices", () => {
   });
 
   it("groups node devices by hardware type", () => {
-    const machine = machineDetailsFactory({ system_id: "abc123" });
+    const machine = factory.machineDetails({ system_id: "abc123" });
     const networkDevices = [
-      nodeDeviceFactory({
+      factory.nodeDevice({
         bus: NodeDeviceBus.PCIE,
         hardware_type: HardwareType.Network,
         node_id: machine.id,
       }),
     ];
     const storageDevices = Array.from(Array(3)).map(() =>
-      nodeDeviceFactory({
+      factory.nodeDevice({
         bus: NodeDeviceBus.PCIE,
         hardware_type: HardwareType.Storage,
         node_id: machine.id,
       })
     );
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items: [...networkDevices, ...storageDevices],
       }),
     });
@@ -162,19 +155,19 @@ describe("NodeDevices", () => {
   });
 
   it("can link to the machine network and storage tabs", () => {
-    const machine = machineDetailsFactory({ system_id: "abc123" });
-    const networkDevice = nodeDeviceFactory({
+    const machine = factory.machineDetails({ system_id: "abc123" });
+    const networkDevice = factory.nodeDevice({
       bus: NodeDeviceBus.PCIE,
       hardware_type: HardwareType.Network,
       node_id: machine.id,
     });
-    const storageDevice = nodeDeviceFactory({
+    const storageDevice = factory.nodeDevice({
       bus: NodeDeviceBus.PCIE,
       hardware_type: HardwareType.Storage,
       node_id: machine.id,
     });
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items: [networkDevice, storageDevice],
       }),
     });
@@ -198,19 +191,19 @@ describe("NodeDevices", () => {
   });
 
   it("can link to the controller network and storage tabs", () => {
-    const controller = controllerDetailsFactory({ system_id: "abc123" });
-    const networkDevice = nodeDeviceFactory({
+    const controller = factory.controllerDetails({ system_id: "abc123" });
+    const networkDevice = factory.nodeDevice({
       bus: NodeDeviceBus.PCIE,
       hardware_type: HardwareType.Network,
       node_id: controller.id,
     });
-    const storageDevice = nodeDeviceFactory({
+    const storageDevice = factory.nodeDevice({
       bus: NodeDeviceBus.PCIE,
       hardware_type: HardwareType.Storage,
       node_id: controller.id,
     });
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items: [networkDevice, storageDevice],
       }),
     });
@@ -230,19 +223,19 @@ describe("NodeDevices", () => {
   });
 
   it("displays the NUMA node index of a node device", () => {
-    const numaNode = numaNodeFactory({ index: 128 });
-    const machine = machineDetailsFactory({
-      numa_nodes: [numaNode, numaNodeFactory()],
+    const numaNode = factory.machineNumaNode({ index: 128 });
+    const machine = factory.machineDetails({
+      numa_nodes: [numaNode, factory.machineNumaNode()],
       system_id: "abc123",
     });
-    const pciDevice = nodeDeviceFactory({
+    const pciDevice = factory.nodeDevice({
       bus: NodeDeviceBus.PCIE,
       id: 1,
       node_id: machine.id,
       numa_node_id: numaNode.id,
     });
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items: [pciDevice],
       }),
     });

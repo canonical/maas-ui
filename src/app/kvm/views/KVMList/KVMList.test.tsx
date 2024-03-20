@@ -5,20 +5,14 @@ import KVMList from "./KVMList";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("KVMList", () => {
   it("correctly fetches the necessary data", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     renderWithBrowserRouter(<KVMList />, {
       route: "/kvm",
@@ -39,9 +33,9 @@ describe("KVMList", () => {
   });
 
   it("shows a LXD table when viewing the LXD tab and there are LXD pods", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ type: PodType.LXD })],
+    const state = factory.rootState({
+      pod: factory.podState({
+        items: [factory.pod({ type: PodType.LXD })],
       }),
     });
     const store = mockStore(state);
@@ -54,9 +48,9 @@ describe("KVMList", () => {
   });
 
   it("shows a LXD table when viewing the LXD tab and there are clusters", () => {
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
-        items: [vmClusterFactory()],
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
+        items: [factory.vmCluster()],
       }),
     });
     const store = mockStore(state);
@@ -69,9 +63,9 @@ describe("KVMList", () => {
   });
 
   it("shows a virsh table when viewing the Virsh tab", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ type: PodType.VIRSH })],
+    const state = factory.rootState({
+      pod: factory.podState({
+        items: [factory.pod({ type: PodType.VIRSH })],
       }),
     });
     const store = mockStore(state);
@@ -84,9 +78,9 @@ describe("KVMList", () => {
   });
 
   it("redirects to the LXD tab if not already on a tab", async () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ type: PodType.LXD })],
+    const state = factory.rootState({
+      pod: factory.podState({
+        items: [factory.pod({ type: PodType.LXD })],
       }),
     });
     const store = mockStore(state);
@@ -100,8 +94,8 @@ describe("KVMList", () => {
   });
 
   it("displays a message if there are no LXD KVMs", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [],
       }),
     });
@@ -126,8 +120,8 @@ describe("KVMList", () => {
   });
 
   it("displays a message if there are no Virsh KVMs", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [],
       }),
     });
@@ -151,8 +145,8 @@ describe("KVMList", () => {
   });
 
   it("displays a spinner when loading pods", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         loading: true,
       }),
     });

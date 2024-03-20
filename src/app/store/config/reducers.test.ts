@@ -1,15 +1,12 @@
 import reducers from "./slice";
 
 import { ConfigNames } from "@/app/store/config/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("config reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual(
-      configStateFactory({
+      factory.configState({
         errors: null,
         loading: false,
         loaded: false,
@@ -26,7 +23,7 @@ describe("config reducer", () => {
         type: "config/fetchStart",
       })
     ).toEqual(
-      configStateFactory({
+      factory.configState({
         loading: true,
         loaded: false,
         saving: false,
@@ -39,7 +36,7 @@ describe("config reducer", () => {
   it("should correctly reduce config/fetchSuccess", () => {
     expect(
       reducers(
-        configStateFactory({
+        factory.configState({
           loading: true,
           loaded: false,
           saving: false,
@@ -48,11 +45,11 @@ describe("config reducer", () => {
         {
           type: "config/fetchSuccess",
           payload: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
               value: "bcache",
             }),
-            configFactory({
+            factory.config({
               name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
               value: "foo",
             }),
@@ -60,16 +57,16 @@ describe("config reducer", () => {
         }
       )
     ).toEqual(
-      configStateFactory({
+      factory.configState({
         loading: false,
         loaded: true,
         saving: false,
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
             value: "bcache",
           }),
-          configFactory({
+          factory.config({
             name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
             value: "foo",
           }),
@@ -81,7 +78,7 @@ describe("config reducer", () => {
   it("should correctly reduce config/updateStart", () => {
     expect(
       reducers(
-        configStateFactory({
+        factory.configState({
           loading: false,
           loaded: false,
           saving: false,
@@ -93,7 +90,7 @@ describe("config reducer", () => {
         }
       )
     ).toEqual(
-      configStateFactory({
+      factory.configState({
         loading: false,
         loaded: false,
         saving: true,
@@ -106,13 +103,13 @@ describe("config reducer", () => {
   it("should correctly reduce config/updateSuccess, without a store update", () => {
     expect(
       reducers(
-        configStateFactory({
+        factory.configState({
           loading: false,
           loaded: false,
           saving: true,
           saved: false,
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
               value: "bcache",
             }),
@@ -124,13 +121,13 @@ describe("config reducer", () => {
         }
       )
     ).toEqual(
-      configStateFactory({
+      factory.configState({
         loading: false,
         loaded: false,
         saving: false,
         saved: true,
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
             value: "bcache",
           }),
@@ -142,14 +139,14 @@ describe("config reducer", () => {
   it("should correctly reduce config/updateNotify, updating the store", () => {
     expect(
       reducers(
-        configStateFactory({
+        factory.configState({
           loading: false,
           loaded: false,
           saving: false,
           saved: true,
           items: [
-            configFactory({ name: ConfigNames.MAAS_NAME, value: "my-maas" }),
-            configFactory({
+            factory.config({ name: ConfigNames.MAAS_NAME, value: "my-maas" }),
+            factory.config({
               name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
               value: "bcache",
             }),
@@ -161,7 +158,7 @@ describe("config reducer", () => {
         }
       )
     ).toEqual(
-      configStateFactory({
+      factory.configState({
         loading: false,
         loaded: false,
         saving: false,

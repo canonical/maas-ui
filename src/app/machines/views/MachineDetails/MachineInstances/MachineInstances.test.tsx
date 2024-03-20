@@ -1,32 +1,25 @@
 import MachineInstances from "./MachineInstances";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineDevice as machineDeviceFactory,
-  machineInterface as machineInterfaceFactory,
-  networkLink as networkLinkFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("MachineInstances", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
             devices: [
-              machineDeviceFactory({
+              factory.machineDevice({
                 fqdn: "instance1",
                 interfaces: [
-                  machineInterfaceFactory({
+                  factory.machineInterface({
                     mac_address: "f5:f6:9b:7c:1b:85",
                     links: [
-                      networkLinkFactory({
+                      factory.networkLink({
                         ip_address: "1.2.3.99",
                       }),
                     ],
@@ -64,16 +57,16 @@ describe("MachineInstances", () => {
 
   it("displays instance with mac address and ip address correctly", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         devices: [
-          machineDeviceFactory({
+          factory.machineDevice({
             fqdn: "foo",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:85",
                 links: [
-                  networkLinkFactory({
+                  factory.networkLink({
                     ip_address: "100.100.3.99",
                   }),
                 ],
@@ -97,13 +90,13 @@ describe("MachineInstances", () => {
 
   it("displays instance with mac address correctly", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         devices: [
-          machineDeviceFactory({
+          factory.machineDevice({
             fqdn: "foo",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:85",
               }),
             ],
@@ -125,29 +118,29 @@ describe("MachineInstances", () => {
 
   it("displays multiple instances", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         devices: [
-          machineDeviceFactory({
+          factory.machineDevice({
             fqdn: "foo",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:85",
               }),
             ],
           }),
-          machineDeviceFactory({
+          factory.machineDevice({
             fqdn: "bar",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:85",
               }),
             ],
           }),
-          machineDeviceFactory({
+          factory.machineDevice({
             fqdn: "baz",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:85",
               }),
             ],
@@ -167,16 +160,16 @@ describe("MachineInstances", () => {
 
   it("displays instances with multiple mac addresses", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         devices: [
-          machineDeviceFactory({
+          factory.machineDevice({
             fqdn: "foo",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:85",
               }),
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:01",
               }),
             ],
@@ -206,19 +199,19 @@ describe("MachineInstances", () => {
 
   it("displays instances with multiple ip addresses", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         devices: [
-          machineDeviceFactory({
+          factory.machineDevice({
             fqdn: "foo",
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 mac_address: "00:00:9b:7c:1b:85",
                 links: [
-                  networkLinkFactory({
+                  factory.networkLink({
                     ip_address: "1.2.3.4",
                   }),
-                  networkLinkFactory({
+                  factory.networkLink({
                     ip_address: "1.2.3.5",
                   }),
                 ],

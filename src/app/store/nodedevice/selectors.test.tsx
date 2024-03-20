@@ -1,17 +1,12 @@
 import selectors from "./selectors";
 
-import {
-  machine as machineFactory,
-  nodeDevice as nodeDeviceFactory,
-  nodeDeviceState as nodeDeviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("nodeDevice selectors", () => {
   it("can get all items", () => {
-    const items = [nodeDeviceFactory(), nodeDeviceFactory()];
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const items = [factory.nodeDevice(), factory.nodeDevice()];
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items,
       }),
     });
@@ -19,8 +14,8 @@ describe("nodeDevice selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         loading: true,
       }),
     });
@@ -28,8 +23,8 @@ describe("nodeDevice selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         loaded: true,
       }),
     });
@@ -37,8 +32,8 @@ describe("nodeDevice selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         saving: true,
       }),
     });
@@ -46,8 +41,8 @@ describe("nodeDevice selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         saved: true,
       }),
     });
@@ -55,8 +50,8 @@ describe("nodeDevice selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         errors: "it's all ruined",
       }),
     });
@@ -65,11 +60,11 @@ describe("nodeDevice selectors", () => {
 
   it("can get a node device by its id", () => {
     const [thisNodeDevice, otherNodeDevice] = [
-      nodeDeviceFactory(),
-      nodeDeviceFactory(),
+      factory.nodeDevice(),
+      factory.nodeDevice(),
     ];
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items: [thisNodeDevice, otherNodeDevice],
       }),
     });
@@ -79,14 +74,14 @@ describe("nodeDevice selectors", () => {
   });
 
   it("can get node devices for a machine", () => {
-    const machine = machineFactory();
+    const machine = factory.machine();
     const machineNodeDevices = [
-      nodeDeviceFactory({ node_id: machine.id }),
-      nodeDeviceFactory({ node_id: machine.id }),
+      factory.nodeDevice({ node_id: machine.id }),
+      factory.nodeDevice({ node_id: machine.id }),
     ];
-    const items = [...machineNodeDevices, nodeDeviceFactory()];
-    const state = rootStateFactory({
-      nodedevice: nodeDeviceStateFactory({
+    const items = [...machineNodeDevices, factory.nodeDevice()];
+    const state = factory.rootState({
+      nodedevice: factory.nodeDeviceState({
         items,
       }),
     });

@@ -6,17 +6,11 @@ import configureStore from "redux-mock-store";
 import AddVlan from "./AddVlan";
 
 import { actions as vlanActions } from "@/app/store/vlan";
-import {
-  space as spaceFactory,
-  fabric as fabricFactory,
-  spaceState as spaceStateFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("displays validation messages for VID", async () => {
-  const store = configureStore()(rootStateFactory());
+  const store = configureStore()(factory.rootState());
 
   render(
     <Provider store={store}>
@@ -60,13 +54,13 @@ it("correctly dispatches VLAN cleanup and create actions on form submit", async 
   const space = { id: 1, name: "space1" };
   const fabric = { id: 1, name: "fabric1" };
 
-  const state = rootStateFactory({
-    space: spaceStateFactory({
-      items: [spaceFactory(space)],
+  const state = factory.rootState({
+    space: factory.spaceState({
+      items: [factory.space(space)],
       loaded: true,
     }),
-    fabric: fabricStateFactory({
-      items: [fabricFactory(fabric)],
+    fabric: factory.fabricState({
+      items: [factory.fabric(fabric)],
       loaded: true,
     }),
   });

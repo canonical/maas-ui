@@ -1,21 +1,16 @@
 import knownBootArchitectures from "./knownBootArchitectures";
 
-import {
-  generalState as generalStateFactory,
-  knownBootArchitecture as knownBootArchitectureFactory,
-  knownBootArchitecturesState as knownBootArchitecturesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("get", () => {
   it("returns knownBootArchitectures", () => {
     const data = [
-      knownBootArchitectureFactory(),
-      knownBootArchitectureFactory(),
+      factory.knownBootArchitecture(),
+      factory.knownBootArchitecture(),
     ];
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        knownBootArchitectures: knownBootArchitecturesStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        knownBootArchitectures: factory.knownBootArchitecturesState({
           data,
         }),
       }),
@@ -26,9 +21,9 @@ describe("get", () => {
 
 describe("loading", () => {
   it("returns knownBootArchitectures loading state", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        knownBootArchitectures: knownBootArchitecturesStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        knownBootArchitectures: factory.knownBootArchitecturesState({
           loading: true,
         }),
       }),
@@ -39,9 +34,9 @@ describe("loading", () => {
 
 describe("loaded", () => {
   it("returns knownBootArchitectures loaded state", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        knownBootArchitectures: knownBootArchitecturesStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        knownBootArchitectures: factory.knownBootArchitecturesState({
           loaded: true,
         }),
       }),
@@ -53,9 +48,9 @@ describe("loaded", () => {
 describe("errors", () => {
   it("returns knownBootArchitectures errors state", () => {
     const errors = "Cannot fetch known architectures.";
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        knownBootArchitectures: knownBootArchitecturesStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        knownBootArchitectures: factory.knownBootArchitecturesState({
           errors,
         }),
       }),

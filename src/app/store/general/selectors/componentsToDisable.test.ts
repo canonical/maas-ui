@@ -1,19 +1,14 @@
 import componentsToDisable from "./componentsToDisable";
 
-import {
-  componentToDisable as componentToDisableFactory,
-  componentsToDisableState as componentsToDisableStateFactory,
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("componentsToDisable selectors", () => {
   describe("get", () => {
     it("returns componentsToDisable", () => {
-      const data = [componentToDisableFactory(), componentToDisableFactory()];
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          componentsToDisable: componentsToDisableStateFactory({
+      const data = [factory.componentToDisable(), factory.componentToDisable()];
+      const state = factory.rootState({
+        general: factory.generalState({
+          componentsToDisable: factory.componentsToDisableState({
             data,
           }),
         }),
@@ -24,9 +19,9 @@ describe("componentsToDisable selectors", () => {
 
   describe("loading", () => {
     it("returns componentsToDisable loading state", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          componentsToDisable: componentsToDisableStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          componentsToDisable: factory.componentsToDisableState({
             loading: true,
           }),
         }),
@@ -37,9 +32,9 @@ describe("componentsToDisable selectors", () => {
 
   describe("loaded", () => {
     it("returns componentsToDisable loaded state", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          componentsToDisable: componentsToDisableStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          componentsToDisable: factory.componentsToDisableState({
             loaded: true,
           }),
         }),
@@ -51,9 +46,9 @@ describe("componentsToDisable selectors", () => {
   describe("errors", () => {
     it("returns componentsToDisable errors state", () => {
       const errors = "Cannot fetch components to disable.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          componentsToDisable: componentsToDisableStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          componentsToDisable: factory.componentsToDisableState({
             errors,
           }),
         }),

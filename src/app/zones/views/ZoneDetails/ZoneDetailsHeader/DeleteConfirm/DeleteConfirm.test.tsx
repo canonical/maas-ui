@@ -4,11 +4,7 @@ import configureStore from "redux-mock-store";
 import DeleteConfirm from "./DeleteConfirm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -17,10 +13,10 @@ describe("DeleteConfirm", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      zone: zoneStateFactory({
+    initialState = factory.rootState({
+      zone: factory.zoneState({
         items: [
-          zoneFactory({
+          factory.zone({
             id: 1,
             name: "zone-name",
           }),

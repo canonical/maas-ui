@@ -7,11 +7,7 @@ import InterfaceFormFields from "./InterfaceFormFields";
 
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -28,9 +24,9 @@ describe("InterfaceFormFields", () => {
       subnet: "",
       tags: [],
     };
-    state = rootStateFactory({
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 1 }), subnetFactory({ id: 2 })],
+    state = factory.rootState({
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 1 }), factory.subnet({ id: 2 })],
         loaded: true,
       }),
     });

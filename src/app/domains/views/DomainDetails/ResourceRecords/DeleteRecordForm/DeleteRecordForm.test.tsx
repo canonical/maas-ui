@@ -8,12 +8,7 @@ import DeleteRecordForm, {
 } from "./DeleteRecordForm";
 
 import { actions as domainActions } from "@/app/store/domain";
-import {
-  domainDetails as domainFactory,
-  domainState as domainStateFactory,
-  domainResource as resourceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -25,10 +20,10 @@ const mockStore = configureStore();
 
 describe("DeleteRecordForm", () => {
   it("closes the form when Cancel button is clicked", async () => {
-    const resource = resourceFactory();
-    const domain = domainFactory({ id: 1, rrsets: [resource] });
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const resource = factory.domainResource();
+    const domain = factory.domainDetails({ id: 1, rrsets: [resource] });
+    const state = factory.rootState({
+      domain: factory.domainState({
         items: [domain],
       }),
     });
@@ -50,12 +45,15 @@ describe("DeleteRecordForm", () => {
 
   it("dispatches an action to delete one of many records that belong to a DNS resource", async () => {
     const [resource, otherResource] = [
-      resourceFactory({ dnsresource_id: 123, name: "resource" }),
-      resourceFactory({ dnsresource_id: 123, name: "other-resource" }),
+      factory.domainResource({ dnsresource_id: 123, name: "resource" }),
+      factory.domainResource({ dnsresource_id: 123, name: "other-resource" }),
     ];
-    const domain = domainFactory({ id: 1, rrsets: [resource, otherResource] });
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const domain = factory.domainDetails({
+      id: 1,
+      rrsets: [resource, otherResource],
+    });
+    const state = factory.rootState({
+      domain: factory.domainState({
         items: [domain],
       }),
     });
@@ -85,10 +83,10 @@ describe("DeleteRecordForm", () => {
   });
 
   it("dispatches an action to delete the last record of a DNS resource", async () => {
-    const resource = resourceFactory();
-    const domain = domainFactory({ id: 1, rrsets: [resource] });
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const resource = factory.domainResource();
+    const domain = factory.domainDetails({ id: 1, rrsets: [resource] });
+    const state = factory.rootState({
+      domain: factory.domainState({
         items: [domain],
       }),
     });

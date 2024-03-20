@@ -13,16 +13,7 @@ import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { actions as tagActions } from "@/app/store/tag";
 import { NodeStatus, FetchNodeStatus } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
@@ -32,21 +23,21 @@ let state: RootState;
 beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue(callId);
   const machines = [
-    machineFactory({
-      domain: modelRefFactory({ id: 1, name: "test" }),
+    factory.machine({
+      domain: factory.modelRef({ id: 1, name: "test" }),
       hostname: "deployed",
       status: NodeStatus.DEPLOYED,
       tags: [1],
     }),
   ];
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: machines,
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           loaded: true,
           groups: [
-            machineStateListGroupFactory({
+            factory.machineStateListGroup({
               items: machines.map(({ system_id }) => system_id),
               name: "Deployed",
             }),
@@ -54,9 +45,9 @@ beforeEach(() => {
         }),
       },
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           machine_count: 1,
           name: "rad",
@@ -111,8 +102,8 @@ it("dispatches actions to fetch necessary data", () => {
 });
 
 it("displays a message if the tag does not exist", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: false,
     }),
@@ -135,8 +126,8 @@ it("displays a message if the tag does not exist", () => {
 });
 
 it("shows a spinner if the tag has not loaded yet", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: true,
     }),

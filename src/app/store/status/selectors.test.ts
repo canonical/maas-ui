@@ -1,14 +1,11 @@
 import status from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("status", () => {
   it("can get the connected status", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         connected: true,
       }),
     });
@@ -16,8 +13,8 @@ describe("status", () => {
   });
 
   it("can get the error status", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         error: "Timeout",
       }),
     });
@@ -25,8 +22,8 @@ describe("status", () => {
   });
 
   it("can get the authenticated status", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         authenticated: false,
       }),
     });
@@ -34,8 +31,8 @@ describe("status", () => {
   });
 
   it("can get the authenticating status", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         authenticating: false,
       }),
     });
@@ -43,8 +40,8 @@ describe("status", () => {
   });
 
   it("can get the connecting status", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         connecting: false,
       }),
     });
@@ -52,8 +49,8 @@ describe("status", () => {
   });
 
   it("can get the external auth url", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: "http://login.example.com",
       }),
     });
@@ -61,8 +58,8 @@ describe("status", () => {
   });
 
   it("can get the external login url", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         externalLoginURL: "http://login.example.com",
       }),
     });
@@ -70,8 +67,8 @@ describe("status", () => {
   });
 
   it("can get the noUsers status", () => {
-    const state = rootStateFactory({
-      status: statusStateFactory({
+    const state = factory.rootState({
+      status: factory.statusState({
         noUsers: true,
       }),
     });

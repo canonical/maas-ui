@@ -7,11 +7,7 @@ import GeneralForm from "./GeneralForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -19,13 +15,13 @@ const mockStore = configureStore();
 describe("GeneralForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
-          configFactory({ name: ConfigNames.THEME, value: "default" }),
-          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
-          configFactory({
+          factory.config({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
+          factory.config({ name: ConfigNames.THEME, value: "default" }),
+          factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: true,
           }),

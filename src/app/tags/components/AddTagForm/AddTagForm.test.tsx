@@ -9,11 +9,7 @@ import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { actions as tagActions } from "@/app/store/tag";
 import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
-import {
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
@@ -22,8 +18,8 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory(),
+  state = factory.rootState({
+    tag: factory.tagState(),
   });
 });
 
@@ -83,8 +79,8 @@ it("returns the newly created tag on save", async () => {
   );
 
   mockFormikFormSaved();
-  const newTag = tagFactory({ id: 8, name: "new-tag" });
-  state.tag = tagStateFactory({
+  const newTag = factory.tag({ id: 8, name: "new-tag" });
+  state.tag = factory.tagState({
     items: [newTag],
     saved: true,
   });

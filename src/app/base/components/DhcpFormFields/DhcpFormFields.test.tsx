@@ -10,21 +10,7 @@ import DhcpForm from "@/app/base/components/DhcpForm";
 import { getIpRangeDisplayName } from "@/app/store/iprange/utils";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import {
-  ipRange as ipRangeFactory,
-  ipRangeState as ipRangeStateFactory,
-  controllerState as controllerStateFactory,
-  deviceState as deviceStateFactory,
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
@@ -36,8 +22,8 @@ vi.mock("@reduxjs/toolkit", async () => {
 });
 
 const mockStore = configureStore();
-const machines = [machineFactory()];
-const ipRange = ipRangeFactory();
+const machines = [factory.machine()];
+const ipRange = factory.ipRange();
 const callId = "mocked-nanoid";
 
 describe("DhcpFormFields", () => {
@@ -46,19 +32,19 @@ describe("DhcpFormFields", () => {
   beforeEach(() => {
     vi.spyOn(query, "generateCallId").mockReturnValue(callId);
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
-    state = rootStateFactory({
-      controller: controllerStateFactory({ loaded: true }),
-      device: deviceStateFactory({ loaded: true }),
-      dhcpsnippet: dhcpSnippetStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({ loaded: true }),
+      device: factory.deviceState({ loaded: true }),
+      dhcpsnippet: factory.dhcpSnippetState({
         items: [
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 1,
             name: "lease",
             updated: "Thu, 15 Aug. 2019 06:21:39",
             value: "lease 10",
           }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             created: "Thu, 15 Aug. 2019 06:21:39",
             id: 2,
             name: "class",
@@ -67,14 +53,14 @@ describe("DhcpFormFields", () => {
         ],
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: machines,
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loading: false,
             loaded: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machines[0].system_id],
                 name: "Deployed",
               }),
@@ -83,16 +69,16 @@ describe("DhcpFormFields", () => {
         },
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         items: [
-          subnetFactory({
+          factory.subnet({
             id: 1,
             name: "test.local",
           }),
         ],
         loaded: true,
       }),
-      iprange: ipRangeStateFactory({
+      iprange: factory.ipRangeState({
         items: [ipRange],
         loaded: true,
       }),

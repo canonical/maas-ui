@@ -1,10 +1,6 @@
 import MachineHostname from "./MachineHostname";
 
-import {
-  machineStateDetailsItem as machineStateDetailsItemFactory,
-  machine as machineFactory,
-  rootState,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 it("displays machine systemId when hostname is not available", async () => {
@@ -13,15 +9,15 @@ it("displays machine systemId when hostname is not available", async () => {
 });
 
 it("displays machine hostname once loaded", () => {
-  const state = rootState();
+  const state = factory.rootState();
   state.machine.items = [
-    machineFactory({
+    factory.machine({
       system_id: "abc123",
       hostname: "test-machine",
     }),
   ];
   state.machine.details = {
-    "mocked-nanoid": machineStateDetailsItemFactory({
+    "mocked-nanoid": factory.machineStateDetailsItem({
       system_id: "abc123",
     }),
   };

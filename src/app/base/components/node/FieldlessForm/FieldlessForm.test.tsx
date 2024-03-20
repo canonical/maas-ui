@@ -5,12 +5,7 @@ import FieldlessForm from "./FieldlessForm";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => ({
@@ -23,17 +18,17 @@ describe("FieldlessForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
           }),
         ],
         selected: null,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });

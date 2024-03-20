@@ -3,12 +3,7 @@ import StorageNotifications from "./StorageNotifications";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatusCode } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  nodeDisk as diskFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("StorageNotifications", () => {
@@ -16,8 +11,8 @@ describe("StorageNotifications", () => {
   let machine: MachineDetails;
 
   beforeEach(() => {
-    machine = machineDetailsFactory({
-      disks: [diskFactory()],
+    machine = factory.machineDetails({
+      disks: [factory.nodeDisk()],
       locked: false,
       osystem: "ubuntu",
       permissions: ["edit"],
@@ -25,8 +20,8 @@ describe("StorageNotifications", () => {
       storage_layout_issues: [],
       system_id: "abc123",
     });
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
       }),
     });

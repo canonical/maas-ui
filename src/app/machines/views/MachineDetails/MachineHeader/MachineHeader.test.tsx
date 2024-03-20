@@ -11,18 +11,7 @@ import {
   NodeStatus,
   NodeStatusCode,
 } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-  machineDevice as machineDeviceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -39,14 +28,14 @@ describe("MachineHeader", () => {
   let state: RootState;
   beforeEach(() => {
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({ fqdn: "test-machine", system_id: "abc123" }),
+          factory.machineDetails({ fqdn: "test-machine", system_id: "abc123" }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -70,7 +59,7 @@ describe("MachineHeader", () => {
   });
 
   it("displays a spinner when loading the details version of the machine", () => {
-    state.machine.items = [machineFactory({ system_id: "abc123" })];
+    state.machine.items = [factory.machine({ system_id: "abc123" })];
 
     renderWithBrowserRouter(
       <MachineHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
@@ -122,7 +111,7 @@ describe("MachineHeader", () => {
   });
 
   it("displays power status when checking power", () => {
-    state.machine.statuses["abc123"] = machineStatusFactory({
+    state.machine.statuses["abc123"] = factory.machineStatus({
       checkingPower: true,
     });
 
@@ -158,8 +147,8 @@ describe("MachineHeader", () => {
   });
 
   it("includes a tab for instances if machine has any", () => {
-    state.machine.items[0] = machineDetailsFactory({
-      devices: [machineDeviceFactory()],
+    state.machine.items[0] = factory.machineDetails({
+      devices: [factory.machineDevice()],
       system_id: "abc123",
     });
 
@@ -174,16 +163,16 @@ describe("MachineHeader", () => {
   });
 
   it("hides the subtitle when editing the name", async () => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+    state = factory.rootState({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",

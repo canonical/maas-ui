@@ -4,12 +4,7 @@ import DeviceDetailsHeader from "./DeviceDetailsHeader";
 
 import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -18,9 +13,9 @@ describe("DeviceDetailsHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({
-        items: [deviceDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.deviceDetails({ system_id: "abc123" })],
       }),
     });
   });
@@ -39,7 +34,7 @@ describe("DeviceDetailsHeader", () => {
   });
 
   it("displays a spinner as the subtitle if loaded device is not the detailed type", () => {
-    state.device.items = [deviceFactory({ system_id: "abc123" })];
+    state.device.items = [factory.device({ system_id: "abc123" })];
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeviceDetailsHeader setSidePanelContent={vi.fn()} systemId="abc123" />,
@@ -56,7 +51,7 @@ describe("DeviceDetailsHeader", () => {
 
   it("displays the device name if an action is selected", () => {
     state.device.items = [
-      deviceDetailsFactory({ fqdn: "plot-device", system_id: "abc123" }),
+      factory.deviceDetails({ fqdn: "plot-device", system_id: "abc123" }),
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -70,7 +65,7 @@ describe("DeviceDetailsHeader", () => {
 
   it("displays the device name if an action is not selected", () => {
     state.device.items = [
-      deviceDetailsFactory({ fqdn: "plot-device", system_id: "abc123" }),
+      factory.deviceDetails({ fqdn: "plot-device", system_id: "abc123" }),
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(

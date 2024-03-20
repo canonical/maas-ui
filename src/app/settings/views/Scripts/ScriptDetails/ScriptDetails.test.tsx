@@ -7,11 +7,7 @@ import ScriptDetails from ".";
 import FileContext, { fileContextStore } from "@/app/base/file-context";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
-import {
-  script as scriptFactory,
-  scriptState as scriptStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -20,11 +16,11 @@ describe("ScriptDetails", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      script: scriptStateFactory({
+    state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             id: 1,
             name: "commissioning-script",
             description: "a commissioning script",

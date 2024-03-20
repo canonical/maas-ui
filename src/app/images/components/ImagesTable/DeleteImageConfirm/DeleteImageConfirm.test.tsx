@@ -6,11 +6,7 @@ import DeleteImageConfirm from "./DeleteImageConfirm";
 import { Labels as TableDeleteConfirmLabels } from "@/app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { actions as bootResourceActions } from "@/app/store/bootresource";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResource as bootResourceFactory,
-  bootResourceState as bootResourceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -18,9 +14,9 @@ const mockStore = configureStore<RootState, {}>();
 describe("DeleteImageConfirm", () => {
   it("calls closeForm on cancel click", async () => {
     const closeForm = vi.fn();
-    const resource = bootResourceFactory();
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const resource = factory.bootResource();
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [resource],
       }),
     });
@@ -36,9 +32,9 @@ describe("DeleteImageConfirm", () => {
   });
 
   it("runs cleanup function on unmount", () => {
-    const resource = bootResourceFactory();
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const resource = factory.bootResource();
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [resource],
       }),
     });
@@ -59,9 +55,9 @@ describe("DeleteImageConfirm", () => {
   });
 
   it("dispatches an action to delete an image", async () => {
-    const resource = bootResourceFactory({ id: 1 });
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const resource = factory.bootResource({ id: 1 });
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [resource],
       }),
     });

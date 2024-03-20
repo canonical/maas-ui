@@ -4,20 +4,7 @@ import DeviceNetworkTable from "./DeviceNetworkTable";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceInterface as deviceInterfaceFactory,
-  deviceState as deviceStateFactory,
-  deviceStatus as deviceStatusFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -25,21 +12,21 @@ const mockStore = configureStore<RootState>();
 describe("DeviceNetworkTable", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    state = factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      device: deviceStateFactory({
-        items: [deviceDetailsFactory({ system_id: "abc123" })],
+      device: factory.deviceState({
+        items: [factory.deviceDetails({ system_id: "abc123" })],
         loaded: true,
         statuses: {
-          abc123: deviceStatusFactory(),
+          abc123: factory.deviceStatus(),
         },
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
     });
@@ -64,19 +51,19 @@ describe("DeviceNetworkTable", () => {
   });
 
   it("can display an interface that has no links", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
     const subnets = [
-      subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" }),
-      subnetFactory({ cidr: "subnet2-cidr", name: "subnet2-name" }),
+      factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" }),
+      factory.subnet({ cidr: "subnet2-cidr", name: "subnet2-name" }),
     ];
     state.subnet.items = subnets;
     state.device.items = [
-      deviceDetailsFactory({
+      factory.deviceDetails({
         interfaces: [
-          deviceInterfaceFactory({
+          factory.deviceInterface({
             discovered: null,
             links: [],
             type: NetworkInterfaceTypes.BOND,
@@ -94,19 +81,19 @@ describe("DeviceNetworkTable", () => {
   });
 
   it("can display an interface that has a link", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+    const subnet = factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" });
     state.subnet.items = [subnet];
     state.device.items = [
-      deviceDetailsFactory({
+      factory.deviceDetails({
         interfaces: [
-          deviceInterfaceFactory({
+          factory.deviceInterface({
             discovered: null,
             links: [
-              networkLinkFactory({
+              factory.networkLink({
                 subnet_id: subnet.id,
                 ip_address: "1.2.3.99",
               }),
@@ -130,7 +117,7 @@ describe("DeviceNetworkTable", () => {
 
   it("displays an empty table description", () => {
     state.device.items = [
-      deviceDetailsFactory({
+      factory.deviceDetails({
         interfaces: [],
         system_id: "abc123",
       }),

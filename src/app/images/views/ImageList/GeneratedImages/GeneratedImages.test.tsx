@@ -2,20 +2,16 @@ import GeneratedImages from "./GeneratedImages";
 
 import { Labels as ImagesTableLabels } from "@/app/images/components/ImagesTable/ImagesTable";
 import { BootResourceType } from "@/app/store/bootresource/types";
-import {
-  bootResource as bootResourceFactory,
-  bootResourceState as bootResourceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("GeneratedImages", () => {
   it("does not render if there are no generated resources", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [
-          bootResourceFactory({ rtype: BootResourceType.SYNCED }),
-          bootResourceFactory({ rtype: BootResourceType.UPLOADED }),
+          factory.bootResource({ rtype: BootResourceType.SYNCED }),
+          factory.bootResource({ rtype: BootResourceType.UPLOADED }),
         ],
       }),
     });
@@ -28,33 +24,33 @@ describe("GeneratedImages", () => {
 
   it("correctly sets images values based on generated resources", () => {
     const resources = [
-      bootResourceFactory({
+      factory.bootResource({
         arch: "amd64",
         name: "esxi/7.0",
         rtype: BootResourceType.UPLOADED,
         title: "VMWare ESXi 7.0",
       }),
-      bootResourceFactory({
+      factory.bootResource({
         arch: "arm64",
         name: "windows/win2012hvr2",
         rtype: BootResourceType.GENERATED,
         title: "Windows 2012",
       }),
-      bootResourceFactory({
+      factory.bootResource({
         arch: "i386",
         name: "centos/centos70",
         rtype: BootResourceType.GENERATED,
         title: "CentOS 7",
       }),
-      bootResourceFactory({
+      factory.bootResource({
         arch: "ppc64el",
         name: "ubuntu/focal",
         rtype: BootResourceType.SYNCED,
         title: "20.04 LTS",
       }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources,
       }),
     });

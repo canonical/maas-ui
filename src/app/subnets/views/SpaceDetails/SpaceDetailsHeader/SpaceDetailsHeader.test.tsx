@@ -9,15 +9,11 @@ import { SpaceDetailsSidePanelViews } from "../constants";
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
 import urls from "@/app/base/urls";
-import {
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, userEvent } from "@/testing/utils";
 
 const renderTestCase = (
-  space = spaceFactory({
+  space = factory.space({
     id: 1,
     name: "space1",
     description: "space 1 description",
@@ -26,8 +22,8 @@ const renderTestCase = (
   const history = createMemoryHistory({
     initialEntries: [{ pathname: urls.subnets.space.index({ id: space.id }) }],
   });
-  const state = rootStateFactory({
-    space: spaceStateFactory({
+  const state = factory.rootState({
+    space: factory.spaceState({
       items: [space],
       loading: false,
     }),
@@ -61,7 +57,7 @@ const renderTestCase = (
 };
 
 it("shows the space name as the section title", () => {
-  renderTestCase(spaceFactory({ id: 1, name: "space-1" }));
+  renderTestCase(factory.space({ id: 1, name: "space-1" }));
 
   expect(screen.getByTestId("section-header-title")).toHaveTextContent(
     "space-1"
@@ -70,7 +66,7 @@ it("shows the space name as the section title", () => {
 
 it("calls a function to open the side panel when the delete button is clicked", async () => {
   const { setSidePanelContent } = renderTestCase(
-    spaceFactory({ id: 1, name: "space-1" })
+    factory.space({ id: 1, name: "space-1" })
   );
 
   await userEvent.click(screen.getByRole("button", { name: "Delete space" }));

@@ -5,21 +5,7 @@ import { Label as NetworkTableActionsLabel } from "@/app/machines/views/MachineD
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  controllerDetails as controllerDetailsFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -31,40 +17,40 @@ describe("NetworkTable", () => {
   let state: RootState;
   let machine: MachineDetails;
   beforeEach(() => {
-    machine = machineDetailsFactory({ system_id: "abc123" });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    machine = factory.machineDetails({ system_id: "abc123" });
+    state = factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
     });
   });
 
   it("can display an interface that has no links", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
     const subnets = [
-      subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" }),
-      subnetFactory({ cidr: "subnet2-cidr", name: "subnet2-name" }),
+      factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" }),
+      factory.subnet({ cidr: "subnet2-cidr", name: "subnet2-name" }),
     ];
     state.subnet.items = subnets;
-    machine = machineDetailsFactory({
+    machine = factory.machineDetails({
       interfaces: [
-        machineInterfaceFactory({
+        factory.machineInterface({
           discovered: null,
           links: [],
           type: NetworkInterfaceTypes.BOND,
@@ -92,18 +78,18 @@ describe("NetworkTable", () => {
   });
 
   it("can display an interface that has a link", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+    const subnet = factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" });
     state.subnet.items = [subnet];
-    machine = machineDetailsFactory({
+    machine = factory.machineDetails({
       interfaces: [
-        machineInterfaceFactory({
+        factory.machineInterface({
           discovered: null,
           links: [
-            networkLinkFactory({
+            factory.networkLink({
               subnet_id: subnet.id,
               ip_address: "1.2.3.99",
             }),
@@ -153,25 +139,25 @@ describe("NetworkTable", () => {
   });
 
   it("can display an interface that is an alias", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
     const subnets = [
-      subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" }),
-      subnetFactory({ cidr: "subnet2-cidr", name: "subnet2-name" }),
+      factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" }),
+      factory.subnet({ cidr: "subnet2-cidr", name: "subnet2-name" }),
     ];
     state.subnet.items = subnets;
-    machine = machineDetailsFactory({
+    machine = factory.machineDetails({
       interfaces: [
-        machineInterfaceFactory({
+        factory.machineInterface({
           discovered: null,
           links: [
-            networkLinkFactory({
+            factory.networkLink({
               subnet_id: subnets[0].id,
               ip_address: "1.2.3.99",
             }),
-            networkLinkFactory({
+            factory.networkLink({
               subnet_id: subnets[1].id,
               ip_address: "1.2.3.101",
             }),
@@ -207,23 +193,23 @@ describe("NetworkTable", () => {
   });
 
   it("displays actions", () => {
-    machine = machineDetailsFactory({
+    machine = factory.machineDetails({
       interfaces: [
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 100,
           is_boot: false,
           name: "bond0",
           parents: [101],
           type: NetworkInterfaceTypes.BOND,
         }),
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 101,
           children: [100],
           is_boot: true,
           name: "eth0",
           type: NetworkInterfaceTypes.PHYSICAL,
         }),
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 102,
           name: "eth1",
           type: NetworkInterfaceTypes.PHYSICAL,
@@ -264,23 +250,23 @@ describe("NetworkTable", () => {
   });
 
   it("can display without actions", () => {
-    const controller = controllerDetailsFactory({
+    const controller = factory.controllerDetails({
       interfaces: [
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 100,
           is_boot: false,
           name: "bond0",
           parents: [101],
           type: NetworkInterfaceTypes.BOND,
         }),
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 101,
           children: [100],
           is_boot: true,
           name: "eth0",
           type: NetworkInterfaceTypes.PHYSICAL,
         }),
-        machineInterfaceFactory({
+        factory.machineInterface({
           id: 102,
           name: "eth1",
           type: NetworkInterfaceTypes.PHYSICAL,
@@ -312,16 +298,16 @@ describe("NetworkTable", () => {
 
   describe("bond and bridge interfaces", () => {
     beforeEach(() => {
-      machine = machineDetailsFactory({
+      machine = factory.machineDetails({
         interfaces: [
-          machineInterfaceFactory({
+          factory.machineInterface({
             id: 100,
             is_boot: false,
             name: "bond0",
             parents: [101],
             type: NetworkInterfaceTypes.BOND,
           }),
-          machineInterfaceFactory({
+          factory.machineInterface({
             id: 101,
             children: [100],
             is_boot: true,
@@ -480,40 +466,40 @@ describe("NetworkTable", () => {
 
   describe("sorting", () => {
     beforeEach(() => {
-      machine = machineDetailsFactory({
+      machine = factory.machineDetails({
         interfaces: [
-          machineInterfaceFactory({
+          factory.machineInterface({
             id: 100,
             name: "bond0",
             parents: [101, 104],
             type: NetworkInterfaceTypes.BOND,
           }),
-          machineInterfaceFactory({
+          factory.machineInterface({
             children: [100],
             id: 101,
             name: "eth0",
             type: NetworkInterfaceTypes.PHYSICAL,
           }),
-          machineInterfaceFactory({
+          factory.machineInterface({
             id: 102,
-            links: [networkLinkFactory(), networkLinkFactory()],
+            links: [factory.networkLink(), factory.networkLink()],
             name: "br0",
             parents: [103],
             type: NetworkInterfaceTypes.BRIDGE,
           }),
-          machineInterfaceFactory({
+          factory.machineInterface({
             children: [102],
             id: 103,
             name: "eth1",
             type: NetworkInterfaceTypes.PHYSICAL,
           }),
-          machineInterfaceFactory({
+          factory.machineInterface({
             id: 99,
             name: "eth2",
             parents: [],
             type: NetworkInterfaceTypes.PHYSICAL,
           }),
-          machineInterfaceFactory({
+          factory.machineInterface({
             children: [100],
             id: 104,
             name: "eth3",

@@ -7,17 +7,7 @@ import DeployForm from "../DeployForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
@@ -32,8 +22,8 @@ describe("DeployFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
           {
             name: ConfigNames.DEFAULT_OSYSTEM,
@@ -48,7 +38,7 @@ describe("DeployFormFields", () => {
         loaded: true,
         loading: false,
       }),
-      general: generalStateFactory({
+      general: factory.generalState({
         defaultMinHweKernel: {
           data: "",
           errors: {},
@@ -99,26 +89,26 @@ describe("DeployFormFields", () => {
           loading: false,
         },
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
           }),
-          machineFactory({
+          factory.machine({
             system_id: "def456",
           }),
         ],
         selected: null,
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
+      user: factory.userState({
+        auth: factory.authState({
           saved: false,
-          user: userFactory({
+          user: factory.user({
             email: "test@example.com",
             global_permissions: ["machine_create"],
             id: 1,

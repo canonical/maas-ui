@@ -3,7 +3,7 @@ import type { Props as FilterAccordionProps } from "./FilterAccordion";
 
 import type { MachineDetails, MachineMeta } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { machineDetails as machineDetailsFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 describe("FilterAccordion", () => {
@@ -19,7 +19,7 @@ describe("FilterAccordion", () => {
   >["getValue"];
   beforeEach(() => {
     items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         link_speeds: [100],
         pool: {
           id: 1,
