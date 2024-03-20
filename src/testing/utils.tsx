@@ -98,7 +98,7 @@ type WrapperProps = {
   parentRoute?: string;
   routePattern?: string;
   state?: RootState;
-  store?: MockStoreEnhanced<RootState, {}>;
+  store?: MockStoreEnhanced<RootState | unknown, {}>;
   sidePanelContent?: SidePanelContent;
   sidePanelSize?: SidePanelSize;
 };
