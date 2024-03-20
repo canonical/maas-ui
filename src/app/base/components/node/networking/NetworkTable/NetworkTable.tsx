@@ -63,7 +63,7 @@ export enum Label {
   Actions = "Actions",
   ActionsMenu = "Interface actions",
   DHCP = "DHCP",
-  EmptyList = "No interfaces availaable",
+  EmptyList = "No interfaces available",
   Fabric = "Fabric",
   IP = "IP Address",
   MAC = "MAC",
