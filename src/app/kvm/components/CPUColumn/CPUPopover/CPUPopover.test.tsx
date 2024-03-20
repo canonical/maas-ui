@@ -1,16 +1,13 @@
 import CPUPopover from "./CPUPopover";
 
-import {
-  podResource as podResourceFactory,
-  vmClusterResource as vmClusterResourceFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, userEvent } from "@/testing/utils";
 
 describe("CPUPopover", () => {
   it("shows if cores are used by any other projects in the group", async () => {
     render(
       <CPUPopover
-        cores={podResourceFactory({
+        cores={factory.podResource({
           allocated_other: 1,
         })}
         overCommit={1}
@@ -26,7 +23,7 @@ describe("CPUPopover", () => {
   it("does not show other cores if no other projects in the group use them", async () => {
     render(
       <CPUPopover
-        cores={podResourceFactory({
+        cores={factory.podResource({
           allocated_other: 0,
         })}
         overCommit={1}
@@ -42,7 +39,7 @@ describe("CPUPopover", () => {
   it("shows CPU over-commit ratio if it is not equal to 1", async () => {
     render(
       <CPUPopover
-        cores={podResourceFactory({
+        cores={factory.podResource({
           allocated_other: 1,
         })}
         overCommit={2}
@@ -58,7 +55,7 @@ describe("CPUPopover", () => {
   it("does not show CPU over-commit ratio if it is equal to 1", async () => {
     render(
       <CPUPopover
-        cores={podResourceFactory({
+        cores={factory.podResource({
           allocated_other: 1,
         })}
         overCommit={1}
@@ -74,7 +71,7 @@ describe("CPUPopover", () => {
   it("displays cores for a vmcluster", async () => {
     render(
       <CPUPopover
-        cores={vmClusterResourceFactory({
+        cores={factory.vmClusterResource({
           allocated_other: 1,
           allocated_tracked: 2,
           free: 3,

@@ -4,21 +4,17 @@ import ImageList, { Labels as ImageListLabels } from "./ImageList";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
 describe("ImageList", () => {
   it("stops polling when unmounted", () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
             value: false,
           }),
@@ -40,10 +36,10 @@ describe("ImageList", () => {
   });
 
   it("shows a warning if automatic image sync is disabled", () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
             value: false,
           }),

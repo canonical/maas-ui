@@ -3,24 +3,13 @@ import { NodeType } from "../types/node";
 import controller from "./selectors";
 import { ImageSyncStatus } from "./types/enum";
 
-import {
-  rootState as rootStateFactory,
-  controller as controllerFactory,
-  controllerImageSyncStatuses as controllerImageSyncStatusesFactory,
-  controllerState as controllerStateFactory,
-  controllerStatus as controllerStatusFactory,
-  controllerStatuses as controllerStatusesFactory,
-  service as serviceFactory,
-  serviceState as serviceStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("controller selectors", () => {
   it("can get all items", () => {
-    const items = [controllerFactory(), controllerFactory()];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const items = [factory.controller(), factory.controller()];
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items,
       }),
     });
@@ -28,8 +17,8 @@ describe("controller selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         loading: true,
       }),
     });
@@ -37,8 +26,8 @@ describe("controller selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
       }),
     });
@@ -47,11 +36,11 @@ describe("controller selectors", () => {
 
   it("can get a controller by id", () => {
     const items = [
-      controllerFactory({ system_id: "808" }),
-      controllerFactory({ system_id: "909" }),
+      factory.controller({ system_id: "808" }),
+      factory.controller({ system_id: "909" }),
     ];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items,
       }),
     });
@@ -60,12 +49,12 @@ describe("controller selectors", () => {
 
   it("can get controllers by a list of IDs", () => {
     const controllers = [
-      controllerFactory({ system_id: "abc123" }),
-      controllerFactory({ system_id: "def456" }),
-      controllerFactory({ system_id: "ghi789" }),
+      factory.controller({ system_id: "abc123" }),
+      factory.controller({ system_id: "def456" }),
+      factory.controller({ system_id: "ghi789" }),
     ];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items: controllers,
       }),
     });
@@ -76,9 +65,9 @@ describe("controller selectors", () => {
   });
 
   it("can get the controller statuses", () => {
-    const statuses = controllerStatusesFactory();
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const statuses = factory.controllerStatuses();
+    const state = factory.rootState({
+      controller: factory.controllerState({
         statuses,
       }),
     });
@@ -86,10 +75,10 @@ describe("controller selectors", () => {
   });
 
   it("can get the statuses for a controller", () => {
-    const controllerStatuses = controllerStatusFactory();
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
-        statuses: controllerStatusesFactory({
+    const controllerStatuses = factory.controllerStatus();
+    const state = factory.rootState({
+      controller: factory.controllerState({
+        statuses: factory.controllerStatuses({
           abc123: controllerStatuses,
         }),
       }),
@@ -100,11 +89,11 @@ describe("controller selectors", () => {
   });
 
   it("can get a status for a controller", () => {
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
-        items: [controllerFactory({ system_id: "abc123" })],
-        statuses: controllerStatusesFactory({
-          abc123: controllerStatusFactory({ importingImages: true }),
+    const state = factory.rootState({
+      controller: factory.controllerState({
+        items: [factory.controller({ system_id: "abc123" })],
+        statuses: factory.controllerStatuses({
+          abc123: factory.controllerStatus({ importingImages: true }),
         }),
       }),
     });
@@ -114,12 +103,12 @@ describe("controller selectors", () => {
   });
 
   it("can get controllers that are processing", () => {
-    const statuses = controllerStatusesFactory({
-      abc123: controllerStatusFactory({ testing: true }),
-      def456: controllerStatusFactory(),
+    const statuses = factory.controllerStatuses({
+      abc123: factory.controllerStatus({ testing: true }),
+      def456: factory.controllerStatus(),
     });
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         statuses,
       }),
     });
@@ -127,16 +116,16 @@ describe("controller selectors", () => {
   });
 
   it("can get the image sync state for all controllers", () => {
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
-        imageSyncStatuses: controllerImageSyncStatusesFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
+        imageSyncStatuses: factory.controllerImageSyncStatuses({
           abc123: ImageSyncStatus.OutOfSync,
           def456: ImageSyncStatus.Syncing,
         }),
       }),
     });
     expect(controller.imageSyncStatuses(state)).toStrictEqual(
-      controllerImageSyncStatusesFactory({
+      factory.controllerImageSyncStatuses({
         abc123: ImageSyncStatus.OutOfSync,
         def456: ImageSyncStatus.Syncing,
       })
@@ -144,9 +133,9 @@ describe("controller selectors", () => {
   });
 
   it("can get the image sync state for a controller", () => {
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
-        imageSyncStatuses: controllerImageSyncStatusesFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
+        imageSyncStatuses: factory.controllerImageSyncStatuses({
           abc123: ImageSyncStatus.OutOfSync,
           def456: ImageSyncStatus.Syncing,
         }),
@@ -158,17 +147,17 @@ describe("controller selectors", () => {
   });
 
   it("can get the services for a controller", () => {
-    const services = [serviceFactory(), serviceFactory()];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const services = [factory.service(), factory.service()];
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items: [
-          controllerFactory({
+          factory.controller({
             system_id: "abc123",
             service_ids: services.map(({ id }) => id),
           }),
         ],
       }),
-      service: serviceStateFactory({
+      service: factory.serviceState({
         items: services,
       }),
     });
@@ -178,13 +167,13 @@ describe("controller selectors", () => {
   });
 
   it("can search tags", () => {
-    const items = [controllerFactory({ tags: [1] }), controllerFactory()];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const items = [factory.controller({ tags: [1] }), factory.controller()];
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items,
       }),
-      tag: tagStateFactory({
-        items: [tagFactory({ id: 1, name: "echidna" })],
+      tag: factory.tagState({
+        items: [factory.tag({ id: 1, name: "echidna" })],
       }),
     });
     expect(controller.search(state, "echidna", [])).toStrictEqual([items[0]]);
@@ -192,18 +181,18 @@ describe("controller selectors", () => {
 
   it("can get all region/region-and-rack controllers", () => {
     const items = [
-      controllerFactory({
+      factory.controller({
         node_type: NodeType.REGION_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         node_type: NodeType.RACK_CONTROLLER,
       }),
     ];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items,
       }),
     });
@@ -216,20 +205,20 @@ describe("controller selectors", () => {
 
   it("can separate region controllers by their Vault configuration status", () => {
     const items = [
-      controllerFactory({
+      factory.controller({
         vault_configured: true,
         node_type: NodeType.REGION_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         vault_configured: false,
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         node_type: NodeType.RACK_CONTROLLER,
       }),
     ];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items,
       }),
     });

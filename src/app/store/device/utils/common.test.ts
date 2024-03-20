@@ -1,20 +1,17 @@
 import { isDeviceDetails, getIpAssignmentDisplay } from "./common";
 
 import { DeviceIpAssignment } from "@/app/store/device/types";
-import {
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("device utils", () => {
   describe("isDeviceDetails", () => {
     it("identifies device details", () => {
-      const deviceDetails = deviceDetailsFactory();
+      const deviceDetails = factory.deviceDetails();
       expect(isDeviceDetails(deviceDetails)).toBe(true);
     });
 
     it("handles base device", () => {
-      const baseDevice = deviceFactory();
+      const baseDevice = factory.device();
       expect(isDeviceDetails(baseDevice)).toBe(false);
     });
 

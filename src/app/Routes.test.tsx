@@ -5,22 +5,7 @@ import type { RootState } from "./store/root/types";
 
 import urls from "@/app/base/urls";
 import { LONG_TIMEOUT } from "@/testing/constants";
-import {
-  rootState as rootStateFactory,
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceState as deviceStateFactory,
-  authState as authStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { waitFor, renderWithBrowserRouter } from "@/testing/utils";
 
 const nodeSummaryRoutes: { path: string; name: string }[] = [
@@ -126,13 +111,13 @@ describe("Routes", () => {
   let scrollToSpy: Mock;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
+    state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
       }),
-      controller: controllerStateFactory({
+      controller: factory.controllerState({
         items: [
-          controllerFactory({
+          factory.controller({
             system_id: "abc123",
             hostname: "test-controller",
           }),
@@ -140,9 +125,9 @@ describe("Routes", () => {
         loaded: true,
         loading: false,
       }),
-      device: deviceStateFactory({
+      device: factory.deviceState({
         items: [
-          deviceDetailsFactory({
+          factory.deviceDetails({
             system_id: "abc123",
             hostname: "test-device",
           }),
@@ -150,20 +135,20 @@ describe("Routes", () => {
         loaded: true,
         loading: false,
       }),
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 1, name: "test-domain" })],
+      domain: factory.domainState({
+        items: [factory.domain({ id: 1, name: "test-domain" })],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
             fqdn: "test-machine",
           }),
         ],
       }),
-      zone: zoneStateFactory({
+      zone: factory.zoneState({
         items: [
-          zoneFactory({
+          factory.zone({
             id: 1,
             name: "test-zone",
           }),

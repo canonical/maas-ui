@@ -6,19 +6,16 @@ import {
 } from "./common";
 
 import { NodeType } from "@/app/store/types/node";
-import {
-  controller as controllerFactory,
-  controllerDetails as controllerDetailsFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("isControllerDetails", () => {
   it("identifies controller details", () => {
-    const controllerDetails = controllerDetailsFactory();
+    const controllerDetails = factory.controllerDetails();
     expect(isControllerDetails(controllerDetails)).toBe(true);
   });
 
   it("handles base controller", () => {
-    const baseController = controllerFactory();
+    const baseController = factory.controller();
     expect(isControllerDetails(baseController)).toBe(false);
   });
 
@@ -33,13 +30,13 @@ describe("isControllerDetails", () => {
 
 describe("isRack", () => {
   it("identifies rack controller", () => {
-    const rackController = controllerFactory({
+    const rackController = factory.controller({
       node_type: NodeType.RACK_CONTROLLER,
     });
-    const regionController = controllerFactory({
+    const regionController = factory.controller({
       node_type: NodeType.REGION_CONTROLLER,
     });
-    const regionAndRackController = controllerFactory({
+    const regionAndRackController = factory.controller({
       node_type: NodeType.REGION_AND_RACK_CONTROLLER,
     });
     expect(isRack(rackController)).toBe(true);
@@ -55,13 +52,13 @@ describe("isRack", () => {
 
 describe("isRegion", () => {
   it("identifies region controller", () => {
-    const rackController = controllerFactory({
+    const rackController = factory.controller({
       node_type: NodeType.RACK_CONTROLLER,
     });
-    const regionController = controllerFactory({
+    const regionController = factory.controller({
       node_type: NodeType.REGION_CONTROLLER,
     });
-    const regionAndRackController = controllerFactory({
+    const regionAndRackController = factory.controller({
       node_type: NodeType.REGION_AND_RACK_CONTROLLER,
     });
     expect(isRegion(rackController)).toBe(false);
@@ -77,13 +74,13 @@ describe("isRegion", () => {
 
 describe("isRegionAndRack", () => {
   it("identifies region+rack controller", () => {
-    const rackController = controllerFactory({
+    const rackController = factory.controller({
       node_type: NodeType.RACK_CONTROLLER,
     });
-    const regionController = controllerFactory({
+    const regionController = factory.controller({
       node_type: NodeType.REGION_CONTROLLER,
     });
-    const regionAndRackController = controllerFactory({
+    const regionAndRackController = factory.controller({
       node_type: NodeType.REGION_AND_RACK_CONTROLLER,
     });
     expect(isRegionAndRack(rackController)).toBe(false);

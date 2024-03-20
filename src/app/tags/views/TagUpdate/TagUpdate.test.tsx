@@ -12,11 +12,7 @@ import { actions as tagActions } from "@/app/store/tag";
 import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "@/app/tags/constants";
 import { Label } from "@/app/tags/views/TagDetails";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
@@ -24,10 +20,10 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           name: "rad",
         }),
@@ -66,8 +62,8 @@ it("dispatches actions to fetch necessary data", () => {
 });
 
 it("shows a spinner if the tag has not loaded yet", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: true,
     }),
@@ -164,7 +160,7 @@ it("goes to the tag details page if it can't go back", async () => {
 });
 
 it("shows a confirmation when a tag's definition is updated", async () => {
-  const tag = tagFactory({ id: 1, definition: "abc", name: "baggage" });
+  const tag = factory.tag({ id: 1, definition: "abc", name: "baggage" });
   state.tag.items = [tag];
   const store = mockStore(state);
   render(

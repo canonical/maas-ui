@@ -2,25 +2,13 @@ import { NetworkInterfaceTypes } from "../types/enum";
 
 import device from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceEventError as deviceEventErrorFactory,
-  deviceInterface as deviceInterfaceFactory,
-  deviceState as deviceStateFactory,
-  deviceStatus as deviceStatusFactory,
-  deviceStatuses as deviceStatusesFactory,
-  networkLink as networkLinkFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("device selectors", () => {
   it("can get all items", () => {
-    const items = [deviceFactory(), deviceFactory()];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const items = [factory.device(), factory.device()];
+    const state = factory.rootState({
+      device: factory.deviceState({
         items,
       }),
     });
@@ -28,8 +16,8 @@ describe("device selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         loading: true,
       }),
     });
@@ -37,8 +25,8 @@ describe("device selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         loaded: true,
       }),
     });
@@ -47,11 +35,11 @@ describe("device selectors", () => {
 
   it("can get a device by id", () => {
     const items = [
-      deviceFactory({ system_id: "808" }),
-      deviceFactory({ system_id: "909" }),
+      factory.device({ system_id: "808" }),
+      factory.device({ system_id: "909" }),
     ];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         items,
       }),
     });
@@ -59,11 +47,11 @@ describe("device selectors", () => {
   });
 
   it("can get a status for a device", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
-        items: [deviceFactory({ system_id: "abc123" })],
-        statuses: deviceStatusesFactory({
-          abc123: deviceStatusFactory({ creatingInterface: true }),
+    const state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.device({ system_id: "abc123" })],
+        statuses: factory.deviceStatuses({
+          abc123: factory.deviceStatus({ creatingInterface: true }),
         }),
       }),
     });
@@ -74,11 +62,11 @@ describe("device selectors", () => {
 
   it("can get event errors for a device", () => {
     const deviceEventErrors = [
-      deviceEventErrorFactory({ id: "abc123" }),
-      deviceEventErrorFactory(),
+      factory.deviceEventError({ id: "abc123" }),
+      factory.deviceEventError(),
     ];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         eventErrors: deviceEventErrors,
       }),
     });
@@ -89,11 +77,11 @@ describe("device selectors", () => {
 
   it("can get event errors for a device and a provided event", () => {
     const deviceEventErrors = [
-      deviceEventErrorFactory({ id: "abc123", event: "creatingInterface" }),
-      deviceEventErrorFactory({ event: "creatingInterface" }),
+      factory.deviceEventError({ id: "abc123", event: "creatingInterface" }),
+      factory.deviceEventError({ event: "creatingInterface" }),
     ];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         eventErrors: deviceEventErrors,
       }),
     });
@@ -104,12 +92,12 @@ describe("device selectors", () => {
 
   it("can get event errors for a device and no event", () => {
     const deviceEventErrors = [
-      deviceEventErrorFactory({ id: "abc123", event: null }),
-      deviceEventErrorFactory({ id: "abc123", event: "creatingInterface" }),
-      deviceEventErrorFactory({ event: null }),
+      factory.deviceEventError({ id: "abc123", event: null }),
+      factory.deviceEventError({ id: "abc123", event: "creatingInterface" }),
+      factory.deviceEventError({ event: null }),
     ];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         eventErrors: deviceEventErrors,
       }),
     });
@@ -120,12 +108,12 @@ describe("device selectors", () => {
 
   it("can get event errors for multiple devices", () => {
     const deviceEventErrors = [
-      deviceEventErrorFactory({ id: "abc123" }),
-      deviceEventErrorFactory({ id: "def456" }),
-      deviceEventErrorFactory(),
+      factory.deviceEventError({ id: "abc123" }),
+      factory.deviceEventError({ id: "def456" }),
+      factory.deviceEventError(),
     ];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         eventErrors: deviceEventErrors,
       }),
     });
@@ -136,12 +124,12 @@ describe("device selectors", () => {
 
   it("can get event errors for multiple devices and a provided event", () => {
     const deviceEventErrors = [
-      deviceEventErrorFactory({ id: "abc123", event: "creatingInterface" }),
-      deviceEventErrorFactory({ id: "def456", event: "creatingInterface" }),
-      deviceEventErrorFactory({ event: "creatingInterface" }),
+      factory.deviceEventError({ id: "abc123", event: "creatingInterface" }),
+      factory.deviceEventError({ id: "def456", event: "creatingInterface" }),
+      factory.deviceEventError({ event: "creatingInterface" }),
     ];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         eventErrors: deviceEventErrors,
       }),
     });
@@ -156,14 +144,14 @@ describe("device selectors", () => {
 
   it("can get event errors for multiple devices and no event", () => {
     const deviceEventErrors = [
-      deviceEventErrorFactory({ id: "abc123", event: null }),
-      deviceEventErrorFactory({ id: "def456", event: null }),
-      deviceEventErrorFactory({ id: "abc123", event: "creatingInterface" }),
-      deviceEventErrorFactory({ id: "def456", event: "creatingInterface" }),
-      deviceEventErrorFactory({ event: null }),
+      factory.deviceEventError({ id: "abc123", event: null }),
+      factory.deviceEventError({ id: "def456", event: null }),
+      factory.deviceEventError({ id: "abc123", event: "creatingInterface" }),
+      factory.deviceEventError({ id: "def456", event: "creatingInterface" }),
+      factory.deviceEventError({ event: null }),
     ];
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         eventErrors: deviceEventErrors,
       }),
     });
@@ -173,8 +161,8 @@ describe("device selectors", () => {
   });
 
   it("can get the active device's system ID", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         active: "abc123",
       }),
     });
@@ -182,9 +170,9 @@ describe("device selectors", () => {
   });
 
   it("can get the active device", () => {
-    const activeDevice = deviceFactory();
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const activeDevice = factory.device();
+    const state = factory.rootState({
+      device: factory.deviceState({
         active: activeDevice.system_id,
         items: [activeDevice],
       }),
@@ -193,8 +181,8 @@ describe("device selectors", () => {
   });
 
   it("can get the selected device's system ID", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         selected: ["abc123"],
       }),
     });
@@ -202,9 +190,9 @@ describe("device selectors", () => {
   });
 
   it("can get the selected device", () => {
-    const selectedDevice = deviceFactory();
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const selectedDevice = factory.device();
+    const state = factory.rootState({
+      device: factory.deviceState({
         selected: [selectedDevice.system_id],
         items: [selectedDevice],
       }),
@@ -213,30 +201,30 @@ describe("device selectors", () => {
   });
 
   it("can search devices by their properties", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         items: [
-          deviceFactory({
+          factory.device({
             hostname: "foo",
             owner: "rob",
           }),
-          deviceFactory({
+          factory.device({
             hostname: "bar",
             owner: "foodie",
           }),
-          deviceFactory({
+          factory.device({
             hostname: "foobar",
             owner: "bazza",
           }),
-          deviceFactory({
+          factory.device({
             hostname: "baz",
             owner: "robert",
             tags: [1],
           }),
         ],
       }),
-      tag: tagStateFactory({
-        items: [tagFactory({ id: 1, name: "echidna" })],
+      tag: factory.tagState({
+        items: [factory.tag({ id: 1, name: "echidna" })],
       }),
     });
 
@@ -271,14 +259,14 @@ describe("device selectors", () => {
   });
 
   it("can get an interface by id", () => {
-    const nic = deviceInterfaceFactory({
+    const nic = factory.deviceInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const node = deviceDetailsFactory({
+    const node = factory.deviceDetails({
       interfaces: [nic],
     });
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         items: [node],
       }),
     });
@@ -288,16 +276,16 @@ describe("device selectors", () => {
   });
 
   it("can get an interface by link id", () => {
-    const link = networkLinkFactory();
-    const nic = deviceInterfaceFactory({
+    const link = factory.networkLink();
+    const nic = factory.deviceInterface({
       links: [link],
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const node = deviceDetailsFactory({
+    const node = factory.deviceDetails({
       interfaces: [nic],
     });
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         items: [node],
       }),
     });

@@ -7,22 +7,15 @@ import { Headers } from "./BootArchitecturesTable";
 import EditBootArchitectures from "./EditBootArchitectures";
 
 import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  knownBootArchitecture as knownBootArchitectureFactory,
-  knownBootArchitecturesState as knownBootArchitecturesStateFactory,
-  generalState as generalStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("shows a spinner while data is loading", () => {
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      knownBootArchitectures: knownBootArchitecturesStateFactory({
+  const state = factory.rootState({
+    general: factory.generalState({
+      knownBootArchitectures: factory.knownBootArchitecturesState({
         loading: true,
       }),
     }),
@@ -43,20 +36,20 @@ it("shows a spinner while data is loading", () => {
 
 it("initialises form data correctly", () => {
   const knownBootArchitectures = [
-    knownBootArchitectureFactory({ name: "arch1" }),
-    knownBootArchitectureFactory({ name: "arch2" }),
+    factory.knownBootArchitecture({ name: "arch1" }),
+    factory.knownBootArchitecture({ name: "arch2" }),
   ];
-  const subnet = subnetFactory({
+  const subnet = factory.subnet({
     disabled_boot_architectures: ["arch1"],
   });
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      knownBootArchitectures: knownBootArchitecturesStateFactory({
+  const state = factory.rootState({
+    general: factory.generalState({
+      knownBootArchitectures: factory.knownBootArchitecturesState({
         data: knownBootArchitectures,
         loading: false,
       }),
     }),
-    subnet: subnetStateFactory({ items: [subnet] }),
+    subnet: factory.subnetState({ items: [subnet] }),
   });
   const store = mockStore(state);
   render(
@@ -77,20 +70,20 @@ it("initialises form data correctly", () => {
 
 it("can update the arches to disable", async () => {
   const knownBootArchitectures = [
-    knownBootArchitectureFactory({ name: "arch1" }),
-    knownBootArchitectureFactory({ name: "arch2" }),
+    factory.knownBootArchitecture({ name: "arch1" }),
+    factory.knownBootArchitecture({ name: "arch2" }),
   ];
-  const subnet = subnetFactory({
+  const subnet = factory.subnet({
     disabled_boot_architectures: ["arch1"],
   });
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      knownBootArchitectures: knownBootArchitecturesStateFactory({
+  const state = factory.rootState({
+    general: factory.generalState({
+      knownBootArchitectures: factory.knownBootArchitecturesState({
         data: knownBootArchitectures,
         loading: false,
       }),
     }),
-    subnet: subnetStateFactory({ items: [subnet] }),
+    subnet: factory.subnetState({ items: [subnet] }),
   });
   const store = mockStore(state);
   render(
@@ -115,20 +108,20 @@ it("can update the arches to disable", async () => {
 
 it("can dispatch an action to update subnet's disabled boot architectures", async () => {
   const knownBootArchitectures = [
-    knownBootArchitectureFactory({ name: "arch1" }),
-    knownBootArchitectureFactory({ name: "arch2" }),
+    factory.knownBootArchitecture({ name: "arch1" }),
+    factory.knownBootArchitecture({ name: "arch2" }),
   ];
-  const subnet = subnetFactory({
+  const subnet = factory.subnet({
     disabled_boot_architectures: [],
   });
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      knownBootArchitectures: knownBootArchitecturesStateFactory({
+  const state = factory.rootState({
+    general: factory.generalState({
+      knownBootArchitectures: factory.knownBootArchitecturesState({
         data: knownBootArchitectures,
         loading: false,
       }),
     }),
-    subnet: subnetStateFactory({ items: [subnet] }),
+    subnet: factory.subnetState({ items: [subnet] }),
   });
   const store = mockStore(state);
   render(

@@ -3,21 +3,17 @@ import LXDClusterHostSettings, { Label } from "./LXDClusterHostSettings";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podDetailsFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("LXDClusterHostSettings", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podDetailsFactory({
+          factory.podDetails({
             cluster: 1,
             id: 2,
             name: "pod1",

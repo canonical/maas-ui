@@ -5,11 +5,7 @@ import DeleteSSHKey from "./DeleteSSHKey";
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { PreferenceSidePanelViews } from "@/app/preferences/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  sshKey as sshKeyFactory,
-  sshKeyState as sshKeyStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
@@ -17,27 +13,27 @@ const mockStore = configureStore<RootState>();
 
 beforeEach(() => {
   const keys = [
-    sshKeyFactory({
+    factory.sshKey({
       id: 1,
       key: "ssh-rsa aabb",
       keysource: { protocol: "lp", auth_id: "koalaparty" },
     }),
-    sshKeyFactory({
+    factory.sshKey({
       id: 2,
       key: "ssh-rsa ccdd",
       keysource: { protocol: "gh", auth_id: "koalaparty" },
     }),
-    sshKeyFactory({
+    factory.sshKey({
       id: 3,
       key: "ssh-rsa eeff",
       keysource: { protocol: "lp", auth_id: "maaate" },
     }),
-    sshKeyFactory({
+    factory.sshKey({
       id: 4,
       key: "ssh-rsa gghh",
       keysource: { protocol: "gh", auth_id: "koalaparty" },
     }),
-    sshKeyFactory({ id: 5, key: "ssh-rsa gghh" }),
+    factory.sshKey({ id: 5, key: "ssh-rsa gghh" }),
   ];
   vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
     setSidePanelContent: vi.fn(),
@@ -48,8 +44,8 @@ beforeEach(() => {
     setSidePanelSize: vi.fn(),
     sidePanelSize: "regular",
   });
-  state = rootStateFactory({
-    sshkey: sshKeyStateFactory({
+  state = factory.rootState({
+    sshkey: factory.sshKeyState({
       loading: false,
       loaded: true,
       items: keys,

@@ -6,7 +6,7 @@ import { DEFAULT_DEBOUNCE_INTERVAL } from "@/app/base/components/DebounceSearchB
 import { actions as machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -29,7 +29,7 @@ it("displays a listbox and a search input field", async () => {
 });
 
 it("fetches machines on mount", async () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   renderWithMockStore(<MachineSelectBox onSelect={vi.fn()} />, {
     store,
@@ -52,7 +52,7 @@ it("fetches machines on mount", async () => {
 });
 
 it("requests machines filtered by the free text input value", async () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   renderWithMockStore(<MachineSelectBox onSelect={vi.fn()} />, {
     store,

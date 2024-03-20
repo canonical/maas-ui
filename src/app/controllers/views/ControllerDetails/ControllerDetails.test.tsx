@@ -10,11 +10,7 @@ import ControllerDetails from "./ControllerDetails";
 
 import urls from "@/app/base/urls";
 import { actions as controllerActions } from "@/app/store/controller";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -29,9 +25,9 @@ afterAll(() => {
 });
 
 it("gets and sets the controller as active", () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
@@ -76,9 +72,9 @@ it("gets and sets the controller as active", () => {
 });
 
 it("unsets active controller and cleans up when unmounting", () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
@@ -128,9 +124,9 @@ it("unsets active controller and cleans up when unmounting", () => {
 });
 
 it("displays a message if the controller does not exist", () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
@@ -166,9 +162,9 @@ it("displays a message if the controller does not exist", () => {
 });
 
 it("gets and sets the controller as active only once when navigating within the same controller", async () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,

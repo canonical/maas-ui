@@ -10,22 +10,15 @@ import DeleteSubnet from "./DeleteSubnet";
 import urls from "@/app/base/urls";
 import { actions as subnetActions } from "@/app/store/subnet";
 import { actions as vlanActions } from "@/app/store/vlan";
-import {
-  subnetDetails as subnetFactory,
-  subnetIP as subnetIPFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  vlan as vlanFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within, waitFor, userEvent } from "@/testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
+  const state = factory.rootState({
+    subnet: factory.subnetState({
       items: [
-        subnetFactory({
+        factory.subnetDetails({
           id: subnetId,
           vlan: 1,
         }),
@@ -33,9 +26,9 @@ const getRootState = () => {
       loading: false,
       loaded: true,
     }),
-    vlan: vlanStateFactory({
+    vlan: factory.vlanState({
       items: [
-        vlanFactory({
+        factory.vlan({
           id: 1,
           dhcp_on: true,
         }),
@@ -50,9 +43,9 @@ const getRootState = () => {
 it("displays a correct error message for a subnet with IPs obtained through DHCP", () => {
   const state = getRootState();
   state.subnet.items = [
-    subnetFactory({
+    factory.subnetDetails({
       id: subnetId,
-      ip_addresses: [subnetIPFactory()],
+      ip_addresses: [factory.subnetIP()],
       vlan: 1,
     }),
   ];

@@ -2,38 +2,29 @@ import KVMConfigurationCard from "../KVMConfigurationCard";
 
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podPowerParameters as powerParametersFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  zoneState as zoneStateFactory,
-  zone as zoneFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 describe("KVMConfigurationCardFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({ items: [], loaded: true }),
-      resourcepool: resourcePoolStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({ items: [], loaded: true }),
+      resourcepool: factory.resourcePoolState({
         loaded: true,
-        items: [resourcePoolFactory({ id: 1, name: "pool-1" })],
+        items: [factory.resourcePool({ id: 1, name: "pool-1" })],
       }),
-      zone: zoneStateFactory({
-        items: [zoneFactory({ id: 1, name: "zone-1" })],
+      zone: factory.zoneState({
+        items: [factory.zone({ id: 1, name: "zone-1" })],
       }),
     });
   });
 
   it("correctly sets initial values for virsh pods", () => {
-    const pod = podFactory({
+    const pod = factory.podDetails({
       id: 1,
-      power_parameters: powerParametersFactory({
+      power_parameters: factory.podPowerParameters({
         power_address: "abc123",
         power_pass: "maxpower",
       }),
@@ -74,9 +65,9 @@ describe("KVMConfigurationCardFields", () => {
   });
 
   it("correctly sets initial values for lxd pods", () => {
-    const pod = podFactory({
+    const pod = factory.podDetails({
       id: 1,
-      power_parameters: powerParametersFactory({
+      power_parameters: factory.podPowerParameters({
         power_address: "abc123",
       }),
       pool: 1,
@@ -115,9 +106,9 @@ describe("KVMConfigurationCardFields", () => {
   });
 
   it("can disable the zone field", () => {
-    const pod = podFactory({
+    const pod = factory.podDetails({
       id: 1,
-      power_parameters: powerParametersFactory({
+      power_parameters: factory.podPowerParameters({
         power_address: "abc123",
       }),
       type: PodType.LXD,

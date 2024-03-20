@@ -10,17 +10,7 @@ import { MachineSidePanelViews } from "@/app/machines/constants";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
@@ -31,7 +21,7 @@ import {
 const mockStore = configureStore<RootState>();
 
 const getAvailableDisk = (name = "available-disk") =>
-  diskFactory({
+  factory.nodeDisk({
     available_size: MIN_PARTITION_SIZE + 1,
     name,
     filesystem: null,
@@ -53,12 +43,12 @@ afterEach(() => {
 });
 
 it("can show an empty message", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     disks: [],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -81,19 +71,19 @@ it("can show an empty message", () => {
 it("only shows disks that are available", () => {
   const [availableDisk, usedDisk] = [
     getAvailableDisk(),
-    diskFactory({
+    factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE - 1,
       filesystem: null,
       name: "used-disk",
       type: DiskTypes.PHYSICAL,
     }),
   ];
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     disks: [availableDisk, usedDisk],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -118,12 +108,12 @@ it("only shows disks that are available", () => {
 
 it("does not show an action column, checkboxes or bulk actions if node is a controller", () => {
   const disk = getAvailableDisk();
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     disks: [disk],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
   });
@@ -151,12 +141,12 @@ it("does not show an action column, checkboxes or bulk actions if node is a cont
 
 it("show an action column, storage checkboxes and bulk actions if node is a machine", () => {
   const disk = getAvailableDisk();
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     disks: [disk],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -183,12 +173,12 @@ it("show an action column, storage checkboxes and bulk actions if node is a mach
 describe("performing machine actions", () => {
   it("can select a single disk", async () => {
     const disk = getAvailableDisk();
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [disk],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
       }),
     });
@@ -210,12 +200,12 @@ describe("performing machine actions", () => {
 
   it("can select all storage devices", async () => {
     const disks = [getAvailableDisk("disk-1"), getAvailableDisk("disk-2")];
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: disks,
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
       }),
     });
@@ -240,12 +230,12 @@ describe("performing machine actions", () => {
 
   it("disables action dropdown and checkboxes if storage cannot be edited", () => {
     const disk = getAvailableDisk();
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [disk],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
       }),
     });
@@ -267,15 +257,15 @@ describe("performing machine actions", () => {
 
   it("can open the add partition form if disk can be partitioned", async () => {
     const disk = getAvailableDisk();
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [disk],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -296,20 +286,20 @@ describe("performing machine actions", () => {
   });
 
   it("can trigger the edit partition form if partition can be edited", async () => {
-    const partition = partitionFactory({ filesystem: null });
-    const disk = diskFactory({
+    const partition = factory.nodePartition({ filesystem: null });
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE - 1,
       partitions: [partition],
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [disk],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -330,19 +320,19 @@ describe("performing machine actions", () => {
   });
 
   it("can trigger the add logical volume form if disk can have one added", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.VOLUME_GROUP,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [disk],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -370,16 +360,16 @@ describe("performing machine actions", () => {
   });
 
   it("can open the edit disk form if the disk is not a volume group", async () => {
-    const disk = diskFactory({ type: DiskTypes.PHYSICAL });
-    const machine = machineDetailsFactory({
+    const disk = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
+    const machine = factory.machineDetails({
       disks: [disk],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -400,17 +390,17 @@ describe("performing machine actions", () => {
   });
 
   it("can open the create bcache form if the machine has at least one cache set", async () => {
-    const backingDevice = diskFactory({ type: DiskTypes.PHYSICAL });
-    const cacheSet = diskFactory({ type: DiskTypes.CACHE_SET });
-    const machine = machineDetailsFactory({
+    const backingDevice = factory.nodeDisk({ type: DiskTypes.PHYSICAL });
+    const cacheSet = factory.nodeDisk({ type: DiskTypes.CACHE_SET });
+    const machine = factory.machineDetails({
       disks: [backingDevice, cacheSet],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -438,12 +428,12 @@ describe("performing machine actions", () => {
   it("disables actions if a bulk action has been selected", async () => {
     vi.restoreAllMocks();
     const partitions = [
-      partitionFactory({ filesystem: null, name: "part-1" }),
-      partitionFactory({ filesystem: null, name: "part-2" }),
+      factory.nodePartition({ filesystem: null, name: "part-1" }),
+      factory.nodePartition({ filesystem: null, name: "part-2" }),
     ];
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [
-        diskFactory({
+        factory.nodeDisk({
           available_size: MIN_PARTITION_SIZE - 1,
           partitions: partitions,
           type: DiskTypes.PHYSICAL,
@@ -451,11 +441,11 @@ describe("performing machine actions", () => {
       ],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -481,21 +471,21 @@ describe("performing machine actions", () => {
   });
 
   it("can trigger a create cache set form for a partition", async () => {
-    const partition = partitionFactory({ filesystem: null });
-    const machine = machineDetailsFactory({
+    const partition = factory.nodePartition({ filesystem: null });
+    const machine = factory.machineDetails({
       disks: [
-        diskFactory({
+        factory.nodeDisk({
           available_size: 0,
           partitions: [partition],
         }),
       ],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -521,20 +511,20 @@ describe("performing machine actions", () => {
   });
 
   it("can trigger a form to delete a volume group", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.VOLUME_GROUP,
       used_size: 0,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [disk],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -562,10 +552,10 @@ describe("performing machine actions", () => {
   });
 
   it("can delete a partition", async () => {
-    const partition = partitionFactory();
-    const machine = machineDetailsFactory({
+    const partition = factory.nodePartition();
+    const machine = factory.machineDetails({
       disks: [
-        diskFactory({
+        factory.nodeDisk({
           available_size: MIN_PARTITION_SIZE - 1,
           partitions: [partition],
           type: DiskTypes.PHYSICAL,
@@ -573,11 +563,11 @@ describe("performing machine actions", () => {
       ],
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

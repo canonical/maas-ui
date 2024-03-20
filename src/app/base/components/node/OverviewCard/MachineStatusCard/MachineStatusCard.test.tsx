@@ -7,14 +7,7 @@ import MachineStatusCard from "./MachineStatusCard";
 import docsUrls from "@/app/base/docsUrls";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
@@ -27,20 +20,20 @@ const mockStore = configureStore<RootState>();
 describe("MachineStatusCard", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
-          data: osInfoFactory(),
+    state = factory.rootState({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
+          data: factory.osInfo(),
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [],
       }),
     });
   });
 
   it("renders a locked machine", () => {
-    const machine = machineDetailsFactory();
+    const machine = factory.machineDetails();
     machine.status = NodeStatus.TESTING;
     machine.locked = true;
     const store = mockStore(state);
@@ -59,11 +52,11 @@ describe("MachineStatusCard", () => {
   });
 
   it("renders os info", () => {
-    const machine = machineDetailsFactory();
+    const machine = factory.machineDetails();
     machine.osystem = "ubuntu";
     machine.distro_series = "focal";
     machine.show_os_info = true;
-    state.general.osInfo.data = osInfoFactory({
+    state.general.osInfo.data = factory.osInfo({
       releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
     });
     const store = mockStore(state);
@@ -84,7 +77,7 @@ describe("MachineStatusCard", () => {
   });
 
   it("renders a failed test warning", () => {
-    const machine = machineDetailsFactory();
+    const machine = factory.machineDetails();
     machine.testing_status = 3;
 
     const store = mockStore(state);
@@ -105,7 +98,7 @@ describe("MachineStatusCard", () => {
   });
 
   it("displays an error message for broken machines", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       error_description: "machine is on fire",
       status: NodeStatus.BROKEN,
       status_code: NodeStatusCode.BROKEN,
@@ -128,7 +121,7 @@ describe("MachineStatusCard", () => {
   });
 
   it("does not display a sync status for deployed machines with hardware sync disabled", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       enable_hw_sync: false,
       status: NodeStatus.DEPLOYED,
     });
@@ -150,7 +143,7 @@ describe("MachineStatusCard", () => {
   });
 
   it("displays a sync status and link to docs for deployed machines with hardware sync enabled", async () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       enable_hw_sync: true,
       status: NodeStatus.DEPLOYED,
       sync_interval: 900,
@@ -186,7 +179,7 @@ describe("MachineStatusCard", () => {
   });
 
   it("displays deployed hardware sync interval in a correct format", async () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       enable_hw_sync: true,
       status: NodeStatus.DEPLOYED,
       sync_interval: 900,
@@ -213,7 +206,7 @@ describe("MachineStatusCard", () => {
   });
 
   it("indicates when a machine is deployed ephemerally", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       ephemeral_deploy: true,
       status: NodeStatus.DEPLOYED,
       status_code: NodeStatusCode.DEPLOYED,

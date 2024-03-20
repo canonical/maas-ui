@@ -6,23 +6,14 @@ import configureStore from "redux-mock-store";
 import ControllerName from "./ControllerName";
 
 import urls from "@/app/base/urls";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  generalState as generalStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
-const domain0 = domainFactory();
-const domain1 = domainFactory({ id: 99, name: "domain1" });
-const controller = controllerDetailsFactory({
+const domain0 = factory.domain();
+const domain1 = factory.domain({ id: 99, name: "domain1" });
+const controller = factory.controllerDetails({
   domain: domain0,
   locked: false,
   permissions: ["edit"],
@@ -30,17 +21,17 @@ const controller = controllerDetailsFactory({
 });
 
 it("can update a controller with the new domain", async () => {
-  const state = rootStateFactory({
-    domain: domainStateFactory({
+  const state = factory.rootState({
+    domain: factory.domainState({
       loaded: true,
       items: [domain0, domain1],
     }),
-    general: generalStateFactory({
-      powerTypes: powerTypesStateFactory({
-        data: [powerTypeFactory()],
+    general: factory.generalState({
+      powerTypes: factory.powerTypesState({
+        data: [factory.powerType()],
       }),
     }),
-    controller: controllerStateFactory({
+    controller: factory.controllerState({
       loaded: true,
       items: [controller],
     }),

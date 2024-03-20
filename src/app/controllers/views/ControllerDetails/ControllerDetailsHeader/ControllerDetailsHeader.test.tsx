@@ -8,19 +8,14 @@ import ControllerDetailsHeader from "./ControllerDetailsHeader";
 import type { ControllerActions } from "@/app/store/controller/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
-import {
-  controller as controllerFactory,
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("displays a spinner as the title if controller has not loaded yet", () => {
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [],
     }),
   });
@@ -44,9 +39,9 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
 });
 
 it("displays a spinner as the subtitle if loaded controller is not the detailed type", () => {
-  const controller = controllerFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
   });
@@ -70,9 +65,9 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
 });
 
 it("displays the controller's FQDN once loaded and detailed type", () => {
-  const controllerDetails = controllerDetailsFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controllerDetails = factory.controllerDetails();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controllerDetails],
     }),
   });
@@ -101,11 +96,11 @@ it("displays actions in take action menu", async () => {
     NodeActions.IMPORT_IMAGES,
     NodeActions.DELETE,
   ];
-  const controllerDetails = controllerDetailsFactory({
+  const controllerDetails = factory.controllerDetails({
     actions,
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controllerDetails],
     }),
   });

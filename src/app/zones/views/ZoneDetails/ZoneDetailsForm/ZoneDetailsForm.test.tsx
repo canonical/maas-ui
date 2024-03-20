@@ -7,22 +7,18 @@ import ZoneDetailsForm from "./ZoneDetailsForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { actions as zoneActions } from "@/app/store/zone";
-import {
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("ZoneDetailsForm", () => {
-  const testZone = zoneFactory();
+  const testZone = factory.zone();
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      zone: zoneStateFactory({
+    initialState = factory.rootState({
+      zone: factory.zoneState({
         items: [testZone],
       }),
     });

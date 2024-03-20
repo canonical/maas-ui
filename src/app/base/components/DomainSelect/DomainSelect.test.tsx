@@ -4,17 +4,14 @@ import configureStore from "redux-mock-store";
 
 import DomainSelect, { Labels } from "./DomainSelect";
 
-import {
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("DomainSelect", () => {
   it("dispatches action to fetch domains on load", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -30,8 +27,8 @@ describe("DomainSelect", () => {
   });
 
   it("disables select if domains have not loaded", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: false,
       }),
     });

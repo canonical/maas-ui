@@ -37,27 +37,7 @@ import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { FetchNodeStatus, TestParams } from "@/app/store/types/node";
 import { NodeStatus, NodeStatusCode } from "@/app/store/types/node";
-import {
-  architecturesState as architecturesStateFactory,
-  fabric as fabricFactory,
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStateDetailsItem as machineStateDetailsItemFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  machineStateCount as machineStateCountFactory,
-  machineStateCounts as machineStateCountsFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  machineActionState,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderHook, cleanup, waitFor, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -76,23 +56,23 @@ describe("machine hook utils", () => {
   const mockCallId = "123456";
 
   beforeEach(() => {
-    machine = machineFactory({
+    machine = factory.machine({
       architecture: "amd64",
       system_id: "abc123",
     });
-    state = rootStateFactory({
-      general: generalStateFactory({
-        architectures: architecturesStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        architectures: factory.architecturesState({
           data: ["amd64"],
         }),
-        osInfo: osInfoStateFactory({
-          data: osInfoFactory(),
+        osInfo: factory.osInfoState({
+          data: factory.osInfo(),
         }),
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
       }),
     });
@@ -166,14 +146,14 @@ describe("machine hook utils", () => {
       vi.restoreAllMocks();
       vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
       const machineCount = 2;
-      const counts = machineStateCountsFactory({
-        "mocked-nanoid": machineStateCountFactory({
+      const counts = factory.machineStateCounts({
+        "mocked-nanoid": factory.machineStateCount({
           count: machineCount,
           loaded: true,
           loading: false,
         }),
       });
-      state.machine = machineStateFactory({
+      state.machine = factory.machineState({
         loaded: true,
         counts,
       });
@@ -239,7 +219,7 @@ describe("machine hook utils", () => {
 
     it("fetches again if the query has been marked as stale", async () => {
       state.machine.counts = {
-        [mockCallId]: machineStateCountFactory({
+        [mockCallId]: factory.machineStateCount({
           stale: true,
         }),
       };
@@ -288,7 +268,7 @@ describe("machine hook utils", () => {
 
     it("fetches again if the query has been marked as stale", async () => {
       state.machine.lists = {
-        [mockCallId]: machineStateListFactory({
+        [mockCallId]: factory.machineStateList({
           stale: true,
         }),
       };
@@ -306,15 +286,19 @@ describe("machine hook utils", () => {
     });
 
     it("returns the fetched machines", () => {
-      const machines = [machineFactory(), machineFactory(), machineFactory()];
-      state.machine = machineStateFactory({
+      const machines = [
+        factory.machine(),
+        factory.machine(),
+        factory.machine(),
+      ];
+      state.machine = factory.machineState({
         loaded: true,
-        items: [...machines, machineFactory()],
+        items: [...machines, factory.machine()],
         lists: {
-          [mockCallId]: machineStateListFactory({
+          [mockCallId]: factory.machineStateList({
             loading: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: machines.map(({ system_id }) => system_id),
               }),
             ],
@@ -329,9 +313,9 @@ describe("machine hook utils", () => {
     });
 
     it("returns the loaded and loading states", () => {
-      state.machine = machineStateFactory({
+      state.machine = factory.machineState({
         lists: {
-          [mockCallId]: machineStateListFactory({
+          [mockCallId]: factory.machineStateList({
             loaded: false,
             loading: true,
           }),
@@ -583,7 +567,7 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("adds a callId to redux dispatch function and returns action state", async () => {
-      state.machine.actions["mocked-nanoid"] = machineActionState({
+      state.machine.actions["mocked-nanoid"] = factory.machineActionState({
         status: "success",
       });
       const store = mockStore(state);
@@ -607,7 +591,7 @@ describe("machine hook utils", () => {
     });
 
     it("can return an error message", async () => {
-      state.machine.actions["mocked-nanoid"] = machineActionState({
+      state.machine.actions["mocked-nanoid"] = factory.machineActionState({
         status: "success",
         failedSystemIds: ["abc123"],
       });
@@ -646,7 +630,7 @@ describe("machine hook utils", () => {
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
-      state.machine.actions["mocked-nanoid"] = machineActionState({
+      state.machine.actions["mocked-nanoid"] = factory.machineActionState({
         status: "success",
       });
       const store = mockStore(state);
@@ -692,7 +676,7 @@ describe("machine hook utils", () => {
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
-      state.machine.actions["mocked-nanoid"] = machineActionState({
+      state.machine.actions["mocked-nanoid"] = factory.machineActionState({
         status: "success",
       });
       const store = mockStore(state);
@@ -729,7 +713,7 @@ describe("machine hook utils", () => {
         .mockReturnValueOnce("mocked-nanoid")
         .mockReturnValueOnce(mockCallId)
         .mockReturnValueOnce("mocked-nanoid-2");
-      state.machine.actions["mocked-nanoid"] = machineActionState({
+      state.machine.actions["mocked-nanoid"] = factory.machineActionState({
         status: "success",
       });
       const store = mockStore(state);
@@ -849,13 +833,13 @@ describe("machine hook utils", () => {
 
     it("returns the machine and loading states", () => {
       vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(mockCallId);
-      const machine = machineFactory({
+      const machine = factory.machine({
         system_id: "abc123",
       });
-      state.machine = machineStateFactory({
-        items: [machine, machineFactory()],
+      state.machine = factory.machineState({
+        items: [machine, factory.machine()],
         details: {
-          [mockCallId]: machineStateDetailsItemFactory({
+          [mockCallId]: factory.machineStateDetailsItem({
             loaded: true,
             loading: true,
             system_id: "abc123",
@@ -927,7 +911,7 @@ describe("machine hook utils", () => {
 
   describe("useCanEditStorage", () => {
     it("handles a machine with editable storage", () => {
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         locked: false,
         status_code: NodeStatusCode.READY,
         permissions: ["edit"],
@@ -940,7 +924,7 @@ describe("machine hook utils", () => {
     });
 
     it("handles a machine without editable storage", () => {
-      const machine = machineDetailsFactory({
+      const machine = factory.machineDetails({
         locked: false,
         status_code: NodeStatusCode.NEW,
         permissions: ["edit"],
@@ -979,7 +963,7 @@ describe("machine hook utils", () => {
     it("can show the full Ubuntu release", () => {
       state.machine.items[0].osystem = "ubuntu";
       state.machine.items[0].distro_series = "focal";
-      state.general.osInfo.data = osInfoFactory({
+      state.general.osInfo.data = factory.osInfo({
         releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
       });
       const store = mockStore(state);
@@ -994,7 +978,7 @@ describe("machine hook utils", () => {
     it("can show the short-form for Ubuntu releases", () => {
       state.machine.items[0].osystem = "ubuntu";
       state.machine.items[0].distro_series = "focal";
-      state.general.osInfo.data = osInfoFactory({
+      state.general.osInfo.data = factory.osInfo({
         releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
       });
       const store = mockStore(state);
@@ -1009,7 +993,7 @@ describe("machine hook utils", () => {
     it("handles non-Ubuntu releases", () => {
       state.machine.items[0].osystem = "centos";
       state.machine.items[0].distro_series = "centos70";
-      state.general.osInfo.data = osInfoFactory({
+      state.general.osInfo.data = factory.osInfo({
         releases: [["centos/centos70", "CentOS 7"]],
       });
       const store = mockStore(state);
@@ -1052,13 +1036,13 @@ describe("machine hook utils", () => {
 
   describe("useIsLimitedEditingAllowed", () => {
     it("allows limited editing", () => {
-      machine = machineDetailsFactory({
+      machine = factory.machineDetails({
         locked: false,
         permissions: ["edit"],
         status: NodeStatus.DEPLOYED,
         system_id: "abc123",
       });
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
       });
       const store = mockStore(state);
@@ -1072,13 +1056,13 @@ describe("machine hook utils", () => {
     });
 
     it("does not allow limited editing when the machine is not editable", () => {
-      machine = machineDetailsFactory({
+      machine = factory.machineDetails({
         locked: false,
         permissions: [],
         status: NodeStatus.DEPLOYED,
         system_id: "abc123",
       });
-      const nic = machineInterfaceFactory();
+      const nic = factory.machineInterface();
       const store = mockStore(state);
       const { result } = renderHook(
         () => useIsLimitedEditingAllowed(nic, machine),
@@ -1090,12 +1074,12 @@ describe("machine hook utils", () => {
     });
 
     it("does not allow limited editing when the machine is not deployed", () => {
-      machine = machineDetailsFactory({
+      machine = factory.machineDetails({
         permissions: ["edit"],
         status: NodeStatus.NEW,
         system_id: "abc123",
       });
-      const nic = machineInterfaceFactory();
+      const nic = factory.machineInterface();
       const store = mockStore(state);
       const { result } = renderHook(
         () => useIsLimitedEditingAllowed(nic, machine),
@@ -1107,7 +1091,7 @@ describe("machine hook utils", () => {
     });
 
     it("does not allow limited editing when the nic is a VLAN", () => {
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         type: NetworkInterfaceTypes.VLAN,
       });
       const store = mockStore(state);
@@ -1123,7 +1107,7 @@ describe("machine hook utils", () => {
 
   describe("useCanAddVLAN", () => {
     it("can not add a VLAN if the nic is an alias", () => {
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         type: NetworkInterfaceTypes.ALIAS,
       });
       const store = mockStore(state);
@@ -1134,7 +1118,7 @@ describe("machine hook utils", () => {
     });
 
     it("can not add a VLAN if the nic is a VLAN", () => {
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         type: NetworkInterfaceTypes.VLAN,
       });
       const store = mockStore(state);
@@ -1145,7 +1129,7 @@ describe("machine hook utils", () => {
     });
 
     it("can not add a VLAN if there are no unused VLANS", () => {
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
       });
       const store = mockStore(state);
@@ -1156,11 +1140,11 @@ describe("machine hook utils", () => {
     });
 
     it("can add a VLAN if there are unused VLANS", () => {
-      const fabric = fabricFactory();
+      const fabric = factory.fabric();
       state.fabric.items = [fabric];
-      const vlan = vlanFactory({ fabric: fabric.id });
+      const vlan = factory.vlan({ fabric: fabric.id });
       state.vlan.items = [vlan];
-      const nic = machineInterfaceFactory({
+      const nic = factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: vlan.id,
       });

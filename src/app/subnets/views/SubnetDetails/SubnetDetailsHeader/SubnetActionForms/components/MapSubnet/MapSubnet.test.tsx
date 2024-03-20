@@ -6,17 +6,15 @@ import configureStore from "redux-mock-store";
 import MapSubnet from "./MapSubnet";
 
 import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("shows a spinner while subnet is loading", () => {
-  const state = rootStateFactory({ subnet: subnetStateFactory({ items: [] }) });
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [] }),
+  });
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -32,9 +30,9 @@ it("shows a spinner while subnet is loading", () => {
 });
 
 it("shows an error if the subnet is IPv6", () => {
-  const subnet = subnetFactory({ version: 6 });
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet] }),
+  const subnet = factory.subnet({ version: 6 });
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet] }),
   });
   const store = mockStore(state);
   render(
@@ -54,9 +52,9 @@ it("shows an error if the subnet is IPv6", () => {
 });
 
 it("can map an IPv4 subnet", async () => {
-  const subnet = subnetFactory({ version: 4 });
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet] }),
+  const subnet = factory.subnet({ version: 4 });
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet] }),
   });
   const store = mockStore(state);
   render(

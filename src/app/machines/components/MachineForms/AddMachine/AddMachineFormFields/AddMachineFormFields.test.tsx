@@ -1,22 +1,7 @@
 import AddMachineForm from "../AddMachineForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  architecturesState as architecturesStateFactory,
-  defaultMinHweKernelState as defaultMinHweKernelStateFactory,
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  generalState as generalStateFactory,
-  hweKernelsState as hweKernelsStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -28,35 +13,35 @@ describe("AddMachineFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory()],
+    state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain()],
         loaded: true,
       }),
-      general: generalStateFactory({
-        architectures: architecturesStateFactory({
+      general: factory.generalState({
+        architectures: factory.architecturesState({
           data: ["amd64/generic"],
           loaded: true,
         }),
-        defaultMinHweKernel: defaultMinHweKernelStateFactory({
+        defaultMinHweKernel: factory.defaultMinHweKernelState({
           data: "ga-16.04",
           loaded: true,
         }),
-        hweKernels: hweKernelsStateFactory({
+        hweKernels: factory.hweKernelsState({
           data: [
             ["ga-16.04", "xenial (ga-16.04)"],
             ["ga-18.04", "bionic (ga-18.04)"],
           ],
           loaded: true,
         }),
-        powerTypes: powerTypesStateFactory({
+        powerTypes: factory.powerTypesState({
           data: [
-            powerTypeFactory({
+            factory.powerType({
               name: "manual",
               description: "Manual",
               fields: [],
             }),
-            powerTypeFactory({
+            factory.powerType({
               name: "ipmi",
               description: "IPMI",
             }),
@@ -64,13 +49,13 @@ describe("AddMachineFormFields", () => {
           loaded: true,
         }),
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory()],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-        items: [zoneFactory()],
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
+        items: [factory.zone()],
       }),
     });
   });

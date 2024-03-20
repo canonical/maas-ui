@@ -2,50 +2,41 @@ import Routes from "./Routes";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  userState as userStateFactory,
-  statusState as statusStateFactory,
-  authState as authStateFactory,
-  user as userFactory,
-  licenseKeys as licenseKeysFactory,
-  licenseKeysState as licenseKeysStateFactory,
-  packageRepositoryState as packageRepositoryStateFactory,
-  packageRepository as packageRepositoryFactory,
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 
-const licensekey = licenseKeysFactory({
+const licensekey = factory.licenseKeys({
   osystem: "ubuntu",
   distro_series: "disco",
 });
 
-const user = userFactory({
+const user = factory.user({
   id: 1,
   username: "admin",
 });
 
-const packageRepository = packageRepositoryFactory({ id: 1 });
-const dhcpSnippet = dhcpSnippetFactory();
+const packageRepository = factory.packageRepository({ id: 1 });
+const dhcpSnippet = factory.dhcpSnippet();
 
 beforeEach(() => {
-  state = rootStateFactory({
-    user: userStateFactory({
-      auth: authStateFactory({ loaded: true, user }),
+  state = factory.rootState({
+    user: factory.userState({
+      auth: factory.authState({ loaded: true, user }),
       loaded: true,
       items: [user],
     }),
-    status: statusStateFactory({ externalAuthURL: null }),
-    licensekeys: licenseKeysStateFactory({ loaded: true, items: [licensekey] }),
-    packagerepository: packageRepositoryStateFactory({
+    status: factory.statusState({ externalAuthURL: null }),
+    licensekeys: factory.licenseKeysState({
+      loaded: true,
+      items: [licensekey],
+    }),
+    packagerepository: factory.packageRepositoryState({
       loaded: true,
       items: [packageRepository],
     }),
-    dhcpsnippet: dhcpSnippetStateFactory({
+    dhcpsnippet: factory.dhcpSnippetState({
       loaded: true,
       items: [dhcpSnippet],
     }),

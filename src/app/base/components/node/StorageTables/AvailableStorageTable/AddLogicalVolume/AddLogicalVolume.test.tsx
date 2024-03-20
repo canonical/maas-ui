@@ -5,27 +5,20 @@ import AddLogicalVolume from "./AddLogicalVolume";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, userEvent, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("AddLogicalVolume", () => {
   it("sets the initial name correctly", () => {
-    const volumeGroup = diskFactory({
+    const volumeGroup = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       name: "voldemort",
       type: DiskTypes.VOLUME_GROUP,
     });
     const logicalVolumes = [
-      diskFactory({
+      factory.nodeDisk({
         name: "lv0",
         parent: {
           id: volumeGroup.id,
@@ -34,7 +27,7 @@ describe("AddLogicalVolume", () => {
         },
         type: DiskTypes.VIRTUAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         name: "lv1",
         parent: {
           id: volumeGroup.id,
@@ -44,16 +37,16 @@ describe("AddLogicalVolume", () => {
         type: DiskTypes.VIRTUAL,
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [volumeGroup, ...logicalVolumes],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -72,13 +65,13 @@ describe("AddLogicalVolume", () => {
   });
 
   it("sets the initial size to the available space", () => {
-    const volumeGroup = diskFactory({
+    const volumeGroup = factory.nodeDisk({
       available_size: 8000000000,
       name: "voldemort",
       type: DiskTypes.VOLUME_GROUP,
     });
     const logicalVolumes = [
-      diskFactory({
+      factory.nodeDisk({
         name: "lv0",
         parent: {
           id: volumeGroup.id,
@@ -87,7 +80,7 @@ describe("AddLogicalVolume", () => {
         },
         type: DiskTypes.VIRTUAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         name: "lv1",
         parent: {
           id: volumeGroup.id,
@@ -97,16 +90,16 @@ describe("AddLogicalVolume", () => {
         type: DiskTypes.VIRTUAL,
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [volumeGroup, ...logicalVolumes],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -125,16 +118,16 @@ describe("AddLogicalVolume", () => {
   });
 
   it("can validate if the size meets the minimum requirement", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: 1000000000, // 1GB
       id: 1,
       type: DiskTypes.VOLUME_GROUP,
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -161,16 +154,16 @@ describe("AddLogicalVolume", () => {
   });
 
   it("can validate if the size is less than available disk space", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: 1000000000, // 1GB
       id: 1,
       type: DiskTypes.VOLUME_GROUP,
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -193,22 +186,22 @@ describe("AddLogicalVolume", () => {
   });
 
   it("correctly dispatches an action to create a logical volume", async () => {
-    const disk = diskFactory({
+    const disk = factory.nodeDisk({
       available_size: 20000000000,
       id: 1,
       type: DiskTypes.VOLUME_GROUP,
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [disk],
             system_id: "abc123",
             supported_filesystems: [{ key: "fat32", ui: "FAT32" }],
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

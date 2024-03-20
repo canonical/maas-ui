@@ -6,22 +6,7 @@ import { ConfigNames } from "@/app/store/config/types";
 import { actions as podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  generatedCertificate as generatedCertificateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  podProject as podProjectFactory,
-  podState as podStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -35,36 +20,36 @@ describe("AddLxd", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [{ name: ConfigNames.MAAS_NAME, value: "MAAS" }],
       }),
-      general: generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+      general: factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           data: null,
         }),
-        powerTypes: powerTypesStateFactory({
+        powerTypes: factory.powerTypesState({
           data: [
-            powerTypeFactory({
+            factory.powerType({
               name: PodType.LXD,
               fields: [
-                powerFieldFactory({ name: "power_address" }),
-                powerFieldFactory({ name: "password" }),
+                factory.powerField({ name: "power_address" }),
+                factory.powerField({ name: "password" }),
               ],
             }),
           ],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory({ id: 0 })],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool({ id: 0 })],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        items: [zoneFactory({ id: 0 })],
+      zone: factory.zoneState({
+        items: [factory.zone({ id: 0 })],
       }),
     });
   });
@@ -88,7 +73,7 @@ describe("AddLxd", () => {
 
   it(`shows the authentication form if the user has generated a certificate for
     the LXD KVM host`, async () => {
-    const certificate = generatedCertificateFactory({
+    const certificate = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
 
@@ -143,7 +128,7 @@ describe("AddLxd", () => {
 
   it("shows the project select form once authenticated", async () => {
     state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
+      "192.168.1.1": [factory.podProject()],
     };
 
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
@@ -208,7 +193,7 @@ describe("AddLxd", () => {
   it("can display submission errors", async () => {
     state.pod.errors = ["Oh bother..."];
     state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
+      "192.168.1.1": [factory.podProject()],
     };
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",

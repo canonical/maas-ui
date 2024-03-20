@@ -5,19 +5,7 @@ import EditInterfaceTable from "./EditInterfaceTable";
 import type { DeviceNetworkInterface } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceInterface as deviceInterfaceFactory,
-  deviceState as deviceStateFactory,
-  deviceStatus as deviceStatusFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -26,24 +14,24 @@ describe("EditInterfaceTable", () => {
   let state: RootState;
   let nic: DeviceNetworkInterface;
   beforeEach(() => {
-    nic = deviceInterfaceFactory();
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    nic = factory.deviceInterface();
+    state = factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      device: deviceStateFactory({
+      device: factory.deviceState({
         items: [
-          deviceDetailsFactory({ interfaces: [nic], system_id: "abc123" }),
+          factory.deviceDetails({ interfaces: [nic], system_id: "abc123" }),
         ],
         loaded: true,
         statuses: {
-          abc123: deviceStatusFactory(),
+          abc123: factory.deviceStatus(),
         },
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
     });
@@ -69,23 +57,23 @@ describe("EditInterfaceTable", () => {
   });
 
   it("can display an interface", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
     const subnets = [
-      subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" }),
-      subnetFactory({ cidr: "subnet2-cidr", name: "subnet2-name" }),
+      factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" }),
+      factory.subnet({ cidr: "subnet2-cidr", name: "subnet2-name" }),
     ];
     state.subnet.items = subnets;
-    nic = deviceInterfaceFactory({
+    nic = factory.deviceInterface({
       discovered: null,
       links: [],
       type: NetworkInterfaceTypes.PHYSICAL,
       vlan_id: vlan.id,
     });
     state.device.items = [
-      deviceDetailsFactory({
+      factory.deviceDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),

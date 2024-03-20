@@ -1,21 +1,18 @@
 import reducers from "./slice";
 
-import {
-  message as messageFactory,
-  messageState as messageStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("reducers", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toStrictEqual(
-      messageStateFactory({
+      factory.messageState({
         items: [],
       })
     );
   });
 
   it("should correctly reduce message/add", () => {
-    const message = messageFactory({
+    const message = factory.message({
       message: "User added",
     });
     expect(
@@ -24,7 +21,7 @@ describe("reducers", () => {
         payload: message,
       })
     ).toStrictEqual(
-      messageStateFactory({
+      factory.messageState({
         items: [message],
       })
     );
@@ -33,13 +30,13 @@ describe("reducers", () => {
   it("should correctly reduce message/remove", () => {
     expect(
       reducers(
-        messageStateFactory({
+        factory.messageState({
           items: [
-            messageFactory({
+            factory.message({
               id: 99,
               message: "User added",
             }),
-            messageFactory({
+            factory.message({
               id: 100,
               message: "User updated",
             }),
@@ -51,9 +48,9 @@ describe("reducers", () => {
         }
       )
     ).toStrictEqual(
-      messageStateFactory({
+      factory.messageState({
         items: [
-          messageFactory({
+          factory.message({
             id: 100,
             message: "User updated",
           }),

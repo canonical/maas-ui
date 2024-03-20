@@ -2,20 +2,15 @@ import KVMStorageCards, { TRUNCATION_POINT } from "./KVMStorageCards";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  podStoragePoolResource as podStoragePoolFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("KVMStorageCards", () => {
   it("shows sort label as sorting by default then id if default pool id provided", () => {
     const pools = {
-      a: podStoragePoolFactory(),
+      a: factory.podStoragePoolResource(),
     };
-    const state = rootStateFactory();
+    const state = factory.rootState();
     renderWithBrowserRouter(
       <KVMStorageCards defaultPoolId="a" pools={pools} />,
       { route: "/kvm/1", state }
@@ -27,9 +22,9 @@ describe("KVMStorageCards", () => {
 
   it("shows sort label as sorting by name if no default pool id provided", () => {
     const pools = {
-      a: podStoragePoolFactory(),
+      a: factory.podStoragePoolResource(),
     };
-    const state = rootStateFactory();
+    const state = factory.rootState();
     renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
       route: "/kvm/1",
       state,
@@ -41,13 +36,13 @@ describe("KVMStorageCards", () => {
 
   it("can expand truncated pools if above truncation point", async () => {
     const pools = {
-      a: podStoragePoolFactory(),
-      b: podStoragePoolFactory(),
-      c: podStoragePoolFactory(),
-      d: podStoragePoolFactory(),
-      e: podStoragePoolFactory(),
+      a: factory.podStoragePoolResource(),
+      b: factory.podStoragePoolResource(),
+      c: factory.podStoragePoolResource(),
+      d: factory.podStoragePoolResource(),
+      e: factory.podStoragePoolResource(),
     };
-    const state = rootStateFactory();
+    const state = factory.rootState();
     renderWithBrowserRouter(<KVMStorageCards pools={pools} />, {
       route: "/kvm/1",
       state,
@@ -69,21 +64,21 @@ describe("KVMStorageCards", () => {
 
   it("can send an analytics event when expanding pools if analytics enabled", async () => {
     const pools = {
-      a: podStoragePoolFactory(),
-      b: podStoragePoolFactory(),
-      c: podStoragePoolFactory(),
-      d: podStoragePoolFactory(),
-      e: podStoragePoolFactory(),
+      a: factory.podStoragePoolResource(),
+      b: factory.podStoragePoolResource(),
+      c: factory.podStoragePoolResource(),
+      d: factory.podStoragePoolResource(),
+      e: factory.podStoragePoolResource(),
     };
     const mockSendAnalytics = vi.fn();
     const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
 
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.ENABLE_ANALYTICS,
             value: false,
           }),

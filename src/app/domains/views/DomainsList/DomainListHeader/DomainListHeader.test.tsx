@@ -5,21 +5,17 @@ import DomainListHeader, {
 } from "./DomainListHeader";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("DomainListHeader", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      domain: domainStateFactory({
+    initialState = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
-        items: [domainFactory(), domainFactory()],
+        items: [factory.domain(), factory.domain()],
       }),
     });
   });

@@ -12,11 +12,7 @@ import { Labels as FetchImagesFormFieldsLabels } from "./FetchImagesFormFields/F
 import { actions as bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResourceState as bootResourceStateFactory,
-  bootResourceStatuses as bootResourceStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -36,7 +32,7 @@ describe("FetchImagesForm", () => {
   });
 
   it("can dispatch an action to fetch images", async () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -99,10 +95,10 @@ describe("FetchImagesForm", () => {
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
     const setSource = vi.fn();
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         eventErrors: [],
-        statuses: bootResourceStatusesFactory({ fetching: false }),
+        statuses: factory.bootResourceStatuses({ fetching: false }),
       }),
     });
     const store = mockStore(state);

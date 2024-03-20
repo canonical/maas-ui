@@ -1,6 +1,6 @@
 import { actions } from "./slice";
 
-import { licenseKeys as licenseKeysFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("licenseKeys actions", () => {
   it("can create a license key", () => {
@@ -24,7 +24,7 @@ describe("licenseKeys actions", () => {
   });
 
   it("can delete license keys", () => {
-    const payload = licenseKeysFactory({
+    const payload = factory.licenseKeys({
       osystem: "windows",
       distro_series: "2012",
     });
@@ -35,7 +35,7 @@ describe("licenseKeys actions", () => {
   });
 
   it("can update license keys", () => {
-    const payload = licenseKeysFactory({
+    const payload = factory.licenseKeys({
       osystem: "windows",
       distro_series: "2012",
     });

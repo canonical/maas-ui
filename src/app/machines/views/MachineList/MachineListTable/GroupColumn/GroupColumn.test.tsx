@@ -4,7 +4,7 @@ import GroupColumn from "./GroupColumn";
 
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
-import { machineStateListGroup as machineStateListGroupFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen, waitFor } from "@/testing/utils";
 
 vi.mock("@/app/store/machine/utils/hooks");
@@ -19,7 +19,7 @@ mockedUseFetchMachineCount.mockReturnValue({
 });
 
 it("displays the correct column name and machines count", () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     collapsed: false,
     count: 5,
     name: "Test Group",
@@ -42,7 +42,7 @@ it("displays the correct column name and machines count", () => {
 });
 
 it("displays correct fetched machines count when initial count is null", async () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     collapsed: false,
     count: null,
     name: "Test Group",

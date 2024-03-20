@@ -1,30 +1,27 @@
 import reducers, { actions } from "./slice";
 
-import {
-  sshKey as sshKeyFactory,
-  sshKeyState as sshKeyStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("sshkey reducer", () => {
   it("should return the initial state", () => {
-    expect(reducers(undefined, { type: "" })).toEqual(sshKeyStateFactory());
+    expect(reducers(undefined, { type: "" })).toEqual(factory.sshKeyState());
   });
 
   it("should correctly reduce fetchStart", () => {
     expect(
-      reducers(sshKeyStateFactory({ loading: false }), actions.fetchStart())
+      reducers(factory.sshKeyState({ loading: false }), actions.fetchStart())
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         loading: true,
       })
     );
   });
 
   it("should correctly reduce fetchSuccess", () => {
-    const items = [sshKeyFactory(), sshKeyFactory()];
+    const items = [factory.sshKey(), factory.sshKey()];
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           items: [],
           loading: true,
           loaded: false,
@@ -32,7 +29,7 @@ describe("sshkey reducer", () => {
         actions.fetchSuccess(items)
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         items,
         loading: false,
         loaded: true,
@@ -43,11 +40,11 @@ describe("sshkey reducer", () => {
   it("should correctly reduce fetchError", () => {
     expect(
       reducers(
-        sshKeyStateFactory({ errors: null }),
+        factory.sshKeyState({ errors: null }),
         actions.fetchError("Unable to list SSH keys")
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         errors: "Unable to list SSH keys",
       })
     );
@@ -56,13 +53,13 @@ describe("sshkey reducer", () => {
   it("should correctly reduce createStart", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           saving: false,
         }),
         actions.createStart()
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         saving: true,
       })
     );
@@ -71,14 +68,14 @@ describe("sshkey reducer", () => {
   it("should correctly reduce createError", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           errors: null,
           saving: true,
         }),
         actions.createError({ auth_id: "User not found" })
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         errors: { auth_id: "User not found" },
         saving: false,
       })
@@ -88,14 +85,14 @@ describe("sshkey reducer", () => {
   it("should correctly reduce createSuccess", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           saved: false,
           saving: true,
         }),
         actions.createSuccess()
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         saved: true,
         saving: false,
       })
@@ -105,13 +102,13 @@ describe("sshkey reducer", () => {
   it("should correctly reduce importStart", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           saving: false,
         }),
         actions.importStart()
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         saving: true,
       })
     );
@@ -120,14 +117,14 @@ describe("sshkey reducer", () => {
   it("should correctly reduce importError", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           errors: {},
           saving: true,
         }),
         actions.importError({ auth_id: "User not found" })
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         errors: { auth_id: "User not found" },
         saving: false,
       })
@@ -137,14 +134,14 @@ describe("sshkey reducer", () => {
   it("should correctly reduce importSuccess", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           saved: false,
           saving: true,
         }),
         actions.importSuccess()
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         saved: true,
         saving: false,
       })
@@ -152,16 +149,16 @@ describe("sshkey reducer", () => {
   });
 
   it("should correctly reduce createNotify", () => {
-    const items = [sshKeyFactory(), sshKeyFactory()];
+    const items = [factory.sshKey(), factory.sshKey()];
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           items: [items[0]],
         }),
         actions.createNotify(items[1])
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         items,
       })
     );
@@ -170,14 +167,14 @@ describe("sshkey reducer", () => {
   it("should correctly reduce deleteStart", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           saved: true,
           saving: false,
         }),
         actions.deleteStart()
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         saved: false,
         saving: true,
       })
@@ -187,14 +184,14 @@ describe("sshkey reducer", () => {
   it("should correctly reduce deleteError", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           errors: {},
           saving: true,
         }),
         actions.deleteError("Could not delete")
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         errors: "Could not delete",
         saving: false,
       })
@@ -204,14 +201,14 @@ describe("sshkey reducer", () => {
   it("should correctly reduce deleteSuccess", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           loading: true,
           saved: false,
         }),
         actions.deleteSuccess()
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         loading: true,
         saved: true,
       })
@@ -219,16 +216,16 @@ describe("sshkey reducer", () => {
   });
 
   it("should correctly reduce deleteNotify", () => {
-    const items = [sshKeyFactory(), sshKeyFactory()];
+    const items = [factory.sshKey(), factory.sshKey()];
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           items,
         }),
         actions.deleteNotify(items[1].id)
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         items: [items[0]],
       })
     );
@@ -237,7 +234,7 @@ describe("sshkey reducer", () => {
   it("should correctly reduce CLEANUP", () => {
     expect(
       reducers(
-        sshKeyStateFactory({
+        factory.sshKeyState({
           errors: { auth_id: "User not found" },
           saved: true,
           saving: true,
@@ -245,7 +242,7 @@ describe("sshkey reducer", () => {
         actions.cleanup()
       )
     ).toEqual(
-      sshKeyStateFactory({
+      factory.sshKeyState({
         errors: null,
         saved: false,
         saving: false,

@@ -8,17 +8,7 @@ import SubnetSummary from "./SubnetSummary";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -28,7 +18,7 @@ let subnet: Subnet;
 
 beforeEach(() => {
   const spaceId = 1;
-  subnet = subnetFactory({
+  subnet = factory.subnet({
     id: 1,
     name: "Test subnet",
     cidr: "192.168.1.1/32",
@@ -42,33 +32,33 @@ beforeEach(() => {
     space: spaceId,
     vlan: 1,
   });
-  state = rootStateFactory({
-    subnet: subnetStateFactory({
+  state = factory.rootState({
+    subnet: factory.subnetState({
       loaded: true,
       loading: false,
-      items: [subnetFactory(subnet)],
+      items: [factory.subnet(subnet)],
     }),
-    space: spaceStateFactory({
+    space: factory.spaceState({
       loaded: true,
       loading: false,
-      items: [spaceFactory({ id: spaceId, name: "Test space" })],
+      items: [factory.space({ id: spaceId, name: "Test space" })],
     }),
-    vlan: vlanStateFactory({
+    vlan: factory.vlanState({
       loaded: true,
       loading: false,
       items: [
-        vlanFactory({
+        factory.vlan({
           id: subnet.vlan,
           name: "Test VLAN",
           fabric: 1,
         }),
       ],
     }),
-    fabric: fabricStateFactory({
+    fabric: factory.fabricState({
       loaded: true,
       loading: false,
       items: [
-        fabricFactory({
+        factory.fabric({
           id: 1,
           name: "Test fabric",
           vlan_ids: [subnet.vlan],

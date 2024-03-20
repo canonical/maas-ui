@@ -3,13 +3,7 @@ import configureStore from "redux-mock-store";
 import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  deviceState as deviceStateFactory,
-  fabricState as fabricStateFactory,
-  networkInterface as networkInterfaceFactory,
-  rootState as rootStateFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -18,10 +12,10 @@ describe("NodeSummaryNetworkCard", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({ loaded: true }),
-      fabric: fabricStateFactory({ loaded: true }),
-      vlan: vlanStateFactory({ loaded: true }),
+    state = factory.rootState({
+      device: factory.deviceState({ loaded: true }),
+      fabric: factory.fabricState({ loaded: true }),
+      vlan: factory.vlanState({ loaded: true }),
     });
   });
 
@@ -56,12 +50,12 @@ describe("NodeSummaryNetworkCard", () => {
 
   it("displays product, vendor and firmware information, if they exist", () => {
     const interfaces = [
-      networkInterfaceFactory({
+      factory.networkInterface({
         firmware_version: "1.0.0",
         product: "Product 1",
         vendor: "Vendor 1",
       }),
-      networkInterfaceFactory({
+      factory.networkInterface({
         firmware_version: null,
         product: null,
         vendor: null,
@@ -93,27 +87,27 @@ describe("NodeSummaryNetworkCard", () => {
   it("groups interfaces by vendor, product and firmware version", () => {
     const interfaces = [
       ...Array.from(Array(4)).map(() =>
-        networkInterfaceFactory({
+        factory.networkInterface({
           firmware_version: "1.0.0",
           product: "Product 1",
           vendor: "Vendor 1",
         })
       ),
       ...Array.from(Array(3)).map(() =>
-        networkInterfaceFactory({
+        factory.networkInterface({
           firmware_version: "2.0.0",
           product: "Product 1",
           vendor: "Vendor 1",
         })
       ),
       ...Array.from(Array(2)).map(() =>
-        networkInterfaceFactory({
+        factory.networkInterface({
           firmware_version: "2.0.0",
           product: "Product 2",
           vendor: "Vendor 1",
         })
       ),
-      networkInterfaceFactory({
+      factory.networkInterface({
         firmware_version: "2.0.0",
         product: "Product 2",
         vendor: "Vendor 2",

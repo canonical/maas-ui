@@ -3,30 +3,22 @@ import configureStore from "redux-mock-store";
 import DeletePartition from ".";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const partition = partitionFactory();
-const disk = diskFactory({
+const partition = factory.nodePartition();
+const disk = factory.nodeDisk({
   id: 1,
   name: "floppy-disk",
-  partitions: [partition, partitionFactory()],
+  partitions: [partition, factory.nodePartition()],
 });
 
-const state = rootStateFactory({
-  machine: machineStateFactory({
-    items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-    statuses: machineStatusesFactory({
-      abc123: machineStatusFactory(),
+const state = factory.rootState({
+  machine: factory.machineState({
+    items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+    statuses: factory.machineStatuses({
+      abc123: factory.machineStatus(),
     }),
   }),
 });

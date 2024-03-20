@@ -8,24 +8,18 @@ import { Labels } from "../StaticRoutes";
 import EditStaticRouteForm from "./EditStaticRouteForm";
 
 import { actions as staticRouteActions } from "@/app/store/staticroute";
-import {
-  rootState as rootStateFactory,
-  staticRouteState as staticRouteStateFactory,
-  subnet as subnetFactory,
-  staticRoute as staticRouteFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 it("displays loading text on load", async () => {
   const mockStore = configureStore();
-  const state = rootStateFactory({
-    staticroute: staticRouteStateFactory({
+  const state = factory.rootState({
+    staticroute: factory.staticRouteState({
       loaded: false,
       loading: true,
       items: [],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       loaded: false,
       items: [],
     }),
@@ -48,27 +42,27 @@ it("displays loading text on load", async () => {
 
 it("dispatches a correct action on edit static route form submit", async () => {
   const mockStore = configureStore();
-  const sourceSubnet = subnetFactory({ id: 1, cidr: "172.16.1.0/24" });
-  const destinationSubnet = subnetFactory({ id: 2, cidr: "223.16.1.0/24" });
-  const staticRoute = staticRouteFactory({
+  const sourceSubnet = factory.subnet({ id: 1, cidr: "172.16.1.0/24" });
+  const destinationSubnet = factory.subnet({ id: 2, cidr: "223.16.1.0/24" });
+  const staticRoute = factory.staticRoute({
     id: 9,
     destination: destinationSubnet.id,
     source: sourceSubnet.id,
   });
 
-  const newDestinationSubnet = subnetFactory({
+  const newDestinationSubnet = factory.subnet({
     id: 3,
     cidr: "222.16.1.0/24",
   });
   const newGatewayIp = "11.1.1.2";
   const newMetric = 3;
 
-  const state = rootStateFactory({
-    staticroute: staticRouteStateFactory({
+  const state = factory.rootState({
+    staticroute: factory.staticRouteState({
       loaded: true,
       items: [staticRoute],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       loaded: true,
       items: [sourceSubnet, destinationSubnet, newDestinationSubnet],
     }),

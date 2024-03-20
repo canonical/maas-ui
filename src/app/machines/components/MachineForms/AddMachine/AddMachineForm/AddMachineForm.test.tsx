@@ -8,23 +8,7 @@ import AddMachineForm from "./AddMachineForm";
 import { PowerFieldType } from "@/app/store/general/types";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  architecturesState as architecturesStateFactory,
-  defaultMinHweKernelState as defaultMinHweKernelStateFactory,
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  generalState as generalStateFactory,
-  hweKernelsState as hweKernelsStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -32,47 +16,47 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    domain: domainStateFactory({
-      items: [domainFactory({ name: "maas" })],
+  state = factory.rootState({
+    domain: factory.domainState({
+      items: [factory.domain({ name: "maas" })],
       loaded: true,
     }),
-    general: generalStateFactory({
-      architectures: architecturesStateFactory({
+    general: factory.generalState({
+      architectures: factory.architecturesState({
         data: ["amd64/generic"],
         loaded: true,
       }),
-      defaultMinHweKernel: defaultMinHweKernelStateFactory({
+      defaultMinHweKernel: factory.defaultMinHweKernelState({
         data: "ga-16.04",
         loaded: true,
       }),
-      hweKernels: hweKernelsStateFactory({
+      hweKernels: factory.hweKernelsState({
         data: [
           ["ga-16.04", "xenial (ga-16.04)"],
           ["ga-18.04", "bionic (ga-18.04)"],
         ],
         loaded: true,
       }),
-      powerTypes: powerTypesStateFactory({
+      powerTypes: factory.powerTypesState({
         data: [
-          powerTypeFactory({
+          factory.powerType({
             name: "manual",
             fields: [],
           }),
-          powerTypeFactory({
+          factory.powerType({
             name: "amt",
             fields: [
-              powerFieldFactory({
+              factory.powerField({
                 name: "power_address",
                 label: "IP address",
                 field_type: PowerFieldType.STRING,
               }),
             ],
           }),
-          powerTypeFactory({
+          factory.powerType({
             name: "apc",
             fields: [
-              powerFieldFactory({
+              factory.powerField({
                 name: "power_id",
                 label: "Power ID",
                 field_type: PowerFieldType.STRING,
@@ -83,14 +67,14 @@ beforeEach(() => {
         loaded: true,
       }),
     }),
-    resourcepool: resourcePoolStateFactory({
-      items: [resourcePoolFactory({ name: "swimming" })],
+    resourcepool: factory.resourcePoolState({
+      items: [factory.resourcePool({ name: "swimming" })],
       loaded: true,
     }),
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({ fetch: "success" }),
       items: [
-        zoneFactory({
+        factory.zone({
           name: "twilight",
         }),
       ],

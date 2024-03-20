@@ -5,14 +5,7 @@ import EditDisk from "./EditDisk";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
 import type { Disk } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -22,20 +15,20 @@ describe("EditDisk", () => {
   let disk: Disk;
 
   beforeEach(() => {
-    disk = diskFactory({
+    disk = factory.nodeDisk({
       is_boot: false,
       type: DiskTypes.PHYSICAL,
     });
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [disk],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -65,7 +58,7 @@ describe("EditDisk", () => {
   it("correctly dispatches an action to edit a disk", async () => {
     disk.is_boot = true;
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         disks: [disk],
         system_id: "abc123",
       }),

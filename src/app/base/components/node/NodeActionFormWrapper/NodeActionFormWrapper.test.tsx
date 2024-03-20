@@ -4,7 +4,7 @@ import NodeActionFormWrapper from "./NodeActionFormWrapper";
 
 import type { Node } from "@/app/store/types/node";
 import { NodeActions } from "@/app/store/types/node";
-import { machine as machineFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { render, screen, waitFor } from "@/testing/utils";
 
@@ -15,8 +15,8 @@ describe("NodeActionFormWrapper", () => {
 
   it("renders children if all selected nodes can perform selected action", () => {
     const nodes = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
-      machineFactory({ system_id: "def456", actions: [NodeActions.ABORT] }),
+      factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
+      factory.machine({ system_id: "def456", actions: [NodeActions.ABORT] }),
     ];
     render(
       <NodeActionFormWrapper
@@ -38,8 +38,8 @@ describe("NodeActionFormWrapper", () => {
 
   it("displays a warning if not all selected nodes can perform selected action", () => {
     const nodes = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
-      machineFactory({ system_id: "def456", actions: [] }),
+      factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
+      factory.machine({ system_id: "def456", actions: [] }),
     ];
     render(
       <NodeActionFormWrapper
@@ -64,8 +64,8 @@ describe("NodeActionFormWrapper", () => {
     // Mock that action has started.
     mockFormikFormSaved();
     const nodes = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
-      machineFactory({ system_id: "def456", actions: [] }),
+      factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
+      factory.machine({ system_id: "def456", actions: [] }),
     ];
     render(
       <NodeActionFormWrapper
@@ -88,8 +88,8 @@ describe("NodeActionFormWrapper", () => {
   it("can run a function on actionable nodes if warning is shown", async () => {
     const onUpdateSelected = vi.fn();
     const nodes = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
-      machineFactory({ system_id: "def456", actions: [] }),
+      factory.machine({ system_id: "abc123", actions: [NodeActions.ABORT] }),
+      factory.machine({ system_id: "def456", actions: [] }),
     ];
     render(
       <NodeActionFormWrapper
@@ -126,7 +126,7 @@ describe("NodeActionFormWrapper", () => {
       </NodeActionFormWrapper>
     );
     // Render with one node selected.
-    const { rerender } = render(<Proxy nodes={[machineFactory()]} />);
+    const { rerender } = render(<Proxy nodes={[factory.machine()]} />);
 
     expect(clearSidePanelContent).not.toHaveBeenCalled();
 

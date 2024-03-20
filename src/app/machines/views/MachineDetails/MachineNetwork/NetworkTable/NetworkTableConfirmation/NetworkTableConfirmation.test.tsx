@@ -6,14 +6,7 @@ import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkT
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   getByTextContent,
   renderWithBrowserRouter,
@@ -27,18 +20,18 @@ describe("NetworkTableConfirmation", () => {
   let nic: NetworkInterface;
   let state: RootState;
   beforeEach(() => {
-    nic = machineInterfaceFactory();
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    nic = factory.machineInterface();
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
         ],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });
@@ -126,13 +119,13 @@ describe("NetworkTableConfirmation", () => {
     });
 
     it("can display a delete confirmation for an alias", () => {
-      const link = networkLinkFactory();
+      const link = factory.networkLink();
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               discovered: null,
-              links: [networkLinkFactory(), link],
+              links: [factory.networkLink(), link],
               name: "alias",
               type: NetworkInterfaceTypes.PHYSICAL,
             }),
@@ -159,13 +152,13 @@ describe("NetworkTableConfirmation", () => {
     });
 
     it("can confirm deleting an alias", async () => {
-      const link = networkLinkFactory();
+      const link = factory.networkLink();
       state.machine.items = [
-        machineDetailsFactory({
+        factory.machineDetails({
           interfaces: [
-            machineInterfaceFactory({
+            factory.machineInterface({
               discovered: null,
-              links: [networkLinkFactory(), link],
+              links: [factory.networkLink(), link],
               name: "alias",
               type: NetworkInterfaceTypes.PHYSICAL,
             }),

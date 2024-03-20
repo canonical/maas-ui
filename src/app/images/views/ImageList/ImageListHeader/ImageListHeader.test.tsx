@@ -7,22 +7,16 @@ import ImageListHeader, {
 import { actions as configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResourceState as bootResourceStateFactory,
-  bootResourceStatuses as bootResourceStatusesFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
 describe("ImageListHeader", () => {
   it("sets the subtitle loading state when polling", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           polling: true,
         }),
       }),
@@ -35,13 +29,13 @@ describe("ImageListHeader", () => {
   });
 
   it("does not show sync toggle if config has not loaded yet", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           polling: true,
         }),
       }),
-      config: configStateFactory({
+      config: factory.configState({
         loaded: false,
       }),
     });
@@ -58,10 +52,10 @@ describe("ImageListHeader", () => {
   });
 
   it("dispatches an action to update config when changing the auto sync switch", async () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
             value: true,
           }),
@@ -90,8 +84,8 @@ describe("ImageListHeader", () => {
   });
 
   it("can show the rack import status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         rackImportRunning: true,
       }),
     });
@@ -109,8 +103,8 @@ describe("ImageListHeader", () => {
   });
 
   it("can show the region import status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         regionImportRunning: true,
       }),
     });

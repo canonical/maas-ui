@@ -10,15 +10,7 @@ import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
 import type { Subnet } from "@/app/store/subnet/types";
 import type { VLAN } from "@/app/store/vlan/types";
-import {
-  rootState as rootStateFactory,
-  ipRange as ipRangeFactory,
-  ipRangeState as ipRangeStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -28,34 +20,34 @@ let subnet: Subnet;
 let vlan: VLAN;
 
 beforeEach(() => {
-  subnet = subnetFactory();
-  vlan = vlanFactory();
-  ipRange = ipRangeFactory({
+  subnet = factory.subnet();
+  vlan = factory.vlan();
+  ipRange = factory.ipRange({
     comment: "what a beaut",
     start_ip: "11.1.1.1",
     subnet: subnet.id,
     type: IPRangeType.Reserved,
     user: "wombat",
   });
-  state = rootStateFactory({
-    iprange: ipRangeStateFactory({
+  state = factory.rootState({
+    iprange: factory.ipRangeState({
       items: [ipRange],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       items: [subnet],
     }),
-    vlan: vlanStateFactory({
+    vlan: factory.vlanState({
       items: [vlan],
     }),
   });
 });
 
 it("renders for a subnet", () => {
-  const subnet2 = subnetFactory();
+  const subnet2 = factory.subnet();
   state.iprange.items = [
-    ipRangeFactory({ start_ip: "11.1.1.1", subnet: subnet.id }),
-    ipRangeFactory({ start_ip: "11.1.1.2", subnet: subnet.id }),
-    ipRangeFactory({ start_ip: "11.1.1.3", subnet: subnet2.id }),
+    factory.ipRange({ start_ip: "11.1.1.1", subnet: subnet.id }),
+    factory.ipRange({ start_ip: "11.1.1.2", subnet: subnet.id }),
+    factory.ipRange({ start_ip: "11.1.1.3", subnet: subnet2.id }),
   ];
   state.subnet.items = [subnet, subnet2];
   const store = mockStore(state);
@@ -90,11 +82,11 @@ it("renders for a subnet", () => {
 });
 
 it("renders for a vlan", () => {
-  const vlan2 = vlanFactory();
+  const vlan2 = factory.vlan();
   state.iprange.items = [
-    ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id }),
-    ipRangeFactory({ start_ip: "11.1.1.2", vlan: vlan.id }),
-    ipRangeFactory({ start_ip: "11.1.1.3", vlan: vlan2.id }),
+    factory.ipRange({ start_ip: "11.1.1.1", vlan: vlan.id }),
+    factory.ipRange({ start_ip: "11.1.1.2", vlan: vlan.id }),
+    factory.ipRange({ start_ip: "11.1.1.3", vlan: vlan2.id }),
   ];
   state.vlan.items = [vlan, vlan2];
   const store = mockStore(state);
@@ -308,7 +300,7 @@ it("disables the add button if there are no subnets in a VLAN", () => {
 
 it("displays the subnet column when the table is for a VLAN", () => {
   state.iprange.items = [
-    ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id }),
+    factory.ipRange({ start_ip: "11.1.1.1", vlan: vlan.id }),
   ];
   const store = mockStore(state);
   render(

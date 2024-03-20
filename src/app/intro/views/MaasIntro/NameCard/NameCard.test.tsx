@@ -6,28 +6,21 @@ import NameCard, { Labels as NameCardLabels } from "./NameCard";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 describe("NameCard", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
-          configFactory({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
+          factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+          factory.config({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
         ],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
+      user: factory.userState({
+        auth: factory.authState({ user: factory.user({ is_superuser: true }) }),
       }),
     });
   });

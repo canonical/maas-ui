@@ -7,11 +7,7 @@ import DeleteDomainForm, {
   Labels as DeleteDomainFormLabels,
 } from "./DeleteDomainForm";
 
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -24,9 +20,9 @@ const mockStore = configureStore();
 describe("DeleteDomainForm", () => {
   it("calls closeForm on cancel click", async () => {
     const closeForm = vi.fn();
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 1, name: "domain-in-the-brain" })],
+    const state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ id: 1, name: "domain-in-the-brain" })],
       }),
     });
     renderWithBrowserRouter(<DeleteDomainForm closeForm={closeForm} id={1} />, {
@@ -38,10 +34,10 @@ describe("DeleteDomainForm", () => {
 
   it("shows the correct text if the domain is deletable and dispatches the correct action when delete is clicked", async () => {
     const closeForm = vi.fn();
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         items: [
-          domainFactory({
+          factory.domain({
             id: 1,
             name: "domain-in-the-brain",
             resource_count: 0,
@@ -86,10 +82,10 @@ describe("DeleteDomainForm", () => {
 
   it("shows the correct text and disables the delete button if the domain has resource records", () => {
     const closeForm = vi.fn();
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         items: [
-          domainFactory({
+          factory.domain({
             id: 1,
             name: "domain-in-the-brain",
             resource_count: 12,

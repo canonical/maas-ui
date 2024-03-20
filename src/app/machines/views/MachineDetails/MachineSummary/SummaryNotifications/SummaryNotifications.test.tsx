@@ -8,16 +8,7 @@ import SummaryNotifications from "./SummaryNotifications";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  architecturesState as architecturesStateFactory,
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineEvent as machineEventFactory,
-  machineState as machineStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -25,21 +16,21 @@ const mockStore = configureStore();
 describe("SummaryNotifications", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        architectures: architecturesStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        architectures: factory.architecturesState({
           data: ["amd64"],
           loaded: true,
         }),
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             architecture: "amd64",
-            events: [machineEventFactory()],
+            events: [factory.machineEvent()],
             system_id: "abc123",
           }),
         ],
@@ -69,10 +60,10 @@ describe("SummaryNotifications", () => {
 
   it("can display a power error", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         architecture: "amd64",
         events: [
-          machineEventFactory({
+          factory.machineEvent({
             description: "machine timed out",
           }),
         ],
@@ -137,7 +128,7 @@ describe("SummaryNotifications", () => {
   });
 
   it("can display a boot images error", () => {
-    state.general.architectures = architecturesStateFactory({
+    state.general.architectures = factory.architecturesState({
       data: [],
       loaded: true,
     });
@@ -180,7 +171,7 @@ describe("SummaryNotifications", () => {
 
   it("can display a failed hardware sync notification", () => {
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         architecture: "amd64",
         system_id: "abc123",
         status: NodeStatus.DEPLOYED,

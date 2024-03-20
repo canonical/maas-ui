@@ -4,23 +4,18 @@ import NumaCardDetails, {
 
 import type { RootState } from "@/app/store/root/types";
 import type { NodeNumaNode } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineNumaNode as machineNumaNodeFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NumaCardDetails", () => {
   let state: RootState;
   let numaNode: NodeNumaNode;
   beforeEach(() => {
-    numaNode = machineNumaNodeFactory();
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    numaNode = factory.machineNumaNode();
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             numa_nodes: [numaNode],
             system_id: "abc123",
           }),

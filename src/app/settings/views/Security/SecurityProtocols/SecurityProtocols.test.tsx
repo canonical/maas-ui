@@ -1,17 +1,12 @@
 import SecurityProtocols from "./SecurityProtocols";
 
-import {
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-  tlsCertificate as tlsCertificateFactory,
-  tlsCertificateState as tlsCertificateStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("displays loading text if TLS certificate has not loaded", () => {
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+  const state = factory.rootState({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: null,
         loaded: false,
         loading: true,
@@ -24,9 +19,9 @@ it("displays loading text if TLS certificate has not loaded", () => {
 });
 
 it("renders TLS disabled section if no TLS certificate is present", () => {
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+  const state = factory.rootState({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: null,
         loaded: true,
       }),
@@ -39,10 +34,10 @@ it("renders TLS disabled section if no TLS certificate is present", () => {
 });
 
 it("renders TLS enabled section if TLS certificate is present", () => {
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
-        data: tlsCertificateFactory(),
+  const state = factory.rootState({
+    general: factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
+        data: factory.tlsCertificate(),
         loaded: true,
       }),
     }),

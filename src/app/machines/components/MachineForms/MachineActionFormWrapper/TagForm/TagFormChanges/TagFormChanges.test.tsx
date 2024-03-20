@@ -10,13 +10,7 @@ import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import type { Tag } from "@/app/store/tag/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
@@ -41,21 +35,24 @@ beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
   vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
-    tagFactory({ id: 1, name: "tag1" }),
-    tagFactory({ id: 2, name: "tag2" }),
+    factory.tag({ id: 1, name: "tag1" }),
+    factory.tag({ id: 2, name: "tag2" }),
   ];
 
-  state = rootStateFactory({
-    machine: machineStateFactory({
-      items: [machineFactory({ tags: [1] }), machineFactory({ tags: [1, 2] })],
+  state = factory.rootState({
+    machine: factory.machineState({
+      items: [
+        factory.machine({ tags: [1] }),
+        factory.machine({ tags: [1, 2] }),
+      ],
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: tags,
       lists: {
         "mocked-nanoid": tagStateListFactory({
           items: [
-            tagFactory({ id: 1, name: "tag1" }),
-            tagFactory({ id: 2, name: "tag2" }),
+            factory.tag({ id: 1, name: "tag1" }),
+            factory.tag({ id: 2, name: "tag2" }),
           ],
           loaded: true,
         }),
@@ -297,14 +294,14 @@ it("discards removed tags", async () => {
 });
 
 it("shows a message if no tags are assigned to the selected machines", () => {
-  const state = rootStateFactory({
-    machine: machineStateFactory({
-      items: [machineFactory({ tags: [] }), machineFactory({ tags: [] })],
+  const state = factory.rootState({
+    machine: factory.machineState({
+      items: [factory.machine({ tags: [] }), factory.machine({ tags: [] })],
       loaded: true,
       loading: false,
     }),
-    tag: tagStateFactory({
-      items: [tagFactory(), tagFactory()],
+    tag: factory.tagState({
+      items: [factory.tag(), factory.tag()],
       loaded: true,
       loading: false,
     }),

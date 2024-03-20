@@ -1,16 +1,12 @@
 import staticRoute from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  staticRoute as staticRouteFactory,
-  staticRouteState as staticRouteStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("all", () => {
   it("returns list of all static routes", () => {
-    const items = [staticRouteFactory(), staticRouteFactory()];
-    const state = rootStateFactory({
-      staticroute: staticRouteStateFactory({
+    const items = [factory.staticRoute(), factory.staticRoute()];
+    const state = factory.rootState({
+      staticroute: factory.staticRouteState({
         items,
       }),
     });
@@ -20,8 +16,8 @@ describe("all", () => {
 
 describe("loading", () => {
   it("returns staticroute loading state", () => {
-    const state = rootStateFactory({
-      staticroute: staticRouteStateFactory({
+    const state = factory.rootState({
+      staticroute: factory.staticRouteState({
         loading: false,
       }),
     });
@@ -31,8 +27,8 @@ describe("loading", () => {
 
 describe("loaded", () => {
   it("returns staticroute loaded state", () => {
-    const state = rootStateFactory({
-      staticroute: staticRouteStateFactory({
+    const state = factory.rootState({
+      staticroute: factory.staticRouteState({
         loaded: true,
       }),
     });
@@ -42,8 +38,8 @@ describe("loaded", () => {
 
 describe("errors", () => {
   it("returns staticroute error state", () => {
-    const state = rootStateFactory({
-      staticroute: staticRouteStateFactory({
+    const state = factory.rootState({
+      staticroute: factory.staticRouteState({
         errors: "Unable to list static routes.",
       }),
     });
@@ -53,8 +49,8 @@ describe("errors", () => {
 
 describe("saving", () => {
   it("returns staticroute saving state", () => {
-    const state = rootStateFactory({
-      staticroute: staticRouteStateFactory({
+    const state = factory.rootState({
+      staticroute: factory.staticRouteState({
         saving: true,
       }),
     });
@@ -64,8 +60,8 @@ describe("saving", () => {
 
 describe("saved", () => {
   it("returns staticroute saved state", () => {
-    const state = rootStateFactory({
-      staticroute: staticRouteStateFactory({
+    const state = factory.rootState({
+      staticroute: factory.staticRouteState({
         saved: true,
       }),
     });

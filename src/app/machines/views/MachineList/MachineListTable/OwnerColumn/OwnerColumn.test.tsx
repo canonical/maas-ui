@@ -2,41 +2,31 @@ import { OwnerColumn } from "./OwnerColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineAction as machineActionFactory,
-  machineActionsState as machineActionsStateFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-  tag as tagFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("OwnerColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        machineActions: machineActionsStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        machineActions: factory.machineActionsState({
           data: [
-            machineActionFactory({
+            factory.machineAction({
               name: NodeActions.ACQUIRE,
               title: "Allocate...",
             }),
-            machineActionFactory({
+            factory.machineAction({
               name: NodeActions.RELEASE,
               title: "Release...",
             }),
           ],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             actions: [],
             system_id: "abc123",
             owner: "user1",
@@ -44,9 +34,9 @@ describe("OwnerColumn", () => {
           }),
         ],
       }),
-      user: userStateFactory({
+      user: factory.userState({
         items: [
-          userFactory({ last_name: "User Full Name", username: "user1" }),
+          factory.user({ last_name: "User Full Name", username: "user1" }),
         ],
       }),
     });
@@ -83,8 +73,8 @@ describe("OwnerColumn", () => {
   it("displays tags", () => {
     state.machine.items[0].tags = [1, 2];
     state.tag.items = [
-      tagFactory({ id: 1, name: "minty" }),
-      tagFactory({ id: 2, name: "aloof" }),
+      factory.tag({ id: 1, name: "minty" }),
+      factory.tag({ id: 2, name: "aloof" }),
     ];
     renderWithBrowserRouter(
       <OwnerColumn onToggleMenu={vi.fn()} systemId="abc123" />,

@@ -1,23 +1,19 @@
 import APIKeyDelete from "./APIKeyDelete";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  token as tokenFactory,
-  tokenState as tokenStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 let state: RootState;
-rootStateFactory({
-  token: tokenStateFactory({
+factory.rootState({
+  token: factory.tokenState({
     items: [
-      tokenFactory({
+      factory.token({
         id: 1,
         key: "ssh-rsa aabb",
         consumer: { key: "abc", name: "Name" },
       }),
-      tokenFactory({
+      factory.token({
         id: 2,
         key: "ssh-rsa ccdd",
         consumer: { key: "abc", name: "Name" },

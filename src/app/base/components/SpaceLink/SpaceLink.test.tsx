@@ -6,18 +6,14 @@ import configureStore from "redux-mock-store";
 import SpaceLink from "./SpaceLink";
 
 import urls from "@/app/base/urls";
-import {
-  rootState as rootStateFactory,
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("handles when spaces are loading", () => {
-  const state = rootStateFactory({
-    space: spaceStateFactory({ items: [], loading: true }),
+  const state = factory.rootState({
+    space: factory.spaceState({ items: [], loading: true }),
   });
   const store = mockStore(state);
   render(
@@ -34,8 +30,8 @@ it("handles when spaces are loading", () => {
 });
 
 it("handles when a space does not exist", () => {
-  const state = rootStateFactory({
-    space: spaceStateFactory({ items: [], loading: false }),
+  const state = factory.rootState({
+    space: factory.spaceState({ items: [], loading: false }),
   });
   const store = mockStore(state);
   render(
@@ -53,9 +49,9 @@ it("handles when a space does not exist", () => {
 });
 
 it("renders a link if spaces have loaded and it exists", () => {
-  const space = spaceFactory();
-  const state = rootStateFactory({
-    space: spaceStateFactory({ items: [space], loading: false }),
+  const space = factory.space();
+  const state = factory.rootState({
+    space: factory.spaceState({ items: [space], loading: false }),
   });
   const store = mockStore(state);
   render(

@@ -3,28 +3,20 @@ import AddChassisForm from "../AddChassisForm";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  generalState as generalStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("AddChassisFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ name: "maas" })],
+    state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ name: "maas" })],
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
           loaded: true,
         }),
       }),
@@ -51,11 +43,11 @@ describe("AddChassisFormFields", () => {
 
   it("does not show power type fields that are scoped to nodes", async () => {
     state.general.powerTypes.data.push(
-      powerTypeFactory({
+      factory.powerType({
         name: PowerTypeNames.VIRSH,
         description: "Virsh (virtual systems)",
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             name: "power_address",
             label: "Address",
             required: true,
@@ -64,7 +56,7 @@ describe("AddChassisFormFields", () => {
             default: "",
             scope: PowerFieldScope.BMC,
           }),
-          powerFieldFactory({
+          factory.powerField({
             name: "power_pass",
             label: "Password (optional)",
             required: false,
@@ -73,7 +65,7 @@ describe("AddChassisFormFields", () => {
             default: "",
             scope: PowerFieldScope.BMC,
           }),
-          powerFieldFactory({
+          factory.powerField({
             name: "power_id",
             label: "Virsh VM ID",
             required: true,

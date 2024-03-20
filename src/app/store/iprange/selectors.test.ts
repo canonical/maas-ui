@@ -1,20 +1,12 @@
 import ipRange from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  ipRange as ipRangeFactory,
-  ipRangeState as ipRangeStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("all", () => {
   it("returns list of all IP ranges", () => {
-    const items = [ipRangeFactory(), ipRangeFactory()];
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const items = [factory.ipRange(), factory.ipRange()];
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         items,
       }),
     });
@@ -24,8 +16,8 @@ describe("all", () => {
 
 describe("loading", () => {
   it("returns iprange loading state", () => {
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         loading: false,
       }),
     });
@@ -35,8 +27,8 @@ describe("loading", () => {
 
 describe("loaded", () => {
   it("returns iprange loaded state", () => {
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         loaded: true,
       }),
     });
@@ -46,8 +38,8 @@ describe("loaded", () => {
 
 describe("errors", () => {
   it("returns iprange error state", () => {
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         errors: "Unable to list IP ranges.",
       }),
     });
@@ -57,8 +49,8 @@ describe("errors", () => {
 
 describe("saving", () => {
   it("returns iprange saving state", () => {
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         saving: true,
       }),
     });
@@ -68,8 +60,8 @@ describe("saving", () => {
 
 describe("saved", () => {
   it("returns iprange saved state", () => {
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         saved: true,
       }),
     });
@@ -79,18 +71,18 @@ describe("saved", () => {
 
 describe("getBySubnet", () => {
   it("returns IP ranges that are in a subnet", () => {
-    const subnet = subnetFactory();
-    const subnet2 = subnetFactory();
+    const subnet = factory.subnet();
+    const subnet2 = factory.subnet();
     const items = [
-      ipRangeFactory({ subnet: subnet.id }),
-      ipRangeFactory({ subnet: subnet.id }),
-      ipRangeFactory({ subnet: subnet2.id }),
+      factory.ipRange({ subnet: subnet.id }),
+      factory.ipRange({ subnet: subnet.id }),
+      factory.ipRange({ subnet: subnet2.id }),
     ];
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         items,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         items: [subnet, subnet2],
       }),
     });
@@ -101,25 +93,25 @@ describe("getBySubnet", () => {
   });
 
   it("handles a null subnet", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     expect(ipRange.getBySubnet(state, null)).toStrictEqual([]);
   });
 });
 
 describe("getByVLAN", () => {
   it("returns IP ranges that are in a VLAN", () => {
-    const vlan = vlanFactory();
-    const vlan2 = vlanFactory();
+    const vlan = factory.vlan();
+    const vlan2 = factory.vlan();
     const items = [
-      ipRangeFactory({ vlan: vlan.id }),
-      ipRangeFactory({ vlan: vlan.id }),
-      ipRangeFactory({ vlan: vlan2.id }),
+      factory.ipRange({ vlan: vlan.id }),
+      factory.ipRange({ vlan: vlan.id }),
+      factory.ipRange({ vlan: vlan2.id }),
     ];
-    const state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    const state = factory.rootState({
+      iprange: factory.ipRangeState({
         items,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan, vlan2],
       }),
     });
@@ -130,7 +122,7 @@ describe("getByVLAN", () => {
   });
 
   it("handles a null VLAN", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     expect(ipRange.getByVLAN(state, null)).toStrictEqual([]);
   });
 });

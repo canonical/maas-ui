@@ -6,14 +6,7 @@ import configureStore from "redux-mock-store";
 import VirshSettings from "./VirshSettings";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podState as podStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,18 +15,18 @@ describe("VirshSettings", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ id: 1, name: "pod1" })],
+    state = factory.rootState({
+      pod: factory.podState({
+        items: [factory.podDetails({ id: 1, name: "pod1" })],
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      tag: tagStateFactory({
+      tag: factory.tagState({
         loaded: true,
       }),
-      zone: zoneStateFactory({}),
+      zone: factory.zoneState({}),
     });
   });
 

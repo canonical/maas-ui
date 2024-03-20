@@ -1,16 +1,12 @@
 import selectors from "./selectors";
 
-import {
-  discovery as discoveryFactory,
-  discoveryState as discoveryStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("discovery selectors", () => {
   it("can get all items", () => {
-    const items = [discoveryFactory()];
-    const state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    const items = [factory.discovery()];
+    const state = factory.rootState({
+      discovery: factory.discoveryState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("discovery selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    const state = factory.rootState({
+      discovery: factory.discoveryState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("discovery selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    const state = factory.rootState({
+      discovery: factory.discoveryState({
         loaded: true,
       }),
     });
@@ -37,8 +33,8 @@ describe("discovery selectors", () => {
 
   it("can get the errors state", () => {
     const errors = "Nothing to discover";
-    const state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    const state = factory.rootState({
+      discovery: factory.discoveryState({
         errors,
       }),
     });
@@ -46,9 +42,9 @@ describe("discovery selectors", () => {
   });
 
   it("can get a discovery by id", () => {
-    const discovery = discoveryFactory({ discovery_id: "123" });
-    const state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    const discovery = factory.discovery({ discovery_id: "123" });
+    const state = factory.rootState({
+      discovery: factory.discoveryState({
         items: [discovery],
       }),
     });
@@ -57,10 +53,10 @@ describe("discovery selectors", () => {
   });
 
   it("can search items", () => {
-    const state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    const state = factory.rootState({
+      discovery: factory.discoveryState({
         items: [
-          discoveryFactory({
+          factory.discovery({
             hostname: "foo",
             mac_address: "00:16:3e:9c:bf:e9",
             mac_organization: "Acme Inc.",
@@ -68,7 +64,7 @@ describe("discovery selectors", () => {
             observer_hostname: "alpha",
             last_seen: "Mon, 19 Oct. 2020 01:15:57",
           }),
-          discoveryFactory({
+          factory.discovery({
             hostname: "bar",
             mac_address: "00:16:4a:9c:bf:e9",
             mac_organization: "Foodies Inc.",
@@ -76,7 +72,7 @@ describe("discovery selectors", () => {
             observer_hostname: "bravo",
             last_seen: "Sat, 17 Oct. 2020 01:15:57",
           }),
-          discoveryFactory({
+          factory.discovery({
             hostname: "foobar",
             mac_address: "00:16:5b:9c:bf:e9",
             mac_organization: "Roxxon",
@@ -84,7 +80,7 @@ describe("discovery selectors", () => {
             observer_hostname: "foot",
             last_seen: "Mon, 19 Oct. 2020 01:15:57",
           }),
-          discoveryFactory({
+          factory.discovery({
             hostname: "fizz",
             mac_address: "00:17:3e:9c:bf:e9",
             mac_organization: "Pacific Couriers",

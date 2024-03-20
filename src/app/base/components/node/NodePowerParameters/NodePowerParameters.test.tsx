@@ -6,27 +6,17 @@ import NodePowerParameters from "./NodePowerParameters";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  certificateMetadata as certificateMetadataFactory,
-  generalState as generalStateFactory,
-  controllerDetails as controllerDetailsFactory,
-  machineDetails as machineDetailsFactory,
-  modelRef as modelRefFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 let state: RootState;
 beforeEach(() => {
-  state = rootStateFactory({
-    general: generalStateFactory({
-      powerTypes: powerTypesStateFactory({
-        data: [powerTypeFactory({ fields: [], name: PowerTypeNames.MANUAL })],
+  state = factory.rootState({
+    general: factory.generalState({
+      powerTypes: factory.powerTypesState({
+        data: [factory.powerType({ fields: [], name: PowerTypeNames.MANUAL })],
         loaded: true,
       }),
     }),
@@ -35,7 +25,7 @@ beforeEach(() => {
 
 it("shows an error if no rack controller is connected", () => {
   state.general.powerTypes.data = [];
-  const machine = machineDetailsFactory({ system_id: "abc123" });
+  const machine = factory.machineDetails({ system_id: "abc123" });
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -49,7 +39,7 @@ it("shows an error if no rack controller is connected", () => {
 });
 
 it("shows an error if a power type has not been set", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     power_type: "",
     system_id: "abc123",
   });
@@ -66,7 +56,7 @@ it("shows an error if a power type has not been set", () => {
 });
 
 it("shows a warning if the power type is set to manual", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     power_type: PowerTypeNames.MANUAL,
     system_id: "abc123",
   });
@@ -86,13 +76,13 @@ it("shows a warning if the power type is set to manual", () => {
 
 it("shows an error if the power type is missing packages", () => {
   state.general.powerTypes.data = [
-    powerTypeFactory({
+    factory.powerType({
       description: "AMT",
       missing_packages: ["package1", "package2"],
       name: PowerTypeNames.AMT,
     }),
   ];
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     power_type: PowerTypeNames.AMT,
     system_id: "abc123",
   });
@@ -117,15 +107,15 @@ it("shows an error if the power type is missing packages", () => {
 
 it("renders power parameters for all scopes if machine is not in a pod", () => {
   state.general.powerTypes.data = [
-    powerTypeFactory({
+    factory.powerType({
       fields: [
-        powerFieldFactory({ name: "node-field", scope: PowerFieldScope.NODE }),
-        powerFieldFactory({ name: "bmc-field", scope: PowerFieldScope.BMC }),
+        factory.powerField({ name: "node-field", scope: PowerFieldScope.NODE }),
+        factory.powerField({ name: "bmc-field", scope: PowerFieldScope.BMC }),
       ],
       name: PowerTypeNames.LXD,
     }),
   ];
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     pod: undefined,
     power_parameters: {
       "node-field": "node field",
@@ -147,16 +137,16 @@ it("renders power parameters for all scopes if machine is not in a pod", () => {
 
 it("renders power parameters only for node scope if machine is in a pod", () => {
   state.general.powerTypes.data = [
-    powerTypeFactory({
+    factory.powerType({
       fields: [
-        powerFieldFactory({ name: "node-field", scope: PowerFieldScope.NODE }),
-        powerFieldFactory({ name: "bmc-field", scope: PowerFieldScope.BMC }),
+        factory.powerField({ name: "node-field", scope: PowerFieldScope.NODE }),
+        factory.powerField({ name: "bmc-field", scope: PowerFieldScope.BMC }),
       ],
       name: PowerTypeNames.LXD,
     }),
   ];
-  const machine = machineDetailsFactory({
-    pod: modelRefFactory(),
+  const machine = factory.machineDetails({
+    pod: factory.modelRef(),
     power_parameters: {
       "node-field": "node field",
       "bmc-field": "bmc field",
@@ -176,14 +166,14 @@ it("renders power parameters only for node scope if machine is in a pod", () => 
 });
 
 it("renders certificate power parameters with metadata", () => {
-  const certificateMetadata = certificateMetadataFactory();
+  const certificateMetadata = factory.certificateMetadata();
   state.general.powerTypes.data = [
-    powerTypeFactory({
-      fields: [powerFieldFactory({ name: "certificate" })],
+    factory.powerType({
+      fields: [factory.powerField({ name: "certificate" })],
       name: PowerTypeNames.LXD,
     }),
   ];
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     certificate: certificateMetadata,
     power_parameters: {
       certificate: "abc",
@@ -206,15 +196,15 @@ it("renders certificate power parameters with metadata", () => {
 
 it("renders power parameters for a controller", () => {
   state.general.powerTypes.data = [
-    powerTypeFactory({
+    factory.powerType({
       fields: [
-        powerFieldFactory({ name: "node-field", scope: PowerFieldScope.NODE }),
-        powerFieldFactory({ name: "bmc-field", scope: PowerFieldScope.BMC }),
+        factory.powerField({ name: "node-field", scope: PowerFieldScope.NODE }),
+        factory.powerField({ name: "bmc-field", scope: PowerFieldScope.BMC }),
       ],
       name: PowerTypeNames.LXD,
     }),
   ];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     power_parameters: {
       "node-field": "node field",
       "bmc-field": "bmc field",

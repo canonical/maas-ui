@@ -1,19 +1,14 @@
 import generatedCertificate from "./generatedCertificate";
 
-import {
-  generalState as generalStateFactory,
-  generatedCertificate as certificateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("generatedCertificate selectors", () => {
   describe("get", () => {
     it("returns generatedCertificate", () => {
-      const data = certificateFactory();
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          generatedCertificate: generatedCertificateStateFactory({
+      const data = factory.generatedCertificate();
+      const state = factory.rootState({
+        general: factory.generalState({
+          generatedCertificate: factory.generatedCertificateState({
             data,
           }),
         }),
@@ -25,9 +20,9 @@ describe("generatedCertificate selectors", () => {
   describe("loading", () => {
     it("returns generatedCertificate loading state", () => {
       const loading = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          generatedCertificate: generatedCertificateStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          generatedCertificate: factory.generatedCertificateState({
             loading,
           }),
         }),
@@ -39,9 +34,9 @@ describe("generatedCertificate selectors", () => {
   describe("loaded", () => {
     it("returns generatedCertificate loaded state", () => {
       const loaded = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          generatedCertificate: generatedCertificateStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          generatedCertificate: factory.generatedCertificateState({
             loaded,
           }),
         }),
@@ -53,9 +48,9 @@ describe("generatedCertificate selectors", () => {
   describe("errors", () => {
     it("returns generatedCertificate errors state", () => {
       const errors = "Cannot fetch generatedCertificate.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          generatedCertificate: generatedCertificateStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          generatedCertificate: factory.generatedCertificateState({
             errors,
           }),
         }),

@@ -7,16 +7,7 @@ import CloneFormFields from "./CloneFormFields";
 import { actions as machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import {
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  rootState as rootStateFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithMockStore,
   screen,
@@ -37,31 +28,31 @@ vi.mock("@reduxjs/toolkit", async () => {
 
 describe("CloneFormFields", () => {
   let state: RootState;
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     pod: { id: 11, name: "podrick" },
     system_id: "abc123",
   });
   beforeEach(() => {
     vi.spyOn(query, "generateCallId").mockReturnValue(callId);
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
-    state = rootStateFactory({
-      fabric: fabricStateFactory({ loaded: true }),
+    state = factory.rootState({
+      fabric: factory.fabricState({ loaded: true }),
 
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loaded: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machine.system_id],
               }),
             ],
           }),
         },
       }),
-      subnet: subnetStateFactory({ loaded: true }),
-      vlan: vlanStateFactory({ loaded: true }),
+      subnet: factory.subnetState({ loaded: true }),
+      vlan: factory.vlanState({ loaded: true }),
     });
   });
 
@@ -99,7 +90,7 @@ describe("CloneFormFields", () => {
   });
 
   it("dispatches action to get full machine details on machine click", async () => {
-    const machine = machineDetailsFactory({ system_id: "abc123" });
+    const machine = factory.machineDetails({ system_id: "abc123" });
     state.machine.items = [machine];
     const store = mockStore(state);
     renderWithMockStore(
@@ -123,7 +114,7 @@ describe("CloneFormFields", () => {
   });
 
   it("applies different styling depending on clone selection state", async () => {
-    const machine = machineDetailsFactory({ system_id: "abc123" });
+    const machine = factory.machineDetails({ system_id: "abc123" });
     state.machine.items = [machine];
     renderWithMockStore(
       <Formik

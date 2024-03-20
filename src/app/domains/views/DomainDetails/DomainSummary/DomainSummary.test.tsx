@@ -7,14 +7,7 @@ import DomainSummary, { Labels as DomainSummaryLabels } from "./DomainSummary";
 
 import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -26,7 +19,7 @@ const mockStore = configureStore();
 
 describe("DomainSummary", () => {
   it("render nothing if domain doesn't exist", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     renderWithBrowserRouter(<DomainSummary id={1} />, {
       state,
     });
@@ -43,9 +36,9 @@ describe("DomainSummary", () => {
   });
 
   it("renders domain summary", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 1, name: "test" })],
+    const state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ id: 1, name: "test" })],
       }),
     });
 
@@ -65,13 +58,13 @@ describe("DomainSummary", () => {
   });
 
   it("doesn't render Edit button when user is not admin", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 1, name: "test" })],
+    const state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ id: 1, name: "test" })],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: false }),
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: false }),
         }),
       }),
     });
@@ -89,18 +82,18 @@ describe("DomainSummary", () => {
     let state: RootState;
 
     beforeEach(() => {
-      state = rootStateFactory({
-        domain: domainStateFactory({
+      state = factory.rootState({
+        domain: factory.domainState({
           items: [
-            domainFactory({
+            factory.domain({
               id: 1,
               name: "test",
             }),
           ],
         }),
-        user: userStateFactory({
-          auth: authStateFactory({
-            user: userFactory({ is_superuser: true }),
+        user: factory.userState({
+          auth: factory.authState({
+            user: factory.user({ is_superuser: true }),
           }),
         }),
       });

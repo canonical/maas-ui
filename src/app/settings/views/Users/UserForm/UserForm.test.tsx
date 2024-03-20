@@ -10,11 +10,7 @@ import { Labels as BaseUserFormLabels } from "@/app/base/components/UserForm/Use
 import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
 import type { User } from "@/app/store/user/types";
-import {
-  user as userFactory,
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -29,12 +25,12 @@ describe("UserForm", () => {
   let user: User;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
     });
-    user = userFactory();
+    user = factory.user();
   });
 
   it("can render", () => {

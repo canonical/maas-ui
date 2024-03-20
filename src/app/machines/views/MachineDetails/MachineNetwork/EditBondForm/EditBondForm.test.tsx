@@ -10,21 +10,7 @@ import {
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
-import {
-  bondOptions as bondOptionsFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  subnet as subnetFactory,
-  rootState as rootStateFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -39,33 +25,33 @@ describe("EditBondForm", () => {
   let nic: NetworkInterface;
 
   beforeEach(() => {
-    nic = machineInterfaceFactory({
+    nic = factory.machineInterface({
       type: NetworkInterfaceTypes.BOND,
       vlan_id: 1,
     });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    state = factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
-        items: [fabricFactory({ name: "test-fabric", id: 1 })],
+        items: [factory.fabric({ name: "test-fabric", id: 1 })],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 1, name: "test-subnet-1", vlan: 1 })],
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 1, name: "test-subnet-1", vlan: 1 })],
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [
-          vlanFactory({
+          factory.vlan({
             id: 1,
             fabric: 1,
           }),
@@ -77,17 +63,17 @@ describe("EditBondForm", () => {
 
   it("displays a table", () => {
     const interfaces = [
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
     ];
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces,
       }),
@@ -108,19 +94,19 @@ describe("EditBondForm", () => {
 
   it("displays the selected interfaces when not editing members", () => {
     const interfaces = [
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "eth0",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "eth1",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
     ];
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces,
       }),
@@ -143,49 +129,49 @@ describe("EditBondForm", () => {
 
   it("displays all valid interfaces when editing members", async () => {
     const interfaces = [
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "valid0",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "valid1",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
       // VLANs are not valid.
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "notvalid0",
         type: NetworkInterfaceTypes.VLAN,
         vlan_id: 1,
       }),
       // Bridges are not valid.
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "notvalid1",
         type: NetworkInterfaceTypes.BRIDGE,
         vlan_id: 1,
       }),
       // Bonds are not valid.
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "notvalid2",
         type: NetworkInterfaceTypes.BOND,
         vlan_id: 1,
       }),
       // Physical interfaces in other VLANs are not valid.
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "notvalid3",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 2,
       }),
       // Physical interfaces in the same VLAN are valid.
-      machineInterfaceFactory({
+      factory.machineInterface({
         name: "valid2",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
     ];
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces,
       }),
@@ -215,21 +201,21 @@ describe("EditBondForm", () => {
 
   it("disables the submit button if two interfaces aren't selected", async () => {
     const interfaces = [
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
     ];
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces,
       }),
@@ -264,21 +250,21 @@ describe("EditBondForm", () => {
 
   it("enables the submit button if only the members have changed", async () => {
     const interfaces = [
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
     ];
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces,
       }),
@@ -352,7 +338,7 @@ describe("EditBondForm", () => {
   });
 
   it("can dispatch an action to update a bond", async () => {
-    const bond = machineInterfaceFactory({
+    const bond = factory.machineInterface({
       id: 3,
       name: "bond1",
       type: NetworkInterfaceTypes.BOND,
@@ -363,7 +349,7 @@ describe("EditBondForm", () => {
       },
     });
     state.general.bondOptions.loaded = true;
-    state.general.bondOptions.data = bondOptionsFactory({
+    state.general.bondOptions.data = factory.bondOptions({
       lacp_rates: [
         [BondLacpRate.FAST, BondLacpRate.FAST],
         [BondLacpRate.SLOW, BondLacpRate.SLOW],
@@ -379,15 +365,15 @@ describe("EditBondForm", () => {
       ],
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [
           bond,
-          machineInterfaceFactory({
+          factory.machineInterface({
             id: 9,
             type: NetworkInterfaceTypes.PHYSICAL,
             vlan_id: 1,
           }),
-          machineInterfaceFactory({
+          factory.machineInterface({
             id: 10,
             type: NetworkInterfaceTypes.PHYSICAL,
             vlan_id: 1,

@@ -1,16 +1,12 @@
 import packagerepository from "./selectors";
 
-import {
-  packageRepository as packageRepositoryFactory,
-  packageRepositoryState as packageRepositoryStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("packagerepository selectors", () => {
   it("can get repository items", () => {
-    const items = [packageRepositoryFactory(), packageRepositoryFactory()];
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const items = [factory.packageRepository(), factory.packageRepository()];
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         loaded: true,
       }),
     });
@@ -36,8 +32,8 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         saving: true,
       }),
     });
@@ -45,8 +41,8 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         saved: true,
       }),
     });
@@ -54,8 +50,8 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get packagerepository errors", () => {
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         errors: { name: "Name already exists" },
       }),
     });
@@ -65,10 +61,10 @@ describe("packagerepository selectors", () => {
   });
 
   it("can get the count", () => {
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         loading: true,
-        items: [packageRepositoryFactory(), packageRepositoryFactory()],
+        items: [factory.packageRepository(), factory.packageRepository()],
       }),
     });
     expect(packagerepository.count(state)).toEqual(2);
@@ -76,11 +72,11 @@ describe("packagerepository selectors", () => {
 
   it("can get a repository by id", () => {
     const items = [
-      packageRepositoryFactory({ id: 101 }),
-      packageRepositoryFactory({ id: 123 }),
+      factory.packageRepository({ id: 101 }),
+      factory.packageRepository({ id: 123 }),
     ];
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         loading: true,
         items,
       }),
@@ -90,12 +86,12 @@ describe("packagerepository selectors", () => {
 
   it("can search items", () => {
     const items = [
-      packageRepositoryFactory({ name: "main_archive" }),
-      packageRepositoryFactory({ url: "www.main.com" }),
-      packageRepositoryFactory(),
+      factory.packageRepository({ name: "main_archive" }),
+      factory.packageRepository({ url: "www.main.com" }),
+      factory.packageRepository(),
     ];
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         items,
       }),
     });
@@ -107,12 +103,12 @@ describe("packagerepository selectors", () => {
 
   it("can search by display name", () => {
     const items = [
-      packageRepositoryFactory({ name: "main_archive", default: true }),
-      packageRepositoryFactory({ url: "www.main.com" }),
-      packageRepositoryFactory(),
+      factory.packageRepository({ name: "main_archive", default: true }),
+      factory.packageRepository({ url: "www.main.com" }),
+      factory.packageRepository(),
     ];
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         items,
       }),
     });
@@ -121,11 +117,11 @@ describe("packagerepository selectors", () => {
 
   it("can get the main archive", () => {
     const [mainArchive, otherArchive] = [
-      packageRepositoryFactory({ name: "main_archive", default: true }),
-      packageRepositoryFactory({ name: "other_archive", default: true }),
+      factory.packageRepository({ name: "main_archive", default: true }),
+      factory.packageRepository({ name: "other_archive", default: true }),
     ];
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         items: [mainArchive, otherArchive],
       }),
     });
@@ -134,11 +130,11 @@ describe("packagerepository selectors", () => {
 
   it("can get the ports archive", () => {
     const [portsArchive, otherArchive] = [
-      packageRepositoryFactory({ name: "ports_archive", default: true }),
-      packageRepositoryFactory({ name: "other_archive", default: true }),
+      factory.packageRepository({ name: "ports_archive", default: true }),
+      factory.packageRepository({ name: "other_archive", default: true }),
     ];
-    const state = rootStateFactory({
-      packagerepository: packageRepositoryStateFactory({
+    const state = factory.rootState({
+      packagerepository: factory.packageRepositoryState({
         items: [portsArchive, otherArchive],
       }),
     });

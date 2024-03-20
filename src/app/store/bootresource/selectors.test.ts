@@ -1,25 +1,13 @@
 import bootResourceSelectors from "./selectors";
 import { BootResourceAction, BootResourceType } from "./types";
 
-import {
-  bootResource as bootResourceFactory,
-  bootResourceEventError as eventErrorFactory,
-  bootResourceFetchedImages as bootResourceFetchedImagesFactory,
-  bootResourceOtherImage as bootResourceOtherImageFactory,
-  bootResourceState as bootResourceStateFactory,
-  bootResourceStatuses as bootResourceStatusesFactory,
-  bootResourceUbuntu as bootResourceUbuntuFactory,
-  bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
-  bootResourceUbuntuCoreImage as bootResourceUbuntuCoreImageFactory,
-  bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("bootresource selectors", () => {
   it("can get all boot resources", () => {
-    const resources = [bootResourceFactory()];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const resources = [factory.bootResource()];
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources,
       }),
     });
@@ -28,12 +16,12 @@ describe("bootresource selectors", () => {
 
   it("can get all synced resources", () => {
     const [synced, uploaded, generated] = [
-      bootResourceFactory({ rtype: BootResourceType.SYNCED }),
-      bootResourceFactory({ rtype: BootResourceType.UPLOADED }),
-      bootResourceFactory({ rtype: BootResourceType.GENERATED }),
+      factory.bootResource({ rtype: BootResourceType.SYNCED }),
+      factory.bootResource({ rtype: BootResourceType.UPLOADED }),
+      factory.bootResource({ rtype: BootResourceType.GENERATED }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [synced, uploaded, generated],
       }),
     });
@@ -44,12 +32,12 @@ describe("bootresource selectors", () => {
 
   it("can get all uploaded resources", () => {
     const [synced, uploaded, generated] = [
-      bootResourceFactory({ rtype: BootResourceType.SYNCED }),
-      bootResourceFactory({ rtype: BootResourceType.UPLOADED }),
-      bootResourceFactory({ rtype: BootResourceType.GENERATED }),
+      factory.bootResource({ rtype: BootResourceType.SYNCED }),
+      factory.bootResource({ rtype: BootResourceType.UPLOADED }),
+      factory.bootResource({ rtype: BootResourceType.GENERATED }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [synced, uploaded, generated],
       }),
     });
@@ -60,12 +48,12 @@ describe("bootresource selectors", () => {
 
   it("can get all generated resources", () => {
     const [synced, uploaded, generated] = [
-      bootResourceFactory({ rtype: BootResourceType.SYNCED }),
-      bootResourceFactory({ rtype: BootResourceType.UPLOADED }),
-      bootResourceFactory({ rtype: BootResourceType.GENERATED }),
+      factory.bootResource({ rtype: BootResourceType.SYNCED }),
+      factory.bootResource({ rtype: BootResourceType.UPLOADED }),
+      factory.bootResource({ rtype: BootResourceType.GENERATED }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [synced, uploaded, generated],
       }),
     });
@@ -76,21 +64,21 @@ describe("bootresource selectors", () => {
 
   it("can get all synced ubuntu boot resources", () => {
     const [syncedUbuntu, syncedNonUbuntu, nonSyncedUbuntu] = [
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu/focal",
         rtype: BootResourceType.SYNCED,
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "centos/centos70",
         rtype: BootResourceType.SYNCED,
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu/impish",
         rtype: BootResourceType.UPLOADED,
       }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [syncedUbuntu, syncedNonUbuntu, nonSyncedUbuntu],
       }),
     });
@@ -100,12 +88,12 @@ describe("bootresource selectors", () => {
   });
 
   it("can get ubuntu image data", () => {
-    const ubuntu = bootResourceUbuntuFactory({
-      arches: [bootResourceUbuntuArchFactory()],
-      releases: [bootResourceUbuntuReleaseFactory()],
+    const ubuntu = factory.bootResourceUbuntu({
+      arches: [factory.bootResourceUbuntuArch()],
+      releases: [factory.bootResourceUbuntuRelease()],
     });
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         ubuntu,
       }),
     });
@@ -114,21 +102,21 @@ describe("bootresource selectors", () => {
 
   it("can get all synced ubuntu core boot resources", () => {
     const [syncedUbuntuCore, syncedNonUbuntuCore, nonSyncedUbuntuCore] = [
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu-core/10",
         rtype: BootResourceType.SYNCED,
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu/focal",
         rtype: BootResourceType.SYNCED,
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu-core/11",
         rtype: BootResourceType.UPLOADED,
       }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [syncedUbuntuCore, syncedNonUbuntuCore, nonSyncedUbuntuCore],
       }),
     });
@@ -138,9 +126,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get ubuntu core image data", () => {
-    const ubuntuCoreImages = [bootResourceUbuntuCoreImageFactory()];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const ubuntuCoreImages = [factory.bootResourceUbuntuCoreImage()];
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         ubuntuCoreImages,
       }),
     });
@@ -151,21 +139,21 @@ describe("bootresource selectors", () => {
 
   it("can get all synced other boot resources", () => {
     const [syncedOther, syncedNonOther, nonOtherSynced] = [
-      bootResourceFactory({
+      factory.bootResource({
         name: "centos/centos70",
         rtype: BootResourceType.SYNCED,
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu/focal",
         rtype: BootResourceType.SYNCED,
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "centos/8",
         rtype: BootResourceType.UPLOADED,
       }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [syncedOther, syncedNonOther, nonOtherSynced],
       }),
     });
@@ -175,9 +163,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get other images data", () => {
-    const otherImages = [bootResourceOtherImageFactory()];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const otherImages = [factory.bootResourceOtherImage()];
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         otherImages,
       }),
     });
@@ -185,9 +173,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get fetched images data", () => {
-    const fetchedImages = bootResourceFetchedImagesFactory();
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const fetchedImages = factory.bootResourceFetchedImages();
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         fetchedImages,
       }),
     });
@@ -197,11 +185,11 @@ describe("bootresource selectors", () => {
   });
 
   it("can get all statuses", () => {
-    const statuses = bootResourceStatusesFactory({
+    const statuses = factory.bootResourceStatuses({
       polling: true,
     });
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         statuses,
       }),
     });
@@ -209,9 +197,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get all event errors", () => {
-    const eventErrors = [eventErrorFactory()];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const eventErrors = [factory.bootResourceEventError()];
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         eventErrors,
       }),
     });
@@ -220,18 +208,18 @@ describe("bootresource selectors", () => {
 
   it("can get a fetch error, if it exists", () => {
     const eventErrors = [
-      eventErrorFactory({
+      factory.bootResourceEventError({
         event: BootResourceAction.FETCH,
         error: "NO FETCH",
       }),
     ];
-    const errorState = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const errorState = factory.rootState({
+      bootresource: factory.bootResourceState({
         eventErrors,
       }),
     });
-    const nonErrorState = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const nonErrorState = factory.rootState({
+      bootresource: factory.bootResourceState({
         eventErrors: [],
       }),
     });
@@ -240,9 +228,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the deletingImage status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           deletingImage: true,
         }),
       }),
@@ -251,9 +239,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the fetching status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           fetching: true,
         }),
       }),
@@ -262,9 +250,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the polling status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           polling: true,
         }),
       }),
@@ -273,9 +261,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the savingOther status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingOther: true,
         }),
       }),
@@ -284,9 +272,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the savingUbuntu status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingUbuntu: true,
         }),
       }),
@@ -295,9 +283,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the savingUbuntuCore status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           savingUbuntuCore: true,
         }),
       }),
@@ -306,9 +294,9 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the stoppingImport status", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        statuses: bootResourceStatusesFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        statuses: factory.bootResourceStatuses({
           stoppingImport: true,
         }),
       }),
@@ -317,8 +305,8 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the rackImportRunning state", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         rackImportRunning: true,
       }),
     });
@@ -326,8 +314,8 @@ describe("bootresource selectors", () => {
   });
 
   it("can get the regionImportRunning state", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         regionImportRunning: true,
       }),
     });

@@ -7,24 +7,20 @@ import TagList from "./TagList";
 
 import type { RootState } from "@/app/store/root/types";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           name: "rad",
         }),
-        tagFactory({
+        factory.tag({
           name: "cool",
         }),
       ],

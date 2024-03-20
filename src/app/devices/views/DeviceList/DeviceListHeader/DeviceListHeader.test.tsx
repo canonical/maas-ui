@@ -4,23 +4,19 @@ import DeviceListHeader from "./DeviceListHeader";
 
 import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({
+    state = factory.rootState({
+      device: factory.deviceState({
         loaded: true,
         items: [
-          deviceFactory({ system_id: "abc123" }),
-          deviceFactory({ system_id: "def456" }),
+          factory.device({ system_id: "abc123" }),
+          factory.device({ system_id: "def456" }),
         ],
       }),
     });

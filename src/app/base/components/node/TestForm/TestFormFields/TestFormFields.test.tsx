@@ -3,36 +3,29 @@ import TestForm from "../TestForm";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-  scriptState as scriptStateFactory,
-  script as scriptFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("TestForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       }),
-      script: scriptStateFactory({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -43,7 +36,7 @@ describe("TestForm", () => {
             },
             script_type: ScriptType.TESTING,
           }),
-          scriptFactory({
+          factory.script({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {

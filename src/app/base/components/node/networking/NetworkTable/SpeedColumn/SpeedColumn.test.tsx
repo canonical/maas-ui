@@ -2,35 +2,29 @@ import SpeedColumn from "./SpeedColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore } from "@/testing/utils";
 
 describe("SpeedColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });
   });
 
   it("can display a disconnected icon in the speed column", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       link_connected: false,
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
@@ -41,13 +35,13 @@ describe("SpeedColumn", () => {
   });
 
   it("can display a slow icon in the speed column", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       interface_speed: 2,
       link_speed: 1,
       link_connected: true,
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
@@ -58,11 +52,11 @@ describe("SpeedColumn", () => {
   });
 
   it("can display no icon in the speed column", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       link_connected: true,
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });

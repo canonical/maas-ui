@@ -8,20 +8,7 @@ import {
 } from "@/app/store/scriptresult/types";
 import { NetworkLinkMode } from "@/app/store/types/enum";
 import type { VLAN } from "@/app/store/vlan/types";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  networkDiscoveredIP as networkDiscoveredIPFactory,
-  networkLink as networkLinkFactory,
-  nodeScriptResultState as nodeScriptResultStateFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultState as scriptResultStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("IPColumn", () => {
@@ -29,27 +16,27 @@ describe("IPColumn", () => {
   let vlan: VLAN;
 
   beforeEach(() => {
-    const fabric = fabricFactory({ name: "fabric-name" });
-    vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const fabric = factory.fabric({ name: "fabric-name" });
+    vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    state = factory.rootState({
+      fabric: factory.fabricState({
         items: [fabric],
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
       }),
     });
   });
 
   it("can display a discovered ip address", () => {
-    const discovered = networkDiscoveredIPFactory({ ip_address: "1.2.3.99" });
-    const links = [networkLinkFactory()];
-    const nic = machineInterfaceFactory({
+    const discovered = factory.networkDiscoveredIP({ ip_address: "1.2.3.99" });
+    const links = [factory.networkLink()];
+    const nic = factory.machineInterface({
       discovered: [discovered],
       links,
       vlan_id: vlan.id,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
@@ -62,15 +49,15 @@ describe("IPColumn", () => {
 
   it("can display an ip address from a link", () => {
     const ip = "1.2.3.99";
-    const link = networkLinkFactory({
+    const link = factory.networkLink({
       ip_address: ip,
     });
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       discovered: [],
       links: [link],
       vlan_id: vlan.id,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
@@ -82,12 +69,12 @@ describe("IPColumn", () => {
   });
 
   it("displays as unconfigured when there is no link", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       discovered: [],
       links: [],
       vlan_id: vlan.id,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
@@ -98,16 +85,16 @@ describe("IPColumn", () => {
 
   it("can display the link mode", () => {
     const links = [
-      networkLinkFactory({
+      factory.networkLink({
         mode: NetworkLinkMode.AUTO,
       }),
     ];
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       discovered: [],
       links,
       vlan_id: vlan.id,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
@@ -119,27 +106,27 @@ describe("IPColumn", () => {
   });
 
   it("can display the failed network status for multiple tests", () => {
-    const links = [networkLinkFactory()];
-    const nic = machineInterfaceFactory({
+    const links = [factory.networkLink()];
+    const nic = factory.machineInterface({
       discovered: [],
       links,
       vlan_id: vlan.id,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    state.scriptresult = scriptResultStateFactory({
+    state.scriptresult = factory.scriptResultState({
       items: [
-        scriptResultFactory({
+        factory.scriptResult({
           id: 1,
           hardware_type: HardwareType.Network,
           interface: nic,
           result_type: ScriptResultType.TESTING,
           status: ScriptResultStatus.FAILED,
         }),
-        scriptResultFactory({
+        factory.scriptResult({
           id: 2,
           hardware_type: HardwareType.Network,
           interface: nic,
@@ -148,7 +135,7 @@ describe("IPColumn", () => {
         }),
       ],
     });
-    state.nodescriptresult = nodeScriptResultStateFactory({
+    state.nodescriptresult = factory.nodeScriptResultState({
       items: { abc123: [1, 2] },
     });
     renderWithMockStore(<IPColumn link={links[0]} nic={nic} node={machine} />, {
@@ -158,20 +145,20 @@ describe("IPColumn", () => {
   });
 
   it("can display the failed network status for one test", () => {
-    const links = [networkLinkFactory()];
-    const nic = machineInterfaceFactory({
+    const links = [factory.networkLink()];
+    const nic = factory.machineInterface({
       discovered: [],
       links,
       vlan_id: vlan.id,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
     state.machine.items = [machine];
-    state.scriptresult = scriptResultStateFactory({
+    state.scriptresult = factory.scriptResultState({
       items: [
-        scriptResultFactory({
+        factory.scriptResult({
           id: 1,
           hardware_type: HardwareType.Network,
           interface: nic,
@@ -181,7 +168,7 @@ describe("IPColumn", () => {
         }),
       ],
     });
-    state.nodescriptresult = nodeScriptResultStateFactory({
+    state.nodescriptresult = factory.nodeScriptResultState({
       items: { abc123: [1, 2] },
     });
     renderWithMockStore(<IPColumn link={links[0]} nic={nic} node={machine} />, {
@@ -191,12 +178,12 @@ describe("IPColumn", () => {
   });
 
   it("can not display the failed network status", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       discovered: [],
-      links: [networkLinkFactory()],
+      links: [factory.networkLink()],
       vlan_id: vlan.id,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [],
       system_id: "abc123",
     });

@@ -10,11 +10,7 @@ import KVMListHeader from "./KVMListHeader";
 import urls from "@/app/base/urls";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -22,10 +18,10 @@ describe("KVMListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         loaded: true,
-        items: [podFactory({ id: 1 }), podFactory({ id: 2 })],
+        items: [factory.pod({ id: 1 }), factory.pod({ id: 2 })],
       }),
     });
   });

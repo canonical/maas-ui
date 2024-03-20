@@ -3,14 +3,14 @@ import configureStore from "redux-mock-store";
 
 import ActionBar from "./ActionBar";
 
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("ActionBar", () => {
   it("displays provided actions", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>

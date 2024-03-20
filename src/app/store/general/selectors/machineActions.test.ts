@@ -1,20 +1,15 @@
 import machineActions from "./machineActions";
 
 import { NodeActions } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machineActionsState as machineActionsStateFactory,
-  machineAction as machineActionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("machineActions selectors", () => {
   describe("get", () => {
     it("returns machineActions", () => {
-      const data = [machineActionFactory(), machineActionFactory()];
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          machineActions: machineActionsStateFactory({
+      const data = [factory.machineAction(), factory.machineAction()];
+      const state = factory.rootState({
+        general: factory.generalState({
+          machineActions: factory.machineActionsState({
             data,
           }),
         }),
@@ -26,9 +21,9 @@ describe("machineActions selectors", () => {
   describe("loading", () => {
     it("returns machineActions loading state", () => {
       const loading = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          machineActions: machineActionsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          machineActions: factory.machineActionsState({
             loading,
           }),
         }),
@@ -40,9 +35,9 @@ describe("machineActions selectors", () => {
   describe("loaded", () => {
     it("returns machineActions loaded state", () => {
       const loaded = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          machineActions: machineActionsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          machineActions: factory.machineActionsState({
             loaded,
           }),
         }),
@@ -54,9 +49,9 @@ describe("machineActions selectors", () => {
   describe("errors", () => {
     it("returns machineActions errors state", () => {
       const errors = "Cannot fetch machineActions.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          machineActions: machineActionsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          machineActions: factory.machineActionsState({
             errors,
           }),
         }),
@@ -67,28 +62,28 @@ describe("machineActions selectors", () => {
 
   it("can return actions by name", () => {
     const data = [
-      machineActionFactory({
+      factory.machineAction({
         name: NodeActions.COMMISSION,
         title: "Commission...",
         sentence: "commissioned",
         type: "lifecycle",
       }),
-      machineActionFactory({
+      factory.machineAction({
         name: NodeActions.ACQUIRE,
         title: "Allocate...",
         sentence: "acquired",
         type: "lifecycle",
       }),
-      machineActionFactory({
+      factory.machineAction({
         name: NodeActions.DEPLOY,
         title: "Deploy...",
         sentence: "deployed",
         type: "lifecycle",
       }),
     ];
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        machineActions: machineActionsStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        machineActions: factory.machineActionsState({
           data,
         }),
       }),

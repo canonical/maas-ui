@@ -5,18 +5,14 @@ import configureStore from "redux-mock-store";
 
 import SpaceSummary from "./SpaceSummary";
 
-import {
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const getRootState = () =>
-  rootStateFactory({
-    space: spaceStateFactory({
+  factory.rootState({
+    space: factory.spaceState({
       items: [
-        spaceFactory({
+        factory.space({
           name: "outer",
           description: "The cold, dark, emptiness of space.",
         }),
@@ -26,7 +22,7 @@ const getRootState = () =>
   });
 
 it("displays space name and description", () => {
-  const space = spaceFactory({
+  const space = factory.space({
     name: "outer",
     description: "The cold, dark, emptiness of space.",
   });
@@ -40,7 +36,7 @@ it("displays space name and description", () => {
 });
 
 it("can open and close the Edit space summary form", async () => {
-  const space = spaceFactory({
+  const space = factory.space({
     name: "outer",
     description: "The cold, dark, emptiness of space.",
   });

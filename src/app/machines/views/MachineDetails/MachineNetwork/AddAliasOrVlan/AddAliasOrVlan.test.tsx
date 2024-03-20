@@ -13,22 +13,7 @@ import {
   TestStatusStatus,
 } from "@/app/store/types/node";
 import type { NetworkInterface } from "@/app/store/types/node";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  modelRef as modelRefFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  testStatus as testStatusFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -43,23 +28,23 @@ describe("AddAliasOrVlan", () => {
   let state: RootState;
   let nic: NetworkInterface;
   beforeEach(() => {
-    nic = machineInterfaceFactory();
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
-        items: [fabricFactory({ id: 54 })],
+    nic = factory.machineInterface();
+    state = factory.rootState({
+      fabric: factory.fabricState({
+        items: [factory.fabric({ id: 54 })],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             actions: [],
             architecture: "amd64/generic",
             cpu_count: 4,
-            cpu_test_status: testStatusFactory({
+            cpu_test_status: factory.testStatus({
               status: TestStatusStatus.RUNNING,
             }),
             distro_series: "bionic",
-            domain: modelRefFactory({
+            domain: factory.modelRef({
               name: "example",
             }),
             extra_macs: [],
@@ -68,33 +53,33 @@ describe("AddAliasOrVlan", () => {
             interfaces: [nic],
             ip_addresses: [],
             memory: 8,
-            memory_test_status: testStatusFactory({
+            memory_test_status: factory.testStatus({
               status: TestStatusStatus.PASSED,
             }),
-            network_test_status: testStatusFactory({
+            network_test_status: factory.testStatus({
               status: TestStatusStatus.PASSED,
             }),
             osystem: "ubuntu",
             owner: "admin",
             permissions: ["edit", "delete"],
             physical_disk_count: 1,
-            pool: modelRefFactory(),
+            pool: factory.modelRef(),
             pxe_mac: "00:11:22:33:44:55",
             spaces: [],
             status: NodeStatus.DEPLOYED,
             status_code: NodeStatusCode.DEPLOYED,
             status_message: "",
             storage: 8,
-            storage_test_status: testStatusFactory({
+            storage_test_status: factory.testStatus({
               status: TestStatusStatus.PASSED,
             }),
             testing_status: TestStatusStatus.PASSED,
             system_id: "abc123",
-            zone: modelRefFactory(),
+            zone: factory.modelRef(),
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -130,16 +115,16 @@ describe("AddAliasOrVlan", () => {
   });
 
   it("displays a save-another button when there are unused VLANS", () => {
-    const fabric = fabricFactory();
+    const fabric = factory.fabric();
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id });
-    state.vlan.items = [vlan, vlanFactory({ fabric: fabric.id })];
-    const nic = machineInterfaceFactory({
+    const vlan = factory.vlan({ fabric: fabric.id });
+    state.vlan.items = [vlan, factory.vlan({ fabric: fabric.id })];
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
       vlan_id: vlan.id,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -182,26 +167,26 @@ describe("AddAliasOrVlan", () => {
   });
 
   it("correctly initialises fabric and VLAN when adding an alias", () => {
-    const fabric = fabricFactory({ id: 1 });
-    const vlan = vlanFactory({ fabric: fabric.id, id: 5001 });
-    const nic = machineInterfaceFactory({ vlan_id: vlan.id });
-    const machine = machineDetailsFactory({
+    const fabric = factory.fabric({ id: 1 });
+    const vlan = factory.vlan({ fabric: fabric.id, id: 5001 });
+    const nic = factory.machineInterface({ vlan_id: vlan.id });
+    const machine = factory.machineDetails({
       system_id: "abc123",
       interfaces: [nic],
     });
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         items: [fabric],
         loaded: true,
         loading: false,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          [machine.system_id]: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          [machine.system_id]: factory.machineStatus(),
         }),
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
         loaded: true,
         loading: false,
@@ -226,7 +211,7 @@ describe("AddAliasOrVlan", () => {
   });
 
   it("correctly dispatches actions to add a VLAN", async () => {
-    const nic = machineInterfaceFactory();
+    const nic = factory.machineInterface();
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddAliasOrVlan
@@ -263,32 +248,32 @@ describe("AddAliasOrVlan", () => {
   });
 
   it("correctly dispatches actions to add an alias", async () => {
-    const fabric = fabricFactory({ id: 1 });
-    const vlan = vlanFactory({ fabric: fabric.id, id: 5001 });
-    const nic = machineInterfaceFactory({ vlan_id: vlan.id });
-    const machine = machineDetailsFactory({
+    const fabric = factory.fabric({ id: 1 });
+    const vlan = factory.vlan({ fabric: fabric.id, id: 5001 });
+    const nic = factory.machineInterface({ vlan_id: vlan.id });
+    const machine = factory.machineDetails({
       system_id: "abc123",
       interfaces: [nic],
     });
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         items: [fabric],
         loaded: true,
         loading: false,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
-        statuses: machineStatusesFactory({
-          [machine.system_id]: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          [machine.system_id]: factory.machineStatus(),
         }),
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
         loaded: true,
         loading: false,
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 76, vlan: vlan.id })],
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 76, vlan: vlan.id })],
         loaded: true,
       }),
     });

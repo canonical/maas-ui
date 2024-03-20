@@ -2,13 +2,7 @@ import { ControllerStatus } from "./ControllerStatus";
 
 import type { RootState } from "@/app/store/root/types";
 import { ServiceStatus } from "@/app/store/service/types";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-  service as serviceFactory,
-  serviceState as serviceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 const getIcon = () => screen.getByTestId("controller-status-icon");
@@ -16,10 +10,10 @@ const getIcon = () => screen.getByTestId("controller-status-icon");
 describe("ControllerStatus", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         items: [
-          controllerFactory({
+          factory.controller({
             system_id: "abc123",
             service_ids: [1, 2],
           }),
@@ -29,13 +23,13 @@ describe("ControllerStatus", () => {
   });
 
   it("handles a dead controller", async () => {
-    state.service = serviceStateFactory({
+    state.service = factory.serviceState({
       items: [
-        serviceFactory({
+        factory.service({
           id: 1,
           status: ServiceStatus.DEAD,
         }),
-        serviceFactory({
+        factory.service({
           id: 2,
           status: ServiceStatus.DEAD,
         }),
@@ -53,13 +47,13 @@ describe("ControllerStatus", () => {
   });
 
   it("handles a degraded controller", async () => {
-    state.service = serviceStateFactory({
+    state.service = factory.serviceState({
       items: [
-        serviceFactory({
+        factory.service({
           id: 1,
           status: ServiceStatus.DEGRADED,
         }),
-        serviceFactory({
+        factory.service({
           id: 2,
           status: ServiceStatus.DEGRADED,
         }),
@@ -77,13 +71,13 @@ describe("ControllerStatus", () => {
   });
 
   it("handles a running controller", async () => {
-    state.service = serviceStateFactory({
+    state.service = factory.serviceState({
       items: [
-        serviceFactory({
+        factory.service({
           id: 1,
           status: ServiceStatus.RUNNING,
         }),
-        serviceFactory({
+        factory.service({
           id: 2,
           status: ServiceStatus.RUNNING,
         }),
@@ -101,13 +95,13 @@ describe("ControllerStatus", () => {
   });
 
   it("handles a powered off controller", async () => {
-    state.service = serviceStateFactory({
+    state.service = factory.serviceState({
       items: [
-        serviceFactory({
+        factory.service({
           id: 1,
           status: ServiceStatus.OFF,
         }),
-        serviceFactory({
+        factory.service({
           id: 2,
           status: ServiceStatus.OFF,
         }),
@@ -125,13 +119,13 @@ describe("ControllerStatus", () => {
   });
 
   it("handles a controller with unknown status", async () => {
-    state.service = serviceStateFactory({
+    state.service = factory.serviceState({
       items: [
-        serviceFactory({
+        factory.service({
           id: 1,
           status: ServiceStatus.UNKNOWN,
         }),
-        serviceFactory({
+        factory.service({
           id: 2,
           status: ServiceStatus.UNKNOWN,
         }),

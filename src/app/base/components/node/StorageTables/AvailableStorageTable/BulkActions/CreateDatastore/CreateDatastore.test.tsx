@@ -5,16 +5,7 @@ import CreateDatastore from "./CreateDatastore";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodeFilesystem as fsFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -27,29 +18,29 @@ const mockStore = configureStore<RootState>();
 describe("CreateDatastore", () => {
   it("sets the initial name correctly", () => {
     const datastores = [
-      diskFactory({
-        filesystem: fsFactory({ fstype: "vmfs6" }),
+      factory.nodeDisk({
+        filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
         type: DiskTypes.PHYSICAL,
       }),
-      diskFactory({
-        filesystem: fsFactory({ fstype: "vmfs6" }),
+      factory.nodeDisk({
+        filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
         type: DiskTypes.PHYSICAL,
       }),
     ];
-    const newDatastore = diskFactory({
+    const newDatastore = factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       type: DiskTypes.PHYSICAL,
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [...datastores, newDatastore],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -69,14 +60,14 @@ describe("CreateDatastore", () => {
 
   it("calculates the sum of the selected storage devices", () => {
     const [selectedDisk, selectedPartition] = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         name: "floppy",
         partitions: null,
         size: 1000000000, // 1GB
         type: DiskTypes.PHYSICAL,
       }),
-      partitionFactory({
+      factory.nodePartition({
         filesystem: null,
         name: "flippy",
         size: 500000000, // 500MB
@@ -84,13 +75,13 @@ describe("CreateDatastore", () => {
     ];
     const disks = [
       selectedDisk,
-      diskFactory({ partitions: [selectedPartition] }),
+      factory.nodeDisk({ partitions: [selectedPartition] }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: disks, system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -109,23 +100,23 @@ describe("CreateDatastore", () => {
 
   it("shows the details of the selected storage devices", () => {
     const [selectedDisk, selectedPartition] = [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE + 1,
         name: "floppy",
         partitions: null,
         type: DiskTypes.PHYSICAL,
       }),
-      partitionFactory({ filesystem: null, name: "flippy" }),
+      factory.nodePartition({ filesystem: null, name: "flippy" }),
     ];
     const disks = [
       selectedDisk,
-      diskFactory({ partitions: [selectedPartition] }),
+      factory.nodeDisk({ partitions: [selectedPartition] }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: disks, system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -151,18 +142,18 @@ describe("CreateDatastore", () => {
 
   it("correctly dispatches an action to create a datastore", async () => {
     const [selectedDisk, selectedPartition] = [
-      diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
-      partitionFactory({ filesystem: null }),
+      factory.nodeDisk({ partitions: null, type: DiskTypes.PHYSICAL }),
+      factory.nodePartition({ filesystem: null }),
     ];
     const disks = [
       selectedDisk,
-      diskFactory({ partitions: [selectedPartition] }),
+      factory.nodeDisk({ partitions: [selectedPartition] }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: disks, system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ disks: disks, system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

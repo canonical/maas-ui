@@ -4,17 +4,13 @@ import configureStore from "redux-mock-store";
 
 import SubnetUsedIPs, { Labels } from "./SubnetUsedIPs";
 
-import {
-  rootState as rootStateFactory,
-  subnetDetails as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("displays correct IP addresses", () => {
-  const subnet = subnetFactory({
+  const subnet = factory.subnetDetails({
     ip_addresses: [
       {
         ip: "11.1.1.1",
@@ -30,8 +26,8 @@ it("displays correct IP addresses", () => {
       },
     ],
   });
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
+  const state = factory.rootState({
+    subnet: factory.subnetState({
       items: [subnet],
     }),
   });
@@ -65,11 +61,11 @@ it("displays correct IP addresses", () => {
 });
 
 it("displays an empty message for a subnet", () => {
-  const subnet = subnetFactory({
+  const subnet = factory.subnetDetails({
     ip_addresses: [],
   });
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
+  const state = factory.rootState({
+    subnet: factory.subnetState({
       items: [subnet],
     }),
   });

@@ -6,31 +6,24 @@ import configureStore from "redux-mock-store";
 import VLANSubnets from "./VLANSubnets";
 
 import urls from "@/app/base/urls";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  subnetStatistics as subnetStatisticsFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("renders correct details", () => {
-  const vlan = vlanFactory({ id: 5005, subnet_ids: [1] });
-  const subnet = subnetFactory({
+  const vlan = factory.vlan({ id: 5005, subnet_ids: [1] });
+  const subnet = factory.subnet({
     allow_dns: true,
     allow_proxy: false,
     managed: true,
-    statistics: subnetStatisticsFactory({ usage_string: "25%" }),
+    statistics: factory.subnetStatistics({ usage_string: "25%" }),
     vlan: vlan.id,
     id: 1,
   });
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet] }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(

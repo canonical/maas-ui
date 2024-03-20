@@ -4,32 +4,20 @@ import urls from "@/app/base/urls";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  pod as podFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 beforeEach(() => {
-  state = rootStateFactory({
-    controller: controllerStateFactory({
+  state = factory.rootState({
+    controller: factory.controllerState({
       items: [],
     }),
-    machine: machineStateFactory({
+    machine: factory.machineState({
       items: [],
     }),
-    general: generalStateFactory({
-      powerTypes: powerTypesStateFactory({
+    general: factory.generalState({
+      powerTypes: factory.powerTypesState({
         data: [],
         loaded: true,
       }),
@@ -38,7 +26,7 @@ beforeEach(() => {
 });
 
 it("renders a link to zone configuration with edit permissions", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     permissions: ["edit"],
     zone: { id: 1, name: "danger" },
   });
@@ -56,7 +44,7 @@ it("renders a link to zone configuration with edit permissions", () => {
 });
 
 it("renders a zone label without edit permissions", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     permissions: [],
     zone: { id: 1, name: "danger" },
   });
@@ -75,10 +63,10 @@ it("renders a zone label without edit permissions", () => {
 });
 
 it("renders a formatted power type", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     power_type: PowerTypeNames.LXD,
   });
-  const powerType = powerTypeFactory({
+  const powerType = factory.powerType({
     name: PowerTypeNames.LXD,
     description: "LXD (virtual systems)",
   });
@@ -97,12 +85,12 @@ it("renders a formatted power type", () => {
 });
 
 it("shows a spinner if tags are not loaded", () => {
-  const machine = machineDetailsFactory({ tags: [1] });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const machine = factory.machineDetails({ tags: [1] });
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: [],
       loaded: false,
     }),
@@ -117,17 +105,17 @@ it("shows a spinner if tags are not loaded", () => {
 });
 
 it("renders a list of tags once loaded", () => {
-  const machine = machineDetailsFactory({ tags: [1, 2, 3] });
+  const machine = factory.machineDetails({ tags: [1, 2, 3] });
   const tags = [
-    tagFactory({ id: 1, name: "virtual" }),
-    tagFactory({ id: 2, name: "test" }),
-    tagFactory({ id: 3, name: "lxd" }),
+    factory.tag({ id: 1, name: "virtual" }),
+    factory.tag({ id: 2, name: "test" }),
+    factory.tag({ id: 3, name: "lxd" }),
   ];
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: tags,
       loaded: true,
     }),
@@ -143,7 +131,7 @@ it("renders a list of tags once loaded", () => {
 
 describe("node is a controller", () => {
   it("does not render owner, host or pool information", () => {
-    const controller = controllerDetailsFactory();
+    const controller = factory.controllerDetails();
     state.controller.items = [controller];
 
     renderWithBrowserRouter(<DetailsCard node={controller} />, {
@@ -160,7 +148,7 @@ describe("node is a controller", () => {
 
 describe("node is a machine", () => {
   it("renders the owner", () => {
-    const machine = machineDetailsFactory({ owner: "admin" });
+    const machine = factory.machineDetails({ owner: "admin" });
     state.machine.items = [machine];
 
     renderWithBrowserRouter(<DetailsCard node={machine} />, {
@@ -173,11 +161,11 @@ describe("node is a machine", () => {
   });
 
   it("renders host details for LXD machines", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       pod: { id: 1, name: "lxd-pod" },
       power_type: PowerTypeNames.LXD,
     });
-    const pod = podFactory({
+    const pod = factory.pod({
       id: 1,
       name: "lxd-pod",
       type: PodType.LXD,
@@ -199,11 +187,11 @@ describe("node is a machine", () => {
   });
 
   it("renders host details for virsh machines", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       pod: { id: 1, name: "virsh-pod" },
       power_type: PowerTypeNames.VIRSH,
     });
-    const pod = podFactory({
+    const pod = factory.pod({
       id: 1,
       name: "virsh-pod",
       type: PodType.VIRSH,
@@ -225,7 +213,7 @@ describe("node is a machine", () => {
   });
 
   it("renders a link to resource pool configuration with edit permissions", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       permissions: ["edit"],
       pool: { id: 1, name: "swimming" },
     });
@@ -243,7 +231,7 @@ describe("node is a machine", () => {
   });
 
   it("renders a resource pool label without edit permissions", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       permissions: [],
       pool: { id: 1, name: "swimming" },
     });

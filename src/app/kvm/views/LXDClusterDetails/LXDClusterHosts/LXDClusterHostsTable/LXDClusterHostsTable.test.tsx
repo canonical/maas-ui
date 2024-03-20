@@ -5,43 +5,34 @@ import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmHost as vmHostFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("LXDClusterHostsTable", () => {
   let state: RootState;
   let host: Pod;
   beforeEach(() => {
-    host = podFactory({
+    host = factory.pod({
       cluster: 1,
       id: 22,
       name: "cluster-host",
       pool: 333,
       type: PodType.LXD,
     });
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         items: [host],
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory({ id: 333, name: "swimming" })],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool({ id: 333, name: "swimming" })],
         loaded: true,
       }),
-      vmcluster: vmClusterStateFactory({
+      vmcluster: factory.vmClusterState({
         items: [
-          vmClusterFactory({
+          factory.vmCluster({
             id: 1,
-            hosts: [vmHostFactory({ id: host.id, name: host.name })],
+            hosts: [factory.vmHost({ id: host.id, name: host.name })],
           }),
         ],
       }),

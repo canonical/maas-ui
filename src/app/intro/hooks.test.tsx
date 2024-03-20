@@ -9,12 +9,7 @@ import { useExitURL } from "./hooks";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -27,10 +22,10 @@ describe("hooks", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ completed_intro: false, is_superuser: true }),
+    state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ completed_intro: false, is_superuser: true }),
         }),
       }),
     });
@@ -38,9 +33,9 @@ describe("hooks", () => {
 
   describe("useExitURL", () => {
     it("gets the exit URL for an admin", () => {
-      state.user = userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: true }),
+      state.user = factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: true }),
         }),
       });
       const store = mockStore(state);
@@ -51,9 +46,9 @@ describe("hooks", () => {
     });
 
     it("gets the exit URL for a non-admin", () => {
-      state.user = userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: false }),
+      state.user = factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: false }),
         }),
       });
       const store = mockStore(state);

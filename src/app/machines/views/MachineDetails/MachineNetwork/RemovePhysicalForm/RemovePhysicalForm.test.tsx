@@ -4,32 +4,25 @@ import RemovePhysicalForm from "./RemovePhysicalForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 let state: RootState;
 const mockStore = configureStore<RootState>();
-const nic = machineInterfaceFactory({
+const nic = factory.machineInterface({
   type: NetworkInterfaceTypes.PHYSICAL,
 });
 beforeEach(() => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: [
-        machineDetailsFactory({
+        factory.machineDetails({
           system_id: "abc123",
           interfaces: [nic],
         }),
       ],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        abc123: factory.machineStatus(),
       }),
     }),
   });

@@ -3,41 +3,32 @@ import { generateClusterRows, generateSingleHostRows } from "../LxdTable";
 import LxdKVMHostTable from "./LxdKVMHostTable";
 
 import { PodType } from "@/app/store/pod/constants";
-import {
-  pod as podFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podVmCount as podVmCountFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmHost as vmHostFactory,
-  vmClusterState as vmClusterStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("LxdKVMHostTable", () => {
   it("can update the LXD hosts sort order", async () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             name: "lxd-2",
-            resources: podResourcesFactory({
-              vm_count: podVmCountFactory({ tracked: 3 }),
+            resources: factory.podResources({
+              vm_count: factory.podVmCount({ tracked: 3 }),
             }),
             type: PodType.LXD,
           }),
-          podFactory({
+          factory.pod({
             name: "lxd-3",
-            resources: podResourcesFactory({
-              vm_count: podVmCountFactory({ tracked: 1 }),
+            resources: factory.podResources({
+              vm_count: factory.podVmCount({ tracked: 1 }),
             }),
             type: PodType.LXD,
           }),
-          podFactory({
+          factory.pod({
             name: "lxd-1",
-            resources: podResourcesFactory({
-              vm_count: podVmCountFactory({ tracked: 2 }),
+            resources: factory.podResources({
+              vm_count: factory.podVmCount({ tracked: 2 }),
             }),
             type: PodType.LXD,
           }),
@@ -76,22 +67,22 @@ describe("LxdKVMHostTable", () => {
   });
 
   it("can update the LXD project sort order", async () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             name: "pod-2",
             type: PodType.LXD,
           }),
-          podFactory({
+          factory.pod({
             name: "pod-1",
             type: PodType.LXD,
           }),
-          podFactory({
+          factory.pod({
             name: "pod-3",
             type: PodType.LXD,
           }),
-          podFactory({
+          factory.pod({
             name: "pod-4",
             type: PodType.LXD,
           }),
@@ -128,9 +119,9 @@ describe("LxdKVMHostTable", () => {
   });
 
   it("can display a single host type", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory()],
+    const state = factory.rootState({
+      pod: factory.podState({
+        items: [factory.pod()],
       }),
     });
     renderWithBrowserRouter(
@@ -142,11 +133,11 @@ describe("LxdKVMHostTable", () => {
   });
 
   it("can display a cluster host type", () => {
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         items: [
-          vmClusterFactory({
-            hosts: [vmHostFactory(), vmHostFactory()],
+          factory.vmCluster({
+            hosts: [factory.vmHost(), factory.vmHost()],
           }),
         ],
       }),

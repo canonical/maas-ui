@@ -6,18 +6,7 @@ import urls from "@/app/base/urls";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineStateCount as machineStateCountFactory,
-  machineStateCounts as machineStateCountsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 vi.mock("@reduxjs/toolkit", async () => {
@@ -35,13 +24,13 @@ describe("MachineListHeader", () => {
   beforeEach(() => {
     vi.spyOn(query, "generateCallId").mockReturnValue(callId);
     const machines = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
     ];
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        counts: machineStateCountsFactory({
-          [callId]: machineStateCountFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
+        counts: factory.machineStateCounts({
+          [callId]: factory.machineStateCount({
             count: 10,
             loaded: true,
             loading: false,
@@ -49,13 +38,13 @@ describe("MachineListHeader", () => {
         }),
         items: machines,
         statuses: {
-          abc123: machineStatusFactory({}),
-          def456: machineStatusFactory({}),
+          abc123: factory.machineStatus({}),
+          def456: factory.machineStatus({}),
         },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
-        items: [resourcePoolFactory()],
+        items: [factory.resourcePool()],
       }),
     });
   });
@@ -66,7 +55,7 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a machine count if machines have loaded", () => {
-    state.machine.counts[callId] = machineStateCountFactory({
+    state.machine.counts[callId] = factory.machineStateCount({
       count: 2,
       loaded: true,
     });
@@ -127,7 +116,7 @@ describe("MachineListHeader", () => {
     state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
     state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
+      factory.machine({ system_id: "abc123", actions: [NodeActions.TAG] }),
     ];
     renderWithBrowserRouter(
       <MachineListHeader
@@ -155,16 +144,16 @@ describe("MachineListHeader", () => {
     // Set a selected machine so the take action menu becomes enabled.
     state.machine.selected = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
-    const machine = machineFactory({
+    const machine = factory.machine({
       system_id: "abc123",
       actions: [NodeActions.TAG],
     });
     state.machine.items = [machine];
     state.machine.lists = {
-      "mocked-nanoid": machineStateListFactory({
+      "mocked-nanoid": factory.machineStateList({
         loaded: true,
         groups: [
-          machineStateListGroupFactory({
+          factory.machineStateListGroup({
             items: [machine.system_id],
           }),
         ],

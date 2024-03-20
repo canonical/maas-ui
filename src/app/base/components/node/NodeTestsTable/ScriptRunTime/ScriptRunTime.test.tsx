@@ -4,7 +4,7 @@ import {
   ScriptResultStatus,
   ScriptResultEstimated,
 } from "@/app/store/scriptresult/types";
-import { scriptResult as scriptResultFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 describe("ScriptRunTime", () => {
@@ -18,7 +18,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("displays the elapsed time when running and runtime is not known", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
@@ -28,7 +28,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("displays the elapsed time when running and runtime is known", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: "0:10:00",
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
@@ -38,7 +38,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("displays the elapsed time when the the start time is not known", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: "0:10:00",
       status: ScriptResultStatus.RUNNING,
       // Use undefined here so that the factory does not set the start time.
@@ -49,7 +49,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("displays the elapsed and estimated times when installing and runtime is not known", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
       status: ScriptResultStatus.INSTALLING,
       starttime: 1617254218,
@@ -59,7 +59,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("displays the elapsed and estimated times when installing and runtime is known", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: "0:10:00",
       status: ScriptResultStatus.INSTALLING,
       starttime: 1617254218,
@@ -69,7 +69,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("updates the elapsed time every second", async () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
@@ -83,7 +83,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("only shows the time if less than a day has elapsed", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
       status: ScriptResultStatus.RUNNING,
       starttime: 1617254218,
@@ -93,7 +93,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("shows the day and time if one day has elapsed", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
       status: ScriptResultStatus.RUNNING,
       starttime: 1617167818,
@@ -103,7 +103,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("shows the days and time if more than one day has elapsed", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: ScriptResultEstimated.UNKNOWN,
       status: ScriptResultStatus.RUNNING,
       starttime: 1617081418,
@@ -113,7 +113,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("displays the estimated time when pending and runtime is known", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       estimated_runtime: "0:10:00",
       status: ScriptResultStatus.PENDING,
     });
@@ -122,7 +122,7 @@ describe("ScriptRunTime", () => {
   });
 
   it("displays the runtime for other statuses", () => {
-    const scriptResult = scriptResultFactory({
+    const scriptResult = factory.scriptResult({
       runtime: "0:15:00",
       status: ScriptResultStatus.FAILED_APPLYING_NETCONF,
     });

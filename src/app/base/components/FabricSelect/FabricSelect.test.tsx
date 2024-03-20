@@ -5,11 +5,7 @@ import configureStore from "redux-mock-store";
 import FabricSelect, { Label } from "./FabricSelect";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -17,8 +13,8 @@ const mockStore = configureStore();
 describe("FabricSelect", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    state = factory.rootState({
+      fabric: factory.fabricState({
         items: [],
         loaded: true,
       }),
@@ -41,8 +37,8 @@ describe("FabricSelect", () => {
 
   it("displays the fabric options", () => {
     const items = [
-      fabricFactory({ id: 1, name: "FABric1" }),
-      fabricFactory({ id: 2, name: "FABric2" }),
+      factory.fabric({ id: 1, name: "FABric1" }),
+      factory.fabric({ id: 2, name: "FABric2" }),
     ];
     state.fabric.items = items;
     const store = mockStore(state);
@@ -104,8 +100,8 @@ describe("FabricSelect", () => {
 
   it("orders the fabrics by name", () => {
     const items = [
-      fabricFactory({ id: 1, name: "FABric2" }),
-      fabricFactory({ id: 2, name: "FABric1" }),
+      factory.fabric({ id: 1, name: "FABric2" }),
+      factory.fabric({ id: 2, name: "FABric1" }),
     ];
     state.fabric.items = items;
     const store = mockStore(state);

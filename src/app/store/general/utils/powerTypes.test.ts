@@ -6,18 +6,15 @@ import {
 } from "./powerTypes";
 
 import { PowerFieldScope } from "@/app/store/general/types";
-import {
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("powerTypes utils", () => {
   describe("formatPowerParameters", () => {
     it("trims power parameters object to those relevant to power type", () => {
-      const powerType = powerTypeFactory({
+      const powerType = factory.powerType({
         fields: [
-          powerFieldFactory({ name: "power_address" }),
-          powerFieldFactory({ name: "power_pass" }),
+          factory.powerField({ name: "power_address" }),
+          factory.powerField({ name: "power_pass" }),
         ],
       });
       const powerParameters = {
@@ -32,16 +29,16 @@ describe("powerTypes utils", () => {
     });
 
     it("can rename parameters for when adding a chassis", () => {
-      const powerType = powerTypeFactory({
+      const powerType = factory.powerType({
         fields: [
-          powerFieldFactory({ name: "power_address" }),
-          powerFieldFactory({ name: "power_pass" }),
-          powerFieldFactory({ name: "power_port" }),
-          powerFieldFactory({ name: "power_protocol" }),
-          powerFieldFactory({ name: "power_token_name" }),
-          powerFieldFactory({ name: "power_token_secret" }),
-          powerFieldFactory({ name: "power_user" }),
-          powerFieldFactory({ name: "power_verify_ssl" }),
+          factory.powerField({ name: "power_address" }),
+          factory.powerField({ name: "power_pass" }),
+          factory.powerField({ name: "power_port" }),
+          factory.powerField({ name: "power_protocol" }),
+          factory.powerField({ name: "power_token_name" }),
+          factory.powerField({ name: "power_token_secret" }),
+          factory.powerField({ name: "power_user" }),
+          factory.powerField({ name: "power_verify_ssl" }),
         ],
       });
 
@@ -70,14 +67,17 @@ describe("powerTypes utils", () => {
     });
 
     it("can filter fields based on their scope", () => {
-      const powerType = powerTypeFactory({
+      const powerType = factory.powerType({
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             name: "power_address",
             scope: PowerFieldScope.BMC,
           }),
-          powerFieldFactory({ name: "power_pass", scope: PowerFieldScope.BMC }),
-          powerFieldFactory({ name: "power_id", scope: PowerFieldScope.NODE }),
+          factory.powerField({
+            name: "power_pass",
+            scope: PowerFieldScope.BMC,
+          }),
+          factory.powerField({ name: "power_id", scope: PowerFieldScope.NODE }),
         ],
       });
 
@@ -97,10 +97,10 @@ describe("powerTypes utils", () => {
 
   describe("generatePowerParametersSchema", () => {
     it("can generate a schema based on the power type", () => {
-      const powerType = powerTypeFactory({
+      const powerType = factory.powerType({
         fields: [
-          powerFieldFactory({ name: "power_address", required: false }),
-          powerFieldFactory({ name: "power_pass", required: true }),
+          factory.powerField({ name: "power_address", required: false }),
+          factory.powerField({ name: "power_pass", required: true }),
         ],
       });
       const schema = generatePowerParametersSchema(powerType);
@@ -109,13 +109,13 @@ describe("powerTypes utils", () => {
     });
 
     it("can filter schema parameters based on the field scopes", () => {
-      const powerType = powerTypeFactory({
+      const powerType = factory.powerType({
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             name: "power_address",
             scope: PowerFieldScope.BMC,
           }),
-          powerFieldFactory({
+          factory.powerField({
             name: "power_pass",
             scope: PowerFieldScope.NODE,
           }),
@@ -132,10 +132,10 @@ describe("powerTypes utils", () => {
   describe("getFieldsInScope", () => {
     it("can get a list of power fields that are in the given field scopes", () => {
       const fields = [
-        powerFieldFactory({ scope: PowerFieldScope.BMC }),
-        powerFieldFactory({ scope: PowerFieldScope.NODE }),
+        factory.powerField({ scope: PowerFieldScope.BMC }),
+        factory.powerField({ scope: PowerFieldScope.NODE }),
       ];
-      const powerType = powerTypeFactory({ fields });
+      const powerType = factory.powerType({ fields });
 
       expect(getFieldsInScope(powerType, [PowerFieldScope.BMC])).toStrictEqual([
         fields[0],
@@ -146,7 +146,7 @@ describe("powerTypes utils", () => {
 
   describe("getPowerTypeFromName", () => {
     it("can get a power type from its name", () => {
-      const powerTypes = [powerTypeFactory({ name: "manual" })];
+      const powerTypes = [factory.powerType({ name: "manual" })];
 
       expect(getPowerTypeFromName(powerTypes, "manual")).toBe(powerTypes[0]);
       expect(getPowerTypeFromName(powerTypes, "other")).toBe(null);

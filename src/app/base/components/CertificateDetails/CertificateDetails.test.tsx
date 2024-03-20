@@ -5,12 +5,7 @@ import CertificateDetails, { Labels } from "./CertificateDetails";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
-import {
-  certificateMetadata as metadataFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,10 +17,10 @@ describe("CertificateDetails", () => {
     const mockUseSendAnalytics = vi
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+          factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
         ],
       }),
     });
@@ -35,7 +30,7 @@ describe("CertificateDetails", () => {
         <CertificateDetails
           certificate="certificate"
           eventCategory="eventCategory"
-          metadata={metadataFactory()}
+          metadata={factory.certificateMetadata()}
         />
       </Provider>
     );

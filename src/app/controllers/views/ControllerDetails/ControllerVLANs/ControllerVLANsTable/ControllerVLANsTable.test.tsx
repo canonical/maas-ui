@@ -3,31 +3,20 @@ import { ControllerVLANsColumns } from "./constants";
 
 import urls from "@/app/base/urls";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  vlanState as vlanStateFactory,
-  vlan as vlanFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  networkInterface as networkInterfaceFactory,
-  rootState as rootStateFactory,
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, within, renderWithBrowserRouter } from "@/testing/utils";
 
 const createNetwork = () => {
   const systemId = "abc123";
-  const fabric0 = fabricFactory({
+  const fabric0 = factory.fabric({
     id: 0,
   });
-  const vlan0 = vlanFactory({
+  const vlan0 = factory.vlan({
     id: 0,
     fabric: 0,
   });
-  const subnet0 = subnetFactory({ id: 0 });
-  const nic0 = networkInterfaceFactory({
+  const subnet0 = factory.subnet({ id: 0 });
+  const nic0 = factory.networkInterface({
     id: 0,
     name: "eth0",
     type: NetworkInterfaceTypes.PHYSICAL,
@@ -37,7 +26,7 @@ const createNetwork = () => {
     vlan_id: 0,
   });
   const interfaces = [nic0];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     system_id: systemId,
     interfaces,
   });
@@ -53,11 +42,11 @@ const createNetwork = () => {
 
 it("displays correct text when loading", function () {
   const net = createNetwork();
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ loaded: true, items: [net.fabric0] }),
-    vlan: vlanStateFactory({ loaded: false, items: [] }),
-    subnet: subnetStateFactory({ loaded: true, items: [net.subnet0] }),
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({ loaded: true, items: [net.fabric0] }),
+    vlan: factory.vlanState({ loaded: false, items: [] }),
+    subnet: factory.subnetState({ loaded: true, items: [net.subnet0] }),
+    controller: factory.controllerState({
       items: [net.controller],
       loaded: true,
       loading: false,
@@ -80,11 +69,11 @@ it("displays correct text when loading", function () {
 
 it("displays correct text for no VLANs", function () {
   const net = createNetwork();
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ loaded: true, items: [net.fabric0] }),
-    vlan: vlanStateFactory({ loaded: true, items: [] }),
-    subnet: subnetStateFactory({ loaded: true, items: [net.subnet0] }),
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({ loaded: true, items: [net.fabric0] }),
+    vlan: factory.vlanState({ loaded: true, items: [] }),
+    subnet: factory.subnetState({ loaded: true, items: [net.subnet0] }),
+    controller: factory.controllerState({
       items: [net.controller],
       loaded: true,
       loading: false,
@@ -107,11 +96,11 @@ it("displays correct text for no VLANs", function () {
 
 it("displays a VLANs table with a single row", function () {
   const net = createNetwork();
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ loaded: true, items: [net.fabric0] }),
-    vlan: vlanStateFactory({ loaded: true, items: [net.vlan0] }),
-    subnet: subnetStateFactory({ loaded: true, items: [net.subnet0] }),
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({ loaded: true, items: [net.fabric0] }),
+    vlan: factory.vlanState({ loaded: true, items: [net.vlan0] }),
+    subnet: factory.subnetState({ loaded: true, items: [net.subnet0] }),
+    controller: factory.controllerState({
       items: [net.controller],
       loaded: true,
       loading: false,
@@ -137,7 +126,7 @@ it("displays a VLANs table with a single row", function () {
 
 it("displays no duplicate vlans", function () {
   const net = createNetwork();
-  const nic1 = networkInterfaceFactory({
+  const nic1 = factory.networkInterface({
     id: 1,
     name: "eth1",
     type: NetworkInterfaceTypes.PHYSICAL,
@@ -146,15 +135,15 @@ it("displays no duplicate vlans", function () {
     links: [],
     vlan_id: 0,
   });
-  net.controller = controllerDetailsFactory({
+  net.controller = factory.controllerDetails({
     system_id: net.controller.system_id,
     interfaces: [net.nic0, nic1],
   });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ loaded: true, items: [net.fabric0] }),
-    vlan: vlanStateFactory({ loaded: true, items: [net.vlan0] }),
-    subnet: subnetStateFactory({ loaded: true, items: [net.subnet0] }),
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({ loaded: true, items: [net.fabric0] }),
+    vlan: factory.vlanState({ loaded: true, items: [net.vlan0] }),
+    subnet: factory.subnetState({ loaded: true, items: [net.subnet0] }),
+    controller: factory.controllerState({
       items: [net.controller],
       loaded: true,
       loading: false,
@@ -178,11 +167,11 @@ it("displays no duplicate vlans", function () {
 
 it("displays correct text within each cell", () => {
   const net = createNetwork();
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ loaded: true, items: [net.fabric0] }),
-    vlan: vlanStateFactory({ loaded: true, items: [net.vlan0] }),
-    subnet: subnetStateFactory({ loaded: true, items: [net.subnet0] }),
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({ loaded: true, items: [net.fabric0] }),
+    vlan: factory.vlanState({ loaded: true, items: [net.vlan0] }),
+    subnet: factory.subnetState({ loaded: true, items: [net.subnet0] }),
+    controller: factory.controllerState({
       items: [net.controller],
       loaded: true,
       loading: false,

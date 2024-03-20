@@ -1,18 +1,14 @@
 import defaultMinHweKernel from "./defaultMinHweKernel";
 
-import {
-  defaultMinHweKernelState as defaultMinHweKernelStateFactory,
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("defaultMinHweKernel selectors", () => {
   describe("get", () => {
     it("returns defaultMinHweKernel", () => {
       const data = "ga-18.04";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          defaultMinHweKernel: defaultMinHweKernelStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          defaultMinHweKernel: factory.defaultMinHweKernelState({
             data,
           }),
         }),
@@ -24,9 +20,9 @@ describe("defaultMinHweKernel selectors", () => {
   describe("loading", () => {
     it("returns defaultMinHweKernel loading state", () => {
       const loading = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          defaultMinHweKernel: defaultMinHweKernelStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          defaultMinHweKernel: factory.defaultMinHweKernelState({
             loading,
           }),
         }),
@@ -38,9 +34,9 @@ describe("defaultMinHweKernel selectors", () => {
   describe("loaded", () => {
     it("returns defaultMinHweKernel loaded state", () => {
       const loaded = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          defaultMinHweKernel: defaultMinHweKernelStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          defaultMinHweKernel: factory.defaultMinHweKernelState({
             loaded,
           }),
         }),
@@ -52,9 +48,9 @@ describe("defaultMinHweKernel selectors", () => {
   describe("errors", () => {
     it("returns defaultMinHweKernel errors state", () => {
       const errors = "Cannot fetch defaultMinHweKernel.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          defaultMinHweKernel: defaultMinHweKernelStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          defaultMinHweKernel: factory.defaultMinHweKernelState({
             errors,
           }),
         }),

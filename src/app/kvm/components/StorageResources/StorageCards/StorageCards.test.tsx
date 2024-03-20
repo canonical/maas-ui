@@ -5,12 +5,12 @@ import StorageCards, {
 } from "./StorageCards";
 
 import { COLOURS } from "@/app/base/constants";
-import { podStoragePoolResource as storagePoolResourceFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 describe("StorageCards", () => {
   it("correctly calculates meter width", () => {
-    const storagePoolResource = storagePoolResourceFactory({
+    const storagePoolResource = factory.podStoragePoolResource({
       allocated_tracked: 20,
       allocated_other: 30,
       total: 100,

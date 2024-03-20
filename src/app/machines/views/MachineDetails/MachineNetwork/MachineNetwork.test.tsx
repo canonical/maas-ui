@@ -1,15 +1,11 @@
 import MachineNetwork from "./MachineNetwork";
 
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 it("displays a spinner if machine is loading", () => {
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [],
     }),
   });
@@ -22,9 +18,9 @@ it("displays a spinner if machine is loading", () => {
 });
 
 it("displays the network tab when loaded", () => {
-  const state = rootStateFactory({
-    machine: machineStateFactory({
-      items: [machineDetailsFactory({ system_id: "abc123" })],
+  const state = factory.rootState({
+    machine: factory.machineState({
+      items: [factory.machineDetails({ system_id: "abc123" })],
     }),
   });
   renderWithBrowserRouter(

@@ -1,16 +1,12 @@
 import domain from "./selectors";
 
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("domain selectors", () => {
   it("can get all items", () => {
-    const items = [domainFactory()];
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const items = [factory.domain()];
+    const state = factory.rootState({
+      domain: factory.domainState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("domain selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("domain selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
     });
@@ -37,11 +33,11 @@ describe("domain selectors", () => {
 
   it("can get a domain by name", () => {
     const items = [
-      domainFactory({ name: "koala" }),
-      domainFactory({ name: "kangaroo" }),
+      factory.domain({ name: "koala" }),
+      factory.domain({ name: "kangaroo" }),
     ];
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         items,
       }),
     });
@@ -50,11 +46,11 @@ describe("domain selectors", () => {
 
   it("can get the default domain", () => {
     const items = [
-      domainFactory({ is_default: true }),
-      domainFactory({ is_default: false }),
+      factory.domain({ is_default: true }),
+      factory.domain({ is_default: false }),
     ];
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         items,
       }),
     });

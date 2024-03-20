@@ -10,21 +10,7 @@ import {
   NetworkLinkMode,
 } from "@/app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  subnetState as subnetStateFactory,
-  subnet as subnetFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -34,39 +20,39 @@ describe("EditBridgeForm", () => {
   let link: NetworkLink;
   let state: RootState;
   beforeEach(() => {
-    link = networkLinkFactory({});
-    nic = machineInterfaceFactory({
+    link = factory.networkLink({});
+    nic = factory.machineInterface({
       links: [link],
       params: {
         bridge_type: BridgeType.OVS,
       },
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    state = rootStateFactory({
-      vlan: vlanStateFactory({
+    state = factory.rootState({
+      vlan: factory.vlanState({
         loaded: true,
         loading: false,
-        items: [vlanFactory({ id: 1, fabric: 1 })],
+        items: [factory.vlan({ id: 1, fabric: 1 })],
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
         loading: false,
-        items: [subnetFactory({ id: 1, vlan: 1 })],
+        items: [factory.subnet({ id: 1, vlan: 1 })],
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
         loading: false,
-        items: [fabricFactory({ id: 1 })],
+        items: [factory.fabric({ id: 1 })],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

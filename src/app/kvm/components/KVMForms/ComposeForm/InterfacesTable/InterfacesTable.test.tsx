@@ -2,26 +2,7 @@ import ComposeForm from "../ComposeForm";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainState as domainStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  generalState as generalStateFactory,
-  podDetails as podDetailsFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  spaceState as spaceStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
@@ -33,46 +14,46 @@ describe("InterfacesTable", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    const pod = podDetailsFactory({ id: 1 });
+    const pod = factory.podDetails({ id: 1 });
 
-    initialState = rootStateFactory({
-      domain: domainStateFactory({
+    initialState = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [pod],
         loaded: true,
-        statuses: { [pod.id]: podStatusFactory() },
+        statuses: { [pod.id]: factory.podStatus() },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      space: spaceStateFactory({
+      space: factory.spaceState({
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });
 
   it("disables add interface button with tooltip if KVM has no available subnets", async () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       attached_vlans: [],
       boot_vlans: [],
       id: 1,
@@ -93,10 +74,10 @@ describe("InterfacesTable", () => {
   });
 
   it("disables add interface button with tooltip if KVM host has no PXE-enabled networks", async () => {
-    const fabric = fabricFactory();
-    const vlan = vlanFactory({ fabric: fabric.id });
-    const subnet = subnetFactory({ vlan: vlan.id });
-    const pod = podDetailsFactory({
+    const fabric = factory.fabric();
+    const vlan = factory.vlan({ fabric: fabric.id });
+    const subnet = factory.subnet({ vlan: vlan.id });
+    const pod = factory.podDetails({
       attached_vlans: [vlan.id],
       boot_vlans: [],
       id: 1,
@@ -120,15 +101,15 @@ describe("InterfacesTable", () => {
   });
 
   it("disables add interface button if pod is composing a machine", () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       attached_vlans: [1],
       boot_vlans: [1],
       id: 1,
     });
-    const subnet = subnetFactory({ vlan: 1 });
+    const subnet = factory.subnet({ vlan: 1 });
     const state = { ...initialState };
     state.pod.items = [pod];
-    state.pod.statuses = { [pod.id]: podStatusFactory({ composing: true }) };
+    state.pod.statuses = { [pod.id]: factory.podStatus({ composing: true }) };
     state.subnet.items = [subnet];
 
     renderWithBrowserRouter(
@@ -139,12 +120,12 @@ describe("InterfacesTable", () => {
   });
 
   it("can add and remove interfaces if KVM has PXE-enabled subnets", async () => {
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       attached_vlans: [1],
       boot_vlans: [1],
       id: 1,
     });
-    const subnet = subnetFactory({ vlan: 1 });
+    const subnet = factory.subnet({ vlan: 1 });
     const state = { ...initialState };
     state.pod.items = [pod];
     state.subnet.items = [subnet];
@@ -176,10 +157,10 @@ describe("InterfacesTable", () => {
   });
 
   it("correctly displays fabric, vlan and PXE details of selected subnet", async () => {
-    const fabric = fabricFactory();
-    const vlan = vlanFactory({ fabric: fabric.id });
-    const subnet = subnetFactory({ vlan: vlan.id });
-    const pod = podDetailsFactory({
+    const fabric = factory.fabric();
+    const vlan = factory.vlan({ fabric: fabric.id });
+    const subnet = factory.subnet({ vlan: vlan.id });
+    const pod = factory.podDetails({
       attached_vlans: [vlan.id],
       boot_vlans: [vlan.id],
       id: 1,
@@ -210,12 +191,15 @@ describe("InterfacesTable", () => {
   });
 
   it("preselects the first PXE network if there is one available", async () => {
-    const fabric = fabricFactory({ name: "pxe-fabric" });
-    const nonBootVlan = vlanFactory({ fabric: fabric.id });
-    const bootVlan = vlanFactory({ fabric: fabric.id, name: "pxe-vlan" });
-    const nonBootSubnet = subnetFactory({ vlan: nonBootVlan.id });
-    const bootSubnet = subnetFactory({ name: "pxe-subnet", vlan: bootVlan.id });
-    const pod = podDetailsFactory({
+    const fabric = factory.fabric({ name: "pxe-fabric" });
+    const nonBootVlan = factory.vlan({ fabric: fabric.id });
+    const bootVlan = factory.vlan({ fabric: fabric.id, name: "pxe-vlan" });
+    const nonBootSubnet = factory.subnet({ vlan: nonBootVlan.id });
+    const bootSubnet = factory.subnet({
+      name: "pxe-subnet",
+      vlan: bootVlan.id,
+    });
+    const pod = factory.podDetails({
       attached_vlans: [nonBootVlan.id, bootVlan.id],
       boot_vlans: [bootVlan.id],
       id: 1,

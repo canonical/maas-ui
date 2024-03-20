@@ -1,16 +1,12 @@
 import fabric from "./selectors";
 
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("fabric selectors", () => {
   it("can get all items", () => {
-    const items = [fabricFactory()];
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const items = [factory.fabric()];
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("fabric selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("fabric selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
       }),
     });
@@ -36,8 +32,8 @@ describe("fabric selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         saving: true,
       }),
     });
@@ -45,8 +41,8 @@ describe("fabric selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         saved: true,
       }),
     });
@@ -54,8 +50,8 @@ describe("fabric selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         errors: "errors!",
       }),
     });
@@ -63,9 +59,9 @@ describe("fabric selectors", () => {
   });
 
   it("can get a fabric by id", () => {
-    const items = [fabricFactory({ id: 10 }), fabricFactory({ id: 42 })];
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const items = [factory.fabric({ id: 10 }), factory.fabric({ id: 42 })];
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         items,
       }),
     });
@@ -74,11 +70,11 @@ describe("fabric selectors", () => {
 
   it("can filter fabrics by name", () => {
     const items = [
-      fabricFactory({ name: "abc" }),
-      fabricFactory({ name: "def" }),
+      factory.fabric({ name: "abc" }),
+      factory.fabric({ name: "def" }),
     ];
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         items,
       }),
     });
@@ -86,8 +82,8 @@ describe("fabric selectors", () => {
   });
 
   it("can get the active fabric's id", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         active: 0,
       }),
     });
@@ -95,9 +91,9 @@ describe("fabric selectors", () => {
   });
 
   it("can get the active fabric", () => {
-    const activeFabric = fabricFactory();
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const activeFabric = factory.fabric();
+    const state = factory.rootState({
+      fabric: factory.fabricState({
         active: activeFabric.id,
         items: [activeFabric],
       }),

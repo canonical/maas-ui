@@ -7,18 +7,7 @@ import deviceSelectors from "@/app/store/device/selectors";
 import type { DeviceNetworkInterface } from "@/app/store/device/types";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceEventError as deviceEventErrorFactory,
-  deviceInterface as deviceInterfaceFactory,
-  deviceState as deviceStateFactory,
-  deviceStatus as deviceStatusFactory,
-  deviceStatuses as deviceStatusesFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
@@ -28,22 +17,22 @@ describe("EditInterface", () => {
   let state: RootState;
   let nic: DeviceNetworkInterface;
   beforeEach(() => {
-    nic = deviceInterfaceFactory();
-    state = rootStateFactory({
-      device: deviceStateFactory({
+    nic = factory.deviceInterface();
+    state = factory.rootState({
+      device: factory.deviceState({
         items: [
-          deviceDetailsFactory({
+          factory.deviceDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
         ],
         loaded: true,
-        statuses: deviceStatusesFactory({
-          abc123: deviceStatusFactory(),
+        statuses: factory.deviceStatuses({
+          abc123: factory.deviceStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 1 }), subnetFactory({ id: 2 })],
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 1 }), factory.subnet({ id: 2 })],
         loaded: true,
       }),
     });
@@ -54,7 +43,7 @@ describe("EditInterface", () => {
   });
 
   it("displays a spinner if device is not detailed version", () => {
-    state.device.items[0] = deviceFactory({ system_id: "abc123" });
+    state.device.items[0] = factory.device({ system_id: "abc123" });
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditInterface closeForm={vi.fn()} nicId={nic.id} systemId="abc123" />,
@@ -156,7 +145,7 @@ describe("EditInterface", () => {
     );
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         event: "updateInterface",
       }),
     ]);
@@ -187,7 +176,7 @@ describe("EditInterface", () => {
     );
     const errors = vi.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         event: "updateInterface",
       }),
     ]);
@@ -208,7 +197,7 @@ describe("EditInterface", () => {
     updatingInterface.mockReturnValue(false);
     // Mock an error for the second submission.
     errors.mockReturnValue([
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         event: "updateInterface",
       }),
     ]);

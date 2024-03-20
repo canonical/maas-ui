@@ -6,12 +6,12 @@ import {
   isDynamic,
 } from "./utils";
 
-import { ipRange as ipRangeFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("isDynamic", () => {
   it("returns whether an IP range is dynamic", () => {
-    const dynamicIP = ipRangeFactory({ type: IPRangeType.Dynamic });
-    const reservedIP = ipRangeFactory({ type: IPRangeType.Reserved });
+    const dynamicIP = factory.ipRange({ type: IPRangeType.Dynamic });
+    const reservedIP = factory.ipRange({ type: IPRangeType.Reserved });
 
     expect(isDynamic(dynamicIP)).toBe(true);
     expect(isDynamic(reservedIP)).toBe(false);
@@ -20,11 +20,11 @@ describe("isDynamic", () => {
 
 describe("getCommentDisplay", () => {
   it("correctly formats an IP range's comment", () => {
-    const dynamicIP = ipRangeFactory({
+    const dynamicIP = factory.ipRange({
       comment: "something",
       type: IPRangeType.Dynamic,
     });
-    const reservedIP = ipRangeFactory({
+    const reservedIP = factory.ipRange({
       comment: "something",
       type: IPRangeType.Reserved,
     });
@@ -36,11 +36,11 @@ describe("getCommentDisplay", () => {
 
 describe("getOwnerDisplay", () => {
   it("correctly formats an IP range's owner", () => {
-    const dynamicIP = ipRangeFactory({
+    const dynamicIP = factory.ipRange({
       type: IPRangeType.Dynamic,
       user: "user",
     });
-    const reservedIP = ipRangeFactory({
+    const reservedIP = factory.ipRange({
       type: IPRangeType.Reserved,
       user: "user",
     });
@@ -52,10 +52,10 @@ describe("getOwnerDisplay", () => {
 
 describe("getTypeDisplay", () => {
   it("correctly formats an IP range's type", () => {
-    const dynamicIP = ipRangeFactory({
+    const dynamicIP = factory.ipRange({
       type: IPRangeType.Dynamic,
     });
-    const reservedIP = ipRangeFactory({
+    const reservedIP = factory.ipRange({
       type: IPRangeType.Reserved,
     });
 

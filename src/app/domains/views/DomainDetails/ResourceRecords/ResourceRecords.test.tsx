@@ -2,18 +2,14 @@ import ResourceRecords, {
   Labels as ResourceRecordsLabels,
 } from "./ResourceRecords";
 
-import {
-  domainDetails as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ResourceRecords", () => {
   it("shows a message if domain has no records", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 1, rrsets: [] })],
+    const state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domainDetails({ id: 1, rrsets: [] })],
       }),
     });
 
@@ -27,8 +23,8 @@ describe("ResourceRecords", () => {
   });
 
   it("displays a loading spinner with text when loading", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         items: [],
         loading: true,
       }),

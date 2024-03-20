@@ -6,17 +6,7 @@ import VMsTable, { Label } from "./VMsTable";
 import { SortDirection } from "@/app/base/types";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   within,
@@ -66,18 +56,18 @@ describe("VMsTable", () => {
     const setSortKey = vi.fn();
     const setSortDirection = vi.fn();
     const vms = [
-      machineFactory({ hostname: "b" }),
-      machineFactory({ hostname: "c" }),
-      machineFactory({ hostname: "a" }),
+      factory.machine({ hostname: "b" }),
+      factory.machine({ hostname: "c" }),
+      factory.machine({ hostname: "a" }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: vms,
         lists: {
-          "mocked-nanoid": machineStateListFactory({
+          "mocked-nanoid": factory.machineStateList({
             loaded: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: vms.map(({ system_id }) => system_id),
               }),
             ],
@@ -106,21 +96,21 @@ describe("VMsTable", () => {
   });
 
   it("can dispatch an action to select all VMs", async () => {
-    const pod = podFactory({ id: 1, name: "pod-1" });
+    const pod = factory.pod({ id: 1, name: "pod-1" });
     const vms = [
-      machineFactory({
+      factory.machine({
         system_id: "abc123",
       }),
-      machineFactory({
+      factory.machine({
         system_id: "def456",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: vms,
         selected: null,
       }),
-      pod: podStateFactory({ items: [pod], loaded: true }),
+      pod: factory.podState({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -151,21 +141,21 @@ describe("VMsTable", () => {
   });
 
   it("can dispatch an action to unselect all VMs", async () => {
-    const pod = podFactory({ id: 1, name: "pod-1" });
+    const pod = factory.pod({ id: 1, name: "pod-1" });
     const vms = [
-      machineFactory({
+      factory.machine({
         system_id: "abc123",
       }),
-      machineFactory({
+      factory.machine({
         system_id: "def456",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: vms,
         selected: { filter: {} },
       }),
-      pod: podStateFactory({ items: [pod], loaded: true }),
+      pod: factory.podState({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -200,8 +190,8 @@ describe("VMsTable", () => {
   });
 
   it("shows a message if no VMs in a KVM host match the search filter", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [],
       }),
     });
@@ -228,8 +218,8 @@ describe("VMsTable", () => {
   });
 
   it("shows a message if no VMs in a cluster match the search filter", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [],
       }),
     });
@@ -257,7 +247,7 @@ describe("VMsTable", () => {
   });
 
   it("renders a column for the host if function provided to render it", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
 
     renderWithBrowserRouter(
       <VMsTable
@@ -281,7 +271,7 @@ describe("VMsTable", () => {
   });
 
   it("does not render a column for the host if no function provided to render it", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
 
     renderWithBrowserRouter(
       <VMsTable
@@ -305,15 +295,15 @@ describe("VMsTable", () => {
   });
 
   it("displays tag names", () => {
-    const vms = [machineFactory({ tags: [1, 2] })];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const vms = [factory.machine({ tags: [1, 2] })];
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: vms,
       }),
-      tag: tagStateFactory({
+      tag: factory.tagState({
         items: [
-          tagFactory({ id: 1, name: "tag1" }),
-          tagFactory({ id: 2, name: "tag2" }),
+          factory.tag({ id: 1, name: "tag1" }),
+          factory.tag({ id: 2, name: "tag2" }),
         ],
       }),
     });
@@ -340,7 +330,7 @@ describe("VMsTable", () => {
   });
 
   it("renders a column for the host if function provided to render it", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
 
     renderWithBrowserRouter(
       <VMsTable
@@ -364,8 +354,8 @@ describe("VMsTable", () => {
   });
 
   it("shows a message if table is empty", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [],
       }),
     });

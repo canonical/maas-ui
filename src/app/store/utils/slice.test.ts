@@ -10,13 +10,7 @@ import {
   generateStatusHandlers,
   genericInitialState,
 } from "@/app/store/utils/slice";
-import {
-  token as tokenFactory,
-  tokenState as tokenStateFactory,
-  pod as podFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("slice", () => {
   describe("base reducers", () => {
@@ -56,8 +50,8 @@ describe("slice", () => {
     });
 
     it("reduces fetchSuccess", () => {
-      const tokens = [tokenFactory()];
-      const tokenState = tokenStateFactory({
+      const tokens = [factory.token()];
+      const tokenState = factory.tokenState({
         items: [],
         loading: true,
       });
@@ -74,7 +68,7 @@ describe("slice", () => {
     });
 
     it("reduces fetchError", () => {
-      const tokenState = tokenStateFactory();
+      const tokenState = factory.tokenState();
       expect(
         slice.reducer(
           tokenState,
@@ -91,7 +85,7 @@ describe("slice", () => {
     });
 
     it("reduces createStart", () => {
-      const tokenState = tokenStateFactory({ saved: true });
+      const tokenState = factory.tokenState({ saved: true });
       expect(
         slice.reducer(tokenState, slice.actions.createStart(null))
       ).toEqual({
@@ -105,7 +99,7 @@ describe("slice", () => {
     });
 
     it("reduces createError", () => {
-      const tokenState = tokenStateFactory();
+      const tokenState = factory.tokenState();
       expect(
         slice.reducer(
           tokenState,
@@ -122,9 +116,9 @@ describe("slice", () => {
     });
 
     it("reduces createNotify", () => {
-      const tokens = [tokenFactory({ id: 1 })];
-      const newToken = tokenFactory({ id: 2 });
-      const tokenState = tokenStateFactory({
+      const tokens = [factory.token({ id: 1 })];
+      const newToken = factory.token({ id: 2 });
+      const tokenState = factory.tokenState({
         items: tokens,
       });
 
@@ -141,7 +135,7 @@ describe("slice", () => {
     });
 
     it("reduces updateStart", () => {
-      const tokenState = tokenStateFactory({ saved: true });
+      const tokenState = factory.tokenState({ saved: true });
       expect(
         slice.reducer(tokenState, slice.actions.updateStart(null))
       ).toEqual({
@@ -155,7 +149,7 @@ describe("slice", () => {
     });
 
     it("reduces updateError", () => {
-      const tokenState = tokenStateFactory();
+      const tokenState = factory.tokenState();
       expect(
         slice.reducer(
           tokenState,
@@ -172,9 +166,9 @@ describe("slice", () => {
     });
 
     it("reduces updateNotify", () => {
-      const newToken = tokenFactory({ id: 1, key: "new-key" });
-      const tokenState = tokenStateFactory({
-        items: [tokenFactory({ id: 1, key: "old-key" })],
+      const newToken = factory.token({ id: 1, key: "new-key" });
+      const tokenState = factory.tokenState({
+        items: [factory.token({ id: 1, key: "old-key" })],
       });
       expect(
         slice.reducer(tokenState, slice.actions.updateNotify(newToken))
@@ -189,8 +183,8 @@ describe("slice", () => {
     });
 
     it("reduces deleteStart", () => {
-      const tokens = [tokenFactory({ id: 1 })];
-      const tokenState = tokenStateFactory({
+      const tokens = [factory.token({ id: 1 })];
+      const tokenState = factory.tokenState({
         items: tokens,
       });
       expect(
@@ -206,8 +200,8 @@ describe("slice", () => {
     });
 
     it("reduces deleteSuccess", () => {
-      const tokens = [tokenFactory({ id: 1 })];
-      const tokenState = tokenStateFactory({
+      const tokens = [factory.token({ id: 1 })];
+      const tokenState = factory.tokenState({
         items: tokens,
       });
       expect(
@@ -223,8 +217,8 @@ describe("slice", () => {
     });
 
     it("reduces deleteError", () => {
-      const tokens = [tokenFactory({ id: 1 })];
-      const tokenState = tokenStateFactory({
+      const tokens = [factory.token({ id: 1 })];
+      const tokenState = factory.tokenState({
         items: tokens,
       });
       expect(
@@ -243,8 +237,8 @@ describe("slice", () => {
     });
 
     it("reduces deleteNotify", () => {
-      const tokens = [tokenFactory({ id: 1 }), tokenFactory({ id: 2 })];
-      const tokenState = tokenStateFactory({
+      const tokens = [factory.token({ id: 1 }), factory.token({ id: 2 })];
+      const tokenState = factory.tokenState({
         items: tokens,
       });
       expect(slice.reducer(tokenState, slice.actions.deleteNotify(1))).toEqual({
@@ -274,7 +268,7 @@ describe("slice", () => {
         },
       });
 
-      const tokenState = tokenStateFactory();
+      const tokenState = factory.tokenState();
       expect(slice.reducer(tokenState, slice.actions.custom())).toEqual({
         errors: "small potato",
         items: [],
@@ -299,7 +293,7 @@ describe("slice", () => {
           },
         },
       });
-      const tokenState = tokenStateFactory();
+      const tokenState = factory.tokenState();
       expect(
         slice.reducer(tokenState, slice.actions.fetchError("small"))
       ).toEqual({
@@ -432,31 +426,31 @@ describe("slice", () => {
     });
 
     it("reduces the start action", () => {
-      const pods = [podFactory({ id: 1 })];
-      const podState = podStateFactory({
+      const pods = [factory.pod({ id: 1 })];
+      const podState = factory.podState({
         items: pods,
         statuses: {
-          1: podStatusFactory({ refreshing: false }),
+          1: factory.podStatus({ refreshing: false }),
         },
       });
 
       expect(
         slice.reducer(podState, slice.actions.refreshStart({ item: pods[0] }))
       ).toEqual(
-        podStateFactory({
+        factory.podState({
           items: pods,
-          statuses: { 1: podStatusFactory({ refreshing: true }) },
+          statuses: { 1: factory.podStatus({ refreshing: true }) },
         })
       );
     });
 
     it("reduces the success action", () => {
-      const pods = [podFactory({ id: 1, cpu_speed: 100 })];
-      const updatedPod = podFactory({ id: 1, cpu_speed: 100 });
-      const podState = podStateFactory({
+      const pods = [factory.pod({ id: 1, cpu_speed: 100 })];
+      const updatedPod = factory.pod({ id: 1, cpu_speed: 100 });
+      const podState = factory.podState({
         items: pods,
         statuses: {
-          1: podStatusFactory({ refreshing: true }),
+          1: factory.podStatus({ refreshing: true }),
         },
       });
 
@@ -466,19 +460,19 @@ describe("slice", () => {
           slice.actions.refreshSuccess({ item: pods[0], payload: updatedPod })
         )
       ).toEqual(
-        podStateFactory({
+        factory.podState({
           items: [updatedPod],
-          statuses: { 1: podStatusFactory({ refreshing: false }) },
+          statuses: { 1: factory.podStatus({ refreshing: false }) },
         })
       );
     });
 
     it("reduces the error action", () => {
-      const pods = [podFactory({ id: 1, cpu_speed: 100 })];
-      const podState = podStateFactory({
+      const pods = [factory.pod({ id: 1, cpu_speed: 100 })];
+      const podState = factory.podState({
         items: pods,
         statuses: {
-          1: podStatusFactory({ refreshing: true }),
+          1: factory.podStatus({ refreshing: true }),
         },
       });
 
@@ -491,10 +485,10 @@ describe("slice", () => {
           })
         )
       ).toEqual(
-        podStateFactory({
+        factory.podState({
           errors: "You dun goofed",
           items: pods,
-          statuses: { 1: podStatusFactory({ refreshing: false }) },
+          statuses: { 1: factory.podStatus({ refreshing: false }) },
         })
       );
     });

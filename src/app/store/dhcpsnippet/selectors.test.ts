@@ -1,16 +1,12 @@
 import dhcpsnippet from "./selectors";
 
-import {
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("dhcpsnippet selectors", () => {
   it("can get all items", () => {
-    const items = [dhcpSnippetFactory(), dhcpSnippetFactory()];
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const items = [factory.dhcpSnippet(), factory.dhcpSnippet()];
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         loaded: true,
       }),
     });
@@ -37,16 +33,16 @@ describe("dhcpsnippet selectors", () => {
 
   it("can search items", () => {
     const items = [
-      dhcpSnippetFactory({
+      factory.dhcpSnippet({
         name: "class",
       }),
-      dhcpSnippetFactory(),
-      dhcpSnippetFactory({
+      factory.dhcpSnippet(),
+      factory.dhcpSnippet({
         description: "boots class",
       }),
     ];
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items,
       }),
     });
@@ -54,18 +50,18 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the count", () => {
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         loading: true,
-        items: [dhcpSnippetFactory(), dhcpSnippetFactory()],
+        items: [factory.dhcpSnippet(), factory.dhcpSnippet()],
       }),
     });
     expect(dhcpsnippet.count(state)).toEqual(2);
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         saving: true,
       }),
     });
@@ -73,8 +69,8 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         saved: true,
       }),
     });
@@ -82,8 +78,8 @@ describe("dhcpsnippet selectors", () => {
   });
 
   it("can get errors", () => {
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         errors: { name: "Name not provided" },
       }),
     });
@@ -94,11 +90,11 @@ describe("dhcpsnippet selectors", () => {
 
   it("can get a dhcp snippet by id", () => {
     const items = [
-      dhcpSnippetFactory({ id: 808 }),
-      dhcpSnippetFactory({ id: 909 }),
+      factory.dhcpSnippet({ id: 808 }),
+      factory.dhcpSnippet({ id: 909 }),
     ];
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         loading: true,
         items,
       }),
@@ -108,12 +104,12 @@ describe("dhcpsnippet selectors", () => {
 
   it("can get dhcp snippets for a node", () => {
     const items = [
-      dhcpSnippetFactory({ id: 707, node: "abc123" }),
-      dhcpSnippetFactory({ id: 808 }),
-      dhcpSnippetFactory({ id: 909, node: "abc123" }),
+      factory.dhcpSnippet({ id: 707, node: "abc123" }),
+      factory.dhcpSnippet({ id: 808 }),
+      factory.dhcpSnippet({ id: 909, node: "abc123" }),
     ];
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items,
       }),
     });
@@ -125,12 +121,12 @@ describe("dhcpsnippet selectors", () => {
 
   it("can get dhcp snippets for subnets", () => {
     const items = [
-      dhcpSnippetFactory({ id: 707, subnet: 1 }),
-      dhcpSnippetFactory({ id: 808, subnet: 2 }),
-      dhcpSnippetFactory({ id: 909, subnet: 3 }),
+      factory.dhcpSnippet({ id: 707, subnet: 1 }),
+      factory.dhcpSnippet({ id: 808, subnet: 2 }),
+      factory.dhcpSnippet({ id: 909, subnet: 3 }),
     ];
-    const state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    const state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items,
       }),
     });

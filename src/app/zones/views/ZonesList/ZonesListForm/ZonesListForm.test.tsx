@@ -7,7 +7,7 @@ import ZonesListForm from "./ZonesListForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { actions as zoneActions } from "@/app/store/zone";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -15,7 +15,7 @@ const mockStore = configureStore();
 describe("ZonesListForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("runs closeForm function when the cancel button is clicked", async () => {

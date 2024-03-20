@@ -9,13 +9,7 @@ import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   render,
   screen,
@@ -26,13 +20,13 @@ import {
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    pod: podStateFactory({
-      items: [podFactory({ id: 2, type: PodType.LXD, cluster: 1 })],
+  state = factory.rootState({
+    pod: factory.podState({
+      items: [factory.podDetails({ id: 2, type: PodType.LXD, cluster: 1 })],
       loaded: true,
     }),
-    vmcluster: vmClusterStateFactory({
-      items: [vmClusterFactory({ id: 1 })],
+    vmcluster: factory.vmClusterState({
+      items: [factory.vmCluster({ id: 1 })],
       loaded: true,
     }),
   });

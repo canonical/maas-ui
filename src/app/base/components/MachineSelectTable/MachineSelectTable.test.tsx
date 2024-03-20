@@ -2,13 +2,7 @@ import MachineSelectTable, { Label } from "./MachineSelectTable";
 
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  machineState as machineStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -22,27 +16,27 @@ describe("MachineSelectTable", () => {
 
   beforeEach(() => {
     machines = [
-      machineFactory({
+      factory.machine({
         system_id: "abc123",
         hostname: "first",
         owner: "admin",
         tags: [12],
       }),
-      machineFactory({
+      factory.machine({
         system_id: "def456",
         hostname: "second",
         owner: "user",
         tags: [13],
       }),
     ];
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: machines,
       }),
-      tag: tagStateFactory({
+      tag: factory.tagState({
         items: [
-          tagFactory({ id: 12, name: "tagA" }),
-          tagFactory({ id: 13, name: "tagB" }),
+          factory.tag({ id: 12, name: "tagA" }),
+          factory.tag({ id: 13, name: "tagB" }),
         ],
       }),
     });

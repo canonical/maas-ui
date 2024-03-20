@@ -5,27 +5,7 @@ import ComposeForm from "../../ComposeForm";
 
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainState as domainStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  generalState as generalStateFactory,
-  podDetails as podDetailsFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -45,55 +25,55 @@ describe("SubnetSelect", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    const pod = podDetailsFactory({ id: 1 });
+    const pod = factory.podDetails({ id: 1 });
 
-    initialState = rootStateFactory({
-      domain: domainStateFactory({
+    initialState = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
-      fabric: fabricStateFactory({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
           loaded: true,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [pod],
         loaded: true,
-        statuses: { [pod.id]: podStatusFactory() },
+        statuses: { [pod.id]: factory.podStatus() },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      space: spaceStateFactory({
+      space: factory.spaceState({
         loaded: true,
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
       }),
     });
   });
 
   it("groups subnets by space if a space is not yet selected", async () => {
     const spaces = [
-      spaceFactory({ name: "Outer" }),
-      spaceFactory({ name: "Safe" }),
+      factory.space({ name: "Outer" }),
+      factory.space({ name: "Safe" }),
     ];
     const subnets = [
-      subnetFactory({ space: spaces[0].id, vlan: 1, name: "sub1" }),
-      subnetFactory({ space: spaces[1].id, vlan: 1, name: "sub2" }),
-      subnetFactory({ space: spaces[0].id, vlan: 1, name: "sub3" }),
+      factory.subnet({ space: spaces[0].id, vlan: 1, name: "sub1" }),
+      factory.subnet({ space: spaces[1].id, vlan: 1, name: "sub2" }),
+      factory.subnet({ space: spaces[0].id, vlan: 1, name: "sub3" }),
     ];
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       attached_vlans: [1],
       boot_vlans: [1],
       id: 1,
@@ -128,12 +108,12 @@ describe("SubnetSelect", () => {
   });
 
   it("filters subnets by selected space", async () => {
-    const space = spaceFactory({ id: 0, name: "Outer" });
+    const space = factory.space({ id: 0, name: "Outer" });
     const [subnetInSpace, subnetNotInSpace] = [
-      subnetFactory({ space: space.id, vlan: 1, name: "sub1" }),
-      subnetFactory({ space: null, vlan: 1, name: "sub2" }),
+      factory.subnet({ space: space.id, vlan: 1, name: "sub1" }),
+      factory.subnet({ space: null, vlan: 1, name: "sub2" }),
     ];
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       attached_vlans: [1],
       boot_vlans: [1],
       id: 1,
@@ -184,20 +164,20 @@ describe("SubnetSelect", () => {
   });
 
   it("shows an error if multiple interfaces defined without at least one PXE network", async () => {
-    const fabric = fabricFactory();
-    const space = spaceFactory();
-    const pxeVlan = vlanFactory({
+    const fabric = factory.fabric();
+    const space = factory.space();
+    const pxeVlan = factory.vlan({
       fabric: fabric.id,
       id: 1,
       name: "test-vlan-1",
     });
-    const nonPxeVlan = vlanFactory({ fabric: fabric.id, id: 2 });
-    const pxeSubnet = subnetFactory({ name: "pxe", vlan: pxeVlan.id });
-    const nonPxeSubnet = subnetFactory({
+    const nonPxeVlan = factory.vlan({ fabric: fabric.id, id: 2 });
+    const pxeSubnet = factory.subnet({ name: "pxe", vlan: pxeVlan.id });
+    const nonPxeSubnet = factory.subnet({
       name: "non-pxe",
       vlan: nonPxeVlan.id,
     });
-    const pod = podDetailsFactory({
+    const pod = factory.podDetails({
       attached_vlans: [pxeVlan.id, nonPxeVlan.id],
       boot_vlans: [pxeVlan.id],
       id: 1,

@@ -2,14 +2,7 @@ import CPUColumn from "./CPUColumn";
 
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podResource as podResourceFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmClusterResource as vmClusterResourceFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("CPUColumn", () => {
@@ -17,12 +10,12 @@ describe("CPUColumn", () => {
   let pod: Pod;
 
   beforeEach(() => {
-    pod = podFactory({
+    pod = factory.pod({
       id: 1,
       name: "pod-1",
     });
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
       }),
     });
@@ -30,8 +23,8 @@ describe("CPUColumn", () => {
 
   it("can display correct cpu core information without overcommit", () => {
     pod.cpu_over_commit_ratio = 1;
-    pod.resources = podResourcesFactory({
-      cores: podResourceFactory({
+    pod.resources = factory.podResources({
+      cores: factory.podResource({
         allocated_other: 0,
         allocated_tracked: 4,
         free: 4,
@@ -50,8 +43,8 @@ describe("CPUColumn", () => {
 
   it("can display correct cpu core information with overcommit", () => {
     pod.cpu_over_commit_ratio = 2;
-    pod.resources = podResourcesFactory({
-      cores: podResourceFactory({
+    pod.resources = factory.podResources({
+      cores: factory.podResource({
         allocated_other: 0,
         allocated_tracked: 4,
         free: 4,
@@ -70,8 +63,8 @@ describe("CPUColumn", () => {
 
   it("can display when cpu has been overcommitted", () => {
     pod.cpu_over_commit_ratio = 1;
-    pod.resources = podResourcesFactory({
-      cores: podResourceFactory({
+    pod.resources = factory.podResources({
+      cores: factory.podResource({
         allocated_other: 0,
         allocated_tracked: 4,
         free: -1,
@@ -90,7 +83,7 @@ describe("CPUColumn", () => {
   });
 
   it("can display correct cpu core information for vmclusters", () => {
-    const resources = vmClusterResourceFactory({
+    const resources = factory.vmClusterResource({
       allocated_other: 1,
       allocated_tracked: 2,
       free: 3,

@@ -7,14 +7,7 @@ import ZoneDetails from "./ZoneDetails";
 
 import { Labels } from "@/app/base/components/EditableSection";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,9 +15,9 @@ const mockStore = configureStore();
 describe("ZoneDetails", () => {
   let initialState: RootState;
 
-  const testZones = zoneStateFactory({
+  const testZones = factory.zoneState({
     items: [
-      zoneFactory({
+      factory.zone({
         id: 1,
         name: "zone-name",
       }),
@@ -32,10 +25,10 @@ describe("ZoneDetails", () => {
   });
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: true }),
+    initialState = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: true }),
         }),
       }),
       zone: testZones,
@@ -66,10 +59,10 @@ describe("ZoneDetails", () => {
   });
 
   it("hides Edit button if user is not admin", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: false }),
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: false }),
         }),
       }),
       zone: testZones,

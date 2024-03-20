@@ -9,18 +9,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { useDhcpTarget } from "./hooks";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  machineStateDetailsItem as machineStateDetailsItemFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -41,33 +30,33 @@ vi.mock("@reduxjs/toolkit", async () => {
 
 beforeEach(() => {
   vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-  state = rootStateFactory({
-    controller: controllerStateFactory({
+  state = factory.rootState({
+    controller: factory.controllerState({
       items: [
-        controllerFactory({
+        factory.controller({
           system_id: "abc123",
         }),
       ],
       loaded: true,
     }),
-    device: deviceStateFactory({
+    device: factory.deviceState({
       items: [
-        deviceFactory({
+        factory.device({
           system_id: "def456",
         }),
       ],
       loaded: true,
     }),
-    machine: machineStateFactory({
+    machine: factory.machineState({
       items: [
-        machineFactory({
+        factory.machine({
           system_id: "ghi789",
         }),
       ],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       loaded: true,
-      items: [subnetFactory({ id: 1 })],
+      items: [factory.subnet({ id: 1 })],
     }),
   });
 });
@@ -151,7 +140,7 @@ it("can return a device", () => {
 
 it("handles loading for a machine", () => {
   state.machine.details = {
-    123456: machineStateDetailsItemFactory({
+    123456: factory.machineStateDetailsItem({
       loading: true,
       system_id: "ghi789",
     }),
@@ -165,7 +154,7 @@ it("handles loading for a machine", () => {
 
 it("handles loaded for a machine", () => {
   state.machine.details = {
-    123456: machineStateDetailsItemFactory({
+    123456: factory.machineStateDetailsItem({
       loaded: true,
       system_id: "ghi789",
     }),

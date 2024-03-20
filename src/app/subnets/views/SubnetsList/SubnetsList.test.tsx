@@ -1,13 +1,7 @@
 import SubnetsList from "./SubnetsList";
 
 import urls from "@/app/subnets/urls";
-import {
-  fabricState as fabricStateFactory,
-  vlanState as vlanStateFactory,
-  subnetState as subnetStateFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -18,13 +12,13 @@ import {
 } from "@/testing/utils";
 
 const getMockState = () => {
-  return rootStateFactory({
-    fabric: fabricStateFactory({
+  return factory.rootState({
+    fabric: factory.fabricState({
       loaded: true,
     }),
-    vlan: vlanStateFactory({ loaded: true }),
-    subnet: subnetStateFactory({ loaded: true }),
-    space: spaceStateFactory({ loaded: true }),
+    vlan: factory.vlanState({ loaded: true }),
+    subnet: factory.subnetState({ loaded: true }),
+    space: factory.spaceState({ loaded: true }),
   });
 };
 

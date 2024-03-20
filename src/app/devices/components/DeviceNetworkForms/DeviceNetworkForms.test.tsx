@@ -5,20 +5,16 @@ import DeviceNetworkForms from "./DeviceNetworkForms";
 import { DeviceSidePanelViews } from "@/app/devices/constants";
 import type { DeviceSidePanelContent } from "@/app/devices/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    device: deviceStateFactory({
-      items: [deviceDetailsFactory({ system_id: "abc123" })],
+  state = factory.rootState({
+    device: factory.deviceState({
+      items: [factory.deviceDetails({ system_id: "abc123" })],
     }),
   });
 });

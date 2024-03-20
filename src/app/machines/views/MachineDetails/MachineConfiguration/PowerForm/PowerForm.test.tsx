@@ -10,30 +10,20 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 let state: RootState;
 beforeEach(() => {
-  state = rootStateFactory({
-    general: generalStateFactory({
-      powerTypes: powerTypesStateFactory({
+  state = factory.rootState({
+    general: factory.generalState({
+      powerTypes: factory.powerTypesState({
         data: [
-          powerTypeFactory({
+          factory.powerType({
             fields: [
-              powerFieldFactory({
+              factory.powerField({
                 name: "amt-field",
                 label: "AMT field",
                 field_type: PowerFieldType.STRING,
@@ -42,9 +32,9 @@ beforeEach(() => {
             ],
             name: PowerTypeNames.AMT,
           }),
-          powerTypeFactory({
+          factory.powerType({
             fields: [
-              powerFieldFactory({
+              factory.powerField({
                 name: "apc-field",
                 label: "APC field",
                 field_type: PowerFieldType.STRING,
@@ -57,16 +47,16 @@ beforeEach(() => {
         loaded: true,
       }),
     }),
-    machine: machineStateFactory({
+    machine: factory.machineState({
       items: [
-        machineDetailsFactory({
+        factory.machineDetails({
           permissions: ["edit"],
           power_type: PowerTypeNames.AMT,
           system_id: "abc123",
         }),
       ],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        abc123: factory.machineStatus(),
       }),
     }),
   });
@@ -134,7 +124,7 @@ it("renders read-only text fields until edit button is pressed", async () => {
 });
 
 it("correctly dispatches an action to update a machine's power", async () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     permissions: ["edit"],
     pod: undefined,
     power_type: PowerTypeNames.AMT,

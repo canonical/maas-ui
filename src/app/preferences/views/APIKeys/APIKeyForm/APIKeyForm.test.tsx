@@ -6,11 +6,7 @@ import configureStore from "redux-mock-store";
 import { APIKeyForm, Label as APIKeyFormLabels } from "./APIKeyForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  token as tokenFactory,
-  tokenState as tokenStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -24,12 +20,12 @@ describe("APIKeyForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      token: tokenStateFactory({
+    state = factory.rootState({
+      token: factory.tokenState({
         loading: false,
         loaded: true,
         items: [
-          tokenFactory({
+          factory.token({
             id: 1,
             key: "ssh-rsa aabb",
             consumer: { key: "abc", name: "Name" },

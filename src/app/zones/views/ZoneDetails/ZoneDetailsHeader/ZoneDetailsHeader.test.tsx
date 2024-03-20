@@ -6,15 +6,7 @@ import configureStore from "redux-mock-store";
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,14 +14,14 @@ const mockStore = configureStore();
 describe("ZoneDetailsHeader", () => {
   let initialState: RootState;
 
-  const testZones = zoneStateFactory({
-    genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+  const testZones = factory.zoneState({
+    genericActions: factory.zoneGenericActions({ fetch: "success" }),
     items: [
-      zoneFactory({
+      factory.zone({
         id: 1,
         name: "zone-name",
       }),
-      zoneFactory({
+      factory.zone({
         id: 2,
         name: "zone2-name",
       }),
@@ -37,10 +29,10 @@ describe("ZoneDetailsHeader", () => {
   });
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: true }),
+    initialState = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: true }),
         }),
       }),
       zone: testZones,
@@ -137,10 +129,10 @@ describe("ZoneDetailsHeader", () => {
   });
 
   it("hides delete button for all zones when user isn't admin", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: false }),
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: false }),
         }),
       }),
       zone: testZones,

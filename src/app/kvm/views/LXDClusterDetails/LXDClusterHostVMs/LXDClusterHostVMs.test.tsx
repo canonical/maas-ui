@@ -3,29 +3,22 @@ import LXDClusterHostVMs, { Label } from "./LXDClusterHostVMs";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmHost as vmHostFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    pod: podStateFactory({
-      items: [podFactory({ id: 2, type: PodType.LXD, cluster: 1 })],
+  state = factory.rootState({
+    pod: factory.podState({
+      items: [factory.podDetails({ id: 2, type: PodType.LXD, cluster: 1 })],
       loaded: true,
     }),
-    vmcluster: vmClusterStateFactory({
+    vmcluster: factory.vmClusterState({
       items: [
-        vmClusterFactory({
+        factory.vmCluster({
           id: 1,
-          hosts: [vmHostFactory({ id: 1 })],
+          hosts: [factory.vmHost({ id: 1 })],
         }),
       ],
       loaded: true,

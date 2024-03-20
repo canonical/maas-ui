@@ -3,19 +3,15 @@ import configureStore from "redux-mock-store";
 import DeviceSummary from "./DeviceSummary";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("DeviceSummary", () => {
   it("shows a spinner if device has not loaded yet", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({ items: [] }),
+    const state = factory.rootState({
+      device: factory.deviceState({ items: [] }),
     });
     const store = mockStore(state);
     renderWithBrowserRouter(<DeviceSummary systemId="abc123" />, { store });
@@ -25,9 +21,9 @@ describe("DeviceSummary", () => {
   });
 
   it("shows device summary once loaded", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
-        items: [deviceFactory({ system_id: "abc123" })],
+    const state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.device({ system_id: "abc123" })],
       }),
     });
     const store = mockStore(state);

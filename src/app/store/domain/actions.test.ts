@@ -1,7 +1,7 @@
 import { actions } from "./slice";
 import { RecordType } from "./types";
 
-import { domainResource as resourceFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("domain actions", () => {
   it("creates an action for fetching domains", () => {
@@ -238,7 +238,7 @@ describe("domain actions", () => {
   });
 
   it("creates an action for updating a domain record", () => {
-    const resource = resourceFactory();
+    const resource = factory.domainResource();
     expect(
       actions.updateRecord({
         domain: 1,
@@ -327,7 +327,7 @@ describe("domain actions", () => {
   });
 
   it("creates an action for deleting a domain record", () => {
-    const resource = resourceFactory();
+    const resource = factory.domainResource();
     expect(
       actions.deleteRecord({
         deleteResource: true,

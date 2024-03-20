@@ -1,15 +1,7 @@
 import CreateRaid from "../CreateRaid";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -20,10 +12,10 @@ import {
 describe("CreateRaidFields", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+    state = factory.rootState({
+      machine: factory.machineState({
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -31,10 +23,10 @@ describe("CreateRaidFields", () => {
 
   it("can handle RAID 0 devices", async () => {
     const disks = [
-      diskFactory({ available_size: 1000000000 }), // 1GB
-      diskFactory({ available_size: 1500000000 }), // 1.5GB
+      factory.nodeDisk({ available_size: 1000000000 }), // 1GB
+      factory.nodeDisk({ available_size: 1500000000 }), // 1.5GB
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });
@@ -56,11 +48,11 @@ describe("CreateRaidFields", () => {
 
   it("can handle RAID 1 devices", async () => {
     const disks = [
-      diskFactory({ available_size: 1000000000 }), // 1GB
-      diskFactory({ available_size: 1500000000 }), // 1.5GB
-      diskFactory({ available_size: 2000000000 }), // 2GB
+      factory.nodeDisk({ available_size: 1000000000 }), // 1GB
+      factory.nodeDisk({ available_size: 1500000000 }), // 1.5GB
+      factory.nodeDisk({ available_size: 2000000000 }), // 2GB
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });
@@ -82,11 +74,11 @@ describe("CreateRaidFields", () => {
 
   it("can handle RAID 1 devices", async () => {
     const disks = [
-      diskFactory({ available_size: 1000000000 }), // 1GB
-      diskFactory({ available_size: 1500000000 }), // 1.5GB
-      diskFactory({ available_size: 2000000000 }), // 2GB
+      factory.nodeDisk({ available_size: 1000000000 }), // 1GB
+      factory.nodeDisk({ available_size: 1500000000 }), // 1.5GB
+      factory.nodeDisk({ available_size: 2000000000 }), // 2GB
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });
@@ -109,12 +101,12 @@ describe("CreateRaidFields", () => {
 
   it("can handle RAID 5 devices", async () => {
     const disks = [
-      diskFactory({ available_size: 1000000000 }), // 1GB
-      diskFactory({ available_size: 1500000000 }), // 1.5GB
-      diskFactory({ available_size: 2000000000 }), // 2GB
-      diskFactory({ available_size: 2500000000 }), // 2.5GB
+      factory.nodeDisk({ available_size: 1000000000 }), // 1GB
+      factory.nodeDisk({ available_size: 1500000000 }), // 1.5GB
+      factory.nodeDisk({ available_size: 2000000000 }), // 2GB
+      factory.nodeDisk({ available_size: 2500000000 }), // 2.5GB
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });
@@ -138,13 +130,13 @@ describe("CreateRaidFields", () => {
 
   it("can handle RAID 6 devices", async () => {
     const disks = [
-      diskFactory({ available_size: 1000000000 }), // 1GB
-      diskFactory({ available_size: 1500000000 }), // 1.5GB
-      diskFactory({ available_size: 2000000000 }), // 2GB
-      diskFactory({ available_size: 2500000000 }), // 2.5GB
-      diskFactory({ available_size: 3000000000 }), // 3GB
+      factory.nodeDisk({ available_size: 1000000000 }), // 1GB
+      factory.nodeDisk({ available_size: 1500000000 }), // 1.5GB
+      factory.nodeDisk({ available_size: 2000000000 }), // 2GB
+      factory.nodeDisk({ available_size: 2500000000 }), // 2.5GB
+      factory.nodeDisk({ available_size: 3000000000 }), // 3GB
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });
@@ -168,12 +160,12 @@ describe("CreateRaidFields", () => {
 
   it("can handle RAID 10 devices", async () => {
     const disks = [
-      diskFactory({ available_size: 1500000000 }), // 1.5GB
-      diskFactory({ available_size: 2000000000 }), // 2GB
-      diskFactory({ available_size: 2500000000 }), // 2.5GB
-      diskFactory({ available_size: 3000000000 }), // 3GB
+      factory.nodeDisk({ available_size: 1500000000 }), // 1.5GB
+      factory.nodeDisk({ available_size: 2000000000 }), // 2GB
+      factory.nodeDisk({ available_size: 2500000000 }), // 2.5GB
+      factory.nodeDisk({ available_size: 3000000000 }), // 3GB
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });
@@ -197,15 +189,15 @@ describe("CreateRaidFields", () => {
 
   it("can handle setting spare disks and partitions", async () => {
     const partitions = [
-      partitionFactory({ size: 1000000000 }), // 1GB
-      partitionFactory({ size: 1500000000 }), // 1.5GB
+      factory.nodePartition({ size: 1000000000 }), // 1GB
+      factory.nodePartition({ size: 1500000000 }), // 1.5GB
     ];
     const disks = [
-      diskFactory({ available_size: 2000000000 }), // 2GB
-      diskFactory({ available_size: 2500000000 }), // 2.5GB
-      diskFactory({ partitions }),
+      factory.nodeDisk({ available_size: 2000000000 }), // 2GB
+      factory.nodeDisk({ available_size: 2500000000 }), // 2.5GB
+      factory.nodeDisk({ partitions }),
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });
@@ -263,15 +255,15 @@ describe("CreateRaidFields", () => {
 
   it("resets block/partition and spare block/partition values on RAID level change", async () => {
     const partitions = [
-      partitionFactory({ size: 1000000000 }), // 1GB
-      partitionFactory({ size: 1500000000 }), // 1.5GB
+      factory.nodePartition({ size: 1000000000 }), // 1GB
+      factory.nodePartition({ size: 1500000000 }), // 1.5GB
     ];
     const disks = [
-      diskFactory({ available_size: 2000000000 }), // 2GB
-      diskFactory({ available_size: 2500000000 }), // 2.5GB
-      diskFactory({ partitions }),
+      factory.nodeDisk({ available_size: 2000000000 }), // 2GB
+      factory.nodeDisk({ available_size: 2500000000 }), // 2.5GB
+      factory.nodeDisk({ partitions }),
     ];
-    state.machine.items[0] = machineDetailsFactory({
+    state.machine.items[0] = factory.machineDetails({
       disks,
       system_id: "abc123",
     });

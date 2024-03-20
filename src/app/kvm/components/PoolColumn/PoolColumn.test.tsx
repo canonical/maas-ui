@@ -5,15 +5,7 @@ import configureStore from "redux-mock-store";
 import PoolColumn from "./PoolColumn";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -21,27 +13,27 @@ describe("PoolColumn", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      pod: podStateFactory({
+    initialState = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             name: "1",
             pool: 1,
             zone: 1,
           }),
         ],
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         items: [
-          resourcePoolFactory({
+          factory.resourcePool({
             id: 1,
             name: "swimming-pool",
           }),
         ],
       }),
-      zone: zoneStateFactory({
+      zone: factory.zoneState({
         items: [
-          zoneFactory({
+          factory.zone({
             id: 1,
             name: "alone-zone",
           }),

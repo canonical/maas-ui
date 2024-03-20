@@ -12,11 +12,7 @@ import { actions as tagActions } from "@/app/store/tag";
 import { Label as DefinitionLabel } from "@/app/tags/components/DefinitionField";
 import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "@/app/tags/constants";
-import {
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   userEvent,
@@ -31,8 +27,8 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory(),
+  state = factory.rootState({
+    tag: factory.tagState(),
   });
 });
 
@@ -90,8 +86,8 @@ it("redirects to the newly created tag on save", async () => {
   );
 
   mockFormikFormSaved();
-  state.tag = tagStateFactory({
-    items: [tagFactory({ id: 8, name: "tag1" })],
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1" })],
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -124,8 +120,8 @@ it("sends analytics when there is a definition", async () => {
   );
 
   mockFormikFormSaved();
-  state.tag = tagStateFactory({
-    items: [tagFactory({ id: 8, name: "tag1", definition: "def1" })],
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1", definition: "def1" })],
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -162,8 +158,8 @@ it("sends analytics when there is no definition", async () => {
   );
 
   mockFormikFormSaved();
-  state.tag = tagStateFactory({
-    items: [tagFactory({ id: 8, name: "tag1" })],
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1" })],
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));

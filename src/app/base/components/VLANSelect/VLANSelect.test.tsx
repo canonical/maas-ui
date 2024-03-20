@@ -4,21 +4,17 @@ import VLANSelect from "./VLANSelect";
 
 import type { RootState } from "@/app/store/root/types";
 import { VlanVid } from "@/app/store/vlan/types";
-import {
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen, within } from "@/testing/utils";
 
 describe("VLANSelect", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      vlan: vlanStateFactory({
+    state = factory.rootState({
+      vlan: factory.vlanState({
         items: [
-          vlanFactory({ id: 1, name: "vlan1", vid: 1, fabric: 3 }),
-          vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
+          factory.vlan({ id: 1, name: "vlan1", vid: 1, fabric: 3 }),
+          factory.vlan({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
         ],
         loaded: true,
       }),
@@ -106,8 +102,8 @@ describe("VLANSelect", () => {
 
   it("can not show the default VLAN", () => {
     state.vlan.items = [
-      vlanFactory({ id: 1, name: "vlan1", vid: 0, fabric: 3 }),
-      vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
+      factory.vlan({ id: 1, name: "vlan1", vid: 0, fabric: 3 }),
+      factory.vlan({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
     ];
     renderWithMockStore(
       <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
@@ -148,8 +144,8 @@ describe("VLANSelect", () => {
 
   it("orders the vlans by name", () => {
     state.vlan.items = [
-      vlanFactory({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
-      vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
+      factory.vlan({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
+      factory.vlan({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
     ];
     renderWithMockStore(
       <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>
@@ -170,8 +166,8 @@ describe("VLANSelect", () => {
 
   it("orders untagged vlans to the start", () => {
     state.vlan.items = [
-      vlanFactory({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
-      vlanFactory({ id: 2, vid: VlanVid.UNTAGGED, fabric: 4 }),
+      factory.vlan({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
+      factory.vlan({ id: 2, vid: VlanVid.UNTAGGED, fabric: 4 }),
     ];
     renderWithMockStore(
       <Formik initialValues={{ vlan: "" }} onSubmit={vi.fn()}>

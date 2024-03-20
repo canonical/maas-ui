@@ -1,19 +1,14 @@
 import pocketsToDisable from "./pocketsToDisable";
 
-import {
-  generalState as generalStateFactory,
-  pocketToDisable as pocketToDisableFactory,
-  pocketsToDisableState as pocketsToDisableStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("pocketsToDisable selectors", () => {
   describe("get", () => {
     it("returns pocketsToDisable", () => {
-      const data = [pocketToDisableFactory(), pocketToDisableFactory()];
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          pocketsToDisable: pocketsToDisableStateFactory({
+      const data = [factory.pocketToDisable(), factory.pocketToDisable()];
+      const state = factory.rootState({
+        general: factory.generalState({
+          pocketsToDisable: factory.pocketsToDisableState({
             data,
           }),
         }),
@@ -24,9 +19,9 @@ describe("pocketsToDisable selectors", () => {
 
   describe("loading", () => {
     it("returns pocketsToDisable loading state", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          pocketsToDisable: pocketsToDisableStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          pocketsToDisable: factory.pocketsToDisableState({
             loading: true,
           }),
         }),
@@ -37,9 +32,9 @@ describe("pocketsToDisable selectors", () => {
 
   describe("loaded", () => {
     it("returns pocketsToDisable loaded state", () => {
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          pocketsToDisable: pocketsToDisableStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          pocketsToDisable: factory.pocketsToDisableState({
             loaded: true,
           }),
         }),
@@ -51,9 +46,9 @@ describe("pocketsToDisable selectors", () => {
   describe("errors", () => {
     it("returns pocketsToDisable errors state", () => {
       const errors = "Cannot fetch pockets to disable.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          pocketsToDisable: pocketsToDisableStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          pocketsToDisable: factory.pocketsToDisableState({
             errors,
           }),
         }),

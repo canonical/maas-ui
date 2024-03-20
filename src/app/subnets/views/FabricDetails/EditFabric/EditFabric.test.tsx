@@ -6,18 +6,14 @@ import configureStore from "redux-mock-store";
 import EditFabric from "./EditFabric";
 
 import { actions as fabricActions } from "@/app/store/fabric";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const getRootState = () =>
-  rootStateFactory({
-    fabric: fabricStateFactory({
+  factory.rootState({
+    fabric: factory.fabricState({
       items: [
-        fabricFactory({
+        factory.fabric({
           name: "fabric-1",
           description: "fabric-1 description",
         }),
@@ -27,7 +23,7 @@ const getRootState = () =>
   });
 
 it("dispatches an update action on submit", async () => {
-  const fabric = fabricFactory({
+  const fabric = factory.fabric({
     name: "fabric-1",
     description: "fabric-1 description",
   });

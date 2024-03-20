@@ -3,7 +3,7 @@ import * as fileDownload from "js-file-download";
 import CertificateDownload, { Labels, TestIds } from "./CertificateDownload";
 
 import type { GeneratedCertificate } from "@/app/store/general/types";
-import { generatedCertificate as certFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 vi.mock("js-file-download", () => {
@@ -16,7 +16,7 @@ describe("CertificateDownload", () => {
   let certificate: GeneratedCertificate;
 
   beforeEach(() => {
-    certificate = certFactory({
+    certificate = factory.generatedCertificate({
       certificate: "certificate",
       CN: "name@host",
     });

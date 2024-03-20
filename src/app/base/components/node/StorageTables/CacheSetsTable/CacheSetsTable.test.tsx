@@ -5,37 +5,28 @@ import CacheSetsTable from "./CacheSetsTable";
 
 import { actions as machineActions } from "@/app/store/machine";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("only shows disks that are cache sets", () => {
   const [cacheSet, notCacheSet] = [
-    diskFactory({
+    factory.nodeDisk({
       name: "quiche",
       type: DiskTypes.CACHE_SET,
     }),
-    diskFactory({
+    factory.nodeDisk({
       name: "frittata",
       type: DiskTypes.PHYSICAL,
     }),
   ];
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     disks: [cacheSet, notCacheSet],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -53,17 +44,17 @@ it("only shows disks that are cache sets", () => {
 });
 
 it("does not show an action column if node is a controller", () => {
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     disks: [
-      diskFactory({
+      factory.nodeDisk({
         name: "quiche",
         type: DiskTypes.CACHE_SET,
       }),
     ],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
   });
@@ -80,17 +71,17 @@ it("does not show an action column if node is a controller", () => {
 });
 
 it("shows an action column if node is a machine", () => {
-  const machine = machineDetailsFactory({
+  const machine = factory.machineDetails({
     disks: [
-      diskFactory({
+      factory.nodeDisk({
         name: "quiche",
         type: DiskTypes.CACHE_SET,
       }),
     ],
     system_id: "abc123",
   });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -107,15 +98,18 @@ it("shows an action column if node is a machine", () => {
 });
 
 it("can delete a cache set if node is a machine", async () => {
-  const disk = diskFactory({
+  const disk = factory.nodeDisk({
     type: DiskTypes.CACHE_SET,
   });
-  const machine = machineDetailsFactory({ disks: [disk], system_id: "abc123" });
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const machine = factory.machineDetails({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        abc123: factory.machineStatus(),
       }),
     }),
   });

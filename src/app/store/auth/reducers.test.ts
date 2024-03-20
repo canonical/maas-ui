@@ -1,22 +1,18 @@
 import reducers from "./slice";
 
 import type { UserState } from "@/app/store/user/types";
-import {
-  authState as authStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("auth", () => {
   let userState: UserState;
 
   beforeEach(() => {
-    userState = userStateFactory();
+    userState = factory.userState();
   });
 
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toStrictEqual({
-      auth: authStateFactory({
+      auth: factory.authState({
         errors: null,
         loaded: false,
         loading: false,
@@ -28,12 +24,12 @@ describe("auth", () => {
   });
 
   it("should correctly reduce auth/fetchStart", () => {
-    const user = userFactory();
+    const user = factory.user();
     expect(
       reducers(
         {
           ...userState,
-          auth: authStateFactory({
+          auth: factory.authState({
             loading: false,
             user,
           }),
@@ -44,7 +40,7 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         loading: true,
         user,
       }),
@@ -52,12 +48,12 @@ describe("auth", () => {
   });
 
   it("should correctly reduce auth/fetchSuccess", () => {
-    const user = userFactory();
+    const user = factory.user();
     expect(
       reducers(
         {
           ...userState,
-          auth: authStateFactory({
+          auth: factory.authState({
             loaded: false,
             loading: true,
           }),
@@ -69,7 +65,7 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         loaded: true,
         loading: false,
         user,
@@ -78,7 +74,7 @@ describe("auth", () => {
   });
 
   it("should correctly reduce auth/changePasswordStart", () => {
-    const auth = authStateFactory({
+    const auth = factory.authState({
       saved: true,
       saving: false,
     });
@@ -95,7 +91,7 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         ...auth,
         saved: false,
         saving: true,
@@ -104,7 +100,7 @@ describe("auth", () => {
   });
 
   it("should correctly reduce auth/changePasswordError", () => {
-    const auth = authStateFactory({
+    const auth = factory.authState({
       saved: true,
       saving: true,
     });
@@ -122,7 +118,7 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         ...auth,
         errors: { password: "Passwords don't match" },
         saved: false,
@@ -132,7 +128,7 @@ describe("auth", () => {
   });
 
   it("should correctly reduce auth/changePasswordSuccess", () => {
-    const auth = authStateFactory({
+    const auth = factory.authState({
       errors: { password: "Passwords don't match" },
       saved: false,
       saving: true,
@@ -149,7 +145,7 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         ...auth,
         errors: null,
         saved: true,
@@ -159,13 +155,13 @@ describe("auth", () => {
   });
 
   it("should correctly reduce user/createNotify", () => {
-    const user = userFactory({ id: 707, username: "wallaby-created" });
+    const user = factory.user({ id: 707, username: "wallaby-created" });
     expect(
       reducers(
         {
           ...userState,
-          auth: authStateFactory({
-            user: userFactory({ id: 707, username: "wallaby" }),
+          auth: factory.authState({
+            user: factory.user({ id: 707, username: "wallaby" }),
           }),
         },
         {
@@ -175,20 +171,20 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         user,
       }),
     });
   });
 
   it("should correctly reduce user/updateNotify", () => {
-    const user = userFactory({ id: 707, username: "wallaby-updated" });
+    const user = factory.user({ id: 707, username: "wallaby-updated" });
     expect(
       reducers(
         {
           ...userState,
-          auth: authStateFactory({
-            user: userFactory({ id: 707, username: "wallaby" }),
+          auth: factory.authState({
+            user: factory.user({ id: 707, username: "wallaby" }),
           }),
         },
         {
@@ -198,7 +194,7 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         user,
       }),
     });
@@ -207,13 +203,13 @@ describe("auth", () => {
   it("does not reduce user/updateNotify for other users", () => {
     const initialState = {
       ...userState,
-      auth: authStateFactory({
-        user: userFactory(),
+      auth: factory.authState({
+        user: factory.user(),
       }),
     };
     expect(
       reducers(initialState, {
-        payload: userFactory({
+        payload: factory.user({
           id: 909,
           username: "admin2",
         }),
@@ -223,7 +219,7 @@ describe("auth", () => {
   });
 
   it("reduces auth/cleanup", () => {
-    const auth = authStateFactory({
+    const auth = factory.authState({
       errors: { password: "Passwords don't match" },
       saved: true,
       saving: true,
@@ -240,7 +236,7 @@ describe("auth", () => {
       )
     ).toStrictEqual({
       ...userState,
-      auth: authStateFactory({
+      auth: factory.authState({
         ...auth,
         errors: null,
         saved: false,

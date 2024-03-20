@@ -6,18 +6,7 @@ import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type { NetworkInterface } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -31,30 +20,30 @@ const route = urls.machines.index;
 describe("AddBridgeForm", () => {
   let nic: NetworkInterface;
   let state: RootState;
-  const fabric = fabricFactory();
+  const fabric = factory.fabric();
   beforeEach(() => {
-    nic = machineInterfaceFactory({
+    nic = factory.machineInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [nic],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      fabric: fabricStateFactory({
-        items: [fabric, fabricFactory()],
+      fabric: factory.fabricState({
+        items: [fabric, factory.fabric()],
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [
-          vlanFactory({
+          factory.vlan({
             id: 39,
             fabric: fabric.id,
             vid: 2,
@@ -69,11 +58,11 @@ describe("AddBridgeForm", () => {
   });
 
   it("displays a table", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces: [nic],
       }),

@@ -6,18 +6,14 @@ import configureStore from "redux-mock-store";
 import VLANLink from "./VLANLink";
 
 import urls from "@/app/base/urls";
-import {
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("handles when VLANs are loading", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [], loading: true }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [], loading: true }),
   });
   const store = mockStore(state);
   render(
@@ -34,8 +30,8 @@ it("handles when VLANs are loading", () => {
 });
 
 it("handles when a VLAN does not exist", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [], loading: false }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [], loading: false }),
   });
   const store = mockStore(state);
   const { container } = render(
@@ -52,9 +48,9 @@ it("handles when a VLAN does not exist", () => {
 });
 
 it("renders a link if VLANs have loaded and it exists", () => {
-  const vlan = vlanFactory();
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [vlan], loading: false }),
+  const vlan = factory.vlan();
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [vlan], loading: false }),
   });
   const store = mockStore(state);
   render(

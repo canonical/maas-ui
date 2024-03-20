@@ -5,21 +5,12 @@ import MachineStorage from "./MachineStorage";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import { NodeStatusCode } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 it("displays a spinner if machine is loading", () => {
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [],
     }),
   });
@@ -31,23 +22,23 @@ it("displays a spinner if machine is loading", () => {
 });
 
 it("renders storage layout dropdown if machine's storage can be edited", async () => {
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      powerTypes: powerTypesStateFactory({
-        data: [powerTypeFactory()],
+  const state = factory.rootState({
+    general: factory.generalState({
+      powerTypes: factory.powerTypesState({
+        data: [factory.powerType()],
       }),
     }),
-    machine: machineStateFactory({
+    machine: factory.machineState({
       items: [
-        machineDetailsFactory({
+        factory.machineDetails({
           locked: false,
           permissions: ["edit"],
           status_code: NodeStatusCode.READY,
           system_id: "abc123",
         }),
       ],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
+      statuses: factory.machineStatuses({
+        abc123: factory.machineStatus(),
       }),
     }),
   });
@@ -77,9 +68,9 @@ it("renders storage layout dropdown if machine's storage can be edited", async (
 });
 
 it("sends an analytics event when clicking on the MAAS docs footer link", async () => {
-  const state = rootStateFactory({
-    machine: machineStateFactory({
-      items: [machineDetailsFactory({ system_id: "abc123" })],
+  const state = factory.rootState({
+    machine: factory.machineState({
+      items: [factory.machineDetails({ system_id: "abc123" })],
       loaded: true,
     }),
   });

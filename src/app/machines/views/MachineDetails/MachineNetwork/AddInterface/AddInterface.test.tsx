@@ -5,19 +5,7 @@ import AddInterface from "./AddInterface";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkLinkMode } from "@/app/store/types/enum";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -25,8 +13,8 @@ const route = urls.machines.index;
 
 describe("AddInterface", () => {
   let state: RootState;
-  const fabric = fabricFactory();
-  const vlan = vlanFactory({
+  const fabric = factory.fabric();
+  const vlan = factory.vlan({
     id: 28,
     fabric: fabric.id,
     vid: 2,
@@ -35,26 +23,26 @@ describe("AddInterface", () => {
     dhcp_on: true,
   });
   beforeEach(() => {
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
-        items: [fabric, fabricFactory()],
+    state = factory.rootState({
+      fabric: factory.fabricState({
+        items: [fabric, factory.fabric()],
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory(), subnetFactory()],
+      subnet: factory.subnetState({
+        items: [factory.subnet(), factory.subnet()],
         loaded: true,
       }),
-      vlan: vlanStateFactory({
+      vlan: factory.vlanState({
         items: [vlan],
         loaded: true,
       }),

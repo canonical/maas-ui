@@ -4,11 +4,7 @@ import TableCheckbox, { Checked } from "./TableCheckbox";
 
 import { actions as machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  machineStateList as machineStateListFactory,
-  machineState as machineStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -20,10 +16,10 @@ let state: RootState;
 const callId = "123456";
 
 beforeEach(() => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           count: 10,
         }),
       },

@@ -12,13 +12,7 @@ import { actions as machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
-import {
-  machine as machineFactory,
-  machineActionState,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
@@ -44,18 +38,18 @@ beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
   vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   const tags = [
-    tagFactory({ id: 1, name: "tag1" }),
-    tagFactory({ id: 2, name: "tag2" }),
+    factory.tag({ id: 1, name: "tag1" }),
+    factory.tag({ id: 2, name: "tag2" }),
   ];
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: tags,
       loaded: true,
       lists: {
         "mocked-nanoid": tagStateListFactory({
           items: [
-            tagFactory({ id: 1, name: "tag1" }),
-            tagFactory({ id: 2, name: "tag2" }),
+            factory.tag({ id: 1, name: "tag1" }),
+            factory.tag({ id: 2, name: "tag2" }),
           ],
           loaded: true,
         }),
@@ -95,8 +89,8 @@ it("dispatches action to fetch tags on load", async () => {
 
 it("correctly dispatches actions to tag machines", async () => {
   const machines = [
-    machineFactory({ system_id: "abc123", tags: [] }),
-    machineFactory({ system_id: "def456", tags: [] }),
+    factory.machine({ system_id: "abc123", tags: [] }),
+    factory.machine({ system_id: "def456", tags: [] }),
   ];
   const store = mockStore(state);
   render(
@@ -144,14 +138,14 @@ it("correctly dispatches actions to tag machines", async () => {
 
 it("correctly dispatches actions to untag machines", async () => {
   const machines = [
-    machineFactory({ system_id: "abc123", tags: [1, 2] }),
-    machineFactory({ system_id: "def456", tags: [1, 2] }),
+    factory.machine({ system_id: "abc123", tags: [1, 2] }),
+    factory.machine({ system_id: "def456", tags: [1, 2] }),
   ];
   state.tag.lists = {
     "mocked-nanoid": tagStateListFactory({
       items: [
-        tagFactory({ id: 1, name: "tag1", machine_count: 1 }),
-        tagFactory({ id: 2, name: "tag2", machine_count: 1 }),
+        factory.tag({ id: 1, name: "tag1", machine_count: 1 }),
+        factory.tag({ id: 2, name: "tag2", machine_count: 1 }),
       ],
       loaded: true,
     }),
@@ -204,7 +198,7 @@ it("correctly dispatches actions to untag machines", async () => {
 });
 
 it("correctly dispatches actions to tag and untag a machine", async () => {
-  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -259,10 +253,10 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
 
 it("shows saving label if not viewing from machine config page", () => {
   const machines = [
-    machineFactory({ system_id: "abc123", tags: [] }),
-    machineFactory({ system_id: "def456", tags: [] }),
+    factory.machine({ system_id: "abc123", tags: [] }),
+    factory.machine({ system_id: "def456", tags: [] }),
   ];
-  state.machine.actions["mocked-nanoid"] = machineActionState({
+  state.machine.actions["mocked-nanoid"] = factory.machineActionState({
     status: "loading",
   });
   const store = mockStore(state);
@@ -290,8 +284,8 @@ it("shows saving label if not viewing from machine config page", () => {
 
 it("does not show saving label if viewing from machine config page", () => {
   const machines = [
-    machineFactory({ system_id: "abc123", tags: [] }),
-    machineFactory({ system_id: "def456", tags: [] }),
+    factory.machine({ system_id: "abc123", tags: [] }),
+    factory.machine({ system_id: "def456", tags: [] }),
   ];
   const store = mockStore(state);
   render(
@@ -316,7 +310,7 @@ it("does not show saving label if viewing from machine config page", () => {
 });
 
 it("shows a notification on success", async () => {
-  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -358,7 +352,7 @@ it("shows a notification on success", async () => {
 });
 
 it("can open a create tag form", async () => {
-  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   renderWithBrowserRouter(
     <TagForm
       clearSidePanelContent={vi.fn()}
@@ -383,7 +377,7 @@ it("can open a create tag form", async () => {
 });
 
 it("updates the new tags after creating a tag", async () => {
-  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  const machines = [factory.machine({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -411,7 +405,7 @@ it("updates the new tags after creating a tag", async () => {
     "new-tag{enter}"
   );
   mockFormikFormSaved();
-  const newTag = tagFactory({ id: 8, name: "new-tag" });
+  const newTag = factory.tag({ id: 8, name: "new-tag" });
   state.tag.saved = true;
   state.tag.items.push(newTag);
   await userEvent.click(

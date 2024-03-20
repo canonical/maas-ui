@@ -12,10 +12,7 @@ import type { ReadScriptResponse } from "./readScript";
 
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
-import {
-  scriptState as scriptStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -54,8 +51,8 @@ describe("ScriptsUpload", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      script: scriptStateFactory({
+    state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
       }),
     });

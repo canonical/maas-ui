@@ -4,31 +4,15 @@ import { FilterGroupKey } from "./types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeActions, NodeStatusCode } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "@/testing/callId-mock";
-import {
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-  machineEventError as machineEventErrorFactory,
-  machineFilterGroup as machineFilterGroupFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStateDetailsItem as machineStateDetailsItemFactory,
-  machineStateCount as machineStateCountFactory,
-  machineStateCounts as machineStateCountsFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 enableCallIdMocks();
 
 describe("machine selectors", () => {
   it("can get all items", () => {
-    const items = [machineFactory(), machineFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const items = [factory.machine(), factory.machine()];
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
       }),
     });
@@ -36,8 +20,8 @@ describe("machine selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         loading: true,
       }),
     });
@@ -45,8 +29,8 @@ describe("machine selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
       }),
     });
@@ -54,8 +38,8 @@ describe("machine selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         saving: true,
       }),
     });
@@ -63,8 +47,8 @@ describe("machine selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         saved: true,
       }),
     });
@@ -72,8 +56,8 @@ describe("machine selectors", () => {
   });
 
   it("can get the active machine's system ID", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         active: "abc123",
       }),
     });
@@ -81,9 +65,9 @@ describe("machine selectors", () => {
   });
 
   it("can get the active machine", () => {
-    const activeMachine = machineFactory();
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const activeMachine = factory.machine();
+    const state = factory.rootState({
+      machine: factory.machineState({
         active: activeMachine.system_id,
         items: [activeMachine],
       }),
@@ -92,8 +76,8 @@ describe("machine selectors", () => {
   });
 
   it("can get the selected machines", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         selected: { items: ["abc123", "def456"] },
       }),
     });
@@ -103,8 +87,8 @@ describe("machine selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         errors: "Data is incorrect",
       }),
     });
@@ -113,11 +97,11 @@ describe("machine selectors", () => {
 
   it("can get a machine by id", () => {
     const items = [
-      machineFactory({ system_id: "808" }),
-      machineFactory({ system_id: "909" }),
+      factory.machine({ system_id: "808" }),
+      factory.machine({ system_id: "909" }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
       }),
     });
@@ -126,12 +110,12 @@ describe("machine selectors", () => {
 
   it("can get machines by status code", () => {
     const items = [
-      machineFactory({ status_code: NodeStatusCode.DISK_ERASING }),
-      machineFactory({ status_code: NodeStatusCode.BROKEN }),
-      machineFactory({ status_code: NodeStatusCode.DISK_ERASING }),
+      factory.machine({ status_code: NodeStatusCode.DISK_ERASING }),
+      factory.machine({ status_code: NodeStatusCode.BROKEN }),
+      factory.machine({ status_code: NodeStatusCode.DISK_ERASING }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
       }),
     });
@@ -141,9 +125,9 @@ describe("machine selectors", () => {
   });
 
   it("can get the machine statuses", () => {
-    const statuses = machineStatusesFactory();
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const statuses = factory.machineStatuses();
+    const state = factory.rootState({
+      machine: factory.machineState({
         statuses,
       }),
     });
@@ -151,10 +135,10 @@ describe("machine selectors", () => {
   });
 
   it("can get the statuses for a machine", () => {
-    const machineStatuses = machineStatusFactory();
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        statuses: machineStatusesFactory({
+    const machineStatuses = factory.machineStatus();
+    const state = factory.rootState({
+      machine: factory.machineState({
+        statuses: factory.machineStatuses({
           abc123: machineStatuses,
         }),
       }),
@@ -163,11 +147,11 @@ describe("machine selectors", () => {
   });
 
   it("can get a status for a machine", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory({ creatingPhysical: true }),
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machine({ system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus({ creatingPhysical: true }),
         }),
       }),
     });
@@ -177,12 +161,12 @@ describe("machine selectors", () => {
   });
 
   it("can get machines that are processing", () => {
-    const statuses = machineStatusesFactory({
-      abc123: machineStatusFactory({ testing: true }),
-      def456: machineStatusFactory(),
+    const statuses = factory.machineStatuses({
+      abc123: factory.machineStatus({ testing: true }),
+      def456: factory.machineStatus(),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         statuses,
       }),
     });
@@ -191,15 +175,15 @@ describe("machine selectors", () => {
 
   it("can get machines that are tagging", () => {
     const machines = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
     ];
-    const statuses = machineStatusesFactory({
-      abc123: machineStatusFactory({ tagging: true }),
-      def456: machineStatusFactory(),
+    const statuses = factory.machineStatuses({
+      abc123: factory.machineStatus({ tagging: true }),
+      def456: factory.machineStatus(),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: machines,
         statuses,
       }),
@@ -209,15 +193,15 @@ describe("machine selectors", () => {
 
   it("can get machines that are untagging", () => {
     const machines = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
     ];
-    const statuses = machineStatusesFactory({
-      abc123: machineStatusFactory({ untagging: true }),
-      def456: machineStatusFactory(),
+    const statuses = factory.machineStatuses({
+      abc123: factory.machineStatus({ untagging: true }),
+      def456: factory.machineStatus(),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: machines,
         statuses,
       }),
@@ -227,17 +211,17 @@ describe("machine selectors", () => {
 
   it("can get machines that are either tagging or untagging", () => {
     const machines = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
-      machineFactory({ system_id: "ghi789" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
+      factory.machine({ system_id: "ghi789" }),
     ];
-    const statuses = machineStatusesFactory({
-      abc123: machineStatusFactory({ tagging: true }),
-      def456: machineStatusFactory({ untagging: true }),
-      ghi789: machineStatusFactory(),
+    const statuses = factory.machineStatuses({
+      abc123: factory.machineStatus({ tagging: true }),
+      def456: factory.machineStatus({ untagging: true }),
+      ghi789: factory.machineStatus(),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: machines,
         statuses,
       }),
@@ -250,15 +234,15 @@ describe("machine selectors", () => {
 
   it("can get machines that are saving pools", () => {
     const items = [
-      machineFactory({ system_id: "808" }),
-      machineFactory({ system_id: "909" }),
+      factory.machine({ system_id: "808" }),
+      factory.machine({ system_id: "909" }),
     ];
-    const statuses = machineStatusesFactory({
-      "808": machineStatusFactory(),
-      "909": machineStatusFactory({ settingPool: true }),
+    const statuses = factory.machineStatuses({
+      "808": factory.machineStatus(),
+      "909": factory.machineStatus({ settingPool: true }),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
         statuses,
       }),
@@ -268,15 +252,15 @@ describe("machine selectors", () => {
 
   it("can get machines that are deleting interfaces", () => {
     const items = [
-      machineFactory({ system_id: "808" }),
-      machineFactory({ system_id: "909" }),
+      factory.machine({ system_id: "808" }),
+      factory.machine({ system_id: "909" }),
     ];
-    const statuses = machineStatusesFactory({
-      "808": machineStatusFactory(),
-      "909": machineStatusFactory({ deletingInterface: true }),
+    const statuses = factory.machineStatuses({
+      "808": factory.machineStatus(),
+      "909": factory.machineStatus({ deletingInterface: true }),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
         statuses,
       }),
@@ -286,15 +270,15 @@ describe("machine selectors", () => {
 
   it("can get machines that are linking subnets", () => {
     const items = [
-      machineFactory({ system_id: "808" }),
-      machineFactory({ system_id: "909" }),
+      factory.machine({ system_id: "808" }),
+      factory.machine({ system_id: "909" }),
     ];
-    const statuses = machineStatusesFactory({
-      "808": machineStatusFactory(),
-      "909": machineStatusFactory({ linkingSubnet: true }),
+    const statuses = factory.machineStatuses({
+      "808": factory.machineStatus(),
+      "909": factory.machineStatus({ linkingSubnet: true }),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
         statuses,
       }),
@@ -304,15 +288,15 @@ describe("machine selectors", () => {
 
   it("can get machines that are unlinking subnets", () => {
     const items = [
-      machineFactory({ system_id: "808" }),
-      machineFactory({ system_id: "909" }),
+      factory.machine({ system_id: "808" }),
+      factory.machine({ system_id: "909" }),
     ];
-    const statuses = machineStatusesFactory({
-      "808": machineStatusFactory(),
-      "909": machineStatusFactory({ unlinkingSubnet: true }),
+    const statuses = factory.machineStatuses({
+      "808": factory.machineStatus(),
+      "909": factory.machineStatus({ unlinkingSubnet: true }),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
         statuses,
       }),
@@ -322,15 +306,15 @@ describe("machine selectors", () => {
 
   it("can get machines that are creating physical interfaces", () => {
     const items = [
-      machineFactory({ system_id: "808" }),
-      machineFactory({ system_id: "909" }),
+      factory.machine({ system_id: "808" }),
+      factory.machine({ system_id: "909" }),
     ];
-    const statuses = machineStatusesFactory({
-      "808": machineStatusFactory(),
-      "909": machineStatusFactory({ creatingPhysical: true }),
+    const statuses = factory.machineStatuses({
+      "808": factory.machineStatus(),
+      "909": factory.machineStatus({ creatingPhysical: true }),
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items,
         statuses,
       }),
@@ -340,11 +324,11 @@ describe("machine selectors", () => {
 
   it("can get all event errors", () => {
     const machineEventErrors = [
-      machineEventErrorFactory(),
-      machineEventErrorFactory(),
+      factory.machineEventError(),
+      factory.machineEventError(),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -353,11 +337,11 @@ describe("machine selectors", () => {
 
   it("can get event errors for a machine", () => {
     const machineEventErrors = [
-      machineEventErrorFactory({ id: "abc123" }),
-      machineEventErrorFactory(),
+      factory.machineEventError({ id: "abc123" }),
+      factory.machineEventError(),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -368,11 +352,11 @@ describe("machine selectors", () => {
 
   it("can get event errors for a machine and a provided event", () => {
     const machineEventErrors = [
-      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
-      machineEventErrorFactory({ event: NodeActions.TAG }),
+      factory.machineEventError({ id: "abc123", event: NodeActions.TAG }),
+      factory.machineEventError({ event: NodeActions.TAG }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -383,12 +367,12 @@ describe("machine selectors", () => {
 
   it("can get event errors for a machine and no event", () => {
     const machineEventErrors = [
-      machineEventErrorFactory({ id: "abc123", event: null }),
-      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
-      machineEventErrorFactory({ event: null }),
+      factory.machineEventError({ id: "abc123", event: null }),
+      factory.machineEventError({ id: "abc123", event: NodeActions.TAG }),
+      factory.machineEventError({ event: null }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -399,12 +383,12 @@ describe("machine selectors", () => {
 
   it("can get event errors for a machine and multiple events", () => {
     const machineEventErrors = [
-      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
-      machineEventErrorFactory({ id: "abc123", event: NodeActions.UNTAG }),
-      machineEventErrorFactory({ id: "abc123", event: NodeActions.ABORT }),
+      factory.machineEventError({ id: "abc123", event: NodeActions.TAG }),
+      factory.machineEventError({ id: "abc123", event: NodeActions.UNTAG }),
+      factory.machineEventError({ id: "abc123", event: NodeActions.ABORT }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -418,12 +402,12 @@ describe("machine selectors", () => {
 
   it("can get event errors for multiple machines", () => {
     const machineEventErrors = [
-      machineEventErrorFactory({ id: "abc123" }),
-      machineEventErrorFactory({ id: "def456" }),
-      machineEventErrorFactory(),
+      factory.machineEventError({ id: "abc123" }),
+      factory.machineEventError({ id: "def456" }),
+      factory.machineEventError(),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -434,12 +418,12 @@ describe("machine selectors", () => {
 
   it("can get event errors for multiple machines and a provided event", () => {
     const machineEventErrors = [
-      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
-      machineEventErrorFactory({ id: "def456", event: NodeActions.TAG }),
-      machineEventErrorFactory({ event: NodeActions.TAG }),
+      factory.machineEventError({ id: "abc123", event: NodeActions.TAG }),
+      factory.machineEventError({ id: "def456", event: NodeActions.TAG }),
+      factory.machineEventError({ event: NodeActions.TAG }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -450,14 +434,14 @@ describe("machine selectors", () => {
 
   it("can get event errors for multiple machines and no event", () => {
     const machineEventErrors = [
-      machineEventErrorFactory({ id: "abc123", event: null }),
-      machineEventErrorFactory({ id: "def456", event: null }),
-      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
-      machineEventErrorFactory({ id: "def456", event: NodeActions.TAG }),
-      machineEventErrorFactory({ event: null }),
+      factory.machineEventError({ id: "abc123", event: null }),
+      factory.machineEventError({ id: "def456", event: null }),
+      factory.machineEventError({ id: "abc123", event: NodeActions.TAG }),
+      factory.machineEventError({ id: "def456", event: NodeActions.TAG }),
+      factory.machineEventError({ event: null }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: machineEventErrors,
       }),
     });
@@ -467,12 +451,12 @@ describe("machine selectors", () => {
   });
 
   it("can get machine count", () => {
-    const machines = [machineFactory(), machineFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...machines, machineFactory()],
-        counts: machineStateCountsFactory({
-          "mocked-nanoid": machineStateCountFactory({
+    const machines = [factory.machine(), factory.machine()];
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [...machines, factory.machine()],
+        counts: factory.machineStateCounts({
+          "mocked-nanoid": factory.machineStateCount({
             count: 2,
             loaded: true,
             loading: false,
@@ -486,9 +470,9 @@ describe("machine selectors", () => {
   });
 
   it("can get machine filters", () => {
-    const filters = [machineFilterGroupFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const filters = [factory.machineFilterGroup()];
+    const state = factory.rootState({
+      machine: factory.machineState({
         filters,
       }),
     });
@@ -496,8 +480,8 @@ describe("machine selectors", () => {
   });
 
   it("can get filters loaded state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         filtersLoaded: true,
       }),
     });
@@ -505,8 +489,8 @@ describe("machine selectors", () => {
   });
 
   it("can get filters loading state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         filtersLoading: true,
       }),
     });
@@ -515,10 +499,10 @@ describe("machine selectors", () => {
 
   it("can get machine filter options", () => {
     const options = [{ key: "option1", label: "Option 1" }];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         filters: [
-          machineFilterGroupFactory({
+          factory.machineFilterGroup({
             key: FilterGroupKey.AgentName,
             options,
           }),
@@ -536,10 +520,10 @@ describe("machine selectors", () => {
       { key: "anoption", label: "An option" },
       { key: "option1", label: "Option 1" },
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         filters: [
-          machineFilterGroupFactory({
+          factory.machineFilterGroup({
             key: FilterGroupKey.AgentName,
             options,
           }),
@@ -552,10 +536,10 @@ describe("machine selectors", () => {
   });
 
   it("can get filter options loaded state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         filters: [
-          machineFilterGroupFactory({
+          factory.machineFilterGroup({
             key: FilterGroupKey.AgentName,
             loaded: true,
           }),
@@ -568,10 +552,10 @@ describe("machine selectors", () => {
   });
 
   it("can get filter options loading state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         filters: [
-          machineFilterGroupFactory({
+          factory.machineFilterGroup({
             key: FilterGroupKey.AgentName,
             loading: true,
           }),
@@ -584,15 +568,15 @@ describe("machine selectors", () => {
   });
 
   it("can get items in a list", () => {
-    const machines = [machineFactory(), machineFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...machines, machineFactory()],
+    const machines = [factory.machine(), factory.machine()];
+    const state = factory.rootState({
+      machine: factory.machineState({
+        items: [...machines, factory.machine()],
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loading: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: machines.map(({ system_id }) => system_id),
               }),
             ],
@@ -604,10 +588,10 @@ describe("machine selectors", () => {
   });
 
   it("can get the count for a list", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             count: 5,
           }),
         },
@@ -618,17 +602,17 @@ describe("machine selectors", () => {
 
   it("can get a group in a list", () => {
     const groups = [
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         name: "admin1",
       }),
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         name: "admin2",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             groups,
           }),
         },
@@ -639,17 +623,17 @@ describe("machine selectors", () => {
 
   it("can get all groups in a list", () => {
     const groups = [
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         name: "admin1",
       }),
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         name: "admin2",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             groups,
           }),
         },
@@ -660,17 +644,17 @@ describe("machine selectors", () => {
 
   it("can get a nullish group in a list", () => {
     const groups = [
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         name: "admin1",
       }),
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         name: "",
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             groups,
           }),
         },
@@ -680,10 +664,10 @@ describe("machine selectors", () => {
   });
 
   it("can get the loaded state for a list", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loaded: true,
           }),
         },
@@ -693,10 +677,10 @@ describe("machine selectors", () => {
   });
 
   it("can get the loading state for a list", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loading: true,
           }),
         },
@@ -706,14 +690,14 @@ describe("machine selectors", () => {
   });
 
   it("can get an interface by id", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const node = machineDetailsFactory({
+    const node = factory.machineDetails({
       interfaces: [nic],
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [node],
       }),
     });
@@ -723,16 +707,16 @@ describe("machine selectors", () => {
   });
 
   it("can get an interface by link id", () => {
-    const link = networkLinkFactory();
-    const nic = machineInterfaceFactory({
+    const link = factory.networkLink();
+    const nic = factory.machineInterface({
       links: [link],
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const node = machineDetailsFactory({
+    const node = factory.machineDetails({
       interfaces: [nic],
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [node],
       }),
     });
@@ -742,20 +726,20 @@ describe("machine selectors", () => {
   });
 
   it("can get unused ids for a details request when the id is being used", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             system_id: "abc123",
           }),
-          78910: machineStateDetailsItemFactory({
+          78910: factory.machineStateDetailsItem({
             system_id: "abc123",
           }),
         },
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["abc123", "def456"],
               }),
             ],
@@ -767,17 +751,17 @@ describe("machine selectors", () => {
   });
 
   it("can get unused ids for a details request when the id is not being used", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             system_id: "abc123",
           }),
         },
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["def456", "ghi789"],
               }),
             ],
@@ -789,24 +773,24 @@ describe("machine selectors", () => {
   });
 
   it("can get unused ids for a list request when the ids are being used", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             system_id: "abc123",
           }),
         },
         lists: {
-          111213: machineStateListFactory({
+          111213: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["abc123", "def456"],
               }),
             ],
           }),
-          78910: machineStateListFactory({
+          78910: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["def456"],
               }),
             ],
@@ -818,24 +802,24 @@ describe("machine selectors", () => {
   });
 
   it("can get unused ids for a list request when the ids are not being used", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             system_id: "abc123",
           }),
         },
         lists: {
-          111213: machineStateListFactory({
+          111213: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["def456", "ghi789"],
               }),
             ],
           }),
-          78910: machineStateListFactory({
+          78910: factory.machineStateList({
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: ["jkl101112"],
               }),
             ],

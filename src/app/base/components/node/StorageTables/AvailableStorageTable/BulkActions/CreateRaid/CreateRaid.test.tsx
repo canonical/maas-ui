@@ -4,45 +4,37 @@ import CreateRaid from "./CreateRaid";
 
 import type { RootState } from "@/app/store/root/types";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("CreateRaid", () => {
   it("sets the initial name correctly", () => {
-    const physicalDisk = diskFactory({
+    const physicalDisk = factory.nodeDisk({
       partitions: null,
       type: DiskTypes.PHYSICAL,
     });
     const raids = [
-      diskFactory({
+      factory.nodeDisk({
         parent: { id: 123, type: DiskTypes.RAID_0, uuid: "md0" },
         type: DiskTypes.VIRTUAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         parent: { id: 123, type: DiskTypes.RAID_10, uuid: "md1" },
         type: DiskTypes.VIRTUAL,
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [...raids, physicalDisk],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -61,24 +53,24 @@ describe("CreateRaid", () => {
 
   it("correctly dispatches an action to create a RAID device", async () => {
     const [selectedDisk, selectedPartition] = [
-      diskFactory({ id: 9, partitions: null, type: DiskTypes.PHYSICAL }),
-      partitionFactory({ id: 10, filesystem: null }),
+      factory.nodeDisk({ id: 9, partitions: null, type: DiskTypes.PHYSICAL }),
+      factory.nodePartition({ id: 10, filesystem: null }),
     ];
     const disks = [
       selectedDisk,
-      diskFactory({ partitions: [selectedPartition] }),
+      factory.nodeDisk({ partitions: [selectedPartition] }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks,
             system_id: "abc123",
             supported_filesystems: [{ key: "ext4", ui: "ext4" }],
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

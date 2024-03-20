@@ -8,13 +8,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { useInitialPowerParameters } from "./hooks";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -27,31 +21,31 @@ describe("general hook utils", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
           data: [
-            powerTypeFactory({
+            factory.powerType({
               can_probe: true,
               fields: [
-                powerFieldFactory({
+                factory.powerField({
                   default: "",
                   name: "power_address",
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   default: "",
                   name: "power_pass",
                 }),
               ],
             }),
-            powerTypeFactory({
+            factory.powerType({
               can_probe: false,
               fields: [
-                powerFieldFactory({
+                factory.powerField({
                   default: "1",
                   name: "node_id",
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   default: "",
                   name: "node_outlet",
                 }),

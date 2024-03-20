@@ -10,18 +10,7 @@ import urls from "@/app/base/urls";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import { actions as statusActions } from "@/app/store/status";
-import {
-  authState as authStateFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -51,28 +40,28 @@ describe("GlobalSideNav", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+          factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
         ],
         loaded: true,
       }),
-      controller: controllerStateFactory({
-        items: [controllerFactory()],
+      controller: factory.controllerState({
+        items: [factory.controller()],
         loaded: true,
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         loaded: true,
         items: [
-          podFactory({
+          factory.pod({
             type: "virsh",
           }),
         ],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({
             id: 99,
             is_superuser: true,
             completed_intro: true,
@@ -131,7 +120,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("hides nav links if not completed intro", () => {
-    state.user.auth.user = userFactory({
+    state.user.auth.user = factory.user({
       completed_intro: false,
       username: "koala",
     });
@@ -230,8 +219,8 @@ describe("GlobalSideNav", () => {
 
   it("displays a warning icon next to controllers if vault is not fully configured", () => {
     state.controller.items = [
-      controllerFactory({ vault_configured: true }),
-      controllerFactory({ vault_configured: false }),
+      factory.controller({ vault_configured: true }),
+      factory.controller({ vault_configured: false }),
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
@@ -244,8 +233,8 @@ describe("GlobalSideNav", () => {
 
   it("does not display a warning icon next to controllers if vault is fully configured", () => {
     state.controller.items = [
-      controllerFactory({ vault_configured: true }),
-      controllerFactory({ vault_configured: true }),
+      factory.controller({ vault_configured: true }),
+      factory.controller({ vault_configured: true }),
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
@@ -259,8 +248,8 @@ describe("GlobalSideNav", () => {
 
   it("does not display a warning icon next to controllers if vault setup has not started", () => {
     state.controller.items = [
-      controllerFactory({ vault_configured: false }),
-      controllerFactory({ vault_configured: false }),
+      factory.controller({ vault_configured: false }),
+      factory.controller({ vault_configured: false }),
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
@@ -273,7 +262,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("links from the logo to machine list page for admins", () => {
-    state.user.auth.user = userFactory({ is_superuser: true });
+    state.user.auth.user = factory.user({ is_superuser: true });
     renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machine/abc123",
       state,
@@ -289,7 +278,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("links from the logo to the machine list for non admins", () => {
-    state.user.auth.user = userFactory({ is_superuser: false });
+    state.user.auth.user = factory.user({ is_superuser: false });
     renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machine/abc123",
       state,
@@ -315,9 +304,9 @@ describe("GlobalSideNav", () => {
 
   it("redirects to the intro page if intro not completed", () => {
     state.config.items = [
-      configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
-    state.user.auth.user = userFactory({ completed_intro: true });
+    state.user.auth.user = factory.user({ completed_intro: true });
     renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machines",
       state,
@@ -328,9 +317,9 @@ describe("GlobalSideNav", () => {
 
   it("redirects to the user intro page if user intro not completed", () => {
     state.config.items = [
-      configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
     ];
-    state.user.auth.user = userFactory({ completed_intro: false });
+    state.user.auth.user = factory.user({ completed_intro: false });
     renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machines",
       state,
@@ -341,7 +330,7 @@ describe("GlobalSideNav", () => {
 
   it("does not redirect if the intro is being displayed", async () => {
     state.config.items = [
-      configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+      factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
     const history = createMemoryHistory({
       initialEntries: [{ pathname: "/" }],

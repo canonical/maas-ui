@@ -5,36 +5,28 @@ import RepositoryForm from "../RepositoryForm";
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  componentsToDisableState as componentsToDisableStateFactory,
-  knownArchitecturesState as knownArchitecturesStateFactory,
-  packageRepository as packageRepositoryFactory,
-  packageRepositoryState as packageRepositoryStateFactory,
-  pocketsToDisableState as pocketsToDisableStateFactory,
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("RepositoryFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        componentsToDisable: componentsToDisableStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        componentsToDisable: factory.componentsToDisableState({
           loaded: true,
         }),
-        knownArchitectures: knownArchitecturesStateFactory({
+        knownArchitectures: factory.knownArchitecturesState({
           loaded: true,
         }),
-        pocketsToDisable: pocketsToDisableStateFactory({
+        pocketsToDisable: factory.pocketsToDisableState({
           loaded: true,
         }),
       }),
-      packagerepository: packageRepositoryStateFactory({
+      packagerepository: factory.packageRepositoryState({
         loaded: true,
-        items: [packageRepositoryFactory()],
+        items: [factory.packageRepository()],
       }),
     });
   });

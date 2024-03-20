@@ -4,21 +4,7 @@ import EditPhysicalForm from "./EditPhysicalForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkLinkMode } from "@/app/store/types/enum";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -26,34 +12,34 @@ const mockStore = configureStore<RootState>();
 describe("EditPhysicalForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
-        items: [fabricFactory({ id: 1 }), fabricFactory()],
+    state = factory.rootState({
+      fabric: factory.fabricState({
+        items: [factory.fabric({ id: 1 }), factory.fabric()],
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             interfaces: [
-              machineInterfaceFactory({
+              factory.machineInterface({
                 id: 1,
                 vlan_id: 1,
-                links: [networkLinkFactory({ id: 1, subnet_id: 1 })],
+                links: [factory.networkLink({ id: 1, subnet_id: 1 })],
               }),
             ],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 1, vlan: 1 }), subnetFactory()],
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 1, vlan: 1 }), factory.subnet()],
         loaded: true,
       }),
-      vlan: vlanStateFactory({
-        items: [vlanFactory({ id: 1, fabric: 1 }), vlanFactory()],
+      vlan: factory.vlanState({
+        items: [factory.vlan({ id: 1, fabric: 1 }), factory.vlan()],
         loaded: true,
       }),
     });

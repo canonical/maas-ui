@@ -10,11 +10,7 @@ import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within } from "@/testing/utils";
 
 vi.mock("../constants", () => ({
@@ -29,17 +25,17 @@ let tags: Tag[];
 
 beforeEach(() => {
   tags = [
-    tagFactory({
+    factory.tag({
       id: 1,
       name: "rad",
     }),
-    tagFactory({
+    factory.tag({
       id: 2,
       name: "cool",
     }),
   ];
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: tags,
     }),
   });
@@ -139,16 +135,16 @@ it("can change the sort order", async () => {
 
 it("displays the tags for the current page", () => {
   tags = [
-    tagFactory({
+    factory.tag({
       name: "rad",
     }),
-    tagFactory({
+    factory.tag({
       name: "cool",
     }),
-    tagFactory({
+    factory.tag({
       name: "hip",
     }),
-    tagFactory({
+    factory.tag({
       name: "totes",
     }),
   ];
@@ -180,7 +176,7 @@ it("displays the tags for the current page", () => {
 });
 
 it("shows an icon for automatic tags", () => {
-  tags = [tagFactory({ definition: "automatic" })];
+  tags = [factory.tag({ definition: "automatic" })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -207,7 +203,7 @@ it("shows an icon for automatic tags", () => {
 });
 
 it("does not show an icon for manual tags", () => {
-  tags = [tagFactory({ definition: undefined })];
+  tags = [factory.tag({ definition: undefined })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -234,7 +230,7 @@ it("does not show an icon for manual tags", () => {
 });
 
 it("shows an icon for kernel options", () => {
-  tags = [tagFactory({ kernel_opts: "i'm a kernel option" })];
+  tags = [factory.tag({ kernel_opts: "i'm a kernel option" })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -261,7 +257,7 @@ it("shows an icon for kernel options", () => {
 });
 
 it("does not show an icon for tags without kernel options", () => {
-  tags = [tagFactory({ kernel_opts: undefined })];
+  tags = [factory.tag({ kernel_opts: undefined })];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -289,7 +285,7 @@ it("does not show an icon for tags without kernel options", () => {
 
 it("can link to nodes", () => {
   tags = [
-    tagFactory({
+    factory.tag({
       machine_count: 1,
       device_count: 2,
       controller_count: 3,

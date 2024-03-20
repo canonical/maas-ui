@@ -4,43 +4,39 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import SSHKeyList, { Label as SSHKeyListLabels } from "./SSHKeyList";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  sshKey as sshKeyFactory,
-  sshKeyState as sshKeyStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("SSHKeyList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      sshkey: sshKeyStateFactory({
+    state = factory.rootState({
+      sshkey: factory.sshKeyState({
         loading: false,
         loaded: true,
         items: [
-          sshKeyFactory({
+          factory.sshKey({
             id: 1,
             key: "ssh-rsa aabb",
             keysource: { protocol: "lp", auth_id: "koalaparty" },
           }),
-          sshKeyFactory({
+          factory.sshKey({
             id: 2,
             key: "ssh-rsa ccdd",
             keysource: { protocol: "gh", auth_id: "koalaparty" },
           }),
-          sshKeyFactory({
+          factory.sshKey({
             id: 3,
             key: "ssh-rsa eeff",
             keysource: { protocol: "lp", auth_id: "maaate" },
           }),
-          sshKeyFactory({
+          factory.sshKey({
             id: 4,
             key: "ssh-rsa gghh",
             keysource: { protocol: "gh", auth_id: "koalaparty" },
           }),
-          sshKeyFactory({ id: 5, key: "ssh-rsa gghh" }),
+          factory.sshKey({ id: 5, key: "ssh-rsa gghh" }),
         ],
       }),
     });

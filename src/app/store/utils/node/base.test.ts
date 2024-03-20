@@ -9,21 +9,14 @@ import {
 
 import { SidePanelViews } from "@/app/base/side-panel-context";
 import { NodeActions, NodeStatus } from "@/app/store/types/node";
-import {
-  controller as controllerFactory,
-  controllerDetails as controllerDetailsFactory,
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("node utils", () => {
   describe("nodeIsController", () => {
     it("correctly identifies a node as a controller", () => {
-      expect(nodeIsController(controllerFactory())).toBe(true);
-      expect(nodeIsController(deviceFactory())).toBe(false);
-      expect(nodeIsController(machineFactory())).toBe(false);
+      expect(nodeIsController(factory.controller())).toBe(true);
+      expect(nodeIsController(factory.device())).toBe(false);
+      expect(nodeIsController(factory.machine())).toBe(false);
       expect(nodeIsController(null)).toBe(false);
       expect(nodeIsController()).toBe(false);
     });
@@ -31,9 +24,9 @@ describe("node utils", () => {
 
   describe("nodeIsDevice", () => {
     it("correctly identifies a node as a device", () => {
-      expect(nodeIsDevice(controllerFactory())).toBe(false);
-      expect(nodeIsDevice(deviceFactory())).toBe(true);
-      expect(nodeIsDevice(machineFactory())).toBe(false);
+      expect(nodeIsDevice(factory.controller())).toBe(false);
+      expect(nodeIsDevice(factory.device())).toBe(true);
+      expect(nodeIsDevice(factory.machine())).toBe(false);
       expect(nodeIsDevice(null)).toBe(false);
       expect(nodeIsDevice()).toBe(false);
     });
@@ -41,9 +34,9 @@ describe("node utils", () => {
 
   describe("nodeIsMachine", () => {
     it("correctly identifies a node as a machine", () => {
-      expect(nodeIsMachine(controllerFactory())).toBe(false);
-      expect(nodeIsMachine(deviceFactory())).toBe(false);
-      expect(nodeIsMachine(machineFactory())).toBe(true);
+      expect(nodeIsMachine(factory.controller())).toBe(false);
+      expect(nodeIsMachine(factory.device())).toBe(false);
+      expect(nodeIsMachine(factory.machine())).toBe(true);
       expect(nodeIsMachine(null)).toBe(false);
       expect(nodeIsMachine()).toBe(false);
     });
@@ -51,45 +44,45 @@ describe("node utils", () => {
 
   describe("isNodeDetails", () => {
     it("correctly identifies nodes as details", () => {
-      expect(isNodeDetails(controllerDetailsFactory())).toBe(true);
-      expect(isNodeDetails(deviceDetailsFactory())).toBe(true);
-      expect(isNodeDetails(machineDetailsFactory())).toBe(true);
+      expect(isNodeDetails(factory.controllerDetails())).toBe(true);
+      expect(isNodeDetails(factory.deviceDetails())).toBe(true);
+      expect(isNodeDetails(factory.machineDetails())).toBe(true);
     });
 
     it("correctly identifies nodes as non-details", () => {
-      expect(isNodeDetails(controllerFactory())).toBe(false);
-      expect(isNodeDetails(deviceFactory())).toBe(false);
-      expect(isNodeDetails(machineFactory())).toBe(false);
+      expect(isNodeDetails(factory.controller())).toBe(false);
+      expect(isNodeDetails(factory.device())).toBe(false);
+      expect(isNodeDetails(factory.machine())).toBe(false);
     });
   });
 
   describe("canOpenActionForm", () => {
     it("handles the null case", () => {
       expect(canOpenActionForm(null, null)).toBe(false);
-      expect(canOpenActionForm(machineFactory(), null)).toBe(false);
+      expect(canOpenActionForm(factory.machine(), null)).toBe(false);
       expect(canOpenActionForm(null, NodeActions.TAG)).toBe(false);
     });
 
     it("handles whether a node can open an action form", () => {
-      const node = deviceFactory({ actions: [NodeActions.SET_ZONE] });
+      const node = factory.device({ actions: [NodeActions.SET_ZONE] });
       expect(canOpenActionForm(node, NodeActions.SET_ZONE)).toBe(true);
       expect(canOpenActionForm(node, NodeActions.DELETE)).toBe(false);
     });
 
     it("handles whether a machine can open the clone action form", () => {
-      const machine1 = machineFactory({
+      const machine1 = factory.machine({
         actions: [NodeActions.CLONE],
         status: NodeStatus.READY,
       });
-      const machine2 = machineFactory({
+      const machine2 = factory.machine({
         actions: [],
         status: NodeStatus.READY,
       });
-      const machine3 = machineFactory({
+      const machine3 = factory.machine({
         actions: [NodeActions.CLONE],
         status: NodeStatus.NEW,
       });
-      const machine4 = machineFactory({
+      const machine4 = factory.machine({
         actions: [],
         status: NodeStatus.NEW,
       });

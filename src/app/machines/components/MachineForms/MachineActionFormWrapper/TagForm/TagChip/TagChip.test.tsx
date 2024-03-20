@@ -1,11 +1,11 @@
 import TagChip from "./TagChip";
 
-import { tag as tagFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const tags = [
-  tagFactory({ name: "chip1", id: 1 }),
-  tagFactory({ name: "chip2", id: 2 }),
+  factory.tag({ name: "chip1", id: 1 }),
+  factory.tag({ name: "chip2", id: 2 }),
 ];
 
 const tagMap = new Map([

@@ -1,18 +1,15 @@
 import ControllerForms from "./ControllerForms";
 
 import { ControllerSidePanelViews } from "@/app/controllers/constants";
-import {
-  controller as controllerFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("ControllerForms", () => {
   it("can render a warning if an action cannot be taken", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     renderWithBrowserRouter(
       <ControllerForms
-        controllers={[controllerFactory()]}
+        controllers={[factory.controller()]}
         setSidePanelContent={vi.fn()}
         sidePanelContent={{
           view: ControllerSidePanelViews.SET_ZONE_CONTROLLER,
@@ -27,10 +24,10 @@ describe("ControllerForms", () => {
   });
 
   it("can render add controller instructions", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     renderWithBrowserRouter(
       <ControllerForms
-        controllers={[controllerFactory()]}
+        controllers={[factory.controller()]}
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: ControllerSidePanelViews.ADD_CONTROLLER }}
       />,

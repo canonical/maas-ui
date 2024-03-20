@@ -1,52 +1,44 @@
 import reducers, { actions } from "./slice";
 
-import {
-  subnet as subnetFactory,
-  subnetBMCNode as subnetBMCNodeFactory,
-  subnetEventError as subnetEventErrorFactory,
-  subnetScanResult as subnetScanResultFactory,
-  subnetState as subnetStateFactory,
-  subnetStatus as subnetStatusFactory,
-  subnetStatuses as subnetStatusesFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("subnet reducer", () => {
   it("should return the initial state", () => {
-    expect(reducers(undefined, { type: "" })).toEqual(subnetStateFactory());
+    expect(reducers(undefined, { type: "" })).toEqual(factory.subnetState());
   });
 
   describe("fetch", () => {
     it("reduces fetchStart", () => {
-      const initialState = subnetStateFactory({ loading: false });
+      const initialState = factory.subnetState({ loading: false });
 
       expect(reducers(initialState, actions.fetchStart())).toEqual(
-        subnetStateFactory({ loading: true })
+        factory.subnetState({ loading: true })
       );
     });
 
     it("reduces fetchSuccess", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         items: [],
         loaded: false,
         loading: true,
       });
-      const subnets = [subnetFactory({ id: 1 }), subnetFactory({ id: 2 })];
+      const subnets = [factory.subnet({ id: 1 }), factory.subnet({ id: 2 })];
 
       expect(reducers(initialState, actions.fetchSuccess(subnets))).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           items: subnets,
           loaded: true,
           loading: false,
-          statuses: subnetStatusesFactory({
-            1: subnetStatusFactory(),
-            2: subnetStatusFactory(),
+          statuses: factory.subnetStatuses({
+            1: factory.subnetStatus(),
+            2: factory.subnetStatus(),
           }),
         })
       );
     });
 
     it("reduces fetchError", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         errors: null,
         loading: true,
       });
@@ -54,10 +46,10 @@ describe("subnet reducer", () => {
       expect(
         reducers(initialState, actions.fetchError("Could not fetch subnets"))
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           errors: "Could not fetch subnets",
           eventErrors: [
-            subnetEventErrorFactory({
+            factory.subnetEventError({
               error: "Could not fetch subnets",
               event: "fetch",
               id: null,
@@ -71,42 +63,42 @@ describe("subnet reducer", () => {
 
   describe("create", () => {
     it("reduces createStart", () => {
-      const initialState = subnetStateFactory({ saving: false });
+      const initialState = factory.subnetState({ saving: false });
 
       expect(reducers(initialState, actions.createStart())).toEqual(
-        subnetStateFactory({ saving: true })
+        factory.subnetState({ saving: true })
       );
     });
 
     it("reduces createSuccess", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         saved: false,
         saving: true,
       });
 
       expect(reducers(initialState, actions.createSuccess())).toEqual(
-        subnetStateFactory({ saved: true, saving: false })
+        factory.subnetState({ saved: true, saving: false })
       );
     });
 
     it("reduces createNotify", () => {
-      const initialState = subnetStateFactory({
-        items: [subnetFactory()],
+      const initialState = factory.subnetState({
+        items: [factory.subnet()],
       });
-      const newSubnet = subnetFactory({ id: 1 });
+      const newSubnet = factory.subnet({ id: 1 });
 
       expect(reducers(initialState, actions.createNotify(newSubnet))).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           items: [...initialState.items, newSubnet],
-          statuses: subnetStatusesFactory({
-            1: subnetStatusFactory(),
+          statuses: factory.subnetStatuses({
+            1: factory.subnetStatus(),
           }),
         })
       );
     });
 
     it("reduces createError", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         errors: null,
         saving: true,
       });
@@ -114,10 +106,10 @@ describe("subnet reducer", () => {
       expect(
         reducers(initialState, actions.createError("Could not create subnet"))
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           errors: "Could not create subnet",
           eventErrors: [
-            subnetEventErrorFactory({
+            factory.subnetEventError({
               error: "Could not create subnet",
               event: "create",
               id: null,
@@ -131,40 +123,40 @@ describe("subnet reducer", () => {
 
   describe("update", () => {
     it("reduces updateStart", () => {
-      const initialState = subnetStateFactory({ saving: false });
+      const initialState = factory.subnetState({ saving: false });
 
       expect(reducers(initialState, actions.updateStart())).toEqual(
-        subnetStateFactory({ saving: true })
+        factory.subnetState({ saving: true })
       );
     });
 
     it("reduces updateSuccess", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         saved: false,
         saving: true,
       });
 
       expect(reducers(initialState, actions.updateSuccess())).toEqual(
-        subnetStateFactory({ saved: true, saving: false })
+        factory.subnetState({ saved: true, saving: false })
       );
     });
 
     it("reduces updateNotify", () => {
-      const initialState = subnetStateFactory({
-        items: [subnetFactory()],
+      const initialState = factory.subnetState({
+        items: [factory.subnet()],
       });
-      const updatedSubnet = subnetFactory({
+      const updatedSubnet = factory.subnet({
         id: initialState.items[0].id,
         name: "updated-reducers",
       });
 
       expect(
         reducers(initialState, actions.updateNotify(updatedSubnet))
-      ).toEqual(subnetStateFactory({ items: [updatedSubnet] }));
+      ).toEqual(factory.subnetState({ items: [updatedSubnet] }));
     });
 
     it("reduces updateError", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         errors: null,
         saving: true,
       });
@@ -172,10 +164,10 @@ describe("subnet reducer", () => {
       expect(
         reducers(initialState, actions.updateError("Could not update subnet"))
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           errors: "Could not update subnet",
           eventErrors: [
-            subnetEventErrorFactory({
+            factory.subnetEventError({
               error: "Could not update subnet",
               event: "update",
               id: null,
@@ -189,37 +181,37 @@ describe("subnet reducer", () => {
 
   describe("delete", () => {
     it("reduces deleteStart", () => {
-      const initialState = subnetStateFactory({ saving: false });
+      const initialState = factory.subnetState({ saving: false });
 
       expect(reducers(initialState, actions.deleteStart())).toEqual(
-        subnetStateFactory({ saving: true })
+        factory.subnetState({ saving: true })
       );
     });
 
     it("reduces deleteSuccess", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         saved: false,
         saving: true,
       });
 
       expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-        subnetStateFactory({ saved: true, saving: false })
+        factory.subnetState({ saved: true, saving: false })
       );
     });
 
     it("reduces deleteNotify", () => {
-      const [deleteSubnet, keepSubnet] = [subnetFactory(), subnetFactory()];
-      const initialState = subnetStateFactory({
+      const [deleteSubnet, keepSubnet] = [factory.subnet(), factory.subnet()];
+      const initialState = factory.subnetState({
         items: [deleteSubnet, keepSubnet],
       });
 
       expect(
         reducers(initialState, actions.deleteNotify(deleteSubnet.id))
-      ).toEqual(subnetStateFactory({ items: [keepSubnet] }));
+      ).toEqual(factory.subnetState({ items: [keepSubnet] }));
     });
 
     it("reduces deleteError", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         errors: null,
         saving: true,
       });
@@ -227,10 +219,10 @@ describe("subnet reducer", () => {
       expect(
         reducers(initialState, actions.deleteError("Could not delete subnet"))
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           errors: "Could not delete subnet",
           eventErrors: [
-            subnetEventErrorFactory({
+            factory.subnetEventError({
               error: "Could not delete subnet",
               event: "delete",
               id: null,
@@ -244,20 +236,20 @@ describe("subnet reducer", () => {
 
   describe("get", () => {
     it("reduces getStart", () => {
-      const initialState = subnetStateFactory({ loading: false });
+      const initialState = factory.subnetState({ loading: false });
 
       expect(reducers(initialState, actions.getStart())).toEqual(
-        subnetStateFactory({ loading: true })
+        factory.subnetState({ loading: true })
       );
     });
 
     it("reduces getError", () => {
-      const initialState = subnetStateFactory({ errors: null, loading: true });
+      const initialState = factory.subnetState({ errors: null, loading: true });
 
       expect(
         reducers(initialState, actions.getError({ id: "id was not supplied" }))
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           errors: { id: "id was not supplied" },
           loading: false,
         })
@@ -265,17 +257,17 @@ describe("subnet reducer", () => {
     });
 
     it("reduces getSuccess when subnet already exists in state", () => {
-      const initialState = subnetStateFactory({
-        items: [subnetFactory({ id: 0, name: "subnet-1" })],
+      const initialState = factory.subnetState({
+        items: [factory.subnet({ id: 0, name: "subnet-1" })],
         loading: true,
       });
-      const updatedSubnet = subnetFactory({
+      const updatedSubnet = factory.subnet({
         id: 0,
         name: "subnet-1-new",
       });
 
       expect(reducers(initialState, actions.getSuccess(updatedSubnet))).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           items: [updatedSubnet],
           loading: false,
         })
@@ -283,18 +275,18 @@ describe("subnet reducer", () => {
     });
 
     it("reduces getSuccess when subnet does not exist yet in state", () => {
-      const initialState = subnetStateFactory({
-        items: [subnetFactory({ id: 0 })],
+      const initialState = factory.subnetState({
+        items: [factory.subnet({ id: 0 })],
         loading: true,
-        statuses: subnetStatusesFactory({ 0: subnetStatusFactory() }),
+        statuses: factory.subnetStatuses({ 0: factory.subnetStatus() }),
       });
-      const newSubnet = subnetFactory({ id: 1 });
+      const newSubnet = factory.subnet({ id: 1 });
 
       expect(reducers(initialState, actions.getSuccess(newSubnet))).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           items: [...initialState.items, newSubnet],
           loading: false,
-          statuses: { ...initialState.statuses, 1: subnetStatusFactory() },
+          statuses: { ...initialState.statuses, 1: factory.subnetStatus() },
         })
       );
     });
@@ -302,18 +294,18 @@ describe("subnet reducer", () => {
 
   describe("setActive", () => {
     it("reduces setActiveSuccess", () => {
-      const initialState = subnetStateFactory({ active: null });
+      const initialState = factory.subnetState({ active: null });
 
       expect(
         reducers(
           initialState,
-          actions.setActiveSuccess(subnetFactory({ id: 0 }))
+          actions.setActiveSuccess(factory.subnet({ id: 0 }))
         )
-      ).toEqual(subnetStateFactory({ active: 0 }));
+      ).toEqual(factory.subnetState({ active: 0 }));
     });
 
     it("reduces setActiveError", () => {
-      const initialState = subnetStateFactory({
+      const initialState = factory.subnetState({
         active: 0,
         errors: null,
       });
@@ -321,7 +313,7 @@ describe("subnet reducer", () => {
       expect(
         reducers(initialState, actions.setActiveError("Subnet does not exist"))
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           active: null,
           errors: "Subnet does not exist",
         })
@@ -331,32 +323,32 @@ describe("subnet reducer", () => {
 
   describe("scan", () => {
     it("reduces scanStart", () => {
-      const initialState = subnetStateFactory({
-        statuses: subnetStatusesFactory({
-          0: subnetStatusFactory({ scanning: false }),
+      const initialState = factory.subnetState({
+        statuses: factory.subnetStatuses({
+          0: factory.subnetStatus({ scanning: false }),
         }),
       });
 
       expect(
         reducers(initialState, actions.scanStart({ item: { id: 0 } }))
       ).toEqual(
-        subnetStateFactory({
-          statuses: subnetStatusesFactory({
-            0: subnetStatusFactory({ scanning: true }),
+        factory.subnetState({
+          statuses: factory.subnetStatuses({
+            0: factory.subnetStatus({ scanning: true }),
           }),
         })
       );
     });
 
     it("reduces scanSuccess when scan successfully started", () => {
-      const initialState = subnetStateFactory({
-        statuses: subnetStatusesFactory({
-          0: subnetStatusFactory({ scanning: true }),
+      const initialState = factory.subnetState({
+        statuses: factory.subnetStatuses({
+          0: factory.subnetStatus({ scanning: true }),
         }),
       });
-      const scanResult = subnetScanResultFactory({
+      const scanResult = factory.subnetScanResult({
         result: "All good",
-        scan_started_on: [subnetBMCNodeFactory()],
+        scan_started_on: [factory.subnetBMCNode()],
       });
 
       expect(
@@ -365,21 +357,21 @@ describe("subnet reducer", () => {
           actions.scanSuccess({ item: { id: 0 }, payload: scanResult })
         )
       ).toEqual(
-        subnetStateFactory({
-          statuses: subnetStatusesFactory({
-            0: subnetStatusFactory({ scanning: false }),
+        factory.subnetState({
+          statuses: factory.subnetStatuses({
+            0: factory.subnetStatus({ scanning: false }),
           }),
         })
       );
     });
 
     it("reduces scanSuccess when scan was not successfully started", () => {
-      const initialState = subnetStateFactory({
-        statuses: subnetStatusesFactory({
-          0: subnetStatusFactory({ scanning: true }),
+      const initialState = factory.subnetState({
+        statuses: factory.subnetStatuses({
+          0: factory.subnetStatus({ scanning: true }),
         }),
       });
-      const scanResult = subnetScanResultFactory({
+      const scanResult = factory.subnetScanResult({
         result: "No good",
         scan_started_on: [],
       });
@@ -390,22 +382,26 @@ describe("subnet reducer", () => {
           actions.scanSuccess({ item: { id: 0 }, payload: scanResult })
         )
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           errors: "No good",
           eventErrors: [
-            subnetEventErrorFactory({ error: "No good", event: "scan", id: 0 }),
+            factory.subnetEventError({
+              error: "No good",
+              event: "scan",
+              id: 0,
+            }),
           ],
-          statuses: subnetStatusesFactory({
-            0: subnetStatusFactory({ scanning: false }),
+          statuses: factory.subnetStatuses({
+            0: factory.subnetStatus({ scanning: false }),
           }),
         })
       );
     });
 
     it("reduces scanError", () => {
-      const initialState = subnetStateFactory({
-        statuses: subnetStatusesFactory({
-          0: subnetStatusFactory({ scanning: true }),
+      const initialState = factory.subnetState({
+        statuses: factory.subnetStatuses({
+          0: factory.subnetStatus({ scanning: true }),
         }),
       });
 
@@ -419,17 +415,17 @@ describe("subnet reducer", () => {
           })
         )
       ).toEqual(
-        subnetStateFactory({
+        factory.subnetState({
           errors: "You broke it",
           eventErrors: [
-            subnetEventErrorFactory({
+            factory.subnetEventError({
               error: "You broke it",
               event: "scan",
               id: 0,
             }),
           ],
-          statuses: subnetStatusesFactory({
-            0: subnetStatusFactory({ scanning: false }),
+          statuses: factory.subnetStatuses({
+            0: factory.subnetStatus({ scanning: false }),
           }),
         })
       );

@@ -20,23 +20,7 @@ import {
   TestStatusStatus,
   FetchNodeStatus,
 } from "@/app/store/types/node";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  machineFilterGroup as machineFilterGroupFactory,
-  testStatus as testStatusFactory,
-  osInfo as osInfoFactory,
-  rootState as rootStateFactory,
-  routerState as routerStateFactory,
-  modelRef as modelRefFactory,
-  vaultEnabledState as vaultEnabledStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   userEvent as userEventCore,
@@ -59,15 +43,15 @@ vi.mock("@reduxjs/toolkit", async () => {
 describe("Machines", () => {
   let state: RootState;
   const machines = [
-    machineFactory({
+    factory.machine({
       actions: [],
       architecture: "amd64/generic",
       cpu_count: 4,
-      cpu_test_status: testStatusFactory({
+      cpu_test_status: factory.testStatus({
         status: TestStatusStatus.RUNNING,
       }),
       distro_series: "bionic",
-      domain: modelRefFactory({
+      domain: factory.modelRef({
         name: "example",
       }),
       extra_macs: [],
@@ -75,39 +59,39 @@ describe("Machines", () => {
       hostname: "koala",
       ip_addresses: [],
       memory: 8,
-      memory_test_status: testStatusFactory({
+      memory_test_status: factory.testStatus({
         status: TestStatusStatus.PASSED,
       }),
-      network_test_status: testStatusFactory({
+      network_test_status: factory.testStatus({
         status: TestStatusStatus.PASSED,
       }),
       osystem: "ubuntu",
       owner: "admin",
       physical_disk_count: 1,
-      pool: modelRefFactory(),
+      pool: factory.modelRef(),
       pxe_mac: "00:11:22:33:44:55",
       spaces: [],
       status: NodeStatus.DEPLOYED,
       status_code: NodeStatusCode.DEPLOYED,
       status_message: "",
       storage: 8,
-      storage_test_status: testStatusFactory({
+      storage_test_status: factory.testStatus({
         status: TestStatusStatus.PASSED,
       }),
       testing_status: TestStatusStatus.PASSED,
       system_id: "abc123",
       workload_annotations: { animal: "springbok" },
-      zone: modelRefFactory(),
+      zone: factory.modelRef(),
     }),
-    machineFactory({
+    factory.machine({
       actions: [],
       architecture: "amd64/generic",
       cpu_count: 2,
-      cpu_test_status: testStatusFactory({
+      cpu_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
       distro_series: "xenial",
-      domain: modelRefFactory({
+      domain: factory.modelRef({
         name: "example",
       }),
       extra_macs: [],
@@ -115,38 +99,38 @@ describe("Machines", () => {
       hostname: "other",
       ip_addresses: [],
       memory: 6,
-      memory_test_status: testStatusFactory({
+      memory_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
-      network_test_status: testStatusFactory({
+      network_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
       osystem: "ubuntu",
       owner: "user",
       physical_disk_count: 2,
-      pool: modelRefFactory(),
+      pool: factory.modelRef(),
       pxe_mac: "66:77:88:99:00:11",
       spaces: [],
       status: NodeStatus.RELEASING,
       status_code: NodeStatusCode.RELEASING,
       status_message: "",
       storage: 16,
-      storage_test_status: testStatusFactory({
+      storage_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
       testing_status: TestStatusStatus.FAILED,
       system_id: "def456",
-      zone: modelRefFactory(),
+      zone: factory.modelRef(),
     }),
-    machineFactory({
+    factory.machine({
       actions: [],
       architecture: "amd64/generic",
       cpu_count: 2,
-      cpu_test_status: testStatusFactory({
+      cpu_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
       distro_series: "xenial",
-      domain: modelRefFactory({
+      domain: factory.modelRef({
         name: "example",
       }),
       extra_macs: [],
@@ -154,44 +138,44 @@ describe("Machines", () => {
       hostname: "other",
       ip_addresses: [],
       memory: 6,
-      memory_test_status: testStatusFactory({
+      memory_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
-      network_test_status: testStatusFactory({
+      network_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
       osystem: "ubuntu",
       owner: "user",
       physical_disk_count: 2,
-      pool: modelRefFactory(),
+      pool: factory.modelRef(),
       pxe_mac: "66:77:88:99:00:11",
       spaces: [],
       status: NodeStatus.FAILED_TESTING,
       status_code: NodeStatusCode.DEPLOYED,
       status_message: "",
       storage: 16,
-      storage_test_status: testStatusFactory({
+      storage_test_status: factory.testStatus({
         status: TestStatusStatus.FAILED,
       }),
       testing_status: TestStatusStatus.FAILED,
       system_id: "ghi789",
-      zone: modelRefFactory(),
+      zone: factory.modelRef(),
     }),
   ];
-  const machineList = machineStateListFactory({
+  const machineList = factory.machineStateList({
     loaded: true,
     groups: [
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         items: [machines[0].system_id],
         name: "Deployed",
         value: FetchNodeStatus.DEPLOYED,
       }),
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         items: [machines[1].system_id],
         name: "Releasing",
         value: FetchNodeStatus.RELEASING,
       }),
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         items: [machines[2].system_id],
         name: "Failed testing",
         value: FetchNodeStatus.FAILED_TESTING,
@@ -202,17 +186,17 @@ describe("Machines", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    state = rootStateFactory({
-      general: generalStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
         machineActions: {
           data: [],
           errors: null,
           loaded: false,
           loading: false,
         },
-        vaultEnabled: vaultEnabledStateFactory({ data: false, loaded: true }),
+        vaultEnabled: factory.vaultEnabledState({ data: false, loaded: true }),
         osInfo: {
-          data: osInfoFactory({
+          data: factory.osInfo({
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
           }),
@@ -227,17 +211,17 @@ describe("Machines", () => {
           loading: false,
         },
       }),
-      controller: controllerStateFactory({
+      controller: factory.controllerState({
         loaded: true,
-        items: [controllerFactory({ vault_configured: false })],
+        items: [factory.controller({ vault_configured: false })],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: machines,
         lists: {
           "78910": machineList,
         },
         filters: [
-          machineFilterGroupFactory({
+          factory.machineFilterGroup({
             key: FilterGroupKey.Workloads,
             loaded: true,
             options: [{ key: "animal:springbok", label: "animal: springbok" }],
@@ -245,11 +229,11 @@ describe("Machines", () => {
         ],
         filtersLoaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       }),
-      router: routerStateFactory(),
+      router: factory.routerState(),
     });
   });
 
@@ -325,13 +309,13 @@ describe("Machines", () => {
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.
     state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
-      machineFactory()
+      factory.machine()
     );
     state.machine.lists = {
-      "mocked-nanoid-2": machineStateListFactory({
+      "mocked-nanoid-2": factory.machineStateList({
         count: state.machine.items.length,
         groups: [
-          machineStateListGroupFactory({
+          factory.machineStateListGroup({
             // Insert the ids of all machines in the list's group.
             items: state.machine.items.map(({ system_id }) => system_id),
           }),

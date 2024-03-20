@@ -6,20 +6,16 @@ import configureStore from "redux-mock-store";
 import MachineConfiguration from "./MachineConfiguration";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
 describe("MachineConfiguration", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machine({ system_id: "abc123" })],
       }),
     });
   });

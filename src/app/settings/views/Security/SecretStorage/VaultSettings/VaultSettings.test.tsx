@@ -3,13 +3,7 @@ import VaultSettings, { Labels as VaultSettingsLabels } from "./VaultSettings";
 import type { Controller } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeType } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-  vaultEnabledState as vaultEnabledStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("VaultSettings", () => {
@@ -17,27 +11,27 @@ describe("VaultSettings", () => {
   let state: RootState;
   beforeEach(() => {
     controllers = [
-      controllerFactory({
+      factory.controller({
         fqdn: "testcontroller1",
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         system_id: "abc123",
         vault_configured: false,
       }),
-      controllerFactory({
+      factory.controller({
         fqdn: "testcontroller2",
         node_type: NodeType.REGION_CONTROLLER,
         system_id: "def456",
         vault_configured: false,
       }),
     ];
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         loading: false,
         items: controllers,
       }),
-      general: generalStateFactory({
-        vaultEnabled: vaultEnabledStateFactory({
+      general: factory.generalState({
+        vaultEnabled: factory.vaultEnabledState({
           data: false,
           loaded: true,
         }),

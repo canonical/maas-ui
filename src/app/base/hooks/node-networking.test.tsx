@@ -10,16 +10,7 @@ import { useIsAllNetworkingDisabled } from "./node-networking";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  controller as controllerFactory,
-  device as deviceFactory,
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -33,19 +24,19 @@ describe("machine hook utils", () => {
   let machine: Machine | null;
 
   beforeEach(() => {
-    machine = machineFactory({
+    machine = factory.machine({
       architecture: "amd64",
       locked: false,
       permissions: ["edit"],
       system_id: "abc123",
     });
-    state = rootStateFactory({
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory()],
+    state = factory.rootState({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType()],
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
       }),
     });
@@ -53,7 +44,7 @@ describe("machine hook utils", () => {
 
   describe("useIsAllNetworkingDisabled", () => {
     it("is disabled when machine is not editable", () => {
-      machine = machineFactory({
+      machine = factory.machine({
         permissions: [],
         system_id: "abc123",
       });
@@ -73,7 +64,7 @@ describe("machine hook utils", () => {
     });
 
     it("is disabled when the machine has the wrong status", () => {
-      machine = machineFactory({
+      machine = factory.machine({
         status: NodeStatus.DEPLOYING,
         system_id: "abc123",
       });
@@ -95,7 +86,7 @@ describe("machine hook utils", () => {
     it("is enabled if the node is a device", () => {
       const store = mockStore(state);
       const { result } = renderHook(
-        () => useIsAllNetworkingDisabled(deviceFactory()),
+        () => useIsAllNetworkingDisabled(factory.device()),
         {
           wrapper: generateWrapper(store),
         }
@@ -106,7 +97,7 @@ describe("machine hook utils", () => {
     it("is disabled if the node is a controller", () => {
       const store = mockStore(state);
       const { result } = renderHook(
-        () => useIsAllNetworkingDisabled(controllerFactory()),
+        () => useIsAllNetworkingDisabled(factory.controller()),
         {
           wrapper: generateWrapper(store),
         }

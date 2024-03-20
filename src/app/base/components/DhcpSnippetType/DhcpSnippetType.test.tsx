@@ -4,18 +4,7 @@ import configureStore from "redux-mock-store";
 import DhcpSnippetType from "./DhcpSnippetType";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerState as controllerStateFactory,
-  deviceState as deviceStateFactory,
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -23,24 +12,24 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    controller: controllerStateFactory({
+  state = factory.rootState({
+    controller: factory.controllerState({
       loaded: true,
     }),
-    device: deviceStateFactory({
+    device: factory.deviceState({
       loaded: true,
     }),
-    dhcpsnippet: dhcpSnippetStateFactory({
+    dhcpsnippet: factory.dhcpSnippetState({
       loaded: true,
       items: [
-        dhcpSnippetFactory({ id: 1, name: "class", description: "" }),
-        dhcpSnippetFactory({
+        factory.dhcpSnippet({ id: 1, name: "class", description: "" }),
+        factory.dhcpSnippet({
           id: 2,
           name: "lease",
           subnet: 2,
           description: "",
         }),
-        dhcpSnippetFactory({
+        factory.dhcpSnippet({
           id: 3,
           name: "boot",
           node: "xyz",
@@ -48,21 +37,21 @@ beforeEach(() => {
         }),
       ],
     }),
-    machine: machineStateFactory({
+    machine: factory.machineState({
       loaded: true,
       items: [
-        machineFactory({
+        factory.machine({
           system_id: "xyz",
           hostname: "machine1",
-          domain: modelRefFactory({ name: "test" }),
+          domain: factory.modelRef({ name: "test" }),
         }),
       ],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       loaded: true,
       items: [
-        subnetFactory({ id: 1, name: "10.0.0.99" }),
-        subnetFactory({ id: 2, name: "test.maas" }),
+        factory.subnet({ id: 1, name: "10.0.0.99" }),
+        factory.subnet({ id: 2, name: "test.maas" }),
       ],
     }),
   });

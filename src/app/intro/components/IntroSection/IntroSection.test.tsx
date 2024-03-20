@@ -6,13 +6,7 @@ import IntroSection from "./IntroSection";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userEventError as userEventErrorFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   renderWithBrowserRouter,
@@ -22,10 +16,10 @@ import {
 describe("IntroSection", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ completed_intro: false, is_superuser: true }),
+    state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ completed_intro: false, is_superuser: true }),
         }),
       }),
     });
@@ -40,9 +34,9 @@ describe("IntroSection", () => {
   });
 
   it("can redirect to close the intro", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: true }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ completed_intro: true }),
       }),
     });
     const history = createMemoryHistory({
@@ -60,9 +54,9 @@ describe("IntroSection", () => {
   });
 
   it("redirects to the machine list for admins", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: true, is_superuser: true }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ completed_intro: true, is_superuser: true }),
       }),
     });
     renderWithBrowserRouter(
@@ -73,9 +67,9 @@ describe("IntroSection", () => {
   });
 
   it("redirects to the machine list for non-admins", () => {
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ completed_intro: true, is_superuser: false }),
+    state.user = factory.userState({
+      auth: factory.authState({
+        user: factory.user({ completed_intro: true, is_superuser: false }),
       }),
     });
     renderWithBrowserRouter(
@@ -86,8 +80,8 @@ describe("IntroSection", () => {
   });
 
   it("can show errors", () => {
-    state.user = userStateFactory({
-      eventErrors: [userEventErrorFactory()],
+    state.user = factory.userState({
+      eventErrors: [factory.userEventError()],
     });
     renderWithBrowserRouter(
       <IntroSection errors="Uh oh!">Intro content</IntroSection>,

@@ -8,13 +8,7 @@ import CommissioningForm from "./CommissioningForm";
 import { Labels as FormikButtonLabels } from "@/app/base/components/FormikFormButtons/FormikFormButtons";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -23,8 +17,8 @@ describe("CommissioningForm", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      config: configStateFactory({
+    initialState = factory.rootState({
+      config: factory.configState({
         loaded: true,
         items: [
           {
@@ -55,11 +49,11 @@ describe("CommissioningForm", () => {
           },
         ],
       }),
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loading: false,
           loaded: true,
-          data: osInfoFactory(),
+          data: factory.osInfo(),
         }),
       }),
     });

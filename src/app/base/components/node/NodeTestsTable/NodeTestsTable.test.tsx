@@ -11,15 +11,7 @@ import {
   ScriptResultStatus,
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultState as scriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -32,23 +24,23 @@ describe("NodeTestsTable", () => {
   let mockUseSendAnalytics: SpyInstance;
 
   beforeEach(() => {
-    machine = machineDetailsFactory({
+    machine = factory.machineDetails({
       locked: false,
       permissions: ["edit"],
     });
-    controller = controllerDetailsFactory({
+    controller = factory.controllerDetails({
       permissions: ["edit"],
     });
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         items: [controller],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [machine],
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         loaded: true,
       }),
     });
@@ -66,7 +58,7 @@ describe("NodeTestsTable", () => {
   it("shows a suppress column if node is a machine and there are testing script results", () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
@@ -85,7 +77,7 @@ describe("NodeTestsTable", () => {
   it("does not show a suppress column if node is a machine and there are no testing script results", () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.COMMISSIONING,
         status: ScriptResultStatus.FAILED,
@@ -106,7 +98,7 @@ describe("NodeTestsTable", () => {
   it("does not show a suppress column if node is a controller", () => {
     state.nodescriptresult.items = { [controller.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.COMMISSIONING,
         status: ScriptResultStatus.FAILED,
@@ -127,7 +119,7 @@ describe("NodeTestsTable", () => {
   it("disables suppress checkbox if test did not fail", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.PASSED,
@@ -153,7 +145,7 @@ describe("NodeTestsTable", () => {
   it("dispatches suppress for an unsuppressed script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
@@ -181,7 +173,7 @@ describe("NodeTestsTable", () => {
   it("dispatches unsuppress for an suppressed script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
@@ -209,7 +201,7 @@ describe("NodeTestsTable", () => {
   it("sends an analytics event when suppressing a script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
@@ -237,7 +229,7 @@ describe("NodeTestsTable", () => {
   it("sends an analytics event when unsuppressing a script result", async () => {
     state.nodescriptresult.items = { [machine.system_id]: [1] };
     const scriptResults = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,

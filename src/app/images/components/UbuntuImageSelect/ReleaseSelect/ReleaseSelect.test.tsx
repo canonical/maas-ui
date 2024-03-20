@@ -1,32 +1,32 @@
 import ReleaseSelect from "./ReleaseSelect";
 
-import { bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
 
 describe("ReleaseSelect", () => {
   it("separates ubuntu releases by LTS and non-LTS, sorted descending by title", () => {
     const releases = [
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "hirsute",
         title: "21.04",
       }),
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "bionic",
         title: "18.04 LTS",
       }),
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "groovy",
         title: "20.10",
       }),
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "xenial",
         title: "16.04 LTS",
       }),
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "impish",
         title: "21.10",
       }),
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "focal",
         title: "20.04 LTS",
       }),
@@ -58,11 +58,11 @@ describe("ReleaseSelect", () => {
   it("can set the selected release", async () => {
     const setSelectedRelease = vi.fn();
     const releases = [
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "focal",
         title: "20.04",
       }),
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "bionic",
         title: "18.04",
       }),

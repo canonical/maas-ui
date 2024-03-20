@@ -2,12 +2,7 @@ import AddController from "./AddController";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-  versionState as versionStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -19,15 +14,15 @@ describe("AddController", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
           { name: ConfigNames.MAAS_URL, value: "http://1.2.3.4/MAAS" },
           { name: ConfigNames.RPC_SHARED_SECRET, value: "veryverysecret" },
         ],
       }),
-      general: generalStateFactory({
-        version: versionStateFactory({ data: "3.2.0" }),
+      general: factory.generalState({
+        version: factory.versionState({ data: "3.2.0" }),
       }),
     });
   });

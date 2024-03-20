@@ -6,20 +6,16 @@ import Pools from "./Pools";
 import urls from "@/app/base/urls";
 import { Label as NotFoundLabel } from "@/app/base/views/NotFound/NotFound";
 import type { RootState } from "@/app/store/root/types";
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("Pools", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
-        items: [resourcePoolFactory({ id: 1 })],
+        items: [factory.resourcePool({ id: 1 })],
       }),
     });
   });

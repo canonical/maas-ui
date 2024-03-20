@@ -1,9 +1,6 @@
 import reducers, { actions } from "./slice";
 
-import {
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { tagStateListFactory } from "@/testing/factories/state";
 
 describe("tag reducer", () => {
@@ -32,8 +29,8 @@ describe("tag reducer", () => {
   });
 
   it("reduces fetchSuccess", () => {
-    const state = tagStateFactory();
-    const tags = [tagFactory()];
+    const state = factory.tagState();
+    const tags = [factory.tag()];
 
     expect(reducers(state, actions.fetchSuccess(tags))).toEqual({
       errors: null,
@@ -47,19 +44,19 @@ describe("tag reducer", () => {
   });
 
   it("ignores calls that don't exist when reducing fetchSuccess", () => {
-    const initialState = tagStateFactory({
+    const initialState = factory.tagState({
       items: [],
       lists: {},
     });
     const fetchedTags = [
-      tagFactory({ name: "tag1" }),
-      tagFactory({ name: "tag2" }),
+      factory.tag({ name: "tag1" }),
+      factory.tag({ name: "tag2" }),
     ];
 
     expect(
       reducers(initialState, actions.fetchSuccess(fetchedTags, "123456"))
     ).toEqual(
-      tagStateFactory({
+      factory.tagState({
         items: [],
         lists: {},
       })
@@ -67,19 +64,19 @@ describe("tag reducer", () => {
   });
 
   it("can handle fetchSuccess with callId", () => {
-    const initialState = tagStateFactory({
+    const initialState = factory.tagState({
       items: [],
       lists: { 123456: tagStateListFactory({ loading: true }) },
     });
     const fetchedTags = [
-      tagFactory({ name: "tag1" }),
-      tagFactory({ name: "tag2" }),
+      factory.tag({ name: "tag1" }),
+      factory.tag({ name: "tag2" }),
     ];
 
     expect(
       reducers(initialState, actions.fetchSuccess(fetchedTags, "123456"))
     ).toEqual(
-      tagStateFactory({
+      factory.tagState({
         items: [],
         loaded: false,
         loading: false,
@@ -95,19 +92,19 @@ describe("tag reducer", () => {
   });
 
   it("can handle fetchSuccess without callId", () => {
-    const initialState = tagStateFactory({
+    const initialState = factory.tagState({
       items: [],
       loading: true,
       loaded: false,
       lists: {},
     });
     const fetchedTags = [
-      tagFactory({ name: "tag1" }),
-      tagFactory({ name: "tag2" }),
+      factory.tag({ name: "tag1" }),
+      factory.tag({ name: "tag2" }),
     ];
 
     expect(reducers(initialState, actions.fetchSuccess(fetchedTags))).toEqual(
-      tagStateFactory({
+      factory.tagState({
         items: fetchedTags,
         loading: false,
         loaded: true,
@@ -117,7 +114,7 @@ describe("tag reducer", () => {
   });
 
   it("reduces fetchError", () => {
-    const state = tagStateFactory();
+    const state = factory.tagState();
 
     expect(reducers(state, actions.fetchError("Could not fetch tags"))).toEqual(
       {
@@ -133,14 +130,14 @@ describe("tag reducer", () => {
   });
 
   it("reduces removeRequest for a list request", () => {
-    const initialState = tagStateFactory({
+    const initialState = factory.tagState({
       lists: { "mock-call-id": tagStateListFactory() },
     });
 
     expect(
       reducers(initialState, actions.removeRequest("mock-call-id"))
     ).toEqual(
-      tagStateFactory({
+      factory.tagState({
         lists: {},
       })
     );
@@ -148,23 +145,23 @@ describe("tag reducer", () => {
 
   describe("create reducers", () => {
     it("should correctly reduce createStart", () => {
-      const initialState = tagStateFactory({ saving: false });
+      const initialState = factory.tagState({ saving: false });
       expect(reducers(initialState, actions.createStart())).toEqual(
-        tagStateFactory({
+        factory.tagState({
           saving: true,
         })
       );
     });
 
     it("should correctly reduce createError", () => {
-      const initialState = tagStateFactory({ saving: true });
+      const initialState = factory.tagState({ saving: true });
       expect(
         reducers(
           initialState,
           actions.createError({ key: "Key already exists" })
         )
       ).toEqual(
-        tagStateFactory({
+        factory.tagState({
           errors: { key: "Key already exists" },
           saving: false,
         })
@@ -172,12 +169,12 @@ describe("tag reducer", () => {
     });
 
     it("should correctly reduce createSuccess", () => {
-      const initialState = tagStateFactory({
+      const initialState = factory.tagState({
         saved: false,
         saving: true,
       });
       expect(reducers(initialState, actions.createSuccess())).toEqual(
-        tagStateFactory({
+        factory.tagState({
           saved: true,
           saving: false,
         })
@@ -185,10 +182,10 @@ describe("tag reducer", () => {
     });
 
     it("should correctly reduce createNotify", () => {
-      const items = [tagFactory(), tagFactory()];
-      const initialState = tagStateFactory({ items: [items[0]] });
+      const items = [factory.tag(), factory.tag()];
+      const initialState = factory.tagState({ items: [items[0]] });
       expect(reducers(initialState, actions.createNotify(items[1]))).toEqual(
-        tagStateFactory({
+        factory.tagState({
           items,
         })
       );
@@ -197,7 +194,7 @@ describe("tag reducer", () => {
 
   describe("update reducers", () => {
     it("reduces updateStart", () => {
-      const tagState = tagStateFactory({ saved: true });
+      const tagState = factory.tagState({ saved: true });
 
       expect(reducers(tagState, actions.updateStart())).toEqual({
         errors: null,
@@ -211,7 +208,7 @@ describe("tag reducer", () => {
     });
 
     it("reduces updateSuccess", () => {
-      const tagState = tagStateFactory({
+      const tagState = factory.tagState({
         saving: true,
       });
 
@@ -227,7 +224,7 @@ describe("tag reducer", () => {
     });
 
     it("reduces updateError", () => {
-      const tagState = tagStateFactory({
+      const tagState = factory.tagState({
         saving: true,
       });
 
@@ -245,8 +242,8 @@ describe("tag reducer", () => {
     });
 
     it("reduces updateNotify", () => {
-      const tags = [tagFactory({ id: 1 })];
-      const updatedTag = tagFactory({
+      const tags = [factory.tag({ id: 1 })];
+      const updatedTag = factory.tag({
         comment: "updated comment",
         definition: "updated def",
         id: 1,
@@ -254,7 +251,7 @@ describe("tag reducer", () => {
         name: "updated tag",
       });
 
-      const tagState = tagStateFactory({
+      const tagState = factory.tagState({
         items: tags,
       });
 
@@ -272,12 +269,12 @@ describe("tag reducer", () => {
 
   describe("delete reducers", () => {
     it("should correctly reduce deleteStart", () => {
-      const initialState = tagStateFactory({
+      const initialState = factory.tagState({
         saved: true,
         saving: false,
       });
       expect(reducers(initialState, actions.deleteStart())).toEqual(
-        tagStateFactory({
+        factory.tagState({
           saved: false,
           saving: true,
         })
@@ -285,14 +282,14 @@ describe("tag reducer", () => {
     });
 
     it("should correctly reduce deleteError", () => {
-      const initialState = tagStateFactory({
+      const initialState = factory.tagState({
         errors: null,
         saving: true,
       });
       expect(
         reducers(initialState, actions.deleteError("Could not delete"))
       ).toEqual(
-        tagStateFactory({
+        factory.tagState({
           errors: "Could not delete",
           saving: false,
         })
@@ -300,19 +297,19 @@ describe("tag reducer", () => {
     });
 
     it("should correctly reduce deleteSuccess", () => {
-      const initialState = tagStateFactory({ saved: false });
+      const initialState = factory.tagState({ saved: false });
       expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-        tagStateFactory({
+        factory.tagState({
           saved: true,
         })
       );
     });
 
     it("should correctly reduce deleteNotify", () => {
-      const items = [tagFactory(), tagFactory()];
-      const initialState = tagStateFactory({ items });
+      const items = [factory.tag(), factory.tag()];
+      const initialState = factory.tagState({ items });
       expect(reducers(initialState, actions.deleteNotify(items[0].id))).toEqual(
-        tagStateFactory({
+        factory.tagState({
           items: [items[1]],
         })
       );

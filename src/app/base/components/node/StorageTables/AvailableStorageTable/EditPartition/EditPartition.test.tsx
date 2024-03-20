@@ -3,25 +3,17 @@ import configureStore from "redux-mock-store";
 import EditPartition from "./EditPartition";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("EditPartition", () => {
   it("can show errors", () => {
-    const partition = partitionFactory();
-    const disk = diskFactory({ partitions: [partition] });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const partition = factory.nodePartition();
+    const disk = factory.nodeDisk({ partitions: [partition] });
+    const state = factory.rootState({
+      machine: factory.machineState({
         eventErrors: [
           {
             error: "didn't work",
@@ -29,9 +21,9 @@ describe("EditPartition", () => {
             id: "abc123",
           },
         ],
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        items: [factory.machineDetails({ disks: [disk], system_id: "abc123" })],
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -49,19 +41,19 @@ describe("EditPartition", () => {
   });
 
   it("correctly dispatches an action to edit a partition", async () => {
-    const partition = partitionFactory();
-    const disk = diskFactory({ partitions: [partition] });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const partition = factory.nodePartition();
+    const disk = factory.nodeDisk({ partitions: [partition] });
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: [disk],
             supported_filesystems: [{ key: "fat32", ui: "FAT32" }],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });

@@ -10,12 +10,7 @@ import CloneResults, { CloneErrorCodes } from "./CloneResults";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineEventError as eventErrorFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -24,9 +19,9 @@ describe("CloneResults", () => {
   let machine: MachineDetails;
 
   beforeEach(() => {
-    machine = machineDetailsFactory({ system_id: "abc123" });
-    state = rootStateFactory({
-      machine: machineStateFactory({ items: [machine], loaded: true }),
+    machine = factory.machineDetails({ system_id: "abc123" });
+    state = factory.rootState({
+      machine: factory.machineState({ items: [machine], loaded: true }),
     });
   });
 
@@ -56,7 +51,7 @@ describe("CloneResults", () => {
 
   it("handles global clone errors", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: "it didn't work",
         event: NodeActions.CLONE,
         id: machine.system_id,
@@ -88,7 +83,7 @@ describe("CloneResults", () => {
 
   it("handles non-invalid item destination errors", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -129,7 +124,7 @@ describe("CloneResults", () => {
 
   it("handles invalid item destination errors", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -170,7 +165,7 @@ describe("CloneResults", () => {
 
   it("groups errors by error code", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -217,7 +212,7 @@ describe("CloneResults", () => {
   it("can filter machines by error type", async () => {
     const setSearchFilter = vi.fn();
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -259,7 +254,7 @@ describe("CloneResults", () => {
   it("does not show filter links if viewing from machine details", () => {
     const setSearchFilter = vi.fn();
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {

@@ -4,7 +4,7 @@ import { Route } from "react-router-dom";
 import DeviceList from "./DeviceList";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -15,7 +15,7 @@ import {
 describe("DeviceList", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("sets the search text from the URL on load", () => {

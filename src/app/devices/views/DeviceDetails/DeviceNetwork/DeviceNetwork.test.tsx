@@ -3,19 +3,15 @@ import configureStore from "redux-mock-store";
 import DeviceNetwork from "./DeviceNetwork";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("DeviceNetwork", () => {
   it("displays a spinner if device is loading", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
+    const state = factory.rootState({
+      device: factory.deviceState({
         items: [],
       }),
     });
@@ -30,9 +26,9 @@ describe("DeviceNetwork", () => {
   });
 
   it("displays the network tab when loaded", () => {
-    const state = rootStateFactory({
-      device: deviceStateFactory({
-        items: [deviceDetailsFactory({ system_id: "abc123" })],
+    const state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.deviceDetails({ system_id: "abc123" })],
       }),
     });
     const store = mockStore(state);

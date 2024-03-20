@@ -4,16 +4,7 @@ import SourceMachineSelect, { Label } from "./SourceMachineSelect";
 import type { Machine } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  machineState as machineStateFactory,
-  machineStateList,
-  machineStateListGroup,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 describe("SourceMachineSelect", () => {
@@ -23,26 +14,26 @@ describe("SourceMachineSelect", () => {
   beforeEach(() => {
     vi.spyOn(query, "generateCallId").mockReturnValueOnce("123456");
     machines = [
-      machineFactory({
+      factory.machine({
         system_id: "abc123",
         hostname: "first",
         owner: "admin",
         tags: [12],
       }),
-      machineFactory({
+      factory.machine({
         system_id: "def456",
         hostname: "second",
         owner: "user",
         tags: [13],
       }),
     ];
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: machines,
         lists: {
-          "123456": machineStateList({
+          "123456": factory.machineStateList({
             groups: [
-              machineStateListGroup({
+              factory.machineStateListGroup({
                 items: machines.map(({ system_id }) => system_id),
               }),
             ],
@@ -51,10 +42,10 @@ describe("SourceMachineSelect", () => {
         },
         loaded: true,
       }),
-      tag: tagStateFactory({
+      tag: factory.tagState({
         items: [
-          tagFactory({ id: 12, name: "tagA" }),
-          tagFactory({ id: 13, name: "tagB" }),
+          factory.tag({ id: 12, name: "tagA" }),
+          factory.tag({ id: 13, name: "tagB" }),
         ],
       }),
     });
@@ -65,7 +56,7 @@ describe("SourceMachineSelect", () => {
   });
 
   it("shows an error if no machines are available to select", () => {
-    state.machine.lists["123456"] = machineStateList({
+    state.machine.lists["123456"] = factory.machineStateList({
       loaded: true,
       loading: false,
       count: 0,
@@ -86,7 +77,7 @@ describe("SourceMachineSelect", () => {
   });
 
   it("shows the machine's details when selected", () => {
-    const selectedMachine = machineDetailsFactory();
+    const selectedMachine = factory.machineDetails();
 
     renderWithMockStore(
       <SourceMachineSelect
@@ -102,7 +93,7 @@ describe("SourceMachineSelect", () => {
   });
 
   it("clears the selected machine on search input change", async () => {
-    const selectedMachine = machineDetailsFactory();
+    const selectedMachine = factory.machineDetails();
     const onMachineClick = vi.fn();
 
     renderWithMockStore(

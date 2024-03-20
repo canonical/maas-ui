@@ -1,25 +1,13 @@
 import pod from "./selectors";
 
 import { PodType } from "@/app/store/pod/constants";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  pod as podFactory,
-  podPowerParameters as powerParametersFactory,
-  podProject as podProjectFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podVM as podVMFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("pod selectors", () => {
   it("can get all items", () => {
-    const items = [podFactory(), podFactory()];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const items = [factory.pod(), factory.pod()];
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -28,11 +16,11 @@ describe("pod selectors", () => {
 
   it("can get all projects", () => {
     const projects = {
-      "172.0.0.1": [podProjectFactory()],
-      "192.168.1.1": [podProjectFactory()],
+      "172.0.0.1": [factory.podProject()],
+      "192.168.1.1": [factory.podProject()],
     };
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         projects,
       }),
     });
@@ -41,11 +29,11 @@ describe("pod selectors", () => {
 
   it("can get all KVMs that MAAS supports", () => {
     const items = [
-      podFactory({ type: PodType.VIRSH }),
-      podFactory({ type: PodType.LXD }),
+      factory.pod({ type: PodType.VIRSH }),
+      factory.pod({ type: PodType.LXD }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -54,11 +42,11 @@ describe("pod selectors", () => {
 
   it("can get all LXD pods", () => {
     const items = [
-      podFactory({ type: PodType.VIRSH }),
-      podFactory({ type: PodType.LXD }),
+      factory.pod({ type: PodType.VIRSH }),
+      factory.pod({ type: PodType.LXD }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -67,13 +55,13 @@ describe("pod selectors", () => {
 
   it("can get all LXD pods that aren't cluster hosts", () => {
     const items = [
-      podFactory({ type: PodType.VIRSH, name: "virsh host" }),
-      podFactory({ type: PodType.LXD, name: "cluster host", cluster: 0 }),
-      podFactory({ type: PodType.LXD, name: "single host 1" }),
-      podFactory({ type: PodType.LXD, name: "single host 2" }),
+      factory.pod({ type: PodType.VIRSH, name: "virsh host" }),
+      factory.pod({ type: PodType.LXD, name: "cluster host", cluster: 0 }),
+      factory.pod({ type: PodType.LXD, name: "single host 1" }),
+      factory.pod({ type: PodType.LXD, name: "single host 2" }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -82,11 +70,11 @@ describe("pod selectors", () => {
 
   it("can get all virsh pods", () => {
     const items = [
-      podFactory({ type: PodType.VIRSH }),
-      podFactory({ type: PodType.LXD }),
+      factory.pod({ type: PodType.VIRSH }),
+      factory.pod({ type: PodType.LXD }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -94,8 +82,8 @@ describe("pod selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         loading: true,
       }),
     });
@@ -103,8 +91,8 @@ describe("pod selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         loaded: true,
       }),
     });
@@ -112,8 +100,8 @@ describe("pod selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         saving: true,
       }),
     });
@@ -121,8 +109,8 @@ describe("pod selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         saved: true,
       }),
     });
@@ -130,8 +118,8 @@ describe("pod selectors", () => {
   });
 
   it("can get the active pod id", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         active: 1,
       }),
     });
@@ -139,9 +127,9 @@ describe("pod selectors", () => {
   });
 
   it("can get the active pod", () => {
-    const activePod = podFactory();
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const activePod = factory.pod();
+    const state = factory.rootState({
+      pod: factory.podState({
         active: activePod.id,
         items: [activePod],
       }),
@@ -150,8 +138,8 @@ describe("pod selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         errors: "Data is incorrect",
       }),
     });
@@ -159,9 +147,9 @@ describe("pod selectors", () => {
   });
 
   it("can get a pod by id", () => {
-    const items = [podFactory({ id: 111 }), podFactory({ id: 222 })];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const items = [factory.pod({ id: 111 }), factory.pod({ id: 222 })];
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -169,19 +157,19 @@ describe("pod selectors", () => {
   });
 
   it("can get a pod's host machine", () => {
-    const items = [podFactory({ host: "abc123" })];
+    const items = [factory.pod({ host: "abc123" })];
     const machineItems = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory(),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine(),
     ];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
-        items: [controllerFactory()],
+    const state = factory.rootState({
+      controller: factory.controllerState({
+        items: [factory.controller()],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: machineItems,
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items,
       }),
     });
@@ -189,19 +177,19 @@ describe("pod selectors", () => {
   });
 
   it("can get a pod's host controller", () => {
-    const items = [podFactory({ host: "abc123" })];
+    const items = [factory.pod({ host: "abc123" })];
     const controllerItems = [
-      controllerFactory({ system_id: "abc123" }),
-      controllerFactory(),
+      factory.controller({ system_id: "abc123" }),
+      factory.controller(),
     ];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items: controllerItems,
       }),
-      machine: machineStateFactory({
-        items: [machineFactory()],
+      machine: factory.machineState({
+        items: [factory.machine()],
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items,
       }),
     });
@@ -210,26 +198,26 @@ describe("pod selectors", () => {
 
   it("can get all pod hosts", () => {
     const items = [
-      podFactory({ host: "aaaaaa" }),
-      podFactory({ host: "bbbbbb" }),
-      podFactory({ host: "cccccc" }),
+      factory.pod({ host: "aaaaaa" }),
+      factory.pod({ host: "bbbbbb" }),
+      factory.pod({ host: "cccccc" }),
     ];
     const controllerItems = [
-      controllerFactory({ system_id: "aaaaaa" }),
-      controllerFactory({ system_id: "bbbbbb" }),
+      factory.controller({ system_id: "aaaaaa" }),
+      factory.controller({ system_id: "bbbbbb" }),
     ];
     const machineItems = [
-      machineFactory({ system_id: "cccccc" }),
-      machineFactory({ system_id: "dddddd" }),
+      factory.machine({ system_id: "cccccc" }),
+      factory.machine({ system_id: "dddddd" }),
     ];
-    const state = rootStateFactory({
-      controller: controllerStateFactory({
+    const state = factory.rootState({
+      controller: factory.controllerState({
         items: controllerItems,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: machineItems,
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items,
       }),
     });
@@ -242,34 +230,34 @@ describe("pod selectors", () => {
 
   it("can group LXD pods by LXD server address", () => {
     const items = [
-      podFactory({ type: PodType.VIRSH }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({ type: PodType.VIRSH }),
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "172.0.0.1",
         }),
         type: PodType.LXD,
       }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "172.0.0.1",
         }),
         type: PodType.LXD,
       }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "192.168.0.1:8000",
         }),
         type: PodType.LXD,
       }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "192.168.0.1:9000",
         }),
         type: PodType.LXD,
       }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -291,34 +279,34 @@ describe("pod selectors", () => {
 
   it("can get LXD pods by LXD server address", () => {
     const items = [
-      podFactory({ type: PodType.VIRSH }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({ type: PodType.VIRSH }),
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "172.0.0.1",
         }),
         type: PodType.LXD,
       }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "172.0.0.1",
         }),
         type: PodType.LXD,
       }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "192.168.0.1:8000",
         }),
         type: PodType.LXD,
       }),
-      podFactory({
-        power_parameters: powerParametersFactory({
+      factory.pod({
+        power_parameters: factory.podPowerParameters({
           power_address: "192.168.0.1:9000",
         }),
         type: PodType.LXD,
       }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items,
       }),
     });
@@ -329,9 +317,9 @@ describe("pod selectors", () => {
   });
 
   it("can get projects by LXD server address", () => {
-    const projects = [podProjectFactory(), podProjectFactory()];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const projects = [factory.podProject(), factory.podProject()];
+    const state = factory.rootState({
+      pod: factory.podState({
         projects: {
           "172.0.0.1": projects,
         },
@@ -342,15 +330,15 @@ describe("pod selectors", () => {
 
   it("can get a specific VM resource of a pod", () => {
     const [thisVmResource, otherVmResource] = [
-      podVMFactory({ system_id: "abc123" }),
-      podVMFactory({ system_id: "def456" }),
+      factory.podVM({ system_id: "abc123" }),
+      factory.podVM({ system_id: "def456" }),
     ];
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             id: 1,
-            resources: podResourcesFactory({
+            resources: factory.podResources({
               vms: [thisVmResource, otherVmResource],
             }),
           }),
@@ -362,16 +350,16 @@ describe("pod selectors", () => {
 
   it("can get the LXD hosts that are in a given cluster", () => {
     const inCluster = [
-      podFactory({ type: PodType.LXD, cluster: 0 }),
-      podFactory({ type: PodType.LXD, cluster: 0 }),
+      factory.pod({ type: PodType.LXD, cluster: 0 }),
+      factory.pod({ type: PodType.LXD, cluster: 0 }),
     ];
     const notInCluster = [
-      podFactory({ type: PodType.LXD }),
-      podFactory({ type: PodType.VIRSH }),
+      factory.pod({ type: PodType.LXD }),
+      factory.pod({ type: PodType.VIRSH }),
     ];
 
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [...inCluster, ...notInCluster],
       }),
     });

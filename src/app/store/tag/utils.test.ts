@@ -1,11 +1,14 @@
 import { getTagNamesForIds, getTagsDisplay } from "./utils";
 
-import { tag as tagFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("tag utils", () => {
   describe("getTagsDisplay", () => {
     it("can get tags for display", () => {
-      const tags = [tagFactory({ name: "tag1" }), tagFactory({ name: "tag2" })];
+      const tags = [
+        factory.tag({ name: "tag1" }),
+        factory.tag({ name: "tag2" }),
+      ];
       expect(getTagsDisplay(tags)).toBe("tag1, tag2");
     });
 
@@ -17,9 +20,9 @@ describe("tag utils", () => {
   describe("getTagNamesForIds", () => {
     it("can map tag ids to names", () => {
       const tags = [
-        tagFactory({ id: 1, name: "tag1" }),
-        tagFactory({ id: 2, name: "tag2" }),
-        tagFactory({ id: 3, name: "tag3" }),
+        factory.tag({ id: 1, name: "tag1" }),
+        factory.tag({ id: 2, name: "tag2" }),
+        factory.tag({ id: 3, name: "tag3" }),
       ];
       expect(getTagNamesForIds([1, 3], tags)).toStrictEqual(["tag1", "tag3"]);
     });

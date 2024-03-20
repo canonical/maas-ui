@@ -4,10 +4,7 @@ import Login, { Labels } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
 import { actions as statusActions } from "@/app/store/status";
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -16,8 +13,8 @@ describe("Login", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
     });

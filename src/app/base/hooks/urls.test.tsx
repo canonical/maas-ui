@@ -8,7 +8,7 @@ import configureStore from "redux-mock-store";
 
 import { useGetURLId } from "./urls";
 
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -16,7 +16,7 @@ const generateWrapper =
   (pathname: string, route: string) =>
   ({ children }: { children: ReactNode }) =>
     (
-      <Provider store={mockStore(rootStateFactory())}>
+      <Provider store={mockStore(factory.rootState())}>
         <MemoryRouter initialEntries={[{ pathname }]}>
           <CompatRouter>
             <Routes>

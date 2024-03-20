@@ -13,15 +13,7 @@ import {
   ScriptResultType,
   ScriptResultStatus,
 } from "@/app/store/scriptresult/types";
-import {
-  machineState as machineStateFactory,
-  machineDetails as machineDetailsFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultData as scriptResultDataFactory,
-  scriptResultState as scriptResultStateFactory,
-  nodeScriptResultState as nodeScriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -34,16 +26,16 @@ describe("machine utils", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1] },
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         items: [
-          scriptResultFactory({
+          factory.scriptResult({
             id: 1,
             name: ScriptResultNames.INSTALL_LOG,
             result_type: ScriptResultType.INSTALLATION,
@@ -51,7 +43,7 @@ describe("machine utils", () => {
           }),
         ],
         logs: {
-          1: scriptResultDataFactory({
+          1: factory.scriptResultData({
             combined: "Installation output",
           }),
         },

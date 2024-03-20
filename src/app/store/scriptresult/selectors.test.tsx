@@ -5,20 +5,13 @@ import {
   ScriptResultStatus,
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
-import {
-  nodeScriptResultState as nodeScriptResultStateFactory,
-  partialScriptResult as partialScriptResultFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultData as scriptResultDataFactory,
-  scriptResultState as scriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("scriptResult selectors", () => {
   it("returns all script results", () => {
-    const items = [scriptResultFactory(), scriptResultFactory()];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const items = [factory.scriptResult(), factory.scriptResult()];
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
     });
@@ -27,8 +20,8 @@ describe("scriptResult selectors", () => {
   });
 
   it("returns the loading state", () => {
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         loading: true,
       }),
     });
@@ -37,8 +30,8 @@ describe("scriptResult selectors", () => {
   });
 
   it("returns the loaded state", () => {
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         loaded: true,
       }),
     });
@@ -47,8 +40,8 @@ describe("scriptResult selectors", () => {
   });
 
   it("returns the errors state", () => {
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         errors: "Data is incorrect",
       }),
     });
@@ -58,15 +51,15 @@ describe("scriptResult selectors", () => {
 
   it("returns script results by id", () => {
     const items = [
-      scriptResultFactory({ id: 1 }),
-      scriptResultFactory({ id: 2 }),
-      scriptResultFactory({ id: 3 }),
+      factory.scriptResult({ id: 1 }),
+      factory.scriptResult({ id: 2 }),
+      factory.scriptResult({ id: 3 }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2] },
       }),
     });
@@ -75,15 +68,15 @@ describe("scriptResult selectors", () => {
 
   it("returns script results by node id", () => {
     const resultsForNode = [
-      scriptResultFactory({ id: 1 }),
-      scriptResultFactory({ id: 2 }),
+      factory.scriptResult({ id: 1 }),
+      factory.scriptResult({ id: 2 }),
     ];
-    const items = [...resultsForNode, scriptResultFactory({ id: 3 })];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const items = [...resultsForNode, factory.scriptResult({ id: 3 })];
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2] },
       }),
     });
@@ -93,27 +86,27 @@ describe("scriptResult selectors", () => {
   });
 
   it("handles no script results for a node", () => {
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items: [
-          scriptResultFactory({ id: 1 }),
-          scriptResultFactory({ id: 2 }),
-          scriptResultFactory({ id: 3 }),
+          factory.scriptResult({ id: 1 }),
+          factory.scriptResult({ id: 2 }),
+          factory.scriptResult({ id: 3 }),
         ],
       }),
-      nodescriptresult: nodeScriptResultStateFactory(),
+      nodescriptresult: factory.nodeScriptResultState(),
     });
     expect(selectors.getByNodeId(state, "abc123")).toStrictEqual(null);
   });
 
   it("returns hardware testing script results by node id", () => {
     const hardwareResultsForNode = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
@@ -121,22 +114,22 @@ describe("scriptResult selectors", () => {
     ];
     const items = [
       ...hardwareResultsForNode,
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         hardware_type: HardwareType.Storage,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 4,
         result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
 
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3, 4] },
       }),
     });
@@ -148,23 +141,23 @@ describe("scriptResult selectors", () => {
 
   it("returns failed hardware testing script results by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
       }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2] },
       }),
     });
@@ -174,7 +167,7 @@ describe("scriptResult selectors", () => {
   });
 
   it("returns commissioning script results by node id", () => {
-    const commissioningResultsForNode = scriptResultFactory({
+    const commissioningResultsForNode = factory.scriptResult({
       id: 1,
       hardware_type: HardwareType.Node,
       result_type: ScriptResultType.COMMISSIONING,
@@ -182,22 +175,22 @@ describe("scriptResult selectors", () => {
 
     const items = [
       commissioningResultsForNode,
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         result_type: ScriptResultType.INSTALLATION,
       }),
     ];
 
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3] },
       }),
     });
@@ -209,28 +202,28 @@ describe("scriptResult selectors", () => {
 
   it("returns network testing script results by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
       }),
     ];
 
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2] },
       }),
     });
@@ -242,23 +235,23 @@ describe("scriptResult selectors", () => {
 
   it("returns failed network testing script results by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
       }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2] },
       }),
     });
@@ -268,7 +261,7 @@ describe("scriptResult selectors", () => {
   });
 
   it("returns storage testing script results by node id", () => {
-    const storageResultsForNode = scriptResultFactory({
+    const storageResultsForNode = factory.scriptResult({
       id: 1,
       hardware_type: HardwareType.Storage,
       result_type: ScriptResultType.TESTING,
@@ -276,22 +269,22 @@ describe("scriptResult selectors", () => {
 
     const items = [
       storageResultsForNode,
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
 
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3] },
       }),
     });
@@ -303,27 +296,27 @@ describe("scriptResult selectors", () => {
 
   it("returns failed storage testing script results by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.Storage,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Storage,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3] },
       }),
     });
@@ -333,7 +326,7 @@ describe("scriptResult selectors", () => {
   });
 
   it("returns other testing script results by node id", () => {
-    const otherResultsForNode = scriptResultFactory({
+    const otherResultsForNode = factory.scriptResult({
       id: 1,
       hardware_type: HardwareType.Node,
       result_type: ScriptResultType.TESTING,
@@ -341,22 +334,22 @@ describe("scriptResult selectors", () => {
 
     const items = [
       otherResultsForNode,
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
 
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3] },
       }),
     });
@@ -368,27 +361,27 @@ describe("scriptResult selectors", () => {
 
   it("returns other failed testing script results by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.Node,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Node,
         result_type: ScriptResultType.TESTING,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         result_type: ScriptResultType.COMMISSIONING,
       }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3] },
       }),
     });
@@ -399,49 +392,49 @@ describe("scriptResult selectors", () => {
 
   it("returns failed testing script results for node ids", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
       }),
       // Should not be returned because it passed.
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.PASSED,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 4,
         hardware_type: HardwareType.Storage,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.FAILED,
       }),
       // Should not be returned because it is not a testing script.
-      scriptResultFactory({
+      factory.scriptResult({
         id: 5,
         result_type: ScriptResultType.COMMISSIONING,
         status: ScriptResultStatus.FAILED,
       }),
       // Should not be returned because it passed.
-      scriptResultFactory({
+      factory.scriptResult({
         id: 6,
         result_type: ScriptResultType.TESTING,
         status: ScriptResultStatus.PASSED,
       }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3], def456: [4, 5, 6] },
       }),
     });
@@ -455,27 +448,27 @@ describe("scriptResult selectors", () => {
 
   it("returns installation script results by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.INSTALLATION,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.INSTALLATION,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.TESTING,
       }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3] },
       }),
     });
@@ -488,23 +481,23 @@ describe("scriptResult selectors", () => {
 
   it("returns failed installation script results by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.INSTALLATION,
         status: ScriptResultStatus.FAILED,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.INSTALLATION,
       }),
     ];
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2] },
       }),
     });
@@ -515,28 +508,28 @@ describe("scriptResult selectors", () => {
 
   it("returns installation script logs by node id", () => {
     const items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         hardware_type: HardwareType.CPU,
         result_type: ScriptResultType.INSTALLATION,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         hardware_type: HardwareType.Network,
         result_type: ScriptResultType.INSTALLATION,
       }),
     ];
     const logs = {
-      1: scriptResultDataFactory(),
-      2: scriptResultDataFactory(),
-      3: scriptResultDataFactory(),
+      1: factory.scriptResultData(),
+      2: factory.scriptResultData(),
+      3: factory.scriptResultData(),
     };
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         items,
         logs,
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1, 2, 3] },
       }),
     });
@@ -548,11 +541,11 @@ describe("scriptResult selectors", () => {
 
   it("returns a log by id", () => {
     const logs = {
-      1: scriptResultDataFactory(),
-      2: scriptResultDataFactory(),
+      1: factory.scriptResultData(),
+      2: factory.scriptResultData(),
     };
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         logs,
       }),
     });
@@ -561,11 +554,11 @@ describe("scriptResult selectors", () => {
 
   it("returns history by id", () => {
     const history = {
-      1: [partialScriptResultFactory()],
-      2: [partialScriptResultFactory()],
+      1: [factory.partialScriptResult()],
+      2: [factory.partialScriptResult()],
     };
-    const state = rootStateFactory({
-      scriptresult: scriptResultStateFactory({
+    const state = factory.rootState({
+      scriptresult: factory.scriptResultState({
         history,
       }),
     });

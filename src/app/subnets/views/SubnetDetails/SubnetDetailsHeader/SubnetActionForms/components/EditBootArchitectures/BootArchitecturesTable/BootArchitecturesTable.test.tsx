@@ -6,12 +6,7 @@ import type { FormValues } from "../EditBootArchitectures";
 
 import BootArchitecturesTable, { Headers } from "./BootArchitecturesTable";
 
-import {
-  generalState as generalStateFactory,
-  knownBootArchitecture as knownBootArchitectureFactory,
-  knownBootArchitecturesState as knownBootArchitecturesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -24,10 +19,10 @@ beforeEach(() => {
 });
 
 it("renders a table of known boot architectures", () => {
-  const knownBootArchitecture = knownBootArchitectureFactory();
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      knownBootArchitectures: knownBootArchitecturesStateFactory({
+  const knownBootArchitecture = factory.knownBootArchitecture();
+  const state = factory.rootState({
+    general: factory.generalState({
+      knownBootArchitectures: factory.knownBootArchitecturesState({
         data: [knownBootArchitecture],
       }),
     }),

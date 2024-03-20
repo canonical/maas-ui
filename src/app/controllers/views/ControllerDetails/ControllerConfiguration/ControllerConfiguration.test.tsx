@@ -14,61 +14,47 @@ import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneS
 import { actions as controllerActions } from "@/app/store/controller";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  generalState as generalStateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
-const controller = controllerDetailsFactory({ system_id: "abc123" });
+const controller = factory.controllerDetails({ system_id: "abc123" });
 
 beforeEach(() => {
-  state = rootStateFactory({
-    controller: controllerStateFactory({
+  state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
     }),
-    general: generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
+    general: factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
         data: null,
       }),
-      powerTypes: powerTypesStateFactory({
+      powerTypes: factory.powerTypesState({
         data: [
-          powerTypeFactory({
+          factory.powerType({
             name: PodType.LXD,
             fields: [
-              powerFieldFactory({ name: "power_address" }),
-              powerFieldFactory({ name: "password" }),
+              factory.powerField({ name: "power_address" }),
+              factory.powerField({ name: "password" }),
             ],
           }),
         ],
         loaded: true,
       }),
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       loaded: true,
       items: [
-        tagFactory({ id: 1, name: "tag1" }),
-        tagFactory({ id: 2, name: "tag2" }),
+        factory.tag({ id: 1, name: "tag1" }),
+        factory.tag({ id: 2, name: "tag2" }),
       ],
     }),
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-      items: [zoneFactory({ name: "twilight" })],
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({ fetch: "success" }),
+      items: [factory.zone({ name: "twilight" })],
     }),
   });
 });

@@ -18,18 +18,7 @@ import {
   FetchNodeStatus,
 } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "@/testing/callId-mock";
-import {
-  filterGroup as filterGroupFactory,
-  machine as machineFactory,
-  machineDetails as machineDetailsFactory,
-  machineEventError as machineEventErrorFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  machineState as machineStateFactory,
-  machineStateCount as machineStateCountFactory,
-  machineStateDetailsItem as machineStateDetailsItemFactory,
-  machineStatus as machineStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 enableCallIdMocks();
 
@@ -65,9 +54,9 @@ describe("machine reducer", () => {
 
   describe("count", () => {
     it("reduces countError", () => {
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         counts: {
-          [callId]: machineStateCountFactory({
+          [callId]: factory.machineStateCount({
             loading: true,
           }),
         },
@@ -78,15 +67,15 @@ describe("machine reducer", () => {
           actions.countError(callId, "Could not count machines")
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           counts: {
-            [callId]: machineStateCountFactory({
+            [callId]: factory.machineStateCount({
               errors: "Could not count machines",
               loading: false,
             }),
           },
           eventErrors: [
-            machineEventErrorFactory({
+            factory.machineEventError({
               error: "Could not count machines",
               event: "count",
               id: null,
@@ -97,11 +86,11 @@ describe("machine reducer", () => {
     });
 
     it("reduces countStart for initial fetch", () => {
-      const initialState = machineStateFactory({ loading: false });
+      const initialState = factory.machineState({ loading: false });
       expect(reducers(initialState, actions.countStart(callId))).toEqual(
-        machineStateFactory({
+        factory.machineState({
           counts: {
-            [callId]: machineStateCountFactory({
+            [callId]: factory.machineStateCount({
               loading: true,
               fetchedAt: NOW,
             }),
@@ -111,7 +100,7 @@ describe("machine reducer", () => {
     });
 
     it("reduces countStart for subsequent fetch", () => {
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         counts: {
           [callId]: {
             ...DEFAULT_COUNT_STATE,
@@ -140,7 +129,7 @@ describe("machine reducer", () => {
 
     it("reduces countSuccess", () => {
       const payload = { count: 10 };
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         counts: {
           [callId]: {
             ...DEFAULT_COUNT_STATE,
@@ -163,7 +152,7 @@ describe("machine reducer", () => {
     });
 
     it("ignores calls that don't exist when reducing countSuccess", () => {
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         counts: {},
       });
       expect(
@@ -174,7 +163,7 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           counts: {},
         })
       );
@@ -183,12 +172,12 @@ describe("machine reducer", () => {
 
   describe("fetch", () => {
     it("reduces fetchStart", () => {
-      const initialState = machineStateFactory({ loading: false });
+      const initialState = factory.machineState({ loading: false });
 
       expect(reducers(initialState, actions.fetchStart(callId))).toEqual(
-        machineStateFactory({
+        factory.machineState({
           lists: {
-            [callId]: machineStateListFactory({
+            [callId]: factory.machineStateList({
               loading: true,
               fetchedAt: NOW,
             }),
@@ -200,7 +189,7 @@ describe("machine reducer", () => {
     it("reduces fetchStart for subsequent fetch for the same callId", () => {
       vi.spyOn(Date, "now").mockImplementation(() => NOW + 1);
 
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         lists: {
           [callId]: {
             ...DEFAULT_LIST_STATE,
@@ -227,10 +216,10 @@ describe("machine reducer", () => {
     });
 
     it("reduces fetchSuccess", () => {
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         items: [],
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loaded: false,
             loading: true,
           }),
@@ -238,8 +227,8 @@ describe("machine reducer", () => {
         statuses: {},
       });
       const fetchedMachines = [
-        machineFactory({ system_id: "abc123" }),
-        machineFactory({ system_id: "def456" }),
+        factory.machine({ system_id: "abc123" }),
+        factory.machine({ system_id: "def456" }),
       ];
 
       expect(
@@ -261,14 +250,14 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: fetchedMachines,
           lists: {
-            [callId]: machineStateListFactory({
+            [callId]: factory.machineStateList({
               count: 1,
               cur_page: 2,
               groups: [
-                machineStateListGroupFactory({
+                factory.machineStateListGroup({
                   collapsed: true,
                   count: 4,
                   items: ["abc123", "def456"],
@@ -282,8 +271,8 @@ describe("machine reducer", () => {
             }),
           },
           statuses: {
-            abc123: machineStatusFactory(),
-            def456: machineStatusFactory(),
+            abc123: factory.machineStatus(),
+            def456: factory.machineStatus(),
           },
         })
       );
@@ -291,31 +280,31 @@ describe("machine reducer", () => {
   });
 
   it("reduces invalidateQueries", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       loading: false,
       counts: {
-        [callId]: machineStateCountFactory({
+        [callId]: factory.machineStateCount({
           loaded: true,
           stale: false,
         }),
       },
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           loaded: true,
           stale: false,
         }),
       },
     });
     expect(reducers(initialState, actions.invalidateQueries())).toEqual(
-      machineStateFactory({
+      factory.machineState({
         counts: {
-          [callId]: machineStateCountFactory({
+          [callId]: factory.machineStateCount({
             loaded: true,
             stale: true,
           }),
         },
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loaded: true,
             stale: true,
           }),
@@ -325,16 +314,16 @@ describe("machine reducer", () => {
   });
 
   it("invalidates queries on status/websocketDisconnected", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       loading: false,
       counts: {
-        [callId]: machineStateCountFactory({
+        [callId]: factory.machineStateCount({
           loaded: true,
           stale: false,
         }),
       },
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           loaded: true,
           stale: false,
         }),
@@ -343,15 +332,15 @@ describe("machine reducer", () => {
     expect(
       reducers(initialState, statusActions.websocketDisconnected())
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         counts: {
-          [callId]: machineStateCountFactory({
+          [callId]: factory.machineStateCount({
             loaded: true,
             stale: true,
           }),
         },
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loaded: true,
             stale: true,
           }),
@@ -362,10 +351,10 @@ describe("machine reducer", () => {
 
   describe("updateNotify", () => {
     it("marks filtered machine counts as stale", () => {
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         loading: false,
         counts: {
-          [callId]: machineStateCountFactory({
+          [callId]: factory.machineStateCount({
             loaded: true,
             stale: false,
             params: { filter: { status: FetchNodeStatus.NEW } },
@@ -373,7 +362,7 @@ describe("machine reducer", () => {
         },
       });
       expect(
-        reducers(initialState, actions.updateNotify(machineFactory()))
+        reducers(initialState, actions.updateNotify(factory.machine()))
       ).toEqual({
         ...initialState,
         counts: { [callId]: { ...initialState.counts[callId], stale: true } },
@@ -381,35 +370,35 @@ describe("machine reducer", () => {
     });
 
     it("doesn't mark unfiltered machine counts as stale", () => {
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         loading: false,
         counts: {
-          [callId]: machineStateCountFactory({
+          [callId]: factory.machineStateCount({
             loaded: true,
             stale: false,
           }),
         },
       });
       expect(
-        reducers(initialState, actions.updateNotify(machineFactory()))
+        reducers(initialState, actions.updateNotify(factory.machine()))
       ).toEqual(initialState);
     });
   });
 
   it("marks count requests as stale on delete notify", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       loading: false,
       counts: {
-        [callId]: machineStateCountFactory({
+        [callId]: factory.machineStateCount({
           loaded: true,
           stale: false,
         }),
       },
     });
     expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
-      machineStateFactory({
+      factory.machineState({
         counts: {
-          [callId]: machineStateCountFactory({
+          [callId]: factory.machineStateCount({
             loaded: true,
             stale: true,
           }),
@@ -419,10 +408,10 @@ describe("machine reducer", () => {
   });
 
   it("resets stale status on fetchSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       loading: false,
       lists: {
-        [callId]: machineStateListFactory({ loaded: true, stale: true }),
+        [callId]: factory.machineStateList({ loaded: true, stale: true }),
       },
     });
     const groups = [
@@ -432,7 +421,7 @@ describe("machine reducer", () => {
     const expectedState = {
       lists: {
         [callId]: {
-          ...machineStateListFactory(),
+          ...factory.machineStateList(),
           ...fetchSuccessPayload,
           loaded: true,
           loading: false,
@@ -443,14 +432,14 @@ describe("machine reducer", () => {
 
     expect(
       reducers(initialState, actions.fetchSuccess(callId, fetchSuccessPayload))
-    ).toEqual(machineStateFactory(expectedState));
+    ).toEqual(factory.machineState(expectedState));
   });
 
   it("resets stale status on countSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       loading: false,
       counts: {
-        [callId]: machineStateCountFactory({
+        [callId]: factory.machineStateCount({
           loaded: true,
           stale: true,
         }),
@@ -459,9 +448,9 @@ describe("machine reducer", () => {
     expect(
       reducers(initialState, actions.countSuccess(callId, { count: 1 }))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         counts: {
-          [callId]: machineStateCountFactory({
+          [callId]: factory.machineStateCount({
             loaded: true,
             stale: false,
             count: 1,
@@ -472,18 +461,18 @@ describe("machine reducer", () => {
   });
 
   it("updates selected machines on delete notify", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       selected: { items: ["abc123"] },
     });
     expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
-      machineStateFactory({
+      factory.machineState({
         selected: { items: [] },
       })
     );
   });
 
   it("reduces machine action with filter", () => {
-    const initialState = machineStateFactory();
+    const initialState = factory.machineState();
 
     expect(
       reducers(
@@ -494,14 +483,14 @@ describe("machine reducer", () => {
   });
 
   it("ignores calls that don't exist when reducing fetchSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       items: [],
       lists: {},
       statuses: {},
     });
     const fetchedMachines = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
     ];
 
     expect(
@@ -523,7 +512,7 @@ describe("machine reducer", () => {
         })
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         items: [],
         lists: {},
         statuses: {},
@@ -532,22 +521,22 @@ describe("machine reducer", () => {
   });
 
   it("does not update existing machine details items when reducing fetchSuccess", () => {
-    const existingMachine = machineDetailsFactory({
+    const existingMachine = factory.machineDetails({
       id: 1,
       system_id: "abc123",
     });
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       items: [existingMachine],
       lists: {
-        [callId]: machineStateListFactory(),
+        [callId]: factory.machineStateList(),
       },
       statuses: {
-        abc123: machineStatusFactory(),
+        abc123: factory.machineStatus(),
       },
     });
     const fetchedMachines = [
-      machineFactory({ id: 1, system_id: "abc123" }),
-      machineFactory({ id: 2, system_id: "def456" }),
+      factory.machine({ id: 1, system_id: "abc123" }),
+      factory.machine({ id: 2, system_id: "def456" }),
     ];
 
     expect(
@@ -569,14 +558,14 @@ describe("machine reducer", () => {
         })
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         items: [existingMachine, fetchedMachines[1]],
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             count: 1,
             cur_page: 2,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 collapsed: true,
                 count: 4,
                 items: ["abc123", "def456"],
@@ -590,15 +579,15 @@ describe("machine reducer", () => {
           }),
         },
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       })
     );
   });
 
   it("updates existing machine items when reducing fetchSuccess", () => {
-    const existingMachine = machineFactory({
+    const existingMachine = factory.machine({
       id: 1,
       hostname: "old-hostname",
       system_id: "abc123",
@@ -607,18 +596,18 @@ describe("machine reducer", () => {
       ...existingMachine,
       hostname: "updated-hostname",
     };
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       items: [existingMachine],
       lists: {
-        [callId]: machineStateListFactory(),
+        [callId]: factory.machineStateList(),
       },
       statuses: {
-        abc123: machineStatusFactory(),
+        abc123: factory.machineStatus(),
       },
     });
     const fetchedMachines = [
       updatedExistingMachine,
-      machineFactory({ id: 2, system_id: "def456" }),
+      factory.machine({ id: 2, system_id: "def456" }),
     ];
 
     expect(
@@ -640,14 +629,14 @@ describe("machine reducer", () => {
         })
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         items: fetchedMachines,
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             count: 1,
             cur_page: 2,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 collapsed: true,
                 count: 4,
                 items: ["abc123", "def456"],
@@ -661,17 +650,17 @@ describe("machine reducer", () => {
           }),
         },
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       })
     );
   });
 
   it("reduces fetchError", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           loading: true,
         }),
       },
@@ -683,15 +672,15 @@ describe("machine reducer", () => {
         actions.fetchError(callId, "Could not fetch machines")
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             errors: "Could not fetch machines",
             loading: false,
           }),
         },
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: "Could not fetch machines",
             event: "fetch",
             id: null,
@@ -702,28 +691,28 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterGroupsStart", () => {
-    const initialState = machineStateFactory({ filtersLoading: false });
+    const initialState = factory.machineState({ filtersLoading: false });
 
     expect(reducers(initialState, actions.filterGroupsStart())).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filtersLoading: true,
       })
     );
   });
 
   it("reduces filterGroupsSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [],
       filtersLoaded: false,
       filtersLoading: true,
     });
-    const filterGroup = filterGroupFactory();
+    const filterGroup = factory.filterGroup();
     const fetchedGroups = [filterGroup];
 
     expect(
       reducers(initialState, actions.filterGroupsSuccess(fetchedGroups))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: fetchedGroups,
         filtersLoaded: true,
         filtersLoading: false,
@@ -732,7 +721,7 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterGroupsError", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       eventErrors: [],
       filtersLoading: true,
     });
@@ -743,10 +732,10 @@ describe("machine reducer", () => {
         actions.filterGroupsError("Could not fetch filter groups")
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         errors: "Could not fetch filter groups",
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: "Could not fetch filter groups",
             event: "filterGroups",
             id: null,
@@ -758,9 +747,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsStart", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Owner,
           loading: false,
         }),
@@ -769,9 +758,9 @@ describe("machine reducer", () => {
     expect(
       reducers(initialState, actions.filterOptionsStart(FilterGroupKey.Owner))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.Owner,
             loading: true,
           }),
@@ -781,10 +770,10 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsError", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       eventErrors: [],
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Owner,
           loading: true,
         }),
@@ -799,16 +788,16 @@ describe("machine reducer", () => {
         )
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: "Could not fetch filter groups",
             event: "filterOptions",
             id: undefined,
           }),
         ],
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             errors: "Could not fetch filter groups",
             key: FilterGroupKey.Owner,
             loading: false,
@@ -819,9 +808,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for bool options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.AgentName,
           options: null,
           loaded: false,
@@ -840,9 +829,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.AgentName, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.AgentName,
             options: fetchedOptions,
             loaded: true,
@@ -855,9 +844,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for float options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Mem,
           options: null,
           loaded: false,
@@ -876,9 +865,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.Mem, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.Mem,
             options: fetchedOptions,
             loaded: true,
@@ -891,9 +880,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for lists of float options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Mem,
           options: null,
           loaded: false,
@@ -912,9 +901,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.Mem, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.Mem,
             options: fetchedOptions,
             loaded: true,
@@ -927,9 +916,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for int options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Status,
           options: null,
           loaded: false,
@@ -948,9 +937,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.Status, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.Status,
             options: fetchedOptions,
             loaded: true,
@@ -963,9 +952,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for lists of int options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Status,
           options: null,
           loaded: false,
@@ -984,9 +973,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.Status, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.Status,
             options: fetchedOptions,
             loaded: true,
@@ -999,9 +988,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for string options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Tags,
           options: null,
           loaded: false,
@@ -1020,9 +1009,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.Tags, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.Tags,
             options: fetchedOptions,
             loaded: true,
@@ -1035,9 +1024,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for dict options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.AgentName,
           options: null,
           loaded: false,
@@ -1056,9 +1045,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.AgentName, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.AgentName,
             options: fetchedOptions,
             loaded: true,
@@ -1071,9 +1060,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces filterOptionsSuccess for lists of string options", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       filters: [
-        filterGroupFactory({
+        factory.filterGroup({
           key: FilterGroupKey.Owner,
           options: null,
           loaded: false,
@@ -1092,9 +1081,9 @@ describe("machine reducer", () => {
         actions.filterOptionsSuccess(FilterGroupKey.Owner, fetchedOptions)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         filters: [
-          filterGroupFactory({
+          factory.filterGroup({
             key: FilterGroupKey.Owner,
             options: fetchedOptions,
             loaded: true,
@@ -1107,14 +1096,14 @@ describe("machine reducer", () => {
   });
 
   it("reduces getStart", () => {
-    const initialState = machineStateFactory({ loading: false });
+    const initialState = factory.machineState({ loading: false });
 
     expect(
       reducers(initialState, actions.getStart({ system_id: "abc123" }, callId))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             loading: true,
             system_id: "abc123",
           }),
@@ -1124,9 +1113,9 @@ describe("machine reducer", () => {
   });
 
   it("reduces getError", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       details: {
-        [callId]: machineStateDetailsItemFactory({
+        [callId]: factory.machineStateDetailsItem({
           system_id: "abc123",
         }),
       },
@@ -1141,16 +1130,16 @@ describe("machine reducer", () => {
         })
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             errors: { system_id: "id was not supplied" },
             system_id: "abc123",
           }),
         },
         errors: null,
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: { system_id: "id was not supplied" },
             event: "get",
             id: "abc123",
@@ -1161,19 +1150,19 @@ describe("machine reducer", () => {
   });
 
   it("should update if machine exists on getSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       details: {
-        [callId]: machineStateDetailsItemFactory({
+        [callId]: factory.machineStateDetailsItem({
           loading: true,
           system_id: "abc123",
         }),
       },
-      items: [machineFactory({ system_id: "abc123", hostname: "machine1" })],
+      items: [factory.machine({ system_id: "abc123", hostname: "machine1" })],
       statuses: {
-        abc123: machineStatusFactory(),
+        abc123: factory.machineStatus(),
       },
     });
-    const updatedMachine = machineDetailsFactory({
+    const updatedMachine = factory.machineDetails({
       system_id: "abc123",
       hostname: "machine1-newname",
     });
@@ -1184,9 +1173,9 @@ describe("machine reducer", () => {
         actions.getSuccess({ system_id: "abc123" }, callId, updatedMachine)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             loaded: true,
             loading: false,
             system_id: "abc123",
@@ -1195,26 +1184,26 @@ describe("machine reducer", () => {
         items: [updatedMachine],
         loading: false,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       })
     );
   });
 
   it("reduces getSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       details: {
-        [callId]: machineStateDetailsItemFactory({
+        [callId]: factory.machineStateDetailsItem({
           loading: true,
           system_id: "abc123",
         }),
       },
-      items: [machineFactory({ system_id: "abc123" })],
+      items: [factory.machine({ system_id: "abc123" })],
       statuses: {
-        abc123: machineStatusFactory(),
+        abc123: factory.machineStatus(),
       },
     });
-    const newMachine = machineDetailsFactory({ system_id: "def456" });
+    const newMachine = factory.machineDetails({ system_id: "def456" });
 
     expect(
       reducers(
@@ -1222,9 +1211,9 @@ describe("machine reducer", () => {
         actions.getSuccess({ system_id: "abc123" }, callId, newMachine)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         details: {
-          [callId]: machineStateDetailsItemFactory({
+          [callId]: factory.machineStateDetailsItem({
             loaded: true,
             loading: false,
             system_id: "abc123",
@@ -1233,20 +1222,20 @@ describe("machine reducer", () => {
         items: [...initialState.items, newMachine],
         loading: false,
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       })
     );
   });
 
   it("ignores calls that don't exist when reducing getSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       details: {},
       items: [],
       statuses: {},
     });
-    const newMachine = machineDetailsFactory({ system_id: "def456" });
+    const newMachine = factory.machineDetails({ system_id: "def456" });
 
     expect(
       reducers(
@@ -1254,7 +1243,7 @@ describe("machine reducer", () => {
         actions.getSuccess({ system_id: "abc123" }, callId, newMachine)
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         details: {},
         items: [],
         statuses: {},
@@ -1263,18 +1252,20 @@ describe("machine reducer", () => {
   });
 
   it("reduces setActiveSuccess", () => {
-    const initialState = machineStateFactory({ active: null });
+    const initialState = factory.machineState({ active: null });
 
     expect(
       reducers(
         initialState,
-        actions.setActiveSuccess(machineDetailsFactory({ system_id: "abc123" }))
+        actions.setActiveSuccess(
+          factory.machineDetails({ system_id: "abc123" })
+        )
       )
-    ).toEqual(machineStateFactory({ active: "abc123" }));
+    ).toEqual(factory.machineState({ active: "abc123" }));
   });
 
   it("reduces setActiveError", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       active: "abc123",
       errors: null,
     });
@@ -1282,11 +1273,11 @@ describe("machine reducer", () => {
     expect(
       reducers(initialState, actions.setActiveError("Machine does not exist"))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         active: null,
         errors: "Machine does not exist",
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: "Machine does not exist",
             event: "setActive",
             id: null,
@@ -1297,10 +1288,10 @@ describe("machine reducer", () => {
   });
 
   it("reduces createStart", () => {
-    const initialState = machineStateFactory({ saved: true, saving: false });
+    const initialState = factory.machineState({ saved: true, saving: false });
 
     expect(reducers(initialState, actions.createStart())).toEqual(
-      machineStateFactory({
+      factory.machineState({
         saved: false,
         saving: true,
       })
@@ -1308,7 +1299,7 @@ describe("machine reducer", () => {
   });
 
   it("reduces createError", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       errors: null,
       saved: false,
       saving: true,
@@ -1320,10 +1311,10 @@ describe("machine reducer", () => {
         actions.createError({ name: "name already exists" })
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         errors: { name: "name already exists" },
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: { name: "name already exists" },
             event: "create",
             id: null,
@@ -1337,29 +1328,29 @@ describe("machine reducer", () => {
 
   it("reduces deleteNotify", () => {
     const machines = [
-      machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
-      machineFactory({ id: 2, system_id: "def456", hostname: "node2" }),
+      factory.machine({ id: 1, system_id: "abc123", hostname: "node1" }),
+      factory.machine({ id: 2, system_id: "def456", hostname: "node2" }),
     ];
-    const initialList = machineStateListFactory({
+    const initialList = factory.machineStateList({
       count: 20,
       cur_page: 1,
       groups: [
-        machineStateListGroupFactory({
+        factory.machineStateListGroup({
           // count can be higher than items.length due to pagination
           count: 15,
           items: ["abc123", "def456"],
         }),
       ],
     });
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       lists: {
         callId: initialList,
       },
       items: machines,
       selected: { items: ["abc123"] },
       statuses: {
-        abc123: machineStatusFactory(),
-        def456: machineStatusFactory(),
+        abc123: factory.machineStatus(),
+        def456: factory.machineStatus(),
       },
     });
     const nextState = produce(initialState, (draft) => {
@@ -1378,14 +1369,14 @@ describe("machine reducer", () => {
 
   it("reduces deleteNotify when last machine in a group is removed", () => {
     const machines = [
-      machineFactory({
+      factory.machine({
         id: 1,
         system_id: "abc123",
         hostname: "node1",
         status: NodeStatus.NEW,
         status_code: NodeStatusCode.NEW,
       }),
-      machineFactory({
+      factory.machine({
         id: 2,
         system_id: "def456",
         hostname: "node2",
@@ -1393,30 +1384,30 @@ describe("machine reducer", () => {
         status_code: NodeStatusCode.FAILED_COMMISSIONING,
       }),
     ];
-    const newGroup = machineStateListGroupFactory({
+    const newGroup = factory.machineStateListGroup({
       name: "New",
       value: "new",
       items: ["abc123"],
       count: 1,
     });
-    const failedCommissioningGroup = machineStateListGroupFactory({
+    const failedCommissioningGroup = factory.machineStateListGroup({
       name: "Failed commissioning",
       value: "failed_commissioning",
       items: ["def456"],
       count: 1,
     });
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       lists: {
-        callId: machineStateListFactory({
+        callId: factory.machineStateList({
           groups: [newGroup, failedCommissioningGroup],
         }),
       },
       items: machines,
       selected: { items: ["def456"] },
       statuses: {
-        abc123: machineStatusFactory(),
-        def456: machineStatusFactory(),
-        ghi789: machineStatusFactory(),
+        abc123: factory.machineStatus(),
+        def456: factory.machineStatus(),
+        ghi789: factory.machineStatus(),
       },
     });
     const nextState = produce(initialState, (draft) => {
@@ -1432,14 +1423,14 @@ describe("machine reducer", () => {
 
   it("reduces deleteNotify with groups of machines", () => {
     const machines = [
-      machineFactory({
+      factory.machine({
         id: 1,
         system_id: "abc123",
         hostname: "node1",
         status: NodeStatus.NEW,
         status_code: NodeStatusCode.NEW,
       }),
-      machineFactory({
+      factory.machine({
         id: 3,
         system_id: "def456",
         hostname: "node3",
@@ -1447,15 +1438,15 @@ describe("machine reducer", () => {
         status_code: NodeStatusCode.NEW,
       }),
     ];
-    const group = machineStateListGroupFactory({
+    const group = factory.machineStateListGroup({
       name: "New",
       value: "new",
       items: ["abc123", "def456"],
       count: 2,
     });
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       lists: {
-        callId: machineStateListFactory({
+        callId: factory.machineStateList({
           count: 2,
           groups: [group],
         }),
@@ -1463,8 +1454,8 @@ describe("machine reducer", () => {
       items: machines,
       selected: { items: ["abc123"] },
       statuses: {
-        abc123: machineStatusFactory(),
-        def456: machineStatusFactory(),
+        abc123: factory.machineStatus(),
+        def456: factory.machineStatus(),
       },
     });
     const nextState = produce(initialState, (draft) => {
@@ -1482,14 +1473,14 @@ describe("machine reducer", () => {
 
   it("reduces updateNotify", () => {
     const machines = [
-      machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
-      machineFactory({ id: 2, system_id: "def456", hostname: "node2" }),
+      factory.machine({ id: 1, system_id: "abc123", hostname: "node1" }),
+      factory.machine({ id: 2, system_id: "def456", hostname: "node2" }),
     ];
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           groups: [
-            machineStateListGroupFactory({
+            factory.machineStateListGroup({
               items: machines.map((machine) => machine.system_id),
             }),
           ],
@@ -1497,7 +1488,7 @@ describe("machine reducer", () => {
       },
       items: machines,
     });
-    const updatedMachine = machineFactory({
+    const updatedMachine = factory.machine({
       id: 1,
       system_id: "abc123",
       hostname: "node1v2",
@@ -1506,7 +1497,7 @@ describe("machine reducer", () => {
     expect(
       reducers(initialState, actions.updateNotify(updatedMachine))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         lists: {
           [callId]: { ...initialState.lists[callId] },
         },
@@ -1517,16 +1508,16 @@ describe("machine reducer", () => {
 
   describe("updateNotify", () => {
     it("reduces updateNotify for machine moved to a group that's not in the current list", () => {
-      const abc123 = machineFactory({
+      const abc123 = factory.machine({
         id: 1,
         system_id: "abc123",
         hostname: "node1",
         status: NodeStatus.COMMISSIONING,
       });
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         items: [
           abc123,
-          machineFactory({
+          factory.machine({
             id: 2,
             system_id: "def456",
             hostname: "node2",
@@ -1534,11 +1525,11 @@ describe("machine reducer", () => {
           }),
         ],
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             count: 2,
             cur_page: 2,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 collapsed: false,
                 count: 2,
                 items: ["abc123", "def456"],
@@ -1553,7 +1544,7 @@ describe("machine reducer", () => {
           }),
         },
       });
-      const updatedMachine = machineFactory({
+      const updatedMachine = factory.machine({
         ...abc123,
         status: NodeStatus.FAILED_COMMISSIONING,
       });
@@ -1561,20 +1552,20 @@ describe("machine reducer", () => {
       expect(
         reducers(initialState, actions.updateNotify(updatedMachine))
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: [updatedMachine, initialState.items[1]],
           lists: {
             [callId]: {
               ...initialState.lists[callId],
               groups: [
-                machineStateListGroupFactory({
+                factory.machineStateListGroup({
                   collapsed: false,
                   count: 1,
                   items: ["def456"],
                   name: NodeStatus.COMMISSIONING,
                   value: FetchNodeStatus.COMMISSIONING,
                 }),
-                machineStateListGroupFactory({
+                factory.machineStateListGroup({
                   collapsed: false,
                   count: null,
                   items: ["abc123"],
@@ -1591,11 +1582,11 @@ describe("machine reducer", () => {
 
   it("reduces checkPowerError", () => {
     const machines = [
-      machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
+      factory.machine({ id: 1, system_id: "abc123", hostname: "node1" }),
     ];
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       items: machines,
-      statuses: { abc123: machineStatusFactory({ checkingPower: true }) },
+      statuses: { abc123: factory.machineStatus({ checkingPower: true }) },
     });
 
     expect(
@@ -1607,30 +1598,30 @@ describe("machine reducer", () => {
         })
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         errors: "Uh oh!",
         eventErrors: [
-          machineEventErrorFactory({
+          factory.machineEventError({
             error: "Uh oh!",
             event: "checkPower",
             id: "abc123",
           }),
         ],
         items: machines,
-        statuses: { abc123: machineStatusFactory({ checkingPower: false }) },
+        statuses: { abc123: factory.machineStatus({ checkingPower: false }) },
       })
     );
   });
 
   it("reduces setSelected", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       selected: [] as SelectedMachines,
     });
 
     expect(
       reducers(initialState, actions.setSelected({ items: ["abcde", "fghij"] }))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         selected: { items: ["abcde", "fghij"] },
       })
     );
@@ -1639,11 +1630,11 @@ describe("machine reducer", () => {
   describe("setPool", () => {
     it("reduces setPoolStart", () => {
       const machines = [
-        machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
+        factory.machine({ id: 1, system_id: "abc123", hostname: "node1" }),
       ];
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         items: machines,
-        statuses: { abc123: machineStatusFactory({ settingPool: false }) },
+        statuses: { abc123: factory.machineStatus({ settingPool: false }) },
       });
 
       expect(
@@ -1654,10 +1645,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: machines,
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               settingPool: true,
             }),
           },
@@ -1667,11 +1658,11 @@ describe("machine reducer", () => {
 
     it("reduces setPoolSuccess", () => {
       const machines = [
-        machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
+        factory.machine({ id: 1, system_id: "abc123", hostname: "node1" }),
       ];
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         items: machines,
-        statuses: { abc123: machineStatusFactory({ settingPool: true }) },
+        statuses: { abc123: factory.machineStatus({ settingPool: true }) },
       });
 
       expect(
@@ -1682,10 +1673,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: machines,
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               settingPool: false,
             }),
           },
@@ -1695,12 +1686,12 @@ describe("machine reducer", () => {
 
     it("reduces setPoolError", () => {
       const machines = [
-        machineFactory({ id: 1, system_id: "abc123", hostname: "node1" }),
+        factory.machine({ id: 1, system_id: "abc123", hostname: "node1" }),
       ];
-      const initialState = machineStateFactory({
+      const initialState = factory.machineState({
         errors: null,
         items: machines,
-        statuses: { abc123: machineStatusFactory({ settingPool: true }) },
+        statuses: { abc123: factory.machineStatus({ settingPool: true }) },
       });
 
       expect(
@@ -1712,10 +1703,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           errors: "Uh oh",
           eventErrors: [
-            machineEventErrorFactory({
+            factory.machineEventError({
               error: "Uh oh",
               event: "setPool",
               id: "abc123",
@@ -1723,7 +1714,7 @@ describe("machine reducer", () => {
           ],
           items: machines,
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               settingPool: false,
             }),
           },
@@ -1733,10 +1724,10 @@ describe("machine reducer", () => {
   });
 
   it("reduces updateStart", () => {
-    const initialState = machineStateFactory({ saved: true, saving: false });
+    const initialState = factory.machineState({ saved: true, saving: false });
 
     expect(reducers(initialState, actions.updateStart())).toEqual(
-      machineStateFactory({
+      factory.machineState({
         saved: false,
         saving: true,
       })
@@ -1745,10 +1736,10 @@ describe("machine reducer", () => {
 
   describe("clone", () => {
     it("reduces cloneStart", () => {
-      const machine = machineFactory({ system_id: "abc123" });
-      const initialState = machineStateFactory({
+      const machine = factory.machine({ system_id: "abc123" });
+      const initialState = factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory({ cloning: false }) },
+        statuses: { abc123: factory.machineStatus({ cloning: false }) },
       });
 
       expect(
@@ -1759,10 +1750,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: [machine],
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               cloning: true,
             }),
           },
@@ -1771,10 +1762,10 @@ describe("machine reducer", () => {
     });
 
     it("reduces cloneSuccess", () => {
-      const machine = machineFactory({ system_id: "abc123" });
-      const initialState = machineStateFactory({
+      const machine = factory.machine({ system_id: "abc123" });
+      const initialState = factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory({ cloning: true }) },
+        statuses: { abc123: factory.machineStatus({ cloning: true }) },
       });
 
       expect(
@@ -1785,10 +1776,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: [machine],
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               cloning: false,
             }),
           },
@@ -1797,10 +1788,10 @@ describe("machine reducer", () => {
     });
 
     it("reduces cloneError", () => {
-      const machine = machineFactory({ system_id: "abc123" });
-      const initialState = machineStateFactory({
+      const machine = factory.machine({ system_id: "abc123" });
+      const initialState = factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory({ cloning: true }) },
+        statuses: { abc123: factory.machineStatus({ cloning: true }) },
       });
 
       expect(
@@ -1812,10 +1803,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           errors: "Cloning failed.",
           eventErrors: [
-            machineEventErrorFactory({
+            factory.machineEventError({
               error: "Cloning failed.",
               event: NodeActions.CLONE,
               id: "abc123",
@@ -1823,7 +1814,7 @@ describe("machine reducer", () => {
           ],
           items: [machine],
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               cloning: false,
             }),
           },
@@ -1834,10 +1825,10 @@ describe("machine reducer", () => {
 
   describe("untag", () => {
     it("reduces untagStart", () => {
-      const machine = machineFactory({ system_id: "abc123" });
-      const initialState = machineStateFactory({
+      const machine = factory.machine({ system_id: "abc123" });
+      const initialState = factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory({ untagging: false }) },
+        statuses: { abc123: factory.machineStatus({ untagging: false }) },
       });
 
       expect(
@@ -1848,10 +1839,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: [machine],
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               untagging: true,
             }),
           },
@@ -1860,10 +1851,10 @@ describe("machine reducer", () => {
     });
 
     it("reduces untagSuccess", () => {
-      const machine = machineFactory({ system_id: "abc123" });
-      const initialState = machineStateFactory({
+      const machine = factory.machine({ system_id: "abc123" });
+      const initialState = factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory({ untagging: true }) },
+        statuses: { abc123: factory.machineStatus({ untagging: true }) },
       });
 
       expect(
@@ -1874,10 +1865,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           items: [machine],
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               untagging: false,
             }),
           },
@@ -1886,10 +1877,10 @@ describe("machine reducer", () => {
     });
 
     it("reduces untagError", () => {
-      const machine = machineFactory({ system_id: "abc123" });
-      const initialState = machineStateFactory({
+      const machine = factory.machine({ system_id: "abc123" });
+      const initialState = factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory({ untagging: true }) },
+        statuses: { abc123: factory.machineStatus({ untagging: true }) },
       });
 
       expect(
@@ -1901,10 +1892,10 @@ describe("machine reducer", () => {
           })
         )
       ).toEqual(
-        machineStateFactory({
+        factory.machineState({
           errors: "Untagging failed.",
           eventErrors: [
-            machineEventErrorFactory({
+            factory.machineEventError({
               error: "Untagging failed.",
               event: NodeActions.UNTAG,
               id: "abc123",
@@ -1912,7 +1903,7 @@ describe("machine reducer", () => {
           ],
           items: [machine],
           statuses: {
-            abc123: machineStatusFactory({
+            abc123: factory.machineStatus({
               untagging: false,
             }),
           },
@@ -1923,26 +1914,26 @@ describe("machine reducer", () => {
 
   it("reduces unsubscribeStart", () => {
     const items = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
     ];
     expect(
       reducers(
-        machineStateFactory({
+        factory.machineState({
           items,
           statuses: {
-            abc123: machineStatusFactory(),
-            def456: machineStatusFactory(),
+            abc123: factory.machineStatus(),
+            def456: factory.machineStatus(),
           },
         }),
         actions.unsubscribeStart(["abc123"])
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         items,
         statuses: {
-          abc123: machineStatusFactory({ unsubscribing: true }),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus({ unsubscribing: true }),
+          def456: factory.machineStatus(),
         },
       })
     );
@@ -1950,45 +1941,45 @@ describe("machine reducer", () => {
 
   it("reduces unsubscribeStart for removed statuses", () => {
     const items = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
     ];
     expect(
       reducers(
-        machineStateFactory({
+        factory.machineState({
           items,
           statuses: {
-            def456: machineStatusFactory(),
+            def456: factory.machineStatus(),
           },
         }),
         actions.unsubscribeStart(["abc123"])
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         items,
         statuses: {
-          def456: machineStatusFactory(),
+          def456: factory.machineStatus(),
         },
       })
     );
   });
 
   it("reduces unsubscribeSuccess", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       items: [
-        machineFactory({ system_id: "abc123" }),
-        machineFactory({ system_id: "def456" }),
+        factory.machine({ system_id: "abc123" }),
+        factory.machine({ system_id: "def456" }),
       ],
       selected: { items: ["abc123"] },
       statuses: {
-        abc123: machineStatusFactory(),
-        def456: machineStatusFactory(),
+        abc123: factory.machineStatus(),
+        def456: factory.machineStatus(),
       },
     });
     expect(
       reducers(initialState, actions.unsubscribeSuccess(["abc123"]))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         ...initialState,
         statuses: { ...initialState.statuses, abc123: { ...DEFAULT_STATUSES } },
       })
@@ -1996,39 +1987,39 @@ describe("machine reducer", () => {
   });
 
   it("reduces removeRequest for a details request", () => {
-    const initialState = machineStateFactory({
+    const initialState = factory.machineState({
       details: {
-        [callId]: machineStateDetailsItemFactory(),
+        [callId]: factory.machineStateDetailsItem(),
       },
     });
     expect(reducers(initialState, actions.removeRequest(callId))).toEqual(
-      machineStateFactory({
+      factory.machineState({
         details: {},
       })
     );
   });
 
   it("reduces softOff", () => {
-    const machine = machineFactory({ system_id: "abc123" });
-    const initialState = machineStateFactory({
+    const machine = factory.machine({ system_id: "abc123" });
+    const initialState = factory.machineState({
       items: [machine],
-      statuses: { abc123: machineStatusFactory() },
+      statuses: { abc123: factory.machineStatus() },
     });
     expect(
       reducers(initialState, actions.softOff({ system_id: machine.system_id }))
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory() },
+        statuses: { abc123: factory.machineStatus() },
       })
     );
   });
 
   it("reduces softOffStart", () => {
-    const machine = machineFactory({ system_id: "abc123" });
-    const initialState = machineStateFactory({
+    const machine = factory.machine({ system_id: "abc123" });
+    const initialState = factory.machineState({
       items: [machine],
-      statuses: { abc123: machineStatusFactory() },
+      statuses: { abc123: factory.machineStatus() },
     });
     expect(
       reducers(
@@ -2036,9 +2027,9 @@ describe("machine reducer", () => {
         actions.softOffStart({ system_id: machine.system_id })
       )
     ).toEqual(
-      machineStateFactory({
+      factory.machineState({
         items: [machine],
-        statuses: { abc123: machineStatusFactory({ turningOff: true }) },
+        statuses: { abc123: factory.machineStatus({ turningOff: true }) },
       })
     );
   });

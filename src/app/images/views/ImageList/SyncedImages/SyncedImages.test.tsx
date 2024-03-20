@@ -3,13 +3,7 @@ import SyncedImages, { Labels as SyncedImagesLabels } from "./SyncedImages";
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { ImageSidePanelViews } from "@/app/images/constants";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
-import {
-  bootResource as bootResourceFactory,
-  bootResourceState as bootResourceStateFactory,
-  bootResourceUbuntuSource as sourceFactory,
-  bootResourceUbuntu as ubuntuFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -30,11 +24,13 @@ describe("SyncedImages", () => {
   });
 
   it("can trigger a side panel form", async () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        ubuntu: ubuntuFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        ubuntu: factory.bootResourceUbuntu({
           sources: [
-            sourceFactory({ source_type: BootResourceSourceType.MAAS_IO }),
+            factory.bootResourceUbuntuSource({
+              source_type: BootResourceSourceType.MAAS_IO,
+            }),
           ],
         }),
       }),
@@ -54,9 +50,9 @@ describe("SyncedImages", () => {
   });
 
   it("renders the change source form and disables closing it if no sources are detected", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        ubuntu: ubuntuFactory({ sources: [] }),
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        ubuntu: factory.bootResourceUbuntu({ sources: [] }),
       }),
     });
     renderWithBrowserRouter(<SyncedImages />, { state });
@@ -68,11 +64,13 @@ describe("SyncedImages", () => {
   });
 
   it("renders the correct text for a single default source", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        ubuntu: ubuntuFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        ubuntu: factory.bootResourceUbuntu({
           sources: [
-            sourceFactory({ source_type: BootResourceSourceType.MAAS_IO }),
+            factory.bootResourceUbuntuSource({
+              source_type: BootResourceSourceType.MAAS_IO,
+            }),
           ],
         }),
       }),
@@ -83,11 +81,11 @@ describe("SyncedImages", () => {
   });
 
   it("renders the correct text for a single custom source", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        ubuntu: ubuntuFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        ubuntu: factory.bootResourceUbuntu({
           sources: [
-            sourceFactory({
+            factory.bootResourceUbuntuSource({
               source_type: BootResourceSourceType.CUSTOM,
               url: "www.url.com",
             }),
@@ -101,9 +99,14 @@ describe("SyncedImages", () => {
   });
 
   it("renders the correct text for multiple sources", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        ubuntu: ubuntuFactory({ sources: [sourceFactory(), sourceFactory()] }),
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        ubuntu: factory.bootResourceUbuntu({
+          sources: [
+            factory.bootResourceUbuntuSource(),
+            factory.bootResourceUbuntuSource(),
+          ],
+        }),
       }),
     });
     renderWithBrowserRouter(<SyncedImages />, { state });
@@ -112,10 +115,12 @@ describe("SyncedImages", () => {
   });
 
   it("disables the button to change source if resources are downloading", async () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        resources: [bootResourceFactory({ downloading: true })],
-        ubuntu: ubuntuFactory({ sources: [sourceFactory()] }),
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        resources: [factory.bootResource({ downloading: true })],
+        ubuntu: factory.bootResourceUbuntu({
+          sources: [factory.bootResourceUbuntuSource()],
+        }),
       }),
     });
     renderWithBrowserRouter(<SyncedImages />, { state });

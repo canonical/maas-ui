@@ -4,11 +4,11 @@ import {
   ServiceName,
   ServiceStatus as ServiceStatusName,
 } from "@/app/store/service/types";
-import { service as serviceFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 it("correctly renders a running service", () => {
-  const service = serviceFactory({ status: ServiceStatusName.RUNNING });
+  const service = factory.service({ status: ServiceStatusName.RUNNING });
   render(<ServiceStatus service={service} />);
 
   expect(screen.getByTestId("service-status-icon")).toHaveClass(
@@ -20,7 +20,7 @@ it("correctly renders a running service", () => {
 });
 
 it("correctly renders a degraded service", () => {
-  const service = serviceFactory({ status: ServiceStatusName.DEGRADED });
+  const service = factory.service({ status: ServiceStatusName.DEGRADED });
   render(<ServiceStatus service={service} />);
 
   expect(screen.getByTestId("service-status-icon")).toHaveClass(
@@ -32,7 +32,7 @@ it("correctly renders a degraded service", () => {
 });
 
 it("correctly renders a dead service", () => {
-  const service = serviceFactory({ status: ServiceStatusName.DEAD });
+  const service = factory.service({ status: ServiceStatusName.DEAD });
   render(<ServiceStatus service={service} />);
 
   expect(screen.getByTestId("service-status-icon")).toHaveClass(
@@ -44,14 +44,14 @@ it("correctly renders a dead service", () => {
 });
 
 it("correctly renders an unknown service", () => {
-  const service = serviceFactory({ status: ServiceStatusName.UNKNOWN });
+  const service = factory.service({ status: ServiceStatusName.UNKNOWN });
   render(<ServiceStatus service={service} />);
 
   expect(screen.queryByTestId("service-status-icon")).not.toBeInTheDocument();
 });
 
 it("renders additional status info if provided", () => {
-  const service = serviceFactory({
+  const service = factory.service({
     name: ServiceName.BIND9,
     status: ServiceStatusName.UNKNOWN,
     status_info: "I have no idea what this is",

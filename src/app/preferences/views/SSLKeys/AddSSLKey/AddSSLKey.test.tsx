@@ -8,10 +8,7 @@ import { AddSSLKey, Label as AddSSLKeyLabels } from "./AddSSLKey";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  sslKeyState as sslKeyStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -25,8 +22,8 @@ describe("AddSSLKey", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      sslkey: sslKeyStateFactory({
+    state = factory.rootState({
+      sslkey: factory.sslKeyState({
         loading: false,
         loaded: true,
         items: [],

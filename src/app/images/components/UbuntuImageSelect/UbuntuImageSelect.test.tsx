@@ -4,22 +4,16 @@ import UbuntuImageSelect from "./UbuntuImageSelect";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
-  bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("UbuntuImageSelect", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
@@ -32,18 +26,18 @@ describe("UbuntuImageSelect", () => {
 
   it("does not show a radio button for a release deleted from the source", () => {
     const [available, deleted] = [
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "available",
         deleted: false,
         title: "20.04 LTS",
       }),
-      bootResourceUbuntuReleaseFactory({
+      factory.bootResourceUbuntuRelease({
         name: "deleted",
         deleted: true,
         title: "20.10",
       }),
     ];
-    const arches = [bootResourceUbuntuArchFactory()];
+    const arches = [factory.bootResourceUbuntuArch()];
     renderWithMockStore(
       <Formik initialValues={{ images: [] }} onSubmit={vi.fn()}>
         <UbuntuImageSelect
@@ -64,13 +58,13 @@ describe("UbuntuImageSelect", () => {
   });
 
   it("does not show a checkbox for an architecture delete from the source", () => {
-    const releases = [bootResourceUbuntuReleaseFactory({ name: "focal" })];
+    const releases = [factory.bootResourceUbuntuRelease({ name: "focal" })];
     const [available, deleted] = [
-      bootResourceUbuntuArchFactory({
+      factory.bootResourceUbuntuArch({
         name: "available",
         deleted: false,
       }),
-      bootResourceUbuntuArchFactory({
+      factory.bootResourceUbuntuArch({
         name: "delete",
         deleted: true,
       }),

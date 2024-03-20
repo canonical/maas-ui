@@ -3,10 +3,7 @@ import configureStore from "redux-mock-store";
 import { SSHKeyForm } from "./SSHKeyForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  sshKeyState as sshKeyStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   renderWithBrowserRouter,
@@ -20,8 +17,8 @@ describe("SSHKeyForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      sshkey: sshKeyStateFactory({
+    state = factory.rootState({
+      sshkey: factory.sshKeyState({
         loading: false,
         loaded: true,
         items: [],

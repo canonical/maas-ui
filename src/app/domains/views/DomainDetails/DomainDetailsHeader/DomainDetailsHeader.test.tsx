@@ -4,18 +4,13 @@ import DomainDetailsHeader, {
   Labels as DomainDetailsHeaderLabels,
 } from "./DomainDetailsHeader";
 
-import {
-  domain as domainFactory,
-  domainDetails as domainDetailsFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({ items: [domainFactory({ id: 1 })] }),
+    const state = factory.rootState({
+      domain: factory.domainState({ items: [factory.domain({ id: 1 })] }),
     });
 
     renderWithBrowserRouter(
@@ -29,9 +24,9 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("shows the domain name in the header if domain has loaded", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 1, name: "domain-in-the-membrane" })],
+    const state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ id: 1, name: "domain-in-the-membrane" })],
       }),
     });
     renderWithBrowserRouter(
@@ -47,11 +42,11 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("Shows the correct number of hosts and resource records once details loaded", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainDetailsFactory({
+          factory.domainDetails({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 5,
@@ -71,11 +66,11 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("Shows only resource records if there are no hosts", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainDetailsFactory({
+          factory.domainDetails({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 0,
@@ -95,11 +90,11 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("shows only hosts if there are no resource records", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainDetailsFactory({
+          factory.domainDetails({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 5,
@@ -121,11 +116,11 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("shows the no records message if there is nothing", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainDetailsFactory({
+          factory.domainDetails({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 0,
@@ -145,11 +140,11 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("does not show a button to delete domain if it is the default", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainDetailsFactory({
+          factory.domainDetails({
             id: 0,
           }),
         ],
@@ -170,11 +165,11 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("calls a function to open the side panel when the 'Add record' button is clicked", async () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainDetailsFactory({
+          factory.domainDetails({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 5,
@@ -199,11 +194,11 @@ describe("DomainDetailsHeader", () => {
   });
 
   it("calls a function to open the side panel when the 'Delete domain' button is clicked", async () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
         items: [
-          domainDetailsFactory({
+          factory.domainDetails({
             id: 1,
             name: "domain-in-the-membrane",
             hosts: 5,

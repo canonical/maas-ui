@@ -6,13 +6,7 @@ import configureStore from "redux-mock-store";
 import ImagesIntro, { Labels as ImagesIntroLabels } from "./ImagesIntro";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResource as bootResourceFactory,
-  bootResourceState as bootResourceStateFactory,
-  bootResourceUbuntu as bootResourceUbuntuFactory,
-  bootResourceUbuntuSource as bootResourceUbuntuSourceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   screen,
   render,
@@ -25,10 +19,10 @@ const mockStore = configureStore();
 describe("ImagesIntro", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        resources: [bootResourceFactory()],
-        ubuntu: bootResourceUbuntuFactory(),
+    state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        resources: [factory.bootResource()],
+        ubuntu: factory.bootResourceUbuntu(),
       }),
     });
   });
@@ -65,7 +59,7 @@ describe("ImagesIntro", () => {
   });
 
   it("disables the continue button if no image and source has been configured", async () => {
-    state.bootresource.ubuntu = bootResourceUbuntuFactory({ sources: [] });
+    state.bootresource.ubuntu = factory.bootResourceUbuntu({ sources: [] });
     state.bootresource.resources = [];
     renderWithBrowserRouter(<ImagesIntro />, {
       route: "/intro/images",
@@ -83,10 +77,10 @@ describe("ImagesIntro", () => {
   });
 
   it("enables the continue button if an image and source has been configured", () => {
-    state.bootresource.ubuntu = bootResourceUbuntuFactory({
-      sources: [bootResourceUbuntuSourceFactory()],
+    state.bootresource.ubuntu = factory.bootResourceUbuntu({
+      sources: [factory.bootResourceUbuntuSource()],
     });
-    state.bootresource.resources = [bootResourceFactory()];
+    state.bootresource.resources = [factory.bootResource()];
     renderWithBrowserRouter(<ImagesIntro />, {
       route: "/intro/images",
       state,

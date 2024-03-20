@@ -2,18 +2,15 @@ import { actions as scriptResultActions } from "../scriptresult/slice";
 
 import reducers from "./slice";
 
-import {
-  scriptResult as scriptResultFactory,
-  nodeScriptResultState as nodeScriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("nodescriptresult reducer", () => {
   it("reduces getByNodeIdSuccess", () => {
-    const nodeScriptResultState = nodeScriptResultStateFactory();
+    const nodeScriptResultState = factory.nodeScriptResultState();
 
     const scriptResults = [
-      scriptResultFactory({ id: 1 }),
-      scriptResultFactory({ id: 2 }),
+      factory.scriptResult({ id: 1 }),
+      factory.scriptResult({ id: 2 }),
     ];
 
     expect(

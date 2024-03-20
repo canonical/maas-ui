@@ -1,13 +1,10 @@
 import reducers, { actions } from "./slice";
 
-import {
-  staticRoute as staticRouteFactory,
-  staticRouteState as staticRouteStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 it("should return the initial state", () => {
   expect(reducers(undefined, { type: "" })).toEqual(
-    staticRouteStateFactory({
+    factory.staticRouteState({
       errors: null,
       loading: false,
       loaded: false,
@@ -19,13 +16,13 @@ it("should return the initial state", () => {
 });
 
 it("should correctly reduce cleanup", () => {
-  const initialState = staticRouteStateFactory({
+  const initialState = factory.staticRouteState({
     errors: { key: "Key already exists" },
     saved: true,
     saving: true,
   });
   expect(reducers(initialState, actions.cleanup())).toEqual(
-    staticRouteStateFactory({
+    factory.staticRouteState({
       errors: null,
       saved: false,
       saving: false,
@@ -35,23 +32,23 @@ it("should correctly reduce cleanup", () => {
 
 describe("fetch reducers", () => {
   it("should correctly reduce fetchStart", () => {
-    const initialState = staticRouteStateFactory({ loading: false });
+    const initialState = factory.staticRouteState({ loading: false });
     expect(reducers(initialState, actions.fetchStart())).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         loading: true,
       })
     );
   });
 
   it("should correctly reduce fetchSuccess", () => {
-    const initialState = staticRouteStateFactory({
+    const initialState = factory.staticRouteState({
       loading: true,
       loaded: false,
       items: [],
     });
-    const items = [staticRouteFactory(), staticRouteFactory()];
+    const items = [factory.staticRoute(), factory.staticRoute()];
     expect(reducers(initialState, actions.fetchSuccess(items))).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         loading: false,
         loaded: true,
         items,
@@ -60,14 +57,14 @@ describe("fetch reducers", () => {
   });
 
   it("should correctly reduce fetchError", () => {
-    const initialState = staticRouteStateFactory({
+    const initialState = factory.staticRouteState({
       errors: null,
       loading: true,
     });
     expect(
       reducers(initialState, actions.fetchError("Unable to list static routes"))
     ).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         errors: "Unable to list static routes",
         loading: false,
       })
@@ -77,20 +74,20 @@ describe("fetch reducers", () => {
 
 describe("create reducers", () => {
   it("should correctly reduce createStart", () => {
-    const initialState = staticRouteStateFactory({ saving: false });
+    const initialState = factory.staticRouteState({ saving: false });
     expect(reducers(initialState, actions.createStart())).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         saving: true,
       })
     );
   });
 
   it("should correctly reduce createError", () => {
-    const initialState = staticRouteStateFactory({ saving: true });
+    const initialState = factory.staticRouteState({ saving: true });
     expect(
       reducers(initialState, actions.createError({ key: "Key already exists" }))
     ).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         errors: { key: "Key already exists" },
         saving: false,
       })
@@ -98,12 +95,12 @@ describe("create reducers", () => {
   });
 
   it("should correctly reduce createSuccess", () => {
-    const initialState = staticRouteStateFactory({
+    const initialState = factory.staticRouteState({
       saved: false,
       saving: true,
     });
     expect(reducers(initialState, actions.createSuccess())).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         saved: true,
         saving: false,
       })
@@ -111,10 +108,10 @@ describe("create reducers", () => {
   });
 
   it("should correctly reduce createNotify", () => {
-    const items = [staticRouteFactory(), staticRouteFactory()];
-    const initialState = staticRouteStateFactory({ items: [items[0]] });
+    const items = [factory.staticRoute(), factory.staticRoute()];
+    const initialState = factory.staticRouteState({ items: [items[0]] });
     expect(reducers(initialState, actions.createNotify(items[1]))).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         items,
       })
     );
@@ -123,12 +120,12 @@ describe("create reducers", () => {
 
 describe("delete reducers", () => {
   it("should correctly reduce deleteStart", () => {
-    const initialState = staticRouteStateFactory({
+    const initialState = factory.staticRouteState({
       saved: true,
       saving: false,
     });
     expect(reducers(initialState, actions.deleteStart())).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         saved: false,
         saving: true,
       })
@@ -136,14 +133,14 @@ describe("delete reducers", () => {
   });
 
   it("should correctly reduce deleteError", () => {
-    const initialState = staticRouteStateFactory({
+    const initialState = factory.staticRouteState({
       errors: null,
       saving: true,
     });
     expect(
       reducers(initialState, actions.deleteError("Could not delete"))
     ).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         errors: "Could not delete",
         saving: false,
       })
@@ -151,19 +148,19 @@ describe("delete reducers", () => {
   });
 
   it("should correctly reduce deleteSuccess", () => {
-    const initialState = staticRouteStateFactory({ saved: false });
+    const initialState = factory.staticRouteState({ saved: false });
     expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         saved: true,
       })
     );
   });
 
   it("should correctly reduce deleteNotify", () => {
-    const items = [staticRouteFactory(), staticRouteFactory()];
-    const initialState = staticRouteStateFactory({ items });
+    const items = [factory.staticRoute(), factory.staticRoute()];
+    const initialState = factory.staticRouteState({ items });
     expect(reducers(initialState, actions.deleteNotify(items[0].id))).toEqual(
-      staticRouteStateFactory({
+      factory.staticRouteState({
         items: [items[1]],
       })
     );

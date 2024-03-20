@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 import Deploy from "./Deploy";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -12,7 +12,7 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory();
+  state = factory.rootState();
 });
 
 it(`dispatches actions to fetch config and general os info if either has not
