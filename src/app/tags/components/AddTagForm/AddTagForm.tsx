@@ -9,7 +9,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { CreateParams, Tag } from "@/app/store/tag/types";
 import KernelOptionsField from "@/app/tags/components/KernelOptionsField";

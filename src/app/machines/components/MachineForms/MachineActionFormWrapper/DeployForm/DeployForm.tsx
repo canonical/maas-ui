@@ -7,12 +7,12 @@ import DeployFormFields from "./DeployFormFields";
 import ActionForm from "@/app/base/components/ActionForm";
 import { useFetchActions, useSendAnalytics } from "@/app/base/hooks";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import {
   defaultMinHweKernel as defaultMinHweKernelSelectors,
   osInfo as osInfoSelectors,
 } from "@/app/store/general/selectors";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { MachineEventErrors } from "@/app/store/machine/types";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import { PodType } from "@/app/store/pod/constants";

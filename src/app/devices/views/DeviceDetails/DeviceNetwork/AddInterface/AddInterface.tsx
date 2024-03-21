@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InterfaceForm from "../InterfaceForm";
 
 import { useCycled, useScrollOnRender } from "@/app/base/hooks";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type {
   CreateInterfaceParams,

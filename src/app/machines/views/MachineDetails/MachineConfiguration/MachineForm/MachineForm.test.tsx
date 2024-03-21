@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import MachineForm from "./MachineForm";
 
 import { Labels } from "@/app/base/components/EditableSection";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";

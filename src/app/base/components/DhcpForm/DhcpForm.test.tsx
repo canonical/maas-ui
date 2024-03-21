@@ -7,7 +7,7 @@ import { Labels as FieldLabels } from "../DhcpFormFields";
 
 import DhcpForm, { Labels } from "./DhcpForm";
 
-import { actions as dhcpActions } from "@/app/store/dhcpsnippet";
+import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
@@ -59,7 +59,7 @@ describe("DhcpForm", () => {
 
     unmount();
 
-    const expectedAction = dhcpActions.cleanup();
+    const expectedAction = dhcpsnippetActions.cleanup();
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
@@ -87,7 +87,7 @@ describe("DhcpForm", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
 
-    const expectedAction = dhcpActions.update({
+    const expectedAction = dhcpsnippetActions.update({
       description: dhcpSnippet.description,
       enabled: dhcpSnippet.enabled,
       id: dhcpSnippet.id,
@@ -128,7 +128,7 @@ describe("DhcpForm", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
 
-    const expectedAction = dhcpActions.create({
+    const expectedAction = dhcpsnippetActions.create({
       description: "new-description",
       enabled: true,
       name: "new-lease",

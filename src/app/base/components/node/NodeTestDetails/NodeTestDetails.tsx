@@ -9,7 +9,7 @@ import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { scriptResultActions } from "@/app/store/scriptresult";
 import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import type { ScriptResultResult } from "@/app/store/scriptresult/types";
 import {

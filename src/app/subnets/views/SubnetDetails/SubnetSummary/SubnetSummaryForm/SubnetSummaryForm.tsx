@@ -6,12 +6,12 @@ import type { SubnetSummaryFormValues } from "./types";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 const subnetSummaryFormSchema = Yup.object().shape({

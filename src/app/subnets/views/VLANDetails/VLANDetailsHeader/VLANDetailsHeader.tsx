@@ -7,7 +7,7 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";

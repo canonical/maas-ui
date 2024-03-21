@@ -5,7 +5,7 @@ import { Button, List, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type {
   FilterGroup,

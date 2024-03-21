@@ -8,7 +8,7 @@ import urls from "@/app/base/urls";
 import SyncedImages from "@/app/images/views/ImageList/SyncedImages";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 
 export enum Labels {

@@ -8,7 +8,7 @@ import TestForm from "@/app/base/components/node/TestForm";
 import type { HardwareType } from "@/app/base/enum";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors, {
   statusSelectors,
 } from "@/app/store/controller/selectors";

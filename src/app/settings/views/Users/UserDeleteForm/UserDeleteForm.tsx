@@ -8,7 +8,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
 import type { EmptyObject } from "@/app/base/types";
 import settingsURLs from "@/app/settings/urls";
-import { actions as userActions } from "@/app/store/user";
+import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 import type { User } from "@/app/store/user/types";
 

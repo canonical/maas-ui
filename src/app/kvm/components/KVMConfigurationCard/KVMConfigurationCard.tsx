@@ -7,7 +7,7 @@ import KVMConfigurationCardFields from "./KVMConfigurationCardFields";
 
 import FormCard from "@/app/base/components/FormCard";
 import FormikForm from "@/app/base/components/FormikForm";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
 import type {

@@ -10,12 +10,12 @@ import {
 } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { ControllerDetails } from "@/app/store/controller/types";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import { getTagsDisplay } from "@/app/store/tag/utils";
 import { nodeIsMachine } from "@/app/store/utils";

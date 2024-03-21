@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import CacheSetsTable from "./CacheSetsTable";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { DiskTypes } from "@/app/store/types/enum";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";

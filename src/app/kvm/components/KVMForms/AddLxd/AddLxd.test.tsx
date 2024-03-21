@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 import AddLxd from "./AddLxd";
 
 import { ConfigNames } from "@/app/store/config/types";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerStatusCard, { Labels } from "./ControllerStatusCard";
 
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import {
   ControllerInstallType,
   ImageSyncStatus,

@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 import VmResources, { Label } from "./VmResources";
 
 import { Label as MachineListLabel } from "@/app/machines/views/MachineList/MachineListTable/MachineListTable";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";

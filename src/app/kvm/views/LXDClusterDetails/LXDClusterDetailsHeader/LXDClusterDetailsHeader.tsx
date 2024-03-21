@@ -14,7 +14,7 @@ import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {

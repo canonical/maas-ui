@@ -16,7 +16,7 @@ import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { actions as domainsActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainsSelectors from "@/app/store/domain/selectors";
 import { DomainMeta } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
@@ -35,13 +35,13 @@ const DomainDetails = (): JSX.Element => {
 
   useEffect(() => {
     if (isId(id)) {
-      dispatch(domainsActions.get(id));
+      dispatch(domainActions.get(id));
       // Set domain as active to ensure all domain data is sent from the server.
-      dispatch(domainsActions.setActive(id));
+      dispatch(domainActions.setActive(id));
     }
     // Unset active domain on cleanup.
     return () => {
-      dispatch(domainsActions.setActive(null));
+      dispatch(domainActions.setActive(null));
     };
   }, [dispatch, id]);
 

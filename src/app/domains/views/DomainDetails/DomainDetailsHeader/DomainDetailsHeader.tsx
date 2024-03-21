@@ -8,7 +8,7 @@ import { DomainDetailsSidePanelViews } from "../constants";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";
 import { isDomainDetails } from "@/app/store/domain/utils";

@@ -11,7 +11,7 @@ import { useAddMessage, useScrollToTop } from "@/app/base/hooks";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 

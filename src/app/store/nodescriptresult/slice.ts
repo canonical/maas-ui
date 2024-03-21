@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { NodeScriptResultMeta } from "@/app/store/nodescriptresult/types";
 import type { NodeScriptResultState } from "@/app/store/nodescriptresult/types";
-import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { scriptResultActions } from "@/app/store/scriptresult";
 import type { ScriptResult } from "@/app/store/scriptresult/types";
 import type { GenericItemMeta } from "@/app/store/utils";
 

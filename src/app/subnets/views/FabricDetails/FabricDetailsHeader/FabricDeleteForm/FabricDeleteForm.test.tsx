@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import FabricDeleteForm from "./FabricDeleteForm";
 
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 

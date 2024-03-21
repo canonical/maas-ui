@@ -6,7 +6,7 @@ import { Label as DeviceNetworkLabel } from "./DeviceNetwork/DeviceNetwork";
 import { Label as DeviceSummaryLabel } from "./DeviceSummary/DeviceSummary";
 
 import urls from "@/app/base/urls";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";

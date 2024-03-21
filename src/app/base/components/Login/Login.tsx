@@ -15,7 +15,7 @@ import * as Yup from "yup";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
-import { actions as statusActions } from "@/app/store/status";
+import { statusActions } from "@/app/store/status";
 import statusSelectors from "@/app/store/status/selectors";
 import { formatErrors } from "@/app/utils";
 

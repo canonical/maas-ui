@@ -10,7 +10,7 @@ import CloneResults from "./CloneResults";
 import ActionForm from "@/app/base/components/ActionForm";
 import type { SetSearchFilter } from "@/app/base/types";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";

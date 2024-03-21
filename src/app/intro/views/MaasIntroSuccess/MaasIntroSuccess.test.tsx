@@ -7,7 +7,7 @@ import MaasIntroSuccess, {
 } from "./MaasIntroSuccess";
 
 import urls from "@/app/base/urls";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

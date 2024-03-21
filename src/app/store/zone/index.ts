@@ -1,6 +1,6 @@
 export {
   default,
-  actions,
+  actions as zoneActions,
   initialGenericActions,
   initialModelActions,
 } from "./slice";

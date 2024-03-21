@@ -7,7 +7,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as poolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import poolSelectors from "@/app/store/resourcepool/selectors";
 import type { ResourcePool } from "@/app/store/resourcepool/types";
 
@@ -43,7 +43,7 @@ export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
 
   useAddMessage(
     saved,
-    poolActions.cleanup,
+    resourcePoolActions.cleanup,
     `${savingPool} ${pool ? "updated" : "added"} successfully.`,
     () => setSaving(null)
   );
@@ -67,7 +67,7 @@ export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
   return (
     <FormikForm
       aria-label={title}
-      cleanup={poolActions.cleanup}
+      cleanup={resourcePoolActions.cleanup}
       errors={errors}
       initialValues={initialValues}
       onCancel={onClose}
@@ -77,16 +77,16 @@ export const PoolForm = ({ pool, onClose, ...props }: Props): JSX.Element => {
         label: "Add pool form",
       }}
       onSubmit={(values) => {
-        dispatch(poolActions.cleanup());
+        dispatch(resourcePoolActions.cleanup());
         if (pool) {
           dispatch(
-            poolActions.update({
+            resourcePoolActions.update({
               ...values,
               id: pool.id,
             })
           );
         } else {
-          dispatch(poolActions.create(values));
+          dispatch(resourcePoolActions.create(values));
         }
         setSaving(values.name);
       }}

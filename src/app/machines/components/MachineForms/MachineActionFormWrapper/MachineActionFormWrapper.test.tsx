@@ -4,7 +4,7 @@ import type { Mock } from "vitest";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";

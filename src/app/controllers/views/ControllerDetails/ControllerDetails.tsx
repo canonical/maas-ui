@@ -23,7 +23,7 @@ import { useGetURLId } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { ControllerMeta } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";

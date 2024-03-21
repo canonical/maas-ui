@@ -7,8 +7,8 @@ import BaseUserForm from "@/app/base/components/UserForm";
 import type { Props as UserFormProps } from "@/app/base/components/UserForm/UserForm";
 import { useAddMessage } from "@/app/base/hooks";
 import settingsURLs from "@/app/settings/urls";
-import { actions as authActions } from "@/app/store/auth";
-import { actions as userActions } from "@/app/store/user";
+import { authActions } from "@/app/store/auth";
+import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 import type { User } from "@/app/store/user/types";
 

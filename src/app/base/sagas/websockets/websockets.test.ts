@@ -23,7 +23,7 @@ import {
   watchWebSockets,
 } from "./websockets";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { getCookie } from "@/app/utils";
 import * as factory from "@/testing/factories";
 import WebSocketClient, {

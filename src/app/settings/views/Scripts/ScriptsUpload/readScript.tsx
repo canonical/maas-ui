@@ -2,7 +2,7 @@ import { NotificationSeverity } from "@canonical/react-components";
 import type { FileWithPath } from "react-dropzone";
 import type { Dispatch } from "redux";
 
-import { actions as messageActions } from "@/app/store/message";
+import { messageActions } from "@/app/store/message";
 
 export type ReadScriptResponse = {
   name: string | null;

@@ -19,7 +19,7 @@ import settingsURLs from "@/app/settings/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import type { RootState } from "@/app/store/root/types";
 import statusSelectors from "@/app/store/status/selectors";
-import { actions as userActions } from "@/app/store/user";
+import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 import type { User } from "@/app/store/user/types";
 import { isComparable } from "@/app/utils";

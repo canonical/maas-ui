@@ -15,7 +15,7 @@ import urls from "@/app/base/urls";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
-import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import { nodeDeviceActions } from "@/app/store/nodedevice";
 import nodeDeviceSelectors from "@/app/store/nodedevice/selectors";
 import { NodeDeviceBus } from "@/app/store/nodedevice/types";
 import type { NodeDevice } from "@/app/store/nodedevice/types";

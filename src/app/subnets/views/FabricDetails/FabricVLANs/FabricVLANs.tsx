@@ -9,13 +9,13 @@ import VLANLink from "@/app/base/components/VLANLink";
 import { useFetchActions } from "@/app/base/hooks";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as spaceActions } from "@/app/store/space";
+import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { getSubnetsInVLAN } from "@/app/store/subnet/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import {

@@ -6,7 +6,7 @@ import DHCPSnippets from "./DHCPSnippets";
 
 import type { Props as DHCPTableProps } from "@/app/base/components/DHCPTable/DHCPTable";
 import urls from "@/app/base/urls";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
 import { render } from "@/testing/utils";
 

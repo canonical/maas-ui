@@ -18,15 +18,15 @@ import ActionForm from "@/app/base/components/ActionForm";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { hostnameValidation, RANGE_REGEX } from "@/app/base/validation";
 import { useActivePod } from "@/app/kvm/hooks";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
-import { actions as machineActions } from "@/app/store/machine";
-import { actions as messageActions } from "@/app/store/message";
-import { actions as podActions } from "@/app/store/pod";
+import { machineActions } from "@/app/store/machine";
+import { messageActions } from "@/app/store/message";
+import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import {
@@ -34,19 +34,19 @@ import {
   isPodDetails,
   resourceWithOverCommit,
 } from "@/app/store/pod/utils";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type { ResourcePool } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as spaceActions } from "@/app/store/space";
+import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import type { Space } from "@/app/store/space/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 import { arrayFromRangesString, getRanges } from "@/app/utils";
 

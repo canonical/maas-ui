@@ -18,7 +18,7 @@ import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useTableSort } from "@/app/base/hooks";
 import { SortDirection } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import { TagMeta } from "@/app/store/tag/types";

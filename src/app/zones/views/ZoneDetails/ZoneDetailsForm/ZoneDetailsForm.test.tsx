@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import ZoneDetailsForm from "./ZoneDetailsForm";
 
 import type { RootState } from "@/app/store/root/types";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 

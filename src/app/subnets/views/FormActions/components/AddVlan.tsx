@@ -10,13 +10,13 @@ import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import SpaceSelect from "@/app/base/components/SpaceSelect";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
-import { actions as spaceActions } from "@/app/store/space";
+import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import { getSpaceDisplay } from "@/app/store/space/utils";
 import { VLANVidRange } from "@/app/store/types/enum";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { toFormikNumber } from "@/app/utils";
 

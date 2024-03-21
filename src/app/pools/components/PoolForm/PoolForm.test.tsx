@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import { PoolForm, Labels as PoolFormLabels } from "./PoolForm";
 
 import urls from "@/app/base/urls";
-import { actions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
@@ -56,7 +56,7 @@ describe("PoolForm", () => {
 
     unmount();
 
-    expect(store.getActions()[0]).toEqual(actions.cleanup());
+    expect(store.getActions()[0]).toEqual(resourcePoolActions.cleanup());
   });
 
   it("redirects when the resource pool is saved", () => {
@@ -101,7 +101,10 @@ describe("PoolForm", () => {
       .find((action) => action.type === "resourcepool/create");
 
     expect(action).toEqual(
-      actions.create({ name: "test name", description: "test description" })
+      resourcePoolActions.create({
+        name: "test name",
+        description: "test description",
+      })
     );
   });
 
@@ -143,7 +146,11 @@ describe("PoolForm", () => {
       .find((action) => action.type === "resourcepool/update");
 
     expect(action).toEqual(
-      actions.update({ id: 1, name: "newName", description: "newDescription" })
+      resourcePoolActions.update({
+        id: 1,
+        name: "newName",
+        description: "newDescription",
+      })
     );
   });
 

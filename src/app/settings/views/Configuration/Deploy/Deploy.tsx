@@ -6,9 +6,9 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useWindowTitle } from "@/app/base/hooks";
 import DeployForm from "@/app/settings/views/Configuration/DeployForm";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
 
 const Deploy = (): JSX.Element => {

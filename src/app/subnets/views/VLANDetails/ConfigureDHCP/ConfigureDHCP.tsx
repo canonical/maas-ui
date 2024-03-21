@@ -12,18 +12,18 @@ import FormikForm from "@/app/base/components/FormikForm";
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
-import { actions as ipRangeActions } from "@/app/store/iprange";
+import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type {
   ConfigureDHCPParams,

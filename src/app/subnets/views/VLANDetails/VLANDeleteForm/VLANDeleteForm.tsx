@@ -8,7 +8,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import type { EmptyObject } from "@/app/base/types";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import subnetURLs from "@/app/subnets/urls";

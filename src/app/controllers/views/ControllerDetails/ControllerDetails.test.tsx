@@ -9,7 +9,7 @@ import { ControllerDetailsTabLabels } from "../../constants";
 import ControllerDetails from "./ControllerDetails";
 
 import urls from "@/app/base/urls";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom-v5-compat";
 
 import urls from "@/app/base/urls";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";

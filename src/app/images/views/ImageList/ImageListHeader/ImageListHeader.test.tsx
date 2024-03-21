@@ -4,7 +4,7 @@ import ImageListHeader, {
   Labels as ImageListHeaderLabels,
 } from "./ImageListHeader";
 
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

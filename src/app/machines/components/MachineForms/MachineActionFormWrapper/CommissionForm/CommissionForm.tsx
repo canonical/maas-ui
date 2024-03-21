@@ -10,7 +10,7 @@ import ActionForm from "@/app/base/components/ActionForm";
 import { useFetchActions, useGetURLId } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import {
   MachineMeta,
   type MachineEventErrors,
@@ -20,7 +20,7 @@ import {
   useFetchMachine,
   useSelectedMachinesActionsDispatch,
 } from "@/app/store/machine/utils/hooks";
-import { actions as scriptActions } from "@/app/store/script";
+import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";
 import { ScriptName } from "@/app/store/script/types";

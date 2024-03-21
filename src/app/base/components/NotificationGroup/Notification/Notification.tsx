@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom-v5-compat";
 
 import settingsURLs from "@/app/settings/urls";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as notificationActions } from "@/app/store/notification";
+import { notificationActions } from "@/app/store/notification";
 import notificationSelectors from "@/app/store/notification/selectors";
 import type { Notification as NotificationType } from "@/app/store/notification/types";
 import {

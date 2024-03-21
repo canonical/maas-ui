@@ -7,7 +7,7 @@ import TagDetails from "./TagDetails";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 

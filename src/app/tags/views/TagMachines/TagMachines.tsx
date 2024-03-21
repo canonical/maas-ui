@@ -15,7 +15,7 @@ import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/cons
 import type { FetchGroupKey, FetchFilters } from "@/app/store/machine/types";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import { TagMeta } from "@/app/store/tag/types";
 import { FetchNodeStatus } from "@/app/store/types/node";

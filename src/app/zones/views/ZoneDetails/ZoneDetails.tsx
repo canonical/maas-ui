@@ -12,7 +12,7 @@ import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 import { ZoneMeta } from "@/app/store/zone/types";
 import { isId } from "@/app/utils";

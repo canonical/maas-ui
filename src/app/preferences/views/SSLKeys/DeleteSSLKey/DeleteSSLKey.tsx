@@ -6,7 +6,7 @@ import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage, useGetURLId } from "@/app/base/hooks";
 import urls from "@/app/preferences/urls";
 import { Label } from "@/app/preferences/views/SSLKeys/SSLKeyList/SSLKeyList";
-import { actions as sslkeyActions } from "@/app/store/sslkey";
+import { sslkeyActions } from "@/app/store/sslkey";
 import sslkeySelectors from "@/app/store/sslkey/selectors";
 import { isId } from "@/app/utils";
 

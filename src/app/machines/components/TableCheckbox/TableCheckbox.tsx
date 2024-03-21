@@ -5,7 +5,7 @@ import { Input } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { SelectedMachines } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";

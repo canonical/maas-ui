@@ -10,9 +10,9 @@ import { useFetchActions, useCycled } from "@/app/base/hooks";
 import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as sshkeyActions } from "@/app/store/sshkey";
+import { sshkeyActions } from "@/app/store/sshkey";
 import sshkeySelectors from "@/app/store/sshkey/selectors";
-import { actions as userActions } from "@/app/store/user";
+import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 import { formatErrors } from "@/app/utils";
 

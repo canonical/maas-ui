@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
+import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 

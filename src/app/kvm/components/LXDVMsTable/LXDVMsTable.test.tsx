@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 
 import LXDVMsTable from "./LXDVMsTable";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { FetchSortDirection, FetchGroupKey } from "@/app/store/machine/types";
 import { generateCallId } from "@/app/store/machine/utils/query";
 import * as factory from "@/testing/factories";

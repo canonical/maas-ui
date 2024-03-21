@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 import FormikField from "@/app/base/components/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { architectures as architecturesSelectors } from "@/app/store/general/selectors";
 
 type Props = {

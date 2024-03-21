@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import PoolDelete from "./PoolDelete";
 
-import { actions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
@@ -40,5 +40,5 @@ it("can delete a resource pool", async () => {
   const action = store
     .getActions()
     .find((action) => action.type === "resourcepool/delete");
-  expect(action).toEqual(actions.delete(1));
+  expect(action).toEqual(resourcePoolActions.delete(1));
 });

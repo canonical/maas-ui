@@ -6,7 +6,7 @@ import NetworkDiscoveryConfigurationSubnetForm, {
 
 import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 

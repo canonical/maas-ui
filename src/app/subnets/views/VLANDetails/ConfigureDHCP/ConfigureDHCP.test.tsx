@@ -4,7 +4,7 @@ import ConfigureDHCP from "./ConfigureDHCP";
 
 import type { RootState } from "@/app/store/root/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
 import {
   userEvent,

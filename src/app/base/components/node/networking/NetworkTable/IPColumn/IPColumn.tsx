@@ -7,7 +7,7 @@ import type { ControllerDetails } from "@/app/store/controller/types";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { scriptResultActions } from "@/app/store/scriptresult";
 import scriptResultsSelectors from "@/app/store/scriptresult/selectors";
 import type { ScriptResult } from "@/app/store/scriptresult/types";
 import type { NetworkInterface, NetworkLink } from "@/app/store/types/node";

@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import MachinesFilterOptions, { Label } from "./MachinesFilterOptions";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FilterGroup } from "@/app/store/machine/types";
 import { FilterGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";

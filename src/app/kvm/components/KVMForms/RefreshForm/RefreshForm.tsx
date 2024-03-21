@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import type { ClearSidePanelContent, EmptyObject } from "@/app/base/types";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 

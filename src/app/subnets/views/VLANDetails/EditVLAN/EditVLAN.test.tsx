@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import EditVLAN from "./EditVLAN";
 
 import type { RootState } from "@/app/store/root/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";

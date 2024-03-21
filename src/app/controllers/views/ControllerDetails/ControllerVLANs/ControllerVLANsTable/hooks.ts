@@ -11,17 +11,17 @@ import type {
   ControllerMeta,
 } from "@/app/store/controller/types";
 import { isControllerDetails } from "@/app/store/controller/utils";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 import { getFabricById } from "@/app/store/fabric/utils";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { getSubnetsInVLAN } from "@/app/store/subnet/utils";
 import { getBondOrBridgeChild } from "@/app/store/utils/node/networking";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import {

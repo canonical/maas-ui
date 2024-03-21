@@ -4,7 +4,7 @@ import DeployForm from "./DeployForm";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";

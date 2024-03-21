@@ -15,7 +15,7 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSendAnalytics } from "@/app/base/hooks";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";

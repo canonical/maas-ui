@@ -7,7 +7,7 @@ import MarkBrokenFormFields from "./MarkBrokenFormFields";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { MachineEventErrors } from "@/app/store/machine/types";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";

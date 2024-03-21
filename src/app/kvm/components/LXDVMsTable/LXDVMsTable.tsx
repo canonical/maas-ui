@@ -11,7 +11,7 @@ import type { GetHostColumn, GetResources } from "./VMsTable/VMsTable";
 import type { SetSearchFilter, SortDirection } from "@/app/base/types";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import { DEFAULTS } from "@/app/machines/views/MachineList/MachineListTable/constants";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
 import { FilterGroupKey } from "@/app/store/machine/types";
 import { FilterMachines, useFetchedCount } from "@/app/store/machine/utils";

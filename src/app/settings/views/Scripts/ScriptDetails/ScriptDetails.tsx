@@ -12,7 +12,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import FileContext from "@/app/base/file-context";
-import { actions as scriptActions } from "@/app/store/script";
+import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";
 

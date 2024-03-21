@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
 import ActionConfirm from "@/app/base/components/node/ActionConfirm";
 import type { ControllerDetails } from "@/app/store/controller/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
 import { formatSize, isDatastore, nodeIsMachine } from "@/app/store/utils";
 

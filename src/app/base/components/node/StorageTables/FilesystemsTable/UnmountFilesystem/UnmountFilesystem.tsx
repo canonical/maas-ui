@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { Disk, Partition } from "@/app/store/types/node";
 import { isDisk, isMounted } from "@/app/store/utils";

@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import CommissionForm from "./CommissionForm";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptName, ScriptType } from "@/app/store/script/types";
 import { PowerState } from "@/app/store/types/enum";

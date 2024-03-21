@@ -18,11 +18,11 @@ import { DeviceSidePanelViews } from "@/app/devices/constants";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
@@ -35,7 +35,7 @@ import {
   getLinkInterface,
   getLinkModeDisplay,
 } from "@/app/store/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import { isComparable } from "@/app/utils";

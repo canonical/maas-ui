@@ -10,7 +10,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { useActivePod, useKVMDetailsRedirect } from "./hooks";
 
 import urls from "@/app/base/urls";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
 

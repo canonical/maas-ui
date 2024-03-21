@@ -7,7 +7,7 @@ import DeleteRecordForm, {
   Labels as DeleteRecordFormLabels,
 } from "./DeleteRecordForm";
 
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import * as factory from "@/testing/factories";
 import {
   userEvent,

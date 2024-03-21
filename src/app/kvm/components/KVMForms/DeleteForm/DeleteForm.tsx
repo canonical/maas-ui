@@ -9,14 +9,14 @@ import ActionForm from "@/app/base/components/ActionForm";
 import FormikField from "@/app/base/components/FormikField";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import { actions as machineActions } from "@/app/store/machine";
-import { actions as messageActions } from "@/app/store/message";
-import { actions as podActions } from "@/app/store/pod";
+import { machineActions } from "@/app/store/machine";
+import { messageActions } from "@/app/store/message";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod, PodMeta } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as vmClusterActions } from "@/app/store/vmcluster";
+import { vmClusterActions } from "@/app/store/vmcluster";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 

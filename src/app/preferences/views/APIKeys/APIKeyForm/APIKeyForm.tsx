@@ -7,7 +7,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as tokenActions } from "@/app/store/token";
+import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 import type { Token } from "@/app/store/token/types";
 

@@ -13,12 +13,12 @@ import EditableSection from "@/app/base/components/EditableSection";
 import FabricLink from "@/app/base/components/FabricLink";
 import VLANLink from "@/app/base/components/VLANLink";
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import type { RootState } from "@/app/store/root/types";
-import { actions as spaceActions } from "@/app/store/space";
+import { spaceActions } from "@/app/store/space";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {

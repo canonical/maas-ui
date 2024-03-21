@@ -4,7 +4,7 @@ import { Icon, Spinner } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { ControllerMeta, ImageSyncStatus } from "@/app/store/controller/types";
 import type { Controller } from "@/app/store/controller/types";

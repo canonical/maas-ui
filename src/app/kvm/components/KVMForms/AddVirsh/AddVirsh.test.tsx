@@ -3,11 +3,11 @@ import configureStore from "redux-mock-store";
 import AddVirsh from "./AddVirsh";
 
 import { ConfigNames } from "@/app/store/config/types";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { PodType } from "@/app/store/pod/constants";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 

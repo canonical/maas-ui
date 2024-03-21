@@ -13,9 +13,9 @@ import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useAddMessage } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "@/app/base/validation";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import {
   architectures as architecturesSelectors,
@@ -29,11 +29,11 @@ import {
   generatePowerParametersSchema,
   useInitialPowerParameters,
 } from "@/app/store/general/utils";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {

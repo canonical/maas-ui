@@ -2,12 +2,12 @@ import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
 
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment } from "@/app/store/device/types";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
-import { actions as zoneActions } from "@/app/store/zone";
+import { subnetActions } from "@/app/store/subnet";
+import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
