@@ -47,6 +47,11 @@ export const MachineNonActionSidePanelViews = {
   CREATE_RAID: ["machineNonActionForm", "createRaid"],
   CREATE_VOLUME_GROUP: ["machineNonActionForm", "createVolumeGroup"],
   DELETE_DISK: ["machineNonActionForm", "deleteDisk"],
+  DELETE_FILESYSTEM: ["machineNonActionForm", "deleteFilesystem"],
+  DELETE_SPECIAL_FILESYSTEM: [
+    "machineNonActionForm",
+    "deleteSpecialFilesystem",
+  ],
   DELETE_VOLUME_GROUP: ["machineNonActionForm", "deleteVolumeGroup"],
   EDIT_DISK: ["machineNonActionForm", "editDisk"],
   EDIT_PARTITION: ["machineNonActionForm", "editPartition"],
@@ -56,6 +61,7 @@ export const MachineNonActionSidePanelViews = {
   REMOVE_PARTITION: ["machineNonActionForm", "removePartition"],
   REMOVE_PHYSICAL: ["machineNonActionForm", "removePhysical"],
   SET_BOOT_DISK: ["machineNonActionForm", "setBootDisk"],
+  UNMOUNT_FILESYSTEM: ["machineNonActionForm", "unmountFilesystem"],
   UPDATE_DATASTORE: ["machineNonActionForm", "updateDatastore"],
 } as const;
 

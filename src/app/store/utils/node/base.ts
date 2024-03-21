@@ -240,6 +240,10 @@ export const getSidePanelTitle = (
         return "Delete discovery";
       case SidePanelViews.DELETE_DISK[1]:
         return "Delete disk";
+      case SidePanelViews.DELETE_FILESYSTEM[1]:
+        return "Delete filesystem";
+      case SidePanelViews.DELETE_SPECIAL_FILESYSTEM[1]:
+        return "Delete special filesystem";
       case SidePanelViews.DeleteTag[1]:
         return "Delete tag";
       case SidePanelViews.DELETE_VOLUME_GROUP[1]:
@@ -274,6 +278,8 @@ export const getSidePanelTitle = (
         return "Set boot disk";
       case SidePanelViews.SET_DEFAULT[1]:
         return "Set default";
+      case SidePanelViews.UNMOUNT_FILESYSTEM[1]:
+        return "Unmount filesystem";
       case SidePanelViews.UPDATE_DATASTORE[1]:
         return "Update datastore";
       case SidePanelViews.UpdateTag[1]:

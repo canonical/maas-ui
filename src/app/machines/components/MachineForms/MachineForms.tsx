@@ -25,6 +25,9 @@ import EditDisk from "@/app/base/components/node/StorageTables/AvailableStorageT
 import EditPartition from "@/app/base/components/node/StorageTables/AvailableStorageTable/EditPartition";
 import SetBootDisk from "@/app/base/components/node/StorageTables/AvailableStorageTable/SetBootDisk";
 import AddSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/AddSpecialFilesystem";
+import DeleteFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteFilesystem";
+import DeleteSpecialFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/DeleteSpecialFilesystem";
+import UnmountFilesystem from "@/app/base/components/node/StorageTables/FilesystemsTable/UnmountFilesystem";
 import type { SidePanelContentTypes } from "@/app/base/side-panel-context";
 import type { SetSearchFilter } from "@/app/base/types";
 import type { MachineActionSidePanelViews } from "@/app/machines/constants";
@@ -84,6 +87,10 @@ export const MachineForms = ({
   const disk = extras && "disk" in extras ? extras.disk : undefined;
   const partition =
     extras && "partition" in extras ? extras.partition : undefined;
+  const storageDevice =
+    extras && "storageDevice" in extras ? extras.storageDevice : undefined;
+  const mountPoint =
+    extras && "mountPoint" in extras ? extras.mountPoint : undefined;
 
   switch (sidePanelContent.view) {
     case MachineSidePanelViews.ADD_CHASSIS:
@@ -240,6 +247,26 @@ export const MachineForms = ({
         />
       );
     }
+    case MachineSidePanelViews.DELETE_FILESYSTEM: {
+      if (!storageDevice || !systemId) return null;
+      return (
+        <DeleteFilesystem
+          close={clearSidePanelContent}
+          storageDevice={storageDevice}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.DELETE_SPECIAL_FILESYSTEM: {
+      if (!mountPoint || !systemId) return null;
+      return (
+        <DeleteSpecialFilesystem
+          close={clearSidePanelContent}
+          mountPoint={mountPoint}
+          systemId={systemId}
+        />
+      );
+    }
     case MachineSidePanelViews.DELETE_VOLUME_GROUP: {
       if (!disk || !systemId) return null;
       return (
@@ -335,6 +362,16 @@ export const MachineForms = ({
         <SetBootDisk
           close={clearSidePanelContent}
           diskId={disk.id}
+          systemId={systemId}
+        />
+      );
+    }
+    case MachineSidePanelViews.UNMOUNT_FILESYSTEM: {
+      if (!storageDevice || !systemId) return null;
+      return (
+        <UnmountFilesystem
+          close={clearSidePanelContent}
+          storageDevice={storageDevice}
           systemId={systemId}
         />
       );

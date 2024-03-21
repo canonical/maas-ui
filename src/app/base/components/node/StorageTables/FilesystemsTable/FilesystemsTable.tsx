@@ -1,15 +1,11 @@
-import { useState } from "react";
-
 import { Button, MainTable, Tooltip } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
-import { useDispatch } from "react-redux";
 
 import TableActionsDropdown from "@/app/base/components/TableActionsDropdown";
-import ActionConfirm from "@/app/base/components/node/ActionConfirm";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { ControllerDetails } from "@/app/store/controller/types";
-import { actions as machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { Filesystem, Disk, Partition } from "@/app/store/types/node";
 import {
@@ -23,11 +19,6 @@ export enum FilesystemAction {
   DELETE = "deleteFilesystem",
   UNMOUNT = "unmountFilesystem",
 }
-
-type Expanded = {
-  content: FilesystemAction;
-  id: string;
-};
 
 type Props = {
   canEditStorage: boolean;
@@ -75,15 +66,12 @@ const normaliseRowData = (
   rowId: string,
   fs: Filesystem,
   storageDevice: Disk | Partition | null,
-  expanded: Expanded | null,
-  setExpanded: (expanded: Expanded | null) => void,
   canEditStorage: Props["canEditStorage"],
-  isMachine: boolean
+  isMachine: boolean,
+  node: Props["node"],
+  setSidePanelContent: SetSidePanelContent
 ) => {
-  const isExpanded = expanded?.id === rowId && Boolean(expanded?.content);
-
   return {
-    className: isExpanded ? "p-table__row is-active" : null,
     columns: [
       { content: storageDevice?.name || "—" },
       { content: storageDevice ? formatSize(storageDevice.size) : "—" },
@@ -101,23 +89,48 @@ const normaliseRowData = (
                       label: "Unmount filesystem...",
                       show: usesStorage(fs.fstype),
                       type: FilesystemAction.UNMOUNT,
+                      view: MachineSidePanelViews.UNMOUNT_FILESYSTEM,
                     },
                     {
                       label: "Remove filesystem...",
                       type: FilesystemAction.DELETE,
+                      view:
+                        node.special_filesystems && !storageDevice
+                          ? MachineSidePanelViews.DELETE_SPECIAL_FILESYSTEM
+                          : MachineSidePanelViews.DELETE_FILESYSTEM,
                     },
                   ]}
                   disabled={!canEditStorage}
-                  onActionClick={(action: FilesystemAction) =>
-                    setExpanded({ content: action, id: rowId })
-                  }
+                  onActionClick={(_, view) => {
+                    if (view) {
+                      if (
+                        node.special_filesystems &&
+                        view === MachineSidePanelViews.DELETE_SPECIAL_FILESYSTEM
+                      ) {
+                        setSidePanelContent({
+                          view,
+                          extras: {
+                            systemId: node.system_id,
+                            mountPoint: fs.mount_point,
+                          },
+                        });
+                        return;
+                      }
+                      setSidePanelContent({
+                        view,
+                        extras: {
+                          systemId: node.system_id,
+                          storageDevice,
+                        },
+                      });
+                    }
+                  }}
                 />
               ),
             },
           ]
         : []),
     ].map((column, i) => ({ ...column, "aria-label": headers[i].content })),
-    expanded: isExpanded,
     key: rowId,
   };
 };
@@ -126,8 +139,6 @@ const FilesystemsTable = ({
   canEditStorage,
   node,
 }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState<Expanded | null>(null);
   const isMachine = nodeIsMachine(node);
   const { setSidePanelContent } = useSidePanel();
 
@@ -142,66 +153,11 @@ const FilesystemsTable = ({
           rowId,
           diskFs,
           disk,
-          expanded,
-          setExpanded,
           canEditStorage,
-          isMachine
+          isMachine,
+          node,
+          setSidePanelContent
         ),
-        expandedContent: isMachine ? (
-          <div className="u-flex--grow">
-            {expanded?.content === FilesystemAction.DELETE && (
-              <ActionConfirm
-                closeExpanded={() => setExpanded(null)}
-                confirmLabel="Remove"
-                eventName="deleteFilesystem"
-                message="Are you sure you want to remove this filesystem?"
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.deleteFilesystem({
-                      blockDeviceId: disk.id,
-                      filesystemId: diskFs.id,
-                      systemId: node.system_id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: "Delete disk filesystem",
-                  category: "Machine storage",
-                  label: "Remove",
-                }}
-                statusKey="deletingFilesystem"
-                systemId={node.system_id}
-              />
-            )}
-            {expanded?.content === FilesystemAction.UNMOUNT && (
-              <ActionConfirm
-                closeExpanded={() => setExpanded(null)}
-                confirmLabel="Unmount"
-                eventName="updateFilesystem"
-                message="Are you sure you want to unmount this filesystem?"
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.updateFilesystem({
-                      blockId: disk.id,
-                      mountOptions: "",
-                      mountPoint: "",
-                      systemId: node.system_id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: "Unmount disk filesystem",
-                  category: "Machine storage",
-                  label: "Unmount",
-                }}
-                statusKey="updatingFilesystem"
-                systemId={node.system_id}
-              />
-            )}
-          </div>
-        ) : null,
       });
     }
 
@@ -217,65 +173,11 @@ const FilesystemsTable = ({
               rowId,
               partitionFs,
               partition,
-              expanded,
-              setExpanded,
               canEditStorage,
-              isMachine
+              isMachine,
+              node,
+              setSidePanelContent
             ),
-            expandedContent: isMachine ? (
-              <div className="u-flex--grow">
-                {expanded?.content === FilesystemAction.DELETE && (
-                  <ActionConfirm
-                    closeExpanded={() => setExpanded(null)}
-                    confirmLabel="Remove"
-                    eventName="deletePartition"
-                    message="Are you sure you want to remove this filesystem?"
-                    onConfirm={() => {
-                      dispatch(machineActions.cleanup());
-                      dispatch(
-                        machineActions.deletePartition({
-                          partitionId: partition.id,
-                          systemId: node.system_id,
-                        })
-                      );
-                    }}
-                    onSaveAnalytics={{
-                      action: "Delete partition filesystem",
-                      category: "Machine storage",
-                      label: "Remove",
-                    }}
-                    statusKey="deletingPartition"
-                    systemId={node.system_id}
-                  />
-                )}
-                {expanded?.content === FilesystemAction.UNMOUNT && (
-                  <ActionConfirm
-                    closeExpanded={() => setExpanded(null)}
-                    confirmLabel="Unmount"
-                    eventName="updateFilesystem"
-                    message="Are you sure you want to unmount this filesystem?"
-                    onConfirm={() => {
-                      dispatch(machineActions.cleanup());
-                      dispatch(
-                        machineActions.updateFilesystem({
-                          mountOptions: "",
-                          mountPoint: "",
-                          partitionId: partition.id,
-                          systemId: node.system_id,
-                        })
-                      );
-                    }}
-                    onSaveAnalytics={{
-                      action: "Unmount partition filesystem",
-                      category: "Machine storage",
-                      label: "Unmount",
-                    }}
-                    statusKey="updatingFilesystem"
-                    systemId={node.system_id}
-                  />
-                )}
-              </div>
-            ) : null,
           });
         }
       });
@@ -292,39 +194,11 @@ const FilesystemsTable = ({
           rowId,
           specialFs,
           null,
-          expanded,
-          setExpanded,
           canEditStorage,
-          isMachine
+          isMachine,
+          node,
+          setSidePanelContent
         ),
-        expandedContent: isMachine ? (
-          <div className="u-flex--grow">
-            {expanded?.content === FilesystemAction.DELETE && (
-              <ActionConfirm
-                closeExpanded={() => setExpanded(null)}
-                confirmLabel="Remove"
-                eventName="unmountSpecial"
-                message="Are you sure you want to remove this special filesystem?"
-                onConfirm={() => {
-                  dispatch(machineActions.cleanup());
-                  dispatch(
-                    machineActions.unmountSpecial({
-                      mountPoint: specialFs.mount_point,
-                      systemId: node.system_id,
-                    })
-                  );
-                }}
-                onSaveAnalytics={{
-                  action: "Unmount special filesystem",
-                  category: "Machine storage",
-                  label: "Remove",
-                }}
-                statusKey="unmountingSpecial"
-                systemId={node.system_id}
-              />
-            )}
-          </div>
-        ) : null,
       });
     });
   }

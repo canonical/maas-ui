@@ -5,11 +5,24 @@ import configureStore from "redux-mock-store";
 
 import FilesystemsTable from "./FilesystemsTable";
 
-import { actions as machineActions } from "@/app/store/machine";
+import * as sidePanelHooks from "@/app/base/side-panel-context";
+import { MachineSidePanelViews } from "@/app/machines/constants";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
+const setSidePanelContent = vi.fn();
+beforeEach(() => {
+  vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+    setSidePanelContent,
+    sidePanelContent: null,
+    setSidePanelSize: vi.fn(),
+    sidePanelSize: "regular",
+  });
+});
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 it("can show an empty message", () => {
   const machine = factory.machineDetails({
@@ -263,19 +276,9 @@ it("can remove a disk's filesystem if node is a machine", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: "Remove filesystem..." })
   );
-  await userEvent.click(screen.getByRole("button", { name: "Remove" }));
-
-  const expectedAction = machineActions.deleteFilesystem({
-    blockDeviceId: disk.id,
-    filesystemId: filesystem.id,
-    systemId: machine.system_id,
-  });
-  expect(
-    screen.getByText("Are you sure you want to remove this filesystem?")
-  ).toBeInTheDocument();
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect.objectContaining({ view: MachineSidePanelViews.DELETE_FILESYSTEM })
+  );
 });
 
 it("can remove a partition's filesystem if node is a machine", async () => {
@@ -309,18 +312,9 @@ it("can remove a partition's filesystem if node is a machine", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: "Remove filesystem..." })
   );
-  await userEvent.click(screen.getByRole("button", { name: "Remove" }));
-
-  const expectedAction = machineActions.deletePartition({
-    partitionId: partition.id,
-    systemId: machine.system_id,
-  });
-  expect(
-    screen.getByText("Are you sure you want to remove this filesystem?")
-  ).toBeInTheDocument();
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect.objectContaining({ view: MachineSidePanelViews.DELETE_FILESYSTEM })
+  );
 });
 
 it("can remove a special filesystem if node is a machine", async () => {
@@ -356,18 +350,11 @@ it("can remove a special filesystem if node is a machine", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: "Remove filesystem..." })
   );
-  await userEvent.click(screen.getByRole("button", { name: "Remove" }));
-
-  const expectedAction = machineActions.unmountSpecial({
-    mountPoint: filesystem.mount_point,
-    systemId: machine.system_id,
-  });
-  expect(
-    screen.getByText("Are you sure you want to remove this special filesystem?")
-  ).toBeInTheDocument();
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect.objectContaining({
+      view: MachineSidePanelViews.DELETE_SPECIAL_FILESYSTEM,
+    })
+  );
 });
 
 it("can unmount a disk's filesystem if node is a machine", async () => {
@@ -400,20 +387,9 @@ it("can unmount a disk's filesystem if node is a machine", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: "Unmount filesystem..." })
   );
-  await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
-
-  const expectedAction = machineActions.updateFilesystem({
-    blockId: disk.id,
-    mountOptions: "",
-    mountPoint: "",
-    systemId: machine.system_id,
-  });
-  expect(
-    screen.getByText("Are you sure you want to unmount this filesystem?")
-  ).toBeInTheDocument();
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect.objectContaining({ view: MachineSidePanelViews.UNMOUNT_FILESYSTEM })
+  );
 });
 
 it("can unmount a partition's filesystem if node is a machine", async () => {
@@ -447,18 +423,7 @@ it("can unmount a partition's filesystem if node is a machine", async () => {
   await userEvent.click(
     screen.getByRole("button", { name: "Unmount filesystem..." })
   );
-  await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
-
-  const expectedAction = machineActions.updateFilesystem({
-    mountOptions: "",
-    mountPoint: "",
-    partitionId: partition.id,
-    systemId: machine.system_id,
-  });
-  expect(
-    screen.getByText("Are you sure you want to unmount this filesystem?")
-  ).toBeInTheDocument();
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  expect(setSidePanelContent).toHaveBeenCalledWith(
+    expect.objectContaining({ view: MachineSidePanelViews.UNMOUNT_FILESYSTEM })
+  );
 });
