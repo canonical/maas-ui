@@ -23,9 +23,5 @@
     .upgrade-col {
       @include breakpoint-widths(0, 0, 0, 10rem, 10rem);
     }
-
-    .images-col {
-      @include breakpoint-widths(0, 0, 14rem, 14rem, 14rem);
-    }
   }
 }
