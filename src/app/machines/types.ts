@@ -22,6 +22,7 @@ import type {
 import type { Script } from "@/app/store/script/types";
 import type {
   Disk,
+  Filesystem,
   NetworkInterface,
   NetworkLink,
   Partition,
@@ -94,6 +95,20 @@ export type MachineSidePanelContent =
         systemId?: Machine["system_id"];
         disk?: Disk;
         partition?: Partition;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        storageDevice: Disk | Partition | null;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        mountPoint: Filesystem["mount_point"];
       }
     >;
 
