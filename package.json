@@ -76,7 +76,7 @@
     "redux-first-history": "5.1.1",
     "redux-saga": "1.2.2",
     "typed-redux-saga": "1.5.0",
-    "typescript": "5.4.2",
+    "typescript": "5.4.3",
     "vanilla-framework": "4.0.0",
     "vite": "5.1.5",
     "vite-plugin-svgr": "4.2.0",
