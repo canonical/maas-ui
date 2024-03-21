@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import FormikField from "@/app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as spaceActions } from "@/app/store/space";
+import { spaceActions } from "@/app/store/space";
 import spaceSelectors from "@/app/store/space/selectors";
 import { simpleSortByKey } from "@/app/utils";
 

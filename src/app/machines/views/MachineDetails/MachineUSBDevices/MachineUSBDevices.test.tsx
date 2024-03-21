@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import MachineUSBDevices from "./MachineUSBDevices";
 
-import { actions as nodeDeviceActions } from "@/app/store/nodedevice";
+import { nodeDeviceActions } from "@/app/store/nodedevice";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter } from "@/testing/utils";

@@ -12,7 +12,7 @@ import LXDPowerFields from "./LXDPowerFields";
 import FormikField from "@/app/base/components/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
 import type { AnyObject } from "@/app/base/types";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "@/app/store/general/selectors";
 import { PowerFieldScope } from "@/app/store/general/types";

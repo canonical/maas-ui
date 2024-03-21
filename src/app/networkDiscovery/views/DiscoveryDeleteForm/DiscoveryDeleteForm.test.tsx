@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import DiscoveryDeleteForm from "./DiscoveryDeleteForm";
 
-import { actions as discoveryActions } from "@/app/store/discovery";
+import { discoveryActions } from "@/app/store/discovery";
 import type { Discovery } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
 import {

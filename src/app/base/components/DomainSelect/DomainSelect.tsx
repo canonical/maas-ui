@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import FormikField from "@/app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
 type Props = {

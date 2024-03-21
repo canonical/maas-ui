@@ -5,7 +5,7 @@ import SpaceDetails from "./SpaceDetails";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as spaceActions } from "@/app/store/space";
+import { spaceActions } from "@/app/store/space";
 import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,

@@ -8,7 +8,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { ACTION_STATUS } from "@/app/base/constants";
 import { useFetchActions } from "@/app/base/hooks";
 import type { RootState } from "@/app/store/root/types";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import { ZONE_ACTIONS } from "@/app/store/zone/constants";
 import zoneSelectors from "@/app/store/zone/selectors";
 

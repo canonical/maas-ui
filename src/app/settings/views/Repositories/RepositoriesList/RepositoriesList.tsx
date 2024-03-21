@@ -13,7 +13,7 @@ import {
 } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import settingsURLs from "@/app/settings/urls";
-import { actions as repositoryActions } from "@/app/store/packagerepository";
+import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
 import type {
   PackageRepository,

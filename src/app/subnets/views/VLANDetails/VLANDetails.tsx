@@ -17,7 +17,7 @@ import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { VLANMeta } from "@/app/store/vlan/types";
 import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";

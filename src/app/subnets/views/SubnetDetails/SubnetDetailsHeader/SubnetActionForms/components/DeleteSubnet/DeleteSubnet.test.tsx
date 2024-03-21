@@ -8,8 +8,8 @@ import configureStore from "redux-mock-store";
 import DeleteSubnet from "./DeleteSubnet";
 
 import urls from "@/app/base/urls";
-import { actions as subnetActions } from "@/app/store/subnet";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { subnetActions } from "@/app/store/subnet";
+import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
 import { render, screen, within, waitFor, userEvent } from "@/testing/utils";
 

@@ -10,7 +10,7 @@ import {
   useSidePanel,
   type SetSidePanelContent,
 } from "@/app/base/side-panel-context";
-import { actions as ipRangeActions } from "@/app/store/iprange";
+import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType, IPRangeMeta } from "@/app/store/iprange/types";

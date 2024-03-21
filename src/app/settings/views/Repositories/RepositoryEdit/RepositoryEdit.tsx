@@ -6,7 +6,7 @@ import RepositoryForm from "../RepositoryForm";
 
 import { useFetchActions } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { actions as repositoryActions } from "@/app/store/packagerepository";
+import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
 import { ResourcePoolMeta } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";

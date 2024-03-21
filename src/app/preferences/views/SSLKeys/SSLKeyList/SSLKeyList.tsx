@@ -5,7 +5,7 @@ import TableActions from "@/app/base/components/TableActions";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
-import { actions as sslkeyActions } from "@/app/store/sslkey";
+import { sslkeyActions } from "@/app/store/sslkey";
 import sslkeySelectors from "@/app/store/sslkey/selectors";
 import type { SSLKey } from "@/app/store/sslkey/types";
 

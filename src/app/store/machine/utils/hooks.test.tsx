@@ -25,7 +25,7 @@ import {
   useFetchedCount,
 } from "./hooks";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type {
   FetchFilters,
   FetchGroupKey,

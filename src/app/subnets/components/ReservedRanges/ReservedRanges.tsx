@@ -18,7 +18,7 @@ import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { actions as ipRangeActions } from "@/app/store/iprange";
+import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";

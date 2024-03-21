@@ -13,7 +13,7 @@ import * as baseHooks from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";

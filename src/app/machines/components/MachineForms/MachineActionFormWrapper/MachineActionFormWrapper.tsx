@@ -22,7 +22,7 @@ import { useScrollOnRender } from "@/app/base/hooks";
 import type { ClearSidePanelContent, SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type {
   MachineActions,
   MachineEventErrors,

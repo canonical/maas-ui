@@ -9,7 +9,7 @@ import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/preferences/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import type { Props as SettingsTableProps } from "@/app/settings/components/SettingsTable/SettingsTable";
-import { actions as sshkeyActions } from "@/app/store/sshkey";
+import { sshkeyActions } from "@/app/store/sshkey";
 import sshkeySelectors from "@/app/store/sshkey/selectors";
 import type { KeySource, SSHKey } from "@/app/store/sshkey/types";
 

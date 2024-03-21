@@ -16,7 +16,7 @@ import MachineActionMenu from "@/app/machines/views/MachineList/MachineListContr
 import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
 import AddHardwareMenu from "@/app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
 import type { useResponsiveColumns } from "@/app/machines/views/MachineList/hooks";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
 

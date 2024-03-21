@@ -13,7 +13,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as sslkeyActions } from "@/app/store/sslkey";
+import { sslkeyActions } from "@/app/store/sslkey";
 import sslkeySelectors from "@/app/store/sslkey/selectors";
 
 export enum Label {

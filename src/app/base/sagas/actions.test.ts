@@ -13,9 +13,9 @@ import {
   updateDomainRecord,
 } from "./actions";
 
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import * as factory from "@/testing/factories";
 
 vi.mock("../../../websocket-client");

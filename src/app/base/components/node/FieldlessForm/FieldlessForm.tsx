@@ -6,8 +6,8 @@ import type { NodeActionFormProps } from "../types";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import type { EmptyObject } from "@/app/base/types";
-import type { actions as controllerActions } from "@/app/store/controller";
-import type { actions as machineActions } from "@/app/store/machine";
+import type { controllerActions } from "@/app/store/controller";
+import type { machineActions } from "@/app/store/machine";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";

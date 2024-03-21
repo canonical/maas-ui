@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 import Login, { Labels } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
-import { actions as statusActions } from "@/app/store/status";
+import { statusActions } from "@/app/store/status";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 

@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import OtherImages, { Labels as OtherImagesLabels } from "./OtherImages";
 
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {

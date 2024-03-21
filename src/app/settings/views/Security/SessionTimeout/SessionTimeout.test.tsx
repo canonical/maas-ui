@@ -5,7 +5,7 @@ import SessionTimeout, {
   Labels as SessionTimeoutLabels,
 } from "./SessionTimeout";
 
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import type { RootState } from "@/app/store/root/types";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {

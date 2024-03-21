@@ -20,12 +20,12 @@ import { useThemeContext } from "@/app/base/theme-context";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as statusActions } from "@/app/store/status";
+import { statusActions } from "@/app/store/status";
 
 export type SideNavigationProps = {
   authUser: ReturnType<typeof authSelectors.get>;

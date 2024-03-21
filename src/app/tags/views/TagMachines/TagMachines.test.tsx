@@ -7,11 +7,11 @@ import TagMachines, { Label } from "./TagMachines";
 
 import urls from "@/app/base/urls";
 import { columnLabels, MachineColumns } from "@/app/machines/constants";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { FetchGroupKey, FetchSortDirection } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { NodeStatus, FetchNodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";

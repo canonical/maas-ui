@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
 
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";

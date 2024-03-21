@@ -7,7 +7,7 @@ import ZonesListTable from "./ZonesListTable";
 import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { actions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
@@ -17,7 +17,7 @@ const ZonesList = (): JSX.Element => {
 
   useWindowTitle("Zones");
 
-  useFetchActions([actions.fetch]);
+  useFetchActions([zoneActions.fetch]);
 
   let content = null;
 

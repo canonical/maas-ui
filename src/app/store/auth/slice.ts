@@ -6,7 +6,7 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import { actions as userActions } from "@/app/store/user";
+import { userActions } from "@/app/store/user";
 import type { AuthState, User, UserState } from "@/app/store/user/types";
 
 type WithPrepare = {

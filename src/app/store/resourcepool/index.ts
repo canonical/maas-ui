@@ -1,1 +1,1 @@
-export { default, actions } from "./slice";
+export { default, actions as resourcePoolActions } from "./slice";

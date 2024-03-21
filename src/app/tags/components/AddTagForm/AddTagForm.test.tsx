@@ -7,7 +7,7 @@ import AddTagForm, { Label } from "./AddTagForm";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";

@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MapSubnet from "./MapSubnet";
 
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 

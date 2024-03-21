@@ -14,7 +14,7 @@ import NotFound from "@/app/base/views/NotFound";
 import PoolAdd from "@/app/pools/views/PoolAdd";
 import PoolEdit from "@/app/pools/views/PoolEdit";
 import { useFetchMachineCount } from "@/app/store/machine/utils/hooks";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import { getRelativeRoute } from "@/app/utils";
 

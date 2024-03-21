@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type { RootState } from "@/app/store/root/types";
 

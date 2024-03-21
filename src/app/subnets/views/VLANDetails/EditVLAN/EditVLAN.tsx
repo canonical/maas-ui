@@ -13,7 +13,7 @@ import SpaceSelect from "@/app/base/components/SpaceSelect";
 import type { RootState } from "@/app/store/root/types";
 import { getSpaceDisplay } from "@/app/store/space/utils";
 import { VLANMTURange, VLANVidRange } from "@/app/store/types/enum";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import { VLANMeta } from "@/app/store/vlan/types";

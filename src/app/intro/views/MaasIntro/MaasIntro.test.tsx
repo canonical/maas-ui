@@ -6,9 +6,9 @@ import { Labels as ConnectivityCardLabels } from "./ConnectivityCard/Connectivit
 import MaasIntro, { Labels as MaasIntroLabels } from "./MaasIntro";
 import { Labels as NameCardLabels } from "./NameCard/NameCard";
 
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
-import { actions as repoActions } from "@/app/store/packagerepository";
+import { repositoryActions } from "@/app/store/packagerepository";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
@@ -101,7 +101,7 @@ describe("MaasIntro", () => {
       maas_name: "my new maas",
       upstream_dns: "0.0.0.0",
     });
-    const updateRepoAction = repoActions.update(mainArchive);
+    const updateRepoAction = repositoryActions.update(mainArchive);
     expect(
       store
         .getActions()
@@ -154,12 +154,12 @@ describe("MaasIntro", () => {
       screen.getByRole("button", { name: MaasIntroLabels.SubmitLabel })
     );
 
-    const updateMainArchiveAction = repoActions.update({
+    const updateMainArchiveAction = repositoryActions.update({
       id: mainArchive.id,
       name: mainArchive.name,
       url: "http://www.newmainarchive.com",
     });
-    const updatePortsArchiveAction = repoActions.update({
+    const updatePortsArchiveAction = repositoryActions.update({
       id: portsArchive.id,
       name: portsArchive.name,
       url: "http://www.newportsarchive.com",

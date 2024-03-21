@@ -22,6 +22,7 @@ beforeEach(() => {
 
 afterEach(() => {
   MockDate.reset();
+  timezoneMock.unregister();
 });
 
 let state: RootState;

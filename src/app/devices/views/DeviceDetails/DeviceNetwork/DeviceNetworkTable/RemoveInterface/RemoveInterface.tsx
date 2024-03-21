@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useCycled, useSendAnalyticsWhen } from "@/app/base/hooks";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type {
   Device,

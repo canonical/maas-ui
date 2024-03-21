@@ -8,7 +8,7 @@ import type { SchemaOf } from "yup";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { DOMAIN_NAME_REGEX } from "@/app/base/validation";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";
 

@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import KVMConfigurationCard from "./KVMConfigurationCard";
 
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

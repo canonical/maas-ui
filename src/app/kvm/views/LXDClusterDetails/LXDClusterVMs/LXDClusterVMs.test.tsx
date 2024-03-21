@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 import LXDClusterVMs from "./LXDClusterVMs";
 
 import urls from "@/app/base/urls";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

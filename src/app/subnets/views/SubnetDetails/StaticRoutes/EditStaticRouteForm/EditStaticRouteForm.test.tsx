@@ -7,7 +7,7 @@ import { Labels } from "../StaticRoutes";
 
 import EditStaticRouteForm from "./EditStaticRouteForm";
 
-import { actions as staticRouteActions } from "@/app/store/staticroute";
+import { staticRouteActions } from "@/app/store/staticroute";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 

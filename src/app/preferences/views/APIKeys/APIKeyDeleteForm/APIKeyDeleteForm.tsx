@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as tokenActions } from "@/app/store/token";
+import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 
 const APIKeyDeleteForm = ({ id }: { id: number }) => {

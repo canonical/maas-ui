@@ -6,7 +6,7 @@ import { useStorageState } from "react-storage-hooks";
 import { DEFAULTS } from "./MachineListTable/constants";
 
 import type { MachineColumnToggle } from "@/app/machines/constants";
-import { actions as machineActions } from "@/app/store/machine/slice";
+import { machineActions } from "@/app/store/machine";
 import { FetchGroupKey } from "@/app/store/machine/types";
 
 const breakpoints: {

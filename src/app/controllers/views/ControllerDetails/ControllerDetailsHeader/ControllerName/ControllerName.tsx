@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import NodeName from "@/app/base/components/NodeName";
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller } from "@/app/store/controller/types";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { RootState } from "@/app/store/root/types";
 

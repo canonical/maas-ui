@@ -10,7 +10,7 @@ import type {
 } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "@/app/base/components/NodeNetworkTab/NodeNetworkTab";
 import ActionConfirm from "@/app/base/components/node/ActionConfirm";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";

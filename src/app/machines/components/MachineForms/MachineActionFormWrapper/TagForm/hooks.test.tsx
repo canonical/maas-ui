@@ -9,7 +9,7 @@ import configureStore from "redux-mock-store";
 import { useFetchTags, useSelectedTags, useUnchangedTags } from "./hooks";
 
 import * as query from "@/app/store/machine/utils/query";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import * as factory from "@/testing/factories";
 import { waitFor } from "@/testing/utils";
 

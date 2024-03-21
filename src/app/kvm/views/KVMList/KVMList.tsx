@@ -15,12 +15,12 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import KVMForms from "@/app/kvm/components/KVMForms";
 import { getFormTitle } from "@/app/kvm/utils";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
-import { actions as poolActions } from "@/app/store/resourcepool";
-import { actions as vmclusterActions } from "@/app/store/vmcluster";
+import { resourcePoolActions } from "@/app/store/resourcepool";
+import { vmClusterActions } from "@/app/store/vmcluster";
 import vmclusterSelectors from "@/app/store/vmcluster/selectors";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 
 export enum Label {
   Title = "KVM list",
@@ -44,8 +44,8 @@ const KVMList = (): JSX.Element => {
 
   useFetchActions([
     podActions.fetch,
-    poolActions.fetch,
-    vmclusterActions.fetch,
+    resourcePoolActions.fetch,
+    vmClusterActions.fetch,
     zoneActions.fetch,
   ]);
 

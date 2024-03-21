@@ -4,7 +4,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric, FabricMeta } from "@/app/store/fabric/types";
 import { getFabricDisplay } from "@/app/store/fabric/utils";

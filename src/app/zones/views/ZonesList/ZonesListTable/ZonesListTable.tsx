@@ -6,7 +6,7 @@ import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { actions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 
 export enum TestIds {
@@ -16,7 +16,7 @@ export enum TestIds {
 const ZonesListTable = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
 
-  useFetchActions([actions.fetch]);
+  useFetchActions([zoneActions.fetch]);
 
   const headers = [
     { content: "Name", sortKey: "name" },

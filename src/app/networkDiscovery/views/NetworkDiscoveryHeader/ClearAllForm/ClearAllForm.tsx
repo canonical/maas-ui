@@ -12,9 +12,9 @@ import docsUrls from "@/app/base/docsUrls";
 import type { EmptyObject } from "@/app/base/types";
 import configSelectors from "@/app/store/config/selectors";
 import { NetworkDiscovery } from "@/app/store/config/types";
-import { actions as discoveryActions } from "@/app/store/discovery";
+import { discoveryActions } from "@/app/store/discovery";
 import discoverySelectors from "@/app/store/discovery/selectors";
-import { actions as messageActions } from "@/app/store/message";
+import { messageActions } from "@/app/store/message";
 
 export enum Labels {
   SubmitLabel = "Clear all discoveries",

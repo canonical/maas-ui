@@ -13,7 +13,7 @@ import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import { useWindowTitle, useAddMessage } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import type { RootState } from "@/app/store/root/types";
-import { actions as scriptActions } from "@/app/store/script";
+import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";

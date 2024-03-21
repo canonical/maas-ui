@@ -8,7 +8,7 @@ import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";

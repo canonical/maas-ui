@@ -14,7 +14,7 @@ import OutsideClickHandler from "@/app/base/components/OutsideClickHandler";
 import { useFetchActions, usePreviousPersistent } from "@/app/base/hooks";
 import type { FetchFilters, Machine } from "@/app/store/machine/types";
 import { useFetchMachine } from "@/app/store/machine/utils/hooks";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 
 export enum Labels {
   AppliesTo = "Applies to",

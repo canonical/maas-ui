@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import VaultSettings from "./VaultSettings";
 
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
 
 const SecretStorage = (): JSX.Element => {

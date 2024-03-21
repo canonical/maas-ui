@@ -9,7 +9,7 @@ import TestFormFields from "./TestFormFields";
 
 import ActionForm from "@/app/base/components/ActionForm";
 import type { HardwareType } from "@/app/base/enum";
-import { actions as scriptActions } from "@/app/store/script";
+import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";
 import { getObjectString } from "@/app/store/script/utils";

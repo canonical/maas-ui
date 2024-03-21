@@ -1,1 +1,1 @@
-export { default, actions } from "./slice";
+export { default, actions as controllerActions } from "./slice";

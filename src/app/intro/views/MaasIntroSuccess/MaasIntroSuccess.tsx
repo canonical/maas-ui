@@ -7,7 +7,7 @@ import IntroCard from "@/app/intro/components/IntroCard";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { useExitURL } from "@/app/intro/hooks";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 
 export enum Labels {
   FinishSetup = "Finish setup",

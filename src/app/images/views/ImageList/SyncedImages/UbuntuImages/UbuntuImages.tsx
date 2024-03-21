@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import FormikForm from "@/app/base/components/FormikForm";
 import UbuntuImageSelect from "@/app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "@/app/images/types";
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type {
   BootResourceUbuntuSource,

@@ -10,7 +10,7 @@ import { Label } from "./MachineList/MachineListTable/GroupColumn";
 import { DEFAULTS } from "./MachineList/MachineListTable/constants";
 import Machines from "./Machines";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { FetchGroupKey, FilterGroupKey } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";

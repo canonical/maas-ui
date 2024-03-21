@@ -14,7 +14,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useSendAnalytics } from "@/app/base/hooks";
 import { useThemeContext } from "@/app/base/theme-context";
 import type { UsabillaLive } from "@/app/base/types";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
 declare global {

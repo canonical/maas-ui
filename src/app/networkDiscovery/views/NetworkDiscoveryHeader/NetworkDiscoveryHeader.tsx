@@ -10,7 +10,7 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { actions as discoveryActions } from "@/app/store/discovery";
+import { discoveryActions } from "@/app/store/discovery";
 import discoverySelectors from "@/app/store/discovery/selectors";
 
 export enum Labels {

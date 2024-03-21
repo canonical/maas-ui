@@ -6,7 +6,7 @@ import { DomainListSidePanelViews } from "../constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
 export enum Labels {

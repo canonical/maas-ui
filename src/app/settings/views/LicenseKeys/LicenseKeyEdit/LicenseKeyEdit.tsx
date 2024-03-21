@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom-v5-compat";
 import LicenseKeyForm from "../LicenseKeyForm";
 
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as licenseKeysActions } from "@/app/store/licensekeys";
+import { licenseKeysActions } from "@/app/store/licensekeys";
 import licenseKeysSelectors from "@/app/store/licensekeys/selectors";
 import type { LicenseKeys } from "@/app/store/licensekeys/types";
 import type { RootState } from "@/app/store/root/types";

@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 
 import MachineCheckbox, { getSelectedMachinesRange } from "./MachineCheckbox";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";

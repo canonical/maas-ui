@@ -1,6 +1,7 @@
 import { ZONE_ACTIONS, ZONE_WEBSOCKET_METHODS } from "./constants";
-import { actions as zoneActions } from "./slice";
 import { ZoneMeta } from "./types";
+
+import { zoneActions } from "./";
 
 it("can create an action for creating a zone", () => {
   expect(

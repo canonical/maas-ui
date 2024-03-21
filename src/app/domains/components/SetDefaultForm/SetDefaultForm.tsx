@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { Labels } from "@/app/domains/views/DomainsList/DomainsTable/DomainsTable";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain, DomainMeta } from "@/app/store/domain/types";
 

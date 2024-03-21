@@ -14,7 +14,7 @@ import type {
   DeviceNetworkInterface,
 } from "@/app/store/device/types";
 import { isDeviceDetails } from "@/app/store/device/utils";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
 import type { NetworkLink } from "@/app/store/types/node";
@@ -24,7 +24,7 @@ import {
   getLinkFromNic,
   getLinkModeDisplay,
 } from "@/app/store/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 type Props = {

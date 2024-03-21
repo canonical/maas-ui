@@ -6,7 +6,7 @@ import DiscoveryAddForm, {
 import { Labels as FormFieldLabels } from "./DiscoveryAddFormFields/DiscoveryAddFormFields";
 import { DeviceType } from "./types";
 
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
 import type { Discovery } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";

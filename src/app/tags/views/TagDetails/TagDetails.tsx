@@ -6,7 +6,7 @@ import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import { TagMeta } from "@/app/store/tag/types";
 import BaseTagDetails from "@/app/tags/components/TagDetails";

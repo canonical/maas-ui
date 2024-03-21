@@ -9,7 +9,7 @@ import EditableSection from "@/app/base/components/EditableSection";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";
 import domainsSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";

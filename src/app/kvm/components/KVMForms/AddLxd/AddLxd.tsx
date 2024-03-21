@@ -10,7 +10,7 @@ import SelectProjectForm from "./SelectProjectForm";
 import type { AddLxdStepValues, NewPodValues } from "./types";
 
 import type { ClearSidePanelContent } from "@/app/base/types";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import zoneSelectors from "@/app/store/zone/selectors";
 

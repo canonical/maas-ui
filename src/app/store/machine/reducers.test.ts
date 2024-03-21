@@ -10,7 +10,7 @@ import type { SelectedMachines } from "./types";
 import { FilterGroupKey, FilterGroupType } from "./types";
 import { FetchGroupKey } from "./types/actions";
 
-import { actions as statusActions } from "@/app/store/status/slice";
+import { statusActions } from "@/app/store/status";
 import {
   NodeActions,
   NodeStatus,

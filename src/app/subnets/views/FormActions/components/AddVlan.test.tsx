@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddVlan from "./AddVlan";
 
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 

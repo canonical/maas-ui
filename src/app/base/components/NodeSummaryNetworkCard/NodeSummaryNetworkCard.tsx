@@ -9,11 +9,11 @@ import NetworkCardTable from "./NetworkCardTable";
 
 import { useFetchActions } from "@/app/base/hooks";
 import type { Device } from "@/app/store/device/types";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { NetworkInterface } from "@/app/store/types/node";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
 type InterfaceGroup = {

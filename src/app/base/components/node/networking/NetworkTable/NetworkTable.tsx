@@ -31,11 +31,11 @@ import type { Sort } from "@/app/base/types";
 import { SortDirection } from "@/app/base/types";
 import NetworkTableActions from "@/app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
 import type { ControllerDetails } from "@/app/store/controller/types";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { MachineDetails } from "@/app/store/machine/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
@@ -52,7 +52,7 @@ import {
   isBootInterface,
   nodeIsMachine,
 } from "@/app/store/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import { getDHCPStatus } from "@/app/store/vlan/utils";

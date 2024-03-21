@@ -11,7 +11,7 @@ import machineSelectors from "@/app/store/machine/selectors";
 import { MachineMeta } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
-import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { scriptResultActions } from "@/app/store/scriptresult";
 import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import { TestStatusStatus } from "@/app/store/types/node";
 import { isId } from "@/app/utils";

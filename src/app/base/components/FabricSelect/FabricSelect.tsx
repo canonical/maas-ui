@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DynamicSelect from "@/app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import { simpleSortByKey } from "@/app/utils";
 

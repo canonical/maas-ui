@@ -9,7 +9,7 @@ import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 
 type Props = Required<Pick<SectionHeaderProps, "title">> & {

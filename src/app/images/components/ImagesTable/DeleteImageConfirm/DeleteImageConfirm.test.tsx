@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 import DeleteImageConfirm from "./DeleteImageConfirm";
 
 import { Labels as TableDeleteConfirmLabels } from "@/app/base/components/TableDeleteConfirm/TableDeleteConfirm";
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";

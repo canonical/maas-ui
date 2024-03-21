@@ -7,7 +7,7 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type { BootResourceState } from "@/app/store/bootresource/types";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {

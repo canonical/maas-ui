@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 import DeleteStaticRouteForm from "./DeleteStaticRouteForm";
 
 import type { RootState } from "@/app/store/root/types";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
+import { staticRouteActions } from "@/app/store/staticroute";
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 

@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import {

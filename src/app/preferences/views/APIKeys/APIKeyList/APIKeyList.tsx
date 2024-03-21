@@ -5,7 +5,7 @@ import TableActions from "@/app/base/components/TableActions";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
-import { actions as tokenActions } from "@/app/store/token";
+import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 import type { Token } from "@/app/store/token/types";
 

@@ -17,9 +17,9 @@ import { UrlSchema } from "@/app/base/validation";
 import IntroSection from "@/app/intro/components/IntroSection";
 import { useExitURL } from "@/app/intro/hooks";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { actions as repoActions } from "@/app/store/packagerepository";
+import { repositoryActions } from "@/app/store/packagerepository";
 import repoSelectors from "@/app/store/packagerepository/selectors";
 
 export enum Labels {
@@ -61,7 +61,7 @@ const MaasIntro = (): JSX.Element => {
   const [showSkip, setShowSkip] = useState(false);
   const exitURL = useExitURL();
 
-  useFetchActions([repoActions.fetch]);
+  useFetchActions([repositoryActions.fetch]);
 
   const errors = {
     ...(configErrors && typeof configErrors === "object" ? configErrors : {}),
@@ -93,7 +93,7 @@ const MaasIntro = (): JSX.Element => {
           }}
           onSubmit={(values) => {
             dispatch(configActions.cleanup());
-            dispatch(repoActions.cleanup());
+            dispatch(repositoryActions.cleanup());
             dispatch(
               configActions.update({
                 http_proxy: values.httpProxy,
@@ -103,7 +103,7 @@ const MaasIntro = (): JSX.Element => {
             );
             if (mainArchive && mainArchive.url !== values.mainArchiveUrl) {
               dispatch(
-                repoActions.update({
+                repositoryActions.update({
                   id: mainArchive.id,
                   name: mainArchive.name,
                   url: values.mainArchiveUrl,
@@ -112,7 +112,7 @@ const MaasIntro = (): JSX.Element => {
             }
             if (portsArchive && portsArchive.url !== values.portsArchiveUrl) {
               dispatch(
-                repoActions.update({
+                repositoryActions.update({
                   id: portsArchive.id,
                   name: portsArchive.name,
                   url: values.portsArchiveUrl,

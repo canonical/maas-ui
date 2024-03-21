@@ -11,7 +11,7 @@ import { Labels as EditableSectionLabels } from "@/app/base/components/EditableS
 import { Label as NodeConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
 import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneSelect";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";

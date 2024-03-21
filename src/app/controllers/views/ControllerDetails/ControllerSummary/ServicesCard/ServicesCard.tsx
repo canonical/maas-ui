@@ -8,7 +8,7 @@ import ServiceStatus from "./ServiceStatus";
 import { useFetchActions } from "@/app/base/hooks";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as serviceActions } from "@/app/store/service";
+import { serviceActions } from "@/app/store/service";
 import serviceSelectors from "@/app/store/service/selectors";
 import type { Service } from "@/app/store/service/types";
 import {

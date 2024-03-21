@@ -26,7 +26,7 @@ import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
-import { actions as poolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import poolSelectors from "@/app/store/resourcepool/selectors";
 import type { ResourcePool } from "@/app/store/resourcepool/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
@@ -196,7 +196,7 @@ const LXDClusterHostsTable = ({
     currentPage * VMS_PER_PAGE
   );
 
-  useFetchActions([poolActions.fetch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   return (
     <>
