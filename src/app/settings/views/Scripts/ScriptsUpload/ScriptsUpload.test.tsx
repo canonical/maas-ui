@@ -1,8 +1,9 @@
 import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import type { Dispatch } from "redux";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
