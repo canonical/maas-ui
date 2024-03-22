@@ -1,5 +1,4 @@
 import { Icon } from "@canonical/react-components";
-import type { Location } from "history";
 import { Link, useLocation } from "react-router-dom";
 
 type LocationState = {
@@ -7,9 +6,9 @@ type LocationState = {
 };
 
 const SettingsBackLink = (): JSX.Element | null => {
-  const location = useLocation<Location>();
+  const location = useLocation();
   const state = location.state as LocationState;
-  if (state === undefined || !state.from) {
+  if (!state?.from || state === undefined) {
     return null;
   }
 

@@ -1,5 +1,6 @@
 import { createMemoryHistory } from "history";
-import { MemoryRouter, Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import { AddSSHKey, Label as AddSSHKeyLabels } from "./AddSSHKey";
 

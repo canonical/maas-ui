@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import SettingsBackLink from "./SettingsBackLink";
 

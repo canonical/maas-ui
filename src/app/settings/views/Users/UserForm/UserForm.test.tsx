@@ -1,6 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { UserForm, Labels as UserFormLabels } from "./UserForm";

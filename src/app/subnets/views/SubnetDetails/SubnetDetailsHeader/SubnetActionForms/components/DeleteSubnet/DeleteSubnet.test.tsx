@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { Router } from "react-router";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
@@ -183,13 +183,12 @@ it("redirects on save", async () => {
   const { rerender } = render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          component={() => (
-            <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-          )}
-          exact
-          path={urls.subnets.subnet.index({ id: subnetId })}
-        />
+        <Routes>
+          <Route
+            element={<DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />}
+            path={urls.subnets.subnet.index({ id: subnetId })}
+          />
+        </Routes>
       </Router>
     </Provider>
   );
@@ -203,13 +202,12 @@ it("redirects on save", async () => {
   rerender(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          component={() => (
-            <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-          )}
-          exact
-          path={urls.subnets.subnet.index({ id: subnetId })}
-        />
+        <Routes>
+          <Route
+            element={<DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />}
+            path={urls.subnets.subnet.index({ id: subnetId })}
+          />
+        </Routes>
       </Router>
     </Provider>
   );
