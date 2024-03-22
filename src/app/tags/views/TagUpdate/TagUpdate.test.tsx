@@ -1,6 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
@@ -38,11 +39,12 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <Route
-          component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-          exact
-          path={urls.tags.tag.index(null)}
-        />
+        <Routes>
+          <Route
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
+            path={urls.tags.tag.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -71,11 +73,12 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <Route
-          component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-          exact
-          path={urls.tags.tag.index(null)}
-        />
+        <Routes>
+          <Route
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
+            path={urls.tags.tag.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -130,11 +133,12 @@ it("goes to the tag details page if it can't go back", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-          exact
-          path={urls.tags.tag.index(null)}
-        />
+        <Routes>
+          <Route
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
+            path={urls.tags.tag.index(null)}
+          />
+        </Routes>
       </Router>
     </Provider>
   );

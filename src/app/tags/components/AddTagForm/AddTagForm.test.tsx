@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -62,13 +62,12 @@ it("returns the newly created tag on save", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Route
-          component={() => (
-            <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
-          )}
-          exact
-          path={urls.tags.index}
-        />
+        <Routes>
+          <Route
+            element={<AddTagForm name="new-tag" onTagCreated={onTagCreated} />}
+            path={urls.tags.index}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
