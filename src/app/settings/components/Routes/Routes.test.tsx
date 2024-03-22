@@ -3,7 +3,7 @@ import Routes from "./Routes";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter } from "@/testing/utils";
+import { renderWithBrowserRouter, waitFor } from "@/testing/utils";
 
 let state: RootState;
 
@@ -154,13 +154,17 @@ describe("Routes", () => {
     });
   });
 
-  it("redirects from base URL to configuration", () => {
+  it("redirects from base URL to general", async () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.index,
       state,
       routePattern: `${urls.settings.index}/*`,
     });
-    expect(window.location.pathname).toBe(urls.settings.configuration.index);
+    await waitFor(() => {
+      expect(window.location.pathname).toBe(
+        urls.settings.configuration.general
+      );
+    });
   });
 
   it("redirects from configuration index to general", () => {
