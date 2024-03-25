@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Notification, Spinner } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import PageContent from "@/app/base/components/PageContent";
 import type { Props as PageContentProps } from "@/app/base/components/PageContent/PageContent";

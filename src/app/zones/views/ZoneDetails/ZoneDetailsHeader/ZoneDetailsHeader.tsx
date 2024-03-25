@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import DeleteConfirm from "./DeleteConfirm";
 

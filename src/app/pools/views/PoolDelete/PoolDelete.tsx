@@ -1,5 +1,5 @@
 import { useOnEscapePressed } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import { useGetURLId } from "@/app/base/hooks";
 import urls from "@/app/base/urls";

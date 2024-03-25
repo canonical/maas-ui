@@ -1,5 +1,5 @@
 import { Redirect } from "react-router";
-import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
+import { Route, Routes as ReactRouterRoutes } from "react-router-dom";
 
 import DeleteSSHKey from "../../views/SSHKeys/DeleteSSHKey";
 import DeleteSSLKey from "../../views/SSLKeys/DeleteSSLKey";

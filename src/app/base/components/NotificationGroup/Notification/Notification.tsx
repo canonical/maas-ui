@@ -1,7 +1,7 @@
 import { Notification } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import settingsURLs from "@/app/settings/urls";
 import authSelectors from "@/app/store/auth/selectors";

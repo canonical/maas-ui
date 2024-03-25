@@ -6,7 +6,7 @@ import {
 } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";

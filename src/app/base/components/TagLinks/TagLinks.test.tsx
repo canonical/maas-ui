@@ -1,5 +1,5 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { CompatRouter } from "react-router-dom";
 
 import TagLinks from "./TagLinks";
 

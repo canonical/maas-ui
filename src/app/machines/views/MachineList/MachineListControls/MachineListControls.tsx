@@ -4,7 +4,7 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Col, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";

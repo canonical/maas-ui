@@ -5,7 +5,7 @@ import classNames from "classnames";
 import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";

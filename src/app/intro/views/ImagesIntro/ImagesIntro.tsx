@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom-v5-compat";
+import { useNavigate, Link } from "react-router-dom";
 
 import urls from "@/app/base/urls";
 import SyncedImages from "@/app/images/views/ImageList/SyncedImages";

@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import { useLocation } from "react-router";
 import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ControllerList from "./ControllerList";

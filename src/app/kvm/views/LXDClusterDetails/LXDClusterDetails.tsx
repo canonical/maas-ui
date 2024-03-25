@@ -2,12 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import {
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom-v5-compat";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 import LXDClusterDetailsRedirect from "./LXDClusterDetailsRedirect";

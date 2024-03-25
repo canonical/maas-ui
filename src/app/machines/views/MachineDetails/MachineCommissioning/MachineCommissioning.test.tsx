@@ -2,7 +2,7 @@ import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { CompatRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineCommissioning from ".";

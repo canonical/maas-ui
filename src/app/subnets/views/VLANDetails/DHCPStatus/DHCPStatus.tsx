@@ -7,7 +7,7 @@ import {
   Spinner,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import ControllerLink from "@/app/base/components/ControllerLink";
 import Definition from "@/app/base/components/Definition";

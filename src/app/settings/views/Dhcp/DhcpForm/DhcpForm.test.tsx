@@ -1,6 +1,6 @@
 import { createMemoryHistory } from "history";
 import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { CompatRouter } from "react-router-dom";
 
 import { DhcpForm } from "./DhcpForm";
 

@@ -2,7 +2,7 @@ import type { MouseEvent, ReactNode } from "react";
 
 import { Navigation } from "@canonical/maas-react-components";
 import classNames from "classnames";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import type { SideNavigationProps } from "../AppSideNavigation";
 import type { NavItem } from "../types";

@@ -1,7 +1,6 @@
 import { Field, Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import * as Yup from "yup";
 
@@ -22,8 +21,8 @@ import {
 
 const mockStore = configureStore<RootState>();
 const mockUseNavigate = vi.fn();
-vi.mock("react-router-dom-v5-compat", async () => {
-  const actual: object = await vi.importActual("react-router-dom-v5-compat");
+vi.mock("react-router-dom", async () => {
+  const actual: object = await vi.importActual("react-router-dom");
   return {
     ...actual,
     useNavigate: () => mockUseNavigate,

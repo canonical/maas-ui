@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom-v5-compat";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 

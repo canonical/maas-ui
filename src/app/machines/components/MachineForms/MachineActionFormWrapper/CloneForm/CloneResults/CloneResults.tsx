@@ -12,7 +12,7 @@ import {
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import type { APIError, SetSearchFilter } from "@/app/base/types";
 import urls from "@/app/base/urls";

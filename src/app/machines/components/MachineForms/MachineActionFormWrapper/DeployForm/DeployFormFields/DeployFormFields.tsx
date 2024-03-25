@@ -12,7 +12,7 @@ import {
 import classNames from "classnames";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import type { DeployFormValues } from "../DeployForm";
 

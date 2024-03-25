@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import MachineTestStatus from "../MachineTestStatus";
 

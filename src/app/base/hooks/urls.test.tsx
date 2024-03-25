@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { CompatRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { useGetURLId } from "./urls";

@@ -1,6 +1,6 @@
 import { Button, List } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import urls from "@/app/base/urls";
 import IntroCard from "@/app/intro/components/IntroCard";

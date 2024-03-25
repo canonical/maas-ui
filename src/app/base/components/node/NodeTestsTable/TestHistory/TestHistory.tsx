@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom-v5-compat";
+import { Link, useLocation } from "react-router-dom";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import type { RootState } from "@/app/store/root/types";

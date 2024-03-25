@@ -1,4 +1,4 @@
-import { matchPath } from "react-router-dom-v5-compat";
+import { matchPath } from "react-router-dom";
 
 import type { NavItem } from "./types";
 
