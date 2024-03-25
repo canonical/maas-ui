@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
+import { useNavigate, useLocation, useMatch } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
 
 import AppSideNavItems from "./AppSideNavItems";

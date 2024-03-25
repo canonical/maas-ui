@@ -1,7 +1,6 @@
 import { lazy } from "react";
 
-import { Redirect } from "react-router-dom";
-import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
+import { Redirect, Route, Routes as ReactRouterRoutes } from "react-router-dom";
 
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import urls from "@/app/base/urls";

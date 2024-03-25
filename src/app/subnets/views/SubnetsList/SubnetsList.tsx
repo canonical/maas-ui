@@ -2,7 +2,7 @@ import { useEffect, useCallback } from "react";
 
 import { MainToolbar } from "@canonical/maas-react-components";
 import { ContextualMenu } from "@canonical/react-components";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import SubnetsControls from "./SubnetsControls";
 import SubnetsTable from "./SubnetsTable";

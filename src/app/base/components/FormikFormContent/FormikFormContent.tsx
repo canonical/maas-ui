@@ -7,7 +7,7 @@ import type { FormikContextType } from "formik";
 import { useFormikContext } from "formik";
 import { withFormikDevtools } from "formik-devtools-extension";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 import type { AnyAction } from "redux";
 
 import type { FormikFormButtonsProps } from "@/app/base/components/FormikFormButtons";

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom-v5-compat";
+import { useLocation } from "react-router-dom";
 
 import type { UsabillaLive } from "@/app/base/types";
 import authSelectors from "@/app/store/auth/selectors";

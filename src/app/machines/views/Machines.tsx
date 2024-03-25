@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate, useMatch } from "react-router-dom-v5-compat";
+import { useLocation, useNavigate, useMatch } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
 
 import MachineForms from "../components/MachineForms";

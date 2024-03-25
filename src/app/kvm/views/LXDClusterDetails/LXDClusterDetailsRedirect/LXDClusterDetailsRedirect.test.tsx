@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { CompatRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";

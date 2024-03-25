@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom-v5-compat";
+import { useLocation } from "react-router-dom";
 
 import urls from "@/app/base/urls";
 import { podActions } from "@/app/store/pod";

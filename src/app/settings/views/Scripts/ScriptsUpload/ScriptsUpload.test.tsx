@@ -2,7 +2,7 @@ import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { CompatRouter } from "react-router-dom";
 import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 

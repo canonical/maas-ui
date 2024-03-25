@@ -1,8 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
-import { Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { Route, CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";

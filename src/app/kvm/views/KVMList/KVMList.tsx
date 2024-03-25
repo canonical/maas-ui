@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom-v5-compat";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
 
 import KVMList from "./KVMList";
 import LXDClusterDetails from "./LXDClusterDetails";

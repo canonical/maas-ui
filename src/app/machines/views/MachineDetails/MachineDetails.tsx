@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
 
 import MachineCommissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";

@@ -1,7 +1,7 @@
 import { Icon, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import Switch from "@/app/base/components/Switch";
 import { useFetchActions, useSendAnalytics } from "@/app/base/hooks";

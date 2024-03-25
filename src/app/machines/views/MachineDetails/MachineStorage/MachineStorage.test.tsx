@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
 
 import { storageLayoutOptions } from "./ChangeStorageLayoutMenu/ChangeStorageLayoutMenu";
 import MachineStorage from "./MachineStorage";

@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import VirshDetailsActionMenu from "./VirshDetailsActionMenu";
 

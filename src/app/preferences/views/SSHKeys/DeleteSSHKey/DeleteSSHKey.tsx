@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useSearchParams } from "react-router-dom-v5-compat";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";

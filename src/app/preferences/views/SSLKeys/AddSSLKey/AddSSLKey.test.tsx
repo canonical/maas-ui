@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { AddSSLKey, Label as AddSSLKeyLabels } from "./AddSSLKey";

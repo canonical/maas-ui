@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import { Button, Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import type { NavigateFunction } from "react-router-dom-v5-compat";
-import { useNavigate } from "react-router-dom-v5-compat";
+import type { NavigateFunction } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/preferences/urls";

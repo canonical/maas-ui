@@ -4,7 +4,7 @@ import { Button, Icon, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";

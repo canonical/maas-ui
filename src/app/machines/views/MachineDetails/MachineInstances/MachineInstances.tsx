@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner, Row, Col, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import { useWindowTitle } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";

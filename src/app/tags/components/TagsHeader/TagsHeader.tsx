@@ -1,7 +1,7 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import SearchBox from "@/app/base/components/SearchBox";
 import SegmentedControl from "@/app/base/components/SegmentedControl";
