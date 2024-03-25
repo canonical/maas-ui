@@ -179,7 +179,7 @@ it("redirects on save", async () => {
   });
   const state = getRootState();
   state.vlan.items[0].dhcp_on = false;
-  const store = configureStore()(state);
+  let store = configureStore()(state);
   const { rerender } = render(
     <Provider store={store}>
       <Router history={history}>
@@ -198,6 +198,7 @@ it("redirects on save", async () => {
   );
 
   state.subnet.saved = true;
+  store = configureStore()(state);
 
   rerender(
     <Provider store={store}>
