@@ -2029,7 +2029,7 @@ describe("machine reducer", () => {
     ).toEqual(
       factory.machineState({
         items: [machine],
-        statuses: { abc123: factory.machineStatus({ turningOff: true }) },
+        statuses: { abc123: factory.machineStatus() },
       })
     );
   });
