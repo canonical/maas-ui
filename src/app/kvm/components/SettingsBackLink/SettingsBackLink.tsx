@@ -8,7 +8,7 @@ type LocationState = {
 const SettingsBackLink = (): JSX.Element | null => {
   const location = useLocation();
   const state = location.state as LocationState;
-  if (!state?.from || state === undefined) {
+  if (!state?.from) {
     return null;
   }
 
