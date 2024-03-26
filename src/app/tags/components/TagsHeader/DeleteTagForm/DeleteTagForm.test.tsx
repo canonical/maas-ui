@@ -2,7 +2,8 @@ import { NotificationSeverity } from "@canonical/react-components";
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -154,11 +155,12 @@ it("can return to the list on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          component={() => <DeleteTagForm id={1} onClose={onClose} />}
-          exact
-          path={path}
-        />
+        <Routes>
+          <Route
+            element={<DeleteTagForm id={1} onClose={onClose} />}
+            path={path}
+          />
+        </Routes>
       </Router>
     </Provider>
   );
@@ -191,13 +193,12 @@ it("can return to the details on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          component={() => (
-            <DeleteTagForm fromDetails id={1} onClose={onClose} />
-          )}
-          exact
-          path={path}
-        />
+        <Routes>
+          <Route
+            element={<DeleteTagForm fromDetails id={1} onClose={onClose} />}
+            path={path}
+          />
+        </Routes>
       </Router>
     </Provider>
   );

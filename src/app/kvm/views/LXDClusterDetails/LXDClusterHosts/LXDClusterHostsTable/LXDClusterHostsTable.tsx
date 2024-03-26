@@ -176,7 +176,7 @@ const LXDClusterHostsTable = ({
   searchFilter,
   setSidePanelContent,
 }: Props): JSX.Element => {
-  const location = useLocation<Location>();
+  const location = useLocation();
   const pools = useSelector(poolSelectors.all);
   const podsLoaded = useSelector(podSelectors.loaded);
   const poolsLoaded = useSelector(poolSelectors.loaded);

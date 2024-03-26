@@ -1,6 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import TagTable, { Label, TestId } from "./TagTable";
@@ -512,21 +513,22 @@ it("can trigger the tag edit sidepanel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          component={() => (
-            <TagTable
-              currentPage={1}
-              filter={TagSearchFilter.All}
-              onDelete={vi.fn()}
-              onUpdate={onUpdate}
-              searchText=""
-              setCurrentPage={vi.fn()}
-              tags={tags}
-            />
-          )}
-          exact
-          path={path}
-        />
+        <Routes>
+          <Route
+            element={
+              <TagTable
+                currentPage={1}
+                filter={TagSearchFilter.All}
+                onDelete={vi.fn()}
+                onUpdate={onUpdate}
+                searchText=""
+                setCurrentPage={vi.fn()}
+                tags={tags}
+              />
+            }
+            path={path}
+          />
+        </Routes>
       </Router>
     </Provider>
   );

@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import FabricVLANs from "./FabricVLANs";
@@ -28,11 +28,12 @@ it("renders correct details", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.fabric.index({ id: 1 }) }]}
       >
-        <Route
-          component={() => <FabricVLANs fabric={fabric} />}
-          exact
-          path={urls.subnets.fabric.index({ id: fabric.id })}
-        />
+        <Routes>
+          <Route
+            element={<FabricVLANs fabric={fabric} />}
+            path={urls.subnets.fabric.index({ id: fabric.id })}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

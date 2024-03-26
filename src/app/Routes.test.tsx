@@ -197,13 +197,13 @@ describe("Routes", () => {
     expect(window.location.pathname).toBe(urls.machines.index);
   });
 
-  it("redirects from Settings base URL to configuration", async () => {
+  it("redirects from Settings base URL to general", async () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.index,
       state,
     });
     await waitFor(() =>
-      expect(window.location.pathname).toBe(urls.settings.configuration.index)
+      expect(window.location.pathname).toBe(urls.settings.configuration.general)
     );
   });
 

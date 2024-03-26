@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import SpaceSubnets from "./SpaceSubnets";
@@ -43,11 +43,12 @@ it("displays a message when there are no subnets", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.space.index({ id: 1 }) }]}
       >
-        <Route
-          component={() => <SpaceSubnets space={space} />}
-          exact
-          path={urls.subnets.space.index({ id: space.id })}
-        />
+        <Routes>
+          <Route
+            element={<SpaceSubnets space={space} />}
+            path={urls.subnets.space.index({ id: space.id })}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -79,11 +80,12 @@ it("displays subnet details correctly", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.space.index({ id: 1 }) }]}
       >
-        <Route
-          component={() => <SpaceSubnets space={space} />}
-          exact
-          path={urls.subnets.space.index({ id: space.id })}
-        />
+        <Routes>
+          <Route
+            element={<SpaceSubnets space={space} />}
+            path={urls.subnets.space.index({ id: space.id })}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

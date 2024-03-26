@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { useLocation } from "react-router";
+import { Routes, useLocation } from "react-router";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
@@ -54,7 +54,9 @@ describe("ControllerList", () => {
           ]}
         >
           <ControllerList />
-          <Route path="*" render={() => <FetchRoute />} />
+          <Routes>
+            <Route element={<FetchRoute />} path="*" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

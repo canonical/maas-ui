@@ -34,9 +34,7 @@ describe("LXDSingleSettings", () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
-          <MemoryRouter>
-            <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-          </MemoryRouter>
+          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
         </Provider>
       </MemoryRouter>
     );

@@ -1,4 +1,5 @@
 import { define, random } from "cooky-cutter";
+import { Action } from "history";
 import type { RouterState } from "redux-first-history";
 
 import { bondOptions } from "./general";
@@ -651,11 +652,12 @@ export const locationState = define<RouterState["location"]>({
   search: "",
   state: null,
   hash: "",
+  key: "",
 });
 
 export const routerState = define<RouterState>({
   location: locationState,
-  action: "POP",
+  action: Action.Pop,
 });
 
 export const rootState = define<RootState>({

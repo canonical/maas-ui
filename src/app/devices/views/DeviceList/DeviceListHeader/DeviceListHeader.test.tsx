@@ -1,5 +1,3 @@
-import { MemoryRouter } from "react-router-dom";
-
 import DeviceListHeader from "./DeviceListHeader";
 
 import { DeviceSidePanelViews } from "@/app/devices/constants";
@@ -64,13 +62,11 @@ describe("DeviceListHeader", () => {
   it("can open the add device form", async () => {
     const setSidePanelContent = vi.fn();
     renderWithBrowserRouter(
-      <MemoryRouter>
-        <DeviceListHeader
-          searchFilter=""
-          setSearchFilter={vi.fn()}
-          setSidePanelContent={setSidePanelContent}
-        />
-      </MemoryRouter>,
+      <DeviceListHeader
+        searchFilter=""
+        setSearchFilter={vi.fn()}
+        setSidePanelContent={setSidePanelContent}
+      />,
       { state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Add device" }));
