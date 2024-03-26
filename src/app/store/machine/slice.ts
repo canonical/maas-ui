@@ -1534,7 +1534,7 @@ const machineSlice = createSlice({
         return {
           meta: {
             model: MachineMeta.MODEL,
-            method: "soft_power_off",
+            method: "action",
           },
           payload: {
             params: actionParams,
@@ -1546,45 +1546,7 @@ const machineSlice = createSlice({
       },
     },
     softOffError: statusHandlers.softOff.error,
-    softOffStart: {
-      prepare: (params) => {
-        if ("filter" in params) {
-          return {
-            meta: {
-              item: { filter: { id: params.filter.id } },
-            },
-            payload: null,
-          };
-        } else {
-          return {
-            meta: {
-              item: { filter: { id: [params.system_id] } },
-            },
-            payload: null,
-          };
-        }
-      },
-      reducer: (
-        state: MachineState,
-        action: PayloadAction<
-          null,
-          string,
-          GenericItemMeta<
-            { filter: { id: Machine[MachineMeta.PK][] } } | { system_id: never }
-          >
-        >
-      ) => {
-        if ("filter" in action.meta.item) {
-          action.meta.item.filter.id.forEach((id) => {
-            if (state.statuses[id]) {
-              state.statuses[id].turningOff = true;
-            }
-          });
-        } else {
-          state.statuses[action.meta.item.system_id].turningOff = true;
-        }
-      },
-    },
+    softOffStart: statusHandlers.softOff.start,
     softOffSuccess: statusHandlers.softOff.success,
     suppressScriptResults: {
       prepare: (

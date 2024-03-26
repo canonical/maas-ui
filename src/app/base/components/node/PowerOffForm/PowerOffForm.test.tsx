@@ -67,7 +67,7 @@ describe("PowerOffForm", () => {
         type: "machine/softOff",
         meta: {
           model: "machine",
-          method: "soft_power_off",
+          method: "action",
         },
         payload: {
           params: {

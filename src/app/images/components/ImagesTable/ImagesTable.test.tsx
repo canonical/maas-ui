@@ -274,6 +274,7 @@ it("disables delete action for images being downloaded", async () => {
       title: "18.04 LTS",
       complete: false,
       status: "Downloading 50%",
+      downloading: true,
     }),
   ];
   const image = {
