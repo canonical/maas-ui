@@ -3,10 +3,10 @@ import { useEffect, type ReactNode } from "react";
 import { ContentSection } from "@canonical/maas-react-components";
 import { useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
-import { useLocation } from "react-router-dom";
 
 import type { SidePanelSize } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { history } from "@/redux-store";
 
 export type AppSidePanelProps = {
   title: string | null;
@@ -16,14 +16,15 @@ export type AppSidePanelProps = {
 
 const useCloseSidePanelOnRouteChange = (): void => {
   const { setSidePanelContent } = useSidePanel();
-  const location = useLocation();
 
   // close side panel on route change
   useEffect(() => {
+    const unlisten = history.listen(() => setSidePanelContent(null));
+
     return () => {
-      setSidePanelContent(null);
+      unlisten();
     };
-  }, [location, setSidePanelContent]);
+  }, [setSidePanelContent]);
 };
 
 const useResetSidePanelOnUnmount = (): void => {
