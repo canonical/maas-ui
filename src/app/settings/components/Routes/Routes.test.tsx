@@ -154,7 +154,7 @@ describe("Routes", () => {
     });
   });
 
-  it("redirects from base URL to general", async () => {
+  it("redirects from base URL to general configuration", async () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.index,
       state,
