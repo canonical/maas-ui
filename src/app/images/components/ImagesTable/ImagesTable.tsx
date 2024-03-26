@@ -149,7 +149,8 @@ const generateResourceRow = ({
   const { os, release } = splitResourceName(resource.name);
   const isCommissioningImage =
     os === "ubuntu" && release === commissioningRelease;
-  const canBeDeleted = !isCommissioningImage && resource.complete;
+  const canBeDeleted =
+    !isCommissioningImage && (resource.complete || !resource.downloading);
   let statusIcon = <Spinner />;
   let statusText = resource.status;
 
