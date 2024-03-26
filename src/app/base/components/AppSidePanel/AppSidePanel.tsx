@@ -3,7 +3,7 @@ import { useEffect, type ReactNode } from "react";
 import { ContentSection } from "@canonical/maas-react-components";
 import { useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
-import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import type { SidePanelSize } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -16,16 +16,14 @@ export type AppSidePanelProps = {
 
 const useCloseSidePanelOnRouteChange = (): void => {
   const { setSidePanelContent } = useSidePanel();
-  const history = useHistory();
+  const location = useLocation();
 
   // close side panel on route change
   useEffect(() => {
-    const unlisten = history.listen(() => setSidePanelContent(null));
-
     return () => {
-      unlisten();
+      setSidePanelContent(null);
     };
-  }, [history, setSidePanelContent]);
+  }, [location, setSidePanelContent]);
 };
 
 const useResetSidePanelOnUnmount = (): void => {

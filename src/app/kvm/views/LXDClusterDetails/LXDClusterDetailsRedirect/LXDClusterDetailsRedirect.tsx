@@ -1,6 +1,6 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useGetURLId } from "@/app/base/hooks/urls";
@@ -40,7 +40,7 @@ const LXDClusterDetailsRedirect = ({ clusterId }: Props): JSX.Element => {
     );
   }
   return (
-    <Redirect to={urls.kvm.lxd.cluster.host.edit({ clusterId, hostId })} />
+    <Navigate to={urls.kvm.lxd.cluster.host.edit({ clusterId, hostId })} />
   );
 };
 

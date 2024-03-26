@@ -1,4 +1,4 @@
-import { Redirect, Route, Routes as ReactRouterRoutes } from "react-router-dom";
+import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
 
 import PageContent from "@/app/base/components/PageContent";
 import urls from "@/app/base/urls";
@@ -77,11 +77,11 @@ const Routes = (): JSX.Element => {
         path={getRelativeRoute(urls.settings.configuration.deploy, base)}
       />
       <Route
-        element={<Redirect to={urls.settings.configuration.index} />}
+        element={<Navigate to={urls.settings.configuration.index} />}
         path="/"
       />
       <Route
-        element={<Redirect to={urls.settings.configuration.general} />}
+        element={<Navigate to={urls.settings.configuration.general} />}
         path={getRelativeRoute(urls.settings.configuration.index, base)}
       />
       <Route
@@ -117,7 +117,7 @@ const Routes = (): JSX.Element => {
         path={getRelativeRoute(urls.settings.security.ipmiSettings, base)}
       />
       <Route
-        element={<Redirect to={urls.settings.security.securityProtocols} />}
+        element={<Navigate to={urls.settings.security.securityProtocols} />}
         path={getRelativeRoute(urls.settings.security.index, base)}
       />
       <Route
@@ -237,7 +237,7 @@ const Routes = (): JSX.Element => {
         path={getRelativeRoute(urls.settings.network.networkDiscovery, base)}
       />
       <Route
-        element={<Redirect to={urls.settings.network.proxy} />}
+        element={<Navigate to={urls.settings.network.proxy} />}
         path={getRelativeRoute(urls.settings.network.index, base)}
       />
       <Route

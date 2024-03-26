@@ -1,6 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { BrowserRouter, Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import AppSideNavigation from "./AppSideNavigation";
