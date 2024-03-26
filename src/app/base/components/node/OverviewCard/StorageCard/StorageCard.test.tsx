@@ -29,9 +29,7 @@ it("does not render test info if node is a controller", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <StorageCard node={controller} />
-        </CompatRouter>
+        <StorageCard node={controller} />
       </MemoryRouter>
     </Provider>
   );
@@ -47,9 +45,7 @@ it("renders test info if node is a machine", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <StorageCard node={machine} setSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -71,9 +67,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <StorageCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -95,9 +89,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <StorageCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -118,9 +110,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <StorageCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -141,9 +131,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <StorageCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -162,9 +150,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <StorageCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <StorageCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

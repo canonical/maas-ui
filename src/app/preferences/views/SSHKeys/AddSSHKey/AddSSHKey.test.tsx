@@ -25,9 +25,7 @@ describe("AddSSHKey", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <AddSSHKey />
-        </CompatRouter>
+        <AddSSHKey />
       </MemoryRouter>,
       { state }
     );
@@ -41,9 +39,7 @@ describe("AddSSHKey", () => {
     const history = createMemoryHistory({ initialEntries: ["/"] });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <AddSSHKey />
-        </CompatRouter>
+        <AddSSHKey />
       </Router>,
       { state }
     );

@@ -19,9 +19,7 @@ it("handles when spaces are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SpaceLink id={1} />
-        </CompatRouter>
+        <SpaceLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -37,9 +35,7 @@ it("handles when a space does not exist", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SpaceLink id={1} />
-        </CompatRouter>
+        <SpaceLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -57,9 +53,7 @@ it("renders a link if spaces have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SpaceLink id={space.id} />
-        </CompatRouter>
+        <SpaceLink id={space.id} />
       </MemoryRouter>
     </Provider>
   );

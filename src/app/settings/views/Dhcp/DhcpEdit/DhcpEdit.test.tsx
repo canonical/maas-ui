@@ -34,9 +34,7 @@ describe("DhcpEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <DhcpEdit />
-        </CompatRouter>
+        <DhcpEdit />
       </MemoryRouter>,
       { state }
     );
@@ -50,9 +48,7 @@ describe("DhcpEdit", () => {
           { pathname: "/settings/dhcp/99999/edit", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <DhcpEdit />
-        </CompatRouter>
+        <DhcpEdit />
       </MemoryRouter>,
       { state }
     );
@@ -64,11 +60,9 @@ describe("DhcpEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

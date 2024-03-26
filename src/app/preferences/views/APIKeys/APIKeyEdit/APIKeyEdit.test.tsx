@@ -35,9 +35,7 @@ describe("APIKeyEdit", () => {
           { pathname: "/account/prefs/api-keys/1", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <APIKeyEdit />
-        </CompatRouter>
+        <APIKeyEdit />
       </MemoryRouter>,
       { state }
     );
@@ -52,9 +50,7 @@ describe("APIKeyEdit", () => {
           { pathname: "/account/prefs/api-keys/1", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <APIKeyEdit />
-        </CompatRouter>
+        <APIKeyEdit />
       </MemoryRouter>,
       { state }
     );
@@ -68,14 +64,12 @@ describe("APIKeyEdit", () => {
           { pathname: "/account/prefs/api-keys/1/edit", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<APIKeyEdit />}
-              path="/account/prefs/api-keys/:id/edit"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<APIKeyEdit />}
+            path="/account/prefs/api-keys/:id/edit"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

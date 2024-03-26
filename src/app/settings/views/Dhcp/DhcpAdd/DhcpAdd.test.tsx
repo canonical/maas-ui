@@ -19,9 +19,7 @@ describe("DhcpAdd", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/dhcp/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <DhcpAdd />
-        </CompatRouter>
+        <DhcpAdd />
       </MemoryRouter>,
       { state }
     );

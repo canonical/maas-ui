@@ -38,12 +38,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -64,12 +62,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="ppa"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="ppa"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -93,12 +89,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -117,12 +111,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -149,12 +141,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -178,12 +168,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -204,12 +192,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -226,12 +212,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -248,12 +232,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -270,12 +252,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -294,12 +274,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -319,12 +297,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -351,12 +327,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );
@@ -386,12 +360,10 @@ describe("RepositoryFormFields", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <RepositoryForm
-            repository={state.packagerepository.items[0]}
-            type="repository"
-          />
-        </CompatRouter>
+        <RepositoryForm
+          repository={state.packagerepository.items[0]}
+          type="repository"
+        />
       </MemoryRouter>,
       { state }
     );

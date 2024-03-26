@@ -71,9 +71,7 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <CompatRouter>
-          <MaasIntro />
-        </CompatRouter>
+        <MaasIntro />
       </MemoryRouter>,
       { store }
     );
@@ -118,9 +116,7 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <CompatRouter>
-          <MaasIntro />
-        </CompatRouter>
+        <MaasIntro />
       </MemoryRouter>,
       { store }
     );
@@ -177,9 +173,7 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <CompatRouter>
-          <MaasIntro />
-        </CompatRouter>
+        <MaasIntro />
       </MemoryRouter>,
       { store }
     );

@@ -31,9 +31,7 @@ describe("ControllerList", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <ControllerList />
-          </CompatRouter>
+          <ControllerList />
         </MemoryRouter>
       </Provider>
     );
@@ -56,10 +54,8 @@ describe("ControllerList", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <ControllerList />
-            <Route path="*" render={() => <FetchRoute />} />
-          </CompatRouter>
+          <ControllerList />
+          <Route path="*" render={() => <FetchRoute />} />
         </MemoryRouter>
       </Provider>
     );

@@ -36,9 +36,7 @@ describe("LXDSingleSettings", () => {
       <MemoryRouter>
         <Provider store={store}>
           <MemoryRouter>
-            <CompatRouter>
-              <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-            </CompatRouter>
+            <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
           </MemoryRouter>
         </Provider>
       </MemoryRouter>
@@ -64,9 +62,7 @@ describe("LXDSingleSettings", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

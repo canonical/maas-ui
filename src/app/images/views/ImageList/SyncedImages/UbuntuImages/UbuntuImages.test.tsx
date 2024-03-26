@@ -133,9 +133,7 @@ describe("UbuntuImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuImages sources={[source]} />
-          </CompatRouter>
+          <UbuntuImages sources={[source]} />
         </MemoryRouter>
       </Provider>
     );
@@ -204,9 +202,7 @@ describe("UbuntuImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuImages sources={[source]} />
-          </CompatRouter>
+          <UbuntuImages sources={[source]} />
         </MemoryRouter>
       </Provider>
     );

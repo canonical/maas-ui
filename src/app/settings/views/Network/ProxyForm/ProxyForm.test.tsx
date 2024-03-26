@@ -44,9 +44,7 @@ describe("ProxyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ProxyForm />
-          </CompatRouter>
+          <ProxyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -67,9 +65,7 @@ describe("ProxyForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ProxyForm />
-          </CompatRouter>
+          <ProxyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -83,9 +79,7 @@ describe("ProxyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ProxyForm />
-          </CompatRouter>
+          <ProxyForm />
         </MemoryRouter>
       </Provider>
     );

@@ -49,9 +49,7 @@ describe("SSHKeyList", () => {
           { pathname: "/account/prefs/ssh-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <SSHKeyList />
-        </CompatRouter>
+        <SSHKeyList />
       </MemoryRouter>,
       { state }
     );

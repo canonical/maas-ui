@@ -49,9 +49,7 @@ describe("UserEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserEdit />
-        </CompatRouter>
+        <UserEdit />
       </MemoryRouter>,
       { state }
     );
@@ -64,9 +62,7 @@ describe("UserEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserEdit />
-        </CompatRouter>
+        <UserEdit />
       </MemoryRouter>,
       { state }
     );
@@ -80,11 +76,9 @@ describe("UserEdit", () => {
           { pathname: "/settings/users/1/edit", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<UserEdit />} path="/settings/users/:id/edit" />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<UserEdit />} path="/settings/users/:id/edit" />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

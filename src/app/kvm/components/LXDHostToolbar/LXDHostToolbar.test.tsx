@@ -45,14 +45,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -71,14 +69,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -101,15 +97,13 @@ describe("LXDHostToolbar", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              clusterId={2}
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            clusterId={2}
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -130,14 +124,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -154,14 +146,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -177,14 +167,12 @@ describe("LXDHostToolbar", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -217,14 +205,12 @@ describe("LXDHostToolbar", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -242,9 +228,7 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar hostId={1} showBasic />
-          </CompatRouter>
+          <LXDHostToolbar hostId={1} showBasic />
         </MemoryRouter>
       </Provider>
     );

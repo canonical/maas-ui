@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { AddStaticRouteFormLabels } from "./AddStaticRouteForm/AddStaticRouteForm";
@@ -34,9 +34,7 @@ it("renders for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <StaticRoutes subnetId={subnet.id} />
-        </CompatRouter>
+        <StaticRoutes subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -82,9 +80,7 @@ it("has a button to open the static route form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <StaticRoutes subnetId={subnet.id} />
-        </CompatRouter>
+        <StaticRoutes subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -117,9 +113,7 @@ it("has a button to open the edit static route form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <StaticRoutes subnetId={subnet.id} />
-        </CompatRouter>
+        <StaticRoutes subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

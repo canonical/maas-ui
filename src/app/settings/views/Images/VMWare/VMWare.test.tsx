@@ -37,9 +37,7 @@ describe("VMWare", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWare />
-          </CompatRouter>
+          <VMWare />
         </MemoryRouter>
       </Provider>
     );
@@ -54,9 +52,7 @@ describe("VMWare", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWare />
-          </CompatRouter>
+          <VMWare />
         </MemoryRouter>
       </Provider>
     );
@@ -73,9 +69,7 @@ describe("VMWare", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWare />
-          </CompatRouter>
+          <VMWare />
         </MemoryRouter>
       </Provider>
     );

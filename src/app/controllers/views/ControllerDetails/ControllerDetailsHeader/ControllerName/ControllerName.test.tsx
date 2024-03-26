@@ -49,13 +49,11 @@ it("can update a controller with the new domain", async () => {
           },
         ]}
       >
-        <CompatRouter>
-          <ControllerName
-            id={controller.system_id}
-            isEditing={true}
-            setIsEditing={vi.fn()}
-          />
-        </CompatRouter>
+        <ControllerName
+          id={controller.system_id}
+          isEditing={true}
+          setIsEditing={vi.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );

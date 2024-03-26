@@ -48,9 +48,7 @@ describe("Commissioning", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Commissioning />
-          </CompatRouter>
+          <Commissioning />
         </MemoryRouter>
       </Provider>
     );
@@ -65,9 +63,7 @@ describe("Commissioning", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Commissioning />
-          </CompatRouter>
+          <Commissioning />
         </MemoryRouter>
       </Provider>
     );
@@ -85,9 +81,7 @@ describe("Commissioning", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Commissioning />
-          </CompatRouter>
+          <Commissioning />
         </MemoryRouter>
       </Provider>
     );

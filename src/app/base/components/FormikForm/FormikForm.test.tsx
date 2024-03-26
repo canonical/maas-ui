@@ -28,15 +28,13 @@ describe("FormikForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <FormikForm
-              aria-label="example"
-              initialValues={{}}
-              onSubmit={vi.fn()}
-            >
-              Content
-            </FormikForm>
-          </CompatRouter>
+          <FormikForm
+            aria-label="example"
+            initialValues={{}}
+            onSubmit={vi.fn()}
+          >
+            Content
+          </FormikForm>
         </MemoryRouter>
       </Provider>
     );

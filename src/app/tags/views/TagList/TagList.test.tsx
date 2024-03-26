@@ -33,18 +33,16 @@ it("renders", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags" }]}>
-        <CompatRouter>
-          <TagList
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tableId="test-table"
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagList
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tableId="test-table"
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );

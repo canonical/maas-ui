@@ -18,9 +18,7 @@ it("can show an empty message", () => {
   });
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 
@@ -51,9 +49,7 @@ it("only shows disks that are being used", () => {
 
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 
@@ -82,9 +78,7 @@ it("can render storage tag links for a controller", () => {
 
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 
@@ -111,9 +105,7 @@ it("can render storage tag links for a machine", () => {
 
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 

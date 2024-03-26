@@ -43,9 +43,7 @@ it("can handle updating a lxd KVM", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -98,9 +96,7 @@ it("can handle updating a virsh KVM", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -157,9 +153,7 @@ it("enables the submit button if form values are different to pod values", async
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -189,9 +183,7 @@ it("enables the submit button if form values are different to pod values", async
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={updatedPod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={updatedPod} />
       </MemoryRouter>
     </Provider>
   );

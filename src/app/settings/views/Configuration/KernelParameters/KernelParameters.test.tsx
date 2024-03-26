@@ -40,9 +40,7 @@ describe("KernelParameters", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <KernelParameters />
-          </CompatRouter>
+          <KernelParameters />
         </MemoryRouter>
       </Provider>
     );
@@ -60,9 +58,7 @@ describe("KernelParameters", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <KernelParameters />
-          </CompatRouter>
+          <KernelParameters />
         </MemoryRouter>
       </Provider>
     );
@@ -80,9 +76,7 @@ describe("KernelParameters", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <KernelParameters />
-          </CompatRouter>
+          <KernelParameters />
         </MemoryRouter>
       </Provider>
     );

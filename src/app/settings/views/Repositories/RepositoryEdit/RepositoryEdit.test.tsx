@@ -48,14 +48,12 @@ describe("RepositoryEdit", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryEdit />}
-              path="/settings/repositories/edit/:type/:id"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryEdit />}
+            path="/settings/repositories/edit/:type/:id"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );
@@ -72,14 +70,12 @@ describe("RepositoryEdit", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryEdit />}
-              path="/settings/repositories/edit/:type/:id"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryEdit />}
+            path="/settings/repositories/edit/:type/:id"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );
@@ -96,14 +92,12 @@ describe("RepositoryEdit", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryEdit />}
-              path="/settings/repositories/edit/:type/:id"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryEdit />}
+            path="/settings/repositories/edit/:type/:id"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

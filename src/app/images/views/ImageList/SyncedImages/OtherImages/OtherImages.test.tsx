@@ -73,9 +73,7 @@ describe("OtherImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <OtherImages />
-          </CompatRouter>
+          <OtherImages />
         </MemoryRouter>
       </Provider>
     );
@@ -140,9 +138,7 @@ describe("OtherImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <OtherImages />
-          </CompatRouter>
+          <OtherImages />
         </MemoryRouter>
       </Provider>
     );

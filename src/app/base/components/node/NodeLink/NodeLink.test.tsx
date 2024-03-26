@@ -26,12 +26,10 @@ it("can render a controller link", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <NodeLink
-            nodeType={NodeType.RACK_CONTROLLER}
-            systemId={controller.system_id}
-          />
-        </CompatRouter>
+        <NodeLink
+          nodeType={NodeType.RACK_CONTROLLER}
+          systemId={controller.system_id}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -51,9 +49,7 @@ it("can render a device link", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <NodeLink nodeType={NodeType.DEVICE} systemId={device.system_id} />
-        </CompatRouter>
+        <NodeLink nodeType={NodeType.DEVICE} systemId={device.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -73,9 +69,7 @@ it("can render a machine link", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <NodeLink nodeType={NodeType.MACHINE} systemId={machine.system_id} />
-        </CompatRouter>
+        <NodeLink nodeType={NodeType.MACHINE} systemId={machine.system_id} />
       </MemoryRouter>
     </Provider>
   );

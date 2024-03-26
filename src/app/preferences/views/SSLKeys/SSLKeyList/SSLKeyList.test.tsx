@@ -50,9 +50,7 @@ describe("SSLKeyList", () => {
           { pathname: "/account/prefs/ssl-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <SSLKeyList />
-        </CompatRouter>
+        <SSLKeyList />
       </MemoryRouter>,
       { state }
     );
@@ -67,9 +65,7 @@ describe("SSLKeyList", () => {
           { pathname: "/account/prefs/ssl-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <SSLKeyList />
-        </CompatRouter>
+        <SSLKeyList />
       </MemoryRouter>,
       { state }
     );
@@ -83,9 +79,7 @@ describe("SSLKeyList", () => {
           { pathname: "/account/prefs/ssl-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <SSLKeyList />
-        </CompatRouter>
+        <SSLKeyList />
       </MemoryRouter>,
       { state }
     );

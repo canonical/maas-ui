@@ -82,9 +82,7 @@ describe("MaasIntroSuccess", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
       >
-        <CompatRouter>
-          <MaasIntroSuccess />
-        </CompatRouter>
+        <MaasIntroSuccess />
       </MemoryRouter>,
       { store }
     );

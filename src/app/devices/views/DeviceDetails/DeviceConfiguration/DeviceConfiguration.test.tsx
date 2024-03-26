@@ -44,9 +44,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -59,9 +57,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -77,9 +73,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -99,9 +93,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

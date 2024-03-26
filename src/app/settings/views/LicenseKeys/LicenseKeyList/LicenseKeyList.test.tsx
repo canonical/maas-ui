@@ -45,9 +45,7 @@ describe("LicenseKeyList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <LicenseKeyList />
-          </CompatRouter>
+          <LicenseKeyList />
         </MemoryRouter>
       </Provider>
     );

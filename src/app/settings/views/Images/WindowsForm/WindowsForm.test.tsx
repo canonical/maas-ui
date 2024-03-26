@@ -36,9 +36,7 @@ describe("WindowsForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <WindowsForm />
-          </CompatRouter>
+          <WindowsForm />
         </MemoryRouter>
       </Provider>
     );

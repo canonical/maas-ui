@@ -111,9 +111,7 @@ describe("UserIntro", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserIntro />
-        </CompatRouter>
+        <UserIntro />
       </MemoryRouter>,
       { store }
     );
@@ -157,9 +155,7 @@ describe("UserIntro", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserIntro />
-        </CompatRouter>
+        <UserIntro />
       </MemoryRouter>,
       { store }
     );

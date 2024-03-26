@@ -94,12 +94,10 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm
-              analyticsCategory="settings"
-              id={state.dhcpsnippet.items[0].id}
-            />
-          </CompatRouter>
+          <DhcpForm
+            analyticsCategory="settings"
+            id={state.dhcpsnippet.items[0].id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -120,9 +118,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -143,9 +139,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -166,9 +160,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -193,9 +185,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );

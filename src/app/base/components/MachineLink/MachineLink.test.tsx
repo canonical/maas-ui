@@ -52,9 +52,7 @@ it("handles when a machine does not exist", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <MachineLink systemId="abc123" />
-        </CompatRouter>
+        <MachineLink systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -71,9 +69,7 @@ it("renders a link if machines have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <MachineLink systemId={machine.system_id} />
-        </CompatRouter>
+        <MachineLink systemId={machine.system_id} />
       </MemoryRouter>
     </Provider>
   );

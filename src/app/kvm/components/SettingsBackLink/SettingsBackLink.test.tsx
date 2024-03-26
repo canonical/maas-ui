@@ -10,9 +10,7 @@ describe("SettingsBackLink", () => {
     const history = createMemoryHistory();
     render(
       <Router history={history}>
-        <CompatRouter>
-          <SettingsBackLink />
-        </CompatRouter>
+        <SettingsBackLink />
       </Router>
     );
 
@@ -28,9 +26,7 @@ describe("SettingsBackLink", () => {
 
     render(
       <Router history={history}>
-        <CompatRouter>
-          <SettingsBackLink />
-        </CompatRouter>
+        <SettingsBackLink />
       </Router>
     );
 

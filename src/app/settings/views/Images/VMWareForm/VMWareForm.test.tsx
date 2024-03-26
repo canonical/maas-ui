@@ -46,9 +46,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );
@@ -63,9 +61,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );
@@ -80,9 +76,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );
@@ -97,9 +91,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );

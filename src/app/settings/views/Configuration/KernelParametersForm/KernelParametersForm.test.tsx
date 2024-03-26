@@ -37,9 +37,7 @@ describe("KernelParametersForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <KernelParametersForm />
-          </CompatRouter>
+          <KernelParametersForm />
         </MemoryRouter>
       </Provider>
     );

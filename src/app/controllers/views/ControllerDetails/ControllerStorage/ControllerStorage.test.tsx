@@ -20,9 +20,7 @@ it("displays a spinner if controller is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerStorage systemId="abc123" />
-        </CompatRouter>
+        <ControllerStorage systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );

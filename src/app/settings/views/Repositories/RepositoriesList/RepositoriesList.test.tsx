@@ -69,9 +69,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -86,9 +84,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -102,9 +98,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -141,9 +135,7 @@ describe("RepositoriesList", () => {
             { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
+          <RepositoriesList />
         </MemoryRouter>
       </Provider>
     );
@@ -193,9 +185,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -220,9 +210,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -245,9 +233,7 @@ describe("RepositoriesList", () => {
             { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
+          <RepositoriesList />
         </MemoryRouter>
       </Provider>
     );

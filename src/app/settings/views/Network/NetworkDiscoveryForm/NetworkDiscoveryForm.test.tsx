@@ -55,9 +55,7 @@ describe("NetworkDiscoveryForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NetworkDiscoveryForm />
-          </CompatRouter>
+          <NetworkDiscoveryForm />
         </MemoryRouter>
       </Provider>
     );
@@ -70,9 +68,7 @@ describe("NetworkDiscoveryForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NetworkDiscoveryForm />
-          </CompatRouter>
+          <NetworkDiscoveryForm />
         </MemoryRouter>
       </Provider>
     );
@@ -110,9 +106,7 @@ describe("NetworkDiscoveryForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NetworkDiscoveryForm />
-          </CompatRouter>
+          <NetworkDiscoveryForm />
         </MemoryRouter>
       </Provider>
     );

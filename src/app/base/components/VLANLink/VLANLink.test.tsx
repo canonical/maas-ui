@@ -19,9 +19,7 @@ it("handles when VLANs are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANLink id={1} />
-        </CompatRouter>
+        <VLANLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -37,9 +35,7 @@ it("handles when a VLAN does not exist", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANLink id={1} />
-        </CompatRouter>
+        <VLANLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -56,9 +52,7 @@ it("renders a link if VLANs have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANLink id={vlan.id} />
-        </CompatRouter>
+        <VLANLink id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

@@ -53,9 +53,7 @@ describe("StorageFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <StorageForm />
-          </CompatRouter>
+          <StorageForm />
         </MemoryRouter>
       </Provider>
     );
@@ -76,9 +74,7 @@ describe("StorageFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <StorageForm />
-          </CompatRouter>
+          <StorageForm />
         </MemoryRouter>
       </Provider>
     );

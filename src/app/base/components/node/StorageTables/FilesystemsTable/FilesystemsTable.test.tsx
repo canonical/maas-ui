@@ -43,9 +43,7 @@ it("can show an empty message", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -70,9 +68,7 @@ it("can show filesystems associated with disks", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -109,9 +105,7 @@ it("can show filesystems associated with partitions", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -143,9 +137,7 @@ it("can show special filesystems", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -173,9 +165,7 @@ it("does not show action column if node is a controller", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={controller} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={controller} />
       </MemoryRouter>
     </Provider>
   );
@@ -205,9 +195,7 @@ it("shows an action column if node is a machine", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -237,9 +225,7 @@ it("disables the action menu if node is a machine and storage can't be edited", 
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage={false} node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage={false} node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -265,9 +251,7 @@ it("can remove a disk's filesystem if node is a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -301,9 +285,7 @@ it("can remove a partition's filesystem if node is a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -339,9 +321,7 @@ it("can remove a special filesystem if node is a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -376,9 +356,7 @@ it("can unmount a disk's filesystem if node is a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -412,9 +390,7 @@ it("can unmount a partition's filesystem if node is a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FilesystemsTable canEditStorage node={machine} />
-        </CompatRouter>
+        <FilesystemsTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DeleteRecordForm, {
@@ -61,9 +60,7 @@ describe("DeleteRecordForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
-          </CompatRouter>
+          <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
         </MemoryRouter>
       </Provider>
     );
@@ -94,9 +91,7 @@ describe("DeleteRecordForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
-          </CompatRouter>
+          <DeleteRecordForm closeForm={vi.fn()} id={1} resource={resource} />
         </MemoryRouter>
       </Provider>
     );

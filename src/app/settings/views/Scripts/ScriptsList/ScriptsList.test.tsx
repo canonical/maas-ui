@@ -67,9 +67,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -86,9 +84,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -101,9 +97,7 @@ describe("ScriptsList", () => {
   it("Displays commissioning scripts by default", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList />
-        </CompatRouter>
+        <ScriptsList />
       </MemoryRouter>,
       { state }
     );
@@ -125,9 +119,7 @@ describe("ScriptsList", () => {
   it("Displays testing scripts", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );
@@ -160,9 +152,7 @@ describe("ScriptsList", () => {
   it("can show a delete confirmation", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList />
-        </CompatRouter>
+        <ScriptsList />
       </MemoryRouter>,
       { state }
     );
@@ -199,9 +189,7 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );
@@ -230,9 +218,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -275,9 +261,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -293,9 +277,7 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList />
-        </CompatRouter>
+        <ScriptsList />
       </MemoryRouter>,
       { state }
     );
@@ -328,9 +310,7 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );
@@ -356,9 +336,7 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );

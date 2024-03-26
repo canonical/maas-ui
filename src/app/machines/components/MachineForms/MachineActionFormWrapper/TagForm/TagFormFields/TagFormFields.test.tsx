@@ -151,24 +151,19 @@ it("updates the new tags after creating a tag", async () => {
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik
-            initialValues={{ added: tags, removed: [] }}
-            onSubmit={vi.fn()}
-          >
-            <TagFormFields
-              {...commonProps}
-              machines={state.machine.items}
-              newTags={tags}
-              selectedCount={state.machine.items.length}
-              selectedMachines={{
-                items: machines.map((item) => item.system_id),
-              }}
-              setNewTags={setNewTags}
-              viewingDetails={false}
-            />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ added: tags, removed: [] }} onSubmit={vi.fn()}>
+          <TagFormFields
+            {...commonProps}
+            machines={state.machine.items}
+            newTags={tags}
+            selectedCount={state.machine.items.length}
+            selectedMachines={{
+              items: machines.map((item) => item.system_id),
+            }}
+            setNewTags={setNewTags}
+            viewingDetails={false}
+          />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );

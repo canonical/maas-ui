@@ -37,9 +37,7 @@ describe("FetchImagesForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchImagesForm closeForm={vi.fn()} setSource={vi.fn()} />
-          </CompatRouter>
+          <FetchImagesForm closeForm={vi.fn()} setSource={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -105,9 +103,7 @@ describe("FetchImagesForm", () => {
     const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchImagesForm closeForm={vi.fn()} setSource={setSource} />
-          </CompatRouter>
+          <FetchImagesForm closeForm={vi.fn()} setSource={setSource} />
         </MemoryRouter>
       </Provider>
     );

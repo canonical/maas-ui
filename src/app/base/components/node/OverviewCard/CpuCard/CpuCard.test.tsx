@@ -32,9 +32,7 @@ it("renders the cpu subtext", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >
-        <CompatRouter>
-          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <CpuCard node={machine} setSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -52,9 +50,7 @@ it("renders the cpu subtext for slower CPUs", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >
-        <CompatRouter>
-          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <CpuCard node={machine} setSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -70,9 +66,7 @@ it("does not render test info if node is a controller", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <CpuCard node={controller} />
-        </CompatRouter>
+        <CpuCard node={controller} />
       </MemoryRouter>
     </Provider>
   );
@@ -86,9 +80,7 @@ it("renders test info if node is a machine", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <CpuCard node={machine} setSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -108,9 +100,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -130,9 +120,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -151,9 +139,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -173,9 +159,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -195,9 +179,7 @@ describe("node is a machine", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CpuCard node={machine} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <CpuCard node={machine} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

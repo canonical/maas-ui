@@ -46,9 +46,7 @@ describe("DnsForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DnsForm />
-          </CompatRouter>
+          <DnsForm />
         </MemoryRouter>
       </Provider>
     );
@@ -61,9 +59,7 @@ describe("DnsForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DnsForm />
-          </CompatRouter>
+          <DnsForm />
         </MemoryRouter>
       </Provider>
     );
@@ -102,9 +98,7 @@ describe("DnsForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DnsForm />
-          </CompatRouter>
+          <DnsForm />
         </MemoryRouter>
       </Provider>
     );

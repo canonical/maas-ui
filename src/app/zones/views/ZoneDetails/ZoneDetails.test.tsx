@@ -43,11 +43,9 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<ZoneDetails />} path="/zone/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetails />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -73,11 +71,9 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<ZoneDetails />} path="/zone/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetails />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

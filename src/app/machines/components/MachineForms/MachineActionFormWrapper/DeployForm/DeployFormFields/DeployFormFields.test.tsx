@@ -133,14 +133,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -157,14 +155,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -187,14 +183,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -219,14 +213,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -245,14 +237,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -281,14 +271,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -327,14 +315,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -364,14 +350,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -399,14 +383,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -425,14 +407,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -454,14 +434,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -492,14 +470,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -533,14 +509,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -576,14 +550,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -614,14 +586,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -637,14 +607,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -673,14 +641,12 @@ describe("DeployFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={vi.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
+          <DeployForm
+            clearSidePanelContent={vi.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
+          />
         </MemoryRouter>
       </Provider>
     );

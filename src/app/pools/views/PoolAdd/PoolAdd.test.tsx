@@ -19,9 +19,7 @@ describe("PoolAdd", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/pool/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <PoolAdd />
-        </CompatRouter>
+        <PoolAdd />
       </MemoryRouter>,
       { state }
     );

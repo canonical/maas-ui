@@ -69,9 +69,7 @@ describe("FetchedImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={vi.fn()} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={vi.fn()} source={source} />
         </MemoryRouter>
       </Provider>
     );
@@ -117,9 +115,7 @@ describe("FetchedImages", () => {
     const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={closeForm} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={closeForm} source={source} />
         </MemoryRouter>
       </Provider>
     );
@@ -133,9 +129,7 @@ describe("FetchedImages", () => {
     rerender(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={closeForm} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={closeForm} source={source} />
         </MemoryRouter>
       </Provider>
     );

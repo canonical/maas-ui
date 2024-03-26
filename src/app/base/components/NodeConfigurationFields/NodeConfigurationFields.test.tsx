@@ -51,11 +51,9 @@ it("can open a create tag form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
-            <NodeConfigurationFields />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
+          <NodeConfigurationFields />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -82,11 +80,9 @@ it("does not display automatic tags on the list", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
-            <NodeConfigurationFields />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
+          <NodeConfigurationFields />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -108,11 +104,9 @@ it("updates the new tags after creating a tag", async () => {
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
-            <NodeConfigurationFields />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
+          <NodeConfigurationFields />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );

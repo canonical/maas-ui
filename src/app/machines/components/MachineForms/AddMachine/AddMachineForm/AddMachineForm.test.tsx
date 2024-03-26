@@ -90,9 +90,7 @@ it("fetches the necessary data on load if not already loaded", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddMachineForm clearSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <AddMachineForm clearSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -119,9 +117,7 @@ it("displays a spinner if data has not loaded", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddMachineForm clearSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <AddMachineForm clearSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -136,9 +132,7 @@ it("enables submit when a power type with no fields is chosen", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddMachineForm clearSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <AddMachineForm clearSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -163,9 +157,7 @@ it("can handle saving a machine", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddMachineForm clearSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <AddMachineForm clearSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -230,9 +222,7 @@ it("correctly trims power parameters before dispatching action", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddMachineForm clearSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <AddMachineForm clearSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -289,9 +279,7 @@ it("correctly filters empty extra mac fields", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddMachineForm clearSidePanelContent={vi.fn()} />
-        </CompatRouter>
+        <AddMachineForm clearSidePanelContent={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

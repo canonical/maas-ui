@@ -71,9 +71,7 @@ describe("LicenseKeyEdit", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LicenseKeyEdit />
-          </CompatRouter>
+          <LicenseKeyEdit />
         </MemoryRouter>
       </Provider>
     );
@@ -89,9 +87,7 @@ describe("LicenseKeyEdit", () => {
             { pathname: "/settings/license-keys/foo/bar/edit", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LicenseKeyEdit />
-          </CompatRouter>
+          <LicenseKeyEdit />
         </MemoryRouter>
       </Provider>
     );
@@ -110,14 +106,12 @@ describe("LicenseKeyEdit", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<LicenseKeyEdit />}
-                path="/settings/license-keys/:osystem/:distro_series/edit"
-              />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route
+              element={<LicenseKeyEdit />}
+              path="/settings/license-keys/:osystem/:distro_series/edit"
+            />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

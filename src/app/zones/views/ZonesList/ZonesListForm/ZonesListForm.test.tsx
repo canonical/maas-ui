@@ -24,9 +24,7 @@ describe("ZonesListForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ZonesListForm closeForm={closeForm} />
-          </CompatRouter>
+          <ZonesListForm closeForm={closeForm} />
         </MemoryRouter>
       </Provider>
     );
@@ -40,9 +38,7 @@ describe("ZonesListForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ZonesListForm closeForm={vi.fn()} />
-          </CompatRouter>
+          <ZonesListForm closeForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

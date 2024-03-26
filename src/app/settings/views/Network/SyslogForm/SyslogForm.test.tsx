@@ -36,9 +36,7 @@ describe("SyslogForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <SyslogForm />
-          </CompatRouter>
+          <SyslogForm />
         </MemoryRouter>
       </Provider>
     );
@@ -51,9 +49,7 @@ describe("SyslogForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <SyslogForm />
-          </CompatRouter>
+          <SyslogForm />
         </MemoryRouter>
       </Provider>
     );
@@ -88,9 +84,7 @@ describe("SyslogForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <SyslogForm />
-          </CompatRouter>
+          <SyslogForm />
         </MemoryRouter>
       </Provider>
     );

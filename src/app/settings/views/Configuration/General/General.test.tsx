@@ -45,9 +45,7 @@ describe("General", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <General />
-          </CompatRouter>
+          <General />
         </MemoryRouter>
       </Provider>
     );
@@ -62,9 +60,7 @@ describe("General", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <General />
-          </CompatRouter>
+          <General />
         </MemoryRouter>
       </Provider>
     );
@@ -81,9 +77,7 @@ describe("General", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <General />
-          </CompatRouter>
+          <General />
         </MemoryRouter>
       </Provider>
     );

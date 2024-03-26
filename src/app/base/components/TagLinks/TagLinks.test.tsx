@@ -11,12 +11,10 @@ describe("TagLinks", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagLinks
-            getLinkURL={(tag) => `www.tags.com/${tag}`}
-            tags={["tag-1", "tag-2"]}
-          />
-        </CompatRouter>
+        <TagLinks
+          getLinkURL={(tag) => `www.tags.com/${tag}`}
+          tags={["tag-1", "tag-2"]}
+        />
       </MemoryRouter>
     );
 

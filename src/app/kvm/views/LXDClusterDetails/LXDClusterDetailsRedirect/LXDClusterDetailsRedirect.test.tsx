@@ -62,14 +62,12 @@ it("redirects to the config form", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<LXDClusterDetailsRedirect clusterId={1} />}
-              path={urls.kvm.lxd.cluster.host.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<LXDClusterDetailsRedirect clusterId={1} />}
+            path={urls.kvm.lxd.cluster.host.index(null)}
+          />
+        </Routes>
       </Router>
     </Provider>
   );

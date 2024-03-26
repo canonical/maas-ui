@@ -32,9 +32,7 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm name="new-tag" onTagCreated={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm name="new-tag" onTagCreated={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -65,15 +63,13 @@ it("returns the newly created tag on save", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <Route
-            component={() => (
-              <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
-            )}
-            exact
-            path={urls.tags.index}
-          />
-        </CompatRouter>
+        <Route
+          component={() => (
+            <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
+          )}
+          exact
+          path={urls.tags.index}
+        />
       </MemoryRouter>
     </Provider>
   );

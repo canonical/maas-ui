@@ -39,9 +39,7 @@ describe("Windows", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Windows />
-          </CompatRouter>
+          <Windows />
         </MemoryRouter>
       </Provider>
     );
@@ -56,9 +54,7 @@ describe("Windows", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Windows />
-          </CompatRouter>
+          <Windows />
         </MemoryRouter>
       </Provider>
     );
@@ -75,9 +71,7 @@ describe("Windows", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Windows />
-          </CompatRouter>
+          <Windows />
         </MemoryRouter>
       </Provider>
     );

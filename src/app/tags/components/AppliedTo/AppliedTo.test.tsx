@@ -41,9 +41,7 @@ it("links to nodes", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <AppliedTo id={1} />
-        </CompatRouter>
+        <AppliedTo id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -89,9 +87,7 @@ it("displays a message if there are no nodes", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <AppliedTo id={1} />
-        </CompatRouter>
+        <AppliedTo id={1} />
       </MemoryRouter>
     </Provider>
   );

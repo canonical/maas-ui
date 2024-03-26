@@ -21,9 +21,7 @@ const generateWrapper =
   ({ children }: { children: ReactNode }) =>
     (
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname }]}>
-          <CompatRouter>{children}</CompatRouter>
-        </MemoryRouter>
+        <MemoryRouter initialEntries={[{ pathname }]}>{children}</MemoryRouter>
       </Provider>
     );
 

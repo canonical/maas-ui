@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ReservedRangeForm, { Labels } from "./ReservedRangeForm";
@@ -45,9 +45,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -61,9 +59,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm setActiveForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -77,9 +73,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -104,9 +98,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -125,13 +117,11 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm
-              createType={IPRangeType.Reserved}
-              id={1}
-              setActiveForm={vi.fn()}
-            />
-          </CompatRouter>
+          <ReservedRangeForm
+            createType={IPRangeType.Reserved}
+            id={1}
+            setActiveForm={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -169,9 +159,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -201,9 +189,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -234,12 +220,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm
-              createType={IPRangeType.Dynamic}
-              setActiveForm={vi.fn()}
-            />
-          </CompatRouter>
+          <ReservedRangeForm
+            createType={IPRangeType.Dynamic}
+            setActiveForm={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );

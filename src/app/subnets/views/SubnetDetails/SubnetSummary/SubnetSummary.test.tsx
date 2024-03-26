@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import SubnetSummary from "./SubnetSummary";
@@ -78,9 +78,7 @@ it("renders correct section heading", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <SubnetSummary id={subnet.id} />
-        </CompatRouter>
+        <SubnetSummary id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -96,9 +94,7 @@ it("renders current values for static fields", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <SubnetSummary id={subnet.id} />
-        </CompatRouter>
+        <SubnetSummary id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -124,9 +120,7 @@ it("renders the correct value for 'VLAN'", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <SubnetSummary id={subnet.id} />
-        </CompatRouter>
+        <SubnetSummary id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -140,9 +134,7 @@ it("renders the correct value for 'Fabric'", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <SubnetSummary id={subnet.id} />
-        </CompatRouter>
+        <SubnetSummary id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

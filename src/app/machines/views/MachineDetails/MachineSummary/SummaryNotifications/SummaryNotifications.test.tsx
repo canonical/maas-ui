@@ -45,9 +45,7 @@ describe("SummaryNotifications", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <SummaryNotifications id="abc123" />
-          </CompatRouter>
+          <SummaryNotifications id="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -77,9 +75,7 @@ describe("SummaryNotifications", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <SummaryNotifications id="abc123" />
-          </CompatRouter>
+          <SummaryNotifications id="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -96,9 +92,7 @@ describe("SummaryNotifications", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <SummaryNotifications id="abc123" />
-          </CompatRouter>
+          <SummaryNotifications id="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -116,9 +110,7 @@ describe("SummaryNotifications", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <SummaryNotifications id="abc123" />
-          </CompatRouter>
+          <SummaryNotifications id="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -138,9 +130,7 @@ describe("SummaryNotifications", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <SummaryNotifications id="abc123" />
-          </CompatRouter>
+          <SummaryNotifications id="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -158,9 +148,7 @@ describe("SummaryNotifications", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <SummaryNotifications id="abc123" />
-          </CompatRouter>
+          <SummaryNotifications id="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -184,9 +172,7 @@ describe("SummaryNotifications", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <SummaryNotifications id="abc123" />
-          </CompatRouter>
+          <SummaryNotifications id="abc123" />
         </MemoryRouter>
       </Provider>
     );

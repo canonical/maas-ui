@@ -37,9 +37,7 @@ describe("ThirdPartyDrivers", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ThirdPartyDrivers />
-          </CompatRouter>
+          <ThirdPartyDrivers />
         </MemoryRouter>
       </Provider>
     );
@@ -54,9 +52,7 @@ describe("ThirdPartyDrivers", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ThirdPartyDrivers />
-          </CompatRouter>
+          <ThirdPartyDrivers />
         </MemoryRouter>
       </Provider>
     );

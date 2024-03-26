@@ -38,13 +38,11 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Route
-            component={() => <TagDetails id={1} />}
-            exact
-            path={urls.tags.tag.index(null)}
-          />
-        </CompatRouter>
+        <Route
+          component={() => <TagDetails id={1} />}
+          exact
+          path={urls.tags.tag.index(null)}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -73,13 +71,11 @@ it("displays a message if the tag does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Route
-            component={() => <TagDetails id={1} />}
-            exact
-            path={urls.tags.tag.index(null)}
-          />
-        </CompatRouter>
+        <Route
+          component={() => <TagDetails id={1} />}
+          exact
+          path={urls.tags.tag.index(null)}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -100,13 +96,11 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Route
-            component={() => <TagDetails id={1} />}
-            exact
-            path={urls.tags.tag.index(null)}
-          />
-        </CompatRouter>
+        <Route
+          component={() => <TagDetails id={1} />}
+          exact
+          path={urls.tags.tag.index(null)}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -121,13 +115,11 @@ it("displays the tag name when not narrow", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Route
-            component={() => <TagDetails id={1} />}
-            exact
-            path={urls.tags.tag.index(null)}
-          />
-        </CompatRouter>
+        <Route
+          component={() => <TagDetails id={1} />}
+          exact
+          path={urls.tags.tag.index(null)}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -141,13 +133,11 @@ it("does not display the tag name when narrow", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Route
-            component={() => <TagDetails id={1} narrow />}
-            exact
-            path={urls.tags.tag.index(null)}
-          />
-        </CompatRouter>
+        <Route
+          component={() => <TagDetails id={1} narrow />}
+          exact
+          path={urls.tags.tag.index(null)}
+        />
       </MemoryRouter>
     </Provider>
   );

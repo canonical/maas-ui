@@ -45,14 +45,12 @@ it("gets and sets the controller as active", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -92,14 +90,12 @@ it("unsets active controller and cleans up when unmounting", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -144,14 +140,12 @@ it("displays a message if the controller does not exist", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -182,14 +176,12 @@ it("gets and sets the controller as active only once when navigating within the 
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

@@ -47,12 +47,10 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDClusterDetailsHeader
-              clusterId={1}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <LXDClusterDetailsHeader
+            clusterId={1}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -72,12 +70,10 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDClusterDetailsHeader
-              clusterId={1}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <LXDClusterDetailsHeader
+            clusterId={1}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -104,12 +100,10 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDClusterDetailsHeader
-              clusterId={1}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <LXDClusterDetailsHeader
+            clusterId={1}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -131,12 +125,10 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDClusterDetailsHeader
-              clusterId={1}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <LXDClusterDetailsHeader
+            clusterId={1}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -158,12 +150,10 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDClusterDetailsHeader
-              clusterId={1}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <LXDClusterDetailsHeader
+            clusterId={1}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -188,12 +178,10 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDClusterDetailsHeader
-              clusterId={1}
-              setSidePanelContent={setSidePanelContent}
-            />
-          </CompatRouter>
+          <LXDClusterDetailsHeader
+            clusterId={1}
+            setSidePanelContent={setSidePanelContent}
+          />
         </MemoryRouter>
       </Provider>
     );

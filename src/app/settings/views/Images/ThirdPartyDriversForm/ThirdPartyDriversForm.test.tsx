@@ -36,9 +36,7 @@ describe("ThirdPartyDriversForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ThirdPartyDriversForm />
-          </CompatRouter>
+          <ThirdPartyDriversForm />
         </MemoryRouter>
       </Provider>
     );

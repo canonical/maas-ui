@@ -69,9 +69,7 @@ it("does not display a kernel options warning for non-deployed machines", async 
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -99,9 +97,7 @@ it("displays warning when deleting a tag with kernel options", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -135,9 +131,7 @@ it("displays a kernel options warning with multiple machines", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -165,9 +159,7 @@ it("displays a kernel options warning with one machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -195,9 +187,7 @@ it("links to a page to display deployed machines", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -218,9 +208,7 @@ it("displays warning when deleting a tag applied to devices", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -241,9 +229,7 @@ it("displays warning when deleting a tag applied to controllers", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -264,9 +250,7 @@ it("generates the correct sentence for multiple nodes", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );

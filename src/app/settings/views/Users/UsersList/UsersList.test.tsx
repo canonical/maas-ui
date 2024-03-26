@@ -61,9 +61,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );
@@ -79,9 +77,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );
@@ -99,9 +95,7 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -118,9 +112,7 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -134,9 +126,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );
@@ -156,9 +146,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );

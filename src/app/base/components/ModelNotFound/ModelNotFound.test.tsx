@@ -17,9 +17,7 @@ describe("ModelNotFound", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
-          </CompatRouter>
+          <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
         </MemoryRouter>
       </Provider>
     );
@@ -33,9 +31,7 @@ describe("ModelNotFound", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ModelNotFound id={1} linkURL="/models" modelName="model" />
-          </CompatRouter>
+          <ModelNotFound id={1} linkURL="/models" modelName="model" />
         </MemoryRouter>
       </Provider>
     );
@@ -51,14 +47,12 @@ describe("ModelNotFound", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ModelNotFound
-              id={1}
-              linkText="Click here to win $500"
-              linkURL="/models"
-              modelName="model"
-            />
-          </CompatRouter>
+          <ModelNotFound
+            id={1}
+            linkText="Click here to win $500"
+            linkURL="/models"
+            modelName="model"
+          />
         </MemoryRouter>
       </Provider>
     );

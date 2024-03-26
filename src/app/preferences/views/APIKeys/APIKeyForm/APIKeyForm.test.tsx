@@ -38,9 +38,7 @@ describe("APIKeyForm", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <APIKeyForm />
-        </CompatRouter>
+        <APIKeyForm />
       </MemoryRouter>,
       { state }
     );
@@ -52,9 +50,7 @@ describe("APIKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <APIKeyForm />
-          </CompatRouter>
+          <APIKeyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -89,9 +85,7 @@ describe("APIKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <APIKeyForm token={state.token.items[0]} />
-          </CompatRouter>
+          <APIKeyForm token={state.token.items[0]} />
         </MemoryRouter>
       </Provider>
     );

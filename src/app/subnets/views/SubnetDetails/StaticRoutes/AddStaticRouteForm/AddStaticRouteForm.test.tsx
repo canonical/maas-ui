@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels } from "../StaticRoutes";
@@ -36,9 +36,7 @@ it("dispatches a correct action on add static route form submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <AddStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <AddStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

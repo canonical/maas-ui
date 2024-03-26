@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels } from "../StaticRoutes";
@@ -28,9 +28,7 @@ it("displays loading text on load", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <EditStaticRouteForm id={1} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <EditStaticRouteForm id={1} setActiveForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -71,9 +69,7 @@ it("dispatches a correct action on edit static route form submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <EditStaticRouteForm id={staticRoute.id} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <EditStaticRouteForm id={staticRoute.id} setActiveForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

@@ -37,9 +37,7 @@ describe("NtpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NtpForm />
-          </CompatRouter>
+          <NtpForm />
         </MemoryRouter>
       </Provider>
     );
@@ -52,9 +50,7 @@ describe("NtpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NtpForm />
-          </CompatRouter>
+          <NtpForm />
         </MemoryRouter>
       </Provider>
     );
@@ -92,9 +88,7 @@ describe("NtpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NtpForm />
-          </CompatRouter>
+          <NtpForm />
         </MemoryRouter>
       </Provider>
     );

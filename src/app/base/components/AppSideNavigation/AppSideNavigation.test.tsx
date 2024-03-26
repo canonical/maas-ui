@@ -107,9 +107,7 @@ describe("GlobalSideNav", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <CompatRouter>
-            <AppSideNavigation />
-          </CompatRouter>
+          <AppSideNavigation />
         </BrowserRouter>
       </Provider>
     );
@@ -344,11 +342,9 @@ describe("GlobalSideNav", () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <CompatRouter>
-            <Routes>
-              <Route element={<AppSideNavigation />} path="*" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<AppSideNavigation />} path="*" />
+          </Routes>
         </Router>
       </Provider>
     );

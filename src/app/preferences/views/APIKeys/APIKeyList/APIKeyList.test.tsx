@@ -40,9 +40,7 @@ describe("APIKeyList", () => {
           { pathname: "/account/prefs/api-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <APIKeyList />
-        </CompatRouter>
+        <APIKeyList />
       </MemoryRouter>,
       { state }
     );

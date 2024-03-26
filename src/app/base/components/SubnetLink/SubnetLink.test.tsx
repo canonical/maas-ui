@@ -19,9 +19,7 @@ it("handles when subnets are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetLink id={1} />
-        </CompatRouter>
+        <SubnetLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -37,9 +35,7 @@ it("handles when a subnet does not exist", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetLink id={1} />
-        </CompatRouter>
+        <SubnetLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -57,9 +53,7 @@ it("renders a link if subnets have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetLink id={subnet.id} />
-        </CompatRouter>
+        <SubnetLink id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

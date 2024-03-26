@@ -21,9 +21,7 @@ it("renders a controller status section if node is a controller", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <OverviewCard node={controller} />
-        </CompatRouter>
+        <OverviewCard node={controller} />
       </MemoryRouter>
     </Provider>
   );
@@ -43,9 +41,7 @@ it("renders a machine status section if node is a machine", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <OverviewCard node={machine} />
-        </CompatRouter>
+        <OverviewCard node={machine} />
       </MemoryRouter>
     </Provider>
   );

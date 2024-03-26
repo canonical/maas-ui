@@ -43,9 +43,7 @@ describe("ImagesIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ImagesIntro />
-          </CompatRouter>
+          <ImagesIntro />
         </MemoryRouter>
       </Provider>
     );

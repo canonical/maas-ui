@@ -103,9 +103,7 @@ describe("UbuntuCoreImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuCoreImages />
-          </CompatRouter>
+          <UbuntuCoreImages />
         </MemoryRouter>
       </Provider>
     );
@@ -170,9 +168,7 @@ describe("UbuntuCoreImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuCoreImages />
-          </CompatRouter>
+          <UbuntuCoreImages />
         </MemoryRouter>
       </Provider>
     );

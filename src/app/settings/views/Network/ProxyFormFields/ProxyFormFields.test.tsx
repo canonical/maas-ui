@@ -44,9 +44,7 @@ describe("ProxyFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ProxyForm />
-          </CompatRouter>
+          <ProxyForm />
         </MemoryRouter>
       </Provider>
     );

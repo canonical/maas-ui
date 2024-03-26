@@ -5,7 +5,7 @@ import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
-import { BrowserRouter, CompatRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
@@ -124,19 +124,13 @@ export const BrowserRouterWithProvider = ({
         initialSidePanelSize={sidePanelSize}
       >
         <BrowserRouter>
-          <CompatRouter>
-            {routePattern ? (
-              <Routes>
-                {parentRoute ? (
-                  <Route path={parentRoute}>{route}</Route>
-                ) : (
-                  route
-                )}
-              </Routes>
-            ) : (
-              children
-            )}
-          </CompatRouter>
+          {routePattern ? (
+            <Routes>
+              {parentRoute ? <Route path={parentRoute}>{route}</Route> : route}
+            </Routes>
+          ) : (
+            children
+          )}
         </BrowserRouter>
       </SidePanelContextProvider>
     </Provider>

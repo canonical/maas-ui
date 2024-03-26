@@ -35,9 +35,7 @@ describe("VirshSettings", () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
-          <CompatRouter>
-            <VirshSettings id={1} />
-          </CompatRouter>
+          <VirshSettings id={1} />
         </Provider>
       </MemoryRouter>
     );
@@ -62,9 +60,7 @@ describe("VirshSettings", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VirshSettings id={1} />
-          </CompatRouter>
+          <VirshSettings id={1} />
         </MemoryRouter>
       </Provider>
     );

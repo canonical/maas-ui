@@ -65,9 +65,7 @@ describe("CommissioningForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <CommissioningForm />
-          </CompatRouter>
+          <CommissioningForm />
         </MemoryRouter>
       </Provider>
     );

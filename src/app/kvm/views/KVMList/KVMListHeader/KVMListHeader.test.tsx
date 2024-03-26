@@ -36,9 +36,7 @@ describe("KVMListHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
-          </CompatRouter>
+          <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
         </MemoryRouter>
       </Provider>
     );
@@ -51,9 +49,7 @@ describe("KVMListHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
-          </CompatRouter>
+          <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
         </MemoryRouter>
       </Provider>
     );
@@ -68,12 +64,10 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
-          <CompatRouter>
-            <KVMListHeader
-              setSidePanelContent={setSidePanelContent}
-              title="LXD"
-            />
-          </CompatRouter>
+          <KVMListHeader
+            setSidePanelContent={setSidePanelContent}
+            title="LXD"
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -97,12 +91,10 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
-          <CompatRouter>
-            <KVMListHeader
-              setSidePanelContent={setSidePanelContent}
-              title="Virsh"
-            />
-          </CompatRouter>
+          <KVMListHeader
+            setSidePanelContent={setSidePanelContent}
+            title="Virsh"
+          />
         </MemoryRouter>
       </Provider>
     );

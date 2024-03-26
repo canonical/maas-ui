@@ -45,9 +45,7 @@ describe("LXDSingleDetailsHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -65,9 +63,7 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -87,9 +83,7 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -108,9 +102,7 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -130,12 +122,10 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSidePanelContent={setSidePanelContent}
-            />
-          </CompatRouter>
+          <LXDSingleDetailsHeader
+            id={1}
+            setSidePanelContent={setSidePanelContent}
+          />
         </MemoryRouter>
       </Provider>
     );

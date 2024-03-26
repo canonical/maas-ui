@@ -23,9 +23,7 @@ describe("UserAdd", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserAdd />
-        </CompatRouter>
+        <UserAdd />
       </MemoryRouter>,
       { state }
     );

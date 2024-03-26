@@ -44,9 +44,7 @@ describe("Details", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <Details />
-        </CompatRouter>
+        <Details />
       </MemoryRouter>,
       { state }
     );
@@ -58,9 +56,7 @@ describe("Details", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -77,9 +73,7 @@ describe("Details", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -119,9 +113,7 @@ describe("Details", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -168,9 +160,7 @@ describe("Details", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -182,9 +172,7 @@ describe("Details", () => {
     state.status.externalAuthURL = "http://login.example.com";
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <Details />
-        </CompatRouter>
+        <Details />
       </MemoryRouter>,
       { state }
     );

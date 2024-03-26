@@ -62,9 +62,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );
@@ -100,9 +98,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );
@@ -117,9 +113,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );
@@ -157,9 +151,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );

@@ -44,9 +44,7 @@ describe("IntroSection", () => {
     });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-        </CompatRouter>
+        <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
       </Router>,
       { state }
     );

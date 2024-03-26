@@ -47,9 +47,7 @@ describe("PoolForm", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
+          <PoolForm />
         </MemoryRouter>
       </Provider>
     );
@@ -75,9 +73,7 @@ describe("PoolForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/pools/add"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
+          <PoolForm />
         </MemoryRouter>
       </Provider>
     );
@@ -117,9 +113,7 @@ describe("PoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/pools/", key: "testKey" }]}
         >
-          <CompatRouter>
-            <PoolForm pool={pool} />
-          </CompatRouter>
+          <PoolForm pool={pool} />
         </MemoryRouter>
       </Provider>
     );
@@ -161,9 +155,7 @@ describe("PoolForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
+          <PoolForm />
         </MemoryRouter>
       </Provider>
     );

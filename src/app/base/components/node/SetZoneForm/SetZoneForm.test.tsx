@@ -30,16 +30,14 @@ it("initialises zone value if exactly one node provided", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SetZoneForm
-            clearSidePanelContent={vi.fn()}
-            modelName="machine"
-            nodes={nodes}
-            onSubmit={vi.fn()}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <SetZoneForm
+          clearSidePanelContent={vi.fn()}
+          modelName="machine"
+          nodes={nodes}
+          onSubmit={vi.fn()}
+          processingCount={0}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -56,16 +54,14 @@ it("does not initialise zone value if more than one node provided", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SetZoneForm
-            clearSidePanelContent={vi.fn()}
-            modelName="machine"
-            nodes={nodes}
-            onSubmit={vi.fn()}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <SetZoneForm
+          clearSidePanelContent={vi.fn()}
+          modelName="machine"
+          nodes={nodes}
+          onSubmit={vi.fn()}
+          processingCount={0}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -83,16 +79,14 @@ it("correctly runs function to set zones of given nodes", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SetZoneForm
-            clearSidePanelContent={vi.fn()}
-            modelName="machine"
-            nodes={nodes}
-            onSubmit={onSubmit}
-            processingCount={0}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <SetZoneForm
+          clearSidePanelContent={vi.fn()}
+          modelName="machine"
+          nodes={nodes}
+          onSubmit={onSubmit}
+          processingCount={0}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );

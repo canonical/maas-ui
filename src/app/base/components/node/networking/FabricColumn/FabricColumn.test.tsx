@@ -41,9 +41,7 @@ describe("FabricColumn", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FabricColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
         </MemoryRouter>
       </Provider>
     );
@@ -68,9 +66,7 @@ describe("FabricColumn", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FabricColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
         </MemoryRouter>
       </Provider>
     );

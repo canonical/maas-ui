@@ -79,9 +79,7 @@ describe("CommissioningFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <CommissioningForm />
-          </CompatRouter>
+          <CommissioningForm />
         </MemoryRouter>
       </Provider>
     );
@@ -99,9 +97,7 @@ describe("CommissioningFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <CommissioningForm />
-          </CompatRouter>
+          <CommissioningForm />
         </MemoryRouter>
       </Provider>
     );
