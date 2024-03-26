@@ -163,7 +163,9 @@ const LXDClusterDetails = (): JSX.Element => {
           path={getRelativeRoute(urls.kvm.lxd.cluster.host.edit(null), base)}
         />
         <Route
-          element={<Navigate to={urls.kvm.lxd.cluster.hosts({ clusterId })} />}
+          element={
+            <Navigate replace to={urls.kvm.lxd.cluster.hosts({ clusterId })} />
+          }
           path={getRelativeRoute(urls.kvm.lxd.cluster.index(null), base)}
         />
         <Route

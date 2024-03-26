@@ -40,7 +40,10 @@ const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
 
 const Routes = (): JSX.Element => (
   <ReactRouterRoutes>
-    <Route element={<Navigate to={urls.machines.index} />} path={urls.index} />
+    <Route
+      element={<Navigate replace to={urls.machines.index} />}
+      path={urls.index}
+    />
     <Route
       element={
         <ErrorBoundary>
@@ -74,11 +77,11 @@ const Routes = (): JSX.Element => (
       path={`${urls.networkDiscovery.index}/*`}
     />
     <Route
-      element={<Navigate to={urls.networkDiscovery.index} />}
+      element={<Navigate replace to={urls.networkDiscovery.index} />}
       path={urls.networkDiscovery.legacyIndex}
     />
     <Route
-      element={<Navigate to={urls.networkDiscovery.configuration} />}
+      element={<Navigate replace to={urls.networkDiscovery.configuration} />}
       path={urls.networkDiscovery.legacyConfiguration}
     />
     <Route

@@ -132,7 +132,7 @@ const DeviceDetails = (): JSX.Element => {
         path={getRelativeRoute(urls.devices.device.configuration(null), base)}
       />
       <Route
-        element={<Navigate to={urls.devices.device.summary({ id })} />}
+        element={<Navigate replace to={urls.devices.device.summary({ id })} />}
         path="/"
       />
     </Routes>

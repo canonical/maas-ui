@@ -40,7 +40,10 @@ const LXDClusterDetailsRedirect = ({ clusterId }: Props): JSX.Element => {
     );
   }
   return (
-    <Navigate to={urls.kvm.lxd.cluster.host.edit({ clusterId, hostId })} />
+    <Navigate
+      replace
+      to={urls.kvm.lxd.cluster.host.edit({ clusterId, hostId })}
+    />
   );
 };
 

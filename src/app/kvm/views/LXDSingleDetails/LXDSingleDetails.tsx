@@ -123,7 +123,7 @@ const LXDSingleDetails = (): JSX.Element => {
             path={getRelativeRoute(urls.kvm.lxd.single.edit(null), base)}
           />
           <Route
-            element={<Navigate to={urls.kvm.lxd.single.vms({ id })} />}
+            element={<Navigate replace to={urls.kvm.lxd.single.vms({ id })} />}
             path="/"
           />
         </Routes>

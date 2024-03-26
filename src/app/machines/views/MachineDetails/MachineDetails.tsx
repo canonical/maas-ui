@@ -96,7 +96,9 @@ const MachineDetails = (): JSX.Element => {
       {machine && (
         <Routes>
           <Route
-            element={<Navigate to={urls.machines.machine.summary({ id })} />}
+            element={
+              <Navigate replace to={urls.machines.machine.summary({ id })} />
+            }
             index
           />
           <Route
@@ -200,7 +202,10 @@ const MachineDetails = (): JSX.Element => {
           />
           <Route
             element={
-              <Navigate to={urls.machines.machine.logs.events({ id })} />
+              <Navigate
+                replace
+                to={urls.machines.machine.logs.events({ id })}
+              />
             }
             path={getRelativeRoute(urls.machines.machine.events(null), base)}
           />
@@ -212,7 +217,9 @@ const MachineDetails = (): JSX.Element => {
             )}
           />
           <Route
-            element={<Navigate to={urls.machines.machine.summary({ id })} />}
+            element={
+              <Navigate replace to={urls.machines.machine.summary({ id })} />
+            }
             path={base}
           />
         </Routes>

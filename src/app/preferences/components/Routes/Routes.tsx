@@ -23,7 +23,10 @@ const Routes = (): JSX.Element => {
   const base = urls.preferences.index;
   return (
     <ReactRouterRoutes>
-      <Route element={<Navigate to={urls.preferences.details} />} path="/" />
+      <Route
+        element={<Navigate replace to={urls.preferences.details} />}
+        path="/"
+      />
       <Route
         element={
           <PageContent

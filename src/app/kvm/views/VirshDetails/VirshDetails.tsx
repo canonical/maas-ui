@@ -82,7 +82,9 @@ const VirshDetails = (): JSX.Element => {
             path={getRelativeRoute(urls.kvm.virsh.details.edit(null), base)}
           />
           <Route
-            element={<Navigate to={urls.kvm.virsh.details.resources({ id })} />}
+            element={
+              <Navigate replace to={urls.kvm.virsh.details.resources({ id })} />
+            }
             path="/"
           />
         </Routes>

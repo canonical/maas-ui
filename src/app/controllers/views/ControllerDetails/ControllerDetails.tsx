@@ -89,7 +89,10 @@ const ControllerDetails = (): JSX.Element => {
         <Routes>
           <Route
             element={
-              <Navigate to={urls.controllers.controller.summary({ id })} />
+              <Navigate
+                replace
+                to={urls.controllers.controller.summary({ id })}
+              />
             }
             index
           />
