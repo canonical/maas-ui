@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as FormLabels } from "../GeneralForm/GeneralForm";
@@ -45,9 +44,7 @@ describe("General", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <General />
-          </CompatRouter>
+          <General />
         </MemoryRouter>
       </Provider>
     );
@@ -62,9 +59,7 @@ describe("General", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <General />
-          </CompatRouter>
+          <General />
         </MemoryRouter>
       </Provider>
     );
@@ -81,9 +76,7 @@ describe("General", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <General />
-          </CompatRouter>
+          <General />
         </MemoryRouter>
       </Provider>
     );

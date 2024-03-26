@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { Router } from "react-router";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
@@ -62,14 +62,12 @@ it("redirects to the config form", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<LXDClusterDetailsRedirect clusterId={1} />}
-              path={urls.kvm.lxd.cluster.host.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<LXDClusterDetailsRedirect clusterId={1} />}
+            path={urls.kvm.lxd.cluster.host.index(null)}
+          />
+        </Routes>
       </Router>
     </Provider>
   );

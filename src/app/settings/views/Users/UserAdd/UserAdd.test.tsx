@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 import { UserAdd } from "./UserAdd";
 
@@ -23,9 +22,7 @@ describe("UserAdd", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserAdd />
-        </CompatRouter>
+        <UserAdd />
       </MemoryRouter>,
       { state }
     );

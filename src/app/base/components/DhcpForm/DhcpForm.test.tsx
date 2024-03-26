@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as FieldLabels } from "../DhcpFormFields";
@@ -50,9 +49,7 @@ describe("DhcpForm", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -71,9 +68,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" id={dhcpSnippet.id} />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" id={dhcpSnippet.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -104,9 +99,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -146,9 +139,7 @@ describe("DhcpForm", () => {
     const Proxy = ({ analyticsCategory }: { analyticsCategory: string }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />
-          </CompatRouter>
+          <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />
         </MemoryRouter>
       </Provider>
     );
@@ -172,9 +163,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" onSave={onSave} />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" onSave={onSave} />
         </MemoryRouter>
       </Provider>
     );
@@ -194,9 +183,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -212,12 +199,10 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm
-              analyticsCategory="settings"
-              id={state.dhcpsnippet.items[0].id}
-            />
-          </CompatRouter>
+          <DhcpForm
+            analyticsCategory="settings"
+            id={state.dhcpsnippet.items[0].id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -246,12 +231,10 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm
-              analyticsCategory="settings"
-              id={state.dhcpsnippet.items[0].id}
-            />
-          </CompatRouter>
+          <DhcpForm
+            analyticsCategory="settings"
+            id={state.dhcpsnippet.items[0].id}
+          />
         </MemoryRouter>
       </Provider>
     );

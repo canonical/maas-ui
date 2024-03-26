@@ -1,6 +1,6 @@
 import { createMemoryHistory } from "history";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import { DhcpForm } from "./DhcpForm";
 
@@ -38,9 +38,7 @@ describe("DhcpForm", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <DhcpForm />
-        </CompatRouter>
+        <DhcpForm />
       </MemoryRouter>,
       { state }
     );
@@ -56,9 +54,7 @@ describe("DhcpForm", () => {
     });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <DhcpForm />
-        </CompatRouter>
+        <DhcpForm />
       </Router>,
       { state }
     );
@@ -68,9 +64,7 @@ describe("DhcpForm", () => {
   it("shows the snippet name in the title when editing", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
-        </CompatRouter>
+        <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
       </MemoryRouter>,
       { state }
     );

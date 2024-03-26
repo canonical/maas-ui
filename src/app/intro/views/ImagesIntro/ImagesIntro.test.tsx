@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ImagesIntro, { Labels as ImagesIntroLabels } from "./ImagesIntro";
@@ -43,9 +42,7 @@ describe("ImagesIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ImagesIntro />
-          </CompatRouter>
+          <ImagesIntro />
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteDomainForm, {
@@ -49,9 +48,7 @@ describe("DeleteDomainForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeleteDomainForm closeForm={closeForm} id={1} />
-          </CompatRouter>
+          <DeleteDomainForm closeForm={closeForm} id={1} />
         </MemoryRouter>
       </Provider>
     );

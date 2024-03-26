@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import VLANDetails from "./VLANDetails";
@@ -24,14 +23,12 @@ it("dispatches actions to fetch necessary data and set vlan as active on mount",
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -55,14 +52,12 @@ it("dispatches actions to unset active vlan and clean up on unmount", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -96,14 +91,12 @@ it("displays a message if the vlan does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -124,14 +117,12 @@ it("shows a spinner if the vlan has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

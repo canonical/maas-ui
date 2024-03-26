@@ -7,7 +7,7 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip } from "@canonical/react-components";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import { TAGS_PER_PAGE } from "../constants";
 

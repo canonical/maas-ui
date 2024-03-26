@@ -6,7 +6,7 @@ import {
   Row,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import TableActions from "@/app/base/components/TableActions";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";

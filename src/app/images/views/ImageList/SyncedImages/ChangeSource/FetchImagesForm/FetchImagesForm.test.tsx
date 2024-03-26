@@ -1,7 +1,6 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FetchImagesForm, {
@@ -37,9 +36,7 @@ describe("FetchImagesForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchImagesForm closeForm={vi.fn()} setSource={vi.fn()} />
-          </CompatRouter>
+          <FetchImagesForm closeForm={vi.fn()} setSource={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -105,9 +102,7 @@ describe("FetchImagesForm", () => {
     const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchImagesForm closeForm={vi.fn()} setSource={setSource} />
-          </CompatRouter>
+          <FetchImagesForm closeForm={vi.fn()} setSource={setSource} />
         </MemoryRouter>
       </Provider>
     );

@@ -1,7 +1,6 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels } from "./DhcpFormFields";
@@ -94,12 +93,10 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm
-              analyticsCategory="settings"
-              id={state.dhcpsnippet.items[0].id}
-            />
-          </CompatRouter>
+          <DhcpForm
+            analyticsCategory="settings"
+            id={state.dhcpsnippet.items[0].id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -120,9 +117,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -143,9 +138,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -166,9 +159,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -193,9 +184,7 @@ describe("DhcpFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );

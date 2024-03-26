@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import OverviewCard from "./OverviewCard";
@@ -21,9 +20,7 @@ it("renders a controller status section if node is a controller", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <OverviewCard node={controller} />
-        </CompatRouter>
+        <OverviewCard node={controller} />
       </MemoryRouter>
     </Provider>
   );
@@ -43,9 +40,7 @@ it("renders a machine status section if node is a machine", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <OverviewCard node={machine} />
-        </CompatRouter>
+        <OverviewCard node={machine} />
       </MemoryRouter>
     </Provider>
   );

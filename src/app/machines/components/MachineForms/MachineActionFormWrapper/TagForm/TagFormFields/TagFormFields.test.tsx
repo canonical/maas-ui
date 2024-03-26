@@ -2,7 +2,6 @@ import * as reduxToolkit from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
@@ -151,24 +150,19 @@ it("updates the new tags after creating a tag", async () => {
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik
-            initialValues={{ added: tags, removed: [] }}
-            onSubmit={vi.fn()}
-          >
-            <TagFormFields
-              {...commonProps}
-              machines={state.machine.items}
-              newTags={tags}
-              selectedCount={state.machine.items.length}
-              selectedMachines={{
-                items: machines.map((item) => item.system_id),
-              }}
-              setNewTags={setNewTags}
-              viewingDetails={false}
-            />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ added: tags, removed: [] }} onSubmit={vi.fn()}>
+          <TagFormFields
+            {...commonProps}
+            machines={state.machine.items}
+            newTags={tags}
+            selectedCount={state.machine.items.length}
+            selectedMachines={{
+              items: machines.map((item) => item.system_id),
+            }}
+            setNewTags={setNewTags}
+            viewingDetails={false}
+          />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddRecordForm, { Labels as AddRecordFormLabels } from "./AddRecordForm";
@@ -51,9 +50,7 @@ describe("AddRecordForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AddRecordForm closeForm={closeForm} id={1} />
-          </CompatRouter>
+          <AddRecordForm closeForm={closeForm} id={1} />
         </MemoryRouter>
       </Provider>
     );

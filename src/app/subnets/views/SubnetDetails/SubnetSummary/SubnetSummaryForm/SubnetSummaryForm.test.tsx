@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetSummaryForm from "./SubnetSummaryForm";
@@ -40,9 +39,7 @@ it("can dispatch an action to update the subnet", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetSummaryForm handleDismiss={vi.fn()} id={subnet.id} />
-        </CompatRouter>
+        <SubnetSummaryForm handleDismiss={vi.fn()} id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

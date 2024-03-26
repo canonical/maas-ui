@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VLANControllers from "./VLANControllers";
@@ -47,9 +46,7 @@ it("displays a spinner when loading controllers", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANControllers id={vlan.id} />
-        </CompatRouter>
+        <VLANControllers id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -61,9 +58,7 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANControllers id={vlan.id} />
-        </CompatRouter>
+        <VLANControllers id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

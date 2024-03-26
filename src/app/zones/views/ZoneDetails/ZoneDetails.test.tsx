@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ZoneDetails from "./ZoneDetails";
@@ -43,11 +42,9 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<ZoneDetails />} path="/zone/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetails />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -73,11 +70,9 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<ZoneDetails />} path="/zone/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetails />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

@@ -2,7 +2,7 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { Link, Route, Routes } from "react-router-dom-v5-compat";
+import { Link, Route, Routes } from "react-router-dom";
 
 import PoolDelete from "./PoolDelete";
 import PoolList from "./PoolList";

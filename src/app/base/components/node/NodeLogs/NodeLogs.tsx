@@ -1,6 +1,5 @@
 import { Tabs } from "@canonical/react-components";
-import { Route, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Route, useLocation, Link, Routes } from "react-router-dom";
 
 import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";
@@ -53,19 +52,15 @@ const NodeLogs = ({ node, urls }: Props): JSX.Element => {
         />
         <DownloadMenu node={node} />
       </div>
-      <Route
-        exact
-        path={urls.installationOutput(null)}
-        render={() => <InstallationOutput node={node} />}
-      />
-      {[urls.index(null), urls.events(null)].map((path) => (
+      <Routes>
         <Route
-          exact
-          key={path}
-          path={path}
-          render={() => <EventLogs node={node} />}
+          element={<InstallationOutput node={node} />}
+          path={urls.installationOutput(null)}
         />
-      ))}
+        {[urls.index(null), urls.events(null)].map((path) => (
+          <Route element={<EventLogs node={node} />} key={path} path={path} />
+        ))}
+      </Routes>
     </>
   );
 };

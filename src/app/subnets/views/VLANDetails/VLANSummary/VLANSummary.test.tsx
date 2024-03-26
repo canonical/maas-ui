@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VLANSummary from "./VLANSummary";
@@ -55,9 +54,7 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANSummary id={vlan.id} />
-        </CompatRouter>
+        <VLANSummary id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -81,9 +78,7 @@ it("can display the edit form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANSummary id={vlan.id} />
-        </CompatRouter>
+        <VLANSummary id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

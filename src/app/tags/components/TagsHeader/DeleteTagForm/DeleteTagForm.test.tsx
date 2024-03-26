@@ -2,8 +2,8 @@ import { NotificationSeverity } from "@canonical/react-components";
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -61,9 +61,7 @@ it("dispatches an action to delete a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -85,9 +83,7 @@ it("dispatches an action to add a notification when tag successfully deleted", a
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -109,9 +105,7 @@ it("displays a message when deleting a tag on a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -134,9 +128,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -163,13 +155,12 @@ it("can return to the list on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <DeleteTagForm id={1} onClose={onClose} />}
-            exact
+            element={<DeleteTagForm id={1} onClose={onClose} />}
             path={path}
           />
-        </CompatRouter>
+        </Routes>
       </Router>
     </Provider>
   );
@@ -202,15 +193,12 @@ it("can return to the details on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => (
-              <DeleteTagForm fromDetails id={1} onClose={onClose} />
-            )}
-            exact
+            element={<DeleteTagForm fromDetails id={1} onClose={onClose} />}
             path={path}
           />
-        </CompatRouter>
+        </Routes>
       </Router>
     </Provider>
   );

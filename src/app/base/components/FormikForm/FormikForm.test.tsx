@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FormikForm from "./FormikForm";
@@ -28,15 +27,13 @@ describe("FormikForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <FormikForm
-              aria-label="example"
-              initialValues={{}}
-              onSubmit={vi.fn()}
-            >
-              Content
-            </FormikForm>
-          </CompatRouter>
+          <FormikForm
+            aria-label="example"
+            initialValues={{}}
+            onSubmit={vi.fn()}
+          >
+            Content
+          </FormikForm>
         </MemoryRouter>
       </Provider>
     );

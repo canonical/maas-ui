@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DHCPSnippets from "./DHCPSnippets";
@@ -58,16 +58,17 @@ it("selects the correct subnets to display in the table", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
-        <Route
-          component={() => (
-            <DHCPSnippets
-              modelName="subnet"
-              subnetIds={[subnets[0].id, subnets[2].id]}
-            />
-          )}
-          exact
-          path={urls.subnets.subnet.index(null)}
-        />
+        <Routes>
+          <Route
+            element={
+              <DHCPSnippets
+                modelName="subnet"
+                subnetIds={[subnets[0].id, subnets[2].id]}
+              />
+            }
+            path={urls.subnets.subnet.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

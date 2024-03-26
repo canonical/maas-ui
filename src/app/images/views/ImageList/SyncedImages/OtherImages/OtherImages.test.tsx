@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import OtherImages, { Labels as OtherImagesLabels } from "./OtherImages";
@@ -73,9 +72,7 @@ describe("OtherImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <OtherImages />
-          </CompatRouter>
+          <OtherImages />
         </MemoryRouter>
       </Provider>
     );
@@ -140,9 +137,7 @@ describe("OtherImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <OtherImages />
-          </CompatRouter>
+          <OtherImages />
         </MemoryRouter>
       </Provider>
     );

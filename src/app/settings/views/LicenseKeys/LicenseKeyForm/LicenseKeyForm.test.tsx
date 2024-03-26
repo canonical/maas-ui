@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFormFields";
@@ -49,9 +49,7 @@ describe("LicenseKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <LicenseKeyForm />
-          </CompatRouter>
+          <LicenseKeyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -67,9 +65,7 @@ describe("LicenseKeyForm", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <LicenseKeyForm />
-          </CompatRouter>
+          <LicenseKeyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -87,9 +83,7 @@ describe("LicenseKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <LicenseKeyForm />
-          </CompatRouter>
+          <LicenseKeyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -105,9 +99,7 @@ describe("LicenseKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <LicenseKeyForm />
-          </CompatRouter>
+          <LicenseKeyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -126,9 +118,7 @@ describe("LicenseKeyForm", () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <CompatRouter>
-            <LicenseKeyForm />
-          </CompatRouter>
+          <LicenseKeyForm />
         </Router>
       </Provider>
     );
@@ -140,9 +130,7 @@ describe("LicenseKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <LicenseKeyForm />
-          </CompatRouter>
+          <LicenseKeyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -190,9 +178,7 @@ describe("LicenseKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <LicenseKeyForm licenseKey={licenseKey} />
-          </CompatRouter>
+          <LicenseKeyForm licenseKey={licenseKey} />
         </MemoryRouter>
       </Provider>
     );
@@ -232,9 +218,7 @@ describe("LicenseKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <LicenseKeyForm />
-          </CompatRouter>
+          <LicenseKeyForm />
         </MemoryRouter>
       </Provider>
     );

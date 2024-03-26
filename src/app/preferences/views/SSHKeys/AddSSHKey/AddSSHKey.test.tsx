@@ -1,6 +1,6 @@
 import { createMemoryHistory } from "history";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import { AddSSHKey, Label as AddSSHKeyLabels } from "./AddSSHKey";
 
@@ -25,9 +25,7 @@ describe("AddSSHKey", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <AddSSHKey />
-        </CompatRouter>
+        <AddSSHKey />
       </MemoryRouter>,
       { state }
     );
@@ -41,9 +39,7 @@ describe("AddSSHKey", () => {
     const history = createMemoryHistory({ initialEntries: ["/"] });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <AddSSHKey />
-        </CompatRouter>
+        <AddSSHKey />
       </Router>,
       { state }
     );

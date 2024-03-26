@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 import DhcpTarget from "./DhcpTarget";
 
@@ -64,9 +63,7 @@ describe("DhcpTarget", () => {
     state.subnet.loading = true;
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpTarget subnetId={808} />
-        </CompatRouter>
+        <DhcpTarget subnetId={808} />
       </MemoryRouter>,
       { state }
     );
@@ -76,9 +73,7 @@ describe("DhcpTarget", () => {
   it("can display a subnet link", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpTarget subnetId={1} />
-        </CompatRouter>
+        <DhcpTarget subnetId={1} />
       </MemoryRouter>,
       { state }
     );
@@ -91,9 +86,7 @@ describe("DhcpTarget", () => {
   it("can display a node link", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpTarget nodeId="xyz" />
-        </CompatRouter>
+        <DhcpTarget nodeId="xyz" />
       </MemoryRouter>,
       { state }
     );

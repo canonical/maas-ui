@@ -1,5 +1,5 @@
-import { Redirect } from "react-router";
-import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
+import { Navigate } from "react-router";
+import { Route, Routes as ReactRouterRoutes } from "react-router-dom";
 
 import DeleteSSHKey from "../../views/SSHKeys/DeleteSSHKey";
 import DeleteSSLKey from "../../views/SSLKeys/DeleteSSLKey";
@@ -23,7 +23,10 @@ const Routes = (): JSX.Element => {
   const base = urls.preferences.index;
   return (
     <ReactRouterRoutes>
-      <Route element={<Redirect to={urls.preferences.details} />} path="/" />
+      <Route
+        element={<Navigate replace to={urls.preferences.details} />}
+        path="/"
+      />
       <Route
         element={
           <PageContent

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LicenseKeyList from ".";
@@ -45,9 +44,7 @@ describe("LicenseKeyList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <LicenseKeyList />
-          </CompatRouter>
+          <LicenseKeyList />
         </MemoryRouter>
       </Provider>
     );

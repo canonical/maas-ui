@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import ControllerListHeader from "./ControllerListHeader";
 import ControllerListTable from "./ControllerListTable";

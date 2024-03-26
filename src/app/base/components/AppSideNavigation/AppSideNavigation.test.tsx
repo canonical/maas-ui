@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { BrowserRouter, Router } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import AppSideNavigation from "./AppSideNavigation";
@@ -21,8 +21,8 @@ import {
 } from "@/testing/utils";
 
 const mockUseNavigate = vi.fn();
-vi.mock("react-router-dom-v5-compat", async () => {
-  const actual: object = await vi.importActual("react-router-dom-v5-compat");
+vi.mock("react-router-dom", async () => {
+  const actual: object = await vi.importActual("react-router-dom");
   return {
     ...actual,
     useNavigate: () => mockUseNavigate,
@@ -102,9 +102,7 @@ describe("GlobalSideNav", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <CompatRouter>
-            <AppSideNavigation />
-          </CompatRouter>
+          <AppSideNavigation />
         </BrowserRouter>
       </Provider>
     );
@@ -339,11 +337,9 @@ describe("GlobalSideNav", () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <CompatRouter>
-            <Routes>
-              <Route element={<AppSideNavigation />} path="*" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<AppSideNavigation />} path="*" />
+          </Routes>
         </Router>
       </Provider>
     );

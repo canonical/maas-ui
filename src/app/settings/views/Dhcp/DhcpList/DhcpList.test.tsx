@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DhcpList from "./DhcpList";
@@ -70,9 +69,7 @@ describe("DhcpList", () => {
   it("can show a delete confirmation", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpList />
-        </CompatRouter>
+        <DhcpList />
       </MemoryRouter>,
       { state }
     );
@@ -91,9 +88,7 @@ describe("DhcpList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
+          <DhcpList />
         </MemoryRouter>
       </Provider>
     );
@@ -131,9 +126,7 @@ describe("DhcpList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
+          <DhcpList />
         </MemoryRouter>
       </Provider>
     );
@@ -160,9 +153,7 @@ describe("DhcpList", () => {
   it("can show snippet details", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpList />
-        </CompatRouter>
+        <DhcpList />
       </MemoryRouter>,
       { state }
     );
@@ -181,9 +172,7 @@ describe("DhcpList", () => {
   it("can filter dhcp snippets", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpList />
-        </CompatRouter>
+        <DhcpList />
       </MemoryRouter>,
       { state }
     );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AvailableStorageTable from "./AvailableStorageTable";
@@ -56,9 +55,7 @@ it("can show an empty message", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </CompatRouter>
+        <AvailableStorageTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -91,9 +88,7 @@ it("only shows disks that are available", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </CompatRouter>
+        <AvailableStorageTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -121,9 +116,7 @@ it("does not show an action column, checkboxes or bulk actions if node is a cont
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AvailableStorageTable canEditStorage node={controller} />
-        </CompatRouter>
+        <AvailableStorageTable canEditStorage node={controller} />
       </MemoryRouter>
     </Provider>
   );
@@ -154,9 +147,7 @@ it("show an action column, storage checkboxes and bulk actions if node is a mach
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AvailableStorageTable canEditStorage node={machine} />
-        </CompatRouter>
+        <AvailableStorageTable canEditStorage node={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -186,9 +177,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -213,9 +202,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -243,9 +230,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage={false} node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage={false} node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -340,9 +325,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -408,9 +391,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -493,9 +474,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -532,9 +511,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -575,9 +552,7 @@ describe("performing machine actions", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AvailableStorageTable canEditStorage node={machine} />
-          </CompatRouter>
+          <AvailableStorageTable canEditStorage node={machine} />
         </MemoryRouter>
       </Provider>
     );

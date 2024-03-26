@@ -278,6 +278,7 @@ exports[`rootReducer > should reset app to initial state on LOGOUT_SUCCESS, exce
     "action": "POP",
     "location": {
       "hash": "",
+      "key": "",
       "pathname": "/",
       "search": "",
       "state": null,

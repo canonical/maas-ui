@@ -1,5 +1,4 @@
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import RepositoryAdd from "./RepositoryAdd";
 
@@ -37,14 +36,12 @@ describe("RepositoryAdd", () => {
           { pathname: "/settings/repositories/add/ppa", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryAdd />}
-              path="/settings/repositories/add/:type"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryAdd />}
+            path="/settings/repositories/add/:type"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );
@@ -62,14 +59,12 @@ describe("RepositoryAdd", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryAdd />}
-              path="/settings/repositories/add/:type"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryAdd />}
+            path="/settings/repositories/add/:type"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

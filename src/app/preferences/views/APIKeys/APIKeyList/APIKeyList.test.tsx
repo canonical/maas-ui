@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 import APIKeyList, { Label as APIKeyListLabels } from "./APIKeyList";
 
@@ -40,9 +39,7 @@ describe("APIKeyList", () => {
           { pathname: "/account/prefs/api-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <APIKeyList />
-        </CompatRouter>
+        <APIKeyList />
       </MemoryRouter>,
       { state }
     );

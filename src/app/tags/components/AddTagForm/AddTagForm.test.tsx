@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -32,9 +31,7 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm name="new-tag" onTagCreated={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm name="new-tag" onTagCreated={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -65,15 +62,12 @@ it("returns the newly created tag on save", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => (
-              <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
-            )}
-            exact
+            element={<AddTagForm name="new-tag" onTagCreated={onTagCreated} />}
             path={urls.tags.index}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

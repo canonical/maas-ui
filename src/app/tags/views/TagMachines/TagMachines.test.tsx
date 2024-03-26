@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import TagMachines, { Label } from "./TagMachines";
@@ -68,11 +67,9 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -114,11 +111,9 @@ it("displays a message if the tag does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -138,11 +133,9 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -156,11 +149,9 @@ it("displays the machine list", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import DeviceConfiguration from "./DeviceConfiguration";
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
@@ -133,7 +132,7 @@ const DeviceDetails = (): JSX.Element => {
         path={getRelativeRoute(urls.devices.device.configuration(null), base)}
       />
       <Route
-        element={<Redirect to={urls.devices.device.summary({ id })} />}
+        element={<Navigate replace to={urls.devices.device.summary({ id })} />}
         path="/"
       />
     </Routes>

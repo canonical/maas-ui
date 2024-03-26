@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditRecordForm, {
@@ -70,9 +69,7 @@ describe("EditRecordForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />
-          </CompatRouter>
+          <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />
         </MemoryRouter>
       </Provider>
     );

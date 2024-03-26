@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";

@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { Col, Icon, NotificationSeverity } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";

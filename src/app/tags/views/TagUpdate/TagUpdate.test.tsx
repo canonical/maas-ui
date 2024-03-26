@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
@@ -39,13 +39,12 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-            exact
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -74,13 +73,12 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-            exact
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -93,9 +91,7 @@ it("can update the tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <TagUpdate id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <TagUpdate id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -137,13 +133,12 @@ it("goes to the tag details page if it can't go back", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-            exact
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </Router>
     </Provider>
   );
@@ -166,9 +161,7 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <TagUpdate id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <TagUpdate id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

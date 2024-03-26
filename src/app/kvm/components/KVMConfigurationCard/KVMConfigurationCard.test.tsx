@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMConfigurationCard from "./KVMConfigurationCard";
@@ -43,9 +42,7 @@ it("can handle updating a lxd KVM", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -98,9 +95,7 @@ it("can handle updating a virsh KVM", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -157,9 +152,7 @@ it("enables the submit button if form values are different to pod values", async
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -189,9 +182,7 @@ it("enables the submit button if form values are different to pod values", async
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={updatedPod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={updatedPod} />
       </MemoryRouter>
     </Provider>
   );

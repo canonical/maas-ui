@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Routes, Route } from "react-router-dom-v5-compat";
+import { Navigate, Routes, Route } from "react-router-dom";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 import ControllerConfiguration from "./ControllerConfiguration";
@@ -90,7 +89,10 @@ const ControllerDetails = (): JSX.Element => {
         <Routes>
           <Route
             element={
-              <Redirect to={urls.controllers.controller.summary({ id })} />
+              <Navigate
+                replace
+                to={urls.controllers.controller.summary({ id })}
+              />
             }
             index
           />

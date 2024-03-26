@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { UserForm, Labels as UserFormLabels } from "./UserForm";
@@ -36,9 +36,7 @@ describe("UserForm", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <UserForm user={user} />
-        </CompatRouter>
+        <UserForm user={user} />
       </MemoryRouter>,
       { state }
     );
@@ -54,9 +52,7 @@ describe("UserForm", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -77,9 +73,7 @@ describe("UserForm", () => {
 
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <UserForm user={user} />
-        </CompatRouter>
+        <UserForm user={user} />
       </Router>,
       { state }
     );
@@ -92,9 +86,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -152,9 +144,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -221,9 +211,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm />
-          </CompatRouter>
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
@@ -287,9 +275,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -302,9 +288,7 @@ describe("UserForm", () => {
   it("displays a checkbox for making the user a MAAS admin", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <UserForm user={user} />
-        </CompatRouter>
+        <UserForm user={user} />
       </MemoryRouter>,
       { state }
     );

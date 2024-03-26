@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TestResults from "./TestResults";
@@ -33,13 +32,11 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.CPU}
-              machine={machine}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <TestResults
+            hardwareType={HardwareType.CPU}
+            machine={machine}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -61,13 +58,11 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.Memory}
-              machine={machine}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <TestResults
+            hardwareType={HardwareType.Memory}
+            machine={machine}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -88,13 +83,11 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.Storage}
-              machine={machine}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <TestResults
+            hardwareType={HardwareType.Storage}
+            machine={machine}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -115,13 +108,11 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.CPU}
-              machine={machine}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <TestResults
+            hardwareType={HardwareType.CPU}
+            machine={machine}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -142,13 +133,11 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <TestResults
-              hardwareType={HardwareType.Network}
-              machine={machine}
-              setSidePanelContent={vi.fn()}
-            />
-          </CompatRouter>
+          <TestResults
+            hardwareType={HardwareType.Network}
+            machine={machine}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );

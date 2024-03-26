@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MaasIntroSuccess, {
@@ -82,9 +81,7 @@ describe("MaasIntroSuccess", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
       >
-        <CompatRouter>
-          <MaasIntroSuccess />
-        </CompatRouter>
+        <MaasIntroSuccess />
       </MemoryRouter>,
       { store }
     );

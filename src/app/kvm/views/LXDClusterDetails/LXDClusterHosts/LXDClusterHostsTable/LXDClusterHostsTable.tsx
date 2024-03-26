@@ -9,8 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { useLocation, Link } from "react-router-dom";
 
 import TableHeader from "@/app/base/components/TableHeader";
 import { useFetchActions, useTableSort } from "@/app/base/hooks";
@@ -177,7 +176,7 @@ const LXDClusterHostsTable = ({
   searchFilter,
   setSidePanelContent,
 }: Props): JSX.Element => {
-  const location = useLocation<Location>();
+  const location = useLocation();
   const pools = useSelector(poolSelectors.all);
   const podsLoaded = useSelector(podSelectors.loaded);
   const poolsLoaded = useSelector(poolSelectors.loaded);

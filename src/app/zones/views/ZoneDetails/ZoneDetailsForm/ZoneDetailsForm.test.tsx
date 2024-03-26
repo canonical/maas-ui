@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ZoneDetailsForm from "./ZoneDetailsForm";
@@ -30,9 +29,7 @@ describe("ZoneDetailsForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ZoneDetailsForm closeForm={closeForm} id={testZone.id} />
-          </CompatRouter>
+          <ZoneDetailsForm closeForm={closeForm} id={testZone.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -46,9 +43,7 @@ describe("ZoneDetailsForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ZoneDetailsForm closeForm={vi.fn()} id={testZone.id} />
-          </CompatRouter>
+          <ZoneDetailsForm closeForm={vi.fn()} id={testZone.id} />
         </MemoryRouter>
       </Provider>
     );

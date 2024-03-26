@@ -1,8 +1,7 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineCommissioning from ".";
@@ -63,11 +62,9 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineCommissioning />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineCommissioning />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -86,11 +83,9 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineCommissioning />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineCommissioning />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -104,11 +99,9 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineCommissioning />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineCommissioning />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -146,11 +139,9 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineCommissioning />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineCommissioning />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

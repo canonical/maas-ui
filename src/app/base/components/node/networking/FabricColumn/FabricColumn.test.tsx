@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricColumn from "./FabricColumn";
@@ -41,9 +40,7 @@ describe("FabricColumn", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FabricColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
         </MemoryRouter>
       </Provider>
     );
@@ -68,9 +65,7 @@ describe("FabricColumn", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FabricColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
         </MemoryRouter>
       </Provider>
     );

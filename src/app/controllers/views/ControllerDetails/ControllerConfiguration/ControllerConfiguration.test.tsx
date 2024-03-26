@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerConfiguration from "./ControllerConfiguration";
@@ -64,9 +63,7 @@ it("displays controller configuration sections", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -85,9 +82,7 @@ it("displays a loading indicator if the controller has not loaded", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -102,9 +97,7 @@ it("displays non-editable controller details by default", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -128,9 +121,7 @@ it("can switch to controller configuration forms", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -166,9 +157,7 @@ it("correctly dispatches an action to update a controller", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId="abc123" />
-        </CompatRouter>
+        <ControllerConfiguration systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -214,9 +203,7 @@ it("displays an alert on edit when controller manages more than 1 node", async (
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId="abc123" />
-        </CompatRouter>
+        <ControllerConfiguration systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );

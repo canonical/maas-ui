@@ -1,6 +1,6 @@
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
 
 import NetworkForm from "../components/NetworkForm";
 

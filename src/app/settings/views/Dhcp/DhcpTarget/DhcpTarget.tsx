@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Spinner } from "@canonical/react-components";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import urls from "@/app/base/urls";
 import { useDhcpTarget } from "@/app/settings/hooks";

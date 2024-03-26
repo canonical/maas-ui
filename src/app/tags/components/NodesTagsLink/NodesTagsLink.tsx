@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import { Link, useLocation } from "react-router-dom-v5-compat";
+import { Link, useLocation } from "react-router-dom";
 
 import urls from "@/app/base/urls";
 import { ControllerMeta } from "@/app/store/controller/types";

@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
 import {
+  Navigate,
   Route,
   Routes,
   useLocation,
   useNavigate,
-} from "react-router-dom-v5-compat";
+} from "react-router-dom";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 import LXDSingleResources from "./LXDSingleResources";
@@ -123,7 +123,7 @@ const LXDSingleDetails = (): JSX.Element => {
             path={getRelativeRoute(urls.kvm.lxd.single.edit(null), base)}
           />
           <Route
-            element={<Redirect to={urls.kvm.lxd.single.vms({ id })} />}
+            element={<Navigate replace to={urls.kvm.lxd.single.vms({ id })} />}
             path="/"
           />
         </Routes>

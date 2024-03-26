@@ -1,9 +1,9 @@
 import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
 import type { Dispatch } from "redux";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
@@ -63,9 +63,7 @@ describe("ScriptsUpload", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsUpload type="testing" />
-        </CompatRouter>
+        <ScriptsUpload type="testing" />
       </MemoryRouter>,
       { state }
     );
@@ -87,9 +85,7 @@ describe("ScriptsUpload", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsUpload type="testing" />
-          </CompatRouter>
+          <ScriptsUpload type="testing" />
         </MemoryRouter>
       </Provider>
     );
@@ -112,9 +108,7 @@ describe("ScriptsUpload", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsUpload type="testing" />
-          </CompatRouter>
+          <ScriptsUpload type="testing" />
         </MemoryRouter>
       </Provider>
     );
@@ -151,9 +145,7 @@ describe("ScriptsUpload", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsUpload type="testing" />
-          </CompatRouter>
+          <ScriptsUpload type="testing" />
         </MemoryRouter>
       </Provider>
     );
@@ -195,9 +187,7 @@ describe("ScriptsUpload", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsUpload type="testing" />
-          </CompatRouter>
+          <ScriptsUpload type="testing" />
         </MemoryRouter>
       </Provider>
     );
@@ -224,9 +214,7 @@ describe("ScriptsUpload", () => {
     });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <ScriptsUpload type="commissioning" />
-        </CompatRouter>
+        <ScriptsUpload type="commissioning" />
       </Router>,
       { state }
     );
@@ -240,9 +228,7 @@ describe("ScriptsUpload", () => {
     });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <ScriptsUpload type="testing" />
-        </CompatRouter>
+        <ScriptsUpload type="testing" />
       </Router>,
       { state }
     );

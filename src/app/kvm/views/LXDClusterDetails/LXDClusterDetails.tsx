@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
 import {
+  Navigate,
   Route,
   Routes,
   useLocation,
   useNavigate,
-} from "react-router-dom-v5-compat";
+} from "react-router-dom";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 import LXDClusterDetailsRedirect from "./LXDClusterDetailsRedirect";
@@ -163,7 +163,9 @@ const LXDClusterDetails = (): JSX.Element => {
           path={getRelativeRoute(urls.kvm.lxd.cluster.host.edit(null), base)}
         />
         <Route
-          element={<Redirect to={urls.kvm.lxd.cluster.hosts({ clusterId })} />}
+          element={
+            <Navigate replace to={urls.kvm.lxd.cluster.hosts({ clusterId })} />
+          }
           path={getRelativeRoute(urls.kvm.lxd.cluster.index(null), base)}
         />
         <Route

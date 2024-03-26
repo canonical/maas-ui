@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddVlan from "./AddVlan";
@@ -15,9 +14,7 @@ it("displays validation messages for VID", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AddVlan activeForm="VLAN" setActiveForm={() => undefined} />
-        </CompatRouter>
+        <AddVlan activeForm="VLAN" setActiveForm={() => undefined} />
       </MemoryRouter>
     </Provider>
   );
@@ -69,9 +66,7 @@ it("correctly dispatches VLAN cleanup and create actions on form submit", async 
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AddVlan activeForm="VLAN" setActiveForm={() => undefined} />
-        </CompatRouter>
+        <AddVlan activeForm="VLAN" setActiveForm={() => undefined} />
       </MemoryRouter>
     </Provider>
   );

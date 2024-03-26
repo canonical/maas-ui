@@ -1,7 +1,6 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FetchedImages, { Labels as FetchedImagesLabels } from "./FetchedImages";
@@ -69,9 +68,7 @@ describe("FetchedImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={vi.fn()} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={vi.fn()} source={source} />
         </MemoryRouter>
       </Provider>
     );
@@ -117,9 +114,7 @@ describe("FetchedImages", () => {
     const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={closeForm} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={closeForm} source={source} />
         </MemoryRouter>
       </Provider>
     );
@@ -133,9 +128,7 @@ describe("FetchedImages", () => {
     rerender(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={closeForm} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={closeForm} source={source} />
         </MemoryRouter>
       </Provider>
     );

@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDSingleSettings from "./LXDSingleSettings";
@@ -35,11 +34,7 @@ describe("LXDSingleSettings", () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-            </CompatRouter>
-          </MemoryRouter>
+          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
         </Provider>
       </MemoryRouter>
     );
@@ -64,9 +59,7 @@ describe("LXDSingleSettings", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

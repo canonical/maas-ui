@@ -1,7 +1,6 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagForm, { Label } from "./TagForm";
@@ -69,15 +68,13 @@ it("dispatches action to fetch tags on load", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={[]}
-            processingCount={0}
-            selectedMachines={{ items: ["abc123"] }}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={[]}
+          processingCount={0}
+          selectedMachines={{ items: ["abc123"] }}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -98,17 +95,15 @@ it("correctly dispatches actions to tag machines", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={machines}
-            processingCount={0}
-            selectedMachines={{
-              items: machines.map((machine) => machine.system_id),
-            }}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={machines}
+          processingCount={0}
+          selectedMachines={{
+            items: machines.map((machine) => machine.system_id),
+          }}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -156,17 +151,15 @@ it("correctly dispatches actions to untag machines", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={machines}
-            processingCount={0}
-            selectedMachines={{
-              items: machines.map((machine) => machine.system_id),
-            }}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={machines}
+          processingCount={0}
+          selectedMachines={{
+            items: machines.map((machine) => machine.system_id),
+          }}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -205,15 +198,13 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={machines}
-            processingCount={0}
-            selectedMachines={{ items: machines.map((item) => item.system_id) }}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={machines}
+          processingCount={0}
+          selectedMachines={{ items: machines.map((item) => item.system_id) }}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -265,15 +256,13 @@ it("shows saving label if not viewing from machine config page", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={machines}
-            processingCount={1}
-            viewingDetails={false}
-            viewingMachineConfig={false}
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={machines}
+          processingCount={1}
+          viewingDetails={false}
+          viewingMachineConfig={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -293,15 +282,13 @@ it("does not show saving label if viewing from machine config page", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={machines}
-            processingCount={1}
-            viewingDetails
-            viewingMachineConfig
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={machines}
+          processingCount={1}
+          viewingDetails
+          viewingMachineConfig
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -317,16 +304,14 @@ it("shows a notification on success", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={machines}
-            processingCount={0}
-            selectedCount={machines.length}
-            selectedMachines={{ items: machines.map((item) => item.system_id) }}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={machines}
+          processingCount={0}
+          selectedCount={machines.length}
+          selectedMachines={{ items: machines.map((item) => item.system_id) }}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -384,16 +369,14 @@ it("updates the new tags after creating a tag", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <CompatRouter>
-          <TagForm
-            clearSidePanelContent={vi.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            selectedCount={state.machine.items.length}
-            selectedMachines={{ items: machines.map((item) => item.system_id) }}
-            viewingDetails={false}
-          />
-        </CompatRouter>
+        <TagForm
+          clearSidePanelContent={vi.fn()}
+          machines={state.machine.items}
+          processingCount={0}
+          selectedCount={state.machine.items.length}
+          selectedMachines={{ items: machines.map((item) => item.system_id) }}
+          viewingDetails={false}
+        />
       </MemoryRouter>
     </Provider>
   );

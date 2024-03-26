@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
@@ -31,9 +30,7 @@ it("only shows filesystems that do not require a storage device", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
-        </CompatRouter>
+        <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -65,9 +62,7 @@ it("can show errors", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
-        </CompatRouter>
+        <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
       </MemoryRouter>
     </Provider>
   );
@@ -92,9 +87,7 @@ it("correctly dispatches an action to mount a special filesystem", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
-        </CompatRouter>
+        <AddSpecialFilesystem closeForm={vi.fn()} machine={machine} />
       </MemoryRouter>
     </Provider>
   );

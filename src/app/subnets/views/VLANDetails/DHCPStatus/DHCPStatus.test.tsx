@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DHCPStatus from "./DHCPStatus";
@@ -20,9 +19,7 @@ it("shows a spinner if data is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={1} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={1} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -41,9 +38,7 @@ it(`shows a warning and disables Configure DHCP button if there are no subnets
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -71,9 +66,7 @@ it("does not show a warning if there are subnets attached to the VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -99,9 +92,7 @@ it("renders correctly when a VLAN does not have DHCP enabled", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -125,9 +116,7 @@ it("renders correctly when a VLAN has external DHCP", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -159,9 +148,7 @@ it("renders correctly when a VLAN has relayed DHCP", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -191,9 +178,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP without high availabi
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -240,9 +225,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP with high availabilit
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

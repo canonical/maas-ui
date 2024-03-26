@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UbuntuImages, { Labels as UbuntuImagesLabels } from "./UbuntuImages";
@@ -133,9 +132,7 @@ describe("UbuntuImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuImages sources={[source]} />
-          </CompatRouter>
+          <UbuntuImages sources={[source]} />
         </MemoryRouter>
       </Provider>
     );
@@ -204,9 +201,7 @@ describe("UbuntuImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuImages sources={[source]} />
-          </CompatRouter>
+          <UbuntuImages sources={[source]} />
         </MemoryRouter>
       </Provider>
     );

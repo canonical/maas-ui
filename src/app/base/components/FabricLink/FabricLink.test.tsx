@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricLink, { Labels } from "./FabricLink";
@@ -19,9 +18,7 @@ it("handles when fabrics are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricLink id={1} />
-        </CompatRouter>
+        <FabricLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -37,9 +34,7 @@ it("handles when a fabric does not exist", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricLink id={1} />
-        </CompatRouter>
+        <FabricLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -56,9 +51,7 @@ it("renders a link if fabrics have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricLink id={fabric.id} />
-        </CompatRouter>
+        <FabricLink id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );

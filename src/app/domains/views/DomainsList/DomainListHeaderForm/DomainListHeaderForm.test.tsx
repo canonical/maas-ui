@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainListHeaderForm, {
@@ -39,9 +38,7 @@ describe("DomainListHeaderForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DomainListHeaderForm closeForm={vi.fn()} />
-          </CompatRouter>
+          <DomainListHeaderForm closeForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
