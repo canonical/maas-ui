@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import SSHKeyList, { Label as SSHKeyListLabels } from "./SSHKeyList";
 

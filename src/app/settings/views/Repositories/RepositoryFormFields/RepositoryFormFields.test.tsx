@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import RepositoryForm from "../RepositoryForm";
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";

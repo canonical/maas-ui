@@ -9,8 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 import TableHeader from "@/app/base/components/TableHeader";
 import { useFetchActions, useTableSort } from "@/app/base/hooks";

@@ -1,6 +1,5 @@
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import IntroSection from "./IntroSection";
 

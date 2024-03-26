@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import APIKeyList, { Label as APIKeyListLabels } from "./APIKeyList";
 

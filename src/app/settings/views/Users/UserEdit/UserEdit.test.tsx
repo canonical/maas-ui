@@ -1,5 +1,4 @@
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { UserEdit } from "./UserEdit";
 

@@ -1,6 +1,6 @@
 import { Field, Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import * as Yup from "yup";
 

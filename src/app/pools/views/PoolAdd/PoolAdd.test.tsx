@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import { PoolAdd, Label as PoolAddLabel } from "./PoolAdd";
 
