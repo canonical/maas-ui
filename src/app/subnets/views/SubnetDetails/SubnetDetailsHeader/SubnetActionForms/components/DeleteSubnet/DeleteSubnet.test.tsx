@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
-import { Route, CompatRouter } from "react-router-dom";
+import { Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
@@ -55,9 +55,7 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
       </Router>
     </Provider>
   );
@@ -82,9 +80,7 @@ it("displays a message if DHCP is disabled on the VLAN", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
       </Router>
     </Provider>
   );
@@ -109,9 +105,7 @@ it("does not display a message if DHCP is enabled on the VLAN", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
       </Router>
     </Provider>
   );
@@ -137,9 +131,7 @@ it("dispatches an action to load vlans and subnets if not loaded", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
       </Router>
     </Provider>
   );
@@ -164,9 +156,7 @@ it("dispatches a delete action on submit", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-        </CompatRouter>
+        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
       </Router>
     </Provider>
   );
@@ -193,15 +183,13 @@ it("redirects on save", async () => {
   const { rerender } = render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Route
-            component={() => (
-              <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-            )}
-            exact
-            path={urls.subnets.subnet.index({ id: subnetId })}
-          />
-        </CompatRouter>
+        <Route
+          component={() => (
+            <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
+          )}
+          exact
+          path={urls.subnets.subnet.index({ id: subnetId })}
+        />
       </Router>
     </Provider>
   );
@@ -215,15 +203,13 @@ it("redirects on save", async () => {
   rerender(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Route
-            component={() => (
-              <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
-            )}
-            exact
-            path={urls.subnets.subnet.index({ id: subnetId })}
-          />
-        </CompatRouter>
+        <Route
+          component={() => (
+            <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
+          )}
+          exact
+          path={urls.subnets.subnet.index({ id: subnetId })}
+        />
       </Router>
     </Provider>
   );

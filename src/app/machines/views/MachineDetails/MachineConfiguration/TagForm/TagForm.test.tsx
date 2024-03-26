@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import TagForm from "./TagForm";
@@ -48,9 +47,7 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <TagForm systemId="abc123" />
-          </CompatRouter>
+          <TagForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -66,9 +63,7 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <TagForm systemId="abc123" />
-          </CompatRouter>
+          <TagForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -84,9 +79,7 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <TagForm systemId="abc123" />
-          </CompatRouter>
+          <TagForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

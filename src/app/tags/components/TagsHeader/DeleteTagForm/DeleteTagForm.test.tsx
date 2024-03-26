@@ -3,7 +3,6 @@ import * as reduxToolkit from "@reduxjs/toolkit";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -61,9 +60,7 @@ it("dispatches an action to delete a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -85,9 +82,7 @@ it("dispatches an action to add a notification when tag successfully deleted", a
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -109,9 +104,7 @@ it("displays a message when deleting a tag on a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -134,9 +127,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -163,13 +154,11 @@ it("can return to the list on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Route
-            component={() => <DeleteTagForm id={1} onClose={onClose} />}
-            exact
-            path={path}
-          />
-        </CompatRouter>
+        <Route
+          component={() => <DeleteTagForm id={1} onClose={onClose} />}
+          exact
+          path={path}
+        />
       </Router>
     </Provider>
   );
@@ -202,15 +191,13 @@ it("can return to the details on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Route
-            component={() => (
-              <DeleteTagForm fromDetails id={1} onClose={onClose} />
-            )}
-            exact
-            path={path}
-          />
-        </CompatRouter>
+        <Route
+          component={() => (
+            <DeleteTagForm fromDetails id={1} onClose={onClose} />
+          )}
+          exact
+          path={path}
+        />
       </Router>
     </Provider>
   );

@@ -1,6 +1,5 @@
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import IntroSection from "./IntroSection";
 
@@ -44,9 +43,7 @@ describe("IntroSection", () => {
     });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-        </CompatRouter>
+        <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
       </Router>,
       { state }
     );

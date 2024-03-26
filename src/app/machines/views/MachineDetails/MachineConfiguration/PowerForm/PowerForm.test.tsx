@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import PowerForm from "./PowerForm";
@@ -68,9 +67,7 @@ it("is not editable if machine does not have edit permission", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <PowerForm systemId="abc123" />
-        </CompatRouter>
+        <PowerForm systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -86,9 +83,7 @@ it("is editable if machine has edit permission", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <PowerForm systemId="abc123" />
-        </CompatRouter>
+        <PowerForm systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -103,9 +98,7 @@ it("renders read-only text fields until edit button is pressed", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <PowerForm systemId="abc123" />
-        </CompatRouter>
+        <PowerForm systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -135,9 +128,7 @@ it("correctly dispatches an action to update a machine's power", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <PowerForm systemId="abc123" />
-        </CompatRouter>
+        <PowerForm systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );

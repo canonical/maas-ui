@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DomainSummary, { Labels as DomainSummaryLabels } from "./DomainSummary";
@@ -157,9 +156,7 @@ describe("DomainSummary", () => {
       render(
         <Provider store={store}>
           <MemoryRouter>
-            <CompatRouter>
-              <DomainSummary id={1} />
-            </CompatRouter>
+            <DomainSummary id={1} />
           </MemoryRouter>
         </Provider>
       );

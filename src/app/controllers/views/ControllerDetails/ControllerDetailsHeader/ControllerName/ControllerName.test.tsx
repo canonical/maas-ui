@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ControllerName from "./ControllerName";
@@ -49,13 +48,11 @@ it("can update a controller with the new domain", async () => {
           },
         ]}
       >
-        <CompatRouter>
-          <ControllerName
-            id={controller.system_id}
-            isEditing={true}
-            setIsEditing={vi.fn()}
-          />
-        </CompatRouter>
+        <ControllerName
+          id={controller.system_id}
+          isEditing={true}
+          setIsEditing={vi.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );

@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import { PoolAdd, Label as PoolAddLabel } from "./PoolAdd";
 
@@ -19,9 +18,7 @@ describe("PoolAdd", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/pool/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <PoolAdd />
-        </CompatRouter>
+        <PoolAdd />
       </MemoryRouter>,
       { state }
     );

@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ReservedRanges, { Labels } from "./ReservedRanges";
@@ -53,9 +53,7 @@ it("renders for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -92,9 +90,7 @@ it("renders for a vlan", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
-        </CompatRouter>
+        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -125,9 +121,7 @@ it("displays an empty message for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -142,9 +136,7 @@ it("displays an empty message for a vlan", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
-        </CompatRouter>
+        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -159,9 +151,7 @@ it("displays a message if there are no subnets in a VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges hasVLANSubnets={false} vlanId={vlan.id} />
-        </CompatRouter>
+        <ReservedRanges hasVLANSubnets={false} vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -177,9 +167,7 @@ it("displays content when it is dynamic", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -207,9 +195,7 @@ it("displays content when it is reserved", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -237,9 +223,7 @@ it("displays an add button when it is reserved", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -257,9 +241,7 @@ it("displays an add button when it is dynamic", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -286,9 +268,7 @@ it("disables the add button if there are no subnets in a VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges vlanId={vlan.id} />
-        </CompatRouter>
+        <ReservedRanges vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -305,9 +285,7 @@ it("displays the subnet column when the table is for a VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
-        </CompatRouter>
+        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -323,9 +301,7 @@ it("does not display the subnet column when the table is for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ReservedRanges subnetId={subnet.id} />
-        </CompatRouter>
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

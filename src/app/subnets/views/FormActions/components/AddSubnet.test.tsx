@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddSubnet from "./AddSubnet";
@@ -39,9 +39,7 @@ it("correctly dispatches subnet cleanup and create actions on form submit", asyn
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <AddSubnet activeForm="Subnet" setActiveForm={() => undefined} />
-        </CompatRouter>
+        <AddSubnet activeForm="Subnet" setActiveForm={() => undefined} />
       </MemoryRouter>
     </Provider>
   );

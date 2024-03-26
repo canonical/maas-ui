@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ControllerDetailsHeader from "./ControllerDetailsHeader";
@@ -23,12 +22,10 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId="abc123"
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId="abc123"
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -49,12 +46,10 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId={controller.system_id}
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId={controller.system_id}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -75,12 +70,10 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId={controllerDetails.system_id}
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId={controllerDetails.system_id}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -108,12 +101,10 @@ it("displays actions in take action menu", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId={controllerDetails.system_id}
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId={controllerDetails.system_id}
+        />
       </MemoryRouter>
     </Provider>
   );

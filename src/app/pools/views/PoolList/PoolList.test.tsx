@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import PoolList from "./PoolList";
 
@@ -28,9 +27,7 @@ describe("PoolList", () => {
     state.resourcepool.loading = true;
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -42,9 +39,7 @@ describe("PoolList", () => {
     state.resourcepool.items = [factory.resourcePool({ permissions: [] })];
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -60,9 +55,7 @@ describe("PoolList", () => {
     ];
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -85,9 +78,7 @@ describe("PoolList", () => {
     ];
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -113,9 +104,7 @@ describe("PoolList", () => {
     ];
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -138,9 +127,7 @@ describe("PoolList", () => {
     ];
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -154,9 +141,7 @@ describe("PoolList", () => {
     state.resourcepool.items[0].machine_total_count = 0;
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -169,9 +154,7 @@ describe("PoolList", () => {
     state.resourcepool.items[0].machine_ready_count = 1;
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );
@@ -187,9 +170,7 @@ describe("PoolList", () => {
     state.resourcepool.errors = "Pools are not for swimming.";
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-        <CompatRouter>
-          <PoolList />
-        </CompatRouter>
+        <PoolList />
       </MemoryRouter>,
       { state }
     );

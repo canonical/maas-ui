@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import SyslogForm from "./SyslogForm";
@@ -36,9 +35,7 @@ describe("SyslogForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <SyslogForm />
-          </CompatRouter>
+          <SyslogForm />
         </MemoryRouter>
       </Provider>
     );
@@ -51,9 +48,7 @@ describe("SyslogForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <SyslogForm />
-          </CompatRouter>
+          <SyslogForm />
         </MemoryRouter>
       </Provider>
     );
@@ -88,9 +83,7 @@ describe("SyslogForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <SyslogForm />
-          </CompatRouter>
+          <SyslogForm />
         </MemoryRouter>
       </Provider>
     );

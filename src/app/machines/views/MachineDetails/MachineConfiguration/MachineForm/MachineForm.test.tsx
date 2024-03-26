@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineForm from "./MachineForm";
@@ -43,9 +42,7 @@ describe("MachineForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <MachineForm systemId="abc123" />
-          </CompatRouter>
+          <MachineForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -61,9 +58,7 @@ describe("MachineForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <MachineForm systemId="abc123" />
-          </CompatRouter>
+          <MachineForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -78,9 +73,7 @@ describe("MachineForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <MachineForm systemId="abc123" />
-          </CompatRouter>
+          <MachineForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -105,9 +98,7 @@ describe("MachineForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <MachineForm systemId="abc123" />
-          </CompatRouter>
+          <MachineForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

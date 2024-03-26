@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels as ConnectivityCardLabels } from "./ConnectivityCard/ConnectivityCard";
@@ -71,9 +70,7 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <CompatRouter>
-          <MaasIntro />
-        </CompatRouter>
+        <MaasIntro />
       </MemoryRouter>,
       { store }
     );
@@ -118,9 +115,7 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <CompatRouter>
-          <MaasIntro />
-        </CompatRouter>
+        <MaasIntro />
       </MemoryRouter>,
       { store }
     );
@@ -177,9 +172,7 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-        <CompatRouter>
-          <MaasIntro />
-        </CompatRouter>
+        <MaasIntro />
       </MemoryRouter>,
       { store }
     );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import UsersList from "./UsersList";
@@ -61,9 +60,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );
@@ -79,9 +76,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );
@@ -99,9 +94,7 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -118,9 +111,7 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
+          <UsersList />
         </MemoryRouter>
       </Provider>
     );
@@ -134,9 +125,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );
@@ -156,9 +145,7 @@ describe("UsersList", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UsersList />
-        </CompatRouter>
+        <UsersList />
       </MemoryRouter>,
       { state }
     );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ControllerLink, { Labels } from "./ControllerLink";
@@ -19,9 +18,7 @@ it("handles when controllers are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerLink systemId="abc123" />
-        </CompatRouter>
+        <ControllerLink systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -37,9 +34,7 @@ it("handles when a controller does not exist", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerLink systemId="abc123" />
-        </CompatRouter>
+        <ControllerLink systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -62,9 +57,7 @@ it("renders a link if controllers have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerLink systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerLink systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );

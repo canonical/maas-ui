@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import TLSEnabled, { Labels } from "./TLSEnabled";
@@ -22,9 +21,7 @@ it("displays a spinner while loading config", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <TLSEnabled />
-        </CompatRouter>
+        <TLSEnabled />
       </MemoryRouter>
     </Provider>
   );
@@ -44,9 +41,7 @@ it("displays a spinner while loading the certificate", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <TLSEnabled />
-        </CompatRouter>
+        <TLSEnabled />
       </MemoryRouter>
     </Provider>
   );
@@ -68,9 +63,7 @@ it("renders certificate content", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <TLSEnabled />
-        </CompatRouter>
+        <TLSEnabled />
       </MemoryRouter>
     </Provider>
   );
@@ -106,9 +99,7 @@ it("disables the interval field if notification is not enabled", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <TLSEnabled />
-        </CompatRouter>
+        <TLSEnabled />
       </MemoryRouter>
     </Provider>
   );
@@ -150,9 +141,7 @@ it("shows an error if TLS notification is enabled but interval is invalid", asyn
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <TLSEnabled />
-        </CompatRouter>
+        <TLSEnabled />
       </MemoryRouter>
     </Provider>
   );
@@ -196,9 +185,7 @@ it("dispatches an action to update TLS notification config with notification ena
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <TLSEnabled />
-        </CompatRouter>
+        <TLSEnabled />
       </MemoryRouter>
     </Provider>
   );
@@ -249,9 +236,7 @@ it("dispatches an action to update TLS notification config with notification dis
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <TLSEnabled />
-        </CompatRouter>
+        <TLSEnabled />
       </MemoryRouter>
     </Provider>
   );

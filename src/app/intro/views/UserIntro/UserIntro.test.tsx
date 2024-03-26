@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import type { SpyInstance } from "vitest";
 
@@ -111,9 +110,7 @@ describe("UserIntro", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserIntro />
-        </CompatRouter>
+        <UserIntro />
       </MemoryRouter>,
       { store }
     );
@@ -157,9 +154,7 @@ describe("UserIntro", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserIntro />
-        </CompatRouter>
+        <UserIntro />
       </MemoryRouter>,
       { store }
     );

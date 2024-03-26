@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import FabricSummary from "./FabricSummary";
@@ -31,9 +31,7 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricSummary fabric={fabric} />
-        </CompatRouter>
+        <FabricSummary fabric={fabric} />
       </MemoryRouter>
     </Provider>
   );
@@ -59,9 +57,7 @@ it("can open and close the Edit fabric summary form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricSummary fabric={fabric} />
-        </CompatRouter>
+        <FabricSummary fabric={fabric} />
       </MemoryRouter>
     </Provider>
   );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import StorageForm from "./StorageForm";
@@ -53,9 +52,7 @@ describe("StorageForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <StorageForm />
-          </CompatRouter>
+          <StorageForm />
         </MemoryRouter>
       </Provider>
     );
@@ -97,9 +94,7 @@ describe("StorageForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <StorageForm />
-          </CompatRouter>
+          <StorageForm />
         </MemoryRouter>
       </Provider>
     );

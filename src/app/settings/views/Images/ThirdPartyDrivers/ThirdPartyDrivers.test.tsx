@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels as TPDFormLabels } from "../ThirdPartyDriversForm/ThirdPartyDriversForm";
@@ -37,9 +36,7 @@ describe("ThirdPartyDrivers", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ThirdPartyDrivers />
-          </CompatRouter>
+          <ThirdPartyDrivers />
         </MemoryRouter>
       </Provider>
     );
@@ -54,9 +51,7 @@ describe("ThirdPartyDrivers", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ThirdPartyDrivers />
-          </CompatRouter>
+          <ThirdPartyDrivers />
         </MemoryRouter>
       </Provider>
     );

@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import CloneResults, { CloneErrorCodes } from "./CloneResults";
@@ -33,13 +32,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -63,13 +60,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -103,13 +98,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -144,13 +137,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -195,13 +186,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -237,13 +226,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              setSearchFilter={setSearchFilter}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            setSearchFilter={setSearchFilter}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -279,14 +266,12 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              setSearchFilter={setSearchFilter}
-              sourceMachine={machine}
-              viewingDetails
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            setSearchFilter={setSearchFilter}
+            sourceMachine={machine}
+            viewingDetails
+          />
         </MemoryRouter>
       </Provider>
     );

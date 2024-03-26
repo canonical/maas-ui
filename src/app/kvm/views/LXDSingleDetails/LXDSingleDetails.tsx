@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 import LXDSingleResources from "./LXDSingleResources";

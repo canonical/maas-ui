@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import EditFabric from "./EditFabric";
@@ -32,9 +32,7 @@ it("dispatches an update action on submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <EditFabric close={vi.fn()} id={fabric.id} />
-        </CompatRouter>
+        <EditFabric close={vi.fn()} id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );

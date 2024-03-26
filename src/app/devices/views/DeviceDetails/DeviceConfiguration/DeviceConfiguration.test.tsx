@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DeviceConfiguration, { Label } from "./DeviceConfiguration";
@@ -44,9 +43,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -59,9 +56,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -77,9 +72,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -99,9 +92,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

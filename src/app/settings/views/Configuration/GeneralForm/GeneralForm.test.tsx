@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import GeneralForm from "./GeneralForm";
@@ -36,9 +35,7 @@ describe("GeneralForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <GeneralForm />
-          </CompatRouter>
+          <GeneralForm />
         </MemoryRouter>
       </Provider>
     );
@@ -54,9 +51,7 @@ describe("GeneralForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <GeneralForm />
-          </CompatRouter>
+          <GeneralForm />
         </MemoryRouter>
       </Provider>
     );
@@ -72,9 +67,7 @@ describe("GeneralForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <GeneralForm />
-          </CompatRouter>
+          <GeneralForm />
         </MemoryRouter>
       </Provider>
     );
@@ -92,9 +85,7 @@ describe("GeneralForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <GeneralForm />
-          </CompatRouter>
+          <GeneralForm />
         </MemoryRouter>
       </Provider>
     );
@@ -112,9 +103,7 @@ describe("GeneralForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <GeneralForm />
-          </CompatRouter>
+          <GeneralForm />
         </MemoryRouter>
       </Provider>
     );
@@ -132,9 +121,7 @@ describe("GeneralForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <GeneralForm />
-          </CompatRouter>
+          <GeneralForm />
         </MemoryRouter>
       </Provider>
     );
@@ -154,9 +141,7 @@ describe("GeneralForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <GeneralForm />
-          </CompatRouter>
+          <GeneralForm />
         </MemoryRouter>
       </Provider>
     );

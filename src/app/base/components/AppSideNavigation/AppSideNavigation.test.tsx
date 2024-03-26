@@ -1,12 +1,6 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import {
-  BrowserRouter,
-  Router,
-  CompatRouter,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Router, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AppSideNavigation from "./AppSideNavigation";
@@ -107,9 +101,7 @@ describe("GlobalSideNav", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <CompatRouter>
-            <AppSideNavigation />
-          </CompatRouter>
+          <AppSideNavigation />
         </BrowserRouter>
       </Provider>
     );
@@ -344,11 +336,9 @@ describe("GlobalSideNav", () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <CompatRouter>
-            <Routes>
-              <Route element={<AppSideNavigation />} path="*" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<AppSideNavigation />} path="*" />
+          </Routes>
         </Router>
       </Provider>
     );

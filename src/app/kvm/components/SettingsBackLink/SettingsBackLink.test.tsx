@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import SettingsBackLink from "./SettingsBackLink";
 
@@ -10,9 +9,7 @@ describe("SettingsBackLink", () => {
     const history = createMemoryHistory();
     render(
       <Router history={history}>
-        <CompatRouter>
-          <SettingsBackLink />
-        </CompatRouter>
+        <SettingsBackLink />
       </Router>
     );
 
@@ -28,9 +25,7 @@ describe("SettingsBackLink", () => {
 
     render(
       <Router history={history}>
-        <CompatRouter>
-          <SettingsBackLink />
-        </CompatRouter>
+        <SettingsBackLink />
       </Router>
     );
 

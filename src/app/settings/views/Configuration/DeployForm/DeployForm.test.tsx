@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
@@ -62,9 +61,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );
@@ -100,9 +97,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );
@@ -117,9 +112,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );
@@ -157,9 +150,7 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeployForm />
-          </CompatRouter>
+          <DeployForm />
         </MemoryRouter>
       </Provider>
     );

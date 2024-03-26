@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import SSLKeyList, { Label as SSLKeyListLabels } from "./SSLKeyList";
 
@@ -50,9 +49,7 @@ describe("SSLKeyList", () => {
           { pathname: "/account/prefs/ssl-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <SSLKeyList />
-        </CompatRouter>
+        <SSLKeyList />
       </MemoryRouter>,
       { state }
     );
@@ -67,9 +64,7 @@ describe("SSLKeyList", () => {
           { pathname: "/account/prefs/ssl-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <SSLKeyList />
-        </CompatRouter>
+        <SSLKeyList />
       </MemoryRouter>,
       { state }
     );
@@ -83,9 +78,7 @@ describe("SSLKeyList", () => {
           { pathname: "/account/prefs/ssl-keys", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <SSLKeyList />
-        </CompatRouter>
+        <SSLKeyList />
       </MemoryRouter>,
       { state }
     );

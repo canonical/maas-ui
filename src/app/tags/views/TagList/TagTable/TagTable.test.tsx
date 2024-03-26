@@ -1,7 +1,6 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import TagTable, { Label, TestId } from "./TagTable";
@@ -51,17 +50,15 @@ it("displays tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -78,17 +75,15 @@ it("displays the tags in order", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -104,17 +99,15 @@ it("can change the sort order", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -153,17 +146,15 @@ it("displays the tags for the current page", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={2}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={2}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -181,17 +172,15 @@ it("shows an icon for automatic tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -208,17 +197,15 @@ it("does not show an icon for manual tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -235,17 +222,15 @@ it("shows an icon for kernel options", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -262,17 +247,15 @@ it("does not show an icon for tags without kernel options", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -297,17 +280,15 @@ it("can link to nodes", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={tags}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={tags}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -346,17 +327,15 @@ it("does not display a message if there are tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -368,17 +347,15 @@ it("displays a message if there are no automatic tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.Auto}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.Auto}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -392,17 +369,15 @@ it("displays a message if there are no manual tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.Manual}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.Manual}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -416,17 +391,15 @@ it("displays a message if none match the search terms", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText="nothing"
-            setCurrentPage={vi.fn()}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText="nothing"
+          setCurrentPage={vi.fn()}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -440,17 +413,15 @@ it("displays a message if none match the filter and search terms", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.Auto}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText="nothing"
-            setCurrentPage={vi.fn()}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.Auto}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText="nothing"
+          setCurrentPage={vi.fn()}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -465,34 +436,30 @@ it("returns to the first page if the search changes", () => {
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.Auto}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={setCurrentPage}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.Auto}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={setCurrentPage}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
   rerender(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.Auto}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText="new"
-            setCurrentPage={setCurrentPage}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.Auto}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText="new"
+          setCurrentPage={setCurrentPage}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -505,34 +472,30 @@ it("returns to the first page if the filter changes", () => {
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={setCurrentPage}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={setCurrentPage}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
   rerender(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <TagTable
-            currentPage={1}
-            filter={TagSearchFilter.Manual}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={setCurrentPage}
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagTable
+          currentPage={1}
+          filter={TagSearchFilter.Manual}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={setCurrentPage}
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -549,23 +512,21 @@ it("can trigger the tag edit sidepanel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Route
-            component={() => (
-              <TagTable
-                currentPage={1}
-                filter={TagSearchFilter.All}
-                onDelete={vi.fn()}
-                onUpdate={onUpdate}
-                searchText=""
-                setCurrentPage={vi.fn()}
-                tags={tags}
-              />
-            )}
-            exact
-            path={path}
-          />
-        </CompatRouter>
+        <Route
+          component={() => (
+            <TagTable
+              currentPage={1}
+              filter={TagSearchFilter.All}
+              onDelete={vi.fn()}
+              onUpdate={onUpdate}
+              searchText=""
+              setCurrentPage={vi.fn()}
+              tags={tags}
+            />
+          )}
+          exact
+          path={path}
+        />
       </Router>
     </Provider>
   );

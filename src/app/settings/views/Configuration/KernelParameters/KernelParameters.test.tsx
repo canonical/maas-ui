@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels as KPFormLabels } from "../KernelParametersForm/KernelParametersForm";
@@ -40,9 +39,7 @@ describe("KernelParameters", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <KernelParameters />
-          </CompatRouter>
+          <KernelParameters />
         </MemoryRouter>
       </Provider>
     );
@@ -60,9 +57,7 @@ describe("KernelParameters", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <KernelParameters />
-          </CompatRouter>
+          <KernelParameters />
         </MemoryRouter>
       </Provider>
     );
@@ -80,9 +75,7 @@ describe("KernelParameters", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <KernelParameters />
-          </CompatRouter>
+          <KernelParameters />
         </MemoryRouter>
       </Provider>
     );

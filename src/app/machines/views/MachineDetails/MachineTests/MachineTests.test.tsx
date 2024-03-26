@@ -1,7 +1,6 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
@@ -73,11 +72,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -124,11 +121,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -167,11 +162,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -206,11 +199,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -229,11 +220,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -254,11 +243,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -299,11 +286,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }

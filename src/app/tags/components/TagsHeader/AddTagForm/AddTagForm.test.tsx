@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -37,9 +36,7 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -107,9 +104,7 @@ it("sends analytics when there is a definition", async () => {
   const TagForm = () => (
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={onClose} />
-        </CompatRouter>
+        <AddTagForm onClose={onClose} />
       </MemoryRouter>
     </Provider>
   );
@@ -145,9 +140,7 @@ it("sends analytics when there is no definition", async () => {
   const TagForm = () => (
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={onClose} />
-        </CompatRouter>
+        <AddTagForm onClose={onClose} />
       </MemoryRouter>
     </Provider>
   );
@@ -178,9 +171,7 @@ it("shows a confirmation when an automatic tag is added", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -213,9 +204,7 @@ it("shows an error if tag name is invalid", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

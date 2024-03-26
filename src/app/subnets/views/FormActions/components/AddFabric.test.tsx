@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddFabric from "./AddFabric";
@@ -17,9 +17,7 @@ const renderTestCase = () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/networks", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddFabric activeForm="Fabric" setActiveForm={setActiveForm} />
-        </CompatRouter>
+        <AddFabric activeForm="Fabric" setActiveForm={setActiveForm} />
       </MemoryRouter>
     </Provider>
   );

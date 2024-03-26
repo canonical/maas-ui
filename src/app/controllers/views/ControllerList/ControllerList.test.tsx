@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import { useLocation } from "react-router";
 import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ControllerList from "./ControllerList";
@@ -31,9 +30,7 @@ describe("ControllerList", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <ControllerList />
-          </CompatRouter>
+          <ControllerList />
         </MemoryRouter>
       </Provider>
     );
@@ -56,10 +53,8 @@ describe("ControllerList", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <ControllerList />
-            <Route path="*" render={() => <FetchRoute />} />
-          </CompatRouter>
+          <ControllerList />
+          <Route path="*" render={() => <FetchRoute />} />
         </MemoryRouter>
       </Provider>
     );

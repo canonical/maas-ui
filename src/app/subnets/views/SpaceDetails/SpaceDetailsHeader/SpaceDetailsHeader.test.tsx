@@ -1,7 +1,6 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router, Route } from "react-router";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { SpaceDetailsSidePanelViews } from "../constants";
@@ -37,19 +36,17 @@ const renderTestCase = (
     ...render(
       <Provider store={store}>
         <Router history={history}>
-          <CompatRouter>
-            <Route
-              component={() => (
-                <SpaceDetailsHeader
-                  setSidePanelContent={setSidePanelContent}
-                  sidePanelContent={null}
-                  space={space}
-                />
-              )}
-              exact
-              path={urls.subnets.space.index({ id: space.id })}
-            />
-          </CompatRouter>
+          <Route
+            component={() => (
+              <SpaceDetailsHeader
+                setSidePanelContent={setSidePanelContent}
+                sidePanelContent={null}
+                space={space}
+              />
+            )}
+            exact
+            path={urls.subnets.space.index({ id: space.id })}
+          />
         </Router>
       </Provider>
     ),

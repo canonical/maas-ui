@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import RepositoriesList, {
@@ -69,9 +68,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -86,9 +83,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -102,9 +97,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -141,9 +134,7 @@ describe("RepositoriesList", () => {
             { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
+          <RepositoriesList />
         </MemoryRouter>
       </Provider>
     );
@@ -193,9 +184,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -220,9 +209,7 @@ describe("RepositoriesList", () => {
           { pathname: "/settings/repositories", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <RepositoriesList />
-        </CompatRouter>
+        <RepositoriesList />
       </MemoryRouter>,
       { state }
     );
@@ -245,9 +232,7 @@ describe("RepositoriesList", () => {
             { pathname: "/settings/repositories", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
+          <RepositoriesList />
         </MemoryRouter>
       </Provider>
     );

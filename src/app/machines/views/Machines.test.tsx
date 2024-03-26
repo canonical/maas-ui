@@ -1,7 +1,6 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { MachineSidePanelViews } from "../constants";
@@ -252,9 +251,7 @@ describe("Machines", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <Machines />
-          </CompatRouter>
+          <Machines />
         </MemoryRouter>
       </Provider>
     );

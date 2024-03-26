@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachinesHeader from "./MachinesHeader";
@@ -45,9 +44,7 @@ describe("MachinesHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <MachinesHeader machineCount={2} title="Machines" />
-          </CompatRouter>
+          <MachinesHeader machineCount={2} title="Machines" />
         </MemoryRouter>
       </Provider>
     );

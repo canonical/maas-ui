@@ -1,7 +1,6 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { AddSSLKey, Label as AddSSLKeyLabels } from "./AddSSLKey";
@@ -34,9 +33,7 @@ describe("AddSSLKey", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <AddSSLKey />
-        </CompatRouter>
+        <AddSSLKey />
       </MemoryRouter>,
       { state }
     );
@@ -48,9 +45,7 @@ describe("AddSSLKey", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <AddSSLKey />
-          </CompatRouter>
+          <AddSSLKey />
         </MemoryRouter>
       </Provider>
     );
@@ -67,9 +62,7 @@ describe("AddSSLKey", () => {
     const history = createMemoryHistory({ initialEntries: ["/"] });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <AddSSLKey />
-        </CompatRouter>
+        <AddSSLKey />
       </Router>,
       { state }
     );
@@ -81,9 +74,7 @@ describe("AddSSLKey", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <AddSSLKey />
-          </CompatRouter>
+          <AddSSLKey />
         </MemoryRouter>
       </Provider>
     );
@@ -118,9 +109,7 @@ describe("AddSSLKey", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <AddSSLKey />
-          </CompatRouter>
+          <AddSSLKey />
         </MemoryRouter>
       </Provider>
     );

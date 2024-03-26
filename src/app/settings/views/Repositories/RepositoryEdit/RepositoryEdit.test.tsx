@@ -1,5 +1,4 @@
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
 
@@ -48,14 +47,12 @@ describe("RepositoryEdit", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryEdit />}
-              path="/settings/repositories/edit/:type/:id"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryEdit />}
+            path="/settings/repositories/edit/:type/:id"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );
@@ -72,14 +69,12 @@ describe("RepositoryEdit", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryEdit />}
-              path="/settings/repositories/edit/:type/:id"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryEdit />}
+            path="/settings/repositories/edit/:type/:id"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );
@@ -96,14 +91,12 @@ describe("RepositoryEdit", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryEdit />}
-              path="/settings/repositories/edit/:type/:id"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryEdit />}
+            path="/settings/repositories/edit/:type/:id"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels as WindowsFormLabels } from "../WindowsForm/WindowsForm";
@@ -39,9 +38,7 @@ describe("Windows", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Windows />
-          </CompatRouter>
+          <Windows />
         </MemoryRouter>
       </Provider>
     );
@@ -56,9 +53,7 @@ describe("Windows", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Windows />
-          </CompatRouter>
+          <Windows />
         </MemoryRouter>
       </Provider>
     );
@@ -75,9 +70,7 @@ describe("Windows", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <Windows />
-          </CompatRouter>
+          <Windows />
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,6 @@
 import { Field, Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import * as Yup from "yup";
 
@@ -269,17 +269,15 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={vi.fn()}
-              validationSchema={Schema}
-            >
-              <FormikFormContent resetOnSave saved={saved}>
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={vi.fn()}
+            validationSchema={Schema}
+          >
+            <FormikFormContent resetOnSave saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -304,17 +302,15 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={vi.fn()}
-              validationSchema={Schema}
-            >
-              <FormikFormContent resetOnSave saved={saved}>
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={vi.fn()}
+            validationSchema={Schema}
+          >
+            <FormikFormContent resetOnSave saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -340,13 +336,11 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent onSuccess={onSuccess} saved={saved}>
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent onSuccess={onSuccess} saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -377,17 +371,15 @@ describe("FormikFormContent", () => {
     const Proxy = ({ errors, saved }: { errors?: string; saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                errors={errors}
-                onSuccess={onSuccess}
-                saved={saved}
-              >
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -410,17 +402,15 @@ describe("FormikFormContent", () => {
     }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                errors={errors}
-                onSuccess={onSuccess}
-                saved={saved}
-              >
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -446,18 +436,16 @@ describe("FormikFormContent", () => {
     }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                errors={errors}
-                onSuccess={onSuccess}
-                resetOnSave
-                saved={saved}
-              >
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              resetOnSave
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -477,16 +465,14 @@ describe("FormikFormContent", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                footer={<div data-testid="footer"></div>}
-                onCancel={vi.fn()}
-              >
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              footer={<div data-testid="footer"></div>}
+              onCancel={vi.fn()}
+            >
+              Content
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );

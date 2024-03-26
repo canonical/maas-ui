@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import VMWareForm, { Labels as VMWareFormLabels } from "./VMWareForm";
@@ -46,9 +45,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );
@@ -63,9 +60,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );
@@ -80,9 +75,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );
@@ -97,9 +90,7 @@ describe("VMWareForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWareForm />
-          </CompatRouter>
+          <VMWareForm />
         </MemoryRouter>
       </Provider>
     );

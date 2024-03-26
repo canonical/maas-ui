@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
@@ -36,11 +36,9 @@ it("does not render if DHCP is selected to be disabled", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={1} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={1} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -66,11 +64,9 @@ it("renders a table of IP ranges if the VLAN has any defined", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={vlan.id} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={vlan.id} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -104,11 +100,9 @@ it(`renders only a subnet select field if no IP ranges exist and no subnet is
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={vlan.id} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={vlan.id} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -152,11 +146,9 @@ it(`renders a subnet select field and prepopulated fields for a reserved range
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={vlan.id} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={vlan.id} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );

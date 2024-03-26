@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 
 import { DhcpAdd } from "./DhcpAdd";
 
@@ -19,9 +18,7 @@ describe("DhcpAdd", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/dhcp/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <DhcpAdd />
-        </CompatRouter>
+        <DhcpAdd />
       </MemoryRouter>,
       { state }
     );

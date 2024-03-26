@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { DomainListSidePanelViews } from "../constants";
@@ -101,9 +100,7 @@ describe("DomainsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DomainsTable />
-          </CompatRouter>
+          <DomainsTable />
         </MemoryRouter>
       </Provider>
     );

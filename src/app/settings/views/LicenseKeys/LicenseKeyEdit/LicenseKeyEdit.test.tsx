@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels as LicenseKeyFormLabels } from "../LicenseKeyForm/LicenseKeyForm";
@@ -71,9 +70,7 @@ describe("LicenseKeyEdit", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LicenseKeyEdit />
-          </CompatRouter>
+          <LicenseKeyEdit />
         </MemoryRouter>
       </Provider>
     );
@@ -89,9 +86,7 @@ describe("LicenseKeyEdit", () => {
             { pathname: "/settings/license-keys/foo/bar/edit", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LicenseKeyEdit />
-          </CompatRouter>
+          <LicenseKeyEdit />
         </MemoryRouter>
       </Provider>
     );
@@ -110,14 +105,12 @@ describe("LicenseKeyEdit", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<LicenseKeyEdit />}
-                path="/settings/license-keys/:osystem/:distro_series/edit"
-              />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route
+              element={<LicenseKeyEdit />}
+              path="/settings/license-keys/:osystem/:distro_series/edit"
+            />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

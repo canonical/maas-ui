@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import CommissioningForm from "../CommissioningForm";
@@ -79,9 +78,7 @@ describe("CommissioningFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <CommissioningForm />
-          </CompatRouter>
+          <CommissioningForm />
         </MemoryRouter>
       </Provider>
     );
@@ -99,9 +96,7 @@ describe("CommissioningFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <CommissioningForm />
-          </CompatRouter>
+          <CommissioningForm />
         </MemoryRouter>
       </Provider>
     );

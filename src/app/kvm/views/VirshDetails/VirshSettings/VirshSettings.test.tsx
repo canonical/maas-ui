@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import VirshSettings from "./VirshSettings";
@@ -35,9 +34,7 @@ describe("VirshSettings", () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
-          <CompatRouter>
-            <VirshSettings id={1} />
-          </CompatRouter>
+          <VirshSettings id={1} />
         </Provider>
       </MemoryRouter>
     );
@@ -62,9 +59,7 @@ describe("VirshSettings", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VirshSettings id={1} />
-          </CompatRouter>
+          <VirshSettings id={1} />
         </MemoryRouter>
       </Provider>
     );

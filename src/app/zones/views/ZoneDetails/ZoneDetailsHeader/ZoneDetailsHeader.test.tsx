@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
@@ -47,13 +46,11 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={1} />}
-            />
-          </CompatRouter>
+          <Route
+            exact
+            path="/zone/:id"
+            render={() => <ZoneDetailsHeader id={1} />}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -70,13 +67,11 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/3", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={3} />}
-            />
-          </CompatRouter>
+          <Route
+            exact
+            path="/zone/:id"
+            render={() => <ZoneDetailsHeader id={3} />}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -92,13 +87,11 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/2", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={2} />}
-            />
-          </CompatRouter>
+          <Route
+            exact
+            path="/zone/:id"
+            render={() => <ZoneDetailsHeader id={2} />}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -115,13 +108,11 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={1} />}
-            />
-          </CompatRouter>
+          <Route
+            exact
+            path="/zone/:id"
+            render={() => <ZoneDetailsHeader id={1} />}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -143,13 +134,11 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/2", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={2} />}
-            />
-          </CompatRouter>
+          <Route
+            exact
+            path="/zone/:id"
+            render={() => <ZoneDetailsHeader id={2} />}
+          />
         </MemoryRouter>
       </Provider>
     );

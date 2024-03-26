@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, CompatRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import SpaceSummary from "./SpaceSummary";
@@ -45,9 +45,7 @@ it("can open and close the Edit space summary form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SpaceSummary space={state.space.items[0]} />
-        </CompatRouter>
+        <SpaceSummary space={state.space.items[0]} />
       </MemoryRouter>
     </Provider>
   );

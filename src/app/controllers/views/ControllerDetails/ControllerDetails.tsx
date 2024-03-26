@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
+import { Redirect, Routes, Route } from "react-router-dom";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 import ControllerConfiguration from "./ControllerConfiguration";
