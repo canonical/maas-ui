@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import UbuntuImageSelect from "@/app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "@/app/images/types";
 import { bootResourceActions } from "@/app/store/bootresource";
@@ -60,6 +61,14 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
   const cleanup = useCallback(() => bootResourceActions.cleanup(), []);
   const saved = previousSaving && !saving && !error;
 
+  const { setSidePanelSize } = useSidePanel();
+  useEffect(() => {
+    setSidePanelSize("large");
+    return () => {
+      setSidePanelSize("regular");
+    };
+  }, [setSidePanelSize]);
+
   useEffect(() => {
     return () => {
       dispatch(bootResourceActions.clearFetchedImages());
@@ -83,9 +92,9 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
 
   return (
     <>
-      <h4>
+      <p>
         Showing images fetched from <strong>{source.url || "maas.io"}</strong>
-      </h4>
+      </p>
       <hr />
       <FormikForm<FetchedImagesValues>
         allowUnchanged

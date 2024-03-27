@@ -27,7 +27,7 @@ const FetchImagesFormFields = (): JSX.Element => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <ul className="p-inline-list">
           <li className="p-inline-list__item u-display--inline-block">
             <FormikField
