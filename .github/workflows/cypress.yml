@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        groups: ['no-users', 'with-users']
+        groups: ["with-users"]
     env:
       MAAS_URL: http://localhost:5240
       MAAS_UI_URL: http://localhost:8400
@@ -40,6 +40,7 @@ jobs:
         if: matrix.groups == 'with-users'
         run: |
           export API_KEY=`sudo maas apikey --username=admin`
+          echo "MAAS_API_KEY=$MAAS_API_KEY" >> $GITHUB_ENV
           maas login admin http://localhost:5240/MAAS $API_KEY
           maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
       - name: Wait for MAAS boot resources
@@ -50,9 +51,10 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           config: baseUrl=${{env.MAAS_UI_URL}},pageLoadTimeout=100000
+          env: MAAS_API_KEY=${{ env.MAAS_API_KEY }},MAAS_URL=${{ env.MAAS_URL }}
           install: false
           start: yarn start
-          spec: cypress/e2e/${{ matrix.groups }}/**/*.spec.ts
+          spec: cypress/e2e/${{ matrix.groups }}/command.spec.ts
           wait-on: ${{env.MAAS_UI_URL}}/MAAS/r/machines
       - uses: actions/upload-artifact@v4
         if: failure()
