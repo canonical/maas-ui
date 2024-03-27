@@ -172,6 +172,6 @@ Cypress.Commands.add("runMAASCommand", (action, params) => {
   const maasURL = Cypress.env("MAAS_URL");
 
   cy.exec(
-    `maas admin ${action} ${params} --apikey ${apiKey} --maas-url ${maasURL}`
+    `maas login admin ${maasURL}/MAAS ${apiKey} && maas admin ${action} ${params} --apikey ${apiKey} --maas-url ${maasURL}`
   );
 });
