@@ -166,3 +166,12 @@ Cypress.Commands.add("expandMainNavigation", () => {
     .window()
     .then((win) => win.localStorage.setItem("appSideNavIsCollapsed", "false"));
 });
+
+Cypress.Commands.add("runMAASCommand", (action, params) => {
+  const apiKey = Cypress.env("MAAS_API_KEY");
+  const maasURL = Cypress.env("MAAS_URL");
+
+  cy.exec(
+    `maas admin ${action} ${params} --apikey ${apiKey} --maas-url ${maasURL}`
+  );
+});

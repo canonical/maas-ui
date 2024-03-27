@@ -20,6 +20,7 @@ declare global {
         shouldSkipSetupIntro?: boolean;
       }): void;
       loginNonAdmin(): void;
+      runMAASCommand(command: string, args: string): void;
       testA11y(pageContext: A11yPageContext): void;
       waitForPageToLoad(): void;
       waitForTableToLoad(options?: {
