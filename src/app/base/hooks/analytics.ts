@@ -105,18 +105,11 @@ export const useGoogleAnalytics = (): boolean => {
       });
       ReactGA.send({
         hitType: "pageview",
-        page: location.pathname + location.search,
-        title: location.pathname,
+        page: window.location.pathname + window.location.search,
+        title: window.location.pathname,
       });
     }
-  }, [
-    allowGoogleAnalytics,
-    authUser,
-    uuid,
-    version,
-    location.pathname,
-    location.search,
-  ]);
+  }, [allowGoogleAnalytics, authUser, uuid, version]);
 
   useEffect(() => {
     ReactGA.send({
