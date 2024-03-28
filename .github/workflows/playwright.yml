@@ -1,7 +1,7 @@
 name: Playwright Tests
 on:
   push:
-    branches: [main]
+    branches: [main, playwright*]
 jobs:
   test:
     timeout-minutes: 15
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
       - name: Install dependencies
         run: yarn
       - name: Install Playwright Browsers
@@ -22,10 +22,17 @@ jobs:
         with:
           maas-url: ${{env.MAAS_URL}}/MAAS
       - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+        run: |
+          sudo maas createadmin --username=admin --password=test --email=fake@example.org
+          export API_KEY=`sudo maas apikey --username=admin`
+          echo "MAAS_API_KEY=$MAAS_API_KEY" >> $GITHUB_ENV
+          maas login admin http://localhost:5240/MAAS $API_KEY
       - name: Wait for MAAS UI to be ready
         run: yarn run wait-on http-get://${{env.MAAS_URL}}/MAAS/r
       - name: Run Playwright tests
+        env:
+          MAAS_API_KEY: ${{ env.MAAS_API_KEY }}
+          MAAS_URL: ${{ env.MAAS_URL }}
         run: yarn playwright test
       - uses: actions/upload-artifact@v4
         if: always()
