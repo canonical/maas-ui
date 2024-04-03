@@ -1,5 +1,6 @@
 import { define, extend } from "cooky-cutter";
 
+import { timestamp } from "./general";
 import { model } from "./model";
 
 import type {
@@ -34,8 +35,8 @@ export const bootResource = extend<Model, BootResource>(model, {
   downloading: false,
   machineCount: 0,
   numberOfNodes: 0,
-  lastUpdate: "Tue, 08 Jun. 2021 02:12:47",
-  lastDeployed: "Tue, 08 Jun. 2021 02:12:47",
+  lastUpdate: () => timestamp("Tue, 08 Jun. 2021 02:12:47"),
+  lastDeployed: () => timestamp("Tue, 08 Jun. 2021 02:12:47"),
   canDeployToMemory: true,
 });
 

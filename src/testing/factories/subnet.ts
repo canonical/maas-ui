@@ -1,5 +1,6 @@
 import { array, define, extend, random } from "cooky-cutter";
 
+import { timestamp } from "./general";
 import { model, timestampedModel } from "./model";
 
 import { PodType } from "@/app/store/pod/constants";
@@ -68,9 +69,9 @@ export const subnetIPNodeSummary = define<SubnetIPNodeSummary>({
 
 export const subnetIP = define<SubnetIP>({
   alloc_type: IPAddressType.AUTO,
-  created: "Wed, 08 Jul. 2020 05:35:4",
+  created: () => timestamp("Wed, 08 Jul. 2020 05:35:04"),
   ip: "192.168.1.1",
-  updated: "Wed, 08 Jul. 2020 05:35:4",
+  updated: () => timestamp("Wed, 08 Jul. 2020 05:35:04"),
 });
 
 export const subnetScanFailure = define<SubnetScanFailure>({

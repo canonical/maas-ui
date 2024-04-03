@@ -98,7 +98,7 @@ it("renders the correct status for a downloaded image that is not selected", () 
 });
 
 it("renders the time of last update", () => {
-  const lastUpdate = "Mon, 30 Jan. 2023 15:54:44";
+  const lastUpdate = factory.timestamp("Mon, 30 Jan. 2023 15:54:44");
   const resource = factory.bootResource({
     arch: "amd64",
     complete: true,
@@ -304,7 +304,7 @@ it("disables delete action for images being downloaded", async () => {
 });
 
 it("displays a correct last deployed time and machine count", () => {
-  const lastDeployed = "Fri, 18 Nov. 2022 09:55:21";
+  const lastDeployed = factory.timestamp("Fri, 18 Nov. 2022 09:55:21");
   const resources = [
     factory.bootResource({
       arch: "amd64",
@@ -358,7 +358,7 @@ it("can handle empty string for last deployed time", () => {
     factory.bootResource({
       arch: "amd64",
       name: "ubuntu/focal",
-      lastDeployed: "",
+      lastDeployed: factory.timestamp(""),
       machineCount: 768,
     }),
   ];
@@ -403,20 +403,20 @@ it("can sort by last deployed time", async () => {
       name: "ubuntu/xenial",
       arch: "amd64",
       title: "16.04 LTS",
-      lastDeployed: "Tue, 16 Nov. 2022 09:55:21",
+      lastDeployed: factory.timestamp("Tue, 16 Nov. 2022 09:55:21"),
     }),
     factory.bootResource({
       arch: "amd64",
       name: "ubuntu/focal",
       title: "20.04 LTS",
-      lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
+      lastDeployed: factory.timestamp("Thu, 17 Nov. 2022 09:55:21"),
       machineCount: 768,
     }),
     factory.bootResource({
       name: "ubuntu/bionic",
       arch: "i386",
       title: "18.04 LTS",
-      lastDeployed: "Wed, 18 Nov. 2022 08:55:21",
+      lastDeployed: factory.timestamp("Wed, 18 Nov. 2022 08:55:21"),
     }),
   ];
   const state = factory.rootState({
@@ -465,20 +465,20 @@ it("sorts by release by default", () => {
       arch: "amd64",
       name: "ubuntu/focal",
       title: "20.04 LTS",
-      lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
+      lastDeployed: factory.timestamp("Thu, 17 Nov. 2022 09:55:21"),
       machineCount: 768,
     }),
     factory.bootResource({
       name: "ubuntu/bionic",
       arch: "i386",
       title: "18.04 LTS",
-      lastDeployed: "Wed, 18 Nov. 2022 08:55:21",
+      lastDeployed: factory.timestamp("Wed, 18 Nov. 2022 08:55:21"),
     }),
     factory.bootResource({
       name: "ubuntu/xenial",
       arch: "amd64",
       title: "16.04 LTS",
-      lastDeployed: "Tue, 16 Nov. 2022 09:55:21",
+      lastDeployed: factory.timestamp("Tue, 16 Nov. 2022 09:55:21"),
     }),
   ];
   const state = factory.rootState({

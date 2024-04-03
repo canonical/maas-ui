@@ -1,5 +1,6 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
+import { timestamp } from "./general";
 import { model, modelRef, timestampedModel } from "./model";
 
 import type {
@@ -211,7 +212,7 @@ export const deviceInterface = extend<NetworkInterface, DeviceNetworkInterface>(
 );
 
 export const deviceDetails = extend<Device, DeviceDetails>(device, {
-  created: "Thu, 15 Oct. 2020 07:25:10",
+  created: () => timestamp("Thu, 15 Oct. 2020 07:25:10"),
   description: "Device description",
   interfaces: () => [deviceInterface()],
   locked: false,
@@ -219,7 +220,7 @@ export const deviceDetails = extend<Device, DeviceDetails>(device, {
   on_network: false,
   pool: null,
   swap_size: null,
-  updated: "Thu, 15 Oct. 2020 07:25:10",
+  updated: () => timestamp("Thu, 15 Oct. 2020 07:25:10"),
 });
 
 const node = extend<SimpleNode, BaseNode>(simpleNode, {
@@ -307,7 +308,7 @@ export const machineEventType = extend<Model, EventType>(model, {
 });
 
 export const machineEvent = extend<Model, NodeEvent>(model, {
-  created: "Mon, 19 Oct. 2020 07:04:37",
+  created: () => timestamp("Mon, 19 Oct. 2020 07:04:37"),
   description: "smartctl-validate on name-VZJoCN timed out",
   type: machineEventType,
 });
@@ -335,9 +336,9 @@ export const machineDetails = extend<BaseMachine, MachineDetails>(machine, {
   bios_boot_method: "uefi",
   bmc: 190,
   boot_disk: null,
-  commissioning_start_time: "Thu, 15 Oct. 2020 07:25:10",
+  commissioning_start_time: () => timestamp("Thu, 15 Oct. 2020 07:25:10"),
   commissioning_status: testStatus,
-  created: "Thu, 15 Oct. 2020 07:25:10",
+  created: () => timestamp("Thu, 15 Oct. 2020 07:25:10"),
   current_commissioning_script_set: 6188,
   current_installation_script_set: 6174,
   current_testing_script_set: 6192,
@@ -388,13 +389,13 @@ export const machineDetails = extend<BaseMachine, MachineDetails>(machine, {
   supported_filesystems: () => [],
   cpu_speed: 1000,
   swap_size: null,
-  updated: "Fri, 23 Oct. 2020 05:24:41",
+  updated: () => timestamp("Fri, 23 Oct. 2020 05:24:41"),
 });
 
 export const controller = extend<BaseNode, Controller>(node, {
   actions,
   description: "a test controller",
-  last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
+  last_image_sync: () => timestamp("Thu, 02 Jul. 2020 22:55:00"),
   link_type: NodeLinkType.CONTROLLER,
   node_type_display: NodeTypeDisplay.REGION_AND_RACK_CONTROLLER,
   node_type: 4,
@@ -412,7 +413,7 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     boot_disk: null,
     commissioning_start_time: "Thu, 15 Oct. 2020 07:25:10",
     commissioning_status: testStatus,
-    created: "Thu, 15 Oct. 2020 07:25:10",
+    created: () => timestamp("Thu, 15 Oct. 2020 07:25:10"),
     current_commissioning_script_set: 6188,
     current_installation_script_set: 6174,
     current_testing_script_set: 6192,
@@ -480,7 +481,7 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     swap_size: null,
     testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
     testing_status: testStatus,
-    updated: "Fri, 23 Oct. 2020 05:24:41",
+    updated: () => timestamp("Fri, 23 Oct. 2020 05:24:41"),
     vault_configured: false,
     vlan: null,
     vlan_ids: () => [],

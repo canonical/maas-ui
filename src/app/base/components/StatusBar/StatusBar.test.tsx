@@ -52,7 +52,7 @@ it("can show if a machine is currently commissioning", () => {
 it("can show if a machine has not been commissioned yet", () => {
   state.machine.items = [
     factory.machineDetails({
-      commissioning_start_time: "",
+      commissioning_start_time: factory.timestamp(""),
       fqdn: "test.maas",
       system_id: "abc123",
     }),
@@ -67,7 +67,7 @@ it("can show the last time a machine was commissioned", () => {
   state.machine.items = [
     factory.machineDetails({
       enable_hw_sync: false,
-      commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
+      commissioning_start_time: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
       fqdn: "test.maas",
       status: NodeStatus.DEPLOYED,
       system_id: "abc123",
@@ -85,7 +85,7 @@ it("can handle an incorrectly formatted commissioning timestamp", () => {
   state.machine.items = [
     factory.machineDetails({
       enable_hw_sync: false,
-      commissioning_start_time: "2020-03-01 09:12:43",
+      commissioning_start_time: factory.timestamp("2020-03-01 09:12:43"),
       fqdn: "test.maas",
       status: NodeStatus.DEPLOYED,
       system_id: "abc123",
@@ -102,13 +102,13 @@ it("can handle an incorrectly formatted commissioning timestamp", () => {
 it("displays Last and Next sync instead of Last commissioned date for deployed machines with hardware sync enabled ", () => {
   state.machine.items = [
     factory.machineDetails({
-      commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
+      commissioning_start_time: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
       fqdn: "test.maas",
       status: NodeStatus.DEPLOYED,
       system_id: "abc123",
       enable_hw_sync: true,
-      last_sync: "Thu, 31 Dec. 2020 22:00:00",
-      next_sync: "Thu, 31 Dec. 2020 23:01:00",
+      last_sync: factory.timestamp("Thu, 31 Dec. 2020 22:00:00"),
+      next_sync: factory.timestamp("Thu, 31 Dec. 2020 23:01:00"),
     }),
   ];
 
@@ -131,13 +131,13 @@ it("displays Last and Next sync instead of Last commissioned date for deployed m
 it("doesn't display last or next sync for deploying machines with hardware sync enabled", () => {
   state.machine.items = [
     factory.machineDetails({
-      commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
+      commissioning_start_time: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
       fqdn: "test.maas",
       status: NodeStatus.DEPLOYING,
       system_id: "abc123",
       enable_hw_sync: true,
-      last_sync: "Thu, 31 Dec. 2020 22:00:00",
-      next_sync: "Thu, 31 Dec. 2020 23:01:00",
+      last_sync: factory.timestamp("Thu, 31 Dec. 2020 22:00:00"),
+      next_sync: factory.timestamp("Thu, 31 Dec. 2020 23:01:00"),
     }),
   ];
 
@@ -159,13 +159,13 @@ it("doesn't display last or next sync for deploying machines with hardware sync 
 it("displays correct text for machines with hardware sync enabled and no last_sync or next_sync", () => {
   state.machine.items = [
     factory.machineDetails({
-      commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
+      commissioning_start_time: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
       fqdn: "test.maas",
       status: NodeStatus.DEPLOYED,
       system_id: "abc123",
       enable_hw_sync: true,
-      last_sync: "",
-      next_sync: "",
+      last_sync: factory.timestamp("Thu, 31 Dec. 2020 22:00:00"),
+      next_sync: factory.timestamp("Thu, 31 Dec. 2020 23:01:00"),
     }),
   ];
 
@@ -189,7 +189,7 @@ it("displays correct text for machines with hardware sync enabled and no last_sy
 
 it("displays last image sync timestamp for a rack or region+rack controller", () => {
   const controller = factory.controllerDetails({
-    last_image_sync: "Thu, 02 Jun. 2022 00:48:41",
+    last_image_sync: factory.timestamp("Thu, 02 Jun. 2022 00:48:41"),
     node_type: NodeType.RACK_CONTROLLER,
   });
   state.controller.active = controller.system_id;

@@ -193,8 +193,8 @@ describe("RepositoryForm", () => {
     const store = mockStore(state);
     const repository = {
       id: 9,
-      created: "Tue, 27 Aug. 2019 12:39:12",
-      updated: "Tue, 27 Aug. 2019 12:39:12",
+      created: factory.timestamp("Tue, 27 Aug. 2019 12:39:12"),
+      updated: factory.timestamp("Tue, 27 Aug. 2019 12:39:12"),
       name: "name",
       url: "http://www.website.com",
       distributions: [],

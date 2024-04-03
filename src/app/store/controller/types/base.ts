@@ -8,7 +8,11 @@ import type {
 import type { APIError } from "@/app/base/types";
 import type { CertificateMetadata, PowerType } from "@/app/store/general/types";
 import type { PowerState, StorageLayout } from "@/app/store/types/enum";
-import type { ModelRef, TimestampFields } from "@/app/store/types/model";
+import type {
+  ModelRef,
+  TimestampFields,
+  UtcTimestamp,
+} from "@/app/store/types/model";
 import type {
   NodeActions,
   BaseNode,
@@ -65,7 +69,7 @@ export type ControllerActions =
 
 export type BaseController = BaseNode & {
   actions: ControllerActions[];
-  last_image_sync: string;
+  last_image_sync: UtcTimestamp;
   link_type: NodeLinkType.CONTROLLER;
   node_type_display:
     | NodeTypeDisplay.RACK_CONTROLLER

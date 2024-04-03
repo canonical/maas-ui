@@ -18,8 +18,9 @@ import {
   isDeployedWithHardwareSync,
   isMachineDetails,
 } from "@/app/store/machine/utils";
+import type { UtcTimestamp } from "@/app/store/types/model";
 import { NodeStatus } from "@/app/store/types/node";
-import { getTimeDistanceString } from "@/app/utils/time";
+import { getUtcTimestamp, getTimeDistanceString } from "@/app/utils/time";
 
 const getLastCommissionedString = (machine: MachineDetails) => {
   if (machine.status === NodeStatus.COMMISSIONING) {
@@ -37,7 +38,7 @@ const getLastCommissionedString = (machine: MachineDetails) => {
   }
 };
 
-const getSyncStatusString = (syncStatus: string) => {
+const getSyncStatusString = (syncStatus: UtcTimestamp) => {
   if (syncStatus === "") {
     return "Never";
   }
@@ -87,7 +88,9 @@ export const StatusBar = (): JSX.Element | null => {
     isControllerDetails(activeController) &&
     (isRack(activeController) || isRegionAndRack(activeController))
   ) {
-    status = `Last image sync: ${activeController.last_image_sync}`;
+    status = `Last image sync: ${getUtcTimestamp(
+      activeController.last_image_sync
+    )}`;
   }
 
   return (

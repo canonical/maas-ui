@@ -1,5 +1,6 @@
 import { define, extend } from "cooky-cutter";
 
+import { timestamp } from "./general";
 import { model } from "./model";
 
 import type { Model } from "@/app/store/types/model";
@@ -15,7 +16,7 @@ export const user = extend<Model, User>(model, {
   is_local: true,
   is_superuser: true,
   last_name: "Full Name jr.",
-  last_login: "Fri, 23 Oct. 2020 00:00:00",
+  last_login: () => timestamp("Fri, 23 Oct. 2020 00:00:00"),
   sshkeys_count: 3,
   username: (i: number) => `user${i}`,
   machines_count: 1,

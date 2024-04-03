@@ -1,5 +1,5 @@
 import type { APIError } from "@/app/base/types";
-import type { Model } from "@/app/store/types/model";
+import type { Model, UtcTimestamp } from "@/app/store/types/model";
 import type { GenericState } from "@/app/store/types/state";
 
 export type User = Model & {
@@ -9,7 +9,7 @@ export type User = Model & {
   is_local: boolean;
   is_superuser: boolean;
   last_name: string;
-  last_login: string;
+  last_login: UtcTimestamp;
   machines_count: number;
   sshkeys_count: number;
   username: string;
