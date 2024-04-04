@@ -48,6 +48,7 @@ describe("NodeLogs", () => {
         {
           route: path,
           state,
+          routePattern: `${urls.machines.machine.logs.index(null)}/*`,
         }
       );
       expect(screen.getByLabelText(label)).toBeInTheDocument();

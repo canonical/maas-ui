@@ -50,6 +50,7 @@ describe("ControllerLogs", () => {
       renderWithBrowserRouter(<ControllerLogs systemId="abc123" />, {
         route: path,
         state,
+        routePattern: `${urls.controllers.controller.logs.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

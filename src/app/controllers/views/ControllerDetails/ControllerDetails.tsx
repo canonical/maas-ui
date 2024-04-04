@@ -160,24 +160,10 @@ const ControllerDetails = (): JSX.Element => {
           />
           <Route
             element={<ControllerLogs systemId={id} />}
-            path={getRelativeRoute(
+            path={`${getRelativeRoute(
               urls.controllers.controller.logs.index(null),
               base
-            )}
-          />
-          <Route
-            element={<ControllerLogs systemId={id} />}
-            path={getRelativeRoute(
-              urls.controllers.controller.logs.events(null),
-              base
-            )}
-          />
-          <Route
-            element={<ControllerLogs systemId={id} />}
-            path={getRelativeRoute(
-              urls.controllers.controller.logs.installationOutput(null),
-              base
-            )}
+            )}/*`}
           />
           <Route
             element={<ControllerConfiguration systemId={id} />}
