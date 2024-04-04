@@ -30,21 +30,6 @@ context("Subnets - Add", () => {
     cy.findByRole("button", { name: "Add VLAN" }).click();
   };
 
-  const completeAddSubnetForm = (
-    subnetName: string,
-    cidr: string,
-    fabric: string,
-    vid: string,
-    vlan: string
-  ) => {
-    openAddForm("Subnet");
-    cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
-    cy.findByRole("textbox", { name: "Name" }).type(subnetName);
-    cy.findByRole("combobox", { name: "Fabric" }).select(fabric);
-    cy.findByRole("combobox", { name: "VLAN" }).select(`${vid} (${vlan})`);
-    cy.findByRole("button", { name: "Add Subnet" }).click();
-  };
-
   const completeForm = (formName: string, name: string) => {
     openAddForm(formName);
     cy.findByRole("textbox", { name: "Name (optional)" }).type(name);
@@ -115,7 +100,7 @@ context("Subnets - Add", () => {
     completeForm("Fabric", fabricName);
     completeForm("Space", spaceName);
     completeAddVlanForm(vid, vlanName, fabricName, spaceName);
-    completeAddSubnetForm(subnetName, cidr, fabricName, vid, vlanName);
+    cy.addSubnet(subnetName, cidr, fabricName, vid, vlanName);
 
     cy.findAllByRole("link", { name: fabricName }).should("have.length", 2);
 

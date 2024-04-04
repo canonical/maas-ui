@@ -1,7 +1,13 @@
 import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
 import { LONG_TIMEOUT } from "../constants";
-import { generateMAASURL, generateMac, generateName } from "../e2e/utils";
+import {
+  generateId,
+  generateMAASURL,
+  generateMac,
+  generateName,
+  generateVid,
+} from "../e2e/utils";
 import type { A11yPageContext } from "./e2e";
 
 Cypress.Commands.add("login", (options) => {
@@ -100,6 +106,26 @@ Cypress.Commands.add("addMachines", (hostnames: string[]) => {
     cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
   });
 });
+
+Cypress.Commands.add(
+  "addSubnet",
+  ({
+    subnetName = `cy-subnet-${generateId()}`,
+    cidr = "192.168.122.18",
+    fabric = `cy-fabric-${generateId()}`,
+    vid = generateVid(),
+    vlan = `cy-vlan-${vid}`,
+  }) => {
+    cy.visit(generateMAASURL("/networks?by=fabric"));
+    cy.findByRole("button", { name: "Add" }).click();
+    cy.findByRole("button", { name: "Subnet" }).click();
+    cy.findByRole("textbox", { name: "CIDR" }).type(cidr);
+    cy.findByRole("textbox", { name: "Name" }).type(subnetName);
+    cy.findByRole("combobox", { name: "Fabric" }).select(fabric);
+    cy.findByRole("combobox", { name: "VLAN" }).select(`${vid} (${vlan})`);
+    cy.findByRole("button", { name: "Add Subnet" }).click();
+  }
+);
 
 function logViolations(violations: Result[], pageContext: A11yPageContext) {
   const divider =

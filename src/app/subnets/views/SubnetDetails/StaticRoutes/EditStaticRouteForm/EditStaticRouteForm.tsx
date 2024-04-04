@@ -63,7 +63,7 @@ const EditStaticRouteForm = ({
 
   useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
-  if (!staticRoute || loading) {
+  if (!staticRouteId || !staticRoute || loading) {
     return (
       <Spinner data-testid="edit-static-route-form-loading" text="Loading..." />
     );

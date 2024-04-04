@@ -12,7 +12,7 @@ const mockStore = configureStore<RootState>();
 
 const subnet = factory.subnet({ id: 1, cidr: "172.16.1.0/24" });
 const destinationSubnet = factory.subnet({ id: 2, cidr: "223.16.1.0/24" });
-const staticroute = factory.staticRoute({ id: 1, subnet: subnet.id });
+const staticroute = factory.staticRoute({ id: 1, destination: subnet.id });
 state = factory.rootState({
   user: factory.userState({
     auth: factory.authState({
