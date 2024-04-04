@@ -8,6 +8,7 @@ import InstallationOutput from "./InstallationOutput";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { Node } from "@/app/store/types/node";
+import { getRelativeRoute } from "@/app/utils";
 
 type GenerateURL = (
   args: { id: Node["system_id"] } | null,
@@ -29,6 +30,7 @@ const NodeLogs = ({ node, urls }: Props): JSX.Element => {
   const showingOutput = pathname.startsWith(
     urls.installationOutput({ id: node.system_id })
   );
+
   return (
     <>
       <div className="u-position--relative">
@@ -55,10 +57,17 @@ const NodeLogs = ({ node, urls }: Props): JSX.Element => {
       <Routes>
         <Route
           element={<InstallationOutput node={node} />}
-          path={urls.installationOutput(null)}
+          path={getRelativeRoute(
+            urls.installationOutput(null),
+            urls.index(null)
+          )}
         />
         {[urls.index(null), urls.events(null)].map((path) => (
-          <Route element={<EventLogs node={node} />} key={path} path={path} />
+          <Route
+            element={<EventLogs node={node} />}
+            key={path}
+            path={getRelativeRoute(path, urls.index(null))}
+          />
         ))}
       </Routes>
     </>
