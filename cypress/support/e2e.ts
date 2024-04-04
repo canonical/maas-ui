@@ -6,6 +6,13 @@ import "@percy/cypress";
 import "./commands";
 
 export type A11yPageContext = { url?: string; title?: string };
+export type SubnetOptions = {
+  subnetName?: string;
+  cidr?: string;
+  fabric?: string;
+  vid?: string;
+  vlan?: string;
+};
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -27,6 +34,7 @@ declare global {
       }): Cypress.Chainable<JQuery<HTMLElement>>;
       getMainNavigation(): Cypress.Chainable<JQuery<HTMLElement>>;
       expandMainNavigation(): void;
+      addSubnet(options: SubnetOptions): void;
     }
   }
 }

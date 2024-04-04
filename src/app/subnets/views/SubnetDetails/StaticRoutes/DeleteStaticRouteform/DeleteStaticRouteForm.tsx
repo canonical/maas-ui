@@ -4,17 +4,24 @@ import ModelActionForm from "@/app/base/components/ModelActionForm";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
-import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type {
+  StaticRoute,
+  StaticRouteMeta,
+} from "@/app/store/staticroute/types";
 
 type Props = {
-  id: Subnet[SubnetMeta.PK];
+  staticRouteId?: StaticRoute[StaticRouteMeta.PK];
   setActiveForm: SetSidePanelContent;
 };
 
-const DeleteStaticRouteForm = ({ id, setActiveForm }: Props) => {
+const DeleteStaticRouteForm = ({ staticRouteId, setActiveForm }: Props) => {
   const dispatch = useDispatch();
   const saved = useSelector(staticRouteSelectors.saved);
   const saving = useSelector(staticRouteSelectors.saving);
+
+  if (!staticRouteId) {
+    return null;
+  }
   return (
     <ModelActionForm
       aria-label="Confirm static route deletion"
@@ -22,7 +29,10 @@ const DeleteStaticRouteForm = ({ id, setActiveForm }: Props) => {
       modelType="static route"
       onCancel={() => setActiveForm(null)}
       onSubmit={() => {
-        dispatch(staticRouteActions.delete(id));
+        dispatch(staticRouteActions.delete(staticRouteId));
+      }}
+      onSuccess={() => {
+        setActiveForm(null);
       }}
       saved={saved}
       saving={saving}

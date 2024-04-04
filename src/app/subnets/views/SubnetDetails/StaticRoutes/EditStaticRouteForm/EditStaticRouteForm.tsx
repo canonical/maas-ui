@@ -39,11 +39,11 @@ const editStaticRouteSchema = Yup.object().shape({
 });
 
 export type Props = {
-  id: StaticRoute[StaticRouteMeta.PK];
+  staticRouteId?: StaticRoute[StaticRouteMeta.PK];
   setActiveForm: SetSidePanelContent;
 };
 const EditStaticRouteForm = ({
-  id,
+  staticRouteId,
   setActiveForm,
 }: Props): JSX.Element | null => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
@@ -55,7 +55,7 @@ const EditStaticRouteForm = ({
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;
   const staticRoute = useSelector((state: RootState) =>
-    staticRouteSelectors.getById(state, id)
+    staticRouteSelectors.getById(state, staticRouteId)
   );
   const source = useSelector((state: RootState) =>
     subnetSelectors.getById(state, staticRoute?.source)
@@ -63,7 +63,7 @@ const EditStaticRouteForm = ({
 
   useFetchActions([staticRouteActions.fetch, subnetActions.fetch]);
 
-  if (!staticRoute || loading) {
+  if (!staticRouteId || !staticRoute || loading) {
     return (
       <Spinner data-testid="edit-static-route-form-loading" text="Loading..." />
     );
@@ -90,7 +90,7 @@ const EditStaticRouteForm = ({
         dispatch(staticRouteActions.cleanup());
         dispatch(
           staticRouteActions.update({
-            id: id,
+            id: staticRouteId,
             source: staticRoute.source,
             gateway_ip,
             destination: toFormikNumber(destination) as number,
