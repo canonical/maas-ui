@@ -13,6 +13,7 @@ import {
   isUpgradeNotification,
 } from "@/app/store/notification/utils";
 import type { RootState } from "@/app/store/root/types";
+import { getUtcTimestamp } from "@/app/utils/time";
 
 type Props = {
   className?: string | null;
@@ -31,6 +32,7 @@ const NotificationGroupNotification = ({
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
+  const createdTimestamp = getUtcTimestamp(notification?.created);
   if (!notification) {
     return null;
   }
@@ -59,7 +61,7 @@ const NotificationGroupNotification = ({
           : undefined
       }
       severity={severity}
-      timestamp={showDate ? notification.created : null}
+      timestamp={showDate ? createdTimestamp : null}
     >
       <span
         dangerouslySetInnerHTML={{ __html: notification.message }}

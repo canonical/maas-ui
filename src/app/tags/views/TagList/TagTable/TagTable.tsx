@@ -24,6 +24,7 @@ import type { Tag } from "@/app/store/tag/types";
 import { TagMeta } from "@/app/store/tag/types";
 import AppliedTo from "@/app/tags/components/AppliedTo";
 import { isComparable } from "@/app/utils";
+import { getUtcTimestamp } from "@/app/utils/time";
 
 type Props = PropsWithSpread<
   {
@@ -75,7 +76,7 @@ const generateRows = (
         },
         {
           "aria-label": Label.Updated,
-          content: tag.updated,
+          content: getUtcTimestamp(tag.updated),
         },
         {
           "aria-label": Label.Auto,
