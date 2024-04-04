@@ -12,6 +12,7 @@ const mockStore = configureStore<RootState>();
 
 const subnet = factory.subnet({ id: 1, cidr: "172.16.1.0/24" });
 const destinationSubnet = factory.subnet({ id: 2, cidr: "223.16.1.0/24" });
+const staticroute = factory.staticRoute({ id: 1, subnet: subnet.id });
 state = factory.rootState({
   user: factory.userState({
     auth: factory.authState({
@@ -21,7 +22,7 @@ state = factory.rootState({
   }),
   staticroute: factory.staticRouteState({
     loaded: true,
-    items: [],
+    items: [staticroute],
   }),
   subnet: factory.subnetState({
     loaded: true,
@@ -31,7 +32,10 @@ state = factory.rootState({
 
 it("renders", () => {
   renderWithBrowserRouter(
-    <DeleteStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />,
+    <DeleteStaticRouteForm
+      setActiveForm={vi.fn()}
+      staticRouteId={staticroute.id}
+    />,
     { state }
   );
 
@@ -41,7 +45,10 @@ it("renders", () => {
 it("dispatches the correct action to delete a static route", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <DeleteStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />,
+    <DeleteStaticRouteForm
+      setActiveForm={vi.fn()}
+      staticRouteId={staticroute.id}
+    />,
     { store }
   );
 
@@ -51,5 +58,5 @@ it("dispatches the correct action to delete a static route", async () => {
     .getActions()
     .find((action) => action.type === staticRouteActions.delete.type);
 
-  expect(action).toStrictEqual(staticRouteActions.delete(subnet.id));
+  expect(action).toStrictEqual(staticRouteActions.delete(staticroute.id));
 });

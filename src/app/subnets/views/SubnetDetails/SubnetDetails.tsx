@@ -88,6 +88,7 @@ const SubnetDetails = (): JSX.Element => {
             activeForm={activeForm}
             id={subnet.id}
             setActiveForm={setSidePanelContent}
+            {...sidePanelContent?.extras}
           />
         ) : null
       }

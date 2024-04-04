@@ -47,5 +47,5 @@ export const SubnetDetailsSidePanelViews = {
 
 export type SubnetDetailsSidePanelContent = SidePanelContent<
   ValueOf<typeof SubnetDetailsSidePanelViews>,
-  { createType?: IPRangeType; ipRangeId?: number }
+  { createType?: IPRangeType; ipRangeId?: number; staticRouteId?: number }
 >;

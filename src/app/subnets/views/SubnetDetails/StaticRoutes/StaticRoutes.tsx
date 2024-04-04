@@ -67,6 +67,7 @@ const generateRows = (
                   view: SubnetDetailsSidePanelViews[
                     SubnetActionTypes.DeleteStaticRoute
                   ],
+                  extras: { staticRouteId: staticRoute.id },
                 });
               }}
               onEdit={() => {
@@ -74,6 +75,7 @@ const generateRows = (
                   view: SubnetDetailsSidePanelViews[
                     SubnetActionTypes.EditStaticRoute
                   ],
+                  extras: { staticRouteId: staticRoute.id },
                 });
               }}
             />

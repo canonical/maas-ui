@@ -32,6 +32,7 @@ const SubnetActionForms = ({
   id,
   activeForm,
   setActiveForm,
+  staticRouteId,
 }: SubnetActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
@@ -40,6 +41,7 @@ const SubnetActionForms = ({
       activeForm={activeForm}
       id={id}
       setActiveForm={setActiveForm}
+      staticRouteId={staticRouteId}
     />
   );
 };
