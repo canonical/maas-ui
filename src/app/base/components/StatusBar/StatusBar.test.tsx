@@ -164,8 +164,8 @@ it("displays correct text for machines with hardware sync enabled and no last_sy
       status: NodeStatus.DEPLOYED,
       system_id: "abc123",
       enable_hw_sync: true,
-      last_sync: factory.timestamp("Thu, 31 Dec. 2020 22:00:00"),
-      next_sync: factory.timestamp("Thu, 31 Dec. 2020 23:01:00"),
+      last_sync: factory.timestamp(""),
+      next_sync: factory.timestamp(""),
     }),
   ];
 
@@ -198,7 +198,7 @@ it("displays last image sync timestamp for a rack or region+rack controller", ()
   renderWithMockStore(<StatusBar />, { state });
 
   expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
-    `Last image sync: ${controller.last_image_sync}`
+    `Last image sync: Thu, 02 Jun. 2022 00:48:41 (UTC)`
   );
 });
 

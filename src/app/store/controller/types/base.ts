@@ -11,7 +11,7 @@ import type { PowerState, StorageLayout } from "@/app/store/types/enum";
 import type {
   ModelRef,
   TimestampFields,
-  UtcTimestamp,
+  UtcDatetime,
 } from "@/app/store/types/model";
 import type {
   NodeActions,
@@ -69,7 +69,7 @@ export type ControllerActions =
 
 export type BaseController = BaseNode & {
   actions: ControllerActions[];
-  last_image_sync: UtcTimestamp;
+  last_image_sync: UtcDatetime;
   link_type: NodeLinkType.CONTROLLER;
   node_type_display:
     | NodeTypeDisplay.RACK_CONTROLLER

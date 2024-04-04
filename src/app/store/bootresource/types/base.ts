@@ -1,6 +1,6 @@
 import type { BootResourceSourceType, BootResourceType } from "./enum";
 
-import type { Model, UtcTimestamp } from "@/app/store/types/model";
+import type { Model, UtcDatetime } from "@/app/store/types/model";
 
 export type BaseImageFields = {
   checked: boolean;
@@ -15,8 +15,8 @@ export type BootResource = Model & {
   complete: boolean;
   downloading: boolean;
   icon: "in-progress" | "queued" | "succeeded" | "waiting";
-  lastUpdate: UtcTimestamp;
-  lastDeployed: UtcTimestamp;
+  lastUpdate: UtcDatetime;
+  lastDeployed: UtcDatetime;
   machineCount: number;
   name: string;
   numberOfNodes: number;

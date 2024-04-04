@@ -19,7 +19,7 @@ import type { ScriptResult } from "@/app/store/scriptresult/types";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
 import { canBeSuppressed } from "@/app/store/scriptresult/utils";
 import { nodeIsMachine } from "@/app/store/utils";
-import { getUtcTimestamp } from "@/app/utils/time";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 export enum ScriptResultAction {
   VIEW_METRICS = "viewMetrics",
@@ -132,7 +132,7 @@ const NodeTestsTable = ({ node, scriptResults }: Props): JSX.Element => {
         },
         {
           className: "date-col",
-          content: getUtcTimestamp(result.updated),
+          content: formatUtcDatetime(result.updated),
         },
         {
           className: "runtime-col",

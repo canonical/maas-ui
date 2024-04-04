@@ -22,7 +22,7 @@ import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 import type { User } from "@/app/store/user/types";
 import { isComparable } from "@/app/utils";
-import { formatUtcTimestamp } from "@/app/utils/time";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 type SortKey = keyof User;
 
@@ -35,7 +35,7 @@ const generateUserRows = (
     const isAuthUser = user.id === authUser?.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const last_login = user.last_login
-      ? formatUtcTimestamp(user.last_login)
+      ? formatUtcDatetime(user.last_login)
       : "Never";
     const fullName = user.last_name;
     return {

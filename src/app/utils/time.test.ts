@@ -2,59 +2,74 @@ import MockDate from "mockdate";
 import timezoneMock from "timezone-mock";
 
 import {
-  formatUtcTimestamp,
+  formatUtcDatetime,
   getTimeDistanceString,
-  getUtcTimestamp,
+  parseUtcDatetime,
 } from "./time";
 
-import type { UtcTimestamp } from "@/app/store/types/model";
-import * as factory from "@/testing/factories";
+import type { UtcDatetime } from "@/app/store/types/model";
 
 beforeEach(() => {
   MockDate.set("Fri, 18 Nov. 2022 01:01:00");
+  timezoneMock.register("Etc/GMT+5");
 });
 
 afterEach(() => {
   MockDate.reset();
+  timezoneMock.unregister();
 });
 
 describe("getTimeDistanceString", () => {
   it("returns time distance for UTC TimeString in the past", () => {
     expect(
-      getTimeDistanceString("Fri, 18 Nov. 2022 01:00:50" as UtcTimestamp)
+      getTimeDistanceString("Fri, 18 Nov. 2022 01:00:50" as UtcDatetime)
     ).toEqual("less than a minute ago");
   });
   it("returns time distance for UTC TimeString in the future", () => {
     expect(
-      getTimeDistanceString("Fri, 18 Nov. 2022 01:01:10" as UtcTimestamp)
+      getTimeDistanceString("Fri, 18 Nov. 2022 01:01:10" as UtcDatetime)
     ).toEqual("in less than a minute");
   });
 });
 
-describe("formatUtcTimestamp", () => {
+describe("formatUtcDatetime", () => {
   it("returns UTC date time in a correct format", () => {
+    timezoneMock.register("Etc/GMT+0");
     expect(
-      formatUtcTimestamp("Fri, 18 Nov. 2022 01:00:50" as UtcTimestamp)
-    ).toEqual("Fri, 18 Nov. 2022 01:00:50");
+      formatUtcDatetime("Fri, 18 Nov. 2022 01:00:50" as UtcDatetime)
+    ).toEqual("Fri, 18 Nov. 2022 01:00:50 (UTC)");
   });
-  it("returns UTC date time in local time", () => {
+  it("returns UTC date time in UTC regardless of timezone", () => {
     timezoneMock.register("Etc/GMT-1");
     expect(
-      formatUtcTimestamp("Fri, 18 Nov. 2022 03:00:00" as UtcTimestamp)
-    ).toEqual("Fri, 18 Nov. 2022 04:00:00");
+      formatUtcDatetime("Fri, 18 Nov. 2022 03:00:00" as UtcDatetime)
+    ).toEqual("Fri, 18 Nov. 2022 03:00:00 (UTC)");
+  });
+  it("returns Never if no time is provided", () => {
+    const inputTimeString = "" as UtcDatetime;
+    const expectedOutput = "Never";
+    expect(formatUtcDatetime(inputTimeString)).toEqual(expectedOutput);
+  });
+
+  it("appends (UTC) to the given time string", () => {
+    const inputTimeString = "Fri, 18 Nov. 2022 01:00:50" as UtcDatetime;
+    const expectedOutput = "Fri, 18 Nov. 2022 01:00:50 (UTC)";
+    expect(formatUtcDatetime(inputTimeString)).toEqual(expectedOutput);
   });
 });
 
-describe("getUtcTimestamp", () => {
-  it("appends (UTC) to the given time string", () => {
-    const inputTimeString = "Fri, 18 Nov. 2022 01:00:50" as UtcTimestamp;
-    const expectedOutput = "Fri, 18 Nov. 2022 01:00:50 (UTC)";
-    expect(getUtcTimestamp(inputTimeString)).toEqual(expectedOutput);
+describe("parseUtcDatetime", () => {
+  it("parses UTC time string into Date object correctly", () => {
+    const utcTimeString = "Fri, 18 Nov. 2022 01:00:50" as UtcDatetime;
+    const expectedDate = new Date(Date.UTC(2022, 10, 18, 1, 0, 50)); // Fri, 18 Nov. 2022 01:00:50
+    const result = parseUtcDatetime(utcTimeString);
+    expect(result).toEqual(expectedDate);
   });
 
-  it("works with different date formats", () => {
-    const inputTimeString = factory.timestamp("2022-11-18T01:00:50Z");
-    const expectedOutput = "2022-11-18T01:00:50Z (UTC)";
-    expect(getUtcTimestamp(inputTimeString)).toEqual(expectedOutput);
+  it("handles leap years correctly", () => {
+    const utcTimeString = "Mon, 29 Feb. 2016 12:00:00" as UtcDatetime;
+    const expectedDate = new Date(Date.UTC(2016, 1, 29, 12, 0, 0)); // Mon, 29 Feb. 2016 12:00:00
+    const result = parseUtcDatetime(utcTimeString);
+    expect(result).toEqual(expectedDate);
   });
 });

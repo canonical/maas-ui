@@ -8,7 +8,7 @@ import type { PowerState, StorageLayout } from "@/app/store/types/enum";
 import type {
   ModelRef,
   TimestampFields,
-  UtcTimestamp,
+  UtcDatetime,
 } from "@/app/store/types/model";
 import type {
   BaseNode,
@@ -73,7 +73,7 @@ export type MachineDetails = BaseMachine &
     bmc: number;
     boot_disk: Disk | null;
     certificate?: CertificateMetadata;
-    commissioning_start_time: UtcTimestamp;
+    commissioning_start_time: UtcDatetime;
     commissioning_status: TestStatus;
     cpu_speed: BaseNode["cpu_speed"];
     cpu_test_status: TestStatus;
@@ -126,8 +126,8 @@ type HardwareSyncFields =
     }
   | {
       enable_hw_sync: true;
-      last_sync: UtcTimestamp;
-      next_sync: UtcTimestamp;
+      last_sync: UtcDatetime;
+      next_sync: UtcDatetime;
       is_sync_healthy: boolean;
       sync_interval: Seconds;
     };

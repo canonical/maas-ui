@@ -13,7 +13,7 @@ import {
   isUpgradeNotification,
 } from "@/app/store/notification/utils";
 import type { RootState } from "@/app/store/root/types";
-import { getUtcTimestamp } from "@/app/utils/time";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = {
   className?: string | null;
@@ -32,7 +32,7 @@ const NotificationGroupNotification = ({
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
-  const createdTimestamp = getUtcTimestamp(notification?.created);
+  const createdTimestamp = formatUtcDatetime(notification?.created);
   if (!notification) {
     return null;
   }

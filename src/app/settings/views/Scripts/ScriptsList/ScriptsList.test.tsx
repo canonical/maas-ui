@@ -315,7 +315,7 @@ describe("ScriptsList", () => {
     );
     expect(
       within(screen.getByRole("row", { name: "test name 33" })).getByText(
-        "2020-12-31 22:59"
+        "Thu, 31 Dec. 2020 22:59:00 (UTC)"
       )
     ).toBeInTheDocument();
   });
@@ -326,7 +326,7 @@ describe("ScriptsList", () => {
         loaded: true,
         items: [
           factory.script({
-            created: factory.timestamp(""),
+            created: () => factory.timestamp(""),
             script_type: ScriptType.TESTING,
           }),
         ],
