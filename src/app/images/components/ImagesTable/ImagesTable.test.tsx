@@ -305,6 +305,7 @@ it("disables delete action for images being downloaded", async () => {
 
 it("displays a correct last deployed time and machine count", () => {
   const lastDeployed = factory.timestamp("Fri, 18 Nov. 2022 09:55:21");
+  const lastDeployedDisplay = `Fri, 18 Nov. 2022 09:55:21 (UTC)`;
   const resources = [
     factory.bootResource({
       arch: "amd64",
@@ -344,7 +345,7 @@ it("displays a correct last deployed time and machine count", () => {
     screen.getByRole("columnheader", { name: /Machines/i })
   ).toBeInTheDocument();
   const row = screen.getByRole("row", { name: "18.04 LTS" });
-  expect(within(row).getByText(lastDeployed)).toBeInTheDocument();
+  expect(within(row).getByText(lastDeployedDisplay)).toBeInTheDocument();
   expect(
     within(row).getByRole("gridcell", { name: /about 1 hour ago/ })
   ).toBeInTheDocument();
