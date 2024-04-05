@@ -5,10 +5,12 @@ import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
+import { Outlet, RouterProvider } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 
 import packageInfo from "../../package.json";
 
-import Routes from "./Routes";
+import routes from "./Routes";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
@@ -68,7 +70,7 @@ const ConnectionStatus = () => {
   ) : null;
 };
 
-export const App = (): JSX.Element => {
+const AppBootstrapper = (): JSX.Element => {
   const dispatch = useDispatch();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
@@ -155,7 +157,7 @@ export const App = (): JSX.Element => {
   } else if (isLoaded) {
     content = (
       <FileContext.Provider value={fileContextStore}>
-        <Routes />
+        <Outlet />
       </FileContext.Provider>
     );
   }
@@ -200,6 +202,19 @@ export const App = (): JSX.Element => {
       </ThemePreviewContextProvider>
     </div>
   );
+};
+
+const router = createBrowserRouter(
+  [{ element: <AppBootstrapper />, children: routes }],
+  {
+    basename: `${import.meta.env.VITE_APP_BASENAME}${
+      import.meta.env.VITE_APP_VITE_BASENAME
+    }`,
+  }
+);
+
+export const App = (): JSX.Element => {
+  return <RouterProvider router={router} />;
 };
 
 export default App;

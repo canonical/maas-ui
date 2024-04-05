@@ -1,6 +1,6 @@
 import { lazy } from "react";
 
-import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
+import { Navigate, Route, createRoutesFromElements } from "react-router-dom";
 
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import urls from "@/app/base/urls";
@@ -38,8 +38,8 @@ const Tags = lazy(() => import("@/app/tags/views/Tags"));
 const ZoneDetails = lazy(() => import("@/app/zones/views/ZoneDetails"));
 const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
 
-const Routes = (): JSX.Element => (
-  <ReactRouterRoutes>
+const routes = createRoutesFromElements(
+  <>
     <Route
       element={<Navigate replace to={urls.machines.index} />}
       path={urls.index}
@@ -245,7 +245,7 @@ const Routes = (): JSX.Element => (
       path={`${urls.subnets.vlan.index(null)}/*`}
     />
     <Route element={<NotFound includeSection />} path="*" />
-  </ReactRouterRoutes>
+  </>
 );
 
-export default Routes;
+export default routes;
