@@ -101,7 +101,7 @@ describe("NotificationGroupNotification", () => {
 
   it("shows the date for upgrade notifications", () => {
     const notification = factory.notification({
-      created: "Tue, 27 Apr. 2021 00:34:39",
+      created: factory.timestamp("Tue, 27 Apr. 2021 00:34:39"),
       ident: NotificationIdent.UPGRADE_STATUS,
     });
     const state = factory.rootState({

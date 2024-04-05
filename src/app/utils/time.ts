@@ -1,16 +1,18 @@
-import { format, formatDistance, parse } from "date-fns";
+import { formatDistance, parse } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
-const DATETIME_FORMAT = "E, dd LLL. yyyy HH:mm:ss";
-const UTC_DATETIME_FORMAT = `${DATETIME_FORMAT} x`;
+import type { UtcDatetime, UtcDatetimeDisplay } from "@/app/store/types/model";
 
-export const parseUtcDatetime = (utcTimeString: string): Date =>
+const DATETIME_DISPLAY_FORMAT = "E, dd LLL. yyyy HH:mm:ss";
+
+export const parseUtcDatetime = (utcTimeString: UtcDatetime): Date =>
   parse(
     `${utcTimeString} +00`, // let parse fn know it's UTC
-    UTC_DATETIME_FORMAT,
+    `${DATETIME_DISPLAY_FORMAT} x`,
     new Date()
   );
 
-export const getTimeDistanceString = (utcTimeString: string): string =>
+export const getTimeDistanceString = (utcTimeString: UtcDatetime) =>
   formatDistance(parseUtcDatetime(utcTimeString), new Date(), {
     addSuffix: true,
   });
@@ -19,5 +21,20 @@ export const getTimeDistanceString = (utcTimeString: string): string =>
  * @param utcTimeString - time string in UTC_DATETIME_FORMAT
  * @returns time string adjusted for local time zone in DATETIME_FORMAT
  */
-export const formatUtcDatetime = (utcTimeString: string): string =>
-  format(parseUtcDatetime(utcTimeString), DATETIME_FORMAT);
+export const formatUtcDatetime = (
+  utcTimeString?: UtcDatetime
+): UtcDatetimeDisplay => {
+  if (!utcTimeString) return "Never";
+
+  try {
+    const utcTime = `${formatInTimeZone(
+      parseUtcDatetime(utcTimeString),
+      "UTC",
+      DATETIME_DISPLAY_FORMAT,
+      { addSuffix: true }
+    )} (UTC)` as const;
+    return utcTime;
+  } catch (error) {
+    return "Never";
+  }
+};

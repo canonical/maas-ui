@@ -37,17 +37,17 @@ describe("DhcpFormFields", () => {
       dhcpsnippet: factory.dhcpSnippetState({
         items: [
           factory.dhcpSnippet({
-            created: "Thu, 15 Aug. 2019 06:21:39",
+            created: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
             id: 1,
             name: "lease",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
+            updated: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
             value: "lease 10",
           }),
           factory.dhcpSnippet({
-            created: "Thu, 15 Aug. 2019 06:21:39",
+            created: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
             id: 2,
             name: "class",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
+            updated: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
           }),
         ],
         loaded: true,

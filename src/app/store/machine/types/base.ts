@@ -5,7 +5,11 @@ import type { ActionState, APIError, Seconds } from "@/app/base/types";
 import type { CloneError } from "@/app/machines/components/MachineForms/MachineActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "@/app/store/general/types";
 import type { PowerState, StorageLayout } from "@/app/store/types/enum";
-import type { ModelRef, TimestampFields } from "@/app/store/types/model";
+import type {
+  ModelRef,
+  TimestampFields,
+  UtcDatetime,
+} from "@/app/store/types/model";
 import type {
   BaseNode,
   Disk,
@@ -69,7 +73,7 @@ export type MachineDetails = BaseMachine &
     bmc: number;
     boot_disk: Disk | null;
     certificate?: CertificateMetadata;
-    commissioning_start_time: string;
+    commissioning_start_time: UtcDatetime;
     commissioning_status: TestStatus;
     cpu_speed: BaseNode["cpu_speed"];
     cpu_test_status: TestStatus;
@@ -122,8 +126,8 @@ type HardwareSyncFields =
     }
   | {
       enable_hw_sync: true;
-      last_sync: string;
-      next_sync: string;
+      last_sync: UtcDatetime;
+      next_sync: UtcDatetime;
       is_sync_healthy: boolean;
       sync_interval: Seconds;
     };

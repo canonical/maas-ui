@@ -25,6 +25,7 @@ import type { Discovery } from "@/app/store/discovery/types";
 import { DiscoveryMeta } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",
@@ -78,7 +79,11 @@ const generateRows = (
           content: discovery.observer_hostname,
         },
         {
-          content: <div className="u-truncate">{discovery.last_seen}</div>,
+          content: (
+            <div className="u-truncate">
+              {formatUtcDatetime(discovery.last_seen)}
+            </div>
+          ),
         },
         {
           content: (

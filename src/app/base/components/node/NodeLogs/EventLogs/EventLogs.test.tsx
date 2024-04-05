@@ -60,7 +60,7 @@ describe("EventLogs", () => {
       state.event.items.push(
         factory.eventRecord({
           node_id: 1,
-          created: "Tue, 16 Mar. 2021 03:04:00",
+          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         })
       );
     }
@@ -116,7 +116,7 @@ describe("EventLogs", () => {
       state.event.items.push(
         factory.eventRecord({
           node_id: 1,
-          created: "Tue, 16 Mar. 2021 03:04:00",
+          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         })
       );
     }
@@ -156,11 +156,11 @@ describe("EventLogs", () => {
   it("orders the rows by most recent first", () => {
     state.event.items = [
       factory.eventRecord({
-        created: "Tue, 16 Mar. 2021 03:04:00",
+        created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         node_id: 1,
       }),
       factory.eventRecord({
-        created: "Tue, 17 Mar. 2021 03:04:00",
+        created: factory.timestamp("Tue, 17 Mar. 2021 03:04:00"),
         node_id: 1,
       }),
     ];
@@ -221,7 +221,7 @@ describe("EventLogs", () => {
       state.event.items.push(
         factory.eventRecord({
           node_id: 1,
-          created: "Tue, 16 Mar. 2021 03:04:00",
+          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         })
       );
     }
@@ -239,7 +239,7 @@ describe("EventLogs", () => {
       state.event.items.push(
         factory.eventRecord({
           node_id: 1,
-          created: "Tue, 16 Mar. 2021 03:04:00",
+          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         })
       );
     }
@@ -273,7 +273,7 @@ describe("EventLogs", () => {
       state.event.items.push(
         factory.eventRecord({
           node_id: 1,
-          created: "Tue, 16 Mar. 2021 03:04:00",
+          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         })
       );
     }
@@ -292,7 +292,7 @@ describe("EventLogs", () => {
       state.event.items.push(
         factory.eventRecord({
           node_id: 1,
-          created: "Tue, 16 Mar. 2021 03:04:00",
+          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         })
       );
     }
@@ -311,7 +311,7 @@ describe("EventLogs", () => {
       state.event.items.push(
         factory.eventRecord({
           node_id: 1,
-          created: "Tue, 16 Mar. 2021 03:04:00",
+          created: factory.timestamp("Tue, 16 Mar. 2021 03:04:00"),
         })
       );
     }

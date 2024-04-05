@@ -29,6 +29,7 @@ import {
   PowerFieldScope,
   PowerFieldType,
 } from "@/app/store/general/types";
+import type { UtcDatetime } from "@/app/store/types/model";
 import { NodeActions } from "@/app/store/types/node";
 
 export const architecture = define<Architecture>("amd64");
@@ -126,3 +127,8 @@ export const tlsCertificate = define<TLSCertificate>({
 });
 
 export const version = define<Version>("test version");
+
+export const timestamp = (timestamp: string) =>
+  timestamp !== undefined
+    ? (timestamp as UtcDatetime)
+    : ("Wed, 08 Jul. 2020 05:35:4" as UtcDatetime);

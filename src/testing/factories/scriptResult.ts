@@ -1,5 +1,6 @@
 import { array, define, extend } from "cooky-cutter";
 
+import { timestamp } from "./general";
 import { model } from "./model";
 
 import type {
@@ -26,7 +27,7 @@ export const partialScriptResult = extend<Model, PartialScriptResult>(model, {
   status: 2,
   status_name: "test status",
   suppressed: false,
-  updated: "Fri, 13 Nov. 2020 04:50:27",
+  updated: () => timestamp("Fri, 13 Nov. 2020 04:50:27"),
 });
 
 export const scriptResult = extend<Model, ScriptResult>(model, {
@@ -44,13 +45,13 @@ export const scriptResult = extend<Model, ScriptResult>(model, {
   runtime: "0:00:00",
   script: 1,
   script_version: 2,
-  started: "Fri, 13 Nov. 2020 04:50:26",
+  started: () => timestamp("Fri, 13 Nov. 2020 04:50:26"),
   starttime: 605243026.966467,
   status: 2,
   status_name: "test status",
   suppressed: false,
   tags: "test, tags",
-  updated: "Fri, 13 Nov. 2020 04:50:27",
+  updated: () => timestamp("Fri, 13 Nov. 2020 04:50:27"),
 });
 
 export const scriptResultData = define<ScriptResultData>({
