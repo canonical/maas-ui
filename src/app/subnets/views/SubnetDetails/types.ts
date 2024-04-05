@@ -10,8 +10,8 @@ import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 export type SubnetAction = keyof typeof SubnetActionTypes;
 
 export interface SubnetActionProps {
-  id: Subnet[SubnetMeta.PK];
+  subnetId: Subnet[SubnetMeta.PK];
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
   activeForm: SubnetAction;
-  setActiveForm: SetSidePanelContent;
+  setSidePanelContent: SetSidePanelContent;
 }

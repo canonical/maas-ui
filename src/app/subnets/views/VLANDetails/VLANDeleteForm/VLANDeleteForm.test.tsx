@@ -29,7 +29,7 @@ it("does not allow deletion if the VLAN is the default VLAN in its fabric", () =
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
+        <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -60,7 +60,7 @@ it("displays a delete confirmation if the VLAN is not the default for its fabric
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
+        <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -89,7 +89,7 @@ it("deletes the VLAN when confirmed", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
+        <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

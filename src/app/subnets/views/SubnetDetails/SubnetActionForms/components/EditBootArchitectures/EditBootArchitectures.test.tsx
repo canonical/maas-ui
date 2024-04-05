@@ -23,7 +23,7 @@ it("shows a spinner while data is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={1} setActiveForm={vi.fn()} />
+        <EditBootArchitectures setSidePanelContent={vi.fn()} subnetId={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -52,7 +52,10 @@ it("initialises form data correctly", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={subnet.id} setActiveForm={vi.fn()} />
+        <EditBootArchitectures
+          setSidePanelContent={vi.fn()}
+          subnetId={subnet.id}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -84,7 +87,10 @@ it("can update the arches to disable", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={subnet.id} setActiveForm={vi.fn()} />
+        <EditBootArchitectures
+          setSidePanelContent={vi.fn()}
+          subnetId={subnet.id}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -120,7 +126,10 @@ it("can dispatch an action to update subnet's disabled boot architectures", asyn
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={subnet.id} setActiveForm={vi.fn()} />
+        <EditBootArchitectures
+          setSidePanelContent={vi.fn()}
+          subnetId={subnet.id}
+        />
       </MemoryRouter>
     </Provider>
   );

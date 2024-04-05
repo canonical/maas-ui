@@ -45,7 +45,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -59,7 +62,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm setActiveForm={vi.fn()} />
+          <ReservedRangeForm setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -73,7 +76,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -98,7 +104,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -119,8 +128,8 @@ describe("ReservedRangeForm", () => {
         >
           <ReservedRangeForm
             createType={IPRangeType.Reserved}
-            id={1}
-            setActiveForm={vi.fn()}
+            setSidePanelContent={vi.fn()}
+            subnetId={1}
           />
         </MemoryRouter>
       </Provider>
@@ -159,7 +168,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -189,7 +201,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -222,7 +237,7 @@ describe("ReservedRangeForm", () => {
         >
           <ReservedRangeForm
             createType={IPRangeType.Dynamic}
-            setActiveForm={vi.fn()}
+            setSidePanelContent={vi.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -233,10 +248,13 @@ describe("ReservedRangeForm", () => {
   });
 
   it("displays an error when start and end IP addresses are not provided", async () => {
-    renderWithBrowserRouter(<ReservedRangeForm setActiveForm={vi.fn()} />, {
-      state,
-      route: "/machines",
-    });
+    renderWithBrowserRouter(
+      <ReservedRangeForm setSidePanelContent={vi.fn()} />,
+      {
+        state,
+        route: "/machines",
+      }
+    );
     await userEvent.click(
       screen.getByRole("textbox", { name: Labels.StartIp })
     );

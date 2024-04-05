@@ -89,8 +89,8 @@ const VLANDetails = (): JSX.Element => {
         activeForm ? (
           <VLANActionForms
             activeForm={activeForm}
-            id={vlan.id}
             setSidePanelContent={setSidePanelContent}
+            vlanId={vlan.id}
             {...sidePanelContent?.extras}
           />
         ) : null

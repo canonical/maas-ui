@@ -12,16 +12,16 @@ import subnetURLs from "@/app/subnets/urls";
 import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types";
 
 export const DeleteSubnet = ({
-  id,
-  setActiveForm,
+  subnetId,
+  setSidePanelContent,
 }: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
   const dispatch = useDispatch();
   const errors = useSelector(subnetSelectors.errors);
   const saving = useSelector(subnetSelectors.saving);
   const saved = useSelector(subnetSelectors.saved);
-  const handleClose = () => setActiveForm(null);
-  const canBeDeleted = useCanBeDeleted(id);
-  const dhcpEnabled = useIsDHCPEnabled(id);
+  const handleClose = () => setSidePanelContent(null);
+  const canBeDeleted = useCanBeDeleted(subnetId);
+  const dhcpEnabled = useIsDHCPEnabled(subnetId);
 
   useFetchActions([subnetActions.fetch]);
 
@@ -38,7 +38,7 @@ export const DeleteSubnet = ({
         initialValues={{}}
         onCancel={handleClose}
         onSubmit={() => {
-          dispatch(subnetActions.delete(id));
+          dispatch(subnetActions.delete(subnetId));
         }}
         saved={saved}
         savedRedirect={subnetURLs.index}

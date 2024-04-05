@@ -18,7 +18,7 @@ it("shows a spinner while subnet is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MapSubnet id={1} setActiveForm={vi.fn()} />
+        <MapSubnet setSidePanelContent={vi.fn()} subnetId={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -35,7 +35,7 @@ it("shows an error if the subnet is IPv6", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MapSubnet id={subnet.id} setActiveForm={vi.fn()} />
+        <MapSubnet setSidePanelContent={vi.fn()} subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -55,7 +55,7 @@ it("can map an IPv4 subnet", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MapSubnet id={subnet.id} setActiveForm={vi.fn()} />
+        <MapSubnet setSidePanelContent={vi.fn()} subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
