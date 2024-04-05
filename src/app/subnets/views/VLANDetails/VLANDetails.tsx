@@ -4,11 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ConfigureDHCP from "./ConfigureDHCP";
 import DHCPStatus from "./DHCPStatus";
-import VLANDeleteForm from "./VLANDeleteForm";
+import VLANActionForms from "./VLANActionForms";
 import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
-import { VLANDetailsSidePanelViews } from "./constants";
+import {
+  VLANActionTypes,
+  type VLANActionType,
+  vlanActionLabels,
+} from "./constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
@@ -72,17 +76,26 @@ const VLANDetails = (): JSX.Element => {
       />
     );
   }
+  const [, name] = sidePanelContent?.view || [];
+  const activeForm =
+    name && Object.keys(VLANActionTypes).includes(name)
+      ? (name as VLANActionType)
+      : null;
 
   return (
     <PageContent
       header={<VLANDetailsHeader id={id} />}
       sidePanelContent={
-        sidePanelContent &&
-        sidePanelContent.view === VLANDetailsSidePanelViews.DELETE_VLAN ? (
-          <VLANDeleteForm closeForm={() => setSidePanelContent(null)} id={id} />
+        activeForm ? (
+          <VLANActionForms
+            activeForm={activeForm}
+            id={vlan.id}
+            setSidePanelContent={setSidePanelContent}
+            {...sidePanelContent?.extras}
+          />
         ) : null
       }
-      sidePanelTitle="Delete VLAN"
+      sidePanelTitle={activeForm ? vlanActionLabels[activeForm] : ""}
     >
       {showDHCPForm ? (
         <ConfigureDHCP closeForm={() => setShowDHCPForm(false)} id={id} />

@@ -59,7 +59,7 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
         data-testid="delete-vlan"
         key="delete-vlan"
         onClick={() =>
-          setSidePanelContent({ view: VLANDetailsSidePanelViews.DELETE_VLAN })
+          setSidePanelContent({ view: VLANDetailsSidePanelViews.DeleteVLAN })
         }
       >
         Delete VLAN

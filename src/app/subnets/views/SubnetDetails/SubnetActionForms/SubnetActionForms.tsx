@@ -1,6 +1,6 @@
-import AddStaticRouteForm from "../../StaticRoutes/AddStaticRouteForm";
-import DeleteStaticRouteForm from "../../StaticRoutes/DeleteStaticRouteform";
-import EditStaticRouteForm from "../../StaticRoutes/EditStaticRouteForm";
+import AddStaticRouteForm from "../StaticRoutes/AddStaticRouteForm";
+import DeleteStaticRouteForm from "../StaticRoutes/DeleteStaticRouteform";
+import EditStaticRouteForm from "../StaticRoutes/EditStaticRouteForm";
 
 import DeleteSubnet from "./components/DeleteSubnet";
 import EditBootArchitectures from "./components/EditBootArchitectures";
