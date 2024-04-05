@@ -62,7 +62,7 @@ describe("discovery selectors", () => {
             mac_organization: "Acme Inc.",
             ip: "0.0.0.0",
             observer_hostname: "alpha",
-            last_seen: "Mon, 19 Oct. 2020 01:15:57",
+            last_seen: factory.timestamp("Mon, 19 Oct. 2020 01:15:57"),
           }),
           factory.discovery({
             hostname: "bar",
@@ -70,7 +70,7 @@ describe("discovery selectors", () => {
             mac_organization: "Foodies Inc.",
             ip: "1.1.1.1",
             observer_hostname: "bravo",
-            last_seen: "Sat, 17 Oct. 2020 01:15:57",
+            last_seen: factory.timestamp("Sat, 17 Oct. 2020 01:15:57"),
           }),
           factory.discovery({
             hostname: "foobar",
@@ -78,7 +78,7 @@ describe("discovery selectors", () => {
             mac_organization: "Roxxon",
             ip: "2.2.2.2",
             observer_hostname: "foot",
-            last_seen: "Mon, 19 Oct. 2020 01:15:57",
+            last_seen: factory.timestamp("Mon, 19 Oct. 2020 01:15:57"),
           }),
           factory.discovery({
             hostname: "fizz",
@@ -86,7 +86,7 @@ describe("discovery selectors", () => {
             mac_organization: "Pacific Couriers",
             ip: "3.3.3.3",
             observer_hostname: "alpha",
-            last_seen: "Mon, 19 Oct. 2020 01:15:57",
+            last_seen: factory.timestamp("Mon, 19 Oct. 2020 01:15:57"),
           }),
         ],
       }),

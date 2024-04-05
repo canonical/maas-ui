@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import { Code, Col, Row } from "@canonical/react-components";
-import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -34,6 +33,7 @@ import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 const getTargetName = (
   controllers: Controller[],
@@ -80,10 +80,7 @@ const generateRows = (
     const expanded = expandedId === dhcpsnippet.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const updated = dhcpsnippet.updated
-      ? format(
-          parse(dhcpsnippet.updated, "E, dd LLL. yyyy HH:mm:ss", new Date()),
-          "yyyy-LL-dd H:mm"
-        )
+      ? formatUtcDatetime(dhcpsnippet.updated)
       : "Never";
     const enabled = dhcpsnippet.enabled ? "Yes" : "No";
     const showDelete = expandedType === "delete";

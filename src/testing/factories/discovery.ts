@@ -1,5 +1,6 @@
 import { extend, random } from "cooky-cutter";
 
+import { timestamp } from "./general";
 import { model } from "./model";
 
 import type { Discovery } from "@/app/store/discovery/types";
@@ -13,7 +14,7 @@ export const discovery = extend<Model, Discovery>(model, {
   hostname: "discovery-hostname",
   ip: "192.168.1.1",
   is_external_dhcp: false,
-  last_seen: "Wed, 08 Jul. 2020 05:35:4",
+  last_seen: () => timestamp("Wed, 08 Jul. 2020 05:35:4"),
   mac_address: "00:00:00:00:00:00",
   mac_organization: "Business Corp, Inc.",
   mdns: 2,

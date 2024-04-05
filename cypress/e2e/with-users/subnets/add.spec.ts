@@ -90,27 +90,27 @@ context("Subnets - Add", () => {
   });
 
   it("can add and delete a new subnet", () => {
-    const fabricName = `cy-fabric-${generateId()}`;
+    const fabric = `cy-fabric-${generateId()}`;
     const spaceName = `cy-space-${generateId()}`;
     const vid = generateVid();
-    const vlanName = `cy-vlan-${vid}`;
+    const vlan = `cy-vlan-${vid}`;
     const cidr = "192.168.122.18";
     const subnetName = `cy-subnet-${generateId()}`;
 
-    completeForm("Fabric", fabricName);
+    completeForm("Fabric", fabric);
     completeForm("Space", spaceName);
-    completeAddVlanForm(vid, vlanName, fabricName, spaceName);
-    cy.addSubnet(subnetName, cidr, fabricName, vid, vlanName);
+    completeAddVlanForm(vid, vlan, fabric, spaceName);
+    cy.addSubnet({ subnetName, cidr, fabric, vid, vlan });
 
-    cy.findAllByRole("link", { name: fabricName }).should("have.length", 2);
+    cy.findAllByRole("link", { name: fabric }).should("have.length", 2);
 
     // Check it groups items added to the same fabric correctly
-    cy.findAllByRole("row", { name: fabricName })
+    cy.findAllByRole("row", { name: fabric })
       .eq(1)
       .within(() => {
         cy.findAllByRole("gridcell")
           .eq(1)
-          .should("have.text", `${vid} (${vlanName})`);
+          .should("have.text", `${vid} (${vlan})`);
         cy.findAllByRole("gridcell").eq(3).should("contain.text", subnetName);
         cy.findAllByRole("gridcell").eq(5).should("have.text", spaceName);
       });

@@ -12,18 +12,14 @@ const mockStore = configureStore();
 it("displays correct IP addresses", () => {
   const subnet = factory.subnetDetails({
     ip_addresses: [
-      {
+      factory.subnetIP({
         ip: "11.1.1.1",
         alloc_type: 4,
-        created: "yesterday",
-        updated: "today",
-      },
-      {
+      }),
+      factory.subnetIP({
         ip: "11.1.1.2",
         alloc_type: 5,
-        created: "yesterday",
-        updated: "today",
-      },
+      }),
     ],
   });
   const state = factory.rootState({

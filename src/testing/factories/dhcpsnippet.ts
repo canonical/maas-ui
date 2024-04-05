@@ -7,9 +7,10 @@ import type {
   DHCPSnippetHistory,
 } from "@/app/store/dhcpsnippet/types";
 import type { Model, TimestampedModel } from "@/app/store/types/model";
+import { timestamp } from "@/testing/factories";
 
 export const dhcpSnippetHistory = extend<Model, DHCPSnippetHistory>(model, {
-  created: "Wed, 08 Jul. 2020 05:35:4",
+  created: () => timestamp("Wed, 08 Jul. 2020 05:35:04"),
   value: "test value",
 });
 

@@ -170,6 +170,7 @@ export {
   powerField,
   powerFieldChoice,
   powerType,
+  timestamp,
   tlsCertificate,
   version,
 } from "./general";
