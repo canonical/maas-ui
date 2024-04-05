@@ -20,7 +20,7 @@
     "cypress-open": "yarn cypress open",
     "cypress-run-a11y": "yarn cypress run --config specPattern=cypress/e2e/accessibility/**/*.ts",
     "cypress-run": "yarn cypress run",
-    "lint": "npmPkgJsonLint . && eslint src cypress && tsc --project tsconfig.json",
+    "lint": "npmPkgJsonLint . && eslint src cypress && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit",
     "link-components": "yarn link \"@canonical/react-components\" && yarn link \"react\" && yarn install",
     "percy": "./cypress/percy.sh",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
