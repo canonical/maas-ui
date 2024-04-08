@@ -3,6 +3,8 @@ import { useCallback } from "react";
 import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import type { VLANActionFormProps } from "../VLANActionForms/VLANActionForms";
+
 import FabricLink from "@/app/base/components/FabricLink";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { EmptyObject } from "@/app/base/types";
@@ -10,19 +12,19 @@ import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
-import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import subnetURLs from "@/app/subnets/urls";
 import { isId } from "@/app/utils";
 
-type Props = {
-  closeForm: () => void;
-  id?: VLAN[VLANMeta.PK] | null;
-};
-
-const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
+const VLANDeleteForm = ({
+  setSidePanelContent,
+  vlanId,
+}: Pick<
+  VLANActionFormProps,
+  "setSidePanelContent" | "vlanId"
+>): JSX.Element | null => {
   const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, id)
+    vlanSelectors.getById(state, vlanId)
   );
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, vlan?.fabric)
@@ -32,7 +34,7 @@ const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
   const saving = useSelector(vlanSelectors.saving);
   const cleanup = useCallback(() => vlanActions.cleanup(), []);
 
-  if (!isId(id) || !vlan || !fabric) {
+  if (!isId(vlanId) || !vlan || !fabric) {
     return null;
   }
 
@@ -42,11 +44,12 @@ const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
       cleanup={cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={closeForm}
+      onCancel={() => setSidePanelContent(null)}
       onSubmit={() => {
         dispatch(cleanup());
-        dispatch(vlanActions.delete(id));
+        dispatch(vlanActions.delete(vlanId));
       }}
+      onSuccess={() => setSidePanelContent(null)}
       saved={saved}
       savedRedirect={subnetURLs.index}
       saving={saving}

@@ -1,6 +1,6 @@
-import AddStaticRouteForm from "../../StaticRoutes/AddStaticRouteForm";
-import DeleteStaticRouteForm from "../../StaticRoutes/DeleteStaticRouteform";
-import EditStaticRouteForm from "../../StaticRoutes/EditStaticRouteForm";
+import AddStaticRouteForm from "../StaticRoutes/AddStaticRouteForm";
+import DeleteStaticRouteForm from "../StaticRoutes/DeleteStaticRouteform";
+import EditStaticRouteForm from "../StaticRoutes/EditStaticRouteForm";
 
 import DeleteSubnet from "./components/DeleteSubnet";
 import EditBootArchitectures from "./components/EditBootArchitectures";
@@ -16,7 +16,7 @@ import type {
 
 const FormComponents: Record<
   SubnetAction,
-  ({ activeForm, setActiveForm }: SubnetActionProps) => JSX.Element | null
+  ({ activeForm, setSidePanelContent }: SubnetActionProps) => JSX.Element | null
 > = {
   [SubnetActionTypes.MapSubnet]: MapSubnet,
   [SubnetActionTypes.EditBootArchitectures]: EditBootArchitectures,
@@ -29,9 +29,9 @@ const FormComponents: Record<
 };
 
 const SubnetActionForms = ({
-  id,
+  subnetId,
   activeForm,
-  setActiveForm,
+  setSidePanelContent,
   staticRouteId,
 }: SubnetActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
@@ -39,9 +39,9 @@ const SubnetActionForms = ({
   return (
     <FormComponent
       activeForm={activeForm}
-      id={id}
-      setActiveForm={setActiveForm}
+      setSidePanelContent={setSidePanelContent}
       staticRouteId={staticRouteId}
+      subnetId={subnetId}
     />
   );
 };

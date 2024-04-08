@@ -25,15 +25,15 @@ const Schema = Yup.object().shape({
 });
 
 export const EditBootArchitectures = ({
-  id,
-  setActiveForm,
+  subnetId,
+  setSidePanelContent,
 }: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
   const dispatch = useDispatch();
   const architecturesLoading = useSelector(
     knownBootArchitecturesSelectors.loading
   );
   const subnet = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, id)
+    subnetSelectors.getById(state, subnetId)
   );
   const errors = useSelector(subnetSelectors.errors);
   const saved = useSelector(subnetSelectors.saved);
@@ -50,7 +50,7 @@ export const EditBootArchitectures = ({
     );
   }
 
-  const closeForm = () => setActiveForm(null);
+  const closeForm = () => setSidePanelContent(null);
   return (
     <FormikForm<FormValues>
       cleanup={cleanup}

@@ -11,10 +11,13 @@ import type {
 
 type Props = {
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
-  setActiveForm: SetSidePanelContent;
+  setSidePanelContent: SetSidePanelContent;
 };
 
-const DeleteStaticRouteForm = ({ staticRouteId, setActiveForm }: Props) => {
+const DeleteStaticRouteForm = ({
+  staticRouteId,
+  setSidePanelContent,
+}: Props) => {
   const dispatch = useDispatch();
   const saved = useSelector(staticRouteSelectors.saved);
   const saving = useSelector(staticRouteSelectors.saving);
@@ -27,12 +30,12 @@ const DeleteStaticRouteForm = ({ staticRouteId, setActiveForm }: Props) => {
       aria-label="Confirm static route deletion"
       initialValues={{}}
       modelType="static route"
-      onCancel={() => setActiveForm(null)}
+      onCancel={() => setSidePanelContent(null)}
       onSubmit={() => {
         dispatch(staticRouteActions.delete(staticRouteId));
       }}
       onSuccess={() => {
-        setActiveForm(null);
+        setSidePanelContent(null);
       }}
       saved={saved}
       saving={saving}

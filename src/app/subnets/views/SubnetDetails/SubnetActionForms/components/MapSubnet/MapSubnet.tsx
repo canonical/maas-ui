@@ -14,19 +14,19 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { SubnetActionProps } from "@/app/subnets/views/SubnetDetails/types";
 
 export const MapSubnet = ({
-  id,
-  setActiveForm,
+  subnetId,
+  setSidePanelContent,
 }: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
   const dispatch = useDispatch();
   const cleanup = useCallback(() => subnetActions.cleanup(), []);
   const subnet = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, id)
+    subnetSelectors.getById(state, subnetId)
   );
   const scanError = useSelector((state: RootState) =>
-    subnetSelectors.eventErrorsForSubnets(state, id, "scan")
+    subnetSelectors.eventErrorsForSubnets(state, subnetId, "scan")
   )[0]?.error;
   const scanning = useSelector((state: RootState) =>
-    subnetSelectors.getStatusForSubnet(state, id, "scanning")
+    subnetSelectors.getStatusForSubnet(state, subnetId, "scanning")
   );
   const [scanned, resetScanned] = useCycled(!scanning);
   const saved = scanned && !scanError;
@@ -39,7 +39,7 @@ export const MapSubnet = ({
     );
   }
 
-  const closeForm = () => setActiveForm(null);
+  const closeForm = () => setSidePanelContent(null);
   const isIPv4 = subnet.version === 4;
   return (
     <FormikForm<EmptyObject>
@@ -50,7 +50,7 @@ export const MapSubnet = ({
       onSubmit={() => {
         resetScanned();
         dispatch(cleanup());
-        dispatch(subnetActions.scan(id));
+        dispatch(subnetActions.scan(subnetId));
       }}
       onSuccess={closeForm}
       saved={saved}

@@ -55,7 +55,7 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
+        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
       </Router>
     </Provider>
   );
@@ -80,7 +80,7 @@ it("displays a message if DHCP is disabled on the VLAN", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
+        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
       </Router>
     </Provider>
   );
@@ -105,7 +105,7 @@ it("does not display a message if DHCP is enabled on the VLAN", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
+        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
       </Router>
     </Provider>
   );
@@ -131,7 +131,7 @@ it("dispatches an action to load vlans and subnets if not loaded", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
+        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
       </Router>
     </Provider>
   );
@@ -156,7 +156,7 @@ it("dispatches a delete action on submit", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />
+        <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
       </Router>
     </Provider>
   );
@@ -185,7 +185,9 @@ it("redirects on save", async () => {
       <Router history={history}>
         <Routes>
           <Route
-            element={<DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />}
+            element={
+              <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
+            }
             path={urls.subnets.subnet.index({ id: subnetId })}
           />
         </Routes>
@@ -205,7 +207,9 @@ it("redirects on save", async () => {
       <Router history={history}>
         <Routes>
           <Route
-            element={<DeleteSubnet id={subnetId} setActiveForm={vi.fn()} />}
+            element={
+              <DeleteSubnet setSidePanelContent={vi.fn()} subnetId={subnetId} />
+            }
             path={urls.subnets.subnet.index({ id: subnetId })}
           />
         </Routes>

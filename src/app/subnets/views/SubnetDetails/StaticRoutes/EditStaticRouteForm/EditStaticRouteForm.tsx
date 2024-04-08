@@ -40,17 +40,17 @@ const editStaticRouteSchema = Yup.object().shape({
 
 export type Props = {
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
-  setActiveForm: SetSidePanelContent;
+  setSidePanelContent: SetSidePanelContent;
 };
 const EditStaticRouteForm = ({
   staticRouteId,
-  setActiveForm,
+  setSidePanelContent,
 }: Props): JSX.Element | null => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);
   const dispatch = useDispatch();
-  const handleClose = () => setActiveForm(null);
+  const handleClose = () => setSidePanelContent(null);
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;

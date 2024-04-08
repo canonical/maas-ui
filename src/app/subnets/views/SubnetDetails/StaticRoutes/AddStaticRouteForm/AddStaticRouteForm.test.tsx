@@ -36,7 +36,10 @@ it("dispatches a correct action on add static route form submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <AddStaticRouteForm id={subnet.id} setActiveForm={vi.fn()} />
+        <AddStaticRouteForm
+          setSidePanelContent={vi.fn()}
+          subnetId={subnet.id}
+        />
       </MemoryRouter>
     </Provider>
   );

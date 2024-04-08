@@ -21,7 +21,8 @@ import { SubnetMeta } from "@/app/store/subnet/types";
 import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
 import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
-import SubnetActionForms from "@/app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/SubnetActionForms";
+import SubnetActionForms from "@/app/subnets/views/SubnetDetails/SubnetActionForms/SubnetActionForms";
+import type { SubnetActionType } from "@/app/subnets/views/SubnetDetails/constants";
 import {
   subnetActionLabels,
   SubnetActionTypes,
@@ -76,7 +77,7 @@ const SubnetDetails = (): JSX.Element => {
   const [, name] = sidePanelContent?.view || [];
   const activeForm =
     name && Object.keys(SubnetActionTypes).includes(name)
-      ? (name as keyof typeof SubnetActionTypes)
+      ? (name as SubnetActionType)
       : null;
 
   return (
@@ -86,8 +87,8 @@ const SubnetDetails = (): JSX.Element => {
         activeForm ? (
           <SubnetActionForms
             activeForm={activeForm}
-            id={subnet.id}
-            setActiveForm={setSidePanelContent}
+            setSidePanelContent={setSidePanelContent}
+            subnetId={subnet.id}
             {...sidePanelContent?.extras}
           />
         ) : null

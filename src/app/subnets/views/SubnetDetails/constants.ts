@@ -13,6 +13,7 @@ export const SubnetActionTypes = {
   ReserveRange: "ReserveRange",
   DeleteReservedRange: "DeleteReservedRange",
 } as const;
+export type SubnetActionType = ValueOf<typeof SubnetActionTypes>;
 
 export const subnetActionLabels = {
   [SubnetActionTypes.MapSubnet]: "Map subnet",

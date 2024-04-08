@@ -33,7 +33,7 @@ state = factory.rootState({
 it("renders", () => {
   renderWithBrowserRouter(
     <DeleteStaticRouteForm
-      setActiveForm={vi.fn()}
+      setSidePanelContent={vi.fn()}
       staticRouteId={staticroute.id}
     />,
     { state }
@@ -46,7 +46,7 @@ it("dispatches the correct action to delete a static route", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
     <DeleteStaticRouteForm
-      setActiveForm={vi.fn()}
+      setSidePanelContent={vi.fn()}
       staticRouteId={staticroute.id}
     />,
     { store }
