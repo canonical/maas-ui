@@ -32,6 +32,9 @@ const ReservedRangeDeleteForm = ({
       onSubmit={() => {
         dispatch(ipRangeActions.delete(ipRangeId));
       }}
+      onSuccess={() => {
+        setSidePanelContent(null);
+      }}
       saved={saved}
       saving={saving}
     />
