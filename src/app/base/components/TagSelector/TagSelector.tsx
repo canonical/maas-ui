@@ -20,7 +20,7 @@ export type Props = {
   help?: string;
   initialSelected?: Tag[];
   label?: string | null;
-  onAddNewTag?: (name: string, event?: React.SyntheticEvent) => void;
+  onAddNewTag?: (name: string) => (event: React.SyntheticEvent) => void;
   onTagsUpdate?: (tags: Tag[]) => void;
   placeholder?: string;
   required?: boolean;
