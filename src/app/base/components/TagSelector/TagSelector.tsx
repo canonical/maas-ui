@@ -20,7 +20,7 @@ export type Props = {
   help?: string;
   initialSelected?: Tag[];
   label?: string | null;
-  onAddNewTag?: (name: string) => void;
+  onAddNewTag?: (name: string, event?: React.SyntheticEvent) => void;
   onTagsUpdate?: (tags: Tag[]) => void;
   placeholder?: string;
   required?: boolean;
@@ -91,10 +91,10 @@ const generateDropdownItems = ({
           appearance="base"
           className="tag-selector__dropdown-button u-break-word"
           data-testid="new-tag"
-          onClick={() => {
+          onClick={(e) => {
             const cleanedFilter = sanitiseFilter(filter);
             if (onAddNewTag) {
-              onAddNewTag(cleanedFilter.name);
+              onAddNewTag(cleanedFilter.name, e);
               setFilter("");
             } else {
               updateTags([...selectedTags, cleanedFilter]);
@@ -272,7 +272,7 @@ export const TagSelector = ({
                 if (allowNewTags) {
                   const cleanedFilter = sanitiseFilter(filter);
                   if (onAddNewTag) {
-                    onAddNewTag(cleanedFilter.name);
+                    onAddNewTag(cleanedFilter.name, e);
                     setFilter("");
                   } else {
                     updateTags([...selectedTags, cleanedFilter]);

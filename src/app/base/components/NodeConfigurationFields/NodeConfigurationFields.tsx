@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { Col, Modal, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { Portal } from "react-portal";
 import { useSelector } from "react-redux";
+import usePortal from "react-useportal";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
@@ -31,11 +31,11 @@ export const NodeConfigurationSchema: SchemaOf<NodeConfigurationValues> =
     .defined();
 
 const NodeConfigurationFields = (): JSX.Element => {
+  const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const { setFieldValue, values } = useFormikContext<NodeConfigurationValues>();
   const selectedTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, values.tags)
   );
-  const [isOpen, setIsOpen] = useState(false);
   const [newTagName, setNewTagName] = useState<string | null>(null);
   const manualTags = useSelector(tagSelectors.getManual);
 
@@ -55,9 +55,9 @@ const NodeConfigurationFields = (): JSX.Element => {
             )}
             externalSelectedTags={selectedTags}
             name="tags"
-            onAddNewTag={(name) => {
+            onAddNewTag={(name, event) => {
               setNewTagName(name);
-              setIsOpen(true);
+              openPortal(event);
             }}
             placeholder="Create or remove tags"
             tagList={manualTags}
@@ -68,7 +68,7 @@ const NodeConfigurationFields = (): JSX.Element => {
         <Portal>
           <Modal
             className="tag-form__modal"
-            close={() => setIsOpen(false)}
+            close={() => closePortal()}
             title={Label.AddTag}
           >
             <AddTagForm
@@ -81,7 +81,7 @@ const NodeConfigurationFields = (): JSX.Element => {
               onTagCreated={(tag) => {
                 setFieldValue("tags", values.tags.concat([tag.id]));
                 setNewTagName(null);
-                setIsOpen(false);
+                closePortal();
               }}
             />
           </Modal>

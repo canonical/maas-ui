@@ -179,7 +179,10 @@ describe("TagSelector", () => {
       "new-tag"
     );
     await userEvent.click(screen.getByTestId("new-tag"));
-    expect(onAddNewTag).toHaveBeenCalledWith("new-tag");
+    expect(onAddNewTag).toHaveBeenCalledWith(
+      "new-tag",
+      expect.objectContaining({ type: "click", _reactName: "onClick" })
+    );
     // The input should get cleared.
     expect(screen.getByRole("textbox", { name: "Tags" })).toHaveValue("");
   });
