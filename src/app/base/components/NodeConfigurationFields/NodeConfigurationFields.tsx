@@ -55,7 +55,7 @@ const NodeConfigurationFields = (): JSX.Element => {
             )}
             externalSelectedTags={selectedTags}
             name="tags"
-            onAddNewTag={(name, event) => {
+            onAddNewTag={(name) => (event) => {
               setNewTagName(name);
               openPortal(event);
             }}

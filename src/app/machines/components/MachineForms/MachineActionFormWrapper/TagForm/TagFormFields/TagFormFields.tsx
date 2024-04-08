@@ -117,7 +117,7 @@ export const TagFormFields = ({
         }
         label={Label.TagInput}
         name="added"
-        onAddNewTag={(name) => {
+        onAddNewTag={(name) => (_) => {
           setNewTagName(name);
           setSecondaryContent("addTag");
         }}

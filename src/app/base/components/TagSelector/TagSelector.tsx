@@ -94,7 +94,7 @@ const generateDropdownItems = ({
           onClick={(e) => {
             const cleanedFilter = sanitiseFilter(filter);
             if (onAddNewTag) {
-              onAddNewTag(cleanedFilter.name, e);
+              onAddNewTag(cleanedFilter.name)?.(e);
               setFilter("");
             } else {
               updateTags([...selectedTags, cleanedFilter]);
