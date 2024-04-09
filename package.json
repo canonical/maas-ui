@@ -109,8 +109,8 @@
     "@types/node": "20.11.30",
     "@types/path-parse": "1.0.22",
     "@types/pluralize": "0.0.33",
-    "@types/react": "18.2.73",
-    "@types/react-dom": "18.2.23",
+    "@types/react": "18.2.75",
+    "@types/react-dom": "18.2.24",
     "@types/react-portal": "4.0.7",
     "@types/react-redux": "7.1.33",
     "@types/react-router": "5.1.20",
@@ -161,12 +161,12 @@
     "webpack": "5.91.0"
   },
   "resolutions": {
-    "node_modules/@types/react-router-dom/@types/react": "18.2.73",
-    "@types/react": "18.2.73",
-    "@types/react-dom": "18.2.23"
+    "node_modules/@types/react-router-dom/@types/react": "18.2.75",
+    "@types/react": "18.2.75",
+    "@types/react-dom": "18.2.24"
   },
   "peerDependencies": {
-    "@types/react": "18.2.73"
+    "@types/react": "18.2.75"
   },
   "browserslist": {
     "production": [
