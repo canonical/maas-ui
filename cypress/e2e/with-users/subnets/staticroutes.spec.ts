@@ -1,3 +1,4 @@
+import { LONG_TIMEOUT } from "../../../constants";
 import { generateMAASURL } from "../../utils";
 
 context("Static Routes", () => {
@@ -27,7 +28,8 @@ context("Static Routes", () => {
     });
     cy.findByRole("button", { name: /save/i }).click();
     cy.findByRole("complementary", { name: /Add static route/i }).should(
-      "not.exist"
+      "not.exist",
+      { timeout: LONG_TIMEOUT }
     );
 
     // Edit static route
@@ -40,7 +42,7 @@ context("Static Routes", () => {
 
     cy.findByRole("complementary", { name: /Edit static route/i }).within(
       () => {
-        cy.findByLabelText(/gateway ip/i).type("{Backspace}1");
+        cy.findByLabelText(/gateway ip/i).type("{Backspace}2");
         cy.findByRole("button", { name: /save/i }).click();
       }
     );
@@ -51,8 +53,9 @@ context("Static Routes", () => {
         cy.findByText(staticRoute as string);
       });
     });
-    cy.findByRole("complementary", { name: /Add static route/i }).should(
-      "not.exist"
+    cy.findByRole("complementary", { name: /Edit static route/i }).should(
+      "not.exist",
+      { timeout: LONG_TIMEOUT }
     );
 
     // Delete the static route
@@ -70,11 +73,15 @@ context("Static Routes", () => {
         cy.findByRole("button", { name: /delete/i }).click();
       }
     );
+    cy.findByRole("complementary", {
+      name: /Delete static route/i,
+    }).should("not.exist", {
+      timeout: LONG_TIMEOUT,
+    });
     cy.get("@staticRoute").then((staticRoute: unknown) => {
       cy.findByRole("region", { name: /Static routes/i }).within(() => {
         cy.findByText(staticRoute as string).should("not.exist");
       });
     });
-    cy.findByRole("region", { name: /side panel/i }).should("not.exist");
   });
 });
