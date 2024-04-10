@@ -16,6 +16,7 @@ describe("NodeSummaryNetworkCard", () => {
       device: factory.deviceState({ loaded: true }),
       fabric: factory.fabricState({ loaded: true }),
       vlan: factory.vlanState({ loaded: true }),
+      subnet: factory.subnetState({ loaded: true }),
     });
   });
 
@@ -33,6 +34,7 @@ describe("NodeSummaryNetworkCard", () => {
 
     expect(actions.some((action) => action.type === "fabric/fetch"));
     expect(actions.some((action) => action.type === "vlan/fetch"));
+    expect(actions.some((action) => action.type === "subnet/fetch"));
   });
 
   it("shows a spinner while network data is loading", () => {
