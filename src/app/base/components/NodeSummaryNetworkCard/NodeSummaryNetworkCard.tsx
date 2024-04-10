@@ -12,6 +12,8 @@ import type { Device } from "@/app/store/device/types";
 import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
+import { subnetActions } from "@/app/store/subnet";
+import subnetSelectors from "@/app/store/subnet/selectors";
 import type { NetworkInterface } from "@/app/store/types/node";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
@@ -107,15 +109,21 @@ const NodeSummaryNetworkCard = ({
 }: Props): JSX.Element => {
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
+  const subnetsLoaded = useSelector(subnetSelectors.loaded);
+  const allNetworkingLoaded = fabricsLoaded && vlansLoaded && subnetsLoaded;
 
-  useFetchActions([fabricActions.fetch, vlanActions.fetch]);
+  useFetchActions([
+    fabricActions.fetch,
+    vlanActions.fetch,
+    subnetActions.fetch,
+  ]);
 
   let content: JSX.Element;
 
   // Confirm that the full machine details have been fetched. This also allows
   // TypeScript know we're using the right union type (otherwise it will
   // complain that interfaces doesn't exist on the base machine type).
-  if (interfaces && fabricsLoaded && vlansLoaded) {
+  if (interfaces && allNetworkingLoaded) {
     const groupedInterfaces = groupInterfaces(interfaces);
     content = (
       <>
