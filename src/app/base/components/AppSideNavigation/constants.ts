@@ -43,7 +43,7 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    groupTitle: "Organisation",
+    groupTitle: "Organization",
     groupIcon: "tag",
     navLinks: [
       {

@@ -1,0 +1,21 @@
+.p-panel__logo {
+  .p-panel__logo-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .logo {
+    margin-top: 0.3rem;
+  }
+}
+.p-navigation__tagged-logo .p-navigation__logo-tag {
+  background-color: $colors--dark-theme--background-default;
+  width: 33px;
+  height: 33px;
+  left: 1rem !important;
+}
+
+aside.p-status-bar {
+  .p-inline-list--middot {
+    display: none;
+  }
+}

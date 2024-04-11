@@ -8,6 +8,8 @@
 // component as it alters the class ordering in Vanilla and may cause
 // regressions.
 @import "vanilla-framework";
+// zerogap overrides part 1
+@import "./zerogap_theme";
 @include vanilla;
 @include vf-p-icon-back-to-top;
 @include vf-p-icon-begin-downloading;
@@ -55,6 +57,7 @@
 @import "./patterns_typography";
 @import "./pseudo-border";
 @import "./utilities";
+
 @include maas-application;
 @include maas-buttons;
 @include maas-contextual-menu;
@@ -308,3 +311,6 @@
 // tags
 @import "@/app/tags/components/TagsHeader/DeleteTagForm/DeleteTagFormWarnings/_index.scss";
 @include DeleteTagFormWarnings;
+
+// zerogap overrides part 2
+@import "./zerogap_styles";
