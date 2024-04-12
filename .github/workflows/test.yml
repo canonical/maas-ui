@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - "3.5"
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -20,7 +20,7 @@ jobs:
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
@@ -40,7 +40,7 @@ jobs:
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
@@ -61,7 +61,7 @@ jobs:
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
