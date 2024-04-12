@@ -2,8 +2,7 @@ name: sitespeed.io
 on:
   push:
     branches:
-      - main
-      - "3.*"
+      - "3.5"
 jobs:
   run-sitespeed:
     name: Run sitespeed.io
@@ -19,6 +18,7 @@ jobs:
         uses: canonical/setup-maas@main
         with:
           maas-url: ${{ env.MAAS_URL }}/MAAS
+          channel: 3.5/beta
           use-maasdb-dump: true
           maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
       - name: Create MAAS admin

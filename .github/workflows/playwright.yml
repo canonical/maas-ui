@@ -1,7 +1,8 @@
 name: Playwright Tests
 on:
   push:
-    branches: [main]
+    branches:
+      - "3.5"
 jobs:
   test:
     timeout-minutes: 15
@@ -12,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
       - name: Install dependencies
         run: yarn
       - name: Install Playwright Browsers
@@ -21,6 +22,7 @@ jobs:
         uses: canonical/setup-maas@main
         with:
           maas-url: ${{env.MAAS_URL}}/MAAS
+          channel: 3.5/beta
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS UI to be ready
