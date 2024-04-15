@@ -107,7 +107,7 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
       {...props}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField label="VID" name="vid" required type="text" />
           <FormikField label="Name" name="name" type="text" />
           <FormikField label="MTU" name="mtu" type="text" />
@@ -117,7 +117,7 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
             name="description"
           />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <SpaceSelect
             defaultOption={{ label: getSpaceDisplay(null), value: "" }}
             name="space"

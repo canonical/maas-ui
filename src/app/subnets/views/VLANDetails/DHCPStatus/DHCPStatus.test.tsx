@@ -19,7 +19,7 @@ it("shows a spinner if data is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={1} openForm={vi.fn()} />
+        <DHCPStatus id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -38,7 +38,7 @@ it(`shows a warning and disables Configure DHCP button if there are no subnets
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -66,7 +66,7 @@ it("does not show a warning if there are subnets attached to the VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -92,7 +92,7 @@ it("renders correctly when a VLAN does not have DHCP enabled", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -116,7 +116,7 @@ it("renders correctly when a VLAN has external DHCP", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -148,7 +148,7 @@ it("renders correctly when a VLAN has relayed DHCP", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -178,7 +178,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP without high availabi
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -225,7 +225,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP with high availabilit
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} openForm={vi.fn()} />
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

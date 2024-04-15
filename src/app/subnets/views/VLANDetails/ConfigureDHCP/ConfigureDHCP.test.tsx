@@ -50,7 +50,7 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", asyn
   // Wait for Formik validateOnMount to run.
   await waitFor(() => {
     expect(
-      screen.getByRole("region", { name: "Configure DHCP" })
+      screen.getByRole("form", { name: "Configure DHCP" })
     ).toBeInTheDocument();
   });
 
@@ -90,7 +90,7 @@ it("correctly initialises data if the VLAN has relayed DHCP", async () => {
   // Wait for Formik validateOnMount to run.
   await waitFor(() => {
     expect(
-      screen.getByRole("region", { name: "Configure DHCP" })
+      screen.getByRole("form", { name: "Configure DHCP" })
     ).toBeInTheDocument();
   });
 
@@ -127,7 +127,7 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
   });
 
   expect(
-    screen.getByRole("region", { name: "Configure DHCP" })
+    screen.getByRole("form", { name: "Configure DHCP" })
   ).toBeInTheDocument();
 
   expect(

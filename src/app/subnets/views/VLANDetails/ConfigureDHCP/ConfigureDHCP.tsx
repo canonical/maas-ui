@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { ExternalLink } from "@canonical/maas-react-components";
-import { Card, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,7 +9,6 @@ import ConfigureDHCPFields from "./ConfigureDHCPFields";
 import DHCPReservedRanges from "./DHCPReservedRanges";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import { controllerActions } from "@/app/store/controller";
@@ -158,83 +157,82 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
     });
 
   return (
-    <Card>
-      <TitledSection className="u-no-padding" title="Configure DHCP">
-        {loading ? (
-          <span data-testid="loading-data">
-            <Spinner text="Loading..." />
-          </span>
-        ) : (
-          <FormikForm<ConfigureDHCPValues>
-            allowUnchanged
-            buttonsHelp={
-              <ExternalLink to={docsUrls.dhcp}>About DHCP</ExternalLink>
-            }
-            cleanup={cleanup}
-            errors={configureDHCPError}
-            initialValues={{
-              dhcpType: isId(vlan.relay_vlan)
-                ? DHCPType.RELAY
-                : DHCPType.CONTROLLERS,
-              enableDHCP: true,
-              endIP: "",
-              gatewayIP: "",
-              primaryRack: vlan.primary_rack || "",
-              relayVLAN: vlan.relay_vlan || "",
-              secondaryRack: vlan.secondary_rack || "",
-              startIP: "",
-              subnet: "",
-            }}
-            onCancel={closeForm}
-            onSaveAnalytics={{
-              action: "Configure DHCP",
-              category: "VLAN details",
-              label: "Configure DHCP form",
-            }}
-            onSubmit={(values) => {
-              resetConfiguredDHCP();
-              dispatch(cleanup());
-              const { enableDHCP, primaryRack, relayVLAN, secondaryRack } =
-                values;
-              const params: ConfigureDHCPParams = {
-                controllers: [],
-                id: vlan.id,
-                relay_vlan: null,
-              };
-              if (enableDHCP) {
-                if (primaryRack) {
-                  params.controllers.push(primaryRack);
-                }
-                if (secondaryRack) {
-                  params.controllers.push(secondaryRack);
-                }
-                if (isId(relayVLAN)) {
-                  params.relay_vlan = Number(relayVLAN);
-                }
-                if (isId(values.subnet)) {
-                  params.extra = {
-                    end: values.endIP,
-                    gateway: values.gatewayIP,
-                    start: values.startIP,
-                    subnet: Number(values.subnet),
-                  };
-                }
+    <>
+      {loading ? (
+        <span data-testid="loading-data">
+          <Spinner text="Loading..." />
+        </span>
+      ) : (
+        <FormikForm<ConfigureDHCPValues>
+          allowUnchanged
+          aria-label="Configure DHCP"
+          buttonsHelp={
+            <ExternalLink to={docsUrls.dhcp}>About DHCP</ExternalLink>
+          }
+          cleanup={cleanup}
+          errors={configureDHCPError}
+          initialValues={{
+            dhcpType: isId(vlan.relay_vlan)
+              ? DHCPType.RELAY
+              : DHCPType.CONTROLLERS,
+            enableDHCP: true,
+            endIP: "",
+            gatewayIP: "",
+            primaryRack: vlan.primary_rack || "",
+            relayVLAN: vlan.relay_vlan || "",
+            secondaryRack: vlan.secondary_rack || "",
+            startIP: "",
+            subnet: "",
+          }}
+          onCancel={closeForm}
+          onSaveAnalytics={{
+            action: "Configure DHCP",
+            category: "VLAN details",
+            label: "Configure DHCP form",
+          }}
+          onSubmit={(values) => {
+            resetConfiguredDHCP();
+            dispatch(cleanup());
+            const { enableDHCP, primaryRack, relayVLAN, secondaryRack } =
+              values;
+            const params: ConfigureDHCPParams = {
+              controllers: [],
+              id: vlan.id,
+              relay_vlan: null,
+            };
+            if (enableDHCP) {
+              if (primaryRack) {
+                params.controllers.push(primaryRack);
               }
-              dispatch(vlanActions.configureDHCP(params));
-            }}
-            onSuccess={() => closeForm()}
-            saved={saved}
-            saving={configuringDHCP}
-            submitLabel="Configure DHCP"
-            validateOnMount
-            validationSchema={Schema}
-          >
-            <ConfigureDHCPFields vlan={vlan} />
-            <DHCPReservedRanges id={vlan.id} />
-          </FormikForm>
-        )}
-      </TitledSection>
-    </Card>
+              if (secondaryRack) {
+                params.controllers.push(secondaryRack);
+              }
+              if (isId(relayVLAN)) {
+                params.relay_vlan = Number(relayVLAN);
+              }
+              if (isId(values.subnet)) {
+                params.extra = {
+                  end: values.endIP,
+                  gateway: values.gatewayIP,
+                  start: values.startIP,
+                  subnet: Number(values.subnet),
+                };
+              }
+            }
+            dispatch(vlanActions.configureDHCP(params));
+          }}
+          onSuccess={() => closeForm()}
+          saved={saved}
+          saving={configuringDHCP}
+          submitLabel="Configure DHCP"
+          validateOnMount
+          validationSchema={Schema}
+        >
+          <ConfigureDHCPFields vlan={vlan} />
+          <DHCPReservedRanges id={vlan.id} />
+        </FormikForm>
+      )}
+    </>
   );
 };
 
