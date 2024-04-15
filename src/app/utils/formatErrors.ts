@@ -73,7 +73,7 @@ const parseHtmlToText = (htmlContent: string): string | null => {
       // Trim any leading or trailing whitespace from the resulting text
       .trim();
 
-    return strippedText !== "" ? strippedText : null;
+    return strippedText || null;
   }
 
   // Return the original content if the body tag is not found
