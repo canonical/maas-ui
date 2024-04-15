@@ -15,6 +15,8 @@ context("Static Routes", () => {
     });
     cy.findByRole("heading", { level: 1 }).invoke("text").as("subnet");
 
+    cy.findByRole("link", { name: /static routes/i }).click();
+
     cy.findByRole("button", { name: /add static route/i }).click();
     cy.get("@subnet").then((subnet: unknown) => {
       cy.findByRole("complementary", { name: /Add static route/i }).within(
