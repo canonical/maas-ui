@@ -54,7 +54,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
           to: `${urlBase}/static-routes`,
         },
         {
-          active: pathname.startsWith(`${urlBase}/reserved-ranges`),
+          active: pathname.startsWith(`${urlBase}/reserved-ip-addresses`),
           component: Link,
           label: "Reserved IPs",
           to: `${urlBase}/reserved-ip-addresses`,
