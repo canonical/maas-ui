@@ -44,7 +44,7 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <FormikField
           label="MAAS provides DHCP"
           name="enableDHCP"

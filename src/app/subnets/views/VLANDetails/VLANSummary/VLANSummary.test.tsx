@@ -2,8 +2,11 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import { VLANDetailsSidePanelViews } from "../constants";
+
 import VLANSummary from "./VLANSummary";
 
+import * as sidePanelHooks from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import type { Controller } from "@/app/store/controller/types";
 import type { Fabric } from "@/app/store/fabric/types";
@@ -11,7 +14,13 @@ import type { RootState } from "@/app/store/root/types";
 import type { Space } from "@/app/store/space/types";
 import type { VLAN } from "@/app/store/vlan/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, within } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  within,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -20,8 +29,16 @@ let fabric: Fabric;
 let space: Space;
 let state: RootState;
 let vlan: VLAN;
+const setSidePanelContent = vi.fn();
 
 beforeEach(() => {
+  vi.spyOn(sidePanelHooks, "useSidePanel").mockReturnValue({
+    setSidePanelContent,
+    sidePanelContent: null,
+    setSidePanelSize: vi.fn(),
+    sidePanelSize: "regular",
+  });
+
   fabric = factory.fabric({ id: 1, name: "fabric-1" });
   space = factory.space({ id: 22, name: "outer" });
   controller = factory.controller({
@@ -49,6 +66,10 @@ beforeEach(() => {
   });
 });
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 it("renders correct details", () => {
   const store = mockStore(state);
   render(
@@ -73,24 +94,13 @@ it("renders correct details", () => {
   );
 });
 
-it("can display the edit form", async () => {
+it("can trigger the edit form side panel", async () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <VLANSummary id={vlan.id} />
-      </MemoryRouter>
-    </Provider>
-  );
-  const formName = "Edit VLAN";
+  renderWithBrowserRouter(<VLANSummary id={vlan.id} />, { store });
   const button = screen.getByRole("button", { name: "Edit" });
   expect(button).toBeInTheDocument();
-  expect(
-    screen.queryByRole("form", { name: formName })
-  ).not.toBeInTheDocument();
   await userEvent.click(button);
-  expect(
-    screen.queryByRole("button", { name: "Edit" })
-  ).not.toBeInTheDocument();
-  expect(screen.getByRole("form", { name: formName })).toBeInTheDocument();
+  expect(setSidePanelContent).toHaveBeenCalledWith({
+    view: VLANDetailsSidePanelViews.EditVLAN,
+  });
 });
