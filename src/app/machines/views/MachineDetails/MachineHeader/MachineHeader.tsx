@@ -153,6 +153,7 @@ const MachineHeader = ({
       subtitleLoading={!isMachineDetails(machine)}
       tabLinks={[
         {
+          active: pathname.startsWith(`${urlBase}/summary`),
           component: Link,
           label: "Summary",
           to: `${urlBase}/summary`,

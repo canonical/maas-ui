@@ -51,4 +51,23 @@ describe("formatErrors", () => {
       "The primary rack controller must be up and running to set a secondary rack controller."
     );
   });
+
+  it("can handle HTML", () => {
+    const html = `
+    <html>
+      <head>
+        <title>502 Bad Gateway</title>
+      </head>
+      <body>
+        <center>
+          <h1>502 Bad Gateway</h1>
+        </center>
+        <hr>
+        <center>nginx/1.18.0 (Ubuntu)</center>
+      </body>
+    </html>
+    `;
+
+    expect(formatErrors(html)).toEqual("502 Bad Gateway nginx/1.18.0 (Ubuntu)");
+  });
 });
