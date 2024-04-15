@@ -126,6 +126,7 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
           </Button>
         ) : null
       }
+      className="u-no-padding--top"
       title="Static routes"
     >
       <MainTable

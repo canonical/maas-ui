@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { useSelector } from "react-redux";
 
 import DHCPTable from "@/app/base/components/DHCPTable";
@@ -23,7 +24,12 @@ const DHCPSnippets = ({ modelName, subnetIds }: Props): JSX.Element => {
   useFetchActions([subnetActions.fetch, ipRangeActions.fetch]);
 
   return (
-    <DHCPTable ipRanges={ipranges} modelName={modelName} subnets={subnets} />
+    <DHCPTable
+      className={classNames({ "u-no-padding--top": modelName === "subnet" })}
+      ipRanges={ipranges}
+      modelName={modelName}
+      subnets={subnets}
+    />
   );
 };
 

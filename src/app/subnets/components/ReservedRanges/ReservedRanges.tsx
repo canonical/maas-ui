@@ -262,6 +262,7 @@ const ReservedRanges = ({
           }
         />
       }
+      className={classNames({ "u-no-padding--top": isSubnet })}
       title="Reserved ranges"
     >
       {isDisabled ? (

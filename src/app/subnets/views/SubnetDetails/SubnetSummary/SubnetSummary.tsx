@@ -41,6 +41,7 @@ const SubnetSummary = ({ id }: Props): JSX.Element | null => {
 
   return (
     <EditableSection
+      className="u-no-padding--top"
       renderContent={(editing, setEditing) =>
         editing ? (
           <SubnetSummaryForm
