@@ -60,10 +60,34 @@ const parseObjectError = (
   return null;
 };
 
+const parseHtmlToText = (htmlContent: string): string | null => {
+  const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+
+  if (bodyMatch) {
+    const bodyContent = bodyMatch[1];
+    const strippedText = bodyContent
+      // Remove all HTML tags from the body content
+      .replace(/<[^>]+>/g, "")
+      // Collapse multiple consecutive whitespace characters into a single space
+      .replace(/\s+/g, " ")
+      // Trim any leading or trailing whitespace from the resulting text
+      .trim();
+
+    return strippedText || null;
+  }
+
+  // Return the original content if the body tag is not found
+  return htmlContent;
+};
+
 type ErrorFormatter = (errors: any, errorKey?: string) => FlattenedError;
-const errorTypeFormatters: Record<string, ErrorFormatter> = {
+
+type ErrorTypeFormat = "string" | "object" | "html";
+
+const errorTypeFormatters: Record<ErrorTypeFormat, ErrorFormatter> = {
   string: parseJSONError,
   object: parseObjectError,
+  html: parseHtmlToText,
 };
 
 export type ErrorType<E = null, I = any, K extends keyof I = any> =
@@ -84,7 +108,26 @@ export const formatErrors = <E, I, K extends keyof I>(
   if (!errors) {
     return null;
   }
-  const errorType = typeof errors;
-  const formatErrors = errorTypeFormatters[errorType];
-  return formatErrors ? formatErrors(errors, errorKey) : null;
+
+  const isHTMLContent = (content: string): boolean => {
+    return /<\/?[a-z][\s\S]*>/i.test(content);
+  };
+
+  const getErrorType = (errors: ErrorType<E, I, K>): ErrorTypeFormat => {
+    if (typeof errors === "string" && isHTMLContent(errors)) {
+      return "html";
+    }
+    return typeof errors in errorTypeFormatters
+      ? (typeof errors as ErrorTypeFormat)
+      : "string";
+  };
+
+  const errorType = getErrorType(errors);
+  const formatErrorsByType = errorTypeFormatters[errorType];
+
+  if (formatErrorsByType) {
+    return formatErrorsByType(errors, errorKey);
+  }
+
+  return null;
 };
