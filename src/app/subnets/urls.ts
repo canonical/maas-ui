@@ -5,6 +5,8 @@ import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import type { SubnetsUrlParams } from "@/app/subnets/types";
 import { argPath, isId } from "@/app/utils";
 
+const withSubnetId = argPath<{ id: Subnet[SubnetMeta.PK] }>;
+
 const urls = {
   index: "/networks",
   indexWithParams: (options: SubnetsUrlParams): string => {
@@ -19,6 +21,11 @@ const urls = {
     index: argPath<{ id: Space[SpaceMeta.PK] }>("/space/:id"),
   },
   subnet: {
+    summary: withSubnetId("/subnet/:id/summary"),
+    staticRoutes: withSubnetId("/subnet/:id/static-routes"),
+    reservedIpAddresses: withSubnetId("/subnet/:id/reserved-ip-addresses"),
+    dhcpSnippets: withSubnetId("/subnet/:id/dhcp-snippets"),
+    usedIpAddresses: withSubnetId("/subnet/:id/used-ip-addresses"),
     index: argPath<{ id: Subnet[SubnetMeta.PK] }>("/subnet/:id"),
   },
   vlan: {
