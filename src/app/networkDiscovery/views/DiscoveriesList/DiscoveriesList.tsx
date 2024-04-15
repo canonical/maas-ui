@@ -79,11 +79,7 @@ const generateRows = (
           content: discovery.observer_hostname,
         },
         {
-          content: (
-            <div className="u-truncate">
-              {formatUtcDatetime(discovery.last_seen)}
-            </div>
-          ),
+          content: <div>{formatUtcDatetime(discovery.last_seen)}</div>,
         },
         {
           content: (
