@@ -1,4 +1,6 @@
 import { ContextualMenu } from "@canonical/react-components";
+import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useSidePanel } from "@/app/base/side-panel-context";
@@ -16,6 +18,8 @@ type Props = {
 
 const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
   const { setSidePanelContent } = useSidePanel();
+  const { pathname } = useLocation();
+  const urlBase = `/subnet/${subnet.id}`;
   return (
     <SectionHeader
       buttons={[
@@ -36,6 +40,38 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
         />,
       ]}
       subtitleLoading={!isSubnetDetails(subnet)}
+      tabLinks={[
+        {
+          active: pathname.startsWith(`${urlBase}/summary`),
+          component: Link,
+          label: "Summary",
+          to: `${urlBase}/summary`,
+        },
+        {
+          active: pathname.startsWith(`${urlBase}/static-routes`),
+          component: Link,
+          label: "Static routes",
+          to: `${urlBase}/static-routes`,
+        },
+        {
+          active: pathname.startsWith(`${urlBase}/reserved-ip-addresses`),
+          component: Link,
+          label: "Reserved IPs",
+          to: `${urlBase}/reserved-ip-addresses`,
+        },
+        {
+          active: pathname.startsWith(`${urlBase}/dhcp-snippets`),
+          component: Link,
+          label: "DHCP snippets",
+          to: `${urlBase}/dhcp-snippets`,
+        },
+        {
+          active: pathname.startsWith(`${urlBase}/used-ip-addresses`),
+          component: Link,
+          label: "Used IP addresses",
+          to: `${urlBase}/used-ip-addresses`,
+        },
+      ]}
       title={subnet.name}
     />
   );

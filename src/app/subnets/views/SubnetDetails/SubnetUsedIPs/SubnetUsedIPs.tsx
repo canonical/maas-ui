@@ -92,7 +92,7 @@ const SubnetUsedIPs = ({ subnetId }: Props): JSX.Element => {
   const loading = useSelector(subnetSelectors.loading);
 
   return (
-    <TitledSection title="Used IP addresses">
+    <TitledSection className="u-no-padding--top" title="Used IP addresses">
       <MainTable
         className="used-ip-table p-table-expanding--light"
         defaultSort="ip"
