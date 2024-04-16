@@ -19,7 +19,7 @@ import {
   getPowerTypeFromName,
   useInitialPowerParameters,
 } from "@/app/store/general/utils";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import {

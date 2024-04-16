@@ -3,12 +3,12 @@ import { Formik } from "formik";
 import BasePowerField from "./BasePowerField";
 
 import { PowerFieldType } from "@/app/store/general/types";
-import { powerField as powerFieldFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render, userEvent } from "@/testing/utils";
 
 describe("BasePowerField", () => {
   it("can be given a custom power parameters name", () => {
-    const field = powerFieldFactory({ name: "field-name" });
+    const field = factory.powerField({ name: "field-name" });
     render(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField
@@ -23,7 +23,7 @@ describe("BasePowerField", () => {
   });
 
   it("correctly renders a string field type", () => {
-    const field = powerFieldFactory({ field_type: PowerFieldType.STRING });
+    const field = factory.powerField({ field_type: PowerFieldType.STRING });
     render(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
@@ -35,7 +35,7 @@ describe("BasePowerField", () => {
   });
 
   it("correctly renders a password field type", () => {
-    const field = powerFieldFactory({
+    const field = factory.powerField({
       field_type: PowerFieldType.PASSWORD,
       label: "Password",
     });
@@ -53,7 +53,7 @@ describe("BasePowerField", () => {
   });
 
   it("correctly renders a choice field type", () => {
-    const field = powerFieldFactory({ field_type: PowerFieldType.CHOICE });
+    const field = factory.powerField({ field_type: PowerFieldType.CHOICE });
     render(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BasePowerField field={field} />
@@ -64,7 +64,7 @@ describe("BasePowerField", () => {
   });
 
   it("correctly handles a multiple choice field type", async () => {
-    const field = powerFieldFactory({
+    const field = factory.powerField({
       choices: [
         ["value1", "label1"],
         ["value2", "label2"],

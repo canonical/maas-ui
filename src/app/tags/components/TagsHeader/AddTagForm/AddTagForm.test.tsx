@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -8,15 +7,11 @@ import AddTagForm, { Label } from "./AddTagForm";
 import * as analyticsHooks from "@/app/base/hooks/analytics";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { Label as DefinitionLabel } from "@/app/tags/components/DefinitionField";
 import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "@/app/tags/constants";
-import {
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   userEvent,
@@ -31,8 +26,8 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory(),
+  state = factory.rootState({
+    tag: factory.tagState(),
   });
 });
 
@@ -41,9 +36,7 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -90,8 +83,8 @@ it("redirects to the newly created tag on save", async () => {
   );
 
   mockFormikFormSaved();
-  state.tag = tagStateFactory({
-    items: [tagFactory({ id: 8, name: "tag1" })],
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1" })],
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -111,9 +104,7 @@ it("sends analytics when there is a definition", async () => {
   const TagForm = () => (
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={onClose} />
-        </CompatRouter>
+        <AddTagForm onClose={onClose} />
       </MemoryRouter>
     </Provider>
   );
@@ -124,8 +115,8 @@ it("sends analytics when there is a definition", async () => {
   );
 
   mockFormikFormSaved();
-  state.tag = tagStateFactory({
-    items: [tagFactory({ id: 8, name: "tag1", definition: "def1" })],
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1", definition: "def1" })],
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -149,9 +140,7 @@ it("sends analytics when there is no definition", async () => {
   const TagForm = () => (
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={onClose} />
-        </CompatRouter>
+        <AddTagForm onClose={onClose} />
       </MemoryRouter>
     </Provider>
   );
@@ -162,8 +151,8 @@ it("sends analytics when there is no definition", async () => {
   );
 
   mockFormikFormSaved();
-  state.tag = tagStateFactory({
-    items: [tagFactory({ id: 8, name: "tag1" })],
+  state.tag = factory.tagState({
+    items: [factory.tag({ id: 8, name: "tag1" })],
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -182,9 +171,7 @@ it("shows a confirmation when an automatic tag is added", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -217,9 +204,7 @@ it("shows an error if tag name is invalid", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm onClose={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

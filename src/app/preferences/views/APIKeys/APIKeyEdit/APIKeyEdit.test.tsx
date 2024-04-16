@@ -1,26 +1,21 @@
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { Label as APIKeyFormLabels } from "../APIKeyForm/APIKeyForm";
 
 import { APIKeyEdit, Label as APIKeyEditLabels } from "./APIKeyEdit";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  token as tokenFactory,
-  tokenState as tokenStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, within, renderWithMockStore } from "@/testing/utils";
 
 describe("APIKeyEdit", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      token: tokenStateFactory({
+    state = factory.rootState({
+      token: factory.tokenState({
         items: [
-          tokenFactory({
+          factory.token({
             id: 1,
             key: "ssh-rsa aabb",
             consumer: { key: "abc", name: "Name" },
@@ -39,9 +34,7 @@ describe("APIKeyEdit", () => {
           { pathname: "/account/prefs/api-keys/1", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <APIKeyEdit />
-        </CompatRouter>
+        <APIKeyEdit />
       </MemoryRouter>,
       { state }
     );
@@ -56,9 +49,7 @@ describe("APIKeyEdit", () => {
           { pathname: "/account/prefs/api-keys/1", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <APIKeyEdit />
-        </CompatRouter>
+        <APIKeyEdit />
       </MemoryRouter>,
       { state }
     );
@@ -72,14 +63,12 @@ describe("APIKeyEdit", () => {
           { pathname: "/account/prefs/api-keys/1/edit", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<APIKeyEdit />}
-              path="/account/prefs/api-keys/:id/edit"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<APIKeyEdit />}
+            path="/account/prefs/api-keys/:id/edit"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

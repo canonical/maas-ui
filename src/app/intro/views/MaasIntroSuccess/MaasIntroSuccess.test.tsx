@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MaasIntroSuccess, {
@@ -7,17 +6,10 @@ import MaasIntroSuccess, {
 } from "./MaasIntroSuccess";
 
 import urls from "@/app/base/urls";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -30,23 +22,23 @@ const mockStore = configureStore<RootState, {}>();
 describe("MaasIntroSuccess", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+          factory.config({ name: ConfigNames.COMPLETED_INTRO, value: false }),
         ],
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ completed_intro: false, is_superuser: false }),
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ completed_intro: false, is_superuser: false }),
         }),
       }),
     });
   });
 
   it("links to the user intro if not yet completed", () => {
-    state.user.auth = authStateFactory({
-      user: userFactory({ completed_intro: false }),
+    state.user.auth = factory.authState({
+      user: factory.user({ completed_intro: false }),
     });
     renderWithBrowserRouter(<MaasIntroSuccess />, {
       route: "/intro/success",
@@ -58,8 +50,8 @@ describe("MaasIntroSuccess", () => {
   });
 
   it("links to the machine list if an admin that has completed the user intro", () => {
-    state.user.auth = authStateFactory({
-      user: userFactory({ completed_intro: true, is_superuser: true }),
+    state.user.auth = factory.authState({
+      user: factory.user({ completed_intro: true, is_superuser: true }),
     });
     renderWithBrowserRouter(<MaasIntroSuccess />, {
       route: "/intro/success",
@@ -71,8 +63,8 @@ describe("MaasIntroSuccess", () => {
   });
 
   it("links to the machine list if a non-admin that has completed the user intro", () => {
-    state.user.auth = authStateFactory({
-      user: userFactory({ completed_intro: true, is_superuser: false }),
+    state.user.auth = factory.authState({
+      user: factory.user({ completed_intro: true, is_superuser: false }),
     });
     renderWithBrowserRouter(<MaasIntroSuccess />, {
       route: "/intro/success",
@@ -89,9 +81,7 @@ describe("MaasIntroSuccess", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
       >
-        <CompatRouter>
-          <MaasIntroSuccess />
-        </CompatRouter>
+        <MaasIntroSuccess />
       </MemoryRouter>,
       { store }
     );

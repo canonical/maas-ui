@@ -2,25 +2,20 @@ import NodeNameFields from "./NodeNameFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainState as domainStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("NodeNameFields", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",

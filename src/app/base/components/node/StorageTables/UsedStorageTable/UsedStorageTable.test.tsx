@@ -1,5 +1,4 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 import UsedStorageTable from "./UsedStorageTable";
 
@@ -8,23 +7,17 @@ import { FilterControllers } from "@/app/store/controller/utils";
 import { MIN_PARTITION_SIZE } from "@/app/store/machine/constants";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { DiskTypes } from "@/app/store/types/enum";
-import {
-  controllerDetails as controllerDetailsFactory,
-  machineDetails as machineDetailsFactory,
-  nodeDisk as diskFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 it("can show an empty message", () => {
-  const node = machineDetailsFactory({
+  const node = factory.machineDetails({
     disks: [],
     system_id: "abc123",
   });
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 
@@ -35,29 +28,27 @@ it("can show an empty message", () => {
 
 it("only shows disks that are being used", () => {
   const [availableDisk, usedDisk] = [
-    diskFactory({
+    factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE + 1,
       name: "available-disk",
       filesystem: null,
       type: DiskTypes.PHYSICAL,
     }),
-    diskFactory({
+    factory.nodeDisk({
       available_size: MIN_PARTITION_SIZE - 1,
       filesystem: null,
       name: "used-disk",
       type: DiskTypes.PHYSICAL,
     }),
   ];
-  const node = machineDetailsFactory({
+  const node = factory.machineDetails({
     disks: [availableDisk, usedDisk],
     system_id: "abc123",
   });
 
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 
@@ -70,9 +61,9 @@ it("only shows disks that are being used", () => {
 });
 
 it("can render storage tag links for a controller", () => {
-  const node = controllerDetailsFactory({
+  const node = factory.controllerDetails({
     disks: [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE - 1,
         type: DiskTypes.PHYSICAL,
         tags: ["abc"],
@@ -86,9 +77,7 @@ it("can render storage tag links for a controller", () => {
 
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 
@@ -99,9 +88,9 @@ it("can render storage tag links for a controller", () => {
 });
 
 it("can render storage tag links for a machine", () => {
-  const node = machineDetailsFactory({
+  const node = factory.machineDetails({
     disks: [
-      diskFactory({
+      factory.nodeDisk({
         available_size: MIN_PARTITION_SIZE - 1,
         type: DiskTypes.PHYSICAL,
         tags: ["abc"],
@@ -115,9 +104,7 @@ it("can render storage tag links for a machine", () => {
 
   render(
     <MemoryRouter>
-      <CompatRouter>
-        <UsedStorageTable node={node} />
-      </CompatRouter>
+      <UsedStorageTable node={node} />
     </MemoryRouter>
   );
 

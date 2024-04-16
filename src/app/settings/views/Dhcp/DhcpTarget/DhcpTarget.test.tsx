@@ -1,45 +1,33 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 import DhcpTarget from "./DhcpTarget";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerState as controllerStateFactory,
-  deviceState as deviceStateFactory,
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("DhcpTarget", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
       }),
-      device: deviceStateFactory({
+      device: factory.deviceState({
         loaded: true,
       }),
-      dhcpsnippet: dhcpSnippetStateFactory({
+      dhcpsnippet: factory.dhcpSnippetState({
         loaded: true,
         items: [
-          dhcpSnippetFactory({ id: 1, name: "class", description: "" }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({ id: 1, name: "class", description: "" }),
+          factory.dhcpSnippet({
             id: 2,
             name: "lease",
             subnet: 2,
             description: "",
           }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             id: 3,
             name: "boot",
             node: "xyz",
@@ -47,21 +35,21 @@ describe("DhcpTarget", () => {
           }),
         ],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "xyz",
             hostname: "machine1",
-            domain: modelRefFactory({ name: "test" }),
+            domain: factory.modelRef({ name: "test" }),
           }),
         ],
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
         items: [
-          subnetFactory({ id: 1, name: "10.0.0.99" }),
-          subnetFactory({ id: 2, name: "test.maas" }),
+          factory.subnet({ id: 1, name: "10.0.0.99" }),
+          factory.subnet({ id: 2, name: "test.maas" }),
         ],
       }),
     });
@@ -75,9 +63,7 @@ describe("DhcpTarget", () => {
     state.subnet.loading = true;
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpTarget subnetId={808} />
-        </CompatRouter>
+        <DhcpTarget subnetId={808} />
       </MemoryRouter>,
       { state }
     );
@@ -87,9 +73,7 @@ describe("DhcpTarget", () => {
   it("can display a subnet link", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpTarget subnetId={1} />
-        </CompatRouter>
+        <DhcpTarget subnetId={1} />
       </MemoryRouter>,
       { state }
     );
@@ -102,9 +86,7 @@ describe("DhcpTarget", () => {
   it("can display a node link", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpTarget nodeId="xyz" />
-        </CompatRouter>
+        <DhcpTarget nodeId="xyz" />
       </MemoryRouter>,
       { state }
     );

@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import TagIdField from "./TagIdField";
 
 import type { Tag } from "@/app/store/tag/types";
-import { tag as tagFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render, userEvent } from "@/testing/utils";
 
 describe("TagIdField", () => {
@@ -11,8 +11,8 @@ describe("TagIdField", () => {
 
   beforeEach(() => {
     tags = [
-      tagFactory({ id: 1, name: "tag1" }),
-      tagFactory({ id: 2, name: "tag2" }),
+      factory.tag({ id: 1, name: "tag1" }),
+      factory.tag({ id: 2, name: "tag2" }),
     ];
   });
 

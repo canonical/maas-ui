@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
-import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -13,11 +12,11 @@ import TableDeleteConfirm from "@/app/base/components/TableDeleteConfirm";
 import { useWindowTitle, useAddMessage } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import type { RootState } from "@/app/store/root/types";
-import { actions as scriptActions } from "@/app/store/script";
+import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import type { Script } from "@/app/store/script/types";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
-import { parseUtcDatetime } from "@/app/utils/time";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 export enum Labels {
   Actions = "Table actions",
@@ -49,7 +48,7 @@ const generateRows = (
     // history timestamps are in the format: Mon, 02 Sep 2019 02:02:39 -0000
     let uploadedOn: string;
     try {
-      uploadedOn = format(parseUtcDatetime(script.created), "yyyy-LL-dd H:mm");
+      uploadedOn = formatUtcDatetime(script.created);
     } catch (error) {
       uploadedOn = "Never";
     }

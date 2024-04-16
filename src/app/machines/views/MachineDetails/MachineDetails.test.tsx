@@ -6,12 +6,7 @@ import MachineDetails from "./MachineDetails";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineDevice as machineDeviceFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -23,13 +18,13 @@ describe("MachineDetails", () => {
   beforeEach(() => {
     scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             fqdn: "test-machine",
             system_id: "abc123",
-            devices: [machineDeviceFactory()],
+            devices: [factory.machineDevice()],
           }),
         ],
         loaded: true,

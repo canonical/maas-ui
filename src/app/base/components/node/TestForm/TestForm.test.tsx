@@ -3,17 +3,10 @@ import configureStore from "redux-mock-store";
 import TestForm from "./TestForm";
 
 import { HardwareType } from "@/app/base/enum";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-  script as scriptFactory,
-  scriptState as scriptStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -22,22 +15,22 @@ describe("TestForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       }),
-      script: scriptStateFactory({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             name: "smartctl-validate",
             tags: ["commissioning", "storage"],
             parameters: {
@@ -48,7 +41,7 @@ describe("TestForm", () => {
             },
             script_type: ScriptType.TESTING,
           }),
-          scriptFactory({
+          factory.script({
             name: "internet-connectivity",
             tags: ["internet", "network-validation", "network"],
             parameters: {
@@ -129,7 +122,7 @@ describe("TestForm", () => {
   });
 
   it("prepopulates scripts of a given hardwareType", () => {
-    const networkScript = scriptFactory({
+    const networkScript = factory.script({
       name: "test1",
       hardware_type: HardwareType.Network,
       script_type: ScriptType.TESTING,
@@ -137,12 +130,12 @@ describe("TestForm", () => {
 
     state.script.items = [
       networkScript,
-      scriptFactory({
+      factory.script({
         name: "test2",
         hardware_type: HardwareType.CPU,
         script_type: ScriptType.TESTING,
       }),
-      scriptFactory({
+      factory.script({
         name: "test3",
         hardware_type: HardwareType.Memory,
         script_type: ScriptType.TESTING,
@@ -172,17 +165,17 @@ describe("TestForm", () => {
 
   it("prepopulates scripts with apply_configured_networking", () => {
     const scripts = [
-      scriptFactory({
+      factory.script({
         name: "test1",
         apply_configured_networking: true,
         script_type: ScriptType.TESTING,
       }),
-      scriptFactory({
+      factory.script({
         name: "test2",
         apply_configured_networking: false,
         script_type: ScriptType.TESTING,
       }),
-      scriptFactory({
+      factory.script({
         name: "test3",
         apply_configured_networking: true,
         script_type: ScriptType.TESTING,

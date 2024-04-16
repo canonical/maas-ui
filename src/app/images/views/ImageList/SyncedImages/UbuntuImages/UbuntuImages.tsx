@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import FormikForm from "@/app/base/components/FormikForm";
 import UbuntuImageSelect from "@/app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "@/app/images/types";
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type {
   BootResourceUbuntuSource,
@@ -87,7 +87,7 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
     return images;
   }, []);
   const imagesDownloading = resources.some((resource) => resource.downloading);
-  const canStopImport = imagesDownloading && !stoppingImport;
+  const canStopImport = (saving || imagesDownloading) && !stoppingImport;
   const mainSource = sources.length > 0 ? sources[0] : null;
   const tooManySources = sources.length > 1;
 
@@ -102,6 +102,7 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
       <Strip shallow>
         <FormikForm<UbuntuImagesValues>
           allowUnchanged
+          buttonsBehavior="independent"
           cleanup={cleanup}
           editable={!tooManySources}
           enableReinitialize
@@ -146,12 +147,18 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
           }}
           saved={saved}
           saving={saving || stoppingImport}
-          savingLabel={stoppingImport ? "Stopping image import..." : null}
           secondarySubmit={() => {
             dispatch(cleanup());
             dispatch(bootResourceActions.stopImport());
           }}
-          secondarySubmitLabel={canStopImport ? Labels.StopImport : null}
+          secondarySubmitDisabled={stoppingImport}
+          secondarySubmitLabel={
+            canStopImport
+              ? stoppingImport
+                ? "Stopping image import..."
+                : Labels.StopImport
+              : null
+          }
           submitLabel={Labels.SubmitLabel}
           validationSchema={UbuntuImagesSchema}
         >

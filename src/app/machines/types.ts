@@ -20,7 +20,13 @@ import type {
   StorageLayoutOption,
 } from "@/app/store/machine/types";
 import type { Script } from "@/app/store/script/types";
-import type { Disk, NetworkInterface, Partition } from "@/app/store/types/node";
+import type {
+  Disk,
+  Filesystem,
+  NetworkInterface,
+  NetworkLink,
+  Partition,
+} from "@/app/store/types/node";
 
 export type MachineSidePanelContent =
   | SidePanelContent<
@@ -63,6 +69,46 @@ export type MachineSidePanelContent =
       ValueOf<typeof MachineSidePanelViews>,
       {
         node: MachineDetails;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        link?: NetworkLink | null;
+        nic?: NetworkInterface | null;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        selected: Selected[];
+        setSelected: SetSelected;
+        linkId?: NetworkLink["id"];
+        nicId?: NetworkInterface["id"];
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        disk?: Disk;
+        partition?: Partition;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        storageDevice: Disk | Partition | null;
+      }
+    >
+  | SidePanelContent<
+      ValueOf<typeof MachineSidePanelViews>,
+      {
+        systemId?: Machine["system_id"];
+        mountPoint: Filesystem["mount_point"];
       }
     >;
 

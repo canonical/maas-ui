@@ -2,29 +2,21 @@ import EditInterface from "./EditInterface";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("EditInterface", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
@@ -48,11 +40,11 @@ describe("EditInterface", () => {
   });
 
   it("displays a form for editing a physical interface", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces: [nic],
       }),
@@ -71,7 +63,7 @@ describe("EditInterface", () => {
       }
     );
     expect(
-      screen.getByRole("heading", { name: "Edit Physical" })
+      screen.getByRole("form", { name: "Edit physical" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save interface" })
@@ -79,13 +71,13 @@ describe("EditInterface", () => {
   });
 
   it("displays a form for editing an alias", () => {
-    const link = networkLinkFactory();
-    const nic = machineInterfaceFactory({
-      links: [networkLinkFactory(), link],
+    const link = factory.networkLink();
+    const nic = factory.machineInterface({
+      links: [factory.networkLink(), link],
       type: NetworkInterfaceTypes.PHYSICAL,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces: [nic],
       }),
@@ -105,7 +97,7 @@ describe("EditInterface", () => {
       }
     );
     expect(
-      screen.getByRole("heading", { name: "Edit Alias" })
+      screen.getByRole("form", { name: "Edit alias" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save Alias" })
@@ -113,11 +105,11 @@ describe("EditInterface", () => {
   });
 
   it("displays a form for editing a VLAN", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.VLAN,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces: [nic],
       }),
@@ -135,20 +127,18 @@ describe("EditInterface", () => {
         state,
       }
     );
-    expect(
-      screen.getByRole("heading", { name: "Edit VLAN" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("form", { name: "Edit VLAN" })).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save VLAN" })
     ).toBeInTheDocument();
   });
 
   it("displays a form for editing a bridge", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.BRIDGE,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         system_id: "abc123",
         interfaces: [nic],
       }),
@@ -167,7 +157,7 @@ describe("EditInterface", () => {
       }
     );
     expect(
-      screen.getByRole("heading", { name: "Edit Bridge" })
+      screen.getByRole("form", { name: "Edit bridge" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Save Bridge" })

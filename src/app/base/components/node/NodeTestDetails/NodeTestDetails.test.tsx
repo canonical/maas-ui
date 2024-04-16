@@ -3,14 +3,7 @@ import configureStore from "redux-mock-store";
 import NodeTestDetails from "./NodeTestDetails";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineState as machineStateFactory,
-  machineDetails as machineDetailsFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultResult as scriptResultResultFactory,
-  scriptResultState as scriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -19,20 +12,20 @@ const getReturnPath = (id: string) => `/some/url/${id}`;
 describe("NodeTestDetails", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",
           }),
         ],
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         loaded: true,
-        items: [scriptResultFactory()],
+        items: [factory.scriptResult()],
       }),
     });
   });
@@ -58,7 +51,7 @@ describe("NodeTestDetails", () => {
   });
 
   it("fetches script results", () => {
-    const scriptResult = scriptResultFactory({ id: 1 });
+    const scriptResult = factory.scriptResult({ id: 1 });
     const scriptResults = [scriptResult];
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
@@ -85,7 +78,7 @@ describe("NodeTestDetails", () => {
   });
 
   it("only fetches script results once", () => {
-    const scriptResult = scriptResultFactory({ id: 1 });
+    const scriptResult = factory.scriptResult({ id: 1 });
     const scriptResults = [scriptResult];
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
@@ -110,7 +103,7 @@ describe("NodeTestDetails", () => {
   });
 
   it("displays script result details", () => {
-    const scriptResult = scriptResultFactory({ id: 1 });
+    const scriptResult = factory.scriptResult({ id: 1 });
     const scriptResults = [scriptResult];
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
@@ -128,11 +121,11 @@ describe("NodeTestDetails", () => {
   });
 
   it("displays script result metrics", () => {
-    const metrics = scriptResultResultFactory({
+    const metrics = factory.scriptResultResult({
       title: "test-title",
       value: "test-value",
     });
-    const scriptResults = [scriptResultFactory({ id: 1, results: [metrics] })];
+    const scriptResults = [factory.scriptResult({ id: 1, results: [metrics] })];
 
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
@@ -158,7 +151,7 @@ describe("NodeTestDetails", () => {
   });
 
   it("fetches script result logs", () => {
-    const scriptResults = [scriptResultFactory({ id: 1 })];
+    const scriptResults = [factory.scriptResult({ id: 1 })];
 
     state.nodescriptresult.items = { abc123: [1] };
     state.scriptresult.items = scriptResults;
@@ -180,7 +173,7 @@ describe("NodeTestDetails", () => {
   });
 
   it("renders a return link", () => {
-    const scriptResult = scriptResultFactory({ id: 1 });
+    const scriptResult = factory.scriptResult({ id: 1 });
     state.scriptresult.items = [scriptResult];
     state.nodescriptresult.items = { abc123: [scriptResult.id] };
 

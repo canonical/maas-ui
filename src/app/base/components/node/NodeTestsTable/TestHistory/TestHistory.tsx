@@ -3,11 +3,11 @@ import { useEffect } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom-v5-compat";
+import { Link, useLocation } from "react-router-dom";
 
 import ScriptStatus from "@/app/base/components/ScriptStatus";
 import type { RootState } from "@/app/store/root/types";
-import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { scriptResultActions } from "@/app/store/scriptresult";
 import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import type { ScriptResult } from "@/app/store/scriptresult/types";
 import { ScriptResultType } from "@/app/store/scriptresult/types";

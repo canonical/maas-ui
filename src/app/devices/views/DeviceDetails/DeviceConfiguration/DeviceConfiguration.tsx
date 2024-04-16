@@ -13,13 +13,13 @@ import type { NodeConfigurationValues } from "@/app/base/components/NodeConfigur
 import TagLinks from "@/app/base/components/TagLinks";
 import { useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device, DeviceMeta } from "@/app/store/device/types";
 import { FilterDevices, isDeviceDetails } from "@/app/store/device/utils";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {

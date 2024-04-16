@@ -8,14 +8,7 @@ import {
 } from "./utils";
 
 import { NodeType } from "@/app/store/types/node";
-import {
-  subnet as subnetFactory,
-  subnetDetails as subnetDetailsFactory,
-  subnetIP as subnetIPFactory,
-  subnetBMC as subnetBMCFactory,
-  subnetDNSRecord as subnetDNSRecordFactory,
-  subnetIPNodeSummary as nodeSummaryFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("subnet utils", () => {
   describe("getSubnetDisplay", function () {
@@ -24,17 +17,17 @@ describe("subnet utils", () => {
     });
 
     it("returns just cidr if name same as cidr", function () {
-      const subnet = subnetFactory({ cidr: "same-name", name: "same-name" });
+      const subnet = factory.subnet({ cidr: "same-name", name: "same-name" });
       expect(getSubnetDisplay(subnet)).toBe("same-name");
     });
 
     it("returns cidr + name", function () {
-      const subnet = subnetFactory({ cidr: "cidr-name", name: "subnet-name" });
+      const subnet = factory.subnet({ cidr: "cidr-name", name: "subnet-name" });
       expect(getSubnetDisplay(subnet)).toBe("cidr-name (subnet-name)");
     });
 
     it("can return the short name instead of cidr + name", function () {
-      const subnet = subnetFactory({ cidr: "cidr-name", name: "subnet-name" });
+      const subnet = factory.subnet({ cidr: "cidr-name", name: "subnet-name" });
       expect(getSubnetDisplay(subnet, true)).toBe("cidr-name");
     });
   });
@@ -46,8 +39,8 @@ describe("subnet utils", () => {
     });
 
     it("correctly returns whether a subnet is the detailed type", () => {
-      const subnet = subnetFactory();
-      const subnetDetails = subnetDetailsFactory();
+      const subnet = factory.subnet();
+      const subnetDetails = factory.subnetDetails();
       expect(isSubnetDetails(subnet)).toBe(false);
       expect(isSubnetDetails(subnetDetails)).toBe(true);
     });
@@ -60,17 +53,19 @@ describe("getHasIPAddresses", function () {
   });
 
   it("handles non-details subnets", function () {
-    const subnet = subnetFactory();
+    const subnet = factory.subnet();
     expect(getHasIPAddresses(subnet)).toBe(false);
   });
 
   it("returns true if argument has IP addresses", function () {
-    const subnet = subnetDetailsFactory({ ip_addresses: [subnetIPFactory()] });
+    const subnet = factory.subnetDetails({
+      ip_addresses: [factory.subnetIP()],
+    });
     expect(getHasIPAddresses(subnet)).toBe(true);
   });
 
   it("returns false if argument has no IP addresses", function () {
-    const subnet = subnetDetailsFactory({ ip_addresses: [] });
+    const subnet = factory.subnetDetails({ ip_addresses: [] });
     expect(getHasIPAddresses(subnet)).toBe(false);
   });
 });
@@ -87,8 +82,8 @@ describe("getIPTypeDisplay", () => {
 
 describe("getIPUsageDisplay", () => {
   it("handles an IP used for a container", () => {
-    const ip = subnetIPFactory({
-      node_summary: nodeSummaryFactory({
+    const ip = factory.subnetIP({
+      node_summary: factory.subnetIPNodeSummary({
         is_container: true,
         node_type: NodeType.DEVICE,
       }),
@@ -97,8 +92,8 @@ describe("getIPUsageDisplay", () => {
   });
 
   it("handles an IP used for a node", () => {
-    const ip = subnetIPFactory({
-      node_summary: nodeSummaryFactory({
+    const ip = factory.subnetIP({
+      node_summary: factory.subnetIPNodeSummary({
         is_container: false,
         node_type: NodeType.MACHINE,
       }),
@@ -107,17 +102,17 @@ describe("getIPUsageDisplay", () => {
   });
 
   it("handles an IP used in BMCs", () => {
-    const ip = subnetIPFactory({ bmcs: [subnetBMCFactory()] });
+    const ip = factory.subnetIP({ bmcs: [factory.subnetBMC()] });
     expect(getIPUsageDisplay(ip)).toBe("BMC");
   });
 
   it("handles an IP used in DNS", () => {
-    const ip = subnetIPFactory({ dns_records: [subnetDNSRecordFactory()] });
+    const ip = factory.subnetIP({ dns_records: [factory.subnetDNSRecord()] });
     expect(getIPUsageDisplay(ip)).toBe("DNS");
   });
 
   it("handles an IP with unknown usage", () => {
-    const ip = subnetIPFactory({
+    const ip = factory.subnetIP({
       bmcs: undefined,
       dns_records: undefined,
       node_summary: undefined,

@@ -7,17 +7,16 @@ import PageContent from "@/app/base/components/PageContent";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DomainForm from "@/app/domains/components/DomainForm";
-import { actions } from "@/app/store/domain";
 import domainsSelectors from "@/app/store/domain/selectors";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
-
+import { zoneActions } from "@/app/store/zone";
 const DomainsList = (): JSX.Element => {
   const domains = useSelector(domainsSelectors.all);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle("DNS");
 
-  useFetchActions([actions.fetch]);
+  useFetchActions([zoneActions.fetch]);
 
   return (
     <PageContent

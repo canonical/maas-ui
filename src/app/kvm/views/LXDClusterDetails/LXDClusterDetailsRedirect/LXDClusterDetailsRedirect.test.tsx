@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { Router } from "react-router";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
@@ -9,13 +9,7 @@ import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   render,
   screen,
@@ -26,13 +20,13 @@ import {
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    pod: podStateFactory({
-      items: [podFactory({ id: 2, type: PodType.LXD, cluster: 1 })],
+  state = factory.rootState({
+    pod: factory.podState({
+      items: [factory.podDetails({ id: 2, type: PodType.LXD, cluster: 1 })],
       loaded: true,
     }),
-    vmcluster: vmClusterStateFactory({
-      items: [vmClusterFactory({ id: 1 })],
+    vmcluster: factory.vmClusterState({
+      items: [factory.vmCluster({ id: 1 })],
       loaded: true,
     }),
   });
@@ -68,14 +62,12 @@ it("redirects to the config form", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<LXDClusterDetailsRedirect clusterId={1} />}
-              path={urls.kvm.lxd.cluster.host.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<LXDClusterDetailsRedirect clusterId={1} />}
+            path={urls.kvm.lxd.cluster.host.index(null)}
+          />
+        </Routes>
       </Router>
     </Provider>
   );

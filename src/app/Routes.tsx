@@ -1,7 +1,6 @@
 import { lazy } from "react";
 
-import { Redirect } from "react-router-dom";
-import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
+import { Navigate, Route, Routes as ReactRouterRoutes } from "react-router-dom";
 
 import ErrorBoundary from "@/app/base/components/ErrorBoundary";
 import urls from "@/app/base/urls";
@@ -41,7 +40,10 @@ const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
 
 const Routes = (): JSX.Element => (
   <ReactRouterRoutes>
-    <Route element={<Redirect to={urls.machines.index} />} path={urls.index} />
+    <Route
+      element={<Navigate replace to={urls.machines.index} />}
+      path={urls.index}
+    />
     <Route
       element={
         <ErrorBoundary>
@@ -75,11 +77,11 @@ const Routes = (): JSX.Element => (
       path={`${urls.networkDiscovery.index}/*`}
     />
     <Route
-      element={<Redirect to={urls.networkDiscovery.index} />}
+      element={<Navigate replace to={urls.networkDiscovery.index} />}
       path={urls.networkDiscovery.legacyIndex}
     />
     <Route
-      element={<Redirect to={urls.networkDiscovery.configuration} />}
+      element={<Navigate replace to={urls.networkDiscovery.configuration} />}
       path={urls.networkDiscovery.legacyConfiguration}
     />
     <Route

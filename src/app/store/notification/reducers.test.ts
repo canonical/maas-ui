@@ -1,10 +1,7 @@
 import reducers, { actions } from "./slice";
 import type { NotificationState } from "./types";
 
-import {
-  notification as notificationFactory,
-  notificationState as notificationStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("notifications reducer", () => {
   let state: Pick<NotificationState, "items">;
@@ -15,35 +12,35 @@ describe("notifications reducer", () => {
 
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
-      ...notificationStateFactory(state),
+      ...factory.notificationState(state),
       errors: null,
     });
   });
 
   describe("fetch", () => {
     it("reduces fetchStart", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         loading: false,
       });
       expect(reducers(initialState, actions.fetchStart())).toEqual(
-        notificationStateFactory({ ...state, loading: true })
+        factory.notificationState({ ...state, loading: true })
       );
     });
 
     it("reduces fetchSuccess", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         items: [],
         loaded: false,
         loading: true,
       });
-      const notifications = [notificationFactory(), notificationFactory()];
+      const notifications = [factory.notification(), factory.notification()];
 
       expect(
         reducers(initialState, actions.fetchSuccess(notifications))
       ).toEqual(
-        notificationStateFactory({
+        factory.notificationState({
           ...state,
           items: notifications,
           loaded: true,
@@ -53,7 +50,7 @@ describe("notifications reducer", () => {
     });
 
     it("reduces fetchError", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         errors: "",
         loading: true,
@@ -64,7 +61,7 @@ describe("notifications reducer", () => {
           actions.fetchError("Could not fetch notifications")
         )
       ).toEqual(
-        notificationStateFactory({
+        factory.notificationState({
           ...state,
           errors: "Could not fetch notifications",
           loading: false,
@@ -75,36 +72,36 @@ describe("notifications reducer", () => {
 
   describe("create", () => {
     it("reduces createStart", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         saving: false,
       });
       expect(reducers(initialState, actions.createStart())).toEqual(
-        notificationStateFactory({ ...state, saving: true })
+        factory.notificationState({ ...state, saving: true })
       );
     });
 
     it("reduces createSuccess", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         saved: false,
         saving: true,
       });
       expect(reducers(initialState, actions.createSuccess())).toEqual(
-        notificationStateFactory({ ...state, saved: true, saving: false })
+        factory.notificationState({ ...state, saved: true, saving: false })
       );
     });
 
     it("reduces createNotify", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
-        items: [notificationFactory()],
+        items: [factory.notification()],
       });
-      const newNotification = notificationFactory();
+      const newNotification = factory.notification();
       expect(
         reducers(initialState, actions.createNotify(newNotification))
       ).toEqual(
-        notificationStateFactory({
+        factory.notificationState({
           ...state,
           items: [...initialState.items, newNotification],
         })
@@ -112,7 +109,7 @@ describe("notifications reducer", () => {
     });
 
     it("reduces createError", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         errors: "",
         saving: true,
@@ -123,7 +120,7 @@ describe("notifications reducer", () => {
           actions.createError("Could not create notification")
         )
       ).toEqual(
-        notificationStateFactory({
+        factory.notificationState({
           ...state,
           errors: "Could not create notification",
           saving: false,
@@ -134,44 +131,44 @@ describe("notifications reducer", () => {
 
   describe("update", () => {
     it("reduces updateStart", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         saving: false,
       });
       expect(reducers(initialState, actions.updateStart())).toEqual(
-        notificationStateFactory({ ...state, saving: true })
+        factory.notificationState({ ...state, saving: true })
       );
     });
 
     it("reduces updateSuccess", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         saved: false,
         saving: true,
       });
       expect(reducers(initialState, actions.updateSuccess())).toEqual(
-        notificationStateFactory({ ...state, saved: true, saving: false })
+        factory.notificationState({ ...state, saved: true, saving: false })
       );
     });
 
     it("reduces updateNotify", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
-        items: [notificationFactory()],
+        items: [factory.notification()],
       });
-      const updatedNotification = notificationFactory({
+      const updatedNotification = factory.notification({
         id: initialState.items[0].id,
         message: "updated-reducers",
       });
       expect(
         reducers(initialState, actions.updateNotify(updatedNotification))
       ).toEqual(
-        notificationStateFactory({ ...state, items: [updatedNotification] })
+        factory.notificationState({ ...state, items: [updatedNotification] })
       );
     });
 
     it("reduces updateError", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         errors: "",
         saving: true,
@@ -182,7 +179,7 @@ describe("notifications reducer", () => {
           actions.updateError("Could not update notification")
         )
       ).toEqual(
-        notificationStateFactory({
+        factory.notificationState({
           ...state,
           errors: "Could not update notification",
           saving: false,
@@ -193,44 +190,44 @@ describe("notifications reducer", () => {
 
   describe("dismiss", () => {
     it("reduces dismissStart", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         saving: false,
       });
       expect(reducers(initialState, actions.dismissStart())).toEqual(
-        notificationStateFactory({ ...state, saving: true })
+        factory.notificationState({ ...state, saving: true })
       );
     });
 
     it("reduces dismissSuccess", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         saved: false,
         saving: true,
       });
       expect(reducers(initialState, actions.dismissSuccess())).toEqual(
-        notificationStateFactory({ ...state, saved: true, saving: false })
+        factory.notificationState({ ...state, saved: true, saving: false })
       );
     });
 
     it("reduces deleteNotify", () => {
       const [deleteNotification, keepNotification] = [
-        notificationFactory(),
-        notificationFactory(),
+        factory.notification(),
+        factory.notification(),
       ];
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         items: [deleteNotification, keepNotification],
       });
       expect(
         reducers(initialState, actions.deleteNotify(deleteNotification.id))
       ).toEqual(
-        notificationStateFactory({ ...state, items: [keepNotification] })
+        factory.notificationState({ ...state, items: [keepNotification] })
       );
     });
 
     it("reduces dismissError", () => {
-      const initialState = notificationStateFactory({
+      const initialState = factory.notificationState({
         ...state,
         errors: "",
         saving: true,
@@ -241,7 +238,7 @@ describe("notifications reducer", () => {
           actions.dismissError("Could not dismiss notification")
         )
       ).toEqual(
-        notificationStateFactory({
+        factory.notificationState({
           ...state,
           errors: "Could not dismiss notification",
           saving: false,

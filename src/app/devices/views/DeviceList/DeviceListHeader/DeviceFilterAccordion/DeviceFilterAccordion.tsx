@@ -4,7 +4,7 @@ import FilterAccordion from "@/app/base/components/FilterAccordion";
 import { useFetchActions } from "@/app/base/hooks";
 import deviceSelectors from "@/app/store/device/selectors";
 import { FilterDevices, getDeviceValue } from "@/app/store/device/utils";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 
 type Props = {

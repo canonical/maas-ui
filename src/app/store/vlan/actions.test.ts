@@ -1,8 +1,8 @@
-import { actions } from "./";
+import { vlanActions } from "./";
 
 describe("vlan actions", () => {
   it("returns an action for fetching vlans", () => {
-    expect(actions.fetch()).toEqual({
+    expect(vlanActions.fetch()).toEqual({
       type: "vlan/fetch",
       meta: {
         model: "vlan",
@@ -14,7 +14,7 @@ describe("vlan actions", () => {
 
   it("returns an action for creating vlans", () => {
     expect(
-      actions.create({ name: "vlan1", description: "a vlan", vid: 99 })
+      vlanActions.create({ name: "vlan1", description: "a vlan", vid: 99 })
     ).toEqual({
       type: "vlan/create",
       meta: {
@@ -33,7 +33,12 @@ describe("vlan actions", () => {
 
   it("returns an action for updating vlans", () => {
     expect(
-      actions.update({ id: 1, name: "vlan1", description: "a vlan", vid: 99 })
+      vlanActions.update({
+        id: 1,
+        name: "vlan1",
+        description: "a vlan",
+        vid: 99,
+      })
     ).toEqual({
       type: "vlan/update",
       meta: {
@@ -52,7 +57,7 @@ describe("vlan actions", () => {
   });
 
   it("returns an action for deleting vlans", () => {
-    expect(actions.delete(1)).toEqual({
+    expect(vlanActions.delete(1)).toEqual({
       type: "vlan/delete",
       meta: {
         model: "vlan",
@@ -67,13 +72,13 @@ describe("vlan actions", () => {
   });
 
   it("returns an action for cleaning vlans", () => {
-    expect(actions.cleanup()).toEqual({
+    expect(vlanActions.cleanup()).toEqual({
       type: "vlan/cleanup",
     });
   });
 
   it("can create an action to get a vlan", () => {
-    expect(actions.get(0)).toEqual({
+    expect(vlanActions.get(0)).toEqual({
       type: "vlan/get",
       meta: {
         model: "vlan",
@@ -86,7 +91,7 @@ describe("vlan actions", () => {
   });
 
   it("can create an action to set an active vlan", () => {
-    expect(actions.setActive(0)).toEqual({
+    expect(vlanActions.setActive(0)).toEqual({
       type: "vlan/setActive",
       meta: {
         model: "vlan",
@@ -100,7 +105,7 @@ describe("vlan actions", () => {
 
   it("can create an action for configuring DHCP", () => {
     expect(
-      actions.configureDHCP({
+      vlanActions.configureDHCP({
         id: 0,
         controllers: ["abc123"],
         extra: {

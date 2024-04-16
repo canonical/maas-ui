@@ -1,6 +1,6 @@
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 import ActionForm from "@/app/base/components/ActionForm";
@@ -8,7 +8,7 @@ import FormikField from "@/app/base/components/FormikField";
 import { useSendAnalytics } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { MachineEventErrors } from "@/app/store/machine/types";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
 import { NodeActions } from "@/app/store/types/node";

@@ -1,16 +1,15 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddFabric from "./AddFabric";
 
-import { actions as fabricActions } from "@/app/store/fabric";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import { fabricActions } from "@/app/store/fabric";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const renderTestCase = () => {
-  const store = configureStore()(rootStateFactory());
+  const store = configureStore()(factory.rootState());
   const setActiveForm = vi.fn();
 
   const view = render(
@@ -18,9 +17,7 @@ const renderTestCase = () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/networks", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddFabric activeForm="Fabric" setActiveForm={setActiveForm} />
-        </CompatRouter>
+        <AddFabric activeForm="Fabric" setActiveForm={setActiveForm} />
       </MemoryRouter>
     </Provider>
   );

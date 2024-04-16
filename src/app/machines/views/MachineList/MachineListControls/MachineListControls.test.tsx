@@ -2,13 +2,9 @@ import configureStore from "redux-mock-store";
 
 import MachineListControls from "./MachineListControls";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -22,14 +18,14 @@ describe("MachineListControls", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory();
-    initialState.machine = machineStateFactory({
+    initialState = factory.rootState();
+    initialState.machine = factory.machineState({
       loaded: true,
       loading: false,
       filtersLoaded: true,
       filtersLoading: false,
       items: [
-        machineFactory({
+        factory.machine({
           fqdn: "abc123",
           system_id: "abc123",
         }),

@@ -9,15 +9,7 @@ import {
   PowerFieldType,
 } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  generalState as generalStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -26,29 +18,29 @@ describe("AddChassisForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         items: [
-          domainFactory({
+          factory.domain({
             name: "maas",
           }),
         ],
         loaded: true,
       }),
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
           data: [
-            powerTypeFactory({
+            factory.powerType({
               name: "manual",
               description: "Manual",
               fields: [],
               can_probe: false,
             }),
-            powerTypeFactory({
+            factory.powerType({
               name: PowerTypeNames.WEDGE,
               description: "Dummy power type",
               fields: [
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_address",
                   label: "IP address",
                   required: true,
@@ -60,12 +52,12 @@ describe("AddChassisForm", () => {
               ],
               can_probe: true,
             }),
-            powerTypeFactory({
+            factory.powerType({
               driver_type: DriverType.POWER,
               name: "vmware",
               description: "VMware",
               fields: [
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_vm_name",
                   label: "VM Name (if UUID unknown)",
                   required: false,
@@ -74,7 +66,7 @@ describe("AddChassisForm", () => {
                   default: "",
                   scope: PowerFieldScope.NODE,
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_uuid",
                   label: "VM UUID (if known)",
                   required: false,
@@ -83,7 +75,7 @@ describe("AddChassisForm", () => {
                   default: "",
                   scope: PowerFieldScope.NODE,
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_address",
                   label: "VMware IP",
                   required: true,
@@ -92,7 +84,7 @@ describe("AddChassisForm", () => {
                   default: "",
                   scope: PowerFieldScope.BMC,
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_user",
                   label: "VMware username",
                   required: true,
@@ -101,7 +93,7 @@ describe("AddChassisForm", () => {
                   default: "",
                   scope: PowerFieldScope.BMC,
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_pass",
                   label: "VMware password",
                   required: true,
@@ -110,7 +102,7 @@ describe("AddChassisForm", () => {
                   default: "",
                   scope: PowerFieldScope.BMC,
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_port",
                   label: "VMware API port (optional)",
                   required: false,
@@ -119,7 +111,7 @@ describe("AddChassisForm", () => {
                   default: "",
                   scope: PowerFieldScope.BMC,
                 }),
-                powerFieldFactory({
+                factory.powerField({
                   name: "power_protocol",
                   label: "VMware API protocol (optional)",
                   required: false,

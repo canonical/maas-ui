@@ -13,24 +13,11 @@ import {
   useMachineActions,
 } from "./node";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  architecturesState as architecturesStateFactory,
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineAction as machineActionFactory,
-  machineActionsState as machineActionsStateFactory,
-  machineEvent as machineEventFactory,
-  machineState as machineStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -45,24 +32,24 @@ describe("node hooks", () => {
     let state: RootState;
 
     beforeEach(() => {
-      state = rootStateFactory({
-        general: generalStateFactory({
-          architectures: architecturesStateFactory({
+      state = factory.rootState({
+        general: factory.generalState({
+          architectures: factory.architecturesState({
             data: ["amd64"],
           }),
-          osInfo: osInfoStateFactory({
-            data: osInfoFactory(),
+          osInfo: factory.osInfoState({
+            data: factory.osInfo(),
           }),
-          powerTypes: powerTypesStateFactory({
-            data: [powerTypeFactory()],
+          powerTypes: factory.powerTypesState({
+            data: [factory.powerType()],
           }),
         }),
       });
     });
 
     it("handles a connected state", () => {
-      state.general.powerTypes = powerTypesStateFactory({
-        data: [powerTypeFactory()],
+      state.general.powerTypes = factory.powerTypesState({
+        data: [factory.powerType()],
       });
       const store = mockStore(state);
       const { result } = renderHook(() => useIsRackControllerConnected(), {
@@ -86,26 +73,26 @@ describe("node hooks", () => {
     let machine: Machine | null;
 
     beforeEach(() => {
-      machine = machineFactory({
+      machine = factory.machine({
         architecture: "amd64",
-        events: [machineEventFactory()],
+        events: [factory.machineEvent()],
         locked: false,
         permissions: ["edit"],
         system_id: "abc123",
       });
-      state = rootStateFactory({
-        general: generalStateFactory({
-          architectures: architecturesStateFactory({
+      state = factory.rootState({
+        general: factory.generalState({
+          architectures: factory.architecturesState({
             data: ["amd64"],
           }),
-          osInfo: osInfoStateFactory({
-            data: osInfoFactory(),
+          osInfo: factory.osInfoState({
+            data: factory.osInfo(),
           }),
-          powerTypes: powerTypesStateFactory({
-            data: [powerTypeFactory()],
+          powerTypes: factory.powerTypesState({
+            data: [factory.powerType()],
           }),
         }),
-        machine: machineStateFactory({
+        machine: factory.machineState({
           items: [machine],
         }),
       });
@@ -188,15 +175,15 @@ describe("node hooks", () => {
     };
 
     beforeEach(() => {
-      state = rootStateFactory({
-        general: generalStateFactory({
-          machineActions: machineActionsStateFactory({
-            data: [machineActionFactory()],
+      state = factory.rootState({
+        general: factory.generalState({
+          machineActions: factory.machineActionsState({
+            data: [factory.machineAction()],
           }),
         }),
-        machine: machineStateFactory({
+        machine: factory.machineState({
           items: [
-            machineFactory({
+            factory.machine({
               system_id: "abc123",
               actions: [],
             }),

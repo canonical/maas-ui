@@ -1,39 +1,30 @@
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import RepositoryAdd from "./RepositoryAdd";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  componentsToDisableState as componentsToDisableStateFactory,
-  knownArchitecturesState as knownArchitecturesStateFactory,
-  packageRepository as packageRepositoryFactory,
-  packageRepositoryState as packageRepositoryStateFactory,
-  pocketsToDisableState as pocketsToDisableStateFactory,
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("RepositoryAdd", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        componentsToDisable: componentsToDisableStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        componentsToDisable: factory.componentsToDisableState({
           loaded: true,
         }),
-        knownArchitectures: knownArchitecturesStateFactory({
+        knownArchitectures: factory.knownArchitecturesState({
           loaded: true,
         }),
-        pocketsToDisable: pocketsToDisableStateFactory({
+        pocketsToDisable: factory.pocketsToDisableState({
           loaded: true,
         }),
       }),
-      packagerepository: packageRepositoryStateFactory({
+      packagerepository: factory.packageRepositoryState({
         loaded: true,
-        items: [packageRepositoryFactory()],
+        items: [factory.packageRepository()],
       }),
     });
   });
@@ -45,14 +36,12 @@ describe("RepositoryAdd", () => {
           { pathname: "/settings/repositories/add/ppa", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryAdd />}
-              path="/settings/repositories/add/:type"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryAdd />}
+            path="/settings/repositories/add/:type"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );
@@ -70,14 +59,12 @@ describe("RepositoryAdd", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<RepositoryAdd />}
-              path="/settings/repositories/add/:type"
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<RepositoryAdd />}
+            path="/settings/repositories/add/:type"
+          />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

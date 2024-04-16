@@ -5,11 +5,7 @@ import configureStore from "redux-mock-store";
 import SpaceSelect from "./SpaceSelect";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -17,8 +13,8 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    space: spaceStateFactory({
+  state = factory.rootState({
+    space: factory.spaceState({
       items: [],
       loaded: false,
     }),
@@ -42,7 +38,7 @@ it("is disabled if spaces haven't loaded", () => {
 });
 
 it("renders options correctly", async () => {
-  const space = spaceFactory({ id: 1, name: "space1" });
+  const space = factory.space({ id: 1, name: "space1" });
   state.space.items = [space];
   state.space.loaded = true;
   const store = mockStore(state);
@@ -82,23 +78,23 @@ it("maintains selected option after new options are added", async () => {
       </Formik>
     </Provider>
   );
-  const stateBefore = rootStateFactory({
-    space: spaceStateFactory({
+  const stateBefore = factory.rootState({
+    space: factory.spaceState({
       items: [
-        spaceFactory({ id: 1, name: "space1" }),
-        spaceFactory({ id: 2, name: "space2" }),
-        spaceFactory({ id: 3, name: "space3" }),
+        factory.space({ id: 1, name: "space1" }),
+        factory.space({ id: 2, name: "space2" }),
+        factory.space({ id: 3, name: "space3" }),
       ],
       loaded: true,
     }),
   });
-  const stateAfter = rootStateFactory({
-    space: spaceStateFactory({
+  const stateAfter = factory.rootState({
+    space: factory.spaceState({
       items: [
-        spaceFactory({ id: 1, name: "space1" }),
-        spaceFactory({ id: 2, name: "space2" }),
-        spaceFactory({ id: 3, name: "space3" }),
-        spaceFactory({ id: 4, name: "space4" }),
+        factory.space({ id: 1, name: "space1" }),
+        factory.space({ id: 2, name: "space2" }),
+        factory.space({ id: 3, name: "space3" }),
+        factory.space({ id: 4, name: "space4" }),
       ],
       loaded: true,
     }),
@@ -132,8 +128,8 @@ it("can hide the default option", () => {
 
 it("orders the spaces by name", () => {
   state.space.items = [
-    spaceFactory({ id: 1, name: "space3" }),
-    spaceFactory({ id: 2, name: "space1" }),
+    factory.space({ id: 1, name: "space3" }),
+    factory.space({ id: 2, name: "space1" }),
   ];
   const store = mockStore(state);
   render(

@@ -1,10 +1,10 @@
 import SubnetUtilisation from "./SubnetUtilisation";
 
-import { subnetStatistics as subnetStatisticsFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 it("renders subnet utilisation statistics", () => {
-  const subnetStatistics = subnetStatisticsFactory({
+  const subnetStatistics = factory.subnetStatistics({
     available_string: "100%",
     num_available: 111,
     total_addresses: 111,

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as ScriptsListLabels } from "./ScriptsList";
@@ -10,11 +9,7 @@ import ScriptsList from ".";
 import { fileContextStore } from "@/app/base/file-context";
 import type { RootState } from "@/app/store/root/types";
 import { ScriptType } from "@/app/store/script/types";
-import {
-  script as scriptFactory,
-  scriptState as scriptStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -37,23 +32,23 @@ describe("ScriptsList", () => {
 
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      script: scriptStateFactory({
+    state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             id: 1,
             name: "commissioning-script",
             description: "a commissioning script",
             script_type: ScriptType.COMMISSIONING,
           }),
-          scriptFactory({
+          factory.script({
             id: 2,
             name: "testing-script",
             description: "a testing script",
             script_type: ScriptType.TESTING,
           }),
-          scriptFactory({
+          factory.script({
             id: 3,
             name: "testing-script-2",
             description: "another testing script",
@@ -71,9 +66,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -90,9 +83,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -105,9 +96,7 @@ describe("ScriptsList", () => {
   it("Displays commissioning scripts by default", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList />
-        </CompatRouter>
+        <ScriptsList />
       </MemoryRouter>,
       { state }
     );
@@ -129,9 +118,7 @@ describe("ScriptsList", () => {
   it("Displays testing scripts", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );
@@ -164,9 +151,7 @@ describe("ScriptsList", () => {
   it("can show a delete confirmation", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList />
-        </CompatRouter>
+        <ScriptsList />
       </MemoryRouter>,
       { state }
     );
@@ -185,15 +170,15 @@ describe("ScriptsList", () => {
   });
 
   it("disables the delete button if a default script", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
+          factory.script({
             default: true,
             script_type: ScriptType.TESTING,
           }),
-          scriptFactory({
+          factory.script({
             default: false,
             script_type: ScriptType.TESTING,
           }),
@@ -203,9 +188,7 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );
@@ -234,9 +217,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -279,9 +260,7 @@ describe("ScriptsList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
+          <ScriptsList />
         </MemoryRouter>
       </Provider>
     );
@@ -297,9 +276,7 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList />
-        </CompatRouter>
+        <ScriptsList />
       </MemoryRouter>,
       { state }
     );
@@ -318,12 +295,12 @@ describe("ScriptsList", () => {
   });
 
   it("correctly formats script creation date", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
-            created: "Thu, 31 Dec. 2020 22:59:00",
+          factory.script({
+            created: factory.timestamp("Thu, 31 Dec. 2020 22:59:00"),
             script_type: ScriptType.TESTING,
           }),
         ],
@@ -332,26 +309,24 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );
     expect(
       within(screen.getByRole("row", { name: "test name 33" })).getByText(
-        "2020-12-31 22:59"
+        "Thu, 31 Dec. 2020 22:59:00 (UTC)"
       )
     ).toBeInTheDocument();
   });
 
   it("formats script creation date as 'Never' if date cannot be parsed", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [
-          scriptFactory({
-            created: "",
+          factory.script({
+            created: () => factory.timestamp(""),
             script_type: ScriptType.TESTING,
           }),
         ],
@@ -360,9 +335,7 @@ describe("ScriptsList", () => {
 
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <ScriptsList type="testing" />
-        </CompatRouter>
+        <ScriptsList type="testing" />
       </MemoryRouter>,
       { state }
     );
@@ -374,8 +347,8 @@ describe("ScriptsList", () => {
   });
 
   it("displays a message if there are no scripts", () => {
-    const state = rootStateFactory({
-      script: scriptStateFactory({
+    const state = factory.rootState({
+      script: factory.scriptState({
         loaded: true,
         items: [],
       }),

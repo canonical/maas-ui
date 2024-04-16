@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import { Labels as LicenseKeyFormLabels } from "../LicenseKeyForm/LicenseKeyForm";
@@ -9,14 +8,7 @@ import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFo
 import { LicenseKeyEdit, Labels as LicenseKeyLabels } from "./LicenseKeyEdit";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  licenseKeys as licenseKeysFactory,
-  licenseKeysState as licenseKeysStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -25,12 +17,12 @@ describe("LicenseKeyEdit", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loaded: true,
           loading: false,
-          data: osInfoFactory({
+          data: factory.osInfo({
             osystems: [
               ["ubuntu", "Ubuntu"],
               ["windows", "Windows"],
@@ -43,16 +35,16 @@ describe("LicenseKeyEdit", () => {
           }),
         }),
       }),
-      licensekeys: licenseKeysStateFactory({
+      licensekeys: factory.licenseKeysState({
         errors: {},
         items: [
-          licenseKeysFactory({
+          factory.licenseKeys({
             osystem: "windows",
             distro_series: "win2012",
             license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXA",
             resource_uri: "/MAAS/api/2.0/license-key/windows/win2012",
           }),
-          licenseKeysFactory({
+          factory.licenseKeys({
             osystem: "windows",
             distro_series: "win2019",
             license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXX7",
@@ -78,9 +70,7 @@ describe("LicenseKeyEdit", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LicenseKeyEdit />
-          </CompatRouter>
+          <LicenseKeyEdit />
         </MemoryRouter>
       </Provider>
     );
@@ -96,9 +86,7 @@ describe("LicenseKeyEdit", () => {
             { pathname: "/settings/license-keys/foo/bar/edit", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LicenseKeyEdit />
-          </CompatRouter>
+          <LicenseKeyEdit />
         </MemoryRouter>
       </Provider>
     );
@@ -117,14 +105,12 @@ describe("LicenseKeyEdit", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<LicenseKeyEdit />}
-                path="/settings/license-keys/:osystem/:distro_series/edit"
-              />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route
+              element={<LicenseKeyEdit />}
+              path="/settings/license-keys/:osystem/:distro_series/edit"
+            />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

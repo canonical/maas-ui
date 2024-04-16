@@ -2,14 +2,10 @@ import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import TableActions from "@/app/base/components/TableActions";
-import {
-  useFetchActions,
-  useAddMessage,
-  useWindowTitle,
-} from "@/app/base/hooks";
+import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
-import { actions as tokenActions } from "@/app/store/token";
+import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 import type { Token } from "@/app/store/token/types";
 
@@ -54,9 +50,6 @@ const APIKeyList = (): JSX.Element => {
   const loading = useSelector(tokenSelectors.loading);
   const loaded = useSelector(tokenSelectors.loaded);
   const tokens = useSelector(tokenSelectors.all);
-  const saved = useSelector(tokenSelectors.saved);
-
-  useAddMessage(saved, tokenActions.cleanup, "API key deleted successfully.");
 
   useFetchActions([tokenActions.fetch]);
 

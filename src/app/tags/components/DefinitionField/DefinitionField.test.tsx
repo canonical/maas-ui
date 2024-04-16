@@ -7,21 +7,17 @@ import DefinitionField, { INVALID_XPATH_ERROR, Label } from "./DefinitionField";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import type { RootState } from "@/app/store/root/types";
-import {
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           name: "rad",
         }),

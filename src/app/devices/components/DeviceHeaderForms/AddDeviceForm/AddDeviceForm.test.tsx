@@ -2,22 +2,13 @@ import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
 
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment } from "@/app/store/device/types";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
-import { actions as zoneActions } from "@/app/store/zone";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import { subnetActions } from "@/app/store/subnet";
+import { zoneActions } from "@/app/store/zone";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -32,18 +23,18 @@ describe("AddDeviceForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 0, name: "maas" })],
+    state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ id: 0, name: "maas" })],
         loaded: true,
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 0, name: "subnet" })],
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 0, name: "subnet" })],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-        items: [zoneFactory({ id: 0, name: "default" })],
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
+        items: [factory.zone({ id: 0, name: "default" })],
       }),
     });
   });

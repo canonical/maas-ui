@@ -1,12 +1,12 @@
 /* eslint-disable testing-library/no-container */
 import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 
-import { scriptResultData as scriptResultDataFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, userEvent } from "@/testing/utils";
 
 describe("NodeTestDetailsLogs", () => {
   it("displays combined content by default", () => {
-    const log = scriptResultDataFactory();
+    const log = factory.scriptResultData();
 
     const { container } = render(<NodeTestDetailsLogs log={log} />);
 
@@ -16,7 +16,7 @@ describe("NodeTestDetailsLogs", () => {
   });
 
   it("displays other content on click", async () => {
-    const log = scriptResultDataFactory();
+    const log = factory.scriptResultData();
 
     const { container } = render(<NodeTestDetailsLogs log={log} />);
     await userEvent.click(screen.getByTestId("tab-link-yaml"));
@@ -25,7 +25,7 @@ describe("NodeTestDetailsLogs", () => {
   });
 
   it("displays 'no data' for empty content", async () => {
-    const log = scriptResultDataFactory();
+    const log = factory.scriptResultData();
 
     const { container } = render(<NodeTestDetailsLogs log={log} />);
     await userEvent.click(screen.getByTestId("tab-link-stderr"));

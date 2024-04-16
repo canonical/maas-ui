@@ -5,7 +5,7 @@ import DhcpForm from "../DhcpForm";
 
 import { useFetchActions } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
-import { actions as dhcpsnippetActions } from "@/app/store/dhcpsnippet";
+import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
 import { DHCPSnippetMeta } from "@/app/store/dhcpsnippet/types";
 import type { RootState } from "@/app/store/root/types";

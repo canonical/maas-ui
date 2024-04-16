@@ -1,40 +1,83 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetDetails from "./SubnetDetails";
 
 import urls from "@/app/base/urls";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
-import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import type { RootState } from "@/app/store/root/types";
+import { staticRouteActions } from "@/app/store/staticroute";
+import { subnetActions } from "@/app/store/subnet";
+import * as factory from "@/testing/factories";
+import { renderWithBrowserRouter, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
+let state: RootState;
+
+beforeEach(() => {
+  state = factory.rootState({
+    subnet: factory.subnetState({
+      items: [factory.subnet({ id: 1 })],
+    }),
+  });
+});
+
+[
+  {
+    component: "SubnetSummary",
+    path: urls.subnets.subnet.summary({ id: 1 }),
+    title: "Subnet summary",
+  },
+  {
+    component: "StaticRoutes",
+    path: urls.subnets.subnet.staticRoutes({ id: 1 }),
+    title: "Static routes",
+  },
+  {
+    component: "ReservedRanges",
+    path: urls.subnets.subnet.reservedIpAddresses({ id: 1 }),
+    title: "Reserved ranges",
+  },
+  {
+    component: "DHCPSnippets",
+    path: urls.subnets.subnet.dhcpSnippets({ id: 1 }),
+    title: "DHCP snippets",
+  },
+  {
+    component: "SubnetUsedIPs",
+    path: urls.subnets.subnet.usedIpAddresses({ id: 1 }),
+    title: "Used IP addresses",
+  },
+].forEach(({ component, path, title }) => {
+  it(`Displays ${component} at ${path}`, async () => {
+    renderWithBrowserRouter(<SubnetDetails />, {
+      route: path,
+      state,
+      routePattern: `${urls.subnets.subnet.index(null)}/*`,
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
+    });
+  });
+});
+
+it("redirects to summary", () => {
+  renderWithBrowserRouter(<SubnetDetails />, {
+    route: urls.subnets.subnet.index({ id: 1 }),
+    state,
+    routePattern: `${urls.subnets.subnet.index(null)}/*`,
+  });
+
+  expect(window.location.pathname).toBe(urls.subnets.subnet.summary({ id: 1 }));
+});
+
 it("dispatches actions to fetch necessary data and set subnet as active on mount", () => {
-  const state = rootStateFactory();
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<SubnetDetails />}
-              path={urls.subnets.subnet.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<SubnetDetails />, {
+    store,
+    route: urls.subnets.subnet.index({ id: 1 }),
+    routePattern: `${urls.subnets.subnet.index(null)}/*`,
+  });
 
   const expectedActions = [
     subnetActions.get(1),
@@ -52,24 +95,11 @@ it("dispatches actions to fetch necessary data and set subnet as active on mount
 });
 
 it("dispatches actions to unset active subnet and clean up on unmount", () => {
-  const state = rootStateFactory();
   const store = mockStore(state);
-  const { unmount } = render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<SubnetDetails />}
-              path={urls.subnets.subnet.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  const { unmount } = renderWithBrowserRouter(<SubnetDetails />, {
+    store,
+    route: urls.subnets.subnet.index({ id: 1 }),
+  });
 
   unmount();
 
@@ -91,57 +121,29 @@ it("dispatches actions to unset active subnet and clean up on unmount", () => {
 });
 
 it("displays a message if the subnet does not exist", () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
-      items: [],
-      loading: false,
-    }),
+  state.subnet = factory.subnetState({
+    items: [],
+    loading: false,
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<SubnetDetails />}
-              path={urls.subnets.subnet.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<SubnetDetails />, {
+    store,
+    route: urls.subnets.subnet.index({ id: 1 }),
+  });
 
   expect(screen.getByText("Subnet not found")).toBeInTheDocument();
 });
 
 it("shows a spinner if the subnet has not loaded yet", () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
-      items: [],
-      loading: true,
-    }),
+  state.subnet = factory.subnetState({
+    items: [],
+    loading: true,
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
-      >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<SubnetDetails />}
-              path={urls.subnets.subnet.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<SubnetDetails />, {
+    store,
+    route: urls.subnets.subnet.index({ id: 1 }),
+  });
 
   expect(
     screen.getByTestId("section-header-title-spinner")

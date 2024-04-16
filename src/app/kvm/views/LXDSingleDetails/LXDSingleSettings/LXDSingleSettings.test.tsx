@@ -1,20 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDSingleSettings from "./LXDSingleSettings";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podState as podStateFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -22,18 +14,18 @@ describe("LXDSingleSettings", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ id: 1, name: "pod1" })],
+    state = factory.rootState({
+      pod: factory.podState({
+        items: [factory.podDetails({ id: 1, name: "pod1" })],
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
       }),
-      tag: tagStateFactory({
+      tag: factory.tagState({
         loaded: true,
       }),
-      zone: zoneStateFactory({}),
+      zone: factory.zoneState({}),
     });
   });
 
@@ -42,11 +34,7 @@ describe("LXDSingleSettings", () => {
     render(
       <MemoryRouter>
         <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-            </CompatRouter>
-          </MemoryRouter>
+          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
         </Provider>
       </MemoryRouter>
     );
@@ -71,9 +59,7 @@ describe("LXDSingleSettings", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

@@ -1,32 +1,27 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import TagDetails from "./TagDetails";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import { tagActions } from "@/app/store/tag";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           name: "rad",
         }),
-        tagFactory({
+        factory.tag({
           id: 2,
           name: "cool",
         }),
@@ -42,13 +37,12 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagDetails id={1} />}
-            exact
+            element={<TagDetails id={1} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -65,8 +59,8 @@ it("dispatches actions to fetch necessary data", () => {
 });
 
 it("displays a message if the tag does not exist", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: false,
     }),
@@ -77,13 +71,12 @@ it("displays a message if the tag does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagDetails id={1} />}
-            exact
+            element={<TagDetails id={1} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -92,8 +85,8 @@ it("displays a message if the tag does not exist", () => {
 });
 
 it("shows a spinner if the tag has not loaded yet", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: true,
     }),
@@ -104,13 +97,12 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagDetails id={1} />}
-            exact
+            element={<TagDetails id={1} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -125,13 +117,12 @@ it("displays the tag name when not narrow", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagDetails id={1} />}
-            exact
+            element={<TagDetails id={1} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -145,13 +136,12 @@ it("does not display the tag name when narrow", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagDetails id={1} narrow />}
-            exact
+            element={<TagDetails id={1} narrow />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

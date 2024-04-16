@@ -2,40 +2,30 @@ import VirshDetailsHeader from "./VirshDetailsHeader";
 
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podPowerParameters as powerParametersFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  podStatuses as podStatusesFactory,
-  podVmCount as podVmCountFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("VirshDetailsHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          podFactory({
+          factory.pod({
             id: 1,
             name: "pod-1",
-            resources: podResourcesFactory({
-              vm_count: podVmCountFactory({ tracked: 10 }),
+            resources: factory.podResources({
+              vm_count: factory.podVmCount({ tracked: 10 }),
             }),
             type: PodType.VIRSH,
           }),
         ],
-        statuses: podStatusesFactory({
-          1: podStatusFactory(),
+        statuses: factory.podStatuses({
+          1: factory.podStatus(),
         }),
       }),
     });
@@ -51,7 +41,7 @@ describe("VirshDetailsHeader", () => {
   });
 
   it("displays the virsh power address", () => {
-    state.pod.items[0].power_parameters = powerParametersFactory({
+    state.pod.items[0].power_parameters = factory.podPowerParameters({
       power_address: "qemu+ssh://ubuntu@192.168.1.1/system",
     });
     renderWithBrowserRouter(
@@ -64,8 +54,8 @@ describe("VirshDetailsHeader", () => {
   });
 
   it("displays the tracked VMs count", () => {
-    state.pod.items[0].resources = podResourcesFactory({
-      vm_count: podVmCountFactory({ tracked: 5 }),
+    state.pod.items[0].resources = factory.podResources({
+      vm_count: factory.podVmCount({ tracked: 5 }),
     });
     renderWithBrowserRouter(
       <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
@@ -77,7 +67,7 @@ describe("VirshDetailsHeader", () => {
   });
 
   it("displays the pod zone name", () => {
-    state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
+    state.zone.items = [factory.zone({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
     renderWithBrowserRouter(
       <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,

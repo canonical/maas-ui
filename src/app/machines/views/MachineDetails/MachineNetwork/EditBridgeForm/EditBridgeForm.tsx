@@ -12,7 +12,7 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions } from "@/app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { MachineEventErrors } from "@/app/store/machine/types/base";
@@ -24,7 +24,7 @@ import type {
   UpdateInterfaceParams,
 } from "@/app/store/types/node";
 import { getInterfaceTypeText } from "@/app/store/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { preparePayload } from "@/app/utils";
 
@@ -78,6 +78,7 @@ const EditBridgeForm = ({
   return (
     <FormikForm<BridgeFormValues, MachineEventErrors>
       allowUnchanged
+      aria-label="Edit bridge"
       cleanup={cleanup}
       errors={errors}
       initialValues={{

@@ -1,17 +1,12 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FormikForm from "./FormikForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -19,10 +14,10 @@ const mockStore = configureStore();
 describe("FormikForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
+          factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
         ],
       }),
     });
@@ -32,15 +27,13 @@ describe("FormikForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <FormikForm
-              aria-label="example"
-              initialValues={{}}
-              onSubmit={vi.fn()}
-            >
-              Content
-            </FormikForm>
-          </CompatRouter>
+          <FormikForm
+            aria-label="example"
+            initialValues={{}}
+            onSubmit={vi.fn()}
+          >
+            Content
+          </FormikForm>
         </MemoryRouter>
       </Provider>
     );

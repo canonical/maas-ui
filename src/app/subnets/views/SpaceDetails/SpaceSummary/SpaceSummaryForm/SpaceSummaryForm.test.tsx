@@ -1,23 +1,18 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SpaceSummaryForm from "./SpaceSummaryForm";
 
-import { actions as spaceActions } from "@/app/store/space";
-import {
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import { spaceActions } from "@/app/store/space";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, within, waitFor } from "@/testing/utils";
 
 const getRootState = () =>
-  rootStateFactory({
-    space: spaceStateFactory({
+  factory.rootState({
+    space: factory.spaceState({
       items: [
-        spaceFactory({
+        factory.space({
           name: "outer",
           description: "The cold, dark, emptiness of space.",
         }),
@@ -27,7 +22,7 @@ const getRootState = () =>
   });
 
 it("dispatches an update action on submit", async () => {
-  const space = spaceFactory({
+  const space = factory.space({
     name: "outer",
     description: "The cold, dark, emptiness of space.",
   });
@@ -37,9 +32,7 @@ it("dispatches an update action on submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SpaceSummaryForm handleDismiss={vi.fn()} space={space} />
-        </CompatRouter>
+        <SpaceSummaryForm handleDismiss={vi.fn()} space={space} />
       </MemoryRouter>
     </Provider>
   );

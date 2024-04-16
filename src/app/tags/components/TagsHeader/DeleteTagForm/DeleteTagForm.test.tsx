@@ -2,8 +2,8 @@ import { NotificationSeverity } from "@canonical/react-components";
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -13,16 +13,9 @@ import * as baseHooks from "@/app/base/hooks/base";
 import urls from "@/app/base/urls";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStateCount as machineStateCountFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
@@ -41,17 +34,17 @@ let scrollToSpy: Mock;
 beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue(callId);
   vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: [
-        machineFactory({
+        factory.machine({
           status: NodeStatus.DEPLOYED,
           tags: [1],
         }),
       ],
     }),
-    tag: tagStateFactory({
-      items: [tagFactory({ id: 1 })],
+    tag: factory.tagState({
+      items: [factory.tag({ id: 1 })],
     }),
   });
   // Mock the scrollTo method as jsdom doesn't support this and will error.
@@ -68,9 +61,7 @@ it("dispatches an action to delete a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -92,9 +83,7 @@ it("dispatches an action to add a notification when tag successfully deleted", a
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -106,7 +95,7 @@ it("dispatches an action to add a notification when tag successfully deleted", a
 
 it("displays a message when deleting a tag on a machine", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       machine_count: 4,
       name: "tag1",
@@ -116,9 +105,7 @@ it("displays a message when deleting a tag on a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -131,7 +118,7 @@ it("displays a message when deleting a tag on a machine", async () => {
 
 it("displays a message when deleting a tag not on a machine", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       machine_count: 0,
       name: "tag1",
@@ -141,9 +128,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagForm id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <DeleteTagForm id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -154,7 +139,7 @@ it("displays a message when deleting a tag not on a machine", async () => {
 
 it("can return to the list on cancel", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       kernel_opts: "opts",
       machine_count: 1,
@@ -170,13 +155,12 @@ it("can return to the list on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <DeleteTagForm id={1} onClose={onClose} />}
-            exact
+            element={<DeleteTagForm id={1} onClose={onClose} />}
             path={path}
           />
-        </CompatRouter>
+        </Routes>
       </Router>
     </Provider>
   );
@@ -187,7 +171,7 @@ it("can return to the list on cancel", async () => {
 
 it("can return to the details on cancel", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       kernel_opts: "opts",
       machine_count: 1,
@@ -195,7 +179,7 @@ it("can return to the details on cancel", async () => {
     }),
   ];
   state.machine.counts = {
-    [callId]: machineStateCountFactory({
+    [callId]: factory.machineStateCount({
       count: 1,
       loaded: true,
     }),
@@ -209,15 +193,12 @@ it("can return to the details on cancel", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => (
-              <DeleteTagForm fromDetails id={1} onClose={onClose} />
-            )}
-            exact
+            element={<DeleteTagForm fromDetails id={1} onClose={onClose} />}
             path={path}
           />
-        </CompatRouter>
+        </Routes>
       </Router>
     </Provider>
   );

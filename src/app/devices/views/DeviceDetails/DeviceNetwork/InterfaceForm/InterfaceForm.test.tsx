@@ -6,20 +6,7 @@ import type { DeviceNetworkInterface } from "@/app/store/device/types";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceInterface as deviceInterfaceFactory,
-  deviceState as deviceStateFactory,
-  deviceStatus as deviceStatusFactory,
-  deviceStatuses as deviceStatusesFactory,
-  fabric as fabricFactory,
-  networkLink as networkLinkFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -28,21 +15,21 @@ describe("InterfaceForm", () => {
   let state: RootState;
   let nic: DeviceNetworkInterface;
   beforeEach(() => {
-    nic = deviceInterfaceFactory();
-    state = rootStateFactory({
-      device: deviceStateFactory({
+    nic = factory.deviceInterface();
+    state = factory.rootState({
+      device: factory.deviceState({
         items: [
-          deviceDetailsFactory({
+          factory.deviceDetails({
             system_id: "abc123",
           }),
         ],
         loaded: true,
-        statuses: deviceStatusesFactory({
-          abc123: deviceStatusFactory(),
+        statuses: factory.deviceStatuses({
+          abc123: factory.deviceStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 1 }), subnetFactory({ id: 2 })],
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 1 }), factory.subnet({ id: 2 })],
         loaded: true,
       }),
     });
@@ -53,7 +40,7 @@ describe("InterfaceForm", () => {
   });
 
   it("displays a spinner if device is not detailed version", () => {
-    state.device.items[0] = deviceFactory({ system_id: "abc123" });
+    state.device.items[0] = factory.device({ system_id: "abc123" });
     const store = mockStore(state);
     renderWithBrowserRouter(
       <InterfaceForm
@@ -76,14 +63,14 @@ describe("InterfaceForm", () => {
       name: "eth123",
       tags: ["tag1", "tag2"],
     };
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
-    const subnet = subnetFactory({ cidr: "subnet-cidr", name: "subnet-name" });
+    const subnet = factory.subnet({ cidr: "subnet-cidr", name: "subnet-name" });
     state.subnet.items = [subnet];
-    const link = networkLinkFactory({ subnet_id: subnet.id });
-    nic = deviceInterfaceFactory({
+    const link = factory.networkLink({ subnet_id: subnet.id });
+    nic = factory.deviceInterface({
       ...nicData,
       discovered: [],
       links: [link],
@@ -91,7 +78,7 @@ describe("InterfaceForm", () => {
       vlan_id: vlan.id,
     });
     state.device.items = [
-      deviceDetailsFactory({
+      factory.deviceDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -128,8 +115,8 @@ describe("InterfaceForm", () => {
   });
 
   it("sets the initial data if no nic is provided", () => {
-    state.device.items[0] = deviceDetailsFactory({
-      interfaces: [deviceInterfaceFactory({ name: "eth20" })],
+    state.device.items[0] = factory.deviceDetails({
+      interfaces: [factory.deviceInterface({ name: "eth20" })],
       system_id: "abc123",
     });
     const store = mockStore(state);

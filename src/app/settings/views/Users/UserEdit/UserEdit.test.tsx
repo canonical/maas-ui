@@ -1,29 +1,23 @@
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { UserEdit } from "./UserEdit";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("UserEdit", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
-      user: userStateFactory({
+      user: factory.userState({
         loaded: true,
         items: [
-          userFactory({
+          factory.user({
             email: "admin@example.com",
             global_permissions: ["machine_create"],
             id: 1,
@@ -32,7 +26,7 @@ describe("UserEdit", () => {
             sshkeys_count: 0,
             username: "admin",
           }),
-          userFactory({
+          factory.user({
             email: "user@example.com",
             global_permissions: ["machine_create"],
             id: 2,
@@ -54,9 +48,7 @@ describe("UserEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserEdit />
-        </CompatRouter>
+        <UserEdit />
       </MemoryRouter>,
       { state }
     );
@@ -69,9 +61,7 @@ describe("UserEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
       >
-        <CompatRouter>
-          <UserEdit />
-        </CompatRouter>
+        <UserEdit />
       </MemoryRouter>,
       { state }
     );
@@ -85,11 +75,9 @@ describe("UserEdit", () => {
           { pathname: "/settings/users/1/edit", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<UserEdit />} path="/settings/users/:id/edit" />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<UserEdit />} path="/settings/users/:id/edit" />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

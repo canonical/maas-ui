@@ -1,5 +1,5 @@
 import { Button, Icon, ICONS, Tooltip } from "@canonical/react-components";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import { HardwareType } from "@/app/base/enum";
 import { useSendAnalytics } from "@/app/base/hooks";

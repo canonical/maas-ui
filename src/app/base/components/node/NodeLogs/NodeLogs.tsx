@@ -1,6 +1,5 @@
 import { Tabs } from "@canonical/react-components";
-import { Route, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Route, useLocation, Link, Routes } from "react-router-dom";
 
 import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";
@@ -9,6 +8,7 @@ import InstallationOutput from "./InstallationOutput";
 import type { ControllerDetails } from "@/app/store/controller/types";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { Node } from "@/app/store/types/node";
+import { getRelativeRoute } from "@/app/utils";
 
 type GenerateURL = (
   args: { id: Node["system_id"] } | null,
@@ -30,6 +30,7 @@ const NodeLogs = ({ node, urls }: Props): JSX.Element => {
   const showingOutput = pathname.startsWith(
     urls.installationOutput({ id: node.system_id })
   );
+
   return (
     <>
       <div className="u-position--relative">
@@ -53,19 +54,22 @@ const NodeLogs = ({ node, urls }: Props): JSX.Element => {
         />
         <DownloadMenu node={node} />
       </div>
-      <Route
-        exact
-        path={urls.installationOutput(null)}
-        render={() => <InstallationOutput node={node} />}
-      />
-      {[urls.index(null), urls.events(null)].map((path) => (
+      <Routes>
         <Route
-          exact
-          key={path}
-          path={path}
-          render={() => <EventLogs node={node} />}
+          element={<InstallationOutput node={node} />}
+          path={getRelativeRoute(
+            urls.installationOutput(null),
+            urls.index(null)
+          )}
         />
-      ))}
+        {[urls.index(null), urls.events(null)].map((path) => (
+          <Route
+            element={<EventLogs node={node} />}
+            key={path}
+            path={getRelativeRoute(path, urls.index(null))}
+          />
+        ))}
+      </Routes>
     </>
   );
 };

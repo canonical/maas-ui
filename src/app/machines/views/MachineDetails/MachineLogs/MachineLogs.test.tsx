@@ -4,27 +4,23 @@ import { Label as EventLogsLabel } from "@/app/base/components/node/NodeLogs/Eve
 import { Label as InstallationOutputLabel } from "@/app/base/components/node/NodeLogs/InstallationOutput/InstallationOutput";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("MachineLogs", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
       }),
     });
   });
 
   it("displays a spinner if machine is loading", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [],
       }),
     });
@@ -52,6 +48,7 @@ describe("MachineLogs", () => {
       renderWithBrowserRouter(<MachineLogs systemId="abc123" />, {
         route: path,
         state,
+        routePattern: `${urls.machines.machine.logs.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

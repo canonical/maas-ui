@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Col, Row } from "@canonical/react-components";
 
 import type { Props as FormikFormProps } from "@/app/base/components/FormikForm/FormikForm";
@@ -6,7 +8,7 @@ import type { EmptyObject } from "@/app/base/types";
 
 type Props = {
   modelType: string;
-  message?: string;
+  message?: ReactNode;
 } & FormikFormProps<EmptyObject>;
 
 const ModelActionForm = ({
@@ -27,9 +29,14 @@ const ModelActionForm = ({
       <Row>
         <Col size={12}>
           <p className="u-nudge-down--small">
-            {message
-              ? message
-              : `Are you sure you want to delete this ${modelType}? This action is permanent and can not be undone.`}
+            {message ? (
+              message
+            ) : (
+              <>
+                Are you sure you want to delete this {modelType}? This action is
+                permanent and can not be undone.
+              </>
+            )}
           </p>
         </Col>
       </Row>

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import {
   useFetchActions,
@@ -8,7 +8,7 @@ import {
 } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import MachineNotifications from "@/app/machines/views/MachineDetails/MachineNotifications";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { architectures as architecturesSelectors } from "@/app/store/general/selectors";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";

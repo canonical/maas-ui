@@ -3,25 +3,19 @@ import configureStore from "redux-mock-store";
 import RefreshForm from "./RefreshForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  podStatuses as podStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("RefreshForm", () => {
   it("can show the processing status when refreshing the given KVM", async () => {
-    const pod = podFactory({ id: 1 });
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const pod = factory.pod({ id: 1 });
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
-        statuses: podStatusesFactory({
-          [pod.id]: podStatusFactory({ refreshing: true }),
+        statuses: factory.podStatuses({
+          [pod.id]: factory.podStatus({ refreshing: true }),
         }),
       }),
     });
@@ -37,12 +31,12 @@ describe("RefreshForm", () => {
   });
 
   it("correctly dispatches actions to refresh given KVM", async () => {
-    const pod = podFactory({ id: 1 });
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const pod = factory.pod({ id: 1 });
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
-        statuses: podStatusesFactory({
-          [pod.id]: podStatusFactory({ refreshing: false }),
+        statuses: factory.podStatuses({
+          [pod.id]: factory.podStatus({ refreshing: false }),
         }),
       }),
     });

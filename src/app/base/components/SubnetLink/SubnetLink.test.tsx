@@ -1,31 +1,24 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetLink from "./SubnetLink";
 
 import urls from "@/app/base/urls";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("handles when subnets are loading", () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [], loading: true }),
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [], loading: true }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetLink id={1} />
-        </CompatRouter>
+        <SubnetLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -34,16 +27,14 @@ it("handles when subnets are loading", () => {
 });
 
 it("handles when a subnet does not exist", () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [], loading: false }),
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [], loading: false }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetLink id={1} />
-        </CompatRouter>
+        <SubnetLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -53,17 +44,15 @@ it("handles when a subnet does not exist", () => {
 });
 
 it("renders a link if subnets have loaded and it exists", () => {
-  const subnet = subnetFactory();
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet], loading: false }),
+  const subnet = factory.subnet();
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet], loading: false }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetLink id={subnet.id} />
-        </CompatRouter>
+        <SubnetLink id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

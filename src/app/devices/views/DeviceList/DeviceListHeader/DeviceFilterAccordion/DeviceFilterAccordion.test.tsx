@@ -1,26 +1,20 @@
 import DeviceFilterAccordion from "./DeviceFilterAccordion";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("DeviceFilterAccordion", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({
-        items: [deviceFactory({ tags: [1] })],
+    state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.device({ tags: [1] })],
         loaded: true,
       }),
-      tag: tagStateFactory({
-        items: [tagFactory({ id: 1, name: "echidna" })],
+      tag: factory.tagState({
+        items: [factory.tag({ id: 1, name: "echidna" })],
       }),
     });
   });

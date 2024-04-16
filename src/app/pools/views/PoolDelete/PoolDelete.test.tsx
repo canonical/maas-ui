@@ -2,25 +2,21 @@ import configureStore from "redux-mock-store";
 
 import PoolDelete from "./PoolDelete";
 
-import { actions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 let state: RootState;
 beforeEach(() => {
-  state = rootStateFactory({
-    resourcepool: resourcePoolStateFactory({
+  state = factory.rootState({
+    resourcepool: factory.resourcePoolState({
       loaded: true,
       items: [
-        resourcePoolFactory({ id: 1 }),
-        resourcePoolFactory({ name: "default", is_default: true }),
-        resourcePoolFactory({ name: "backup", is_default: false }),
+        factory.resourcePool({ id: 1 }),
+        factory.resourcePool({ name: "default", is_default: true }),
+        factory.resourcePool({ name: "backup", is_default: false }),
       ],
     }),
   });
@@ -44,5 +40,5 @@ it("can delete a resource pool", async () => {
   const action = store
     .getActions()
     .find((action) => action.type === "resourcepool/delete");
-  expect(action).toEqual(actions.delete(1));
+  expect(action).toEqual(resourcePoolActions.delete(1));
 });

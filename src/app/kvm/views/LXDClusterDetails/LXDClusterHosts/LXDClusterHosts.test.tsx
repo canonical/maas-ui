@@ -3,14 +3,7 @@ import LXDClusterHosts from "./LXDClusterHosts";
 import urls from "@/app/base/urls";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmHost as vmHostFactory,
-  vmClusterState as vmClusterStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("LXDClusterHosts", () => {
@@ -18,19 +11,19 @@ describe("LXDClusterHosts", () => {
 
   beforeEach(() => {
     const pods = [
-      podFactory({ id: 111, name: "cluster-member-1", type: PodType.LXD }),
-      podFactory({ id: 222, name: "cluster-member-2", type: PodType.LXD }),
+      factory.pod({ id: 111, name: "cluster-member-1", type: PodType.LXD }),
+      factory.pod({ id: 222, name: "cluster-member-2", type: PodType.LXD }),
     ];
-    const cluster = vmClusterFactory({
+    const cluster = factory.vmCluster({
       id: 1,
-      hosts: pods.map((pod) => vmHostFactory({ id: pod.id, name: pod.name })),
+      hosts: pods.map((pod) => factory.vmHost({ id: pod.id, name: pod.name })),
     });
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         items: pods,
         loaded: true,
       }),
-      vmcluster: vmClusterStateFactory({
+      vmcluster: factory.vmClusterState({
         items: [cluster],
         loaded: true,
       }),

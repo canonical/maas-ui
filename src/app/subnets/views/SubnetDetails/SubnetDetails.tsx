@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import StaticRoutes from "./StaticRoutes";
 import SubnetDetailsHeader from "./SubnetDetailsHeader";
@@ -13,20 +14,22 @@ import PageContent from "@/app/base/components/PageContent/PageContent";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { staticRouteActions } from "@/app/store/staticroute";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { SubnetMeta } from "@/app/store/subnet/types";
 import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
 import ReservedRanges from "@/app/subnets/components/ReservedRanges";
 import subnetURLs from "@/app/subnets/urls";
-import SubnetActionForms from "@/app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/SubnetActionForms";
+import SubnetActionForms from "@/app/subnets/views/SubnetDetails/SubnetActionForms/SubnetActionForms";
+import type { SubnetActionType } from "@/app/subnets/views/SubnetDetails/constants";
 import {
   subnetActionLabels,
   SubnetActionTypes,
 } from "@/app/subnets/views/SubnetDetails/constants";
-import { isId } from "@/app/utils";
+import { getRelativeRoute, isId } from "@/app/utils";
 
 const SubnetDetails = (): JSX.Element => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
@@ -76,8 +79,10 @@ const SubnetDetails = (): JSX.Element => {
   const [, name] = sidePanelContent?.view || [];
   const activeForm =
     name && Object.keys(SubnetActionTypes).includes(name)
-      ? (name as keyof typeof SubnetActionTypes)
+      ? (name as SubnetActionType)
       : null;
+
+  const base = urls.subnets.subnet.index(null);
 
   return (
     <PageContent
@@ -86,19 +91,61 @@ const SubnetDetails = (): JSX.Element => {
         activeForm ? (
           <SubnetActionForms
             activeForm={activeForm}
-            id={subnet.id}
-            setActiveForm={setSidePanelContent}
+            setSidePanelContent={setSidePanelContent}
+            subnetId={subnet.id}
+            {...sidePanelContent?.extras}
           />
         ) : null
       }
       sidePanelTitle={activeForm ? subnetActionLabels[activeForm] : ""}
     >
-      <SubnetSummary id={id} />
-      <Utilisation statistics={subnet.statistics} />
-      <StaticRoutes subnetId={id} />
-      <ReservedRanges subnetId={id} />
-      <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
-      <SubnetUsedIPs subnetId={id} />
+      <Routes>
+        <Route
+          element={
+            <Navigate replace to={urls.subnets.subnet.summary({ id })} />
+          }
+          index
+        />
+        <Route
+          element={
+            <>
+              <SubnetSummary id={id} />
+              <Utilisation statistics={subnet.statistics} />
+            </>
+          }
+          path={getRelativeRoute(urls.subnets.subnet.summary(null), base)}
+        />
+        <Route
+          element={<StaticRoutes subnetId={id} />}
+          path={getRelativeRoute(urls.subnets.subnet.staticRoutes(null), base)}
+        />
+        <Route
+          element={<ReservedRanges subnetId={id} />}
+          path={getRelativeRoute(
+            urls.subnets.subnet.reservedIpAddresses(null),
+            base
+          )}
+        />
+        <Route
+          element={
+            <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
+          }
+          path={getRelativeRoute(urls.subnets.subnet.dhcpSnippets(null), base)}
+        />
+        <Route
+          element={<SubnetUsedIPs subnetId={id} />}
+          path={getRelativeRoute(
+            urls.subnets.subnet.usedIpAddresses(null),
+            base
+          )}
+        />
+        <Route
+          element={
+            <Navigate replace to={urls.subnets.subnet.summary({ id })} />
+          }
+          path={base}
+        />
+      </Routes>
     </PageContent>
   );
 };

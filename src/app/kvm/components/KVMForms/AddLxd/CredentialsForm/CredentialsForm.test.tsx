@@ -5,22 +5,11 @@ import type { NewPodValues } from "../types";
 
 import CredentialsForm from "./CredentialsForm";
 
-import { actions as generalActions } from "@/app/store/general";
-import { actions as podActions } from "@/app/store/pod";
+import { generalActions } from "@/app/store/general";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  generatedCertificate as generatedCertificateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  podProject as podProjectFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, userEvent, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -30,21 +19,21 @@ describe("CredentialsForm", () => {
   let newPodValues: NewPodValues;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           data: null,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory()],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        items: [zoneFactory()],
+      zone: factory.zoneState({
+        items: [factory.zone()],
       }),
     });
     newPodValues = {
@@ -160,7 +149,7 @@ describe("CredentialsForm", () => {
 
   it("moves to the authentication step if certificate successfully generated", () => {
     const setStep = vi.fn();
-    state.general.generatedCertificate.data = generatedCertificateFactory({
+    state.general.generatedCertificate.data = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
     const store = mockStore(state);
@@ -189,7 +178,7 @@ describe("CredentialsForm", () => {
   it(`does not move to the authentication step if certificate successfully
       generated but errors are present`, () => {
     const setStep = vi.fn();
-    state.general.generatedCertificate.data = generatedCertificateFactory({
+    state.general.generatedCertificate.data = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
     state.pod.errors = "Failed to connect to LXD.";
@@ -219,7 +208,7 @@ describe("CredentialsForm", () => {
   it("moves to the project select step if projects exist for given LXD address", () => {
     const setStep = vi.fn();
     state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
+      "192.168.1.1": [factory.podProject()],
     };
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -248,7 +237,7 @@ describe("CredentialsForm", () => {
       address but pod errors are present`, () => {
     const setStep = vi.fn();
     state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
+      "192.168.1.1": [factory.podProject()],
     };
     state.pod.errors = "Failed to fetch projects.";
     const store = mockStore(state);
@@ -281,10 +270,10 @@ describe("CredentialsForm", () => {
   it("displays errors if generating a cert failed", () => {
     const setStep = vi.fn();
     state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
+      "192.168.1.1": [factory.podProject()],
     };
-    state.general = generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
+    state.general = factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
         errors: "name too long",
       }),
     });
@@ -317,7 +306,7 @@ describe("CredentialsForm", () => {
   it("clears the submission errors when unmounting", () => {
     const setSubmissionErrors = vi.fn();
     state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
+      "192.168.1.1": [factory.podProject()],
     };
     state.pod.errors = "Failed to fetch projects.";
     const store = mockStore(state);

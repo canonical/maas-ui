@@ -3,20 +3,15 @@ import type { ReactNode } from "react";
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useActivePod, useKVMDetailsRedirect } from "./hooks";
 
 import urls from "@/app/base/urls";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -25,16 +20,14 @@ const generateWrapper =
   ({ children }: { children: ReactNode }) =>
     (
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname }]}>
-          <CompatRouter>{children}</CompatRouter>
-        </MemoryRouter>
+        <MemoryRouter initialEntries={[{ pathname }]}>{children}</MemoryRouter>
       </Provider>
     );
 
 describe("kvm hooks", () => {
   describe("useActivePod", () => {
     it("gets and sets active pod", () => {
-      const state = rootStateFactory();
+      const state = factory.rootState();
       const store = mockStore(state);
       const podId = 1;
       renderHook(() => useActivePod(podId), {
@@ -56,7 +49,7 @@ describe("kvm hooks", () => {
     });
 
     it("unsets active pod on unmount", () => {
-      const state = rootStateFactory();
+      const state = factory.rootState();
       const store = mockStore(state);
       const podId = 1;
       const { unmount } = renderHook(() => useActivePod(podId), {
@@ -74,7 +67,7 @@ describe("kvm hooks", () => {
     });
 
     it("does not dispatch actions if null id provided", () => {
-      const state = rootStateFactory();
+      const state = factory.rootState();
       const store = mockStore(state);
       renderHook(() => useActivePod(null), {
         wrapper: generateWrapper(store),
@@ -86,8 +79,8 @@ describe("kvm hooks", () => {
 
   describe("useKVMDetailsRedirect", () => {
     it("returns null if pods have not yet loaded", () => {
-      const state = rootStateFactory({
-        pod: podStateFactory({ loaded: false }),
+      const state = factory.rootState({
+        pod: factory.podState({ loaded: false }),
       });
       const store = mockStore(state);
       const { result } = renderHook(() => useKVMDetailsRedirect(1), {
@@ -98,9 +91,9 @@ describe("kvm hooks", () => {
     });
 
     it("can redirect to cluster host page", () => {
-      const state = rootStateFactory({
-        pod: podStateFactory({
-          items: [podFactory({ cluster: 2, id: 1, type: PodType.LXD })],
+      const state = factory.rootState({
+        pod: factory.podState({
+          items: [factory.pod({ cluster: 2, id: 1, type: PodType.LXD })],
           loaded: true,
         }),
       });
@@ -117,9 +110,9 @@ describe("kvm hooks", () => {
     });
 
     it("can redirect to LXD single host page", () => {
-      const state = rootStateFactory({
-        pod: podStateFactory({
-          items: [podFactory({ id: 1, type: PodType.LXD })],
+      const state = factory.rootState({
+        pod: factory.podState({
+          items: [factory.pod({ id: 1, type: PodType.LXD })],
           loaded: true,
         }),
       });
@@ -136,9 +129,9 @@ describe("kvm hooks", () => {
     });
 
     it("can redirect to Virsh page", () => {
-      const state = rootStateFactory({
-        pod: podStateFactory({
-          items: [podFactory({ id: 1, type: PodType.VIRSH })],
+      const state = factory.rootState({
+        pod: factory.podState({
+          items: [factory.pod({ id: 1, type: PodType.VIRSH })],
           loaded: true,
         }),
       });

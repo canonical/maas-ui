@@ -2,14 +2,10 @@ import configureStore from "redux-mock-store";
 
 import MachinesFilterAccordion, { Label } from "./MachinesFilterAccordion";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { FilterGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  machineFilterGroup as machineFilterGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -22,9 +18,9 @@ const mockStore = configureStore<RootState>();
 describe("MachinesFilterAccordion", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        filters: [machineFilterGroupFactory()],
+    state = factory.rootState({
+      machine: factory.machineState({
+        filters: [factory.machineFilterGroup()],
         filtersLoaded: true,
       }),
     });
@@ -65,7 +61,7 @@ describe("MachinesFilterAccordion", () => {
 
   it("can display options", async () => {
     state.machine.filters = [
-      machineFilterGroupFactory({
+      factory.machineFilterGroup({
         key: FilterGroupKey.Status,
         loaded: true,
         options: [{ key: "status1", label: "Status 1" }],

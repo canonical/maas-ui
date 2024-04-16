@@ -1,7 +1,6 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FetchImagesForm, {
@@ -9,14 +8,10 @@ import FetchImagesForm, {
 } from "./FetchImagesForm";
 import { Labels as FetchImagesFormFieldsLabels } from "./FetchImagesFormFields/FetchImagesFormFields";
 
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResourceState as bootResourceStateFactory,
-  bootResourceStatuses as bootResourceStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -36,14 +31,12 @@ describe("FetchImagesForm", () => {
   });
 
   it("can dispatch an action to fetch images", async () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchImagesForm closeForm={vi.fn()} setSource={vi.fn()} />
-          </CompatRouter>
+          <FetchImagesForm closeForm={vi.fn()} setSource={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -99,19 +92,17 @@ describe("FetchImagesForm", () => {
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
     const setSource = vi.fn();
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         eventErrors: [],
-        statuses: bootResourceStatusesFactory({ fetching: false }),
+        statuses: factory.bootResourceStatuses({ fetching: false }),
       }),
     });
     const store = mockStore(state);
     const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchImagesForm closeForm={vi.fn()} setSource={setSource} />
-          </CompatRouter>
+          <FetchImagesForm closeForm={vi.fn()} setSource={setSource} />
         </MemoryRouter>
       </Provider>
     );

@@ -1,25 +1,24 @@
+import configureStore from "redux-mock-store";
+
 import UserDelete from "./UserDelete";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 let state: RootState;
 
+const mockStore = configureStore<RootState>();
+
 beforeEach(() => {
-  state = rootStateFactory({
-    status: statusStateFactory({
+  state = factory.rootState({
+    status: factory.statusState({
       externalAuthURL: null,
     }),
-    user: userStateFactory({
+    user: factory.userState({
       loaded: true,
       items: [
-        userFactory({
+        factory.user({
           email: "admin@example.com",
           global_permissions: ["machine_create"],
           id: 1,
@@ -40,4 +39,17 @@ it("renders", () => {
     routePattern: "/settings/users/:id/edit",
   });
   expect(screen.getByRole("form", { name: "Delete user" }));
+});
+
+it("can add a message when a user is deleted", () => {
+  state.user.saved = true;
+  const store = mockStore(state);
+  renderWithBrowserRouter(<UserDelete />, {
+    store,
+    route: "/settings/users/1/edit",
+    routePattern: "/settings/users/:id/edit",
+  });
+  const actions = store.getActions();
+  expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
+  expect(actions.some((action) => action.type === "message/add")).toBe(true);
 });

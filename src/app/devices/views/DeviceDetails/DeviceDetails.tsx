@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import DeviceConfiguration from "./DeviceConfiguration";
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
@@ -16,11 +15,11 @@ import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import DeviceHeaderForms from "@/app/devices/components/DeviceHeaderForms";
 import DeviceNetworkForms from "@/app/devices/components/DeviceNetworkForms";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import { DeviceMeta } from "@/app/store/device/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { isId, getRelativeRoute } from "@/app/utils";
 
@@ -133,7 +132,7 @@ const DeviceDetails = (): JSX.Element => {
         path={getRelativeRoute(urls.devices.device.configuration(null), base)}
       />
       <Route
-        element={<Redirect to={urls.devices.device.summary({ id })} />}
+        element={<Navigate replace to={urls.devices.device.summary({ id })} />}
         path="/"
       />
     </Routes>

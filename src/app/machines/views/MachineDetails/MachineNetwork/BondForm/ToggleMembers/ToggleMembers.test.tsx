@@ -4,10 +4,7 @@ import ToggleMembers from "./ToggleMembers";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineInterface as machineInterfaceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -15,17 +12,17 @@ const mockStore = configureStore<RootState>();
 describe("ToggleMembers", () => {
   it("disables the edit button if there are no additional valid interfaces", () => {
     const interfaces = [
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
     ];
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     renderWithBrowserRouter(
       <ToggleMembers
         selected={selected}
@@ -40,20 +37,20 @@ describe("ToggleMembers", () => {
 
   it("disables the update button if two interfaces aren't selected", () => {
     const interfaces = [
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
-      machineInterfaceFactory({
+      factory.machineInterface({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
     ];
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     const { unmount } = renderWithBrowserRouter(
       <ToggleMembers
         editingMembers

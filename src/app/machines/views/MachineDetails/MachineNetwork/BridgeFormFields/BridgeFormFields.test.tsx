@@ -4,14 +4,14 @@ import configureStore from "redux-mock-store";
 import BridgeFormFields from "./BridgeFormFields";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("BridgeFormFields", () => {
   it("does not display the fd field if stp isn't on", async () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     renderWithBrowserRouter(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BridgeFormFields />
@@ -24,7 +24,7 @@ describe("BridgeFormFields", () => {
   });
 
   it("displays the fd field if stp is on", async () => {
-    const store = mockStore(rootStateFactory());
+    const store = mockStore(factory.rootState());
     renderWithBrowserRouter(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <BridgeFormFields />

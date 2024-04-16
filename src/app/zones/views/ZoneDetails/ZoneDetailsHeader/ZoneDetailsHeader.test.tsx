@@ -1,20 +1,11 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,14 +13,14 @@ const mockStore = configureStore();
 describe("ZoneDetailsHeader", () => {
   let initialState: RootState;
 
-  const testZones = zoneStateFactory({
-    genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+  const testZones = factory.zoneState({
+    genericActions: factory.zoneGenericActions({ fetch: "success" }),
     items: [
-      zoneFactory({
+      factory.zone({
         id: 1,
         name: "zone-name",
       }),
-      zoneFactory({
+      factory.zone({
         id: 2,
         name: "zone2-name",
       }),
@@ -37,10 +28,10 @@ describe("ZoneDetailsHeader", () => {
   });
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: true }),
+    initialState = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: true }),
         }),
       }),
       zone: testZones,
@@ -55,13 +46,9 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={1} />}
-            />
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetailsHeader id={1} />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -78,13 +65,9 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/3", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={3} />}
-            />
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetailsHeader id={3} />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -100,17 +83,15 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/2", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={2} />}
-            />
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetailsHeader id={2} />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByTestId("delete-zone")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Delete AZ" })
+    ).toBeInTheDocument();
   });
 
   it("hides delete button when zone id is 1 (as this is the default)", () => {
@@ -121,13 +102,9 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={1} />}
-            />
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetailsHeader id={1} />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );
@@ -135,10 +112,10 @@ describe("ZoneDetailsHeader", () => {
   });
 
   it("hides delete button for all zones when user isn't admin", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: false }),
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: false }),
         }),
       }),
       zone: testZones,
@@ -149,13 +126,9 @@ describe("ZoneDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/2", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Route
-              exact
-              path="/zone/:id"
-              render={() => <ZoneDetailsHeader id={2} />}
-            />
-          </CompatRouter>
+          <Routes>
+            <Route element={<ZoneDetailsHeader id={2} />} path="/zone/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

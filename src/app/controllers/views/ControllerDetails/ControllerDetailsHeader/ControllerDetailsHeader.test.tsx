@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerDetailsHeader from "./ControllerDetailsHeader";
@@ -8,19 +7,14 @@ import ControllerDetailsHeader from "./ControllerDetailsHeader";
 import type { ControllerActions } from "@/app/store/controller/types";
 import { NodeActions } from "@/app/store/types/node";
 import { getNodeActionTitle } from "@/app/store/utils";
-import {
-  controller as controllerFactory,
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("displays a spinner as the title if controller has not loaded yet", () => {
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [],
     }),
   });
@@ -28,12 +22,10 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId="abc123"
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId="abc123"
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -44,9 +36,9 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
 });
 
 it("displays a spinner as the subtitle if loaded controller is not the detailed type", () => {
-  const controller = controllerFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
   });
@@ -54,12 +46,10 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId={controller.system_id}
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId={controller.system_id}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -70,9 +60,9 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
 });
 
 it("displays the controller's FQDN once loaded and detailed type", () => {
-  const controllerDetails = controllerDetailsFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controllerDetails = factory.controllerDetails();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controllerDetails],
     }),
   });
@@ -80,12 +70,10 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId={controllerDetails.system_id}
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId={controllerDetails.system_id}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -101,11 +89,11 @@ it("displays actions in take action menu", async () => {
     NodeActions.IMPORT_IMAGES,
     NodeActions.DELETE,
   ];
-  const controllerDetails = controllerDetailsFactory({
+  const controllerDetails = factory.controllerDetails({
     actions,
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controllerDetails],
     }),
   });
@@ -113,12 +101,10 @@ it("displays actions in take action menu", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerDetailsHeader
-            setSidePanelContent={vi.fn()}
-            systemId={controllerDetails.system_id}
-          />
-        </CompatRouter>
+        <ControllerDetailsHeader
+          setSidePanelContent={vi.fn()}
+          systemId={controllerDetails.system_id}
+        />
       </MemoryRouter>
     </Provider>
   );

@@ -1,11 +1,11 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import { getVLANDisplay } from "@/app/store/vlan/utils";

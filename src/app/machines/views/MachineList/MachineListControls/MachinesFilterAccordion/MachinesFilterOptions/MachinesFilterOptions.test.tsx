@@ -2,15 +2,11 @@ import configureStore from "redux-mock-store";
 
 import MachinesFilterOptions, { Label } from "./MachinesFilterOptions";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FilterGroup } from "@/app/store/machine/types";
 import { FilterGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  machineFilterGroup as machineFilterGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -25,13 +21,13 @@ describe("MachinesFilterOptions", () => {
   let filterGroup: FilterGroup;
 
   beforeEach(() => {
-    filterGroup = machineFilterGroupFactory({
+    filterGroup = factory.machineFilterGroup({
       key: FilterGroupKey.Status,
       options: [{ key: "status1", label: "Status 1" }],
       loaded: true,
     });
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         filters: [filterGroup],
         filtersLoaded: true,
       }),
@@ -188,7 +184,7 @@ describe("MachinesFilterOptions", () => {
   });
 
   it("displays workload annotation filters", () => {
-    filterGroup = machineFilterGroupFactory({
+    filterGroup = factory.machineFilterGroup({
       key: FilterGroupKey.Workloads,
       loaded: true,
       options: [
@@ -217,7 +213,7 @@ describe("MachinesFilterOptions", () => {
   });
 
   it("sets search text for workload annotation filters", async () => {
-    filterGroup = machineFilterGroupFactory({
+    filterGroup = factory.machineFilterGroup({
       key: FilterGroupKey.Workloads,
       loaded: true,
       options: [

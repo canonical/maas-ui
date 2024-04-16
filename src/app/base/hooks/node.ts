@@ -4,12 +4,12 @@ import type { ButtonProps, MenuLink } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import {
   machineActions as machineActionsSelectors,
   powerTypes as powerTypesSelectors,
 } from "@/app/store/general/selectors";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineActions, MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";

@@ -63,7 +63,7 @@ context("Controller details", () => {
   });
 
   it("lists valid actions on the controller details page", () => {
-    cy.findByText(/Take action/).click();
+    cy.findByRole("button", { name: "Take action" }).click();
 
     [/Set zone/i, /Delete/i].forEach((name) =>
       cy

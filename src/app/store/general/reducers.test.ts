@@ -1,14 +1,6 @@
 import reducers, { actions } from "./slice";
 
-import {
-  bondOptions as bondOptionsFactory,
-  bondOptionsState as bondOptionsStateFactory,
-  generalState as generalStateFactory,
-  generatedCertificate as certificateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  tlsCertificate as tlsCertificateFactory,
-  tlsCertificateState as tlsCertificateStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("general reducer", () => {
   it("should return the initial state", () => {
@@ -107,33 +99,33 @@ describe("general reducer", () => {
   });
 
   it("reduces fetchBondOptionsStart", () => {
-    const initialState = generalStateFactory({
-      bondOptions: bondOptionsStateFactory({ loading: false }),
+    const initialState = factory.generalState({
+      bondOptions: factory.bondOptionsState({ loading: false }),
     });
     expect(reducers(initialState, actions.fetchBondOptionsStart())).toEqual(
-      generalStateFactory({
-        bondOptions: bondOptionsStateFactory({ loading: true }),
+      factory.generalState({
+        bondOptions: factory.bondOptionsState({ loading: true }),
       })
     );
   });
 
   it("reduces fetchBondOptionsSuccess", () => {
-    const initialState = generalStateFactory({
-      bondOptions: bondOptionsStateFactory({
+    const initialState = factory.generalState({
+      bondOptions: factory.bondOptionsState({
         data: undefined,
         loading: true,
         loaded: false,
       }),
     });
-    const fetchedBondOptions = bondOptionsFactory();
+    const fetchedBondOptions = factory.bondOptions();
     expect(
       reducers(
         initialState,
         actions.fetchBondOptionsSuccess(fetchedBondOptions)
       )
     ).toEqual(
-      generalStateFactory({
-        bondOptions: bondOptionsStateFactory({
+      factory.generalState({
+        bondOptions: factory.bondOptionsState({
           data: fetchedBondOptions,
           loading: false,
           loaded: true,
@@ -143,8 +135,8 @@ describe("general reducer", () => {
   });
 
   it("reduces fetchBondOptionsError", () => {
-    const initialState = generalStateFactory({
-      bondOptions: bondOptionsStateFactory({
+    const initialState = factory.generalState({
+      bondOptions: factory.bondOptionsState({
         errors: null,
         loaded: false,
         loading: true,
@@ -157,8 +149,8 @@ describe("general reducer", () => {
         actions.fetchBondOptionsError("Could not fetch bond options")
       )
     ).toEqual(
-      generalStateFactory({
-        bondOptions: bondOptionsStateFactory({
+      factory.generalState({
+        bondOptions: factory.bondOptionsState({
           errors: "Could not fetch bond options",
           loaded: false,
           loading: false,
@@ -168,33 +160,33 @@ describe("general reducer", () => {
   });
 
   it("reduces fetchTlsCertificateStart", () => {
-    const initialState = generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({ loading: false }),
+    const initialState = factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({ loading: false }),
     });
     expect(reducers(initialState, actions.fetchTlsCertificateStart())).toEqual(
-      generalStateFactory({
-        tlsCertificate: tlsCertificateStateFactory({ loading: true }),
+      factory.generalState({
+        tlsCertificate: factory.tlsCertificateState({ loading: true }),
       })
     );
   });
 
   it("reduces fetchTlsCertificateSuccess", () => {
-    const initialState = generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+    const initialState = factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         data: null,
         loading: true,
         loaded: false,
       }),
     });
-    const fetchedTlsCertificate = tlsCertificateFactory();
+    const fetchedTlsCertificate = factory.tlsCertificate();
     expect(
       reducers(
         initialState,
         actions.fetchTlsCertificateSuccess(fetchedTlsCertificate)
       )
     ).toEqual(
-      generalStateFactory({
-        tlsCertificate: tlsCertificateStateFactory({
+      factory.generalState({
+        tlsCertificate: factory.tlsCertificateState({
           data: fetchedTlsCertificate,
           loading: false,
           loaded: true,
@@ -204,8 +196,8 @@ describe("general reducer", () => {
   });
 
   it("reduces fetchTlsCertificateError", () => {
-    const initialState = generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
+    const initialState = factory.generalState({
+      tlsCertificate: factory.tlsCertificateState({
         errors: null,
         loaded: false,
         loading: true,
@@ -216,8 +208,8 @@ describe("general reducer", () => {
     expect(
       reducers(initialState, actions.fetchTlsCertificateError(error))
     ).toEqual(
-      generalStateFactory({
-        tlsCertificate: tlsCertificateStateFactory({
+      factory.generalState({
+        tlsCertificate: factory.tlsCertificateState({
           errors: error,
           loaded: false,
           loading: false,
@@ -227,15 +219,15 @@ describe("general reducer", () => {
   });
 
   it("reduces generateCertificateStart", () => {
-    const initialState = generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
+    const initialState = factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
         loading: false,
       }),
     });
 
     expect(reducers(initialState, actions.generateCertificateStart())).toEqual(
-      generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+      factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           loading: true,
         }),
       })
@@ -243,9 +235,9 @@ describe("general reducer", () => {
   });
 
   it("reduces generateCertificateSuccess", () => {
-    const certificate = certificateFactory();
-    const initialState = generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
+    const certificate = factory.generatedCertificate();
+    const initialState = factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
         data: null,
         loaded: false,
         loading: true,
@@ -255,8 +247,8 @@ describe("general reducer", () => {
     expect(
       reducers(initialState, actions.generateCertificateSuccess(certificate))
     ).toEqual(
-      generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+      factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           data: certificate,
           loaded: true,
           loading: false,
@@ -266,8 +258,8 @@ describe("general reducer", () => {
   });
 
   it("reduces generateCertificateError", () => {
-    const initialState = generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
+    const initialState = factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
         errors: null,
         loaded: false,
         loading: true,
@@ -280,8 +272,8 @@ describe("general reducer", () => {
         actions.generateCertificateError("Could not generate certificate")
       )
     ).toEqual(
-      generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+      factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           errors: "Could not generate certificate",
           loaded: false,
           loading: false,
@@ -291,9 +283,9 @@ describe("general reducer", () => {
   });
 
   it("reduces clearGeneratedCertificate", () => {
-    const initialState = generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
-        data: certificateFactory(),
+    const initialState = factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
+        data: factory.generatedCertificate(),
         errors: "Uh oh",
         loaded: true,
         loading: true,
@@ -301,8 +293,8 @@ describe("general reducer", () => {
     });
 
     expect(reducers(initialState, actions.clearGeneratedCertificate())).toEqual(
-      generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+      factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           data: null,
           errors: null,
           loaded: false,
@@ -313,9 +305,9 @@ describe("general reducer", () => {
   });
 
   it("reduces cleanupGeneratedCertificateErrors", () => {
-    const cert = certificateFactory();
-    const initialState = generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
+    const cert = factory.generatedCertificate();
+    const initialState = factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
         data: cert,
         errors: "Uh oh",
         loaded: true,
@@ -326,8 +318,8 @@ describe("general reducer", () => {
     expect(
       reducers(initialState, actions.cleanupGeneratedCertificateErrors())
     ).toEqual(
-      generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+      factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           data: cert,
           errors: null,
           loaded: true,

@@ -13,17 +13,7 @@ import {
   ScriptResultNames,
 } from "@/app/store/scriptresult/types";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  controllerState as controllerStateFactory,
-  controllerDetails as controllerDetailsFactory,
-  machineState as machineStateFactory,
-  machineDetails as machineDetailsFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultData as scriptResultDataFactory,
-  scriptResultState as scriptResultStateFactory,
-  nodeScriptResultState as nodeScriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 vi.mock("js-file-download", () => {
@@ -42,27 +32,27 @@ describe("DownloadMenu", () => {
     vi.useFakeTimers().setSystemTime(new Date("2021-03-25").getTime());
     // Work around for RTL async events with fake timers.
     userEvt = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    machine = machineDetailsFactory({
+    machine = factory.machineDetails({
       fqdn: "hungry-wombat.aus",
       system_id: "abc123",
     });
-    controller = controllerDetailsFactory({
+    controller = factory.controllerDetails({
       fqdn: "hungry-wombat.aus",
       system_id: "abc123",
     });
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         items: [controller],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [machine],
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1] },
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         items: [
-          scriptResultFactory({
+          factory.scriptResult({
             id: 1,
             name: ScriptResultNames.INSTALL_LOG,
             result_type: ScriptResultType.INSTALLATION,
@@ -70,7 +60,7 @@ describe("DownloadMenu", () => {
           }),
         ],
         logs: {
-          1: scriptResultDataFactory({
+          1: factory.scriptResultData({
             combined: "installation-output log",
           }),
         },
@@ -259,7 +249,7 @@ describe("DownloadMenu", () => {
     state.machine.items[0].status = NodeStatus.FAILED_DEPLOYMENT;
     state.nodescriptresult.items.abc123.push(2);
     state.scriptresult.items.push(
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         name: ScriptResultNames.CURTIN_LOG,
         result_type: ScriptResultType.INSTALLATION,
@@ -280,7 +270,7 @@ describe("DownloadMenu", () => {
     state.machine.items[0].status = NodeStatus.FAILED_COMMISSIONING;
     state.nodescriptresult.items.abc123.push(2);
     state.scriptresult.items.push(
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         name: ScriptResultNames.CURTIN_LOG,
         result_type: ScriptResultType.INSTALLATION,
@@ -301,7 +291,7 @@ describe("DownloadMenu", () => {
     state.machine.items[0].status = NodeStatus.FAILED_DEPLOYMENT;
     state.nodescriptresult.items.abc123.push(2);
     state.scriptresult.items.push(
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         name: ScriptResultNames.CURTIN_LOG,
         result_type: ScriptResultType.INSTALLATION,

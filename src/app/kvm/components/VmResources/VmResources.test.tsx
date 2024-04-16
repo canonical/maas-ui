@@ -4,19 +4,11 @@ import configureStore from "redux-mock-store";
 import VmResources, { Label } from "./VmResources";
 
 import { Label as MachineListLabel } from "@/app/machines/views/MachineList/MachineListTable/MachineListTable";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  machineState as machineStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  machine as machineFactory,
-  pod as podFactory,
-  podState as podStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -40,16 +32,16 @@ describe("VmResources", () => {
   beforeEach(() => {
     vi.spyOn(query, "generateCallId").mockReturnValue(callId);
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue(callId);
-    const machines = [machineFactory(), machineFactory()];
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    const machines = [factory.machine(), factory.machine()];
+    state = factory.rootState({
+      machine: factory.machineState({
         items: machines,
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             count: machines.length,
             loaded: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: machines.map(({ system_id }) => system_id),
                 name: "Deployed",
               }),
@@ -57,8 +49,8 @@ describe("VmResources", () => {
           }),
         },
       }),
-      pod: podStateFactory({
-        items: [podFactory({ id: 1, name: "pod1", type: PodType.LXD })],
+      pod: factory.podState({
+        items: [factory.pod({ id: 1, name: "pod1", type: PodType.LXD })],
       }),
     });
   });
@@ -70,7 +62,7 @@ describe("VmResources", () => {
   it("disables the dropdown if no VMs are provided", () => {
     state.machine.lists[callId].count = 0;
     state.machine.lists[callId].groups = [
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         items: [],
         name: "Deployed",
       }),

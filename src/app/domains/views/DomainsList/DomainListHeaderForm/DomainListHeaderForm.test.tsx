@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainListHeaderForm, {
@@ -8,7 +7,7 @@ import DomainListHeaderForm, {
 } from "./DomainListHeaderForm";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -21,7 +20,7 @@ const mockStore = configureStore();
 describe("DomainListHeaderForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("runs closeForm function when the cancel button is clicked", async () => {
@@ -39,9 +38,7 @@ describe("DomainListHeaderForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DomainListHeaderForm closeForm={vi.fn()} />
-          </CompatRouter>
+          <DomainListHeaderForm closeForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

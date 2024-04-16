@@ -1,7 +1,7 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import { UserForm, Labels as UserFormLabels } from "./UserForm";
@@ -10,11 +10,7 @@ import { Labels as BaseUserFormLabels } from "@/app/base/components/UserForm/Use
 import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
 import type { User } from "@/app/store/user/types";
-import {
-  user as userFactory,
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -29,20 +25,18 @@ describe("UserForm", () => {
   let user: User;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
     });
-    user = userFactory();
+    user = factory.user();
   });
 
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <UserForm user={user} />
-        </CompatRouter>
+        <UserForm user={user} />
       </MemoryRouter>,
       { state }
     );
@@ -58,9 +52,7 @@ describe("UserForm", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -81,9 +73,7 @@ describe("UserForm", () => {
 
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <UserForm user={user} />
-        </CompatRouter>
+        <UserForm user={user} />
       </Router>,
       { state }
     );
@@ -96,9 +86,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -156,9 +144,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -225,9 +211,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm />
-          </CompatRouter>
+          <UserForm />
         </MemoryRouter>
       </Provider>
     );
@@ -291,9 +275,7 @@ describe("UserForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
+          <UserForm user={user} />
         </MemoryRouter>
       </Provider>
     );
@@ -306,9 +288,7 @@ describe("UserForm", () => {
   it("displays a checkbox for making the user a MAAS admin", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <UserForm user={user} />
-        </CompatRouter>
+        <UserForm user={user} />
       </MemoryRouter>,
       { state }
     );

@@ -1,7 +1,6 @@
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeConfigurationFields, { Label } from "./NodeConfigurationFields";
@@ -11,13 +10,7 @@ import * as baseHooks from "@/app/base/hooks/base";
 import type { RootState } from "@/app/store/root/types";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
@@ -27,19 +20,19 @@ let tags: Tag[];
 
 beforeEach(() => {
   tags = [
-    tagFactory({ id: 1, name: "tag1" }),
-    tagFactory({ id: 2, name: "tag2" }),
-    tagFactory({ id: 3, name: "tag3" }),
+    factory.tag({ id: 1, name: "tag1" }),
+    factory.tag({ id: 2, name: "tag2" }),
+    factory.tag({ id: 3, name: "tag3" }),
   ];
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: [
-        machineFactory({
+        factory.machine({
           tags: [],
         }),
       ],
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: tags,
     }),
   });
@@ -57,11 +50,9 @@ it("can open a create tag form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
-            <NodeConfigurationFields />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
+          <NodeConfigurationFields />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -77,8 +68,8 @@ it("can open a create tag form", async () => {
 });
 
 it("does not display automatic tags on the list", async () => {
-  const manualTag = tagFactory({ id: 1, name: "tag1" });
-  const automaticTag = tagFactory({
+  const manualTag = factory.tag({ id: 1, name: "tag1" });
+  const automaticTag = factory.tag({
     id: 4,
     name: "automatic-tag",
     definition: `//node[@class="system"]/vendor = "QEMU"`,
@@ -88,11 +79,9 @@ it("does not display automatic tags on the list", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
-            <NodeConfigurationFields />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
+          <NodeConfigurationFields />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -114,11 +103,9 @@ it("updates the new tags after creating a tag", async () => {
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
-            <NodeConfigurationFields />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
+          <NodeConfigurationFields />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -132,7 +119,7 @@ it("updates the new tags after creating a tag", async () => {
   );
 
   mockFormikFormSaved();
-  const newTag = tagFactory({ id: 8, name: "new-tag" });
+  const newTag = factory.tag({ id: 8, name: "new-tag" });
   state.tag.saved = true;
   state.tag.items.push(newTag);
   await userEvent.click(

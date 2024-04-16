@@ -1,22 +1,12 @@
 import subnet from "./selectors";
 
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  podDetails as podDetailsFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetEventError as subnetEventErrorFactory,
-  subnetState as subnetStateFactory,
-  subnetStatus as subnetStatusFactory,
-  subnetStatuses as subnetStatusesFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("subnet selectors", () => {
   it("can get all items", () => {
-    const items = [subnetFactory(), subnetFactory()];
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const items = [factory.subnet(), factory.subnet()];
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items,
       }),
     });
@@ -24,8 +14,8 @@ describe("subnet selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         loading: true,
       }),
     });
@@ -33,8 +23,8 @@ describe("subnet selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         loaded: true,
       }),
     });
@@ -42,9 +32,9 @@ describe("subnet selectors", () => {
   });
 
   it("can get a subnet by id", () => {
-    const items = [subnetFactory({ id: 808 }), subnetFactory({ id: 909 })];
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const items = [factory.subnet({ id: 808 }), factory.subnet({ id: 909 })];
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items,
       }),
     });
@@ -53,12 +43,12 @@ describe("subnet selectors", () => {
 
   it("can get multiple subnets by id", () => {
     const items = [
-      subnetFactory({ id: 707 }),
-      subnetFactory({ id: 808 }),
-      subnetFactory({ id: 909 }),
+      factory.subnet({ id: 707 }),
+      factory.subnet({ id: 808 }),
+      factory.subnet({ id: 909 }),
     ];
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items,
       }),
     });
@@ -70,11 +60,11 @@ describe("subnet selectors", () => {
 
   it("can get a subnet by cidr", () => {
     const items = [
-      subnetFactory({ cidr: "cidr0" }),
-      subnetFactory({ cidr: "cidr1" }),
+      factory.subnet({ cidr: "cidr0" }),
+      factory.subnet({ cidr: "cidr1" }),
     ];
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items,
       }),
     });
@@ -83,13 +73,13 @@ describe("subnet selectors", () => {
 
   it("can get subnets that are available to a given pod", () => {
     const subnets = [
-      subnetFactory({ vlan: 1 }),
-      subnetFactory({ vlan: 2 }),
-      subnetFactory({ vlan: 3 }),
+      factory.subnet({ vlan: 1 }),
+      factory.subnet({ vlan: 2 }),
+      factory.subnet({ vlan: 3 }),
     ];
-    const pod = podDetailsFactory({ attached_vlans: [1, 2] });
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const pod = factory.podDetails({ attached_vlans: [1, 2] });
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: subnets,
       }),
     });
@@ -98,12 +88,12 @@ describe("subnet selectors", () => {
 
   it("can get subnets for a VLAN", () => {
     const subnets = [
-      subnetFactory({ vlan: 1 }),
-      subnetFactory({ vlan: 2 }),
-      subnetFactory({ vlan: 1 }),
+      factory.subnet({ vlan: 1 }),
+      factory.subnet({ vlan: 2 }),
+      factory.subnet({ vlan: 1 }),
     ];
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: subnets,
       }),
     });
@@ -112,14 +102,14 @@ describe("subnet selectors", () => {
 
   it("can get subnets for a fabric", () => {
     const subnets = [
-      subnetFactory({ vlan: 1 }),
-      subnetFactory({ vlan: 2 }),
-      subnetFactory({ vlan: 3 }),
+      factory.subnet({ vlan: 1 }),
+      factory.subnet({ vlan: 2 }),
+      factory.subnet({ vlan: 3 }),
     ];
-    const fabric = fabricFactory({ id: 101, vlan_ids: [1, 3] });
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({ items: [fabric] }),
-      subnet: subnetStateFactory({
+    const fabric = factory.fabric({ id: 101, vlan_ids: [1, 3] });
+    const state = factory.rootState({
+      fabric: factory.fabricState({ items: [fabric] }),
+      subnet: factory.subnetState({
         items: subnets,
       }),
     });
@@ -131,13 +121,13 @@ describe("subnet selectors", () => {
 
   it("can get PXE-enabled subnets that are available to a given pod", () => {
     const subnets = [
-      subnetFactory({ vlan: 1 }),
-      subnetFactory({ vlan: 2 }),
-      subnetFactory({ vlan: 3 }),
+      factory.subnet({ vlan: 1 }),
+      factory.subnet({ vlan: 2 }),
+      factory.subnet({ vlan: 3 }),
     ];
-    const pod = podDetailsFactory({ boot_vlans: [1, 2] });
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const pod = factory.podDetails({ boot_vlans: [1, 2] });
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         items: subnets,
       }),
     });
@@ -148,8 +138,8 @@ describe("subnet selectors", () => {
   });
 
   it("can get the active subnet's id", () => {
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         active: 0,
       }),
     });
@@ -157,9 +147,9 @@ describe("subnet selectors", () => {
   });
 
   it("can get the active subnet", () => {
-    const activeFabric = subnetFactory();
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const activeFabric = factory.subnet();
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         active: activeFabric.id,
         items: [activeFabric],
       }),
@@ -168,11 +158,11 @@ describe("subnet selectors", () => {
   });
 
   it("can get a status for a subnet", () => {
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
-        items: [subnetFactory({ id: 0 })],
-        statuses: subnetStatusesFactory({
-          0: subnetStatusFactory({ scanning: true }),
+    const state = factory.rootState({
+      subnet: factory.subnetState({
+        items: [factory.subnet({ id: 0 })],
+        statuses: factory.subnetStatuses({
+          0: factory.subnetStatus({ scanning: true }),
         }),
       }),
     });
@@ -181,11 +171,11 @@ describe("subnet selectors", () => {
 
   it("can get event errors for a subnet", () => {
     const subnetEventErrors = [
-      subnetEventErrorFactory({ id: 123 }),
-      subnetEventErrorFactory(),
+      factory.subnetEventError({ id: 123 }),
+      factory.subnetEventError(),
     ];
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         eventErrors: subnetEventErrors,
       }),
     });
@@ -196,11 +186,11 @@ describe("subnet selectors", () => {
 
   it("can get event errors for a subnet and a provided event", () => {
     const subnetEventErrors = [
-      subnetEventErrorFactory({ id: 123, event: "scan" }),
-      subnetEventErrorFactory({ id: 123, event: "something-else" }),
+      factory.subnetEventError({ id: 123, event: "scan" }),
+      factory.subnetEventError({ id: 123, event: "something-else" }),
     ];
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({
+    const state = factory.rootState({
+      subnet: factory.subnetState({
         eventErrors: subnetEventErrors,
       }),
     });

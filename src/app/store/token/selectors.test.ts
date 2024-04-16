@@ -1,17 +1,13 @@
 import token from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  token as tokenFactory,
-  tokenState as tokenStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("token selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
-      const items = [tokenFactory(), tokenFactory()];
-      const state = rootStateFactory({
-        token: tokenStateFactory({
+      const items = [factory.token(), factory.token()];
+      const state = factory.rootState({
+        token: factory.tokenState({
           items,
         }),
       });
@@ -21,8 +17,8 @@ describe("token selectors", () => {
 
   describe("loading", () => {
     it("returns token loading state", () => {
-      const state = rootStateFactory({
-        token: tokenStateFactory({
+      const state = factory.rootState({
+        token: factory.tokenState({
           loading: false,
         }),
       });
@@ -32,8 +28,8 @@ describe("token selectors", () => {
 
   describe("loaded", () => {
     it("returns token loaded state", () => {
-      const state = rootStateFactory({
-        token: tokenStateFactory({
+      const state = factory.rootState({
+        token: factory.tokenState({
           loaded: true,
         }),
       });
@@ -43,8 +39,8 @@ describe("token selectors", () => {
 
   describe("errors", () => {
     it("returns token error state", () => {
-      const state = rootStateFactory({
-        token: tokenStateFactory({
+      const state = factory.rootState({
+        token: factory.tokenState({
           errors: "Unable to list SSH keys.",
         }),
       });
@@ -54,8 +50,8 @@ describe("token selectors", () => {
 
   describe("saving", () => {
     it("returns token saving state", () => {
-      const state = rootStateFactory({
-        token: tokenStateFactory({
+      const state = factory.rootState({
+        token: factory.tokenState({
           saving: false,
         }),
       });
@@ -65,8 +61,8 @@ describe("token selectors", () => {
 
   describe("saved", () => {
     it("returns token saved state", () => {
-      const state = rootStateFactory({
-        token: tokenStateFactory({
+      const state = factory.rootState({
+        token: factory.tokenState({
           saved: true,
         }),
       });

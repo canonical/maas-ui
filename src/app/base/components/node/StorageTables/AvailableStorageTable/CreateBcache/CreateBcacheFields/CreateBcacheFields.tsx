@@ -22,7 +22,7 @@ export const CreateBcacheFields = ({
 }: Props): JSX.Element => {
   return (
     <Row>
-      <Col size={5}>
+      <Col size={12}>
         <FormikField label="Name" name="name" required type="text" />
         <Input
           disabled
@@ -58,7 +58,7 @@ export const CreateBcacheFields = ({
         />
         <TagNameField />
       </Col>
-      <Col emptyLarge={7} size={5}>
+      <Col size={12}>
         <FilesystemFields systemId={systemId} />
       </Col>
     </Row>

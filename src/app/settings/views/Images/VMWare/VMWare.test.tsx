@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as VMWareFormLabels } from "../VMWareForm/VMWareForm";
@@ -9,11 +8,7 @@ import VMWare, { Labels as VMWareLabels } from "./VMWare";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,13 +17,13 @@ describe("VMWare", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.VCENTER_SERVER, value: "" }),
-          configFactory({ name: ConfigNames.VCENTER_USERNAME, value: "" }),
-          configFactory({ name: ConfigNames.VCENTER_PASSWORD, value: "" }),
-          configFactory({ name: ConfigNames.VCENTER_DATACENTER, value: "" }),
+          factory.config({ name: ConfigNames.VCENTER_SERVER, value: "" }),
+          factory.config({ name: ConfigNames.VCENTER_USERNAME, value: "" }),
+          factory.config({ name: ConfigNames.VCENTER_PASSWORD, value: "" }),
+          factory.config({ name: ConfigNames.VCENTER_DATACENTER, value: "" }),
         ],
       }),
     });
@@ -41,9 +36,7 @@ describe("VMWare", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWare />
-          </CompatRouter>
+          <VMWare />
         </MemoryRouter>
       </Provider>
     );
@@ -58,9 +51,7 @@ describe("VMWare", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWare />
-          </CompatRouter>
+          <VMWare />
         </MemoryRouter>
       </Provider>
     );
@@ -77,9 +68,7 @@ describe("VMWare", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <VMWare />
-          </CompatRouter>
+          <VMWare />
         </MemoryRouter>
       </Provider>
     );

@@ -1,12 +1,14 @@
-import type { ButtonProps } from "@canonical/react-components";
+import type { ButtonProps, ValueOf } from "@canonical/react-components";
 
 import TableMenu from "@/app/base/components/TableMenu";
 import type { DataTestElement } from "@/app/base/types";
+import type { MachineSidePanelViews } from "@/app/machines/constants";
 
 export type TableAction<A> = {
   label: string;
   show?: boolean;
   type: A;
+  view?: ValueOf<typeof MachineSidePanelViews>;
 };
 
 // This allows the "data-testid" attribute to be used for the action links, which
@@ -16,7 +18,7 @@ type TableActionsLink = DataTestElement<ButtonProps>;
 type Props<A> = {
   actions: TableAction<A>[];
   disabled?: boolean;
-  onActionClick: (action: A) => void;
+  onActionClick: (action: A, view?: TableAction<A>["view"]) => void;
 };
 
 const TableActionsDropdown = <A extends string>({
@@ -30,7 +32,7 @@ const TableActionsDropdown = <A extends string>({
       links.push({
         children: action.label,
         "data-testid": action.type,
-        onClick: () => onActionClick(action.type),
+        onClick: () => onActionClick(action.type, action?.view),
       });
     }
     return links;

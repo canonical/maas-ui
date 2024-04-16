@@ -1,19 +1,14 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
-import {
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
@@ -22,8 +17,8 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory(),
+  state = factory.rootState({
+    tag: factory.tagState(),
   });
 });
 
@@ -36,9 +31,7 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <AddTagForm name="new-tag" onTagCreated={vi.fn()} />
-        </CompatRouter>
+        <AddTagForm name="new-tag" onTagCreated={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -69,22 +62,19 @@ it("returns the newly created tag on save", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => (
-              <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
-            )}
-            exact
+            element={<AddTagForm name="new-tag" onTagCreated={onTagCreated} />}
             path={urls.tags.index}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
 
   mockFormikFormSaved();
-  const newTag = tagFactory({ id: 8, name: "new-tag" });
-  state.tag = tagStateFactory({
+  const newTag = factory.tag({ id: 8, name: "new-tag" });
+  state.tag = factory.tagState({
     items: [newTag],
     saved: true,
   });

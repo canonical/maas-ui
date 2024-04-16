@@ -1,20 +1,14 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UbuntuCoreImages, {
   Labels as UbuntuCoreImagesLabels,
 } from "./UbuntuCoreImages";
 
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResource as bootResourceFactory,
-  bootResourceUbuntuCoreImage as ubuntuCoreImageFactory,
-  bootResourceState as bootResourceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -26,8 +20,8 @@ const mockStore = configureStore<RootState, {}>();
 
 describe("UbuntuCoreImages", () => {
   it("does not render if there is no Ubuntu core image data", () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({ ubuntuCoreImages: [] }),
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({ ubuntuCoreImages: [] }),
     });
 
     renderWithBrowserRouter(<UbuntuCoreImages />, { state });
@@ -38,30 +32,30 @@ describe("UbuntuCoreImages", () => {
 
   it("correctly sets initial values based on resources", () => {
     const ubuntuCoreImages = [
-      ubuntuCoreImageFactory({
+      factory.bootResourceUbuntuCoreImage({
         name: "ubuntu-core/amd64/generic/20",
         title: "Ubuntu Core 20",
       }),
     ];
     const resources = [
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu-core/20",
         arch: "amd64",
         title: "Ubuntu Core 20",
       }), // only this resource is an "Ubuntu core image"
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu/focal",
         arch: "amd64",
         title: "20.04 LTS",
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "centos/centos70",
         arch: "amd64",
         title: "CentOS 7",
       }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources,
         ubuntuCoreImages,
       }),
@@ -76,30 +70,30 @@ describe("UbuntuCoreImages", () => {
 
   it("can dispatch an action to save Ubuntu core images", async () => {
     const ubuntuCoreImages = [
-      ubuntuCoreImageFactory({
+      factory.bootResourceUbuntuCoreImage({
         name: "ubuntu-core/amd64/generic/20",
         title: "Ubuntu Core 20",
       }),
     ];
     const resources = [
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu-core/20",
         arch: "amd64",
         title: "Ubuntu Core 20",
       }), // only this resource is an "Ubuntu core image"
-      bootResourceFactory({
+      factory.bootResource({
         name: "ubuntu/focal",
         arch: "amd64",
         title: "20.04 LTS",
       }),
-      bootResourceFactory({
+      factory.bootResource({
         name: "centos/centos70",
         arch: "amd64",
         title: "CentOS 7",
       }),
     ];
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources,
         ubuntuCoreImages,
       }),
@@ -108,9 +102,7 @@ describe("UbuntuCoreImages", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuCoreImages />
-          </CompatRouter>
+          <UbuntuCoreImages />
         </MemoryRouter>
       </Provider>
     );
@@ -130,13 +122,13 @@ describe("UbuntuCoreImages", () => {
 
   it(`does not show a button to stop importing Ubuntu core images if none are
     downloading`, () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [
-          bootResourceFactory({ downloading: true, name: "ubuntu/focal" }),
-          bootResourceFactory({ downloading: false, name: "ubuntu-core/20" }),
+          factory.bootResource({ downloading: true, name: "ubuntu/focal" }),
+          factory.bootResource({ downloading: false, name: "ubuntu-core/20" }),
         ],
-        ubuntuCoreImages: [ubuntuCoreImageFactory()],
+        ubuntuCoreImages: [factory.bootResourceUbuntuCoreImage()],
       }),
     });
 
@@ -147,23 +139,35 @@ describe("UbuntuCoreImages", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("enables 'Stop import' button if images are saving", async () => {
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        ubuntuCoreImages: [factory.bootResourceUbuntuCoreImage()],
+        statuses: factory.bootResourceStatuses({ savingUbuntuCore: true }),
+      }),
+    });
+    renderWithBrowserRouter(<UbuntuCoreImages />, { state });
+    const stopImportButton = screen.getByRole("button", {
+      name: UbuntuCoreImagesLabels.StopImport,
+    });
+    expect(stopImportButton).toBeEnabled();
+  });
+
   it(`can dispatch an action to stop importing Ubuntu core images if at least
     one is downloading`, async () => {
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
         resources: [
-          bootResourceFactory({ downloading: true, name: "ubuntu-core/20" }),
+          factory.bootResource({ downloading: true, name: "ubuntu-core/20" }),
         ],
-        ubuntuCoreImages: [ubuntuCoreImageFactory()],
+        ubuntuCoreImages: [factory.bootResourceUbuntuCoreImage()],
       }),
     });
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <UbuntuCoreImages />
-          </CompatRouter>
+          <UbuntuCoreImages />
         </MemoryRouter>
       </Provider>
     );

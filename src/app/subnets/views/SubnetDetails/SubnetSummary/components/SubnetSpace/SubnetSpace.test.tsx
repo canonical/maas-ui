@@ -3,13 +3,13 @@ import configureStore from "redux-mock-store";
 
 import SubnetSpace from "./SubnetSpace";
 
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("shows a warning tooltip if the subnet is not in a space", async () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -27,7 +27,7 @@ it("shows a warning tooltip if the subnet is not in a space", async () => {
 });
 
 it("does not show a warning tooltip if the subnet is in a space", async () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   render(
     <Provider store={store}>

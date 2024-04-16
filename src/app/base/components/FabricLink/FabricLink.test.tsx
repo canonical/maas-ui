@@ -1,31 +1,24 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricLink, { Labels } from "./FabricLink";
 
 import urls from "@/app/base/urls";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("handles when fabrics are loading", () => {
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: [], loading: true }),
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: [], loading: true }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricLink id={1} />
-        </CompatRouter>
+        <FabricLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -34,16 +27,14 @@ it("handles when fabrics are loading", () => {
 });
 
 it("handles when a fabric does not exist", () => {
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: [], loading: false }),
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: [], loading: false }),
   });
   const store = mockStore(state);
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricLink id={1} />
-        </CompatRouter>
+        <FabricLink id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -52,17 +43,15 @@ it("handles when a fabric does not exist", () => {
 });
 
 it("renders a link if fabrics have loaded and it exists", () => {
-  const fabric = fabricFactory();
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: [fabric], loading: false }),
+  const fabric = factory.fabric();
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: [fabric], loading: false }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricLink id={fabric.id} />
-        </CompatRouter>
+        <FabricLink id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );

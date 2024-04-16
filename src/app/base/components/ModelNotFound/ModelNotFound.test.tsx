@@ -1,25 +1,22 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ModelNotFound from "./ModelNotFound";
 
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("ModelNotFound", () => {
   it("renders the correct heading", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
-          </CompatRouter>
+          <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
         </MemoryRouter>
       </Provider>
     );
@@ -28,14 +25,12 @@ describe("ModelNotFound", () => {
   });
 
   it("renders the default link correctly", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ModelNotFound id={1} linkURL="/models" modelName="model" />
-          </CompatRouter>
+          <ModelNotFound id={1} linkURL="/models" modelName="model" />
         </MemoryRouter>
       </Provider>
     );
@@ -46,19 +41,17 @@ describe("ModelNotFound", () => {
   });
 
   it("can be given customised link text", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ModelNotFound
-              id={1}
-              linkText="Click here to win $500"
-              linkURL="/models"
-              modelName="model"
-            />
-          </CompatRouter>
+          <ModelNotFound
+            id={1}
+            linkText="Click here to win $500"
+            linkURL="/models"
+            modelName="model"
+          />
         </MemoryRouter>
       </Provider>
     );

@@ -1,16 +1,11 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { APIKeyForm, Label as APIKeyFormLabels } from "./APIKeyForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  token as tokenFactory,
-  tokenState as tokenStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -24,12 +19,12 @@ describe("APIKeyForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      token: tokenStateFactory({
+    state = factory.rootState({
+      token: factory.tokenState({
         loading: false,
         loaded: true,
         items: [
-          tokenFactory({
+          factory.token({
             id: 1,
             key: "ssh-rsa aabb",
             consumer: { key: "abc", name: "Name" },
@@ -42,9 +37,7 @@ describe("APIKeyForm", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <APIKeyForm />
-        </CompatRouter>
+        <APIKeyForm />
       </MemoryRouter>,
       { state }
     );
@@ -56,9 +49,7 @@ describe("APIKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <APIKeyForm />
-          </CompatRouter>
+          <APIKeyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -93,9 +84,7 @@ describe("APIKeyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <APIKeyForm token={state.token.items[0]} />
-          </CompatRouter>
+          <APIKeyForm token={state.token.items[0]} />
         </MemoryRouter>
       </Provider>
     );

@@ -9,10 +9,10 @@ import type { SetPoolFormValues } from "./types";
 import ActionForm from "@/app/base/components/ActionForm";
 import { useFetchActions } from "@/app/base/hooks";
 import type { MachineActionFormProps } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { MachineEventErrors } from "@/app/store/machine/types";
 import { useSelectedMachinesActionsDispatch } from "@/app/store/machine/utils/hooks";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import { NodeActions } from "@/app/store/types/node";
 

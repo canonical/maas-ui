@@ -2,14 +2,14 @@ import type { ReactNode } from "react";
 
 import { Button, Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import type { NavigateFunction } from "react-router-dom-v5-compat";
-import { useNavigate } from "react-router-dom-v5-compat";
+import type { NavigateFunction } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/preferences/urls";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import type { Props as SettingsTableProps } from "@/app/settings/components/SettingsTable/SettingsTable";
-import { actions as sshkeyActions } from "@/app/store/sshkey";
+import { sshkeyActions } from "@/app/store/sshkey";
 import sshkeySelectors from "@/app/store/sshkey/selectors";
 import type { KeySource, SSHKey } from "@/app/store/sshkey/types";
 

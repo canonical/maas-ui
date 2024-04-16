@@ -2,19 +2,15 @@ import { Formik } from "formik";
 
 import FilesystemFields from "./FilesystemFields";
 
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen, userEvent } from "@/testing/utils";
 
 describe("FilesystemFields", () => {
   it("only shows filesystem types that require a storage device", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             supported_filesystems: [
               { key: "fat32", ui: "fat32" }, // requires storage
               { key: "ramfs", ui: "ramfs" }, // does not require storage
@@ -41,10 +37,10 @@ describe("FilesystemFields", () => {
   });
 
   it("disables mount point and options if no fstype selected", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             supported_filesystems: [{ key: "fat32", ui: "fat32" }],
             system_id: "abc123",
           }),
@@ -66,10 +62,10 @@ describe("FilesystemFields", () => {
   });
 
   it("sets mount point to 'none' and disables field if swap fstype selected", async () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             supported_filesystems: [{ key: "swap", ui: "swap" }],
             system_id: "abc123",
           }),

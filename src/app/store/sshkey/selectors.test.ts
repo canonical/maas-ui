@@ -1,17 +1,13 @@
 import sshkey from "./selectors";
 
-import {
-  rootState as rootStateFactory,
-  sshKey as sshKeyFactory,
-  sshKeyState as sshKeyStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("sshkey selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
-      const items = [sshKeyFactory(), sshKeyFactory()];
-      const state = rootStateFactory({
-        sshkey: sshKeyStateFactory({
+      const items = [factory.sshKey(), factory.sshKey()];
+      const state = factory.rootState({
+        sshkey: factory.sshKeyState({
           items,
         }),
       });
@@ -21,8 +17,8 @@ describe("sshkey selectors", () => {
 
   describe("loading", () => {
     it("returns sshkey loading state", () => {
-      const state = rootStateFactory({
-        sshkey: sshKeyStateFactory({
+      const state = factory.rootState({
+        sshkey: factory.sshKeyState({
           loading: false,
         }),
       });
@@ -32,8 +28,8 @@ describe("sshkey selectors", () => {
 
   describe("loaded", () => {
     it("returns sshkey loaded state", () => {
-      const state = rootStateFactory({
-        sshkey: sshKeyStateFactory({
+      const state = factory.rootState({
+        sshkey: factory.sshKeyState({
           loaded: true,
         }),
       });
@@ -43,8 +39,8 @@ describe("sshkey selectors", () => {
 
   describe("errors", () => {
     it("returns sshkey error state", () => {
-      const state = rootStateFactory({
-        sshkey: sshKeyStateFactory({
+      const state = factory.rootState({
+        sshkey: factory.sshKeyState({
           errors: "Unable to list SSH keys.",
         }),
       });
@@ -54,8 +50,8 @@ describe("sshkey selectors", () => {
 
   describe("saving", () => {
     it("returns sshkey saving state", () => {
-      const state = rootStateFactory({
-        sshkey: sshKeyStateFactory({
+      const state = factory.rootState({
+        sshkey: factory.sshKeyState({
           saving: false,
         }),
       });
@@ -65,8 +61,8 @@ describe("sshkey selectors", () => {
 
   describe("saved", () => {
     it("returns sshkey saved state", () => {
-      const state = rootStateFactory({
-        sshkey: sshKeyStateFactory({
+      const state = factory.rootState({
+        sshkey: factory.sshKeyState({
           saved: true,
         }),
       });

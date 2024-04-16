@@ -1,34 +1,27 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VLANDeleteForm from "./VLANDeleteForm";
 
-import { actions as vlanActions } from "@/app/store/vlan";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import { vlanActions } from "@/app/store/vlan";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("does not allow deletion if the VLAN is the default VLAN in its fabric", () => {
-  const vlan = vlanFactory({ id: 1, fabric: 2 });
-  const fabric = fabricFactory({
+  const vlan = factory.vlan({ id: 1, fabric: 2 });
+  const fabric = factory.fabric({
     default_vlan_id: vlan.id,
     id: 2,
     vlan_ids: [vlan.id],
   });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({
       items: [fabric],
     }),
-    vlan: vlanStateFactory({
+    vlan: factory.vlanState({
       items: [vlan],
     }),
   });
@@ -36,9 +29,7 @@ it("does not allow deletion if the VLAN is the default VLAN in its fabric", () =
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
-        </CompatRouter>
+        <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -51,17 +42,17 @@ it("does not allow deletion if the VLAN is the default VLAN in its fabric", () =
 });
 
 it("displays a delete confirmation if the VLAN is not the default for its fabric", () => {
-  const vlan = vlanFactory({ id: 1, fabric: 2 });
-  const fabric = fabricFactory({
+  const vlan = factory.vlan({ id: 1, fabric: 2 });
+  const fabric = factory.fabric({
     default_vlan_id: 22,
     id: 2,
     vlan_ids: [22, 33],
   });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({
       items: [fabric],
     }),
-    vlan: vlanStateFactory({
+    vlan: factory.vlanState({
       items: [vlan],
     }),
   });
@@ -69,9 +60,7 @@ it("displays a delete confirmation if the VLAN is not the default for its fabric
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
-        </CompatRouter>
+        <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -82,17 +71,17 @@ it("displays a delete confirmation if the VLAN is not the default for its fabric
 });
 
 it("deletes the VLAN when confirmed", async () => {
-  const vlan = vlanFactory({ id: 1, fabric: 2 });
-  const fabric = fabricFactory({
+  const vlan = factory.vlan({ id: 1, fabric: 2 });
+  const fabric = factory.fabric({
     default_vlan_id: 22,
     id: 2,
     vlan_ids: [22, 33],
   });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({
+  const state = factory.rootState({
+    fabric: factory.fabricState({
       items: [fabric],
     }),
-    vlan: vlanStateFactory({
+    vlan: factory.vlanState({
       items: [vlan],
     }),
   });
@@ -100,9 +89,7 @@ it("deletes the VLAN when confirmed", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <VLANDeleteForm closeForm={vi.fn()} id={vlan.id} />
-        </CompatRouter>
+        <VLANDeleteForm setSidePanelContent={vi.fn()} vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

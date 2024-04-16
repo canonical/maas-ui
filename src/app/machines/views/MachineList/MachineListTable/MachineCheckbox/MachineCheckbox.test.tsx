@@ -2,15 +2,9 @@ import configureStore from "redux-mock-store";
 
 import MachineCheckbox, { getSelectedMachinesRange } from "./MachineCheckbox";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  machineStateList as machineStateListFactory,
-  machineState as machineStateFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  machine as machineFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -19,12 +13,12 @@ let state: RootState;
 const callId = "123456";
 
 beforeEach(() => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           groups: [
-            machineStateListGroupFactory({
+            factory.machineStateListGroup({
               count: 1,
               items: ["abc123"],
               name: "admin2",
@@ -173,7 +167,7 @@ describe("getSelectedMachinesRange tests", () => {
     "system_id_3",
     "system_id_4",
   ];
-  const machines = systemIds.map((id) => machineFactory({ system_id: id }));
+  const machines = systemIds.map((id) => factory.machine({ system_id: id }));
 
   it("getSelectedMachinesRange selects a range of machines", () => {
     const selected = { groups: [""], items: [systemIds[0]] };

@@ -1,25 +1,18 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import OverviewCard from "./OverviewCard";
 
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("renders a controller status section if node is a controller", () => {
-  const controller = controllerDetailsFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controllerDetails();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
   });
@@ -27,9 +20,7 @@ it("renders a controller status section if node is a controller", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <OverviewCard node={controller} />
-        </CompatRouter>
+        <OverviewCard node={controller} />
       </MemoryRouter>
     </Provider>
   );
@@ -39,9 +30,9 @@ it("renders a controller status section if node is a controller", () => {
 });
 
 it("renders a machine status section if node is a machine", () => {
-  const machine = machineDetailsFactory();
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const machine = factory.machineDetails();
+  const state = factory.rootState({
+    machine: factory.machineState({
       items: [machine],
     }),
   });
@@ -49,9 +40,7 @@ it("renders a machine status section if node is a machine", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <OverviewCard node={machine} />
-        </CompatRouter>
+        <OverviewCard node={machine} />
       </MemoryRouter>
     </Provider>
   );

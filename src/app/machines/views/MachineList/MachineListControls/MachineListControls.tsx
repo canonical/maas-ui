@@ -4,7 +4,7 @@ import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Col, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import DebounceSearchBox from "@/app/base/components/DebounceSearchBox";
 import GroupSelect from "@/app/base/components/GroupSelect";
@@ -16,7 +16,7 @@ import MachineActionMenu from "@/app/machines/views/MachineList/MachineListContr
 import MachinesFilterAccordion from "@/app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion";
 import AddHardwareMenu from "@/app/machines/views/MachineList/MachineListHeader/AddHardwareMenu";
 import type { useResponsiveColumns } from "@/app/machines/views/MachineList/hooks";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FetchGroupKey } from "@/app/store/machine/types";
 import { useHasSelection } from "@/app/store/machine/utils/hooks";
 

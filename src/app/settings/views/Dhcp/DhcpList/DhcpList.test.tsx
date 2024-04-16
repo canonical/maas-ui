@@ -1,23 +1,11 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DhcpList from "./DhcpList";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerState as controllerStateFactory,
-  deviceState as deviceStateFactory,
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -33,24 +21,24 @@ describe("DhcpList", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
       }),
-      device: deviceStateFactory({
+      device: factory.deviceState({
         loaded: true,
       }),
-      dhcpsnippet: dhcpSnippetStateFactory({
+      dhcpsnippet: factory.dhcpSnippetState({
         loaded: true,
         items: [
-          dhcpSnippetFactory({ id: 1, name: "class", description: "" }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({ id: 1, name: "class", description: "" }),
+          factory.dhcpSnippet({
             id: 2,
             name: "lease",
             subnet: 2,
             description: "",
           }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             id: 3,
             name: "boot",
             node: "xyz",
@@ -58,21 +46,21 @@ describe("DhcpList", () => {
           }),
         ],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "xyz",
             hostname: "machine1",
-            domain: modelRefFactory({ name: "test" }),
+            domain: factory.modelRef({ name: "test" }),
           }),
         ],
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         loaded: true,
         items: [
-          subnetFactory({ id: 1, name: "10.0.0.99" }),
-          subnetFactory({ id: 2, name: "test.maas" }),
+          factory.subnet({ id: 1, name: "10.0.0.99" }),
+          factory.subnet({ id: 2, name: "test.maas" }),
         ],
       }),
     });
@@ -81,9 +69,7 @@ describe("DhcpList", () => {
   it("can show a delete confirmation", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpList />
-        </CompatRouter>
+        <DhcpList />
       </MemoryRouter>,
       { state }
     );
@@ -102,9 +88,7 @@ describe("DhcpList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
+          <DhcpList />
         </MemoryRouter>
       </Provider>
     );
@@ -142,9 +126,7 @@ describe("DhcpList", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
+          <DhcpList />
         </MemoryRouter>
       </Provider>
     );
@@ -171,9 +153,7 @@ describe("DhcpList", () => {
   it("can show snippet details", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpList />
-        </CompatRouter>
+        <DhcpList />
       </MemoryRouter>,
       { state }
     );
@@ -192,9 +172,7 @@ describe("DhcpList", () => {
   it("can filter dhcp snippets", async () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <DhcpList />
-        </CompatRouter>
+        <DhcpList />
       </MemoryRouter>,
       { state }
     );

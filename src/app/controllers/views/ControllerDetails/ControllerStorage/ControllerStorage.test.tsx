@@ -1,21 +1,17 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerStorage from "./ControllerStorage";
 
-import {
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("displays a spinner if controller is loading", () => {
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [],
     }),
   });
@@ -23,9 +19,7 @@ it("displays a spinner if controller is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerStorage systemId="abc123" />
-        </CompatRouter>
+        <ControllerStorage systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );

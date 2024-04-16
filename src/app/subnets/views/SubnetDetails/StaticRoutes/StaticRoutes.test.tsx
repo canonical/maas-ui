@@ -1,41 +1,31 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddStaticRouteFormLabels } from "./AddStaticRouteForm/AddStaticRouteForm";
 import StaticRoutes, { Labels } from "./StaticRoutes";
 
-import {
-  rootState as rootStateFactory,
-  staticRoute as staticRouteFactory,
-  staticRouteState as staticRouteStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  authState as authStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("renders for a subnet", () => {
-  const subnet = subnetFactory({ id: 1 });
-  const state = rootStateFactory({
-    staticroute: staticRouteStateFactory({
+  const subnet = factory.subnet({ id: 1 });
+  const state = factory.rootState({
+    staticroute: factory.staticRouteState({
       items: [
-        staticRouteFactory({
+        factory.staticRoute({
           gateway_ip: "11.1.1.1",
           source: 1,
         }),
-        staticRouteFactory({
+        factory.staticRoute({
           gateway_ip: "11.1.1.2",
           source: 1,
         }),
       ],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       items: [subnet],
     }),
   });
@@ -44,9 +34,7 @@ it("renders for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <StaticRoutes subnetId={subnet.id} />
-        </CompatRouter>
+        <StaticRoutes subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -72,19 +60,19 @@ it("renders for a subnet", () => {
 });
 
 it("has a button to open the static route form", async () => {
-  const subnet = subnetFactory({ id: 1 });
-  const state = rootStateFactory({
-    user: userStateFactory({
-      auth: authStateFactory({
-        user: userFactory(),
+  const subnet = factory.subnet({ id: 1 });
+  const state = factory.rootState({
+    user: factory.userState({
+      auth: factory.authState({
+        user: factory.user(),
       }),
-      items: [userFactory(), userFactory(), userFactory()],
+      items: [factory.user(), factory.user(), factory.user()],
     }),
-    staticroute: staticRouteStateFactory({
+    staticroute: factory.staticRouteState({
       items: [],
     }),
-    subnet: subnetStateFactory({
-      items: [subnet, subnetFactory({ id: 2 })],
+    subnet: factory.subnetState({
+      items: [subnet, factory.subnet({ id: 2 })],
     }),
   });
 
@@ -92,9 +80,7 @@ it("has a button to open the static route form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <StaticRoutes subnetId={subnet.id} />
-        </CompatRouter>
+        <StaticRoutes subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -108,17 +94,17 @@ it("has a button to open the static route form", async () => {
 });
 
 it("has a button to open the edit static route form", async () => {
-  const subnet = subnetFactory({ id: 1 });
-  const state = rootStateFactory({
-    staticroute: staticRouteStateFactory({
+  const subnet = factory.subnet({ id: 1 });
+  const state = factory.rootState({
+    staticroute: factory.staticRouteState({
       items: [
-        staticRouteFactory({
+        factory.staticRoute({
           gateway_ip: "11.1.1.1",
           source: 1,
         }),
       ],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       items: [subnet],
     }),
   });
@@ -127,9 +113,7 @@ it("has a button to open the edit static route form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <CompatRouter>
-          <StaticRoutes subnetId={subnet.id} />
-        </CompatRouter>
+        <StaticRoutes subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import { Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom-v5-compat";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
@@ -15,7 +15,7 @@ import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
 

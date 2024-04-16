@@ -1,13 +1,7 @@
 import reducers, { actions } from "./slice";
 import { DeviceMeta } from "./types";
 
-import {
-  device as deviceFactory,
-  deviceDetails as deviceDetailsFactory,
-  deviceEventError as deviceEventErrorFactory,
-  deviceStatus as deviceStatusFactory,
-  deviceState as deviceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("device reducers", () => {
   it("should return the initial state", () => {
@@ -27,7 +21,7 @@ describe("device reducers", () => {
 
   it("reduces fetchStart", () => {
     expect(reducers(undefined, actions.fetchStart())).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         loaded: false,
         loading: true,
       })
@@ -35,10 +29,10 @@ describe("device reducers", () => {
   });
 
   it("reduces fetchSuccess", () => {
-    const devices = [deviceFactory(), deviceFactory()];
+    const devices = [factory.device(), factory.device()];
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           items: [],
           loaded: false,
           loading: true,
@@ -46,93 +40,93 @@ describe("device reducers", () => {
         actions.fetchSuccess(devices)
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         loading: false,
         loaded: true,
         items: devices,
         statuses: {
-          [devices[0][DeviceMeta.PK]]: deviceStatusFactory(),
-          [devices[1][DeviceMeta.PK]]: deviceStatusFactory(),
+          [devices[0][DeviceMeta.PK]]: factory.deviceStatus(),
+          [devices[1][DeviceMeta.PK]]: factory.deviceStatus(),
         },
       })
     );
   });
 
   it("reduces createNotify", () => {
-    const initialState = deviceStateFactory({
-      items: [deviceFactory({ system_id: "abc123" })],
-      statuses: { abc123: deviceStatusFactory() },
+    const initialState = factory.deviceState({
+      items: [factory.device({ system_id: "abc123" })],
+      statuses: { abc123: factory.deviceStatus() },
     });
-    const newDevice = deviceFactory({ system_id: "def456" });
+    const newDevice = factory.device({ system_id: "def456" });
 
     expect(reducers(initialState, actions.createNotify(newDevice))).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         items: [...initialState.items, newDevice],
         statuses: {
-          abc123: deviceStatusFactory(),
-          def456: deviceStatusFactory(),
+          abc123: factory.deviceStatus(),
+          def456: factory.deviceStatus(),
         },
       })
     );
   });
 
   it("should update if device exists on createNotify", () => {
-    const initialState = deviceStateFactory({
-      items: [deviceFactory({ hostname: "device1", system_id: "abc123" })],
-      statuses: { abc123: deviceStatusFactory() },
+    const initialState = factory.deviceState({
+      items: [factory.device({ hostname: "device1", system_id: "abc123" })],
+      statuses: { abc123: factory.deviceStatus() },
     });
-    const updatedDevice = deviceFactory({
+    const updatedDevice = factory.device({
       hostname: "device1-newname",
       system_id: "abc123",
     });
 
     expect(reducers(initialState, actions.createNotify(updatedDevice))).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         items: [updatedDevice],
         statuses: {
-          abc123: deviceStatusFactory(),
+          abc123: factory.deviceStatus(),
         },
       })
     );
   });
 
   it("reduces updateNotify", () => {
-    const initialState = deviceStateFactory({
+    const initialState = factory.deviceState({
       items: [
-        deviceFactory({ system_id: "abc123", hostname: "device1" }),
-        deviceFactory({ system_id: "def456", hostname: "device2" }),
+        factory.device({ system_id: "abc123", hostname: "device1" }),
+        factory.device({ system_id: "def456", hostname: "device2" }),
       ],
     });
-    const updatedDevice = deviceFactory({
+    const updatedDevice = factory.device({
       system_id: "abc123",
       hostname: "device1-new",
     });
 
     expect(reducers(initialState, actions.updateNotify(updatedDevice))).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         items: [updatedDevice, initialState.items[1]],
       })
     );
   });
 
   it("reduces deleteNotify", () => {
-    const initialState = deviceStateFactory({
+    const initialState = factory.deviceState({
       items: [
-        deviceFactory({ system_id: "abc123" }),
-        deviceFactory({ system_id: "def456" }),
+        factory.device({ system_id: "abc123" }),
+        factory.device({ system_id: "def456" }),
       ],
       selected: ["abc123"],
       statuses: {
-        abc123: deviceStatusFactory(),
-        def456: deviceStatusFactory(),
+        abc123: factory.deviceStatus(),
+        def456: factory.deviceStatus(),
       },
     });
 
     expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         items: [initialState.items[1]],
         selected: [],
-        statuses: { def456: deviceStatusFactory() },
+        statuses: { def456: factory.deviceStatus() },
       })
     );
   });
@@ -140,9 +134,9 @@ describe("device reducers", () => {
   it("reduces createInterfaceStart", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ creatingInterface: false }),
+            abc123: factory.deviceStatus({ creatingInterface: false }),
           },
         }),
         actions.createInterfaceStart({
@@ -152,9 +146,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ creatingInterface: true }),
+          abc123: factory.deviceStatus({ creatingInterface: true }),
         },
       })
     );
@@ -163,11 +157,11 @@ describe("device reducers", () => {
   it("reduces createInterfaceError", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: deviceStatusFactory({ creatingInterface: true }),
+            abc123: factory.deviceStatus({ creatingInterface: true }),
           },
         }),
         actions.createInterfaceError({
@@ -179,17 +173,17 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: "It's realllll bad",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "It's realllll bad",
             event: "createInterface",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: deviceStatusFactory({ creatingInterface: false }),
+          abc123: factory.deviceStatus({ creatingInterface: false }),
         },
       })
     );
@@ -198,9 +192,9 @@ describe("device reducers", () => {
   it("reduces createInterfaceSuccess", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ creatingInterface: true }),
+            abc123: factory.deviceStatus({ creatingInterface: true }),
           },
         }),
         actions.createInterfaceSuccess({
@@ -210,9 +204,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ creatingInterface: false }),
+          abc123: factory.deviceStatus({ creatingInterface: false }),
         },
       })
     );
@@ -221,9 +215,9 @@ describe("device reducers", () => {
   it("reduces createPhysicalStart", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ creatingPhysical: false }),
+            abc123: factory.deviceStatus({ creatingPhysical: false }),
           },
         }),
         actions.createPhysicalStart({
@@ -233,9 +227,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ creatingPhysical: true }),
+          abc123: factory.deviceStatus({ creatingPhysical: true }),
         },
       })
     );
@@ -244,11 +238,11 @@ describe("device reducers", () => {
   it("reduces createPhysicalError", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: deviceStatusFactory({ creatingPhysical: true }),
+            abc123: factory.deviceStatus({ creatingPhysical: true }),
           },
         }),
         actions.createPhysicalError({
@@ -260,17 +254,17 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: "It's realllll bad",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "It's realllll bad",
             event: "createPhysical",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: deviceStatusFactory({ creatingPhysical: false }),
+          abc123: factory.deviceStatus({ creatingPhysical: false }),
         },
       })
     );
@@ -279,9 +273,9 @@ describe("device reducers", () => {
   it("reduces createPhysicalSuccess", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ creatingPhysical: true }),
+            abc123: factory.deviceStatus({ creatingPhysical: true }),
           },
         }),
         actions.createPhysicalSuccess({
@@ -291,24 +285,24 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ creatingPhysical: false }),
+          abc123: factory.deviceStatus({ creatingPhysical: false }),
         },
       })
     );
   });
 
   it("reduces getStart", () => {
-    const initialState = deviceStateFactory({ loading: false });
+    const initialState = factory.deviceState({ loading: false });
 
     expect(reducers(initialState, actions.getStart())).toEqual(
-      deviceStateFactory({ loading: true })
+      factory.deviceState({ loading: true })
     );
   });
 
   it("reduces getError", () => {
-    const initialState = deviceStateFactory({ errors: null, loading: true });
+    const initialState = factory.deviceState({ errors: null, loading: true });
 
     expect(
       reducers(
@@ -316,10 +310,10 @@ describe("device reducers", () => {
         actions.getError({ system_id: "id was not supplied" })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: { system_id: "id was not supplied" },
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: { system_id: "id was not supplied" },
             event: "get",
             id: null,
@@ -331,64 +325,64 @@ describe("device reducers", () => {
   });
 
   it("should update if device exists on getSuccess", () => {
-    const initialState = deviceStateFactory({
-      items: [deviceFactory({ system_id: "abc123", hostname: "device1" })],
+    const initialState = factory.deviceState({
+      items: [factory.device({ system_id: "abc123", hostname: "device1" })],
       loading: false,
       statuses: {
-        abc123: deviceStatusFactory(),
+        abc123: factory.deviceStatus(),
       },
     });
-    const updatedDevice = deviceDetailsFactory({
+    const updatedDevice = factory.deviceDetails({
       system_id: "abc123",
       hostname: "device1-newname",
     });
 
     expect(reducers(initialState, actions.getSuccess(updatedDevice))).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         items: [updatedDevice],
         loading: false,
         statuses: {
-          abc123: deviceStatusFactory(),
+          abc123: factory.deviceStatus(),
         },
       })
     );
   });
 
   it("reduces getSuccess", () => {
-    const initialState = deviceStateFactory({
-      items: [deviceFactory({ system_id: "abc123" })],
+    const initialState = factory.deviceState({
+      items: [factory.device({ system_id: "abc123" })],
       loading: true,
       statuses: {
-        abc123: deviceStatusFactory(),
+        abc123: factory.deviceStatus(),
       },
     });
-    const newDevice = deviceDetailsFactory({ system_id: "def456" });
+    const newDevice = factory.deviceDetails({ system_id: "def456" });
 
     expect(reducers(initialState, actions.getSuccess(newDevice))).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         items: [...initialState.items, newDevice],
         loading: false,
         statuses: {
-          abc123: deviceStatusFactory(),
-          def456: deviceStatusFactory(),
+          abc123: factory.deviceStatus(),
+          def456: factory.deviceStatus(),
         },
       })
     );
   });
 
   it("reduces setActiveSuccess", () => {
-    const initialState = deviceStateFactory({ active: null });
+    const initialState = factory.deviceState({ active: null });
 
     expect(
       reducers(
         initialState,
-        actions.setActiveSuccess(deviceDetailsFactory({ system_id: "abc123" }))
+        actions.setActiveSuccess(factory.deviceDetails({ system_id: "abc123" }))
       )
-    ).toEqual(deviceStateFactory({ active: "abc123" }));
+    ).toEqual(factory.deviceState({ active: "abc123" }));
   });
 
   it("reduces setActiveError", () => {
-    const initialState = deviceStateFactory({
+    const initialState = factory.deviceState({
       active: "abc123",
       errors: null,
     });
@@ -396,11 +390,11 @@ describe("device reducers", () => {
     expect(
       reducers(initialState, actions.setActiveError("Device does not exist"))
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         active: null,
         errors: "Device does not exist",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "Device does not exist",
             event: "setActive",
             id: null,
@@ -413,9 +407,9 @@ describe("device reducers", () => {
   it("reduces updateInterfaceStart", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ updatingInterface: false }),
+            abc123: factory.deviceStatus({ updatingInterface: false }),
           },
         }),
         actions.updateInterfaceStart({
@@ -425,9 +419,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ updatingInterface: true }),
+          abc123: factory.deviceStatus({ updatingInterface: true }),
         },
       })
     );
@@ -436,11 +430,11 @@ describe("device reducers", () => {
   it("reduces updateInterfaceError", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: deviceStatusFactory({ updatingInterface: true }),
+            abc123: factory.deviceStatus({ updatingInterface: true }),
           },
         }),
         actions.updateInterfaceError({
@@ -452,17 +446,17 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: "It's realllll bad",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "It's realllll bad",
             event: "updateInterface",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: deviceStatusFactory({ updatingInterface: false }),
+          abc123: factory.deviceStatus({ updatingInterface: false }),
         },
       })
     );
@@ -471,9 +465,9 @@ describe("device reducers", () => {
   it("reduces updateInterfaceSuccess", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ updatingInterface: true }),
+            abc123: factory.deviceStatus({ updatingInterface: true }),
           },
         }),
         actions.updateInterfaceSuccess({
@@ -483,9 +477,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ updatingInterface: false }),
+          abc123: factory.deviceStatus({ updatingInterface: false }),
         },
       })
     );
@@ -494,9 +488,9 @@ describe("device reducers", () => {
   it("reduces deleteStart", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ deleting: false }),
+            abc123: factory.deviceStatus({ deleting: false }),
           },
         }),
         actions.deleteStart({
@@ -506,9 +500,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ deleting: true }),
+          abc123: factory.deviceStatus({ deleting: true }),
         },
       })
     );
@@ -517,11 +511,11 @@ describe("device reducers", () => {
   it("reduces deleteError", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: deviceStatusFactory({ deleting: true }),
+            abc123: factory.deviceStatus({ deleting: true }),
           },
         }),
         actions.deleteError({
@@ -533,17 +527,17 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: "It's realllll bad",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "It's realllll bad",
             event: "delete",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: deviceStatusFactory({ deleting: false }),
+          abc123: factory.deviceStatus({ deleting: false }),
         },
       })
     );
@@ -552,9 +546,9 @@ describe("device reducers", () => {
   it("reduces deleteSuccess", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ deleting: true }),
+            abc123: factory.deviceStatus({ deleting: true }),
           },
         }),
         actions.deleteSuccess({
@@ -564,9 +558,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ deleting: false }),
+          abc123: factory.deviceStatus({ deleting: false }),
         },
       })
     );
@@ -575,9 +569,9 @@ describe("device reducers", () => {
   it("reduces setZoneStart", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ settingZone: false }),
+            abc123: factory.deviceStatus({ settingZone: false }),
           },
         }),
         actions.setZoneStart({
@@ -587,9 +581,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ settingZone: true }),
+          abc123: factory.deviceStatus({ settingZone: true }),
         },
       })
     );
@@ -598,11 +592,11 @@ describe("device reducers", () => {
   it("reduces setZoneError", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: deviceStatusFactory({ settingZone: true }),
+            abc123: factory.deviceStatus({ settingZone: true }),
           },
         }),
         actions.setZoneError({
@@ -614,17 +608,17 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: "It's realllll bad",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "It's realllll bad",
             event: "setZone",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: deviceStatusFactory({ settingZone: false }),
+          abc123: factory.deviceStatus({ settingZone: false }),
         },
       })
     );
@@ -633,9 +627,9 @@ describe("device reducers", () => {
   it("reduces setZoneSuccess", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ settingZone: true }),
+            abc123: factory.deviceStatus({ settingZone: true }),
           },
         }),
         actions.setZoneSuccess({
@@ -645,9 +639,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ settingZone: false }),
+          abc123: factory.deviceStatus({ settingZone: false }),
         },
       })
     );
@@ -656,9 +650,9 @@ describe("device reducers", () => {
   it("reduces linkSubnetStart", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ linkingSubnet: false }),
+            abc123: factory.deviceStatus({ linkingSubnet: false }),
           },
         }),
         actions.linkSubnetStart({
@@ -668,9 +662,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ linkingSubnet: true }),
+          abc123: factory.deviceStatus({ linkingSubnet: true }),
         },
       })
     );
@@ -679,11 +673,11 @@ describe("device reducers", () => {
   it("reduces linkSubnetError", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: deviceStatusFactory({ linkingSubnet: true }),
+            abc123: factory.deviceStatus({ linkingSubnet: true }),
           },
         }),
         actions.linkSubnetError({
@@ -695,17 +689,17 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: "It's realllll bad",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "It's realllll bad",
             event: "linkSubnet",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: deviceStatusFactory({ linkingSubnet: false }),
+          abc123: factory.deviceStatus({ linkingSubnet: false }),
         },
       })
     );
@@ -714,9 +708,9 @@ describe("device reducers", () => {
   it("reduces linkSubnetSuccess", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ linkingSubnet: true }),
+            abc123: factory.deviceStatus({ linkingSubnet: true }),
           },
         }),
         actions.linkSubnetSuccess({
@@ -726,9 +720,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ linkingSubnet: false }),
+          abc123: factory.deviceStatus({ linkingSubnet: false }),
         },
       })
     );
@@ -737,9 +731,9 @@ describe("device reducers", () => {
   it("reduces unlinkSubnetStart", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ unlinkingSubnet: false }),
+            abc123: factory.deviceStatus({ unlinkingSubnet: false }),
           },
         }),
         actions.unlinkSubnetStart({
@@ -749,9 +743,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ unlinkingSubnet: true }),
+          abc123: factory.deviceStatus({ unlinkingSubnet: true }),
         },
       })
     );
@@ -760,11 +754,11 @@ describe("device reducers", () => {
   it("reduces unlinkSubnetError", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           errors: "It's realllll bad",
           eventErrors: [],
           statuses: {
-            abc123: deviceStatusFactory({ unlinkingSubnet: true }),
+            abc123: factory.deviceStatus({ unlinkingSubnet: true }),
           },
         }),
         actions.unlinkSubnetError({
@@ -776,17 +770,17 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         errors: "It's realllll bad",
         eventErrors: [
-          deviceEventErrorFactory({
+          factory.deviceEventError({
             error: "It's realllll bad",
             event: "unlinkSubnet",
             id: "abc123",
           }),
         ],
         statuses: {
-          abc123: deviceStatusFactory({ unlinkingSubnet: false }),
+          abc123: factory.deviceStatus({ unlinkingSubnet: false }),
         },
       })
     );
@@ -795,9 +789,9 @@ describe("device reducers", () => {
   it("reduces unlinkSubnetSuccess", () => {
     expect(
       reducers(
-        deviceStateFactory({
+        factory.deviceState({
           statuses: {
-            abc123: deviceStatusFactory({ unlinkingSubnet: true }),
+            abc123: factory.deviceStatus({ unlinkingSubnet: true }),
           },
         }),
         actions.unlinkSubnetSuccess({
@@ -807,9 +801,9 @@ describe("device reducers", () => {
         })
       )
     ).toEqual(
-      deviceStateFactory({
+      factory.deviceState({
         statuses: {
-          abc123: deviceStatusFactory({ unlinkingSubnet: false }),
+          abc123: factory.deviceStatus({ unlinkingSubnet: false }),
         },
       })
     );

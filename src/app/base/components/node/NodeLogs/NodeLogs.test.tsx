@@ -5,11 +5,7 @@ import NodeLogs from "./NodeLogs";
 import urls from "@/app/base/urls";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 describe("NodeLogs", () => {
@@ -17,9 +13,9 @@ describe("NodeLogs", () => {
   let machine: MachineDetails;
 
   beforeEach(() => {
-    machine = machineDetailsFactory({ system_id: "abc123" });
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    machine = factory.machineDetails({ system_id: "abc123" });
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
       }),
     });
@@ -52,6 +48,7 @@ describe("NodeLogs", () => {
         {
           route: path,
           state,
+          routePattern: `${urls.machines.machine.logs.index(null)}/*`,
         }
       );
       expect(screen.getByLabelText(label)).toBeInTheDocument();

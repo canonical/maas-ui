@@ -1,25 +1,22 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddSpace from "./AddSpace";
 
-import { actions as spaceActions } from "@/app/store/space";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import { spaceActions } from "@/app/store/space";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 test("correctly dispatches space cleanup and create actions on form submit", async () => {
-  const store = configureStore()(rootStateFactory());
+  const store = configureStore()(factory.rootState());
 
   render(
     <Provider store={store}>
       <MemoryRouter
         initialEntries={[{ pathname: "/networks", key: "testKey" }]}
       >
-        <CompatRouter>
-          <AddSpace activeForm="Space" setActiveForm={() => undefined} />
-        </CompatRouter>
+        <AddSpace activeForm="Space" setActiveForm={() => undefined} />
       </MemoryRouter>
     </Provider>
   );

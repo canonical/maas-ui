@@ -1,7 +1,6 @@
 import * as reduxToolkit from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
@@ -10,14 +9,7 @@ import urls from "@/app/base/urls";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  machineStateCount as machineStateCountFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -36,24 +28,24 @@ vi.mock("@reduxjs/toolkit", async () => {
 beforeEach(() => {
   vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("{}");
   vi.spyOn(query, "generateCallId").mockReturnValue("mocked-nanoid");
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       items: [
-        machineFactory({
+        factory.machine({
           status: NodeStatus.DEPLOYED,
           tags: [1],
         }),
       ],
     }),
-    tag: tagStateFactory({
-      items: [tagFactory({ id: 1 })],
+    tag: factory.tagState({
+      items: [factory.tag({ id: 1 })],
     }),
   });
 });
 
 it("does not display a kernel options warning for non-deployed machines", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       kernel_opts: "opts",
       machine_count: 4,
@@ -61,13 +53,13 @@ it("does not display a kernel options warning for non-deployed machines", async 
     }),
   ];
   state.machine.items = [
-    machineFactory({
+    factory.machine({
       status: NodeStatus.ALLOCATED,
       tags: [1],
     }),
   ];
   state.machine.counts = {
-    [callId]: machineStateCountFactory({
+    [callId]: factory.machineStateCount({
       count: 0,
       loaded: true,
     }),
@@ -76,9 +68,7 @@ it("does not display a kernel options warning for non-deployed machines", async 
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -89,7 +79,7 @@ it("does not display a kernel options warning for non-deployed machines", async 
 
 it("displays warning when deleting a tag with kernel options", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       kernel_opts: "opts",
       machine_count: 4,
@@ -97,7 +87,7 @@ it("displays warning when deleting a tag with kernel options", async () => {
     }),
   ];
   state.machine.counts = {
-    [callId]: machineStateCountFactory({
+    [callId]: factory.machineStateCount({
       count: 1,
       loaded: true,
     }),
@@ -106,9 +96,7 @@ it("displays warning when deleting a tag with kernel options", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -119,13 +107,13 @@ it("displays warning when deleting a tag with kernel options", async () => {
 
 it("displays a kernel options warning with multiple machines", async () => {
   state.machine.items.push(
-    machineFactory({
+    factory.machine({
       status: NodeStatus.DEPLOYED,
       tags: [1],
     })
   );
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       kernel_opts: "opts",
       machine_count: 4,
@@ -133,7 +121,7 @@ it("displays a kernel options warning with multiple machines", async () => {
     }),
   ];
   state.machine.counts = {
-    [callId]: machineStateCountFactory({
+    [callId]: factory.machineStateCount({
       count: 2,
       loaded: true,
     }),
@@ -142,9 +130,7 @@ it("displays a kernel options warning with multiple machines", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -155,7 +141,7 @@ it("displays a kernel options warning with multiple machines", async () => {
 
 it("displays a kernel options warning with one machine", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       kernel_opts: "opts",
       machine_count: 1,
@@ -163,7 +149,7 @@ it("displays a kernel options warning with one machine", async () => {
     }),
   ];
   state.machine.counts = {
-    [callId]: machineStateCountFactory({
+    [callId]: factory.machineStateCount({
       count: 1,
       loaded: true,
     }),
@@ -172,9 +158,7 @@ it("displays a kernel options warning with one machine", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -185,7 +169,7 @@ it("displays a kernel options warning with one machine", async () => {
 
 it("links to a page to display deployed machines", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       id: 1,
       kernel_opts: "opts",
       machine_count: 4,
@@ -193,7 +177,7 @@ it("links to a page to display deployed machines", async () => {
     }),
   ];
   state.machine.counts = {
-    [callId]: machineStateCountFactory({
+    [callId]: factory.machineStateCount({
       count: 1,
       loaded: true,
     }),
@@ -202,9 +186,7 @@ it("links to a page to display deployed machines", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -215,7 +197,7 @@ it("links to a page to display deployed machines", async () => {
 
 it("displays warning when deleting a tag applied to devices", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       device_count: 1,
       id: 1,
       name: "tag1",
@@ -225,9 +207,7 @@ it("displays warning when deleting a tag applied to devices", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -238,7 +218,7 @@ it("displays warning when deleting a tag applied to devices", async () => {
 
 it("displays warning when deleting a tag applied to controllers", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       controller_count: 1,
       id: 1,
       name: "tag1",
@@ -248,9 +228,7 @@ it("displays warning when deleting a tag applied to controllers", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -261,7 +239,7 @@ it("displays warning when deleting a tag applied to controllers", async () => {
 
 it("generates the correct sentence for multiple nodes", async () => {
   state.tag.items = [
-    tagFactory({
+    factory.tag({
       controller_count: 2,
       id: 1,
       name: "tag1",
@@ -271,9 +249,7 @@ it("generates the correct sentence for multiple nodes", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <DeleteTagFormWarnings id={1} />
-        </CompatRouter>
+        <DeleteTagFormWarnings id={1} />
       </MemoryRouter>
     </Provider>
   );

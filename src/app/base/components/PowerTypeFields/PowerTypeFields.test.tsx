@@ -5,13 +5,7 @@ import PowerTypeFields from "./PowerTypeFields";
 import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithMockStore,
   screen,
@@ -22,9 +16,9 @@ import {
 describe("PowerTypeFields", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
           loaded: true,
         }),
       }),
@@ -33,21 +27,21 @@ describe("PowerTypeFields", () => {
 
   it("correctly generates power options from power type", () => {
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             field_type: PowerFieldType.STRING,
             label: "Required text",
             name: "field1",
             required: true,
           }),
-          powerFieldFactory({
+          factory.powerField({
             field_type: PowerFieldType.STRING,
             label: "Non-required text",
             name: "field2",
             required: false,
           }),
-          powerFieldFactory({
+          factory.powerField({
             choices: [
               ["choice1", "Choice 1"],
               ["choice2", "Choice 2"],
@@ -100,10 +94,10 @@ describe("PowerTypeFields", () => {
 
   it("does not show select if showSelect is false", () => {
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         fields: [
-          powerFieldFactory({ name: "field1" }),
-          powerFieldFactory({ name: "field2" }),
+          factory.powerField({ name: "field1" }),
+          factory.powerField({ name: "field2" }),
         ],
         name: PowerTypeNames.MANUAL,
       }),
@@ -124,14 +118,14 @@ describe("PowerTypeFields", () => {
 
   it("can limit the fields to show based on their scope", () => {
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             name: "field1",
             label: "Field 1",
             scope: PowerFieldScope.NODE,
           }),
-          powerFieldFactory({
+          factory.powerField({
             name: "field2",
             label: "Field 2",
             scope: PowerFieldScope.BMC,
@@ -161,13 +155,13 @@ describe("PowerTypeFields", () => {
 
   it("can only show power types suitable for chassis", () => {
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         can_probe: true,
         description: "virsh",
         fields: [],
         name: PowerTypeNames.VIRSH,
       }),
-      powerTypeFactory({
+      factory.powerType({
         can_probe: false,
         description: "manual",
         fields: [],
@@ -190,9 +184,9 @@ describe("PowerTypeFields", () => {
 
   it("can be given different values for formik field names", () => {
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         fields: [
-          powerFieldFactory({ name: "parameter1", label: "Parameter 1" }),
+          factory.powerField({ name: "parameter1", label: "Parameter 1" }),
         ],
         name: PowerTypeNames.MANUAL,
       }),
@@ -246,15 +240,15 @@ describe("PowerTypeFields", () => {
   it("resets the fields of the selected power type on change", async () => {
     // Mock two power types that share a power parameter "parameter1"
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         description: "manual",
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             default: "default1",
             name: "parameter1",
             label: "Parameter 1",
           }),
-          powerFieldFactory({
+          factory.powerField({
             default: "default2",
             name: "parameter2",
             label: "Parameter 2",
@@ -262,15 +256,15 @@ describe("PowerTypeFields", () => {
         ],
         name: PowerTypeNames.MANUAL,
       }),
-      powerTypeFactory({
+      factory.powerType({
         description: "virsh",
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             default: "default3",
             name: "parameter1",
             label: "Parameter 1",
           }),
-          powerFieldFactory({
+          factory.powerField({
             default: "default4",
             name: "parameter3",
             label: "Parameter 3",
@@ -325,11 +319,11 @@ describe("PowerTypeFields", () => {
 
   it("renders LXD power fields with custom props if selected", () => {
     const powerTypes = [
-      powerTypeFactory({
+      factory.powerType({
         fields: [
-          powerFieldFactory({ name: "certificate" }),
-          powerFieldFactory({ name: "key" }),
-          powerFieldFactory({ name: "password", label: "Password" }),
+          factory.powerField({ name: "certificate" }),
+          factory.powerField({ name: "key" }),
+          factory.powerField({ name: "password", label: "Password" }),
         ],
         name: PowerTypeNames.LXD,
       }),

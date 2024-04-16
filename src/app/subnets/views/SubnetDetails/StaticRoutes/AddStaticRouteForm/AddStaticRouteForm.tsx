@@ -10,9 +10,9 @@ import SubnetSelect from "@/app/base/components/SubnetSelect";
 import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
+import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import { getIsDestinationForSource } from "@/app/store/subnet/utils";
@@ -38,23 +38,23 @@ const addStaticRouteSchema = Yup.object().shape({
 });
 
 export type Props = {
-  id: Subnet[SubnetMeta.PK];
-  setActiveForm: SetSidePanelContent;
+  subnetId: Subnet[SubnetMeta.PK];
+  setSidePanelContent: SetSidePanelContent;
 };
 const AddStaticRouteForm = ({
-  id,
-  setActiveForm,
+  subnetId,
+  setSidePanelContent,
 }: Props): JSX.Element | null => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
   const saving = useSelector(staticRouteSelectors.saving);
   const saved = useSelector(staticRouteSelectors.saved);
   const dispatch = useDispatch();
-  const handleClose = () => setActiveForm(null);
+  const handleClose = () => setSidePanelContent(null);
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;
   const source = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, id)
+    subnetSelectors.getById(state, subnetId)
   );
 
   useFetchActions([subnetActions.fetch]);
@@ -69,7 +69,7 @@ const AddStaticRouteForm = ({
       cleanup={staticRouteActions.cleanup}
       errors={staticRouteErrors}
       initialValues={{
-        source: id,
+        source: subnetId,
         gateway_ip: "",
         destination: "",
         metric: "0",
@@ -84,7 +84,7 @@ const AddStaticRouteForm = ({
         dispatch(staticRouteActions.cleanup());
         dispatch(
           staticRouteActions.create({
-            source: id,
+            source: subnetId,
             gateway_ip,
             destination: toFormikNumber(destination) as number,
             metric: toFormikNumber(metric),

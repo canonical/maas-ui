@@ -1,18 +1,13 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { PoolForm, Labels as PoolFormLabels } from "./PoolForm";
 
 import urls from "@/app/base/urls";
-import { actions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
-import {
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -25,12 +20,12 @@ const mockStore = configureStore();
 describe("PoolForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      resourcepool: resourcePoolStateFactory({
+    state = factory.rootState({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [
-          resourcePoolFactory({ name: "default", is_default: true }),
-          resourcePoolFactory({ name: "backup", is_default: false }),
+          factory.resourcePool({ name: "default", is_default: true }),
+          factory.resourcePool({ name: "backup", is_default: false }),
         ],
       }),
     });
@@ -51,16 +46,14 @@ describe("PoolForm", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
+          <PoolForm />
         </MemoryRouter>
       </Provider>
     );
 
     unmount();
 
-    expect(store.getActions()[0]).toEqual(actions.cleanup());
+    expect(store.getActions()[0]).toEqual(resourcePoolActions.cleanup());
   });
 
   it("redirects when the resource pool is saved", () => {
@@ -79,9 +72,7 @@ describe("PoolForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/pools/add"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
+          <PoolForm />
         </MemoryRouter>
       </Provider>
     );
@@ -105,22 +96,23 @@ describe("PoolForm", () => {
       .find((action) => action.type === "resourcepool/create");
 
     expect(action).toEqual(
-      actions.create({ name: "test name", description: "test description" })
+      resourcePoolActions.create({
+        name: "test name",
+        description: "test description",
+      })
     );
   });
 
   it("can update a resource pool", async () => {
     const store = mockStore(state);
-    const pool = resourcePoolFactory({ id: 1 });
+    const pool = factory.resourcePool({ id: 1 });
 
     render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/pools/", key: "testKey" }]}
         >
-          <CompatRouter>
-            <PoolForm pool={pool} />
-          </CompatRouter>
+          <PoolForm pool={pool} />
         </MemoryRouter>
       </Provider>
     );
@@ -147,7 +139,11 @@ describe("PoolForm", () => {
       .find((action) => action.type === "resourcepool/update");
 
     expect(action).toEqual(
-      actions.update({ id: 1, name: "newName", description: "newDescription" })
+      resourcePoolActions.update({
+        id: 1,
+        name: "newName",
+        description: "newDescription",
+      })
     );
   });
 
@@ -158,9 +154,7 @@ describe("PoolForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
+          <PoolForm />
         </MemoryRouter>
       </Provider>
     );

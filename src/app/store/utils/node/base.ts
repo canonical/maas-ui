@@ -218,32 +218,68 @@ export const getSidePanelTitle = (
         return "Add VLAN";
       case SidePanelViews.CHANGE_SOURCE[1]:
         return "Change source";
+      case SidePanelViews.APPLY_STORAGE_LAYOUT[1]:
+        return "Change storage layout";
       case SidePanelViews.CLEAR_ALL_DISCOVERIES[1]:
         return "Clear all discoveries";
+      case SidePanelViews.CREATE_BCACHE[1]:
+        return "Create bcache";
+      case SidePanelViews.CREATE_CACHE_SET[1]:
+        return "Create cache set";
       case SidePanelViews.CREATE_DATASTORE[1]:
         return "Create datastore";
+      case SidePanelViews.CREATE_LOGICAL_VOLUME[1]:
+        return "Create logical volume";
+      case SidePanelViews.CREATE_PARTITION[1]:
+        return "Create partition";
       case SidePanelViews.CREATE_RAID[1]:
         return "Create raid";
       case SidePanelViews.CREATE_VOLUME_GROUP[1]:
         return "Create volume group";
       case SidePanelViews.DELETE_DISCOVERY[1]:
         return "Delete discovery";
+      case SidePanelViews.DELETE_DISK[1]:
+        return "Delete disk";
+      case SidePanelViews.DELETE_FILESYSTEM[1]:
+        return "Delete filesystem";
+      case SidePanelViews.DELETE_SPECIAL_FILESYSTEM[1]:
+        return "Delete special filesystem";
       case SidePanelViews.DeleteTag[1]:
         return "Delete tag";
+      case SidePanelViews.DELETE_VOLUME_GROUP[1]:
+        return "Delete volume group";
       case SidePanelViews.EDIT_INTERFACE[1]:
         return "Edit interface";
       case SidePanelViews.CREATE_ZONE[1]:
         return "Add AZ";
+      case SidePanelViews.EDIT_DISK[1]:
+        return "Edit disk";
+      case SidePanelViews.EDIT_PARTITION[1]:
+        return "Edit partition";
+      case SidePanelViews.EDIT_PHYSICAL[1]:
+        return "Edit physical";
       case SidePanelViews.DELETE_IMAGE[1]:
         return "Delete image";
       case SidePanelViews.DELETE_SPACE[1]:
         return "Delete space";
       case SidePanelViews.DELETE_FABRIC[1]:
         return "Delete fabric";
+      case SidePanelViews.MARK_CONNECTED[1]:
+        return "Mark as connected";
+      case SidePanelViews.MARK_DISCONNECTED[1]:
+        return "Mark as disconnected";
       case SidePanelViews.REMOVE_INTERFACE[1]:
         return "Remove interface";
+      case SidePanelViews.REMOVE_PARTITION[1]:
+        return "Remove partition";
+      case SidePanelViews.REMOVE_PHYSICAL[1]:
+        return "Remove physical";
+      case SidePanelViews.SET_BOOT_DISK[1]:
+        return "Set boot disk";
       case SidePanelViews.SET_DEFAULT[1]:
         return "Set default";
+      case SidePanelViews.UNMOUNT_FILESYSTEM[1]:
+        return "Unmount filesystem";
       case SidePanelViews.UPDATE_DATASTORE[1]:
         return "Update datastore";
       case SidePanelViews.UpdateTag[1]:

@@ -2,23 +2,17 @@ import { VersionColumn } from "./VersionColumn";
 
 import { ControllerInstallType } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  controllerVersions as controllerVersionsFactory,
-  controllerVersionInfo as controllerVersionInfoFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
 
 describe("VersionColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         items: [
-          controllerFactory({
+          factory.controller({
             system_id: "abc123",
           }),
         ],
@@ -27,8 +21,8 @@ describe("VersionColumn", () => {
   });
 
   it("can display the current version", () => {
-    state.controller.items[0].versions = controllerVersionsFactory({
-      current: controllerVersionInfoFactory({ version: "1.2.3" }),
+    state.controller.items[0].versions = factory.controllerVersions({
+      current: factory.controllerVersionInfo({ version: "1.2.3" }),
     });
     renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
       route: "/controllers",
@@ -38,8 +32,8 @@ describe("VersionColumn", () => {
   });
 
   it("can display an unknown version", () => {
-    state.controller.items[0].versions = controllerVersionsFactory({
-      current: controllerVersionInfoFactory({ version: undefined }),
+    state.controller.items[0].versions = factory.controllerVersions({
+      current: factory.controllerVersionInfo({ version: undefined }),
     });
     renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
       route: "/controllers",
@@ -49,7 +43,7 @@ describe("VersionColumn", () => {
   });
 
   it("can display the origin", () => {
-    state.controller.items[0].versions = controllerVersionsFactory({
+    state.controller.items[0].versions = factory.controllerVersions({
       origin: "latest/edge",
     });
     renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
@@ -60,7 +54,7 @@ describe("VersionColumn", () => {
   });
 
   it("can display the origin when it is a deb", async () => {
-    state.controller.items[0].versions = controllerVersionsFactory({
+    state.controller.items[0].versions = factory.controllerVersions({
       install_type: ControllerInstallType.DEB,
       origin: "stable",
     });
@@ -74,7 +68,7 @@ describe("VersionColumn", () => {
   });
 
   it("can display a cohort tooltip", async () => {
-    state.controller.items[0].versions = controllerVersionsFactory({
+    state.controller.items[0].versions = factory.controllerVersions({
       snap_cohort:
         "MSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViMUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNTI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjVhM2ViNzQwZGZmYzk5OWFiYWU=",
     });

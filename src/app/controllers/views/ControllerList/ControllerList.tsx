@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import ControllerListHeader from "./ControllerListHeader";
 import ControllerListTable from "./ControllerListTable";
@@ -12,13 +12,13 @@ import VaultNotification from "@/app/base/components/VaultNotification";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { FilterControllers } from "@/app/store/controller/utils";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 
 const ControllerList = (): JSX.Element => {

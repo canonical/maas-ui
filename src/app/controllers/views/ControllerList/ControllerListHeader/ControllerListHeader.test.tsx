@@ -4,11 +4,7 @@ import ControllerListHeader from "./ControllerListHeader";
 
 import { ControllerSidePanelViews } from "@/app/controllers/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -17,12 +13,12 @@ describe("ControllerListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         items: [
-          controllerFactory({ system_id: "abc123" }),
-          controllerFactory({ system_id: "def456" }),
+          factory.controller({ system_id: "abc123" }),
+          factory.controller({ system_id: "def456" }),
         ],
       }),
     });

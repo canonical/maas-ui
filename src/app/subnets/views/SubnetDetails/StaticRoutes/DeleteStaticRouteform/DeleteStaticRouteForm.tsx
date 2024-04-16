@@ -2,27 +2,40 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { actions as staticRouteActions } from "@/app/store/staticroute";
+import { staticRouteActions } from "@/app/store/staticroute";
 import staticRouteSelectors from "@/app/store/staticroute/selectors";
-import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type {
+  StaticRoute,
+  StaticRouteMeta,
+} from "@/app/store/staticroute/types";
 
 type Props = {
-  id: Subnet[SubnetMeta.PK];
-  setActiveForm: SetSidePanelContent;
+  staticRouteId?: StaticRoute[StaticRouteMeta.PK];
+  setSidePanelContent: SetSidePanelContent;
 };
 
-const DeleteStaticRouteForm = ({ id, setActiveForm }: Props) => {
+const DeleteStaticRouteForm = ({
+  staticRouteId,
+  setSidePanelContent,
+}: Props) => {
   const dispatch = useDispatch();
   const saved = useSelector(staticRouteSelectors.saved);
   const saving = useSelector(staticRouteSelectors.saving);
+
+  if (!staticRouteId) {
+    return null;
+  }
   return (
     <ModelActionForm
       aria-label="Confirm static route deletion"
       initialValues={{}}
       modelType="static route"
-      onCancel={() => setActiveForm(null)}
+      onCancel={() => setSidePanelContent(null)}
       onSubmit={() => {
-        dispatch(staticRouteActions.delete(id));
+        dispatch(staticRouteActions.delete(staticRouteId));
+      }}
+      onSuccess={() => {
+        setSidePanelContent(null);
       }}
       saved={saved}
       saving={saving}

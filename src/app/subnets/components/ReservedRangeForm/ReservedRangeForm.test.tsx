@@ -1,20 +1,21 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ReservedRangeForm, { Labels } from "./ReservedRangeForm";
 
-import { actions as ipRangeActions } from "@/app/store/iprange";
+import { ipRangeActions } from "@/app/store/iprange";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
+import * as factory from "@/testing/factories";
 import {
-  rootState as rootStateFactory,
-  ipRange as ipRangeFactory,
-  ipRangeState as ipRangeStateFactory,
-} from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -23,14 +24,14 @@ describe("ReservedRangeForm", () => {
   let ipRange: IPRange;
 
   beforeEach(() => {
-    ipRange = ipRangeFactory({
+    ipRange = factory.ipRange({
       comment: "what a beaut",
       start_ip: "11.1.1.1",
       type: IPRangeType.Reserved,
       user: "wombat",
     });
-    state = rootStateFactory({
-      iprange: ipRangeStateFactory({
+    state = factory.rootState({
+      iprange: factory.ipRangeState({
         items: [ipRange],
       }),
     });
@@ -44,9 +45,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -60,9 +62,7 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -76,9 +76,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -103,9 +104,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -124,13 +126,11 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm
-              createType={IPRangeType.Reserved}
-              id={1}
-              setActiveForm={vi.fn()}
-            />
-          </CompatRouter>
+          <ReservedRangeForm
+            createType={IPRangeType.Reserved}
+            setSidePanelContent={vi.fn()}
+            subnetId={1}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -168,9 +168,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -200,9 +201,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm ipRangeId={ipRange.id} setActiveForm={vi.fn()} />
-          </CompatRouter>
+          <ReservedRangeForm
+            ipRangeId={ipRange.id}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -233,17 +235,36 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ReservedRangeForm
-              createType={IPRangeType.Dynamic}
-              setActiveForm={vi.fn()}
-            />
-          </CompatRouter>
+          <ReservedRangeForm
+            createType={IPRangeType.Dynamic}
+            setSidePanelContent={vi.fn()}
+          />
         </MemoryRouter>
       </Provider>
     );
     expect(
       screen.queryByRole("textbox", { name: Labels.Comment })
     ).not.toBeInTheDocument();
+  });
+
+  it("displays an error when start and end IP addresses are not provided", async () => {
+    renderWithBrowserRouter(
+      <ReservedRangeForm setSidePanelContent={vi.fn()} />,
+      {
+        state,
+        route: "/machines",
+      }
+    );
+    await userEvent.click(
+      screen.getByRole("textbox", { name: Labels.StartIp })
+    );
+    await userEvent.click(screen.getByRole("textbox", { name: Labels.EndIp }));
+    await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
+    expect(
+      await screen.findByLabelText(Labels.StartIp)
+    ).toHaveAccessibleErrorMessage(/Start IP is required/);
+    expect(
+      await screen.findByLabelText(Labels.EndIp)
+    ).toHaveAccessibleErrorMessage(/End IP is required/);
   });
 });

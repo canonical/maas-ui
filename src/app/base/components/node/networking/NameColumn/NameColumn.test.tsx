@@ -6,13 +6,7 @@ import NameColumn from "./NameColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -20,23 +14,23 @@ const mockStore = configureStore();
 describe("NameColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });
   });
 
   it("disables the checkboxes when networking is disabled", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         status: NodeStatus.COMMISSIONING,
         system_id: "abc123",
@@ -59,11 +53,11 @@ describe("NameColumn", () => {
   });
 
   it("can not show a checkbox", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       type: NetworkInterfaceTypes.PHYSICAL,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         status: NodeStatus.COMMISSIONING,
         system_id: "abc123",

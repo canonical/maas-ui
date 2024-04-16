@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { Redirect, useLocation } from "react-router-dom";
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Navigate, useLocation, Route, Routes } from "react-router-dom";
 
 import MachineCommissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
@@ -26,10 +25,10 @@ import { useGetURLId } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import MachineForms from "@/app/machines/components/MachineForms";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { MachineMeta } from "@/app/store/machine/types";
 import { useFetchMachine } from "@/app/store/machine/utils/hooks";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { getRelativeRoute, isId } from "@/app/utils";
 
@@ -97,7 +96,9 @@ const MachineDetails = (): JSX.Element => {
       {machine && (
         <Routes>
           <Route
-            element={<Redirect to={urls.machines.machine.summary({ id })} />}
+            element={
+              <Navigate replace to={urls.machines.machine.summary({ id })} />
+            }
             index
           />
           <Route
@@ -201,7 +202,10 @@ const MachineDetails = (): JSX.Element => {
           />
           <Route
             element={
-              <Redirect to={urls.machines.machine.logs.events({ id })} />
+              <Navigate
+                replace
+                to={urls.machines.machine.logs.events({ id })}
+              />
             }
             path={getRelativeRoute(urls.machines.machine.events(null), base)}
           />
@@ -213,7 +217,9 @@ const MachineDetails = (): JSX.Element => {
             )}
           />
           <Route
-            element={<Redirect to={urls.machines.machine.summary({ id })} />}
+            element={
+              <Navigate replace to={urls.machines.machine.summary({ id })} />
+            }
             path={base}
           />
         </Routes>

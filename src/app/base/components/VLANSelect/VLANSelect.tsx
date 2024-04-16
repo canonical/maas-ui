@@ -9,7 +9,7 @@ import DynamicSelect from "@/app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "@/app/base/components/FormikField/FormikField";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { VlanVid } from "@/app/store/vlan/types";
 import type { VLAN } from "@/app/store/vlan/types";

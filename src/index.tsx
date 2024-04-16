@@ -2,14 +2,13 @@ import { StrictMode } from "react";
 
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import packageInfo from "../package.json";
 
 import App from "./app/App";
 import SidePanelContextProvider from "./app/base/side-panel-context";
-import { history, store } from "./redux-store";
+import { store, history } from "./redux-store";
 import * as serviceWorker from "./serviceWorker";
 
 import "./scss/index.scss";
@@ -17,10 +16,13 @@ import "./scss/index.scss";
 export const RootProviders = ({ children }: { children: JSX.Element }) => {
   return (
     <Provider store={store}>
-      <Router history={history}>
-        <CompatRouter>
-          <SidePanelContextProvider>{children}</SidePanelContextProvider>
-        </CompatRouter>
+      <Router
+        basename={`${import.meta.env.VITE_APP_BASENAME}${
+          import.meta.env.VITE_APP_VITE_BASENAME
+        }`}
+        history={history}
+      >
+        <SidePanelContextProvider>{children}</SidePanelContextProvider>
       </Router>
     </Provider>
   );

@@ -1,20 +1,15 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as FieldLabels } from "../DhcpFormFields";
 
 import DhcpForm, { Labels } from "./DhcpForm";
 
-import { actions as dhcpActions } from "@/app/store/dhcpsnippet";
+import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
 import type { RootState } from "@/app/store/root/types";
-import {
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -23,21 +18,21 @@ describe("DhcpForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items: [
-          dhcpSnippetFactory({
-            created: "Thu, 15 Aug. 2019 06:21:39",
+          factory.dhcpSnippet({
+            created: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
             id: 1,
             name: "lease",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
+            updated: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
             value: "lease 10",
           }),
-          dhcpSnippetFactory({
-            created: "Thu, 15 Aug. 2019 06:21:39",
+          factory.dhcpSnippet({
+            created: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
             id: 2,
             name: "class",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
+            updated: factory.timestamp("Thu, 15 Aug. 2019 06:21:39"),
           }),
         ],
         loaded: true,
@@ -54,16 +49,14 @@ describe("DhcpForm", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
 
     unmount();
 
-    const expectedAction = dhcpActions.cleanup();
+    const expectedAction = dhcpsnippetActions.cleanup();
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
@@ -75,9 +68,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" id={dhcpSnippet.id} />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" id={dhcpSnippet.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -91,7 +82,7 @@ describe("DhcpForm", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
 
-    const expectedAction = dhcpActions.update({
+    const expectedAction = dhcpsnippetActions.update({
       description: dhcpSnippet.description,
       enabled: dhcpSnippet.enabled,
       id: dhcpSnippet.id,
@@ -108,9 +99,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -132,7 +121,7 @@ describe("DhcpForm", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
 
-    const expectedAction = dhcpActions.create({
+    const expectedAction = dhcpsnippetActions.create({
       description: "new-description",
       enabled: true,
       name: "new-lease",
@@ -150,9 +139,7 @@ describe("DhcpForm", () => {
     const Proxy = ({ analyticsCategory }: { analyticsCategory: string }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />
-          </CompatRouter>
+          <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />
         </MemoryRouter>
       </Provider>
     );
@@ -176,9 +163,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" onSave={onSave} />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" onSave={onSave} />
         </MemoryRouter>
       </Provider>
     );
@@ -198,9 +183,7 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
+          <DhcpForm analyticsCategory="settings" />
         </MemoryRouter>
       </Provider>
     );
@@ -216,12 +199,10 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm
-              analyticsCategory="settings"
-              id={state.dhcpsnippet.items[0].id}
-            />
-          </CompatRouter>
+          <DhcpForm
+            analyticsCategory="settings"
+            id={state.dhcpsnippet.items[0].id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -250,12 +231,10 @@ describe("DhcpForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm
-              analyticsCategory="settings"
-              id={state.dhcpsnippet.items[0].id}
-            />
-          </CompatRouter>
+          <DhcpForm
+            analyticsCategory="settings"
+            id={state.dhcpsnippet.items[0].id}
+          />
         </MemoryRouter>
       </Provider>
     );

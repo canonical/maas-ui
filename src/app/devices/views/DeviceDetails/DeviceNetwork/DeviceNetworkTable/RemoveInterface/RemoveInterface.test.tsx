@@ -4,16 +4,9 @@ import RemoveInterface from "./RemoveInterface";
 
 import * as analyticsHooks from "@/app/base/hooks/analytics";
 import * as baseHooks from "@/app/base/hooks/base";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceEventError as deviceEventErrorFactory,
-  deviceState as deviceStateFactory,
-  deviceStatus as deviceStatusFactory,
-  deviceStatuses as deviceStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -21,12 +14,12 @@ const mockStore = configureStore<RootState>();
 describe("RemoveInterface", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({
-        items: [deviceDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.deviceDetails({ system_id: "abc123" })],
         loaded: true,
-        statuses: deviceStatusesFactory({
-          abc123: deviceStatusFactory(),
+        statuses: factory.deviceStatuses({
+          abc123: factory.deviceStatus(),
         }),
       }),
     });
@@ -58,22 +51,22 @@ describe("RemoveInterface", () => {
 
   it("can show errors related to deleting the interface", () => {
     state.device.eventErrors = [
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         id: "someOtherDevice",
         error: "Some other error for some other device",
         event: "someOtherError",
       }),
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         id: "abc123",
         error: "Some other error for this device",
         event: "someOtherError",
       }),
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         id: "abc123",
         error: "Delete interface error for this device",
         event: "deleteInterface",
       }),
-      deviceEventErrorFactory({
+      factory.deviceEventError({
         id: "someOtherDevice",
         error: "Delete interface error for this device",
         event: "deleteInterface",

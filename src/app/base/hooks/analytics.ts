@@ -1,7 +1,8 @@
 import { useCallback, useEffect } from "react";
 
+import ReactGA from "react-ga4";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom-v5-compat";
+import { useLocation } from "react-router-dom";
 
 import type { UsabillaLive } from "@/app/base/types";
 import authSelectors from "@/app/store/auth/selectors";
@@ -10,7 +11,6 @@ import { version as versionSelectors } from "@/app/store/general/selectors";
 
 declare global {
   interface Window {
-    ga: (...args: unknown[]) => void;
     lightningjs: {
       require: (variable: string, url: string) => Window["usabilla_live"];
     };
@@ -35,8 +35,11 @@ const sendAnalytics = (
   eventAction = "",
   eventLabel = ""
 ) => {
-  window.ga &&
-    window.ga("send", "event", eventCategory, eventAction, eventLabel);
+  ReactGA.event({
+    category: eventCategory,
+    action: eventAction,
+    label: eventLabel,
+  });
 };
 
 /**
@@ -93,66 +96,27 @@ export const useGoogleAnalytics = (): boolean => {
 
   useEffect(() => {
     if (allowGoogleAnalytics) {
-      (function (w, d, s, l, i) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        w[l] = w[l] || [];
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        const f = d.getElementsByTagName(s)[0],
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          j = d.createElement(s),
-          dl = l !== "dataLayer" ? "&l=" + l : "";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        j.async = true;
-        const src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        j.src = src;
-        if (document.querySelectorAll(`script[src="${src}"]`).length === 0) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          f.parentNode.insertBefore(j, f);
-        }
-      })(window, document, "script", "dataLayer", "GTM-P4TGJR9");
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.ga =
-        window.ga ||
-        function () {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          // eslint-disable-next-line prefer-rest-params
-          (window.ga.q = window.ga.q || []).push(arguments);
-          return window.ga;
-        };
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.ga.l = +new Date();
-      window.ga("create", "UA-1018242-63", "auto", {
-        userId: `${uuid}-${authUser.id}`,
+      ReactGA.initialize("G-V64NN1TC9B", {
+        gaOptions: {
+          user_id: `${uuid}-${authUser.id}`,
+          dimension1: version,
+          dimension2: uuid,
+        },
       });
-      window.ga("set", "dimension1", version);
-      window.ga("set", "dimension2", uuid);
-
-      window.ga(
-        "send",
-        "pageview",
-        window.location.pathname + window.location.search
-      );
+      ReactGA.send({
+        hitType: "pageview",
+        page: window.location.pathname + window.location.search,
+        title: window.location.pathname,
+      });
     }
   }, [allowGoogleAnalytics, authUser, uuid, version]);
 
   useEffect(() => {
-    window.ga &&
-      window.ga(
-        "send",
-        "pageview",
-        window.location.pathname + window.location.search
-      );
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: location.pathname,
+    });
   }, [location.pathname, location.search]);
 
   return allowGoogleAnalytics;

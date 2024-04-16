@@ -1,5 +1,5 @@
 import type { APIError } from "@/app/base/types";
-import type { Model } from "@/app/store/types/model";
+import type { Model, UtcDatetime } from "@/app/store/types/model";
 import type { GenericState } from "@/app/store/types/state";
 
 export type Discovery = Model & {
@@ -10,7 +10,7 @@ export type Discovery = Model & {
   hostname: string | null;
   ip: string | null;
   is_external_dhcp: boolean | null;
-  last_seen: string;
+  last_seen: UtcDatetime;
   mac_address: string | null;
   mac_organization: string;
   mdns: number | null;

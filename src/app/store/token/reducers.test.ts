@@ -1,14 +1,11 @@
 import reducers, { actions } from "./slice";
 
-import {
-  token as tokenFactory,
-  tokenState as tokenStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("token reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         errors: null,
         loading: false,
         loaded: false,
@@ -20,23 +17,23 @@ describe("token reducer", () => {
   });
 
   it("should correctly reduce fetchStart", () => {
-    const initialState = tokenStateFactory({ loading: false });
+    const initialState = factory.tokenState({ loading: false });
     expect(reducers(initialState, actions.fetchStart())).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         loading: true,
       })
     );
   });
 
   it("should correctly reduce fetchSuccess", () => {
-    const initialState = tokenStateFactory({
+    const initialState = factory.tokenState({
       loading: true,
       loaded: false,
       items: [],
     });
-    const items = [tokenFactory(), tokenFactory()];
+    const items = [factory.token(), factory.token()];
     expect(reducers(initialState, actions.fetchSuccess(items))).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         loading: false,
         loaded: true,
         items,
@@ -45,14 +42,14 @@ describe("token reducer", () => {
   });
 
   it("should correctly reduce fetchError", () => {
-    const initialState = tokenStateFactory({
+    const initialState = factory.tokenState({
       errors: null,
       loading: true,
     });
     expect(
       reducers(initialState, actions.fetchError("Unable to list SSL keys"))
     ).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         errors: "Unable to list SSL keys",
         loading: false,
       })
@@ -60,20 +57,20 @@ describe("token reducer", () => {
   });
 
   it("should correctly reduce createStart", () => {
-    const initialState = tokenStateFactory({ saving: false });
+    const initialState = factory.tokenState({ saving: false });
     expect(reducers(initialState, actions.createStart())).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         saving: true,
       })
     );
   });
 
   it("should correctly reduce createError", () => {
-    const initialState = tokenStateFactory({ saving: true });
+    const initialState = factory.tokenState({ saving: true });
     expect(
       reducers(initialState, actions.createError({ key: "Key already exists" }))
     ).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         errors: { key: "Key already exists" },
         saving: false,
       })
@@ -81,12 +78,12 @@ describe("token reducer", () => {
   });
 
   it("should correctly reduce createSuccess", () => {
-    const initialState = tokenStateFactory({
+    const initialState = factory.tokenState({
       saved: false,
       saving: true,
     });
     expect(reducers(initialState, actions.createSuccess())).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         saved: true,
         saving: false,
       })
@@ -94,12 +91,12 @@ describe("token reducer", () => {
   });
 
   it("should correctly reduce deleteStart", () => {
-    const initialState = tokenStateFactory({
+    const initialState = factory.tokenState({
       saved: true,
       saving: false,
     });
     expect(reducers(initialState, actions.deleteStart())).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         saved: false,
         saving: true,
       })
@@ -107,11 +104,11 @@ describe("token reducer", () => {
   });
 
   it("should correctly reduce deleteError", () => {
-    const initialState = tokenStateFactory({ errors: null, saving: true });
+    const initialState = factory.tokenState({ errors: null, saving: true });
     expect(
       reducers(initialState, actions.deleteError("Could not delete"))
     ).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         errors: "Could not delete",
         saving: false,
       })
@@ -119,42 +116,42 @@ describe("token reducer", () => {
   });
 
   it("should correctly reduce deleteSuccess", () => {
-    const initialState = tokenStateFactory({ saved: false });
+    const initialState = factory.tokenState({ saved: false });
     expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         saved: true,
       })
     );
   });
 
   it("should correctly reduce createNotify", () => {
-    const items = [tokenFactory(), tokenFactory()];
-    const initialState = tokenStateFactory({ items: [items[0]] });
+    const items = [factory.token(), factory.token()];
+    const initialState = factory.tokenState({ items: [items[0]] });
     expect(reducers(initialState, actions.createNotify(items[1]))).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         items,
       })
     );
   });
 
   it("should correctly reduce deleteNotify", () => {
-    const items = [tokenFactory(), tokenFactory()];
-    const initialState = tokenStateFactory({ items });
+    const items = [factory.token(), factory.token()];
+    const initialState = factory.tokenState({ items });
     expect(reducers(initialState, actions.deleteNotify(items[0].id))).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         items: [items[1]],
       })
     );
   });
 
   it("should correctly reduce cleanup", () => {
-    const initialState = tokenStateFactory({
+    const initialState = factory.tokenState({
       errors: { key: "Key already exists" },
       saved: true,
       saving: true,
     });
     expect(reducers(initialState, actions.cleanup())).toEqual(
-      tokenStateFactory({
+      factory.tokenState({
         errors: null,
         saved: false,
         saving: false,

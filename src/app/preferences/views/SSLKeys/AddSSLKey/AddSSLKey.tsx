@@ -6,14 +6,14 @@ import {
 } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
-import { actions as sslkeyActions } from "@/app/store/sslkey";
+import { sslkeyActions } from "@/app/store/sslkey";
 import sslkeySelectors from "@/app/store/sslkey/selectors";
 
 export enum Label {

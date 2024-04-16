@@ -4,14 +4,7 @@ import urls from "@/app/base/urls";
 import type { Controller } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeType } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  controllerVersions as controllerVersionsFactory,
-  rootState as rootStateFactory,
-  vaultEnabledState as vaultEnabledStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -23,9 +16,9 @@ describe("ControllerListTable", () => {
   let controller: Controller;
   let state: RootState;
   beforeEach(() => {
-    controller = controllerFactory();
-    state = rootStateFactory({
-      controller: controllerStateFactory({
+    controller = factory.controller();
+    state = factory.rootState({
+      controller: factory.controllerState({
         loaded: true,
         items: [controller],
       }),
@@ -54,9 +47,9 @@ describe("ControllerListTable", () => {
   describe("controller list sorting", () => {
     it("can sort by FQDN", async () => {
       const controllers = [
-        controllerFactory({ fqdn: "b", system_id: "b" }),
-        controllerFactory({ fqdn: "c", system_id: "c" }),
-        controllerFactory({ fqdn: "a", system_id: "a" }),
+        factory.controller({ fqdn: "b", system_id: "b" }),
+        factory.controller({ fqdn: "c", system_id: "c" }),
+        factory.controller({ fqdn: "a", system_id: "a" }),
       ];
       renderWithBrowserRouter(
         <ControllerListTable
@@ -86,16 +79,16 @@ describe("ControllerListTable", () => {
 
     it("can sort by version", async () => {
       const controllers = [
-        controllerFactory({
-          versions: controllerVersionsFactory({ origin: "3" }),
+        factory.controller({
+          versions: factory.controllerVersions({ origin: "3" }),
           system_id: "c",
         }),
-        controllerFactory({
-          versions: controllerVersionsFactory({ origin: "1" }),
+        factory.controller({
+          versions: factory.controllerVersions({ origin: "1" }),
           system_id: "a",
         }),
-        controllerFactory({
-          versions: controllerVersionsFactory({ origin: "2" }),
+        factory.controller({
+          versions: factory.controllerVersions({ origin: "2" }),
           system_id: "b",
         }),
       ];
@@ -130,7 +123,7 @@ describe("ControllerListTable", () => {
 
   describe("controller selection", () => {
     it("handles selecting a single controller", async () => {
-      const controllers = [controllerFactory({ system_id: "abc123" })];
+      const controllers = [factory.controller({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <ControllerListTable
@@ -147,7 +140,7 @@ describe("ControllerListTable", () => {
     });
 
     it("handles unselecting a single controller", async () => {
-      const controllers = [controllerFactory({ system_id: "abc123" })];
+      const controllers = [factory.controller({ system_id: "abc123" })];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
         <ControllerListTable
@@ -165,8 +158,8 @@ describe("ControllerListTable", () => {
 
     it("handles selecting all controllers", async () => {
       const controllers = [
-        controllerFactory({ system_id: "abc123" }),
-        controllerFactory({ system_id: "def456" }),
+        factory.controller({ system_id: "abc123" }),
+        factory.controller({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
@@ -185,8 +178,8 @@ describe("ControllerListTable", () => {
 
     it("handles unselecting all controllers", async () => {
       const controllers = [
-        controllerFactory({ system_id: "abc123" }),
-        controllerFactory({ system_id: "def456" }),
+        factory.controller({ system_id: "abc123" }),
+        factory.controller({ system_id: "def456" }),
       ];
       const onSelectedChange = vi.fn();
       renderWithBrowserRouter(
@@ -207,8 +200,8 @@ describe("ControllerListTable", () => {
   describe("vault status icons", () => {
     it("shows no icons by default", () => {
       const controllers = [
-        controllerFactory({ system_id: "abc123" }),
-        controllerFactory({ system_id: "def456" }),
+        factory.controller({ system_id: "abc123" }),
+        factory.controller({ system_id: "def456" }),
       ];
       state.controller.items = controllers;
       renderWithBrowserRouter(
@@ -225,12 +218,12 @@ describe("ControllerListTable", () => {
 
     it("shows icons with appropriate tooltips based on vault status for each controller", async () => {
       const controllers = [
-        controllerFactory({
+        factory.controller({
           system_id: "abc123",
           vault_configured: true,
           node_type: NodeType.REGION_CONTROLLER,
         }),
-        controllerFactory({
+        factory.controller({
           system_id: "def456",
           vault_configured: false,
           node_type: NodeType.REGION_AND_RACK_CONTROLLER,
@@ -284,20 +277,20 @@ describe("ControllerListTable", () => {
 
     it("displays a security-tick with appropriate tooltip on controllers once they are all configured and vault is enabled", async () => {
       const controllers = [
-        controllerFactory({
+        factory.controller({
           system_id: "abc123",
           vault_configured: true,
           node_type: NodeType.REGION_CONTROLLER,
         }),
-        controllerFactory({
+        factory.controller({
           system_id: "def456",
           vault_configured: true,
           node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         }),
       ];
       state.controller.items = controllers;
-      state.general = generalStateFactory({
-        vaultEnabled: vaultEnabledStateFactory({
+      state.general = factory.generalState({
+        vaultEnabled: factory.vaultEnabledState({
           data: true,
           loaded: true,
         }),
@@ -331,25 +324,25 @@ describe("ControllerListTable", () => {
 
     it("does not show vault icons on rack controllers", () => {
       const controllers = [
-        controllerFactory({
+        factory.controller({
           system_id: "abc123",
           vault_configured: true,
           node_type: NodeType.REGION_CONTROLLER,
         }),
-        controllerFactory({
+        factory.controller({
           system_id: "def456",
           vault_configured: true,
           node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         }),
-        controllerFactory({
+        factory.controller({
           system_id: "ghi789",
           vault_configured: true,
           node_type: NodeType.RACK_CONTROLLER,
         }),
       ];
       state.controller.items = controllers;
-      state.general = generalStateFactory({
-        vaultEnabled: vaultEnabledStateFactory({
+      state.general = factory.generalState({
+        vaultEnabled: factory.vaultEnabledState({
           data: true,
           loaded: true,
         }),

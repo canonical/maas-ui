@@ -4,7 +4,7 @@ import configureStore from "redux-mock-store";
 import MachineList from "./MachineList";
 import { DEFAULTS } from "./MachineListTable/constants";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import {
@@ -14,21 +14,7 @@ import {
   NodeType,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineFilterGroup as machineFilterGroupFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  osInfo as osInfoFactory,
-  rootState as rootStateFactory,
-  testStatus as testStatusFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  vaultEnabledState as vaultEnabledStateFactory,
-  controllerState as controllerStateFactory,
-  controller as controllerFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter, fireEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -48,15 +34,15 @@ describe("MachineList", () => {
     vi.useFakeTimers();
     vi.spyOn(query, "generateCallId").mockReturnValue("123456");
     const machines = [
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 4,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.RUNNING,
         }),
         distro_series: "bionic",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -64,38 +50,38 @@ describe("MachineList", () => {
         hostname: "koala",
         ip_addresses: [],
         memory: 8,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         osystem: "ubuntu",
         owner: "admin",
         physical_disk_count: 1,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "00:11:22:33:44:55",
         spaces: [],
         status: NodeStatus.DEPLOYED,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 8,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 2,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         distro_series: "xenial",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -103,38 +89,38 @@ describe("MachineList", () => {
         hostname: "other",
         ip_addresses: [],
         memory: 6,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         osystem: "ubuntu",
         owner: "user",
         physical_disk_count: 2,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "66:77:88:99:00:11",
         spaces: [],
         status: NodeStatus.RELEASING,
         status_code: NodeStatusCode.RELEASING,
         status_message: "",
         storage: 16,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         testing_status: TestStatusStatus.FAILED,
         system_id: "def456",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 2,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         distro_series: "xenial",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -142,41 +128,41 @@ describe("MachineList", () => {
         hostname: "other",
         ip_addresses: [],
         memory: 6,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         osystem: "ubuntu",
         owner: "user",
         physical_disk_count: 2,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "66:77:88:99:00:11",
         spaces: [],
         status: NodeStatus.FAILED_TESTING,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 16,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         testing_status: TestStatusStatus.FAILED,
         system_id: "ghi789",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
     ];
-    state = rootStateFactory({
-      general: generalStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
         machineActions: {
           data: [],
           errors: null,
           loaded: false,
           loading: false,
         },
-        vaultEnabled: vaultEnabledStateFactory({ data: false, loaded: true }),
+        vaultEnabled: factory.vaultEnabledState({ data: false, loaded: true }),
         osInfo: {
-          data: osInfoFactory({
+          data: factory.osInfo({
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
           }),
@@ -185,27 +171,27 @@ describe("MachineList", () => {
           loading: false,
         },
       }),
-      controller: controllerStateFactory({
+      controller: factory.controllerState({
         loaded: true,
-        items: [controllerFactory({ vault_configured: false })],
+        items: [factory.controller({ vault_configured: false })],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: machines,
         lists: {
-          "123456": machineStateListFactory({
+          "123456": factory.machineStateList({
             loaded: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machines[0].system_id],
                 name: "Deployed",
                 value: FetchNodeStatus.DEPLOYED,
               }),
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machines[1].system_id],
                 name: "Releasing",
                 value: FetchNodeStatus.RELEASING,
               }),
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machines[2].system_id],
                 name: "Failed testing",
                 value: FetchNodeStatus.FAILED_TESTING,
@@ -213,7 +199,7 @@ describe("MachineList", () => {
             ],
           }),
         },
-        filters: [machineFilterGroupFactory()],
+        filters: [factory.machineFilterGroup()],
         filtersLoaded: true,
       }),
     });
@@ -324,7 +310,7 @@ describe("MachineList", () => {
 
   it("displays a message if there are no search results", async () => {
     state.machine.lists = {
-      "123456": machineStateListFactory({
+      "123456": factory.machineStateList({
         count: 0,
         groups: [],
       }),
@@ -403,13 +389,13 @@ describe("MachineList", () => {
       .mockReturnValueOnce("mocked-nanoid-2");
     // Create two pages of machines.
     state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
-      machineFactory()
+      factory.machine()
     );
     state.machine.lists = {
-      "mocked-nanoid-1": machineStateListFactory({
+      "mocked-nanoid-1": factory.machineStateList({
         count: state.machine.items.length,
         groups: [
-          machineStateListGroupFactory({
+          factory.machineStateListGroup({
             // Insert the ids of all machines in the list's group.
             items: state.machine.items.map(({ system_id }) => system_id),
           }),
@@ -443,12 +429,12 @@ describe("MachineList", () => {
 
   it("shows a warning notification if not all controllers are configured with Vault", async () => {
     const controllers = [
-      controllerFactory({
+      factory.controller({
         system_id: "abc123",
         vault_configured: true,
         node_type: NodeType.REGION_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         system_id: "def456",
         vault_configured: false,
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
@@ -474,12 +460,12 @@ describe("MachineList", () => {
 
   it("shows a warning notification if  all controllers are configured with Vault but secrets are not migrated", async () => {
     const controllers = [
-      controllerFactory({
+      factory.controller({
         system_id: "abc123",
         vault_configured: true,
         node_type: NodeType.REGION_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         system_id: "def456",
         vault_configured: true,
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
@@ -505,12 +491,12 @@ describe("MachineList", () => {
 
   it("doesn't show a warning notification if Vault setup has not been started", async () => {
     const controllers = [
-      controllerFactory({
+      factory.controller({
         system_id: "abc123",
         vault_configured: false,
         node_type: NodeType.REGION_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         system_id: "def456",
         vault_configured: false,
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
@@ -534,20 +520,20 @@ describe("MachineList", () => {
 
   it("doesn't show a warning notification if Vault is fully configured", async () => {
     const controllers = [
-      controllerFactory({
+      factory.controller({
         system_id: "abc123",
         vault_configured: true,
         node_type: NodeType.REGION_CONTROLLER,
       }),
-      controllerFactory({
+      factory.controller({
         system_id: "def456",
         vault_configured: true,
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
     ];
     state.controller.items = controllers;
-    state.general = generalStateFactory({
-      vaultEnabled: vaultEnabledStateFactory({
+    state.general = factory.generalState({
+      vaultEnabled: factory.vaultEnabledState({
         data: true,
         loaded: true,
       }),

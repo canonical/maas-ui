@@ -16,7 +16,7 @@ import {
   StorageLayout,
 } from "@/app/store/types/enum";
 import { NodeActions } from "@/app/store/types/node";
-import { scriptResult as scriptResultFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("machine actions", () => {
   it("should handle fetching machines", () => {
@@ -723,8 +723,8 @@ describe("machine actions", () => {
   it("can create a suppress script results action", () => {
     expect(
       actions.suppressScriptResults("abc123", [
-        scriptResultFactory({ id: 0, name: "script0" }),
-        scriptResultFactory({ id: 2, name: "script2" }),
+        factory.scriptResult({ id: 0, name: "script0" }),
+        factory.scriptResult({ id: 2, name: "script2" }),
       ])
     ).toEqual({
       meta: {

@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import type { Mock } from "vitest";
 
@@ -9,12 +8,8 @@ import { ControllerDetailsTabLabels } from "../../constants";
 import ControllerDetails from "./ControllerDetails";
 
 import urls from "@/app/base/urls";
-import { actions as controllerActions } from "@/app/store/controller";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import { controllerActions } from "@/app/store/controller";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -29,9 +24,9 @@ afterAll(() => {
 });
 
 it("gets and sets the controller as active", () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
@@ -49,14 +44,12 @@ it("gets and sets the controller as active", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -76,9 +69,9 @@ it("gets and sets the controller as active", () => {
 });
 
 it("unsets active controller and cleans up when unmounting", () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
@@ -96,14 +89,12 @@ it("unsets active controller and cleans up when unmounting", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -128,9 +119,9 @@ it("unsets active controller and cleans up when unmounting", () => {
 });
 
 it("displays a message if the controller does not exist", () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
@@ -148,14 +139,12 @@ it("displays a message if the controller does not exist", () => {
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -166,9 +155,9 @@ it("displays a message if the controller does not exist", () => {
 });
 
 it("gets and sets the controller as active only once when navigating within the same controller", async () => {
-  const controller = controllerFactory({ system_id: "abc123" });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controller({ system_id: "abc123" });
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
@@ -186,14 +175,12 @@ it("gets and sets the controller as active only once when navigating within the 
           },
         ]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<ControllerDetails />}
-              path={`${urls.controllers.controller.index(null)}/*`}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<ControllerDetails />}
+            path={`${urls.controllers.controller.index(null)}/*`}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

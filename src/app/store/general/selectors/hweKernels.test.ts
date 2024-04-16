@@ -1,19 +1,14 @@
 import hweKernels from "./hweKernels";
 
-import {
-  generalState as generalStateFactory,
-  hweKernelsState as hweKernelsStateFactory,
-  hweKernel as hweKernelFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("hweKernels selectors", () => {
   describe("get", () => {
     it("returns hweKernels", () => {
-      const data = [hweKernelFactory(), hweKernelFactory()];
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          hweKernels: hweKernelsStateFactory({
+      const data = [factory.hweKernel(), factory.hweKernel()];
+      const state = factory.rootState({
+        general: factory.generalState({
+          hweKernels: factory.hweKernelsState({
             data,
           }),
         }),
@@ -25,9 +20,9 @@ describe("hweKernels selectors", () => {
   describe("loading", () => {
     it("returns hweKernels loading state", () => {
       const loading = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          hweKernels: hweKernelsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          hweKernels: factory.hweKernelsState({
             loading,
           }),
         }),
@@ -39,9 +34,9 @@ describe("hweKernels selectors", () => {
   describe("loaded", () => {
     it("returns hweKernels loaded state", () => {
       const loaded = true;
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          hweKernels: hweKernelsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          hweKernels: factory.hweKernelsState({
             loaded,
           }),
         }),
@@ -53,9 +48,9 @@ describe("hweKernels selectors", () => {
   describe("errors", () => {
     it("returns hweKernels errors state", () => {
       const errors = "Cannot fetch hweKernels.";
-      const state = rootStateFactory({
-        general: generalStateFactory({
-          hweKernels: hweKernelsStateFactory({
+      const state = factory.rootState({
+        general: factory.generalState({
+          hweKernels: factory.hweKernelsState({
             errors,
           }),
         }),

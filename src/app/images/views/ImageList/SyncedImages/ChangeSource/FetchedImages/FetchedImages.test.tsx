@@ -1,25 +1,15 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FetchedImages, { Labels as FetchedImagesLabels } from "./FetchedImages";
 
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import { BootResourceSourceType } from "@/app/store/bootresource/types";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  bootResourceFetchedArch as fetchedArchFactory,
-  bootResourceFetchedImages as fetchedImagesFactory,
-  bootResourceFetchedRelease as fetchedReleaseFactory,
-  bootResourceState as bootResourceStateFactory,
-  bootResourceUbuntuSource as sourceFactory,
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => ({
@@ -33,10 +23,10 @@ describe("FetchedImages", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
@@ -54,33 +44,31 @@ describe("FetchedImages", () => {
   });
 
   it("can dispatch an action to save fetched ubuntu images", async () => {
-    const source = sourceFactory({
+    const source = factory.bootResourceUbuntuSource({
       keyring_data: "abcde",
       keyring_filename: "/path/to/file",
       source_type: BootResourceSourceType.CUSTOM,
       url: "www.url.com",
     });
-    const state = rootStateFactory({
-      bootresource: bootResourceStateFactory({
-        fetchedImages: fetchedImagesFactory({
-          arches: [fetchedArchFactory()],
-          releases: [fetchedReleaseFactory()],
+    const state = factory.rootState({
+      bootresource: factory.bootResourceState({
+        fetchedImages: factory.bootResourceFetchedImages({
+          arches: [factory.bootResourceFetchedArch()],
+          releases: [factory.bootResourceFetchedRelease()],
         }),
       }),
     });
-    state.bootresource = bootResourceStateFactory({
-      fetchedImages: fetchedImagesFactory({
-        arches: [fetchedArchFactory()],
-        releases: [fetchedReleaseFactory()],
+    state.bootresource = factory.bootResourceState({
+      fetchedImages: factory.bootResourceFetchedImages({
+        arches: [factory.bootResourceFetchedArch()],
+        releases: [factory.bootResourceFetchedRelease()],
       }),
     });
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={vi.fn()} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={vi.fn()} source={source} />
         </MemoryRouter>
       </Provider>
     );
@@ -114,21 +102,19 @@ describe("FetchedImages", () => {
     vi.spyOn(reactComponentHooks, "usePrevious")
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
-    const source = sourceFactory();
+    const source = factory.bootResourceUbuntuSource();
     const closeForm = vi.fn();
-    state.bootresource = bootResourceStateFactory({
-      fetchedImages: fetchedImagesFactory({
-        arches: [fetchedArchFactory()],
-        releases: [fetchedReleaseFactory()],
+    state.bootresource = factory.bootResourceState({
+      fetchedImages: factory.bootResourceFetchedImages({
+        arches: [factory.bootResourceFetchedArch()],
+        releases: [factory.bootResourceFetchedRelease()],
       }),
     });
     const store = mockStore(state);
     const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={closeForm} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={closeForm} source={source} />
         </MemoryRouter>
       </Provider>
     );
@@ -142,9 +128,7 @@ describe("FetchedImages", () => {
     rerender(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FetchedImages closeForm={closeForm} source={source} />
-          </CompatRouter>
+          <FetchedImages closeForm={closeForm} source={source} />
         </MemoryRouter>
       </Provider>
     );

@@ -3,6 +3,7 @@
     display: inline-flex;
     flex-wrap: nowrap;
     border: 1px solid $colors--light-theme--border-high-contrast;
+    margin-bottom: $spv--medium;
 
     .p-button {
       .p-icon--delete {

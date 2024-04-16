@@ -2,34 +2,29 @@ import { NameColumn } from "./NameColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
-import {
-  modelRef as modelRefFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
-            domain: modelRefFactory({
+          factory.machine({
+            domain: factory.modelRef({
               name: "example",
             }),
             extra_macs: [],
             fqdn: "koala.example",
             hostname: "koala",
             ip_addresses: [],
-            pool: modelRefFactory(),
+            pool: factory.modelRef(),
             pxe_mac: "00:11:22:33:44:55",
             status: NodeStatus.RELEASING,
             system_id: "abc123",
-            zone: modelRefFactory(),
+            zone: factory.modelRef(),
           }),
         ],
       }),
@@ -127,8 +122,8 @@ describe("NameColumn", () => {
   });
 
   it("can render a machine with minimal data", () => {
-    state.machine.items[0] = machineFactory({
-      domain: modelRefFactory({
+    state.machine.items[0] = factory.machine({
+      domain: factory.modelRef({
         name: "example",
       }),
       fqdn: "koala.example",
@@ -143,8 +138,8 @@ describe("NameColumn", () => {
   });
 
   it("can render a machine in the MAC state with minimal data", () => {
-    state.machine.items[0] = machineFactory({
-      domain: modelRefFactory({
+    state.machine.items[0] = factory.machine({
+      domain: factory.modelRef({
         name: "example",
       }),
       hostname: "koala",

@@ -1,5 +1,7 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
+import { timestamp } from "./general";
+
 import type {
   Model,
   ModelRef,
@@ -11,8 +13,8 @@ export const model = define<Model>({
 });
 
 export const timestampedModel = extend<Model, TimestampedModel>(model, {
-  created: "Wed, 19 Feb. 2020 11:59:19",
-  updated: "Fri, 03 Jul. 2020 02:44:12",
+  created: () => timestamp("Wed, 19 Feb. 2020 11:59:19"),
+  updated: () => timestamp("Fri, 03 Jul. 2020 02:44:12"),
 });
 
 export const modelRef = extend<Model, ModelRef>(model, {

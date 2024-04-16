@@ -9,15 +9,7 @@ import {
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
 import { PowerState } from "@/app/store/types/enum";
-import {
-  machineState as machineStateFactory,
-  machineDetails as machineDetailsFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultData as scriptResultDataFactory,
-  scriptResultState as scriptResultStateFactory,
-  nodeScriptResultState as nodeScriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("InstallationOutput", () => {
@@ -25,24 +17,24 @@ describe("InstallationOutput", () => {
   let machine: MachineDetails;
 
   beforeEach(() => {
-    machine = machineDetailsFactory({ system_id: "abc123" });
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    machine = factory.machineDetails({ system_id: "abc123" });
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1] },
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         items: [
-          scriptResultFactory({
+          factory.scriptResult({
             id: 1,
             name: ScriptResultNames.INSTALL_LOG,
             result_type: ScriptResultType.INSTALLATION,
           }),
         ],
         logs: {
-          1: scriptResultDataFactory({
+          1: factory.scriptResultData({
             combined: "script result",
           }),
         },
@@ -94,7 +86,7 @@ describe("InstallationOutput", () => {
   it("displays the state when the machine has installed but no result", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.PASSED;
     state.scriptresult.logs = {
-      1: scriptResultDataFactory({
+      1: factory.scriptResultData({
         combined: undefined,
       }),
     };
@@ -115,7 +107,7 @@ describe("InstallationOutput", () => {
   it("displays the state when the installation failed without result", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.FAILED;
     state.scriptresult.logs = {
-      1: scriptResultDataFactory({
+      1: factory.scriptResultData({
         combined: undefined,
       }),
     };
@@ -151,7 +143,7 @@ describe("InstallationOutput", () => {
 
   it("displays the state the installation status is unknown", () => {
     state.scriptresult.items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         name: ScriptResultNames.INSTALL_LOG,
         result_type: ScriptResultType.INSTALLATION,

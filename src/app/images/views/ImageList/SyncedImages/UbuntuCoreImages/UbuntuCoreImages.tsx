@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import FormikForm from "@/app/base/components/FormikForm";
 import NonUbuntuImageSelect from "@/app/images/components/NonUbuntuImageSelect";
 import type { ImageValue } from "@/app/images/types";
-import { actions as bootResourceActions } from "@/app/store/bootresource";
+import { bootResourceActions } from "@/app/store/bootresource";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import { BootResourceAction } from "@/app/store/bootresource/types";
 import {
@@ -85,7 +85,7 @@ const UbuntuCoreImages = (): JSX.Element | null => {
     return images;
   }, []);
   const imagesDownloading = resources.some((resource) => resource.downloading);
-  const canStopImport = imagesDownloading && !stoppingImport;
+  const canStopImport = (saving || imagesDownloading) && !stoppingImport;
 
   return (
     <>
@@ -94,6 +94,7 @@ const UbuntuCoreImages = (): JSX.Element | null => {
         <h4>{Labels.CoreImages}</h4>
         <FormikForm<UbuntuCoreImagesValues>
           allowUnchanged
+          buttonsBehavior="independent"
           cleanup={cleanup}
           enableReinitialize
           errors={error}
@@ -120,7 +121,14 @@ const UbuntuCoreImages = (): JSX.Element | null => {
             dispatch(cleanup());
             dispatch(bootResourceActions.stopImport());
           }}
-          secondarySubmitLabel={canStopImport ? Labels.StopImport : null}
+          secondarySubmitDisabled={stoppingImport}
+          secondarySubmitLabel={
+            canStopImport
+              ? stoppingImport
+                ? "Stopping image import..."
+                : Labels.StopImport
+              : null
+          }
           submitLabel={Labels.SubmitLabel}
           validationSchema={UbuntuCoreImagesSchema}
         >

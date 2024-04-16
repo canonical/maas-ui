@@ -10,7 +10,7 @@ import {
   useSidePanel,
   type SetSidePanelContent,
 } from "@/app/base/side-panel-context";
-import { actions as ipRangeActions } from "@/app/store/iprange";
+import { ipRangeActions } from "@/app/store/iprange";
 import ipRangeSelectors from "@/app/store/iprange/selectors";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType, IPRangeMeta } from "@/app/store/iprange/types";
@@ -21,8 +21,8 @@ import { isId } from "@/app/utils";
 type Props = {
   createType?: IPRangeType;
   ipRangeId?: IPRange[IPRangeMeta.PK] | null;
-  setActiveForm: SetSidePanelContent;
-  id?: Subnet[SubnetMeta.PK] | null;
+  setSidePanelContent: SetSidePanelContent;
+  subnetId?: Subnet[SubnetMeta.PK] | null;
 };
 
 export type FormValues = {
@@ -41,15 +41,15 @@ export enum Labels {
 
 const Schema = Yup.object().shape({
   comment: Yup.string(),
-  end_ip: Yup.string().required("Start IP is required"),
-  start_ip: Yup.string().required("End IP is required"),
+  start_ip: Yup.string().required("Start IP is required"),
+  end_ip: Yup.string().required("End IP is required"),
 });
 
 const ReservedRangeForm = ({
   createType,
   ipRangeId,
-  setActiveForm,
-  id,
+  setSidePanelContent,
+  subnetId,
   ...props
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -69,7 +69,7 @@ const ReservedRangeForm = ({
   const errors = useSelector(ipRangeSelectors.errors);
   const cleanup = useCallback(() => ipRangeActions.cleanup(), []);
   const isEditing = isId(computedIpRangeId);
-  const onClose = () => setActiveForm(null);
+  const onClose = () => setSidePanelContent(null);
   let computedCreateType = createType;
   if (!createType) {
     computedCreateType =
@@ -115,7 +115,7 @@ const ReservedRangeForm = ({
         if (!isEditing && computedCreateType) {
           dispatch(
             ipRangeActions.create({
-              subnet: id,
+              subnet: subnetId,
               type: computedCreateType,
               ...values,
             })

@@ -6,18 +6,13 @@ import {
   groupSubnetData,
 } from "./utils";
 
-import {
-  fabric as fabricFactory,
-  vlan as vlanFactory,
-  subnet as subnetFactory,
-  space as spaceFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 test("getTableData generates correct sortData for fabric", () => {
-  const fabrics = [fabricFactory({ id: 1, vlan_ids: [1] })];
-  const vlans = [vlanFactory({ id: 1, fabric: 1, subnet_ids: [1] })];
-  const subnets = [subnetFactory({ vlan: 1, cidr: "172.16.1.0/24" })];
-  const spaces = [spaceFactory({ vlan_ids: [1] })];
+  const fabrics = [factory.fabric({ id: 1, vlan_ids: [1] })];
+  const vlans = [factory.vlan({ id: 1, fabric: 1, subnet_ids: [1] })];
+  const subnets = [factory.subnet({ vlan: 1, cidr: "172.16.1.0/24" })];
+  const spaces = [factory.space({ vlan_ids: [1] })];
   expect(
     getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[0].sortData
   ).toEqual({
@@ -31,9 +26,9 @@ test("getTableData generates correct sortData for fabric", () => {
 
 test("getTableData returns fabrics sorted in a correct order", () => {
   const fabrics = [
-    fabricFactory({ id: 1, name: "fabric-1" }),
-    fabricFactory({ id: 2, name: "1 fabric" }),
-    fabricFactory({ id: 10, name: "fabric-10" }),
+    factory.fabric({ id: 1, name: "fabric-1" }),
+    factory.fabric({ id: 2, name: "1 fabric" }),
+    factory.fabric({ id: 10, name: "fabric-10" }),
   ];
   const expectedOrder = ["1 fabric", "fabric-1", "fabric-10"];
   const tableData = getTableData(
@@ -48,9 +43,9 @@ test("getTableData returns fabrics sorted in a correct order", () => {
 
 test("getTableData returns spaces sorted in a correct order", () => {
   const spaces = [
-    spaceFactory({ id: 1, name: "space-1" }),
-    spaceFactory({ id: 2, name: "1 space" }),
-    spaceFactory({ id: 10, name: "space-10" }),
+    factory.space({ id: 1, name: "space-1" }),
+    factory.space({ id: 2, name: "1 space" }),
+    factory.space({ id: 10, name: "space-10" }),
   ];
   const expectedOrder = ["1 space", "space-1", "space-10"];
   const tableData = getTableData(
@@ -64,16 +59,16 @@ test("getTableData returns spaces sorted in a correct order", () => {
 });
 
 test("groupRowsBySpace returns grouped spaces in a correct format", () => {
-  const fabrics = [fabricFactory({ id: 1, vlan_ids: [1, 2, 3] })];
+  const fabrics = [factory.fabric({ id: 1, vlan_ids: [1, 2, 3] })];
   const vlans = [
-    vlanFactory({ vid: 1, fabric: 1, space: 1 }),
-    vlanFactory({ vid: 2, fabric: 1, space: 1 }),
-    vlanFactory({ vid: 3, fabric: 1, space: 2 }),
+    factory.vlan({ vid: 1, fabric: 1, space: 1 }),
+    factory.vlan({ vid: 2, fabric: 1, space: 1 }),
+    factory.vlan({ vid: 3, fabric: 1, space: 2 }),
   ];
-  const subnets = [subnetFactory(), subnetFactory()];
+  const subnets = [factory.subnet(), factory.subnet()];
   const spaces = [
-    spaceFactory({ id: 1, name: "space-1" }),
-    spaceFactory({ id: 2, name: "space-2" }),
+    factory.space({ id: 1, name: "space-1" }),
+    factory.space({ id: 2, name: "space-2" }),
   ];
   const tableData = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
 
@@ -85,12 +80,12 @@ test("groupRowsBySpace returns grouped spaces in a correct format", () => {
 
 test("filterSubnetsBySearchText matches a correct number of results with each value", () => {
   const fabrics = [
-    fabricFactory({ id: 1, vlan_ids: [1], name: "test-fabric-1" }),
-    fabricFactory({ id: 2, name: "test-fabric-2" }),
-    fabricFactory({ id: 3, name: "test-fabric-3" }),
+    factory.fabric({ id: 1, vlan_ids: [1], name: "test-fabric-1" }),
+    factory.fabric({ id: 2, name: "test-fabric-2" }),
+    factory.fabric({ id: 3, name: "test-fabric-3" }),
   ];
   const vlans = [
-    vlanFactory({
+    factory.vlan({
       id: 1,
       fabric: 1,
       space: 1,
@@ -98,8 +93,8 @@ test("filterSubnetsBySearchText matches a correct number of results with each va
       subnet_ids: [1],
     }),
   ];
-  const subnets = [subnetFactory({ cidr: "172.16.1.0/24", vlan: 1, id: 1 })];
-  const spaces = [spaceFactory({ id: 1, name: "space-1" })];
+  const subnets = [factory.subnet({ cidr: "172.16.1.0/24", vlan: 1, id: 1 })];
+  const spaces = [factory.space({ id: 1, name: "space-1" })];
   const tableRows = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
 
   expect(tableRows).toHaveLength(3);
@@ -110,12 +105,12 @@ test("filterSubnetsBySearchText matches a correct number of results with each va
 
 test("groupRowsByFabric returns grouped rows in a correct format", () => {
   const fabrics = [
-    fabricFactory({ id: 1, vlan_ids: [1] }),
-    fabricFactory({ id: 2 }),
+    factory.fabric({ id: 1, vlan_ids: [1] }),
+    factory.fabric({ id: 2 }),
   ];
-  const vlans = [vlanFactory({ fabric: 1 }), vlanFactory({ fabric: 1 })];
-  const subnets = [subnetFactory(), subnetFactory()];
-  const spaces = [spaceFactory()];
+  const vlans = [factory.vlan({ fabric: 1 }), factory.vlan({ fabric: 1 })];
+  const subnets = [factory.subnet(), factory.subnet()];
+  const spaces = [factory.space()];
   const tableData = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
 
   expect(groupRowsByFabric(tableData)[0].fabricId).toBe(fabrics[0].id);
@@ -126,12 +121,12 @@ test("groupRowsByFabric returns grouped rows in a correct format", () => {
 
 test("groupSubnetData returns grouped data in a correct format", () => {
   const fabrics = [
-    fabricFactory({ id: 1, vlan_ids: [1] }),
-    fabricFactory({ id: 2 }),
+    factory.fabric({ id: 1, vlan_ids: [1] }),
+    factory.fabric({ id: 2 }),
   ];
-  const vlans = [vlanFactory({ fabric: 1 }), vlanFactory({ fabric: 1 })];
-  const subnets = [subnetFactory(), subnetFactory()];
-  const spaces = [spaceFactory()];
+  const vlans = [factory.vlan({ fabric: 1 }), factory.vlan({ fabric: 1 })];
+  const subnets = [factory.subnet(), factory.subnet()];
+  const spaces = [factory.space()];
   const tableData = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
 
   expect(groupSubnetData(tableData)).toStrictEqual({

@@ -7,7 +7,7 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import { useFetchActions, useCycled } from "@/app/base/hooks";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type { BootResourceState } from "@/app/store/bootresource/types";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {
@@ -75,11 +75,7 @@ const ImageListHeader = (): JSX.Element => {
                 <TooltipButton
                   className="u-nudge-right--small"
                   iconName="help"
-                  message={`Enables automatic image updates (sync). The
-                            region controller will check for new images every hour
-                            and automatically sync them, if available, from the
-                            stream configured below. Syncing at the rack controller
-                            level occurs every 5 minutes and cannot be disabled.`}
+                  message={`Enables hourly image updates (sync) from the source configured below.`}
                 />
               </span>
             }

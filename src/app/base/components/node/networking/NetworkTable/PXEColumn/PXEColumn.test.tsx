@@ -2,35 +2,29 @@ import PXEColumn from "./PXEColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore } from "@/testing/utils";
 
 describe("PXEColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });
   });
 
   it("can display a boot icon", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       is_boot: true,
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });
@@ -41,11 +35,11 @@ describe("PXEColumn", () => {
   });
 
   it("does not display an icon if it is not a boot interface", () => {
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       is_boot: false,
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       interfaces: [nic],
       system_id: "abc123",
     });

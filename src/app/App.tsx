@@ -14,19 +14,18 @@ import PageContent from "./base/components/PageContent/PageContent";
 import SectionHeader from "./base/components/SectionHeader";
 import ThemePreviewContextProvider from "./base/theme-context";
 import { MAAS_UI_ID } from "./constants";
-import { formatErrors } from "./utils";
 
 import AppSideNavigation from "@/app/base/components/AppSideNavigation";
 import Login from "@/app/base/components/Login";
 import StatusBar from "@/app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "@/app/base/file-context";
 import { useFetchActions } from "@/app/base/hooks";
-import { actions as authActions } from "@/app/store/auth";
+import { authActions } from "@/app/store/auth";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
-import { actions as generalActions } from "@/app/store/general";
-import { actions as statusActions } from "@/app/store/status";
+import { generalActions } from "@/app/store/general";
+import { statusActions } from "@/app/store/status";
 import status from "@/app/store/status/selectors";
 
 export enum VaultErrors {
@@ -74,7 +73,6 @@ export const App = (): JSX.Element => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
-  const authenticationError = useSelector(status.authenticationError);
   const authLoading = useSelector(authSelectors.loading);
   const authLoaded = useSelector(authSelectors.loaded);
   const connected = useSelector(status.connected);
@@ -134,18 +132,6 @@ export const App = (): JSX.Element => {
   } else if (hasAuthError) {
     content = (
       <PageContent sidePanelContent={null} sidePanelTitle={null}>
-        {authenticationError ? (
-          authenticationError === "Session expired" ? (
-            <Notification role="alert" severity="information">
-              Your session has expired. Plese log in again to continue using
-              MAAS.
-            </Notification>
-          ) : (
-            <Notification role="alert" severity="negative" title="Error:">
-              {formatErrors(authenticationError, "__all__")}
-            </Notification>
-          )
-        ) : null}
         <Login />
       </PageContent>
     );

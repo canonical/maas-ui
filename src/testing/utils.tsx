@@ -5,8 +5,7 @@ import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
@@ -98,7 +97,7 @@ type WrapperProps = {
   parentRoute?: string;
   routePattern?: string;
   state?: RootState;
-  store?: MockStoreEnhanced<RootState, {}>;
+  store?: MockStoreEnhanced<RootState | unknown, {}>;
   sidePanelContent?: SidePanelContent;
   sidePanelSize?: SidePanelSize;
 };
@@ -111,7 +110,7 @@ export const BrowserRouterWithProvider = ({
   sidePanelSize,
   state,
   store,
-}: WrapperProps & { children: React.ReactNode }): React.ReactElement => {
+}: WrapperProps & { children: React.ReactNode }): React.ReactNode => {
   const getMockStore = (state: RootState) => {
     const mockStore = configureStore();
     return mockStore(state);
@@ -125,19 +124,13 @@ export const BrowserRouterWithProvider = ({
         initialSidePanelSize={sidePanelSize}
       >
         <BrowserRouter>
-          <CompatRouter>
-            {routePattern ? (
-              <Routes>
-                {parentRoute ? (
-                  <Route path={parentRoute}>{route}</Route>
-                ) : (
-                  route
-                )}
-              </Routes>
-            ) : (
-              children
-            )}
-          </CompatRouter>
+          {routePattern ? (
+            <Routes>
+              {parentRoute ? <Route path={parentRoute}>{route}</Route> : route}
+            </Routes>
+          ) : (
+            children
+          )}
         </BrowserRouter>
       </SidePanelContextProvider>
     </Provider>
@@ -148,7 +141,7 @@ const WithMockStoreProvider = ({
   children,
   state,
   store,
-}: WrapperProps & { children: React.ReactElement }) => {
+}: WrapperProps & { children: React.ReactNode }) => {
   const getMockStore = (state: RootState) => {
     const mockStore = configureStore();
     return mockStore(state);
@@ -183,7 +176,7 @@ export const renderWithBrowserRouter = (
 };
 
 export const renderWithMockStore = (
-  ui: React.ReactElement,
+  ui: React.ReactNode,
   options?: RenderOptions & {
     state?: RootState;
     store?: WrapperProps["store"];
@@ -198,7 +191,7 @@ export const renderWithMockStore = (
   });
   return {
     ...rendered,
-    rerender: (ui: React.ReactElement) =>
+    rerender: (ui: React.ReactNode) =>
       renderWithMockStore(ui, { container: rendered.container, ...options }),
   };
 };

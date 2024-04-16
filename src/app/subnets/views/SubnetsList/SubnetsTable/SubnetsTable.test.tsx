@@ -1,20 +1,12 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetsTable from "./SubnetsTable";
 import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 
 import urls from "@/app/subnets/urls";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  vlanState as vlanStateFactory,
-  subnetState as subnetStateFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
@@ -28,17 +20,17 @@ const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
     ...new Array(numberOfFabrics)
       .fill(null)
       .map((_value, index) =>
-        fabricFactory({ id: index + 1, name: `fabric-${index + 1}` })
+        factory.fabric({ id: index + 1, name: `fabric-${index + 1}` })
       ),
   ];
-  return rootStateFactory({
-    fabric: fabricStateFactory({
+  return factory.rootState({
+    fabric: factory.fabricState({
       loaded: true,
       items: fabrics,
     }),
-    vlan: vlanStateFactory({ loaded: true }),
-    subnet: subnetStateFactory({ loaded: true }),
-    space: spaceStateFactory({ loaded: true }),
+    vlan: factory.vlanState({ loaded: true }),
+    subnet: factory.subnetState({ loaded: true }),
+    space: factory.spaceState({ loaded: true }),
   });
 };
 
@@ -50,9 +42,7 @@ it("renders a single table variant at a time", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -68,9 +58,7 @@ it("renders Subnets by Fabric table when grouping by Fabric", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -87,9 +75,7 @@ it("renders Subnets by Space table when grouping by Space", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="space" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="space" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -106,9 +92,7 @@ it("displays a correct number of pages", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -140,9 +124,7 @@ it("updates the list of items correctly when navigating to another page", async 
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -183,9 +165,7 @@ it("doesn't display pagination if rows are within items per page limit", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -206,9 +186,7 @@ it("displays correctly paginated rows", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -251,9 +229,7 @@ it("displays the last available page once the currently active has no items", as
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -283,9 +259,7 @@ it("displays the last available page once the currently active has no items", as
   rerender(
     <Provider store={updatedStore}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -311,9 +285,7 @@ it("remains on the same page once the data is updated and page is still availabl
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );
@@ -339,9 +311,7 @@ it("remains on the same page once the data is updated and page is still availabl
   rerender(
     <Provider store={updatedStore}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <CompatRouter>
-          <SubnetsTable groupBy="fabric" searchText="" />
-        </CompatRouter>
+        <SubnetsTable groupBy="fabric" searchText="" />
       </MemoryRouter>
     </Provider>
   );

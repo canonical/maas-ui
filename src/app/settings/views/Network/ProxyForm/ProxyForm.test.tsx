@@ -1,16 +1,12 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ProxyForm from "./ProxyForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render, reduceInitialState } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -19,8 +15,8 @@ describe("ProxyForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         loaded: true,
         items: [
           {
@@ -47,9 +43,7 @@ describe("ProxyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ProxyForm />
-          </CompatRouter>
+          <ProxyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -70,9 +64,7 @@ describe("ProxyForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
         >
-          <CompatRouter>
-            <ProxyForm />
-          </CompatRouter>
+          <ProxyForm />
         </MemoryRouter>
       </Provider>
     );
@@ -86,9 +78,7 @@ describe("ProxyForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ProxyForm />
-          </CompatRouter>
+          <ProxyForm />
         </MemoryRouter>
       </Provider>
     );

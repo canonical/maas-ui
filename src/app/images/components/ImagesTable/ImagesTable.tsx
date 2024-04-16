@@ -11,7 +11,11 @@ import type { BootResource } from "@/app/store/bootresource/types";
 import { splitResourceName } from "@/app/store/bootresource/utils";
 import configSelectors from "@/app/store/config/selectors";
 import { sizeStringToNumber } from "@/app/utils/formatBytes";
-import { getTimeDistanceString, parseUtcDatetime } from "@/app/utils/time";
+import {
+  formatUtcDatetime,
+  getTimeDistanceString,
+  parseUtcDatetime,
+} from "@/app/utils/time";
 
 type Props = {
   handleClear?: (image: ImageValue) => void;
@@ -27,7 +31,8 @@ export enum Labels {
   Selected = "Selected for download",
   CannotBeCleared = "At least one architecture must be selected for the default commissioning release.",
   WillBeDeleted = "Will be deleted",
-  CannotDelete = "Cannot delete images of the default commissioning release.",
+  CannotDeleteDefault = "Cannot delete images of the default commissioning release.",
+  CannotDeleteImporting = "Cannot delete images that are currently being imported.",
   EmptyState = "No images have been selected.",
   DeleteImageConfirm = "Confirm image deletion",
   LastDeployed = "Last deployed",
@@ -86,6 +91,7 @@ const generateImageRow = (
       },
       { content: image.arch, className: "arch-col" },
       { content: "—", className: "size-col" },
+      { content: "—", className: "diskless-col" },
       {
         content: (
           <DoubleRow
@@ -145,7 +151,10 @@ const generateResourceRow = ({
   setSidePanelContent: ImageSetSidePanelContent;
 }) => {
   const { os, release } = splitResourceName(resource.name);
-  const canBeDeleted = !(os === "ubuntu" && release === commissioningRelease);
+  const isCommissioningImage =
+    os === "ubuntu" && release === commissioningRelease;
+  const canBeDeleted =
+    !isCommissioningImage && (resource.complete || !resource.downloading);
   let statusIcon = <Spinner />;
   let statusText = resource.status;
 
@@ -185,7 +194,7 @@ const generateResourceRow = ({
         content: resource.lastDeployed ? (
           <DoubleRow
             primary={getTimeDistanceString(resource.lastDeployed)}
-            secondary={resource.lastDeployed}
+            secondary={formatUtcDatetime(resource.lastDeployed)}
           />
         ) : (
           "—"
@@ -201,7 +210,13 @@ const generateResourceRow = ({
           <TableActions
             data-testid="image-actions"
             deleteDisabled={!canBeDeleted}
-            deleteTooltip={!canBeDeleted ? Labels.CannotDelete : null}
+            deleteTooltip={
+              !canBeDeleted
+                ? isCommissioningImage
+                  ? Labels.CannotDeleteDefault
+                  : Labels.CannotDeleteImporting
+                : null
+            }
             onDelete={() =>
               setSidePanelContent({
                 view: ImageSidePanelViews.DELETE_IMAGE,

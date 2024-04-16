@@ -1,32 +1,23 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetSummaryForm from "./SubnetSummaryForm";
 
-import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-} from "@/testing/factories";
+import { subnetActions } from "@/app/store/subnet";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("can dispatch an action to update the subnet", async () => {
   const fabrics = [
-    fabricFactory({ default_vlan_id: 3, id: 1, vlan_ids: [3] }),
-    fabricFactory({ default_vlan_id: 4, id: 2, vlan_ids: [4] }),
+    factory.fabric({ default_vlan_id: 3, id: 1, vlan_ids: [3] }),
+    factory.fabric({ default_vlan_id: 4, id: 2, vlan_ids: [4] }),
   ];
   const vlans = [
-    vlanFactory({ fabric: 1, id: 3 }),
-    vlanFactory({ fabric: 2, id: 4 }),
+    factory.vlan({ fabric: 1, id: 3 }),
+    factory.vlan({ fabric: 2, id: 4 }),
   ];
-  const subnet = subnetFactory({
+  const subnet = factory.subnet({
     active_discovery: false,
     allow_dns: false,
     allow_proxy: false,
@@ -39,18 +30,16 @@ it("can dispatch an action to update the subnet", async () => {
     id: 5,
     vlan: vlans[0].id,
   });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: fabrics, loaded: true }),
-    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
-    vlan: vlanStateFactory({ items: vlans, loaded: true }),
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: fabrics, loaded: true }),
+    subnet: factory.subnetState({ items: [subnet], loaded: true }),
+    vlan: factory.vlanState({ items: vlans, loaded: true }),
   });
   const store = configureStore()(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <SubnetSummaryForm handleDismiss={vi.fn()} id={subnet.id} />
-        </CompatRouter>
+        <SubnetSummaryForm handleDismiss={vi.fn()} id={subnet.id} />
       </MemoryRouter>
     </Provider>
   );

@@ -10,25 +10,7 @@ import {
   NodeStatusCode,
   TestStatusStatus,
 } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineActionsState as machineActionsStateFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  testStatus as testStatusFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -46,15 +28,15 @@ describe("MachineListTable", () => {
 
   beforeEach(() => {
     machines = [
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 4,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.RUNNING,
         }),
         distro_series: "bionic",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -62,38 +44,38 @@ describe("MachineListTable", () => {
         hostname: "koala",
         ip_addresses: [],
         memory: 8,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         osystem: "ubuntu",
         owner: "admin",
         physical_disk_count: 1,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "00:11:22:33:44:55",
         spaces: [],
         status: NodeStatus.DEPLOYED,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 8,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 2,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         distro_series: "xenial",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -101,38 +83,38 @@ describe("MachineListTable", () => {
         hostname: "other",
         ip_addresses: [],
         memory: 6,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         osystem: "ubuntu",
         owner: "user",
         physical_disk_count: 2,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "66:77:88:99:00:11",
         spaces: [],
         status: NodeStatus.RELEASING,
         status_code: NodeStatusCode.RELEASING,
         status_message: "",
         storage: 16,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         testing_status: TestStatusStatus.FAILED,
         system_id: "def456",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 2,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         distro_series: "xenial",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -140,82 +122,82 @@ describe("MachineListTable", () => {
         hostname: "other",
         ip_addresses: [],
         memory: 6,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         osystem: "ubuntu",
         owner: "user",
         physical_disk_count: 2,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "66:77:88:99:00:11",
         spaces: [],
         status: NodeStatus.RELEASING,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 16,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.FAILED,
         }),
         testing_status: TestStatusStatus.FAILED,
         system_id: "ghi789",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
     ];
     groups = [
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         items: [machines[0].system_id, machines[2].system_id],
         name: "Deployed",
       }),
-      machineStateListGroupFactory({
+      factory.machineStateListGroup({
         items: [machines[1].system_id],
         name: "Releasing",
       }),
     ];
-    state = rootStateFactory({
-      general: generalStateFactory({
-        machineActions: machineActionsStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        machineActions: factory.machineActionsState({
           data: [],
         }),
-        osInfo: osInfoStateFactory({
-          data: osInfoFactory({
+        osInfo: factory.osInfoState({
+          data: factory.osInfo({
             osystems: [["ubuntu", "Ubuntu"]],
             releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
           }),
           loaded: true,
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: machines,
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loading: true,
             groups,
           }),
         },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [
-          resourcePoolFactory({
+          factory.resourcePool({
             id: 0,
             name: "default",
           }),
-          resourcePoolFactory({
+          factory.resourcePool({
             id: 1,
             name: "Backup",
           }),
         ],
       }),
-      zone: zoneStateFactory({
+      zone: factory.zoneState({
         items: [
-          zoneFactory({
+          factory.zone({
             id: 0,
             name: "default",
           }),
-          zoneFactory({
+          factory.zone({
             id: 1,
             name: "Backup",
           }),
@@ -267,10 +249,10 @@ describe("MachineListTable", () => {
 
   it("displays a message if there are no search results", () => {
     groups = [];
-    state.machine = machineStateFactory({
+    state.machine = factory.machineState({
       items: [],
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           loading: false,
           groups,
         }),
@@ -303,10 +285,10 @@ describe("MachineListTable", () => {
 
   it("displays a message if there are no machines", () => {
     groups = [];
-    state.machine = machineStateFactory({
+    state.machine = factory.machineState({
       items: [],
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           loading: false,
           groups,
         }),
@@ -437,13 +419,13 @@ describe("MachineListTable", () => {
   });
 
   it("can change machines to display full owners name instead of username", async () => {
-    const user = userFactory({
+    const user = factory.user({
       id: 1,
       username: "admin",
       last_name: "full name",
     });
     state.machine.items[0].owner = user.username;
-    state.user = userStateFactory({
+    state.user = factory.userState({
       items: [user],
     });
     renderWithBrowserRouter(

@@ -14,7 +14,7 @@ import type { SelectedMachines } from "@/app/store/machine/types/base";
 import { FilterMachines, selectedToFilters } from "@/app/store/machine/utils";
 import type { UseFetchQueryOptions } from "@/app/store/machine/utils/hooks";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import type { TagStateList } from "@/app/store/tag/types/base";

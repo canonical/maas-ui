@@ -6,7 +6,7 @@ import type { SchemaOf } from "yup";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import RecordFields from "@/app/domains/components/RecordFields";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import { MIN_TTL } from "@/app/store/domain/constants";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain, DomainResource } from "@/app/store/domain/types";

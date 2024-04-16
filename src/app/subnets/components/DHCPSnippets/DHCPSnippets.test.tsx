@@ -1,17 +1,13 @@
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import DHCPSnippets from "./DHCPSnippets";
 
 import type { Props as DHCPTableProps } from "@/app/base/components/DHCPTable/DHCPTable";
 import urls from "@/app/base/urls";
-import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import { subnetActions } from "@/app/store/subnet";
+import * as factory from "@/testing/factories";
 import { render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -25,7 +21,7 @@ afterEach(() => {
 });
 
 it("dispatches an action to fetch the subnets on mount", () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -49,9 +45,9 @@ it("dispatches an action to fetch the subnets on mount", () => {
 });
 
 it("selects the correct subnets to display in the table", () => {
-  const subnets = [subnetFactory(), subnetFactory(), subnetFactory()];
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
+  const subnets = [factory.subnet(), factory.subnet(), factory.subnet()];
+  const state = factory.rootState({
+    subnet: factory.subnetState({
       items: subnets,
       loading: false,
     }),
@@ -62,16 +58,17 @@ it("selects the correct subnets to display in the table", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
-        <Route
-          component={() => (
-            <DHCPSnippets
-              modelName="subnet"
-              subnetIds={[subnets[0].id, subnets[2].id]}
-            />
-          )}
-          exact
-          path={urls.subnets.subnet.index(null)}
-        />
+        <Routes>
+          <Route
+            element={
+              <DHCPSnippets
+                modelName="subnet"
+                subnetIds={[subnets[0].id, subnets[2].id]}
+              />
+            }
+            path={urls.subnets.subnet.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

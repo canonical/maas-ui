@@ -10,7 +10,7 @@ import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import { NodeActions } from "@/app/store/types/node";
 

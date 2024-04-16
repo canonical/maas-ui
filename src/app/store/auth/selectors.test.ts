@@ -1,18 +1,13 @@
 import auth from "./selectors";
 
-import {
-  authState as authStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("auth", () => {
   it("can get the current user details", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ username: "admin" }),
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ username: "admin" }),
         }),
       }),
     });
@@ -20,9 +15,9 @@ describe("auth", () => {
   });
 
   it("can get the current user loading status", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
           loading: true,
         }),
       }),
@@ -31,9 +26,9 @@ describe("auth", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
           loaded: true,
         }),
       }),
@@ -42,9 +37,9 @@ describe("auth", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
           saving: true,
         }),
       }),
@@ -53,9 +48,9 @@ describe("auth", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
           saved: true,
         }),
       }),
@@ -64,9 +59,9 @@ describe("auth", () => {
   });
 
   it("can get user errors", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
           errors: { username: "Username already exists" },
         }),
       }),
@@ -77,10 +72,10 @@ describe("auth", () => {
   });
 
   it("can get whether the auth user is an admin", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: true }),
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ is_superuser: true }),
         }),
       }),
     });
@@ -88,10 +83,10 @@ describe("auth", () => {
   });
 
   it("can get whether the auth user has completed the user intro", () => {
-    const state = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ completed_intro: true }),
+    const state = factory.rootState({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({ completed_intro: true }),
         }),
       }),
     });

@@ -14,10 +14,10 @@ import CredentialsFormFields from "./CredentialsFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import type { ClearSidePanelContent } from "@/app/base/types";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
 import { splitCertificateName } from "@/app/store/general/utils";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";

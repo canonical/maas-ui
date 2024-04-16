@@ -1,17 +1,16 @@
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 import { DhcpAdd } from "./DhcpAdd";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("DhcpAdd", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("can render", () => {
@@ -19,9 +18,7 @@ describe("DhcpAdd", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/dhcp/add", key: "testKey" }]}
       >
-        <CompatRouter>
-          <DhcpAdd />
-        </CompatRouter>
+        <DhcpAdd />
       </MemoryRouter>,
       { state }
     );

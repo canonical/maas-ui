@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import RepositoryFormFields from "../RepositoryFormFields";
@@ -12,13 +12,13 @@ import type { RepositoryFormValues } from "./types";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useAddMessage } from "@/app/base/hooks";
 import settingsURLs from "@/app/settings/urls";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import {
   componentsToDisable as componentsToDisableSelectors,
   knownArchitectures as knownArchitecturesSelectors,
   pocketsToDisable as pocketsToDisableSelectors,
 } from "@/app/store/general/selectors";
-import { actions as repositoryActions } from "@/app/store/packagerepository";
+import { repositoryActions } from "@/app/store/packagerepository";
 import repositorySelectors from "@/app/store/packagerepository/selectors";
 import type {
   CreateParams,

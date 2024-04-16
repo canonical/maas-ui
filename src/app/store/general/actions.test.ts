@@ -1,8 +1,8 @@
-import { actions as general } from "./slice";
+import { generalActions } from "./";
 
 describe("general actions", () => {
   it("should handle fetching architectures", () => {
-    expect(general.fetchArchitectures()).toEqual({
+    expect(generalActions.fetchArchitectures()).toEqual({
       type: "general/fetchArchitectures",
       meta: {
         cache: true,
@@ -14,7 +14,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching bond options", () => {
-    expect(general.fetchBondOptions()).toEqual({
+    expect(generalActions.fetchBondOptions()).toEqual({
       type: "general/fetchBondOptions",
       meta: {
         cache: true,
@@ -26,7 +26,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching boot architectures", () => {
-    expect(general.fetchKnownBootArchitectures()).toEqual({
+    expect(generalActions.fetchKnownBootArchitectures()).toEqual({
       type: "general/fetchKnownBootArchitectures",
       meta: {
         cache: true,
@@ -38,7 +38,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching components to disable", () => {
-    expect(general.fetchComponentsToDisable()).toEqual({
+    expect(generalActions.fetchComponentsToDisable()).toEqual({
       type: "general/fetchComponentsToDisable",
       meta: {
         cache: true,
@@ -50,7 +50,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching default min hwe kernel", () => {
-    expect(general.fetchDefaultMinHweKernel()).toEqual({
+    expect(generalActions.fetchDefaultMinHweKernel()).toEqual({
       type: "general/fetchDefaultMinHweKernel",
       meta: {
         cache: true,
@@ -62,7 +62,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching hwe kernels", () => {
-    expect(general.fetchHweKernels()).toEqual({
+    expect(generalActions.fetchHweKernels()).toEqual({
       type: "general/fetchHweKernels",
       meta: {
         cache: true,
@@ -74,7 +74,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching known architectures", () => {
-    expect(general.fetchKnownArchitectures()).toEqual({
+    expect(generalActions.fetchKnownArchitectures()).toEqual({
       type: "general/fetchKnownArchitectures",
       meta: {
         cache: true,
@@ -86,7 +86,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching machine actions", () => {
-    expect(general.fetchMachineActions()).toEqual({
+    expect(generalActions.fetchMachineActions()).toEqual({
       type: "general/fetchMachineActions",
       meta: {
         cache: true,
@@ -98,7 +98,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching osinfo", () => {
-    expect(general.fetchOsInfo()).toEqual({
+    expect(generalActions.fetchOsInfo()).toEqual({
       type: "general/fetchOsInfo",
       meta: {
         cache: true,
@@ -110,7 +110,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching pockets to disable", () => {
-    expect(general.fetchPocketsToDisable()).toEqual({
+    expect(generalActions.fetchPocketsToDisable()).toEqual({
       type: "general/fetchPocketsToDisable",
       meta: {
         cache: true,
@@ -122,7 +122,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching power types", () => {
-    expect(general.fetchPowerTypes()).toEqual({
+    expect(generalActions.fetchPowerTypes()).toEqual({
       type: "general/fetchPowerTypes",
       meta: {
         cache: true,
@@ -134,7 +134,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching TLS certificate", () => {
-    expect(general.fetchTlsCertificate()).toEqual({
+    expect(generalActions.fetchTlsCertificate()).toEqual({
       type: "general/fetchTlsCertificate",
       meta: {
         cache: true,
@@ -146,7 +146,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching Vault enabled status", () => {
-    expect(general.fetchVaultEnabled()).toEqual({
+    expect(generalActions.fetchVaultEnabled()).toEqual({
       type: "general/fetchVaultEnabled",
       meta: {
         cache: true,
@@ -158,7 +158,7 @@ describe("general actions", () => {
   });
 
   it("should handle fetching version", () => {
-    expect(general.fetchVersion()).toEqual({
+    expect(generalActions.fetchVersion()).toEqual({
       type: "general/fetchVersion",
       meta: {
         cache: true,
@@ -170,17 +170,19 @@ describe("general actions", () => {
   });
 
   it("should handle generating a certificate", () => {
-    expect(general.generateCertificate({ object_name: "name" })).toEqual({
-      type: "general/generateCertificate",
-      meta: {
-        model: "general",
-        method: "generate_client_certificate",
-      },
-      payload: {
-        params: {
-          object_name: "name",
+    expect(generalActions.generateCertificate({ object_name: "name" })).toEqual(
+      {
+        type: "general/generateCertificate",
+        meta: {
+          model: "general",
+          method: "generate_client_certificate",
         },
-      },
-    });
+        payload: {
+          params: {
+            object_name: "name",
+          },
+        },
+      }
+    );
   });
 });

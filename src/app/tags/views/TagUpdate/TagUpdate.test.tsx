@@ -1,22 +1,18 @@
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { Label as KernelOptionsLabel } from "@/app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "@/app/tags/constants";
 import { Label } from "@/app/tags/views/TagDetails";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
@@ -24,10 +20,10 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           name: "rad",
         }),
@@ -43,13 +39,12 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-            exact
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -66,8 +61,8 @@ it("dispatches actions to fetch necessary data", () => {
 });
 
 it("shows a spinner if the tag has not loaded yet", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [],
       loading: true,
     }),
@@ -78,13 +73,12 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-            exact
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -97,9 +91,7 @@ it("can update the tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <TagUpdate id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <TagUpdate id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -141,13 +133,12 @@ it("goes to the tag details page if it can't go back", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <CompatRouter>
+        <Routes>
           <Route
-            component={() => <TagUpdate id={1} onClose={vi.fn()} />}
-            exact
+            element={<TagUpdate id={1} onClose={vi.fn()} />}
             path={urls.tags.tag.index(null)}
           />
-        </CompatRouter>
+        </Routes>
       </Router>
     </Provider>
   );
@@ -164,15 +155,13 @@ it("goes to the tag details page if it can't go back", async () => {
 });
 
 it("shows a confirmation when a tag's definition is updated", async () => {
-  const tag = tagFactory({ id: 1, definition: "abc", name: "baggage" });
+  const tag = factory.tag({ id: 1, definition: "abc", name: "baggage" });
   state.tag.items = [tag];
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <CompatRouter>
-          <TagUpdate id={1} onClose={vi.fn()} />
-        </CompatRouter>
+        <TagUpdate id={1} onClose={vi.fn()} />
       </MemoryRouter>
     </Provider>
   );

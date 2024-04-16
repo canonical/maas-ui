@@ -4,12 +4,7 @@ import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
 import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  discovery as discoveryFactory,
-  discoveryState as discoveryStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
@@ -19,8 +14,8 @@ describe("ClearAllForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
           {
             name: ConfigNames.NETWORK_DISCOVERY,
@@ -28,13 +23,13 @@ describe("ClearAllForm", () => {
           },
         ],
       }),
-      discovery: discoveryStateFactory({
+      discovery: factory.discoveryState({
         loaded: true,
         items: [
-          discoveryFactory({
+          factory.discovery({
             hostname: "my-discovery-test",
           }),
-          discoveryFactory({
+          factory.discovery({
             hostname: "another-test",
           }),
         ],
@@ -43,7 +38,7 @@ describe("ClearAllForm", () => {
   });
 
   it("displays a message when discovery is enabled", () => {
-    state.config = configStateFactory({
+    state.config = factory.configState({
       items: [
         {
           name: ConfigNames.NETWORK_DISCOVERY,
@@ -59,7 +54,7 @@ describe("ClearAllForm", () => {
   });
 
   it("displays a message when discovery is disabled", () => {
-    state.config = configStateFactory({
+    state.config = factory.configState({
       items: [
         {
           name: ConfigNames.NETWORK_DISCOVERY,

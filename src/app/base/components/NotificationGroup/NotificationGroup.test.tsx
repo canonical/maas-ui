@@ -3,21 +3,17 @@ import configureStore from "redux-mock-store";
 import NotificationGroup from "./NotificationGroup";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  notification as notificationFactory,
-  notificationState as notificationStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("NotificationGroup", () => {
   it("renders", () => {
-    const notifications = [notificationFactory(), notificationFactory()];
+    const notifications = [factory.notification(), factory.notification()];
 
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });
@@ -37,10 +33,10 @@ describe("NotificationGroup", () => {
   });
 
   it("hides multiple notifications by default", () => {
-    const notifications = [notificationFactory(), notificationFactory()];
+    const notifications = [factory.notification(), factory.notification()];
 
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });
@@ -55,10 +51,10 @@ describe("NotificationGroup", () => {
   });
 
   it("displays a count for multiple notifications", () => {
-    const notifications = [notificationFactory(), notificationFactory()];
+    const notifications = [factory.notification(), factory.notification()];
 
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });
@@ -74,11 +70,11 @@ describe("NotificationGroup", () => {
 
   it("does not display a dismiss all link if none can be dismissed", () => {
     const notifications = [
-      notificationFactory({ dismissable: false }),
-      notificationFactory({ dismissable: false }),
+      factory.notification({ dismissable: false }),
+      factory.notification({ dismissable: false }),
     ];
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });
@@ -94,12 +90,12 @@ describe("NotificationGroup", () => {
 
   it("can dismiss multiple notifications", async () => {
     const notifications = [
-      notificationFactory({ dismissable: true }),
-      notificationFactory({ dismissable: true }),
+      factory.notification({ dismissable: true }),
+      factory.notification({ dismissable: true }),
     ];
 
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });
@@ -118,12 +114,12 @@ describe("NotificationGroup", () => {
 
   it("does not dismiss undismissable notifications when dismissing a group", async () => {
     const notifications = [
-      notificationFactory({ dismissable: true }),
-      notificationFactory({ dismissable: false }),
+      factory.notification({ dismissable: true }),
+      factory.notification({ dismissable: false }),
     ];
 
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });
@@ -141,13 +137,13 @@ describe("NotificationGroup", () => {
 
   it("can toggle multiple notifications", async () => {
     const notifications = [
-      notificationFactory(),
-      notificationFactory(),
-      notificationFactory(),
+      factory.notification(),
+      factory.notification(),
+      factory.notification(),
     ];
 
-    const state = rootStateFactory({
-      notification: notificationStateFactory({
+    const state = factory.rootState({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });

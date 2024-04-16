@@ -19,12 +19,13 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { actions as discoveryActions } from "@/app/store/discovery";
+import { discoveryActions } from "@/app/store/discovery";
 import discoverySelectors from "@/app/store/discovery/selectors";
 import type { Discovery } from "@/app/store/discovery/types";
 import { DiscoveryMeta } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 export enum Labels {
   DiscoveriesList = "Discoveries list",
@@ -78,7 +79,7 @@ const generateRows = (
           content: discovery.observer_hostname,
         },
         {
-          content: <div className="u-truncate">{discovery.last_seen}</div>,
+          content: <div>{formatUtcDatetime(discovery.last_seen)}</div>,
         },
         {
           content: (

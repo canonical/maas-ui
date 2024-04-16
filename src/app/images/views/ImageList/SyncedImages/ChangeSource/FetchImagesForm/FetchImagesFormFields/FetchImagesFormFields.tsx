@@ -27,7 +27,7 @@ const FetchImagesFormFields = (): JSX.Element => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <ul className="p-inline-list">
           <li className="p-inline-list__item u-display--inline-block">
             <FormikField
@@ -82,7 +82,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                 help="Contents on the keyring to validate the mirror path."
                 label={Labels.KeyringData}
                 name="keyring_data"
-                placeholder="Contents of GPG key"
+                placeholder="Contents of GPG key (base64 encoded)"
               />
             </ShowAdvanced>
           </>

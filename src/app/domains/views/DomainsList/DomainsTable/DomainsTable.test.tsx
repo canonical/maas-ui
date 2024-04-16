@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { DomainListSidePanelViews } from "../constants";
@@ -9,11 +8,7 @@ import DomainsTable, { Labels as DomainsTableLabels } from "./DomainsTable";
 
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -34,20 +29,20 @@ describe("DomainsTable", () => {
       setSidePanelSize: vi.fn(),
       sidePanelSize: "regular",
     });
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         items: [
-          domainFactory({
+          factory.domain({
             id: 1,
             name: "b",
             is_default: true,
           }),
-          domainFactory({
+          factory.domain({
             id: 2,
             name: "c",
             is_default: false,
           }),
-          domainFactory({
+          factory.domain({
             id: 3,
             name: "a",
             is_default: false,
@@ -105,9 +100,7 @@ describe("DomainsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <CompatRouter>
-            <DomainsTable />
-          </CompatRouter>
+          <DomainsTable />
         </MemoryRouter>
       </Provider>
     );

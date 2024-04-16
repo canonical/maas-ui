@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CloneResults, { CloneErrorCodes } from "./CloneResults";
@@ -10,12 +9,7 @@ import CloneResults, { CloneErrorCodes } from "./CloneResults";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machineDetails as machineDetailsFactory,
-  machineEventError as eventErrorFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -24,9 +18,9 @@ describe("CloneResults", () => {
   let machine: MachineDetails;
 
   beforeEach(() => {
-    machine = machineDetailsFactory({ system_id: "abc123" });
-    state = rootStateFactory({
-      machine: machineStateFactory({ items: [machine], loaded: true }),
+    machine = factory.machineDetails({ system_id: "abc123" });
+    state = factory.rootState({
+      machine: factory.machineState({ items: [machine], loaded: true }),
     });
   });
 
@@ -38,13 +32,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -56,7 +48,7 @@ describe("CloneResults", () => {
 
   it("handles global clone errors", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: "it didn't work",
         event: NodeActions.CLONE,
         id: machine.system_id,
@@ -68,13 +60,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -88,7 +78,7 @@ describe("CloneResults", () => {
 
   it("handles non-invalid item destination errors", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -108,13 +98,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -129,7 +117,7 @@ describe("CloneResults", () => {
 
   it("handles invalid item destination errors", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -149,13 +137,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -170,7 +156,7 @@ describe("CloneResults", () => {
 
   it("groups errors by error code", () => {
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -200,13 +186,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              selectedCount={2}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            selectedCount={2}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -217,7 +201,7 @@ describe("CloneResults", () => {
   it("can filter machines by error type", async () => {
     const setSearchFilter = vi.fn();
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -242,13 +226,11 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              setSearchFilter={setSearchFilter}
-              sourceMachine={machine}
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            setSearchFilter={setSearchFilter}
+            sourceMachine={machine}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -259,7 +241,7 @@ describe("CloneResults", () => {
   it("does not show filter links if viewing from machine details", () => {
     const setSearchFilter = vi.fn();
     state.machine.eventErrors = [
-      eventErrorFactory({
+      factory.machineEventError({
         error: {
           destinations: [
             {
@@ -284,14 +266,12 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <CloneResults
-              closeForm={vi.fn()}
-              setSearchFilter={setSearchFilter}
-              sourceMachine={machine}
-              viewingDetails
-            />
-          </CompatRouter>
+          <CloneResults
+            closeForm={vi.fn()}
+            setSearchFilter={setSearchFilter}
+            sourceMachine={machine}
+            viewingDetails
+          />
         </MemoryRouter>
       </Provider>
     );

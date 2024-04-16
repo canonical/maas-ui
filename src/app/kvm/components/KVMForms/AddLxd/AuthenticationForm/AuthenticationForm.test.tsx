@@ -5,22 +5,11 @@ import type { NewPodValues } from "../types";
 
 import AuthenticationForm from "./AuthenticationForm";
 
-import { actions as generalActions } from "@/app/store/general";
-import { actions as podActions } from "@/app/store/pod";
+import { generalActions } from "@/app/store/general";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  generatedCertificate as generatedCertificateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  podProject as podProjectFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -30,21 +19,21 @@ describe("AuthenticationForm", () => {
   let newPodValues: NewPodValues;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        generatedCertificate: generatedCertificateStateFactory({
+    state = factory.rootState({
+      general: factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
           data: null,
         }),
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory()],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        items: [zoneFactory()],
+      zone: factory.zoneState({
+        items: [factory.zone()],
       }),
     });
     newPodValues = {
@@ -88,7 +77,7 @@ describe("AuthenticationForm", () => {
 
   it("dispatches an action to poll LXD server if authenticating via certificate", async () => {
     const setNewPodValues = vi.fn();
-    const generatedCert = generatedCertificateFactory({
+    const generatedCert = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
     state.general.generatedCertificate.data = generatedCert;
@@ -124,7 +113,7 @@ describe("AuthenticationForm", () => {
 
   it("dispatches an action to fetch projects if using a password", async () => {
     const setNewPodValues = vi.fn();
-    const generatedCert = generatedCertificateFactory({
+    const generatedCert = factory.generatedCertificate({
       CN: "my-favourite-kvm@host",
     });
     state.general.generatedCertificate.data = generatedCert;
@@ -234,7 +223,7 @@ describe("AuthenticationForm", () => {
   it("moves to the project select step if projects exist for given LXD address", () => {
     const setStep = vi.fn();
     state.pod.projects = {
-      "192.168.1.1": [podProjectFactory()],
+      "192.168.1.1": [factory.podProject()],
     };
     renderWithBrowserRouter(
       <AuthenticationForm

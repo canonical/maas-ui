@@ -20,7 +20,7 @@ import {
 import { ScriptType } from "@/app/store/script/types";
 import { ScriptResultNames } from "@/app/store/scriptresult/types";
 import { getCookie } from "@/app/utils";
-import { zone as zoneFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 vi.mock("@/bakery");
 
@@ -397,7 +397,7 @@ describe("zone list API", () => {
   });
 
   it("can fetch zones", async () => {
-    const zones = [zoneFactory()];
+    const zones = [factory.zone()];
     fetchMock.mockResponse(JSON.stringify(zones));
     const response = await api.zones.fetch("csrf-token");
     expect(response).toMatchObject(zones);

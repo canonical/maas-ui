@@ -4,19 +4,9 @@ import DeployForm from "./DeployForm";
 
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  defaultMinHweKernelState as defaultMinHweKerelStateFactory,
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -25,10 +15,10 @@ describe("DeployForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.DEFAULT_OSYSTEM,
             value: "ubuntu",
             choices: [
@@ -36,18 +26,18 @@ describe("DeployForm", () => {
               ["ubuntu", "Ubuntu"],
             ],
           }),
-          configFactory({
+          factory.config({
             name: ConfigNames.ENABLE_ANALYTICS,
             value: true,
           }),
         ],
       }),
-      general: generalStateFactory({
-        defaultMinHweKernel: defaultMinHweKerelStateFactory({
+      general: factory.generalState({
+        defaultMinHweKernel: factory.defaultMinHweKernelState({
           data: "ga-18.04",
           loaded: true,
         }),
-        osInfo: osInfoStateFactory({
+        osInfo: factory.osInfoState({
           data: {
             osystems: [
               ["centos", "CentOS"],
@@ -84,14 +74,14 @@ describe("DeployForm", () => {
           loaded: true,
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
         statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         },
       }),
     });
@@ -121,9 +111,9 @@ describe("DeployForm", () => {
   });
 
   it("shows a spinner if data has not loaded yet", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
           loaded: false,
         }),
       }),

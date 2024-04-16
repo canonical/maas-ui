@@ -1,35 +1,32 @@
 import reducers, { actions } from "./slice";
 import { ServiceName } from "./types";
 
-import {
-  service as serviceFactory,
-  serviceState as serviceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("service reducer", () => {
   it("should return the initial state", () => {
-    expect(reducers(undefined, { type: "" })).toEqual(serviceStateFactory());
+    expect(reducers(undefined, { type: "" })).toEqual(factory.serviceState());
   });
 
   describe("fetch", () => {
     it("reduces fetchStart", () => {
-      const initialState = serviceStateFactory({ loading: false });
+      const initialState = factory.serviceState({ loading: false });
 
       expect(reducers(initialState, actions.fetchStart())).toEqual(
-        serviceStateFactory({ loading: true })
+        factory.serviceState({ loading: true })
       );
     });
 
     it("reduces fetchSuccess", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         items: [],
         loaded: false,
         loading: true,
       });
-      const services = [serviceFactory(), serviceFactory()];
+      const services = [factory.service(), factory.service()];
 
       expect(reducers(initialState, actions.fetchSuccess(services))).toEqual(
-        serviceStateFactory({
+        factory.serviceState({
           items: services,
           loaded: true,
           loading: false,
@@ -38,7 +35,7 @@ describe("service reducer", () => {
     });
 
     it("reduces fetchError", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         errors: null,
         loading: true,
       });
@@ -46,7 +43,7 @@ describe("service reducer", () => {
       expect(
         reducers(initialState, actions.fetchError("Could not fetch services"))
       ).toEqual(
-        serviceStateFactory({
+        factory.serviceState({
           errors: "Could not fetch services",
           loading: false,
         })
@@ -56,39 +53,39 @@ describe("service reducer", () => {
 
   describe("create", () => {
     it("reduces createStart", () => {
-      const initialState = serviceStateFactory({ saving: false });
+      const initialState = factory.serviceState({ saving: false });
 
       expect(reducers(initialState, actions.createStart())).toEqual(
-        serviceStateFactory({ saving: true })
+        factory.serviceState({ saving: true })
       );
     });
 
     it("reduces createSuccess", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         saved: false,
         saving: true,
       });
 
       expect(reducers(initialState, actions.createSuccess())).toEqual(
-        serviceStateFactory({ saved: true, saving: false })
+        factory.serviceState({ saved: true, saving: false })
       );
     });
 
     it("reduces createNotify", () => {
-      const initialState = serviceStateFactory({
-        items: [serviceFactory()],
+      const initialState = factory.serviceState({
+        items: [factory.service()],
       });
-      const newService = serviceFactory();
+      const newService = factory.service();
 
       expect(reducers(initialState, actions.createNotify(newService))).toEqual(
-        serviceStateFactory({
+        factory.serviceState({
           items: [...initialState.items, newService],
         })
       );
     });
 
     it("reduces createError", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         errors: null,
         saving: true,
       });
@@ -96,7 +93,7 @@ describe("service reducer", () => {
       expect(
         reducers(initialState, actions.createError("Could not create service"))
       ).toEqual(
-        serviceStateFactory({
+        factory.serviceState({
           errors: "Could not create service",
           saving: false,
         })
@@ -106,40 +103,40 @@ describe("service reducer", () => {
 
   describe("update", () => {
     it("reduces updateStart", () => {
-      const initialState = serviceStateFactory({ saving: false });
+      const initialState = factory.serviceState({ saving: false });
 
       expect(reducers(initialState, actions.updateStart())).toEqual(
-        serviceStateFactory({ saving: true })
+        factory.serviceState({ saving: true })
       );
     });
 
     it("reduces updateSuccess", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         saved: false,
         saving: true,
       });
 
       expect(reducers(initialState, actions.updateSuccess())).toEqual(
-        serviceStateFactory({ saved: true, saving: false })
+        factory.serviceState({ saved: true, saving: false })
       );
     });
 
     it("reduces updateNotify", () => {
-      const initialState = serviceStateFactory({
-        items: [serviceFactory()],
+      const initialState = factory.serviceState({
+        items: [factory.service()],
       });
-      const updatedService = serviceFactory({
+      const updatedService = factory.service({
         id: initialState.items[0].id,
         name: ServiceName.PROXY,
       });
 
       expect(
         reducers(initialState, actions.updateNotify(updatedService))
-      ).toEqual(serviceStateFactory({ items: [updatedService] }));
+      ).toEqual(factory.serviceState({ items: [updatedService] }));
     });
 
     it("reduces updateError", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         errors: null,
         saving: true,
       });
@@ -147,7 +144,7 @@ describe("service reducer", () => {
       expect(
         reducers(initialState, actions.updateError("Could not update service"))
       ).toEqual(
-        serviceStateFactory({
+        factory.serviceState({
           errors: "Could not update service",
           saving: false,
         })
@@ -157,37 +154,40 @@ describe("service reducer", () => {
 
   describe("delete", () => {
     it("reduces deleteStart", () => {
-      const initialState = serviceStateFactory({ saving: false });
+      const initialState = factory.serviceState({ saving: false });
 
       expect(reducers(initialState, actions.deleteStart())).toEqual(
-        serviceStateFactory({ saving: true })
+        factory.serviceState({ saving: true })
       );
     });
 
     it("reduces deleteSuccess", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         saved: false,
         saving: true,
       });
 
       expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-        serviceStateFactory({ saved: true, saving: false })
+        factory.serviceState({ saved: true, saving: false })
       );
     });
 
     it("reduces deleteNotify", () => {
-      const [deleteService, keepService] = [serviceFactory(), serviceFactory()];
-      const initialState = serviceStateFactory({
+      const [deleteService, keepService] = [
+        factory.service(),
+        factory.service(),
+      ];
+      const initialState = factory.serviceState({
         items: [deleteService, keepService],
       });
 
       expect(
         reducers(initialState, actions.deleteNotify(deleteService.id))
-      ).toEqual(serviceStateFactory({ items: [keepService] }));
+      ).toEqual(factory.serviceState({ items: [keepService] }));
     });
 
     it("reduces deleteError", () => {
-      const initialState = serviceStateFactory({
+      const initialState = factory.serviceState({
         errors: null,
         saving: true,
       });
@@ -195,7 +195,7 @@ describe("service reducer", () => {
       expect(
         reducers(initialState, actions.deleteError("Could not delete service"))
       ).toEqual(
-        serviceStateFactory({
+        factory.serviceState({
           errors: "Could not delete service",
           saving: false,
         })

@@ -9,17 +9,7 @@ import {
   NotificationIdent,
 } from "@/app/store/notification/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  locationState as locationStateFactory,
-  message as messageFactory,
-  messageState as messageStateFactory,
-  notification as notificationFactory,
-  notificationState as notificationStateFactory,
-  rootState as rootStateFactory,
-  routerState as routerStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -30,25 +20,25 @@ describe("NotificationList", () => {
 
   beforeEach(() => {
     notifications = [
-      notificationFactory({
+      factory.notification({
         id: 1,
         category: NotificationCategory.ERROR,
         message: "an error",
       }),
     ];
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: false,
           }),
         ],
       }),
-      message: messageStateFactory({
-        items: [messageFactory({ id: 1, message: "User deleted" })],
+      message: factory.messageState({
+        items: [factory.message({ id: 1, message: "User deleted" })],
       }),
-      notification: notificationStateFactory({
+      notification: factory.notificationState({
         items: notifications,
       }),
     });
@@ -101,7 +91,7 @@ describe("NotificationList", () => {
   });
 
   it("displays a single notification if only one of a certain category", () => {
-    const notification = notificationFactory({
+    const notification = factory.notification({
       category: NotificationCategory.ERROR,
       message: "uh oh",
     });
@@ -119,10 +109,10 @@ describe("NotificationList", () => {
 
   it("displays a NotificationGroup for more than one notification of a category", () => {
     const notifications = [
-      notificationFactory({
+      factory.notification({
         category: NotificationCategory.ERROR,
       }),
-      notificationFactory({
+      factory.notification({
         category: NotificationCategory.ERROR,
       }),
     ];
@@ -142,26 +132,26 @@ describe("NotificationList", () => {
   });
 
   it("can display a release notification", () => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: true,
           }),
         ],
       }),
-      notification: notificationStateFactory({
+      notification: factory.notificationState({
         items: [
-          notificationFactory({
+          factory.notification({
             category: NotificationCategory.INFO,
             ident: NotificationIdent.RELEASE,
             message: "New release, yay!",
           }),
         ],
       }),
-      router: routerStateFactory({
-        location: locationStateFactory({
+      router: factory.routerState({
+        location: factory.locationState({
           pathname: "/machines",
         }),
       }),
@@ -178,24 +168,24 @@ describe("NotificationList", () => {
   });
 
   it("does not display a release notification for some urls", () => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: true,
           }),
         ],
       }),
-      notification: notificationStateFactory({
+      notification: factory.notificationState({
         items: [
-          notificationFactory({
+          factory.notification({
             ident: NotificationIdent.RELEASE,
           }),
         ],
       }),
-      router: routerStateFactory({
-        location: locationStateFactory({
+      router: factory.routerState({
+        location: factory.locationState({
           pathname: "/kvm",
         }),
       }),
@@ -211,14 +201,14 @@ describe("NotificationList", () => {
 
   it("applies the correct className when has content", () => {
     const notificationsWithContent = [
-      notificationFactory({
+      factory.notification({
         id: 1,
         category: NotificationCategory.INFO,
         message: "Informational message",
       }),
     ];
-    const stateWithContent = rootStateFactory({
-      notification: notificationStateFactory({
+    const stateWithContent = factory.rootState({
+      notification: factory.notificationState({
         items: notificationsWithContent,
       }),
     });

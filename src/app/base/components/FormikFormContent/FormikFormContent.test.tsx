@@ -1,7 +1,6 @@
 import { Field, Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 import * as Yup from "yup";
 
@@ -11,22 +10,19 @@ import { TestIds } from "@/app/base/components/FormikFormButtons";
 import * as hooks from "@/app/base/hooks/analytics";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   render,
   screen,
   renderWithBrowserRouter,
+  renderWithMockStore,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 const mockUseNavigate = vi.fn();
-vi.mock("react-router-dom-v5-compat", async () => {
-  const actual: object = await vi.importActual("react-router-dom-v5-compat");
+vi.mock("react-router-dom", async () => {
+  const actual: object = await vi.importActual("react-router-dom");
   return {
     ...actual,
     useNavigate: () => mockUseNavigate,
@@ -36,10 +32,10 @@ vi.mock("react-router-dom-v5-compat", async () => {
 describe("FormikFormContent", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
+          factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
         ],
       }),
     });
@@ -273,17 +269,15 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={vi.fn()}
-              validationSchema={Schema}
-            >
-              <FormikFormContent resetOnSave saved={saved}>
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={vi.fn()}
+            validationSchema={Schema}
+          >
+            <FormikFormContent resetOnSave saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -308,17 +302,15 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={vi.fn()}
-              validationSchema={Schema}
-            >
-              <FormikFormContent resetOnSave saved={saved}>
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={vi.fn()}
+            validationSchema={Schema}
+          >
+            <FormikFormContent resetOnSave saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -344,13 +336,11 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent onSuccess={onSuccess} saved={saved}>
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent onSuccess={onSuccess} saved={saved}>
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -381,17 +371,15 @@ describe("FormikFormContent", () => {
     const Proxy = ({ errors, saved }: { errors?: string; saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                errors={errors}
-                onSuccess={onSuccess}
-                saved={saved}
-              >
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -414,17 +402,15 @@ describe("FormikFormContent", () => {
     }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                errors={errors}
-                onSuccess={onSuccess}
-                saved={saved}
-              >
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -450,18 +436,16 @@ describe("FormikFormContent", () => {
     }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                errors={errors}
-                onSuccess={onSuccess}
-                resetOnSave
-                saved={saved}
-              >
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              errors={errors}
+              onSuccess={onSuccess}
+              resetOnSave
+              saved={saved}
+            >
+              <Field name="val1" />
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -481,20 +465,35 @@ describe("FormikFormContent", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={vi.fn()}>
-              <FormikFormContent
-                footer={<div data-testid="footer"></div>}
-                onCancel={vi.fn()}
-              >
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
+          <Formik initialValues={{}} onSubmit={vi.fn()}>
+            <FormikFormContent
+              footer={<div data-testid="footer"></div>}
+              onCancel={vi.fn()}
+            >
+              Content
+            </FormikFormContent>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
 
     expect(screen.getByTestId("footer")).toBeInTheDocument();
+  });
+
+  it("renders inline form correctly when inline prop is true", () => {
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <FormikFormContent aria-label="inline form" inline>
+          <Field aria-label="test field" name="testField" />
+        </FormikFormContent>
+      </Formik>
+    );
+
+    expect(screen.getByRole("form", { name: "inline form" })).toHaveClass(
+      "p-form--inline"
+    );
+    expect(
+      screen.getByRole("textbox", { name: "test field" })
+    ).toBeInTheDocument();
   });
 });

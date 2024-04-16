@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Definition from "@/app/base/components/Definition";
 import { useFetchActions } from "@/app/base/hooks";
 import type { RootState } from "@/app/store/root/types";
-import { actions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
@@ -16,7 +16,7 @@ const ZoneDetailsContent = ({ id }: Props): JSX.Element | null => {
     zoneSelectors.getById(state, id)
   );
 
-  useFetchActions([actions.fetch]);
+  useFetchActions([zoneActions.fetch]);
 
   if (zone) {
     return (

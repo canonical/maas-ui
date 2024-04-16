@@ -1,36 +1,30 @@
 import reducers, { actions } from "./slice";
 
-import {
-  user as userFactory,
-  userEventError as userEventErrorFactory,
-  authState as authStateFactory,
-  userState as userStateFactory,
-  userStatuses as userStatusesFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("users reducer", () => {
   it("should return the initial state", () => {
-    expect(reducers(undefined, { type: "" })).toEqual(userStateFactory());
+    expect(reducers(undefined, { type: "" })).toEqual(factory.userState());
   });
 
   describe("fetch", () => {
     it("reduces fetchStart", () => {
-      const initialState = userStateFactory({ loading: false });
+      const initialState = factory.userState({ loading: false });
       expect(reducers(initialState, actions.fetchStart())).toEqual(
-        userStateFactory({ loading: true })
+        factory.userState({ loading: true })
       );
     });
 
     it("reduces fetchSuccess", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         items: [],
         loaded: false,
         loading: true,
       });
-      const users = [userFactory(), userFactory()];
+      const users = [factory.user(), factory.user()];
 
       expect(reducers(initialState, actions.fetchSuccess(users))).toEqual(
-        userStateFactory({
+        factory.userState({
           items: users,
           loaded: true,
           loading: false,
@@ -39,14 +33,14 @@ describe("users reducer", () => {
     });
 
     it("reduces fetchError", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         errors: "",
         loading: true,
       });
       expect(
         reducers(initialState, actions.fetchError("Could not fetch users"))
       ).toEqual(
-        userStateFactory({
+        factory.userState({
           errors: "Could not fetch users",
           loading: false,
         })
@@ -56,41 +50,41 @@ describe("users reducer", () => {
 
   describe("create", () => {
     it("reduces createStart", () => {
-      const initialState = userStateFactory({ saving: false });
+      const initialState = factory.userState({ saving: false });
       expect(reducers(initialState, actions.createStart())).toEqual(
-        userStateFactory({ saving: true })
+        factory.userState({ saving: true })
       );
     });
 
     it("reduces createSuccess", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         saved: false,
         saving: true,
       });
       expect(reducers(initialState, actions.createSuccess())).toEqual(
-        userStateFactory({ saved: true, saving: false })
+        factory.userState({ saved: true, saving: false })
       );
     });
 
     it("reduces createNotify", () => {
-      const initialState = userStateFactory({
-        items: [userFactory()],
+      const initialState = factory.userState({
+        items: [factory.user()],
       });
-      const newUser = userFactory();
+      const newUser = factory.user();
       expect(reducers(initialState, actions.createNotify(newUser))).toEqual(
-        userStateFactory({ items: [...initialState.items, newUser] })
+        factory.userState({ items: [...initialState.items, newUser] })
       );
     });
 
     it("reduces createError", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         errors: "",
         saving: true,
       });
       expect(
         reducers(initialState, actions.createError("Could not create user"))
       ).toEqual(
-        userStateFactory({
+        factory.userState({
           errors: "Could not create user",
           saving: false,
         })
@@ -100,25 +94,25 @@ describe("users reducer", () => {
 
   describe("update", () => {
     it("reduces updateStart", () => {
-      const initialState = userStateFactory({ saving: false });
+      const initialState = factory.userState({ saving: false });
       expect(reducers(initialState, actions.updateStart())).toEqual(
-        userStateFactory({ saving: true })
+        factory.userState({ saving: true })
       );
     });
 
     it("reduces updateSuccess", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         saved: false,
         saving: true,
       });
       expect(reducers(initialState, actions.updateSuccess())).toEqual(
-        userStateFactory({ saved: true, saving: false })
+        factory.userState({ saved: true, saving: false })
       );
     });
 
     it("reduces updateNotify", () => {
-      const items = [userFactory()];
-      const initialState = userStateFactory({
+      const items = [factory.user()];
+      const initialState = factory.userState({
         items,
       });
       const updatedUser = {
@@ -126,19 +120,19 @@ describe("users reducer", () => {
         username: "updated-reducers",
       };
       expect(reducers(initialState, actions.updateNotify(updatedUser))).toEqual(
-        userStateFactory({ items: [updatedUser] })
+        factory.userState({ items: [updatedUser] })
       );
     });
 
     it("reduces updateError", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         errors: "",
         saving: true,
       });
       expect(
         reducers(initialState, actions.updateError("Could not update user"))
       ).toEqual(
-        userStateFactory({
+        factory.userState({
           errors: "Could not update user",
           saving: false,
         })
@@ -148,41 +142,41 @@ describe("users reducer", () => {
 
   describe("delete", () => {
     it("reduces deleteStart", () => {
-      const initialState = userStateFactory({ saving: false });
+      const initialState = factory.userState({ saving: false });
       expect(reducers(initialState, actions.deleteStart())).toEqual(
-        userStateFactory({ saving: true })
+        factory.userState({ saving: true })
       );
     });
 
     it("reduces deleteSuccess", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         saved: false,
         saving: true,
       });
       expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-        userStateFactory({ saved: true, saving: false })
+        factory.userState({ saved: true, saving: false })
       );
     });
 
     it("reduces deleteNotify", () => {
-      const [deleteUser, keepUser] = [userFactory(), userFactory()];
-      const initialState = userStateFactory({
+      const [deleteUser, keepUser] = [factory.user(), factory.user()];
+      const initialState = factory.userState({
         items: [deleteUser, keepUser],
       });
       expect(
         reducers(initialState, actions.deleteNotify(deleteUser.id))
-      ).toEqual(userStateFactory({ items: [keepUser] }));
+      ).toEqual(factory.userState({ items: [keepUser] }));
     });
 
     it("reduces deleteError", () => {
-      const initialState = userStateFactory({
+      const initialState = factory.userState({
         errors: "",
         saving: true,
       });
       expect(
         reducers(initialState, actions.deleteError("Could not delete user"))
       ).toEqual(
-        userStateFactory({
+        factory.userState({
           errors: "Could not delete user",
           saving: false,
         })
@@ -194,16 +188,16 @@ describe("users reducer", () => {
     it("reduces markIntroCompleteStart", () => {
       expect(
         reducers(
-          userStateFactory({
-            statuses: userStatusesFactory({
+          factory.userState({
+            statuses: factory.userStatuses({
               markingIntroComplete: false,
             }),
           }),
           actions.markIntroCompleteStart()
         )
       ).toEqual(
-        userStateFactory({
-          statuses: userStatusesFactory({
+        factory.userState({
+          statuses: factory.userStatuses({
             markingIntroComplete: true,
           }),
         })
@@ -211,30 +205,30 @@ describe("users reducer", () => {
     });
 
     it("reduces markIntroCompleteSuccess", () => {
-      const authUser = userFactory({ completed_intro: false });
+      const authUser = factory.user({ completed_intro: false });
       expect(
         reducers(
-          userStateFactory({
-            auth: authStateFactory({
+          factory.userState({
+            auth: factory.authState({
               user: authUser,
             }),
-            statuses: userStatusesFactory({
+            statuses: factory.userStatuses({
               markingIntroComplete: true,
             }),
           }),
           actions.markIntroCompleteSuccess(
-            userFactory({ completed_intro: true })
+            factory.user({ completed_intro: true })
           )
         )
       ).toEqual(
-        userStateFactory({
-          auth: authStateFactory({
+        factory.userState({
+          auth: factory.authState({
             user: {
               ...authUser,
               completed_intro: true,
             },
           }),
-          statuses: userStatusesFactory({
+          statuses: factory.userStatuses({
             markingIntroComplete: false,
           }),
         })
@@ -244,22 +238,22 @@ describe("users reducer", () => {
     it("reduces markIntroCompleteError", () => {
       expect(
         reducers(
-          userStateFactory({
-            statuses: userStatusesFactory({
+          factory.userState({
+            statuses: factory.userStatuses({
               markingIntroComplete: true,
             }),
           }),
           actions.markIntroCompleteError("Uh oh!")
         )
       ).toEqual(
-        userStateFactory({
+        factory.userState({
           eventErrors: [
-            userEventErrorFactory({
+            factory.userEventError({
               error: "Uh oh!",
               event: "markIntroComplete",
             }),
           ],
-          statuses: userStatusesFactory({
+          statuses: factory.userStatuses({
             markingIntroComplete: false,
           }),
         })

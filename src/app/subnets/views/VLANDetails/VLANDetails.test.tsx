@@ -1,25 +1,20 @@
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import VLANDetails from "./VLANDetails";
 
 import urls from "@/app/base/urls";
-import { actions as vlanActions } from "@/app/store/vlan";
-import {
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import { vlanActions } from "@/app/store/vlan";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("dispatches actions to fetch necessary data and set vlan as active on mount", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
-      items: [vlanFactory({ id: 1, space: 3 })],
+  const state = factory.rootState({
+    vlan: factory.vlanState({
+      items: [factory.vlan({ id: 1, space: 3 })],
     }),
   });
   const store = mockStore(state);
@@ -28,14 +23,12 @@ it("dispatches actions to fetch necessary data and set vlan as active on mount",
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -52,21 +45,19 @@ it("dispatches actions to fetch necessary data and set vlan as active on mount",
 });
 
 it("dispatches actions to unset active vlan and clean up on unmount", () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   const { unmount } = render(
     <Provider store={store}>
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -88,8 +79,8 @@ it("dispatches actions to unset active vlan and clean up on unmount", () => {
 });
 
 it("displays a message if the vlan does not exist", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
+  const state = factory.rootState({
+    vlan: factory.vlanState({
       items: [],
       loading: false,
     }),
@@ -100,14 +91,12 @@ it("displays a message if the vlan does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );
@@ -116,8 +105,8 @@ it("displays a message if the vlan does not exist", () => {
 });
 
 it("shows a spinner if the vlan has not loaded yet", () => {
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
+  const state = factory.rootState({
+    vlan: factory.vlanState({
       items: [],
       loading: true,
     }),
@@ -128,14 +117,12 @@ it("shows a spinner if the vlan has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: urls.subnets.vlan.index({ id: 1 }) }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route
-              element={<VLANDetails />}
-              path={urls.subnets.vlan.index(null)}
-            />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route
+            element={<VLANDetails />}
+            path={urls.subnets.vlan.index(null)}
+          />
+        </Routes>
       </MemoryRouter>
     </Provider>
   );

@@ -7,7 +7,7 @@ import ZonesListTitle from "./ZonesListTitle";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
 import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { actions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
@@ -19,7 +19,7 @@ const ZonesListHeader = ({
   const zonesCount = useSelector(zoneSelectors.count);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
 
-  useFetchActions([actions.fetch]);
+  useFetchActions([zoneActions.fetch]);
 
   return (
     <MainToolbar>

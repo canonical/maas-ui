@@ -1,8 +1,4 @@
 @mixin SectionHeader {
-  .section-header {
-    padding-top: $spv--medium;
-  }
-
   .section-header__title {
     margin: 0 $sph--large $spv--large 0;
     padding-top: 0.051rem;
@@ -23,5 +19,8 @@
     .p-contextual-menu__toggle {
       margin-bottom: $spv--small;
     }
+  }
+  .section-header__tabs {
+    margin-bottom: $spv--medium;
   }
 }

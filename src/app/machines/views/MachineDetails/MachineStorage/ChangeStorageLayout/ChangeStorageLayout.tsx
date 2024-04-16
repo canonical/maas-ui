@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { ClearSidePanelContent, EmptyObject } from "@/app/base/types";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { Machine, StorageLayoutOption } from "@/app/store/machine/types";
 import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { StorageLayout } from "@/app/store/types/enum";
@@ -49,6 +49,7 @@ export const ChangeStorageLayout = ({
             storageLayout: selectedLayout.value,
           })
         );
+        clearSidePanelContent();
       }}
       saved={saved}
       saving={saving}

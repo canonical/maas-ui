@@ -13,15 +13,15 @@ import FormikForm from "@/app/base/components/FormikForm";
 import TagNameField from "@/app/base/components/TagNameField";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import type {
@@ -35,7 +35,7 @@ import {
   getInterfaceSubnet,
   getLinkMode,
 } from "@/app/store/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { preparePayload } from "@/app/utils";
 
@@ -107,6 +107,7 @@ const EditAliasOrVlanForm = ({
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
     <FormikForm<EditAliasOrVlanValues, MachineEventErrors>
+      aria-label={isAlias ? "Edit alias" : "Edit VLAN"}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
@@ -142,12 +143,12 @@ const EditAliasOrVlanForm = ({
     >
       <Row>
         {isVLAN ? (
-          <Col size={6}>
+          <Col size={12}>
             <h3 className="p-heading--5 u-no-margin--bottom">VLAN details</h3>
             <TagNameField />
           </Col>
         ) : null}
-        <Col size={6}>
+        <Col size={12}>
           <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
           <NetworkFields
             fabricDisabled={true}

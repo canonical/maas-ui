@@ -1,17 +1,12 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddRecordForm, { Labels as AddRecordFormLabels } from "./AddRecordForm";
 
 import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
 import { RecordType } from "@/app/store/domain/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -24,9 +19,9 @@ const mockStore = configureStore();
 describe("AddRecordForm", () => {
   it("calls closeForm on cancel click", async () => {
     const closeForm = vi.fn();
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ id: 1, name: "domain-in-the-brain" })],
+    const state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ id: 1, name: "domain-in-the-brain" })],
       }),
     });
 
@@ -39,10 +34,10 @@ describe("AddRecordForm", () => {
 
   it("Dispatches the correct action on submit", async () => {
     const closeForm = vi.fn();
-    const state = rootStateFactory({
-      domain: domainStateFactory({
+    const state = factory.rootState({
+      domain: factory.domainState({
         items: [
-          domainFactory({
+          factory.domain({
             id: 1,
             name: "domain-in-the-brain",
             resource_count: 0,
@@ -55,9 +50,7 @@ describe("AddRecordForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <AddRecordForm closeForm={closeForm} id={1} />
-          </CompatRouter>
+          <AddRecordForm closeForm={closeForm} id={1} />
         </MemoryRouter>
       </Provider>
     );

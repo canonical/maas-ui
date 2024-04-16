@@ -14,20 +14,7 @@ import { Label as SubnetSelectLabel } from "@/app/base/components/SubnetSelect/S
 import { Label as VLANSelectLabel } from "@/app/base/components/VLANSelect/VLANSelect";
 import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-  subnetStatistics as subnetStatisticsFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -36,44 +23,44 @@ describe("NetworkFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    const vlan = vlanFactory({ fabric: 1, vid: 1 });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    const vlan = factory.vlan({ fabric: 1, vid: 1 });
+    state = factory.rootState({
+      fabric: factory.fabricState({
         items: [
-          fabricFactory({ id: 1, default_vlan_id: vlan.id }),
-          fabricFactory({ default_vlan_id: vlan.id }),
+          factory.fabric({ id: 1, default_vlan_id: vlan.id }),
+          factory.fabric({ default_vlan_id: vlan.id }),
         ],
         loaded: true,
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      subnet: subnetStateFactory({
+      subnet: factory.subnetState({
         items: [
-          subnetFactory({ vlan: vlan.id }),
-          subnetFactory({ vlan: vlan.id }),
+          factory.subnet({ vlan: vlan.id }),
+          factory.subnet({ vlan: vlan.id }),
         ],
         loaded: true,
       }),
-      vlan: vlanStateFactory({
-        items: [vlan, vlanFactory({ fabric: 1, vid: 2 })],
+      vlan: factory.vlanState({
+        items: [vlan, factory.vlan({ fabric: 1, vid: 2 })],
         loaded: true,
       }),
     });
   });
 
   it("changes the vlan to the default for a fabric", async () => {
-    const fabric = fabricFactory();
+    const fabric = factory.fabric();
     state.vlan.items = [
-      vlanFactory({ fabric: fabric.id, vid: 1 }),
-      vlanFactory({ fabric: fabric.id, vid: 2 }),
+      factory.vlan({ fabric: fabric.id, vid: 1 }),
+      factory.vlan({ fabric: fabric.id, vid: 2 }),
     ];
     fabric.default_vlan_id = state.vlan.items[1].id;
     state.fabric.items = [fabric];
@@ -256,8 +243,8 @@ describe("NetworkFields", () => {
 
   it("sets the ip address to the first address from the subnet when the mode is static", async () => {
     state.subnet.items.push(
-      subnetFactory({
-        statistics: subnetStatisticsFactory({
+      factory.subnet({
+        statistics: factory.subnetStatistics({
           first_address: "1.2.3.4",
         }),
         vlan: state.vlan.items[0].id,

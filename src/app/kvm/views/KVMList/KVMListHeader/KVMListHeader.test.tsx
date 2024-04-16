@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMListHeader from "./KVMListHeader";
@@ -10,11 +9,7 @@ import KVMListHeader from "./KVMListHeader";
 import urls from "@/app/base/urls";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -22,10 +17,10 @@ describe("KVMListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         loaded: true,
-        items: [podFactory({ id: 1 }), podFactory({ id: 2 })],
+        items: [factory.pod({ id: 1 }), factory.pod({ id: 2 })],
       }),
     });
   });
@@ -40,9 +35,7 @@ describe("KVMListHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
-          </CompatRouter>
+          <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
         </MemoryRouter>
       </Provider>
     );
@@ -55,9 +48,7 @@ describe("KVMListHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
-          </CompatRouter>
+          <KVMListHeader setSidePanelContent={vi.fn()} title="some text" />
         </MemoryRouter>
       </Provider>
     );
@@ -72,12 +63,10 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
-          <CompatRouter>
-            <KVMListHeader
-              setSidePanelContent={setSidePanelContent}
-              title="LXD"
-            />
-          </CompatRouter>
+          <KVMListHeader
+            setSidePanelContent={setSidePanelContent}
+            title="LXD"
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -101,12 +90,10 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
-          <CompatRouter>
-            <KVMListHeader
-              setSidePanelContent={setSidePanelContent}
-              title="Virsh"
-            />
-          </CompatRouter>
+          <KVMListHeader
+            setSidePanelContent={setSidePanelContent}
+            title="Virsh"
+          />
         </MemoryRouter>
       </Provider>
     );

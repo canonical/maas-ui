@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import { Code, Col, Row } from "@canonical/react-components";
-import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -15,13 +14,13 @@ import { useWindowTitle, useAddMessage } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import settingsURLs from "@/app/settings/urls";
 import DhcpTarget from "@/app/settings/views/Dhcp/DhcpTarget";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller } from "@/app/store/controller/types";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import deviceSelectors from "@/app/store/device/selectors";
 import type { Device } from "@/app/store/device/types";
-import { actions as dhcpsnippetActions } from "@/app/store/dhcpsnippet";
+import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
 import type {
   DHCPSnippet,
@@ -31,9 +30,10 @@ import type {
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 const getTargetName = (
   controllers: Controller[],
@@ -80,10 +80,7 @@ const generateRows = (
     const expanded = expandedId === dhcpsnippet.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const updated = dhcpsnippet.updated
-      ? format(
-          parse(dhcpsnippet.updated, "E, dd LLL. yyyy HH:mm:ss", new Date()),
-          "yyyy-LL-dd H:mm"
-        )
+      ? formatUtcDatetime(dhcpsnippet.updated)
       : "Never";
     const enabled = dhcpsnippet.enabled ? "Yes" : "No";
     const showDelete = expandedType === "delete";

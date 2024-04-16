@@ -7,12 +7,12 @@ import IPMIPowerFields, {
 
 import type { PowerField } from "@/app/store/general/types";
 import { PowerFieldType } from "@/app/store/general/types";
-import { powerField as powerFieldFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, waitFor } from "@/testing/utils";
 
 let workaroundsField: PowerField;
 beforeEach(() => {
-  workaroundsField = powerFieldFactory({
+  workaroundsField = factory.powerField({
     field_type: PowerFieldType.MULTIPLE_CHOICE,
     label: "Workaround flags",
     name: WORKAROUNDS_FIELD_NAME,

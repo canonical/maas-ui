@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
@@ -8,17 +7,7 @@ import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podPowerParameters as powerParametersFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  podStatus as podStatusFactory,
-  podStatuses as podStatusesFactory,
-  podVmCount as podVmCountFactory,
-  zone as zoneFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -27,23 +16,23 @@ describe("LXDSingleDetailsHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          podFactory({
+          factory.pod({
             id: 1,
             name: "pod-1",
-            resources: podResourcesFactory({
-              vm_count: podVmCountFactory({ tracked: 10 }),
+            resources: factory.podResources({
+              vm_count: factory.podVmCount({ tracked: 10 }),
             }),
             type: PodType.LXD,
           }),
         ],
-        statuses: podStatusesFactory({
-          1: podStatusFactory(),
+        statuses: factory.podStatuses({
+          1: factory.podStatus(),
         }),
       }),
     });
@@ -55,9 +44,7 @@ describe("LXDSingleDetailsHeader", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -66,7 +53,7 @@ describe("LXDSingleDetailsHeader", () => {
   });
 
   it("displays the LXD project", () => {
-    state.pod.items[0].power_parameters = powerParametersFactory({
+    state.pod.items[0].power_parameters = factory.podPowerParameters({
       project: "Manhattan",
     });
     const store = mockStore(state);
@@ -75,9 +62,7 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -88,8 +73,8 @@ describe("LXDSingleDetailsHeader", () => {
   });
 
   it("displays the tracked VMs count", () => {
-    state.pod.items[0].resources = podResourcesFactory({
-      vm_count: podVmCountFactory({ tracked: 5 }),
+    state.pod.items[0].resources = factory.podResources({
+      vm_count: factory.podVmCount({ tracked: 5 }),
     });
     const store = mockStore(state);
     render(
@@ -97,9 +82,7 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -110,7 +93,7 @@ describe("LXDSingleDetailsHeader", () => {
   });
 
   it("displays the pod's zone's name", () => {
-    state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
+    state.zone.items = [factory.zone({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
     const store = mockStore(state);
     render(
@@ -118,9 +101,7 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-          </CompatRouter>
+          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );
@@ -131,7 +112,7 @@ describe("LXDSingleDetailsHeader", () => {
   });
 
   it("can open the refresh host form", async () => {
-    state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
+    state.zone.items = [factory.zone({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
     const setSidePanelContent = vi.fn();
     const store = mockStore(state);
@@ -140,12 +121,10 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <CompatRouter>
-            <LXDSingleDetailsHeader
-              id={1}
-              setSidePanelContent={setSidePanelContent}
-            />
-          </CompatRouter>
+          <LXDSingleDetailsHeader
+            id={1}
+            setSidePanelContent={setSidePanelContent}
+          />
         </MemoryRouter>
       </Provider>
     );

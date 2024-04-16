@@ -6,7 +6,7 @@ import APIKeyForm from "../APIKeyForm";
 import { useFetchActions } from "@/app/base/hooks";
 import { useGetURLId } from "@/app/base/hooks/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tokenActions } from "@/app/store/token";
+import { tokenActions } from "@/app/store/token";
 import tokenSelectors from "@/app/store/token/selectors";
 import { TokenMeta } from "@/app/store/token/types";
 

@@ -7,9 +7,9 @@ import UpdateCertificateFields from "./UpdateCertificateFields";
 
 import type { FormikFormProps } from "@/app/base/components/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "@/app/store/general/selectors";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { PodDetails } from "@/app/store/pod/types";
 

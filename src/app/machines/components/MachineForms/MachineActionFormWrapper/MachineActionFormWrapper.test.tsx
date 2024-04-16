@@ -4,17 +4,11 @@ import type { Mock } from "vitest";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machineActionState as machineActionStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
@@ -69,21 +63,21 @@ it("scrolls to the top of the window when opening the form", async () => {
 });
 
 it("can show untag errors when the tag form is open", async () => {
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       actions: {
-        "123456": machineActionStateFactory({
+        "123456": factory.machineActionState({
           status: "error",
           errors: "Untagging failed",
         }),
       },
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       loaded: true,
     }),
   });
   const machines = [
-    machineFactory({
+    factory.machine({
       system_id: "abc123",
       actions: [NodeActions.TAG, NodeActions.UNTAG],
     }),
@@ -102,9 +96,9 @@ it("can show untag errors when the tag form is open", async () => {
 
 it("clears selected machines and invalidates queries on delete success", async () => {
   mockFormikFormSaved();
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const machines = [
-    machineFactory({
+    factory.machine({
       system_id: "abc123",
     }),
   ];
@@ -149,7 +143,7 @@ it("displays a warning message and disabled submit button when selectedCount equ
 
 it("displays an error message with failure details", async () => {
   const machines = [
-    machineFactory({
+    factory.machine({
       system_id: "abc123",
       hostname: "test-machine-1",
       actions: [],
@@ -159,10 +153,10 @@ it("displays an error message with failure details", async () => {
   const failureDetails = {
     "mark broken action is not available for this node": ["abc123"],
   };
-  const state = rootStateFactory({
-    machine: machineStateFactory({
+  const state = factory.rootState({
+    machine: factory.machineState({
       actions: {
-        "123456": machineActionStateFactory({
+        "123456": factory.machineActionState({
           status: "error",
           failedSystemIds,
           failureDetails,

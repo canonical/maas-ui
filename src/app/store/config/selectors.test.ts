@@ -1,18 +1,14 @@
 import config from "./selectors";
 
 import { ConfigNames } from "@/app/store/config/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("config selectors", () => {
   describe("all", () => {
     it("returns list of all MAAS configs", () => {
-      const allConfigs = [configFactory(), configFactory()];
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const allConfigs = [factory.config(), factory.config()];
+      const state = factory.rootState({
+        config: factory.configState({
           items: allConfigs,
         }),
       });
@@ -22,8 +18,8 @@ describe("config selectors", () => {
 
   describe("errors", () => {
     it("returns config errors", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           errors: "It's all broken",
         }),
       });
@@ -33,8 +29,8 @@ describe("config selectors", () => {
 
   describe("loading", () => {
     it("returns config loading state", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           loading: false,
         }),
       });
@@ -44,8 +40,8 @@ describe("config selectors", () => {
 
   describe("loaded", () => {
     it("returns config loaded state", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           loaded: true,
         }),
       });
@@ -55,8 +51,8 @@ describe("config selectors", () => {
 
   describe("saved", () => {
     it("returns config saved state", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           saved: true,
         }),
       });
@@ -66,10 +62,10 @@ describe("config selectors", () => {
 
   describe("defaultStorageLayout", () => {
     it("returns MAAS config for default storage layout", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
               value: "bcache",
             }),
@@ -82,10 +78,10 @@ describe("config selectors", () => {
 
   describe("storageLayoutOptions", () => {
     it("returns array of storage layout options, formatted as objects", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
               value: "bcache",
               choices: [
@@ -111,10 +107,10 @@ describe("config selectors", () => {
 
   describe("enableDiskErasing", () => {
     it("returns MAAS config for enabling disk erase on release", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
               value: "foo",
             }),
@@ -127,10 +123,10 @@ describe("config selectors", () => {
 
   describe("diskEraseWithSecure", () => {
     it("returns MAAS config for enabling disk erase with secure erase", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
               value: "bar",
             }),
@@ -143,10 +139,10 @@ describe("config selectors", () => {
 
   describe("diskEraseWithQuick", () => {
     it("returns MAAS config for enabling disk erase with quick erase", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
               value: "baz",
             }),
@@ -159,10 +155,10 @@ describe("config selectors", () => {
 
   describe("httpProxy", () => {
     it("returns MAAS config for http proxy", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.HTTP_PROXY, value: "foo" }),
+            factory.config({ name: ConfigNames.HTTP_PROXY, value: "foo" }),
           ],
         }),
       });
@@ -172,10 +168,10 @@ describe("config selectors", () => {
 
   describe("enableHttpProxy", () => {
     it("returns MAAS config for enabling httpProxy", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.ENABLE_HTTP_PROXY,
               value: "bar",
             }),
@@ -188,10 +184,10 @@ describe("config selectors", () => {
 
   describe("usePeerProxy", () => {
     it("returns MAAS config for enabling peer proxy", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.USE_PEER_PROXY, value: "baz" }),
+            factory.config({ name: ConfigNames.USE_PEER_PROXY, value: "baz" }),
           ],
         }),
       });
@@ -201,10 +197,10 @@ describe("config selectors", () => {
 
   describe("proxyType", () => {
     it("returns 'noProxy' if enable_http_proxy is false", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.ENABLE_HTTP_PROXY,
               value: false,
             }),
@@ -215,11 +211,14 @@ describe("config selectors", () => {
     });
 
     it("returns 'builtInProxy' if enable_http_proxy is true and http_proxy is empty", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.ENABLE_HTTP_PROXY, value: true }),
-            configFactory({ name: ConfigNames.HTTP_PROXY, value: "" }),
+            factory.config({
+              name: ConfigNames.ENABLE_HTTP_PROXY,
+              value: true,
+            }),
+            factory.config({ name: ConfigNames.HTTP_PROXY, value: "" }),
           ],
         }),
       });
@@ -227,11 +226,14 @@ describe("config selectors", () => {
     });
 
     it("returns 'externalProxy' if enable_http_proxy is true and http_proxy is not empty", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.ENABLE_HTTP_PROXY, value: true }),
-            configFactory({
+            factory.config({
+              name: ConfigNames.ENABLE_HTTP_PROXY,
+              value: true,
+            }),
+            factory.config({
               name: ConfigNames.HTTP_PROXY,
               value: "http://www.url.com",
             }),
@@ -242,15 +244,18 @@ describe("config selectors", () => {
     });
 
     it("returns 'peerProxy' if enable_http_proxy is true, http_proxy is not empty and use_peer_proxy is true", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.ENABLE_HTTP_PROXY, value: true }),
-            configFactory({
+            factory.config({
+              name: ConfigNames.ENABLE_HTTP_PROXY,
+              value: true,
+            }),
+            factory.config({
               name: ConfigNames.HTTP_PROXY,
               value: "http://www.url.com",
             }),
-            configFactory({ name: ConfigNames.USE_PEER_PROXY, value: true }),
+            factory.config({ name: ConfigNames.USE_PEER_PROXY, value: true }),
           ],
         }),
       });
@@ -260,10 +265,10 @@ describe("config selectors", () => {
 
   describe("maasName", () => {
     it("returns MAAS config for maas name", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.MAAS_NAME,
               value: "bionic-maas",
             }),
@@ -276,10 +281,10 @@ describe("config selectors", () => {
 
   describe("analyticsEnabled", () => {
     it("returns MAAS config for enable analytics", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+            factory.config({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
           ],
         }),
       });
@@ -289,10 +294,10 @@ describe("config selectors", () => {
 
   describe("commissioningDistroSeries", () => {
     it("returns MAAS config for commissioning distro series", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
               value: "bionic",
             }),
@@ -305,10 +310,10 @@ describe("config selectors", () => {
 
   describe("distroSeriesOptions", () => {
     it("returns array of distro series options, formatted as objects", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
               value: "bionic",
               choices: [["bionic", "Ubuntu 18.04 LTS 'Bionic-Beaver'"]],
@@ -327,10 +332,10 @@ describe("config selectors", () => {
 
   describe("defaultMinKernelVersion", () => {
     it("returns MAAS config for default kernel version", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_MIN_HWE_KERNEL,
               value: "",
             }),
@@ -343,10 +348,10 @@ describe("config selectors", () => {
 
   describe("kernelParams", () => {
     it("returns MAAS config for kernel parameters", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.KERNEL_OPTS, value: "foo" }),
+            factory.config({ name: ConfigNames.KERNEL_OPTS, value: "foo" }),
           ],
         }),
       });
@@ -356,10 +361,10 @@ describe("config selectors", () => {
 
   describe("windowsKmsHost", () => {
     it("returns Windows KMS host", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.WINDOWS_KMS_HOST,
               value: "127.0.0.1",
             }),
@@ -372,10 +377,10 @@ describe("config selectors", () => {
 
   describe("vCenterServer", () => {
     it("returns vCenter server", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.VCENTER_SERVER,
               value: "my server",
             }),
@@ -388,10 +393,10 @@ describe("config selectors", () => {
 
   describe("vCenterUsername", () => {
     it("returns vCenter username", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.VCENTER_USERNAME,
               value: "admin",
             }),
@@ -404,10 +409,10 @@ describe("config selectors", () => {
 
   describe("vCenterPassword", () => {
     it("returns vCenter password", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.VCENTER_PASSWORD,
               value: "passwd",
             }),
@@ -420,10 +425,10 @@ describe("config selectors", () => {
 
   describe("vCenterDatacenter", () => {
     it("returns vCenter datacenter", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.VCENTER_DATACENTER,
               value: "my datacenter",
             }),
@@ -436,10 +441,10 @@ describe("config selectors", () => {
 
   describe("thirdPartyDriversEnabled", () => {
     it("returns value of enable_third_party_drivers", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
               value: true,
             }),
@@ -452,10 +457,10 @@ describe("config selectors", () => {
 
   describe("defaultOSystem", () => {
     it("returns MAAS config for default OS", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_OSYSTEM,
               value: "bionic",
             }),
@@ -468,10 +473,10 @@ describe("config selectors", () => {
 
   describe("defaultOSystemOptions", () => {
     it("returns array of default OS options, formatted as objects", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_OSYSTEM,
               value: "ubuntu",
               choices: [
@@ -497,10 +502,10 @@ describe("config selectors", () => {
 
   describe("defaultDistroSeries", () => {
     it("returns MAAS config for default distro series", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.DEFAULT_DISTRO_SERIES,
               value: "bionic",
             }),
@@ -513,10 +518,10 @@ describe("config selectors", () => {
 
   describe("completedIntro", () => {
     it("returns MAAS config for completed intro", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+            factory.config({ name: ConfigNames.COMPLETED_INTRO, value: true }),
           ],
         }),
       });
@@ -526,10 +531,10 @@ describe("config selectors", () => {
 
   describe("releaseNotifications", () => {
     it("returns MAAS config for release notifications", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.RELEASE_NOTIFICATIONS,
               value: true,
             }),
@@ -542,10 +547,10 @@ describe("config selectors", () => {
 
   describe("bootImagesAutoImport", () => {
     it("returns MAAS config for boot images auto import", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
               value: true,
             }),
@@ -558,10 +563,10 @@ describe("config selectors", () => {
 
   describe("maasUrl", () => {
     it("returns MAAS config for MAAS URL", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.MAAS_URL,
               value: "http://1.2.3.4/MAAS",
             }),
@@ -574,10 +579,10 @@ describe("config selectors", () => {
 
   describe("rpcSharedSecret", () => {
     it("returns MAAS config for RPC shared secret", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.RPC_SHARED_SECRET,
               value: "veryverysecret",
             }),
@@ -590,10 +595,10 @@ describe("config selectors", () => {
 
   describe("sessionLength", () => {
     it("returns MAAS config for sessionLength", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.SESSION_LENGTH,
               value: 42069,
             }),
@@ -606,10 +611,10 @@ describe("config selectors", () => {
 
   describe("tlsCertExpirationNotificationEnabled", () => {
     it("returns MAAS config for TLS cert expiration notification enabled", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
               value: true,
             }),
@@ -622,10 +627,10 @@ describe("config selectors", () => {
 
   describe("tlsCertExpirationNotificationInterval", () => {
     it("returns MAAS config for TLS cert expiration notification interval", () => {
-      const state = rootStateFactory({
-        config: configStateFactory({
+      const state = factory.rootState({
+        config: factory.configState({
           items: [
-            configFactory({
+            factory.config({
               name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
               value: 45,
             }),

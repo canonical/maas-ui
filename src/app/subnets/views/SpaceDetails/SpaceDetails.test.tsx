@@ -1,16 +1,12 @@
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import SpaceDetails from "./SpaceDetails";
 
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as spaceActions } from "@/app/store/space";
-import {
-  spaceState as spaceStateFactory,
-  space as spaceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import { spaceActions } from "@/app/store/space";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -22,7 +18,7 @@ import {
 const mockStore = configureStore<RootState>();
 
 it("dispatches actions to get and set space as active on mount", () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   renderWithBrowserRouter(
     <Routes>
@@ -43,7 +39,7 @@ it("dispatches actions to get and set space as active on mount", () => {
 });
 
 it("dispatches actions to unset active space and clean up on unmount", () => {
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   const { unmount } = renderWithBrowserRouter(
     <Routes>
@@ -72,8 +68,8 @@ it("dispatches actions to unset active space and clean up on unmount", () => {
 });
 
 it("displays a message if the space does not exist", () => {
-  const state = rootStateFactory({
-    space: spaceStateFactory({
+  const state = factory.rootState({
+    space: factory.spaceState({
       items: [],
       loading: false,
     }),
@@ -89,8 +85,8 @@ it("displays a message if the space does not exist", () => {
 });
 
 it("shows a spinner if the space has not loaded yet", () => {
-  const state = rootStateFactory({
-    space: spaceStateFactory({
+  const state = factory.rootState({
+    space: factory.spaceState({
       items: [],
       loading: true,
     }),
@@ -108,13 +104,13 @@ it("shows a spinner if the space has not loaded yet", () => {
 });
 
 it("displays space details", async () => {
-  const space = spaceFactory({
+  const space = factory.space({
     id: 1,
     name: "space1",
     description: "space 1 description",
   });
-  const state = rootStateFactory({
-    space: spaceStateFactory({
+  const state = factory.rootState({
+    space: factory.spaceState({
       items: [space],
       loading: false,
     }),
@@ -134,13 +130,13 @@ it("displays space details", async () => {
 });
 
 it("displays a delete confirmation before delete", async () => {
-  const space = spaceFactory({
+  const space = factory.space({
     id: 1,
     name: "space1",
     description: "space 1 description",
   });
-  const state = rootStateFactory({
-    space: spaceStateFactory({
+  const state = factory.rootState({
+    space: factory.spaceState({
       items: [space],
       loading: false,
     }),
@@ -178,14 +174,14 @@ it("displays a delete confirmation before delete", async () => {
 });
 
 it("displays an error if there are any subnets on the space.", async () => {
-  const space = spaceFactory({
+  const space = factory.space({
     id: 1,
     name: "space1",
     description: "space 1 description",
     subnet_ids: [1],
   });
-  const state = rootStateFactory({
-    space: spaceStateFactory({
+  const state = factory.rootState({
+    space: factory.spaceState({
       items: [space],
       loading: false,
     }),

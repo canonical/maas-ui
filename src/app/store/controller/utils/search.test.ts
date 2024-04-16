@@ -1,29 +1,26 @@
 import { FilterControllers, getControllerValue } from "./search";
 
 import type { Filters } from "@/app/utils/search/filter-handlers";
-import {
-  controller as controllerFactory,
-  tag as tagFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("search", () => {
   describe("getControllerValue", () => {
     it("can get an attribute via a mapping function", () => {
-      const controller = controllerFactory({
+      const controller = factory.controller({
         domain: { id: 1, name: "danger" },
       });
       expect(getControllerValue(controller, "domain")).toBe("danger");
     });
 
     it("can get an attribute directly from the controller", () => {
-      const controller = controllerFactory({ hostname: "miami-controller" });
+      const controller = factory.controller({ hostname: "miami-controller" });
       expect(getControllerValue(controller, "hostname")).toBe(
         "miami-controller"
       );
     });
 
     it("can get an attribute that is an array directly from the controller", () => {
-      const controller = controllerFactory({ permissions: ["edit", "read"] });
+      const controller = factory.controller({ permissions: ["edit", "read"] });
       expect(getControllerValue(controller, "permissions")).toStrictEqual([
         "edit",
         "read",
@@ -32,11 +29,11 @@ describe("search", () => {
 
     it("can get tags", () => {
       const tags = [
-        tagFactory({ id: 1, name: "tag1" }),
-        tagFactory({ id: 2, name: "tag2" }),
-        tagFactory({ id: 3, name: "tag3" }),
+        factory.tag({ id: 1, name: "tag1" }),
+        factory.tag({ id: 2, name: "tag2" }),
+        factory.tag({ id: 3, name: "tag3" }),
       ];
-      const controller = controllerFactory({ tags: [1, 2] });
+      const controller = factory.controller({ tags: [1, 2] });
       expect(getControllerValue(controller, "tags", { tags })).toStrictEqual([
         "tag1",
         "tag2",

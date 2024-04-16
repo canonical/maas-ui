@@ -3,8 +3,7 @@ import type { ReactNode } from "react";
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { useLocation, Link } from "react-router-dom";
 
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
@@ -14,7 +13,7 @@ import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {

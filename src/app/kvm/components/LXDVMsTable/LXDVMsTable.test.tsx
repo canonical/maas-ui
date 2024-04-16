@@ -4,10 +4,10 @@ import configureStore from "redux-mock-store";
 
 import LXDVMsTable from "./LXDVMsTable";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { FetchSortDirection, FetchGroupKey } from "@/app/store/machine/types";
 import { generateCallId } from "@/app/store/machine/utils/query";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -18,7 +18,7 @@ describe("LXDVMsTable", () => {
   });
 
   it("fetches machines on load", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -60,7 +60,7 @@ describe("LXDVMsTable", () => {
   });
 
   it("clears machine selected state on unmount", async () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     const { unmount } = render(
       <Provider store={store}>
@@ -87,7 +87,7 @@ describe("LXDVMsTable", () => {
   });
 
   it("shows an add VM button if function provided", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -110,7 +110,7 @@ describe("LXDVMsTable", () => {
   });
 
   it("does not show an add VM button if no function provided", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>

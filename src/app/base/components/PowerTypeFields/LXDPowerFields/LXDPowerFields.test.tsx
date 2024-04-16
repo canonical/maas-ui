@@ -2,12 +2,12 @@ import { Formik } from "formik";
 
 import LXDPowerFields from "./LXDPowerFields";
 
-import { powerField as powerFieldFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("LXDPowerFields", () => {
   it("can be given a custom power parameters name", () => {
-    const field = powerFieldFactory({ name: "field", label: "custom field" });
+    const field = factory.powerField({ name: "field", label: "custom field" });
     renderWithMockStore(
       <Formik initialValues={{}} onSubmit={vi.fn()}>
         <LXDPowerFields

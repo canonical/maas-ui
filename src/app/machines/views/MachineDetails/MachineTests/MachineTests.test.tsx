@@ -1,7 +1,6 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineTests from ".";
@@ -13,13 +12,7 @@ import {
   ScriptResultParamType,
 } from "@/app/store/scriptresult/types";
 import { TestStatusStatus } from "@/app/store/types/node";
-import {
-  machineState as machineStateFactory,
-  machineDetails as machineDetailsFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultState as scriptResultStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 vi.mock("@canonical/react-components/dist/hooks", () => {
@@ -35,11 +28,11 @@ const mockStore = configureStore<RootState>();
 describe("MachineTests", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             locked: false,
             permissions: ["edit"],
             system_id: "abc123",
@@ -47,7 +40,7 @@ describe("MachineTests", () => {
           }),
         ],
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         loaded: true,
       }),
     });
@@ -56,17 +49,17 @@ describe("MachineTests", () => {
   it("renders headings for each hardware type", () => {
     state.nodescriptresult.items = { abc123: [1, 2, 3] };
     state.scriptresult.items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.CPU,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Network,
       }),
-      scriptResultFactory({
+      factory.scriptResult({
         id: 3,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Node,
@@ -79,11 +72,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -103,7 +94,7 @@ describe("MachineTests", () => {
   it("renders headings for each block device", () => {
     state.nodescriptresult.items = { abc123: [1, 2] };
     state.scriptresult.items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Storage,
@@ -130,11 +121,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -147,7 +136,7 @@ describe("MachineTests", () => {
   it("shows a heading for a block device without a model and serial", () => {
     state.nodescriptresult.items = { abc123: [1, 2] };
     state.scriptresult.items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Storage,
@@ -173,11 +162,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -188,7 +175,7 @@ describe("MachineTests", () => {
   it("shows a heading for a network interface", () => {
     state.nodescriptresult.items = { abc123: [1, 2] };
     state.scriptresult.items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 2,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.Network,
@@ -212,11 +199,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -235,11 +220,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -253,18 +236,16 @@ describe("MachineTests", () => {
 
   it("fetches script results on mount if they have already been loaded", () => {
     state.nodescriptresult.items = { abc123: [] };
-    state.scriptresult.items = [scriptResultFactory()];
+    state.scriptresult.items = [factory.scriptResult()];
     const store = mockStore(state);
     renderWithMockStore(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }
@@ -282,7 +263,7 @@ describe("MachineTests", () => {
       () => TestStatusStatus.PASSED
     );
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         locked: false,
         permissions: ["edit"],
         system_id: "abc123",
@@ -293,7 +274,7 @@ describe("MachineTests", () => {
     state.nodescriptresult.items = { abc123: [1] };
     // Add existing script results.
     state.scriptresult.items = [
-      scriptResultFactory({
+      factory.scriptResult({
         id: 1,
         result_type: ScriptResultType.TESTING,
         hardware_type: HardwareType.CPU,
@@ -305,11 +286,9 @@ describe("MachineTests", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CompatRouter>
-            <Routes>
-              <Route element={<MachineTests />} path="/machine/:id" />
-            </Routes>
-          </CompatRouter>
+          <Routes>
+            <Route element={<MachineTests />} path="/machine/:id" />
+          </Routes>
         </MemoryRouter>
       </Provider>,
       { store }

@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { Navigation, NavigationBar } from "@canonical/maas-react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
+import { useNavigate, useLocation, useMatch } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
 
 import AppSideNavItems from "./AppSideNavItems";
@@ -20,14 +20,14 @@ import { useThemeContext } from "@/app/base/theme-context";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import configSelectors from "@/app/store/config/selectors";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as statusActions } from "@/app/store/status";
+import { statusActions } from "@/app/store/status";
 
-type SideNavigationProps = {
+export type SideNavigationProps = {
   authUser: ReturnType<typeof authSelectors.get>;
   filteredGroups: typeof navGroups;
   isAdmin: boolean;
@@ -96,6 +96,7 @@ export const AppSideNavigation = ({
             isAuthenticated={isAuthenticated}
             logout={logout}
             path={path}
+            setIsCollapsed={setIsCollapsed}
             showLinks={showLinks}
             vaultIncomplete={vaultIncomplete}
           />

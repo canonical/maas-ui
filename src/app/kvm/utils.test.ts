@@ -1,9 +1,6 @@
 import { getSortedPoolsArray, memoryWithUnit } from "./utils";
 
-import {
-  podStoragePoolResource as podPoolFactory,
-  vmClusterStoragePoolResource as vmPoolFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("kvm utils", () => {
   describe("memoryWithUnit", () => {
@@ -17,9 +14,9 @@ describe("kvm utils", () => {
 
   describe("getSortedPoolsArray", () => {
     it("correctly returns a sorted array of pools in a pod", () => {
-      const poolA = podPoolFactory({ id: "a" });
-      const poolB = podPoolFactory({ id: "b" });
-      const poolC = podPoolFactory({ id: "c" });
+      const poolA = factory.podStoragePoolResource({ id: "a" });
+      const poolB = factory.podStoragePoolResource({ id: "b" });
+      const poolC = factory.podStoragePoolResource({ id: "c" });
       const pools = {
         poolC,
         poolB,
@@ -34,9 +31,9 @@ describe("kvm utils", () => {
     });
 
     it("correctly returns a sorted array of pools in a cluster", () => {
-      const poolA = vmPoolFactory();
-      const poolB = vmPoolFactory();
-      const poolC = vmPoolFactory();
+      const poolA = factory.vmClusterStoragePoolResource();
+      const poolB = factory.vmClusterStoragePoolResource();
+      const poolC = factory.vmClusterStoragePoolResource();
       const pools = {
         poolC,
         poolA,

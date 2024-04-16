@@ -13,15 +13,15 @@ import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions, useIsAllNetworkingDisabled } from "@/app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
 import type { MachineEventErrors } from "@/app/store/machine/types/base";
 import { isMachineDetails } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type {
   NetworkInterface,
@@ -34,7 +34,7 @@ import {
   getLinkFromNic,
   getLinkMode,
 } from "@/app/store/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { preparePayload } from "@/app/utils";
 
@@ -108,6 +108,7 @@ const EditPhysicalForm = ({
 
   return (
     <FormikForm<EditPhysicalValues, MachineEventErrors>
+      aria-label="Edit physical"
       cleanup={cleanup}
       errors={errors}
       initialValues={{

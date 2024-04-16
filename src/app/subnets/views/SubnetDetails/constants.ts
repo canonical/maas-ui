@@ -13,6 +13,7 @@ export const SubnetActionTypes = {
   ReserveRange: "ReserveRange",
   DeleteReservedRange: "DeleteReservedRange",
 } as const;
+export type SubnetActionType = ValueOf<typeof SubnetActionTypes>;
 
 export const subnetActionLabels = {
   [SubnetActionTypes.MapSubnet]: "Map subnet",
@@ -47,5 +48,5 @@ export const SubnetDetailsSidePanelViews = {
 
 export type SubnetDetailsSidePanelContent = SidePanelContent<
   ValueOf<typeof SubnetDetailsSidePanelViews>,
-  { createType?: IPRangeType; ipRangeId?: number }
+  { createType?: IPRangeType; ipRangeId?: number; staticRouteId?: number }
 >;

@@ -12,6 +12,7 @@ import AppliedTo from "@/app/tags/components/AppliedTo";
 import DefinitionField from "@/app/tags/components/DefinitionField";
 import KernelOptionsField from "@/app/tags/components/KernelOptionsField";
 import { Label } from "@/app/tags/views/TagDetails";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = {
   id: Tag[TagMeta.PK];
@@ -39,7 +40,10 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
           />
         </Col>
         <Col size={12}>
-          <Definition description={tag.updated} label={Label.Update} />
+          <Definition
+            description={formatUtcDatetime(tag.updated)}
+            label={Label.Update}
+          />
         </Col>
         <Col size={12}>
           <Definition label={Label.AppliedTo}>

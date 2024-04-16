@@ -7,21 +7,22 @@ import {
   Spinner,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import ControllerLink from "@/app/base/components/ControllerLink";
 import Definition from "@/app/base/components/Definition";
 import TitledSection from "@/app/base/components/TitledSection";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
+import { SidePanelViews, useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { actions as fabricActions } from "@/app/store/fabric";
+import { fabricActions } from "@/app/store/fabric";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
+import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "@/app/store/vlan/types";
 import { getFullVLANName } from "@/app/store/vlan/utils";
@@ -29,7 +30,6 @@ import { isId } from "@/app/utils";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;
-  openForm: () => void;
 };
 
 // Note this is not the same as the getDHCPStatus VLAN util as it uses slightly
@@ -54,7 +54,8 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
   return "Disabled";
 };
 
-const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
+const DHCPStatus = ({ id }: Props): JSX.Element | null => {
+  const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const vlans = useSelector(vlanSelectors.all);
@@ -91,7 +92,13 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
   return (
     <TitledSection
       buttons={
-        <Button disabled={!hasVLANSubnets} onClick={openForm}>
+        <Button
+          disabled={!hasVLANSubnets}
+          onClick={() => {
+            setSidePanelSize("large");
+            setSidePanelContent({ view: SidePanelViews.ConfigureDHCP });
+          }}
+        >
           Configure DHCP
         </Button>
       }

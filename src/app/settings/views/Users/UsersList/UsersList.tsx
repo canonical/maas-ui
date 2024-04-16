@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import { Notification } from "@canonical/react-components";
-import { format, parse } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 
 import TableActions from "@/app/base/components/TableActions";
 import TableHeader from "@/app/base/components/TableHeader";
 import {
   useFetchActions,
-  useAddMessage,
   useTableSort,
   useWindowTitle,
 } from "@/app/base/hooks";
@@ -20,10 +18,11 @@ import settingsURLs from "@/app/settings/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import type { RootState } from "@/app/store/root/types";
 import statusSelectors from "@/app/store/status/selectors";
-import { actions as userActions } from "@/app/store/user";
+import { userActions } from "@/app/store/user";
 import userSelectors from "@/app/store/user/selectors";
 import type { User } from "@/app/store/user/types";
 import { isComparable } from "@/app/utils";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 type SortKey = keyof User;
 
@@ -36,10 +35,7 @@ const generateUserRows = (
     const isAuthUser = user.id === authUser?.id;
     // Dates are in the format: Thu, 15 Aug. 2019 06:21:39.
     const last_login = user.last_login
-      ? format(
-          parse(user.last_login, "E, dd LLL. yyyy HH:mm:ss", new Date()),
-          "yyyy-LL-dd H:mm"
-        )
+      ? formatUtcDatetime(user.last_login)
       : "Never";
     const fullName = user.last_name;
     return {
@@ -101,14 +97,12 @@ const getSortValue = (sortKey: SortKey, user: User) => {
 const UsersList = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
   const [displayUsername, setDisplayUsername] = useState(true);
-  const [deletingUser, setDeleting] = useState<User["username"] | null>(null);
   const users = useSelector((state: RootState) =>
     userSelectors.search(state, searchText)
   );
   const loading = useSelector(userSelectors.loading);
   const loaded = useSelector(userSelectors.loaded);
   const authUser = useSelector(authSelectors.get);
-  const saved = useSelector(userSelectors.saved);
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const dispatch = useDispatch();
 
@@ -123,13 +117,6 @@ const UsersList = (): JSX.Element => {
   const sortedUsers = sortRows(users);
 
   useWindowTitle("Users");
-
-  useAddMessage(
-    saved,
-    userActions.cleanup,
-    `${deletingUser} removed successfully.`,
-    () => setDeleting(null)
-  );
 
   useFetchActions([userActions.fetch]);
 

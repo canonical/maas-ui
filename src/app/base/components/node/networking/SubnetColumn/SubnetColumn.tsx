@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import { useIsAllNetworkingDisabled } from "@/app/base/hooks";

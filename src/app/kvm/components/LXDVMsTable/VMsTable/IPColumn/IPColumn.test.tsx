@@ -6,12 +6,7 @@ import configureStore from "redux-mock-store";
 import IPColumn from "./IPColumn";
 
 import type { NodeIpAddress } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineIpAddress as ipAddressFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
@@ -20,15 +15,18 @@ describe("IPColumn", () => {
 
   beforeEach(() => {
     ipAddresses = [
-      ipAddressFactory({ ip: "192.168.1.1", is_boot: true }),
-      ipAddressFactory({ ip: "192.168.1.2:8000", is_boot: false }),
-      ipAddressFactory({ ip: "2001:db8::ff00:42:8329", is_boot: false }),
+      factory.machineIpAddress({ ip: "192.168.1.1", is_boot: true }),
+      factory.machineIpAddress({ ip: "192.168.1.2:8000", is_boot: false }),
+      factory.machineIpAddress({
+        ip: "2001:db8::ff00:42:8329",
+        is_boot: false,
+      }),
     ];
   });
 
   it("shows a spinner if the machine is still loading", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [],
       }),
     });
@@ -49,10 +47,10 @@ describe("IPColumn", () => {
   });
 
   it("can show a list of the machine's ipv4s", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineFactory({
+          factory.machine({
             ip_addresses: ipAddresses,
             system_id: "abc123",
           }),
@@ -78,10 +76,10 @@ describe("IPColumn", () => {
   });
 
   it("can show a list of the machine's ipv6s", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineFactory({
+          factory.machine({
             ip_addresses: ipAddresses,
             system_id: "abc123",
           }),

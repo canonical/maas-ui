@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ExternalLink } from "@canonical/maas-react-components";
 import { List, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import TitledSection from "../TitledSection";
 
@@ -14,7 +14,7 @@ import TableActions from "@/app/base/components/TableActions";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions } from "@/app/base/hooks";
 import settingsURLs from "@/app/settings/urls";
-import { actions as dhcpsnippetActions } from "@/app/store/dhcpsnippet";
+import { dhcpsnippetActions } from "@/app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "@/app/store/dhcpsnippet/selectors";
 import type { DHCPSnippet } from "@/app/store/dhcpsnippet/types";
 import type { IPRange } from "@/app/store/iprange/types";

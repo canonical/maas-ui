@@ -1,16 +1,12 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NetworkDiscoveryForm from "./NetworkDiscoveryForm";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -19,8 +15,8 @@ describe("NetworkDiscoveryForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         loaded: true,
         items: [
           {
@@ -58,9 +54,7 @@ describe("NetworkDiscoveryForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NetworkDiscoveryForm />
-          </CompatRouter>
+          <NetworkDiscoveryForm />
         </MemoryRouter>
       </Provider>
     );
@@ -73,9 +67,7 @@ describe("NetworkDiscoveryForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NetworkDiscoveryForm />
-          </CompatRouter>
+          <NetworkDiscoveryForm />
         </MemoryRouter>
       </Provider>
     );
@@ -113,9 +105,7 @@ describe("NetworkDiscoveryForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <NetworkDiscoveryForm />
-          </CompatRouter>
+          <NetworkDiscoveryForm />
         </MemoryRouter>
       </Provider>
     );

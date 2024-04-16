@@ -1,47 +1,37 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMConfigurationCard from "./KVMConfigurationCard";
 
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podDetails as podFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    pod: podStateFactory({
-      items: [podFactory({ id: 1, name: "pod1" })],
+  state = factory.rootState({
+    pod: factory.podState({
+      items: [factory.podDetails({ id: 1, name: "pod1" })],
       loaded: true,
     }),
-    resourcepool: resourcePoolStateFactory({
-      items: [resourcePoolFactory({ id: 2 })],
+    resourcepool: factory.resourcePoolState({
+      items: [factory.resourcePool({ id: 2 })],
       loaded: true,
     }),
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-      items: [zoneFactory({ id: 3 })],
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({ fetch: "success" }),
+      items: [factory.zone({ id: 3 })],
     }),
   });
 });
 
 it("can handle updating a lxd KVM", async () => {
-  const pod = podFactory({
+  const pod = factory.podDetails({
     id: 1,
     tags: ["tag1", "tag2"],
     type: PodType.LXD,
@@ -52,9 +42,7 @@ it("can handle updating a lxd KVM", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -96,7 +84,7 @@ it("can handle updating a lxd KVM", async () => {
 });
 
 it("can handle updating a virsh KVM", async () => {
-  const pod = podFactory({
+  const pod = factory.podDetails({
     id: 1,
     tags: ["tag1", "tag2"],
     type: PodType.VIRSH,
@@ -107,9 +95,7 @@ it("can handle updating a virsh KVM", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -156,7 +142,7 @@ it("can handle updating a virsh KVM", async () => {
 });
 
 it("enables the submit button if form values are different to pod values", async () => {
-  const pod = podFactory({
+  const pod = factory.podDetails({
     cpu_over_commit_ratio: 1,
     id: 1,
   });
@@ -166,9 +152,7 @@ it("enables the submit button if form values are different to pod values", async
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={pod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={pod} />
       </MemoryRouter>
     </Provider>
   );
@@ -198,9 +182,7 @@ it("enables the submit button if form values are different to pod values", async
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <KVMConfigurationCard pod={updatedPod} />
-        </CompatRouter>
+        <KVMConfigurationCard pod={updatedPod} />
       </MemoryRouter>
     </Provider>
   );

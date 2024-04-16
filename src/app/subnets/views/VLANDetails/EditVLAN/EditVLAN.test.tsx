@@ -1,22 +1,13 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditVLAN from "./EditVLAN";
 
 import type { RootState } from "@/app/store/root/types";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import type { VLAN } from "@/app/store/vlan/types";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -26,9 +17,9 @@ describe("EditVLAN", () => {
   let vlan: VLAN;
 
   beforeEach(() => {
-    const fabric = fabricFactory({ id: 22, name: "fabric1" });
-    const space = spaceFactory({ id: 23, name: "space1" });
-    vlan = vlanFactory({
+    const fabric = factory.fabric({ id: 22, name: "fabric1" });
+    const space = factory.space({ id: 23, name: "space1" });
+    vlan = factory.vlan({
       description: "I'm a little VLAN",
       fabric: 22,
       mtu: 5432,
@@ -36,10 +27,10 @@ describe("EditVLAN", () => {
       space: space.id,
       vid: 1010,
     });
-    state = rootStateFactory({
-      fabric: fabricStateFactory({ items: [fabric, fabricFactory()] }),
-      space: spaceStateFactory({ items: [space, spaceFactory()] }),
-      vlan: vlanStateFactory({ items: [vlan] }),
+    state = factory.rootState({
+      fabric: factory.fabricState({ items: [fabric, factory.fabric()] }),
+      space: factory.spaceState({ items: [space, factory.space()] }),
+      vlan: factory.vlanState({ items: [vlan] }),
     });
   });
 
@@ -51,9 +42,7 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <EditVLAN close={vi.fn()} id={vlan.id} />
-          </CompatRouter>
+          <EditVLAN close={vi.fn()} id={vlan.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -67,9 +56,7 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <EditVLAN close={vi.fn()} id={vlan.id} />
-          </CompatRouter>
+          <EditVLAN close={vi.fn()} id={vlan.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -109,9 +96,7 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <EditVLAN close={vi.fn()} id={vlan.id} />
-          </CompatRouter>
+          <EditVLAN close={vi.fn()} id={vlan.id} />
         </MemoryRouter>
       </Provider>
     );
@@ -142,9 +127,7 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CompatRouter>
-            <EditVLAN close={vi.fn()} id={vlan.id} />
-          </CompatRouter>
+          <EditVLAN close={vi.fn()} id={vlan.id} />
         </MemoryRouter>
       </Provider>
     );

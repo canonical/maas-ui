@@ -1,19 +1,12 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Details, Label as DetailsLabels } from "./Details";
 
 import { Labels as UserFormLabels } from "@/app/base/components/UserForm/UserForm";
 import type { RootState } from "@/app/store/root/types";
-import {
-  authState as authStateFactory,
-  rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -27,13 +20,13 @@ describe("Details", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({
+      user: factory.userState({
+        auth: factory.authState({
+          user: factory.user({
             email: "test@example.com",
             global_permissions: ["machine_create"],
             id: 1,
@@ -50,9 +43,7 @@ describe("Details", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <Details />
-        </CompatRouter>
+        <Details />
       </MemoryRouter>,
       { state }
     );
@@ -64,9 +55,7 @@ describe("Details", () => {
     const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -83,9 +72,7 @@ describe("Details", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -125,9 +112,7 @@ describe("Details", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -174,9 +159,7 @@ describe("Details", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
+          <Details />
         </MemoryRouter>
       </Provider>
     );
@@ -188,9 +171,7 @@ describe("Details", () => {
     state.status.externalAuthURL = "http://login.example.com";
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <Details />
-        </CompatRouter>
+        <Details />
       </MemoryRouter>,
       { state }
     );

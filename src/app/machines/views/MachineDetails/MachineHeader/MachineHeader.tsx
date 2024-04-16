@@ -1,8 +1,7 @@
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { useLocation, Link } from "react-router-dom";
 
 import MachineName from "./MachineName";
 
@@ -15,7 +14,7 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import { useSendAnalytics } from "@/app/base/hooks";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import type { MachineSetSidePanelContent } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine } from "@/app/store/machine/types";
 import { isMachineDetails } from "@/app/store/machine/utils";
@@ -89,10 +88,43 @@ const MachineHeader = ({
 
   return (
     <SectionHeader
+      renderButtons={() => (
+        <div>
+          <div className="u-hide--medium u-hide--small u-nudge-right">
+            <NodeActionMenuGroup
+              alwaysShowLifecycle
+              excludeActions={[NodeActions.IMPORT_IMAGES]}
+              filterActions
+              hasSelection={true}
+              isNodeLocked={machine.locked}
+              nodeDisplay="machine"
+              nodes={[machine]}
+              onActionClick={handleActionClick}
+              singleNode
+            />
+          </div>
+          <div className="u-hide--large u-nudge-right">
+            <NodeActionMenu
+              alwaysShowLifecycle
+              className="u-hide--large"
+              excludeActions={[NodeActions.IMPORT_IMAGES]}
+              filterActions
+              hasSelection={true}
+              key="action-dropdown"
+              nodeDisplay="machine"
+              nodes={[machine]}
+              onActionClick={handleActionClick}
+              toggleAppearance=""
+              toggleClassName="p-action-menu u-no-margin--bottom"
+              toggleLabel="Menu"
+            />
+          </div>
+        </div>
+      )}
       subtitle={
         editingName ? null : (
           <div className="u-flex--wrap u-flex--align-center">
-            <div className="u-nudge-left u-nudge-right">
+            <div className="u-nudge-left">
               {machine.locked ? (
                 <TooltipButton
                   aria-label="locked"
@@ -114,35 +146,6 @@ const MachineHeader = ({
                   ? "Checking power"
                   : `Power ${machine.power_state}`}
               </PowerIcon>
-            </div>
-            <div className="u-hide--medium u-hide--small u-nudge-right">
-              <NodeActionMenuGroup
-                alwaysShowLifecycle
-                excludeActions={[NodeActions.IMPORT_IMAGES]}
-                filterActions
-                hasSelection={true}
-                isNodeLocked={machine.locked}
-                nodeDisplay="machine"
-                nodes={[machine]}
-                onActionClick={handleActionClick}
-                singleNode
-              />
-            </div>
-            <div className="u-hide--large u-nudge-right">
-              <NodeActionMenu
-                alwaysShowLifecycle
-                className="u-hide--large"
-                excludeActions={[NodeActions.IMPORT_IMAGES]}
-                filterActions
-                hasSelection={true}
-                key="action-dropdown"
-                nodeDisplay="machine"
-                nodes={[machine]}
-                onActionClick={handleActionClick}
-                toggleAppearance=""
-                toggleClassName="p-action-menu u-no-margin--bottom"
-                toggleLabel="Menu"
-              />
             </div>
           </div>
         )

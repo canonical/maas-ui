@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagForm from "./TagForm";
@@ -10,15 +9,7 @@ import urls from "@/app/base/urls";
 import { Label as TagFormFieldsLabel } from "@/app/machines/components/MachineForms/MachineActionFormWrapper/TagForm/TagFormFields";
 import { FilterMachines } from "@/app/store/machine/utils";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -27,23 +18,23 @@ describe("TagForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             permissions: ["edit"],
             system_id: "abc123",
             tags: [1, 2],
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
-      tag: tagStateFactory({
+      tag: factory.tagState({
         items: [
-          tagFactory({ id: 1, name: "tag-1" }),
-          tagFactory({ id: 2, name: "tag-2" }),
+          factory.tag({ id: 1, name: "tag-1" }),
+          factory.tag({ id: 2, name: "tag-2" }),
         ],
         loaded: true,
       }),
@@ -56,9 +47,7 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <TagForm systemId="abc123" />
-          </CompatRouter>
+          <TagForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -74,9 +63,7 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <TagForm systemId="abc123" />
-          </CompatRouter>
+          <TagForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -92,9 +79,7 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <TagForm systemId="abc123" />
-          </CompatRouter>
+          <TagForm systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

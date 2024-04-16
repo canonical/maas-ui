@@ -2,16 +2,7 @@ import RAMColumn from "./RAMColumn";
 
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  pod as podFactory,
-  podMemoryResource as podMemoryResourceFactory,
-  podResource as podResourceFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmClusterResource as vmClusterResourceFactory,
-  vmClusterResourcesMemory as vmClusterResourcesMemoryFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("RAMColumn", () => {
@@ -19,12 +10,12 @@ describe("RAMColumn", () => {
   let pod: Pod;
 
   beforeEach(() => {
-    pod = podFactory({
+    pod = factory.pod({
       id: 1,
       name: "pod-1",
     });
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
       }),
     });
@@ -32,14 +23,14 @@ describe("RAMColumn", () => {
 
   it("can display correct memory information without overcommit", () => {
     pod.memory_over_commit_ratio = 1;
-    pod.resources = podResourcesFactory({
-      memory: podMemoryResourceFactory({
-        general: podResourceFactory({
+    pod.resources = factory.podResources({
+      memory: factory.podMemoryResource({
+        general: factory.podResource({
           allocated_other: 1,
           allocated_tracked: 2,
           free: 3,
         }),
-        hugepages: podResourceFactory({
+        hugepages: factory.podResource({
           allocated_other: 4,
           allocated_tracked: 5,
           free: 6,
@@ -61,14 +52,14 @@ describe("RAMColumn", () => {
 
   it("can display correct memory information with overcommit", () => {
     pod.memory_over_commit_ratio = 2;
-    pod.resources = podResourcesFactory({
-      memory: podMemoryResourceFactory({
-        general: podResourceFactory({
+    pod.resources = factory.podResources({
+      memory: factory.podMemoryResource({
+        general: factory.podResource({
           allocated_other: 1,
           allocated_tracked: 2,
           free: 3,
         }),
-        hugepages: podResourceFactory({
+        hugepages: factory.podResource({
           allocated_other: 4,
           allocated_tracked: 5,
           free: 6,
@@ -91,14 +82,14 @@ describe("RAMColumn", () => {
 
   it("can display when memory has been overcommitted", () => {
     pod.memory_over_commit_ratio = 1;
-    pod.resources = podResourcesFactory({
-      memory: podMemoryResourceFactory({
-        general: podResourceFactory({
+    pod.resources = factory.podResources({
+      memory: factory.podMemoryResource({
+        general: factory.podResource({
           allocated_other: 0,
           allocated_tracked: 2,
           free: -1,
         }),
-        hugepages: podResourceFactory({
+        hugepages: factory.podResource({
           allocated_other: 0,
           allocated_tracked: 5,
           free: -1,
@@ -118,13 +109,13 @@ describe("RAMColumn", () => {
   });
 
   it("can display correct memory for a vmcluster", () => {
-    const memory = vmClusterResourcesMemoryFactory({
-      general: vmClusterResourceFactory({
+    const memory = factory.vmClusterResourcesMemory({
+      general: factory.vmClusterResource({
         allocated_other: 1,
         allocated_tracked: 2,
         free: 3,
       }),
-      hugepages: vmClusterResourceFactory({
+      hugepages: factory.vmClusterResource({
         allocated_other: 4,
         allocated_tracked: 5,
         free: 6,

@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Routes, Route } from "react-router-dom-v5-compat";
+import { Navigate, Routes, Route } from "react-router-dom";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 import ControllerConfiguration from "./ControllerConfiguration";
@@ -23,7 +22,7 @@ import { useGetURLId } from "@/app/base/hooks/urls";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
 import ControllerForms from "@/app/controllers/components/ControllerForms/ControllerForms";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import { ControllerMeta } from "@/app/store/controller/types";
 import type { RootState } from "@/app/store/root/types";
@@ -90,7 +89,10 @@ const ControllerDetails = (): JSX.Element => {
         <Routes>
           <Route
             element={
-              <Redirect to={urls.controllers.controller.summary({ id })} />
+              <Navigate
+                replace
+                to={urls.controllers.controller.summary({ id })}
+              />
             }
             index
           />
@@ -158,24 +160,10 @@ const ControllerDetails = (): JSX.Element => {
           />
           <Route
             element={<ControllerLogs systemId={id} />}
-            path={getRelativeRoute(
+            path={`${getRelativeRoute(
               urls.controllers.controller.logs.index(null),
               base
-            )}
-          />
-          <Route
-            element={<ControllerLogs systemId={id} />}
-            path={getRelativeRoute(
-              urls.controllers.controller.logs.events(null),
-              base
-            )}
-          />
-          <Route
-            element={<ControllerLogs systemId={id} />}
-            path={getRelativeRoute(
-              urls.controllers.controller.logs.installationOutput(null),
-              base
-            )}
+            )}/*`}
           />
           <Route
             element={<ControllerConfiguration systemId={id} />}

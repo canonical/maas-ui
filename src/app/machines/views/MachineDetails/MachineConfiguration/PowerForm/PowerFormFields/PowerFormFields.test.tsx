@@ -4,24 +4,17 @@ import PowerFormFields from ".";
 
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  generalState as generalStateFactory,
-  machineDetails as machineDetailsFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("PowerFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory({ fields: [], name: "manual" })],
+    state = factory.rootState({
+      general: factory.generalState({
+        powerTypes: factory.powerTypesState({
+          data: [factory.powerType({ fields: [], name: "manual" })],
           loaded: true,
         }),
       }),
@@ -30,14 +23,14 @@ describe("PowerFormFields", () => {
 
   it("disables the power select and limits field scopes to node if machine is in a pod", () => {
     state.general.powerTypes.data = [
-      powerTypeFactory({
+      factory.powerType({
         fields: [
-          powerFieldFactory({
+          factory.powerField({
             label: "Node field",
             name: "node-field",
             scope: PowerFieldScope.NODE,
           }),
-          powerFieldFactory({
+          factory.powerField({
             label: "BMC field",
             name: "bmc-field",
             scope: PowerFieldScope.BMC,
@@ -46,7 +39,7 @@ describe("PowerFormFields", () => {
         name: "manual",
       }),
     ];
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       pod: {
         id: 1,
         name: "pod",

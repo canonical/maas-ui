@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import { useOnEscapePressed } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useSearchParams } from "react-router-dom-v5-compat";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 import { useAddMessage } from "@/app/base/hooks";
 import urls from "@/app/preferences/urls";
-import { actions as sshkeyActions } from "@/app/store/sshkey";
+import { sshkeyActions } from "@/app/store/sshkey";
 import sshkeySelectors from "@/app/store/sshkey/selectors";
 import type { SSHKey, SSHKeyMeta } from "@/app/store/sshkey/types";
 

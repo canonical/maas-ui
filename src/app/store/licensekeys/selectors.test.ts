@@ -1,17 +1,13 @@
 import licensekeys from "./selectors";
 
-import {
-  licenseKeys as licenseKeysFactory,
-  licenseKeysState as licenseKeysStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("licensekeys selectors", () => {
   describe("all", () => {
     it("returns all license keys", () => {
-      const items = [licenseKeysFactory(), licenseKeysFactory()];
-      const state = rootStateFactory({
-        licensekeys: licenseKeysStateFactory({
+      const items = [factory.licenseKeys(), factory.licenseKeys()];
+      const state = factory.rootState({
+        licensekeys: factory.licenseKeysState({
           items,
         }),
       });
@@ -21,8 +17,8 @@ describe("licensekeys selectors", () => {
 
   describe("loading", () => {
     it("returns licensekeys loading state", () => {
-      const state = rootStateFactory({
-        licensekeys: licenseKeysStateFactory({
+      const state = factory.rootState({
+        licensekeys: factory.licenseKeysState({
           loading: true,
         }),
       });
@@ -32,8 +28,8 @@ describe("licensekeys selectors", () => {
 
   describe("loaded", () => {
     it("returns license keys loaded state", () => {
-      const state = rootStateFactory({
-        licensekeys: licenseKeysStateFactory({
+      const state = factory.rootState({
+        licensekeys: factory.licenseKeysState({
           loaded: true,
         }),
       });
@@ -43,8 +39,8 @@ describe("licensekeys selectors", () => {
 
   describe("saved", () => {
     it("returns license keys saved state", () => {
-      const state = rootStateFactory({
-        licensekeys: licenseKeysStateFactory({
+      const state = factory.rootState({
+        licensekeys: factory.licenseKeysState({
           saved: true,
         }),
       });
@@ -55,13 +51,13 @@ describe("licensekeys selectors", () => {
   describe("search", () => {
     it("filters license keys by term", () => {
       const items = [
-        licenseKeysFactory(),
-        licenseKeysFactory({
+        factory.licenseKeys(),
+        factory.licenseKeys({
           distro_series: "2019",
         }),
       ];
-      const state = rootStateFactory({
-        licensekeys: licenseKeysStateFactory({
+      const state = factory.rootState({
+        licensekeys: factory.licenseKeysState({
           items,
         }),
       });

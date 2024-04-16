@@ -2,31 +2,26 @@ import configureStore from "redux-mock-store";
 
 import GroupCheckbox from "./GroupCheckbox";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  machineStateList as machineStateListFactory,
-  machineState as machineStateFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithMockStore } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
 let state: RootState;
 const callId = "123456";
-const group = machineStateListGroupFactory({
+const group = factory.machineStateListGroup({
   count: 2,
   name: "admin2",
   value: "admin-2",
 });
 beforeEach(() => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
       lists: {
-        [callId]: machineStateListFactory({
+        [callId]: factory.machineStateList({
           groups: [group],
         }),
       },
@@ -55,7 +50,7 @@ it("is disabled if all machines are selected", () => {
 });
 
 it("is disabled if there are no machines in the group", () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     count: 0,
     name: "admin2",
     value: "admin-2",
@@ -77,7 +72,7 @@ it("is disabled if there are no machines in the group", () => {
 
 it("is not disabled if there are machines in the group", () => {
   state.machine.lists[callId].groups = [
-    machineStateListGroupFactory({
+    factory.machineStateListGroup({
       count: 1,
       name: "admin2",
       value: "admin-2",
@@ -152,7 +147,7 @@ it("is checked if the group is selected", () => {
 });
 
 it("is partially checked if a machine in the group is selected", () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     count: 2,
     items: ["abc123", "def456"],
     name: "admin2",
@@ -177,14 +172,14 @@ it("is partially checked if a machine in the group is selected", () => {
 });
 
 it("is not checked if a selected machine is in another group", () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     count: 2,
     items: ["abc123"],
     name: "admin2",
     value: "admin-2",
   });
   state.machine.lists[callId].groups = [
-    machineStateListGroupFactory({
+    factory.machineStateListGroup({
       count: 2,
       items: ["def456"],
       name: "admin1",
@@ -232,7 +227,7 @@ it("can dispatch an action to select the group", async () => {
 });
 
 it("removes selected machines that are in the group that was clicked", async () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     count: 2,
     items: ["abc123"],
     name: "admin2",
@@ -265,14 +260,14 @@ it("removes selected machines that are in the group that was clicked", async () 
 });
 
 it("does not overwrite selected machines in different groups", async () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     count: 2,
     items: ["abc123"],
     name: "admin2",
     value: "admin-2",
   });
   state.machine.lists[callId].groups = [
-    machineStateListGroupFactory({
+    factory.machineStateListGroup({
       count: 2,
       items: ["def456"],
       name: "admin1",
@@ -306,14 +301,14 @@ it("does not overwrite selected machines in different groups", async () => {
 });
 
 it("can dispatch an action to unselect the group", async () => {
-  const group = machineStateListGroupFactory({
+  const group = factory.machineStateListGroup({
     count: 2,
     items: ["abc123"],
     name: "admin2",
     value: "admin-2",
   });
   state.machine.lists[callId].groups = [
-    machineStateListGroupFactory({
+    factory.machineStateListGroup({
       count: 2,
       items: ["def456"],
       name: "admin1",

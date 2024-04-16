@@ -3,14 +3,7 @@ import AuthenticationCard from "./AuthenticationCard";
 import { PodType } from "@/app/store/pod/constants";
 import type { PodDetails, PodPowerParameters } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  certificateMetadata as certificateFactory,
-  pod as podFactory,
-  podDetails as podDetailsFactory,
-  podPowerParameters as powerParametersFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("AuthenticationCard", () => {
@@ -18,22 +11,22 @@ describe("AuthenticationCard", () => {
   let pod: PodDetails;
 
   beforeEach(() => {
-    pod = podDetailsFactory({
-      certificate: certificateFactory(),
+    pod = factory.podDetails({
+      certificate: factory.certificateMetadata(),
       id: 1,
-      power_parameters: powerParametersFactory({
+      power_parameters: factory.podPowerParameters({
         certificate: "abc123",
         key: "abc123",
       }),
       type: PodType.LXD,
     });
-    state = rootStateFactory({
-      pod: podStateFactory({ items: [pod] }),
+    state = factory.rootState({
+      pod: factory.podState({ items: [pod] }),
     });
   });
 
   it("shows a spinner if pod is not PodDetails type", () => {
-    state.pod.items[0] = podFactory({ id: 1 });
+    state.pod.items[0] = factory.pod({ id: 1 });
     renderWithBrowserRouter(<AuthenticationCard hostId={pod.id} />, {
       route: "/kvm/1/edit",
       state,

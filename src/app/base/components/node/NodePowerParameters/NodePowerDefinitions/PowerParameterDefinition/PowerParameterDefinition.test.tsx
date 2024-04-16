@@ -1,11 +1,11 @@
 import PowerParameterDefinition from "./PowerParameterDefinition";
 
 import { PowerFieldType } from "@/app/store/general/types";
-import { powerField as powerFieldFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 it("renders the value of a power parameter", () => {
-  const field = powerFieldFactory({
+  const field = factory.powerField({
     field_type: PowerFieldType.STRING,
   });
   render(<PowerParameterDefinition field={field} powerParameter="parameter" />);
@@ -14,7 +14,7 @@ it("renders the value of a power parameter", () => {
 });
 
 it("handles 'choice' power fields", () => {
-  const field = powerFieldFactory({
+  const field = factory.powerField({
     choices: [
       ["choice1", "Choice 1"],
       ["choice2", "Choice 2"],
@@ -27,7 +27,7 @@ it("handles 'choice' power fields", () => {
 });
 
 it("handles 'multiple_choice' power fields", () => {
-  const field = powerFieldFactory({
+  const field = factory.powerField({
     choices: [
       ["choice1", "Choice 1"],
       ["choice2", "Choice 2"],
@@ -46,7 +46,7 @@ it("handles 'multiple_choice' power fields", () => {
 });
 
 it("handles 'password' power fields", () => {
-  const field = powerFieldFactory({
+  const field = factory.powerField({
     field_type: PowerFieldType.PASSWORD,
   });
   render(<PowerParameterDefinition field={field} powerParameter="password" />);

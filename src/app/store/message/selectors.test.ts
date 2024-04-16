@@ -1,17 +1,13 @@
 import messages from "./selectors";
 
-import {
-  message as messageFactory,
-  messageState as messageStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("messages", () => {
   it("can get all messages", () => {
-    const state = rootStateFactory({
-      message: messageStateFactory({
+    const state = factory.rootState({
+      message: factory.messageState({
         items: [
-          messageFactory({
+          factory.message({
             message: "User added",
           }),
         ],
@@ -23,10 +19,10 @@ describe("messages", () => {
   });
 
   it("can get the count of messages", () => {
-    const state = rootStateFactory({
-      message: messageStateFactory({
+    const state = factory.rootState({
+      message: factory.messageState({
         items: [
-          messageFactory({
+          factory.message({
             message: "User added",
           }),
         ],

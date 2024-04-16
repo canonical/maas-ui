@@ -15,11 +15,10 @@ import TooltipButton from "@/app/base/components/TooltipButton";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useTableSort } from "@/app/base/hooks";
 import { SortDirection } from "@/app/base/types";
-import ImageStatus from "@/app/controllers/components/ImageStatus";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "@/app/store/general/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { NodeType } from "@/app/store/types/node";
@@ -197,17 +196,6 @@ const generateRows = ({
             ? "Up-to-date"
             : controller.versions?.update?.version || null,
         },
-        {
-          "aria-label": "Last image sync",
-          className: "images-col",
-          content: (
-            <DoubleRow
-              primary={controller.last_image_sync || "Never"}
-              primaryTitle={controller.last_image_sync || "Never"}
-              secondary={<ImageStatus systemId={system_id} />}
-            />
-          ),
-        },
       ],
       "data-testid": `controller-${system_id}`,
     };
@@ -318,17 +306,6 @@ const ControllerListTable = ({
             <TableHeader data-testid="upgrade-header">
               Available upgrade
             </TableHeader>
-          ),
-        },
-        {
-          className: "images-col",
-          content: (
-            <>
-              <TableHeader data-testid="images-header">
-                Last Image Sync
-              </TableHeader>
-              <TableHeader>Images Status</TableHeader>
-            </>
           ),
         },
       ]}

@@ -1,30 +1,23 @@
 import StorageColumn from "./StorageColumn";
 
-import {
-  pod as podFactory,
-  podResource as podResourceFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmClusterResource as vmClusterResourceFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("StorageColumn", () => {
   it("displays correct storage information for a pod", () => {
-    const pod = podFactory({
+    const pod = factory.pod({
       id: 1,
       name: "pod-1",
-      resources: podResourcesFactory({
-        storage: podResourceFactory({
+      resources: factory.podResources({
+        storage: factory.podResource({
           allocated_other: 30000000000,
           allocated_tracked: 70000000000,
           free: 900000000000,
         }),
       }),
     });
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [pod],
       }),
     });
@@ -49,7 +42,7 @@ describe("StorageColumn", () => {
   });
 
   it("displays correct storage information for a vmcluster", () => {
-    const resources = vmClusterResourceFactory({
+    const resources = factory.vmClusterResource({
       allocated_other: 1,
       allocated_tracked: 2,
       free: 3,

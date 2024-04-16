@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditRecordForm, {
@@ -8,15 +7,10 @@ import EditRecordForm, {
 } from "./EditRecordForm";
 
 import { Labels as RecordFieldsLabels } from "@/app/domains/components/RecordFields/RecordFields";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import { RecordType } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  domainDetails as domainFactory,
-  domainState as domainStateFactory,
-  domainResource as resourceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -28,14 +22,14 @@ const mockStore = configureStore();
 
 describe("EditRecordForm", () => {
   let state: RootState;
-  const resourceA = resourceFactory({
+  const resourceA = factory.domainResource({
     dnsdata_id: null,
     dnsresource_id: 11,
     name: "test-resource-A",
     rrdata: "0.0.0.0",
     rrtype: RecordType.A,
   });
-  const resourceTXT = resourceFactory({
+  const resourceTXT = factory.domainResource({
     dnsdata_id: 22,
     dnsresource_id: 33,
     name: "test-resource-TXT",
@@ -44,10 +38,10 @@ describe("EditRecordForm", () => {
   });
 
   beforeEach(() => {
-    state = rootStateFactory({
-      domain: domainStateFactory({
+    state = factory.rootState({
+      domain: factory.domainState({
         items: [
-          domainFactory({
+          factory.domainDetails({
             id: 1,
             name: "test",
             rrsets: [resourceA, resourceTXT],
@@ -75,9 +69,7 @@ describe("EditRecordForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />
-          </CompatRouter>
+          <EditRecordForm closeForm={vi.fn()} id={1} resource={resourceA} />
         </MemoryRouter>
       </Provider>
     );

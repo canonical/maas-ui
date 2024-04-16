@@ -4,13 +4,7 @@ import { ZoneColumn } from "./ZoneColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -18,11 +12,11 @@ const mockStore = configureStore<RootState>();
 describe("ZoneColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
             zone: { name: "zone-north", id: 0 },
             spaces: ["management"],
@@ -30,13 +24,13 @@ describe("ZoneColumn", () => {
           }),
         ],
       }),
-      zone: zoneStateFactory({
+      zone: factory.zoneState({
         items: [
-          zoneFactory({
+          factory.zone({
             id: 0,
             name: "default",
           }),
-          zoneFactory({
+          factory.zone({
             id: 1,
             name: "Backup",
           }),

@@ -1,14 +1,11 @@
 import reducers from "./slice";
 
-import {
-  script as scriptFactory,
-  scriptState as scriptStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("scripts reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual(
-      scriptStateFactory({
+      factory.scriptState({
         errors: null,
         items: [],
         loaded: false,
@@ -25,7 +22,7 @@ describe("scripts reducer", () => {
         type: "script/fetchStart",
       })
     ).toEqual(
-      scriptStateFactory({
+      factory.scriptState({
         errors: null,
         items: [],
         loaded: false,
@@ -41,7 +38,7 @@ describe("scripts reducer", () => {
         type: "script/fetchError",
       })
     ).toEqual(
-      scriptStateFactory({
+      factory.scriptState({
         items: [],
         errors: { error: "Unable to fetch scripts" },
         loaded: false,
@@ -52,12 +49,12 @@ describe("scripts reducer", () => {
 
   it("should correctly reduce script/fetchSuccess", () => {
     const items = [
-      scriptFactory({ name: "script 1" }),
-      scriptFactory({ name: "script2" }),
+      factory.script({ name: "script 1" }),
+      factory.script({ name: "script2" }),
     ];
     expect(
       reducers(
-        scriptStateFactory({
+        factory.scriptState({
           items: [],
           loaded: false,
           loading: true,
@@ -68,7 +65,7 @@ describe("scripts reducer", () => {
         }
       )
     ).toEqual(
-      scriptStateFactory({
+      factory.scriptState({
         items,
         loaded: true,
         loading: false,
@@ -92,7 +89,7 @@ describe("scripts reducer", () => {
         }
       )
     ).toEqual(
-      scriptStateFactory({
+      factory.scriptState({
         errors: null,
         items: [],
         loaded: false,
@@ -106,7 +103,7 @@ describe("scripts reducer", () => {
   it("should correctly reduce script/deleteSuccess", () => {
     expect(
       reducers(
-        scriptStateFactory({
+        factory.scriptState({
           errors: null,
           saved: false,
           saving: false,
@@ -117,7 +114,7 @@ describe("scripts reducer", () => {
         }
       )
     ).toEqual(
-      scriptStateFactory({
+      factory.scriptState({
         errors: null,
         saved: true,
         saving: false,
@@ -142,7 +139,7 @@ describe("scripts reducer", () => {
         }
       )
     ).toEqual(
-      scriptStateFactory({
+      factory.scriptState({
         errors: { error: "Not found" },
         items: [],
         loaded: false,

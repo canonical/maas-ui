@@ -1,25 +1,22 @@
 import { FilterDevices, getDeviceValue } from "./search";
 
 import type { Filters } from "@/app/utils/search/filter-handlers";
-import {
-  device as deviceFactory,
-  tag as tagFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("search", () => {
   describe("getDeviceValue", () => {
     it("can get an attribute via a mapping function", () => {
-      const device = deviceFactory({ zone: { id: 1, name: "danger" } });
+      const device = factory.device({ zone: { id: 1, name: "danger" } });
       expect(getDeviceValue(device, "zone")).toBe("danger");
     });
 
     it("can get an attribute directly from the device", () => {
-      const device = deviceFactory({ hostname: "miami-device" });
+      const device = factory.device({ hostname: "miami-device" });
       expect(getDeviceValue(device, "hostname")).toBe("miami-device");
     });
 
     it("can get an attribute that is an array directly from the device", () => {
-      const device = deviceFactory({ fabrics: ["fabric-0", "fabric-1"] });
+      const device = factory.device({ fabrics: ["fabric-0", "fabric-1"] });
       expect(getDeviceValue(device, "fabrics")).toStrictEqual([
         "fabric-0",
         "fabric-1",
@@ -28,11 +25,11 @@ describe("search", () => {
 
     it("can get tags", () => {
       const tags = [
-        tagFactory({ id: 1, name: "tag1" }),
-        tagFactory({ id: 2, name: "tag2" }),
-        tagFactory({ id: 3, name: "tag3" }),
+        factory.tag({ id: 1, name: "tag1" }),
+        factory.tag({ id: 2, name: "tag2" }),
+        factory.tag({ id: 3, name: "tag3" }),
       ];
-      const device = deviceFactory({ tags: [1, 2] });
+      const device = factory.device({ tags: [1, 2] });
       expect(getDeviceValue(device, "tags", { tags })).toStrictEqual([
         "tag1",
         "tag2",

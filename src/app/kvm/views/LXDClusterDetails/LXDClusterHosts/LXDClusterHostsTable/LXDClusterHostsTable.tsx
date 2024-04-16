@@ -9,8 +9,7 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { useLocation, Link } from "react-router-dom";
 
 import TableHeader from "@/app/base/components/TableHeader";
 import { useFetchActions, useTableSort } from "@/app/base/hooks";
@@ -26,7 +25,7 @@ import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
-import { actions as poolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import poolSelectors from "@/app/store/resourcepool/selectors";
 import type { ResourcePool } from "@/app/store/resourcepool/types";
 import type { VMCluster } from "@/app/store/vmcluster/types";
@@ -177,7 +176,7 @@ const LXDClusterHostsTable = ({
   searchFilter,
   setSidePanelContent,
 }: Props): JSX.Element => {
-  const location = useLocation<Location>();
+  const location = useLocation();
   const pools = useSelector(poolSelectors.all);
   const podsLoaded = useSelector(podSelectors.loaded);
   const poolsLoaded = useSelector(poolSelectors.loaded);
@@ -196,7 +195,7 @@ const LXDClusterHostsTable = ({
     currentPage * VMS_PER_PAGE
   );
 
-  useFetchActions([poolActions.fetch]);
+  useFetchActions([resourcePoolActions.fetch]);
 
   return (
     <>

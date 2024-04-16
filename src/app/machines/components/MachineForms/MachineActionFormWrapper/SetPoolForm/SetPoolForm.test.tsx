@@ -4,14 +4,7 @@ import SetPoolForm from "./SetPoolForm";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -19,30 +12,30 @@ const mockStore = configureStore<RootState>();
 describe("SetPoolForm", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         errors: {},
         loading: false,
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
           }),
-          machineFactory({
+          factory.machine({
             system_id: "def456",
           }),
         ],
         selected: null,
         statuses: {
-          abc123: machineStatusFactory({ settingPool: false }),
-          def456: machineStatusFactory({ settingPool: false }),
+          abc123: factory.machineStatus({ settingPool: false }),
+          def456: factory.machineStatus({ settingPool: false }),
         },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         errors: {},
         items: [
-          resourcePoolFactory({ id: 0, name: "default" }),
-          resourcePoolFactory({ id: 1, name: "pool-1" }),
+          factory.resourcePool({ id: 0, name: "default" }),
+          factory.resourcePool({ id: 1, name: "pool-1" }),
         ],
         loaded: true,
       }),

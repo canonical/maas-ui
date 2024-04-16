@@ -5,18 +5,10 @@ import type { NewPodValues } from "../types";
 
 import SelectProjectForm from "./SelectProjectForm";
 
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  podProject as podProjectFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
@@ -31,16 +23,16 @@ describe("SelectProjectForm", () => {
   let newPodValues: NewPodValues;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         loaded: true,
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory()],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool()],
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        items: [zoneFactory()],
+      zone: factory.zoneState({
+        items: [factory.zone()],
       }),
     });
     newPodValues = {
@@ -55,7 +47,7 @@ describe("SelectProjectForm", () => {
   });
 
   it("shows the LXD host details", () => {
-    const project = podProjectFactory();
+    const project = factory.podProject();
     state.pod.projects = {
       "192.168.1.1": [project],
     };
@@ -75,7 +67,7 @@ describe("SelectProjectForm", () => {
   });
 
   it("shows an error if attempting to add a project name that already exists", async () => {
-    const project = podProjectFactory({ name: "foo" });
+    const project = factory.podProject({ name: "foo" });
     state.pod.projects = {
       "192.168.1.1": [project],
     };
@@ -101,7 +93,7 @@ describe("SelectProjectForm", () => {
   });
 
   it("can handle creating a LXD KVM with a new project", async () => {
-    const project = podProjectFactory({ name: "foo" });
+    const project = factory.podProject({ name: "foo" });
     state.pod.projects = {
       "192.168.1.1": [project],
     };
@@ -145,7 +137,7 @@ describe("SelectProjectForm", () => {
   });
 
   it("can handle saving a LXD KVM with an existing project", async () => {
-    const project = podProjectFactory({ name: "existing-project" });
+    const project = factory.podProject({ name: "existing-project" });
     state.pod.projects = {
       "192.168.1.1": [project],
     };

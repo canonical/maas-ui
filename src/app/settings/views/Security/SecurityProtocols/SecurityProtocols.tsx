@@ -6,7 +6,7 @@ import TLSDisabled from "./TLSDisabled";
 import TLSEnabled from "./TLSEnabled";
 
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { tlsCertificate as tlsCertificateSelectors } from "@/app/store/general/selectors";
 
 const SecurityProtocols = (): JSX.Element => {

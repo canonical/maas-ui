@@ -1,38 +1,31 @@
 import SetPoolForm from "../SetPoolForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("SetPoolFormFields", () => {
   let state: RootState;
   const route = "/machines";
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
+          factory.machine({ system_id: "abc123" }),
+          factory.machine({ system_id: "def456" }),
         ],
         selected: { items: ["abc123", "def456"] },
         statuses: {
-          abc123: machineStatusFactory({ settingPool: false }),
-          def456: machineStatusFactory({ settingPool: false }),
+          abc123: factory.machineStatus({ settingPool: false }),
+          def456: factory.machineStatus({ settingPool: false }),
         },
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [
-          resourcePoolFactory({ id: 0, name: "default" }),
-          resourcePoolFactory({ id: 1, name: "pool-1" }),
+          factory.resourcePool({ id: 0, name: "default" }),
+          factory.resourcePool({ id: 1, name: "pool-1" }),
         ],
       }),
     });

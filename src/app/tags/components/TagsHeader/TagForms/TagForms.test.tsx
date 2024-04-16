@@ -3,11 +3,7 @@ import type { Mock } from "vitest";
 import TagForms from "./TagForms";
 
 import { TagSidePanelViews } from "@/app/tags/constants";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 let scrollToSpy: Mock;
@@ -28,16 +24,16 @@ it("can display the add tag form", () => {
       setSidePanelContent={vi.fn()}
       sidePanelContent={{ view: TagSidePanelViews.AddTag }}
     />,
-    { route: "/tags", state: rootStateFactory() }
+    { route: "/tags", state: factory.rootState() }
   );
   expect(screen.getByRole("form", { name: "Create tag" })).toBeInTheDocument();
 });
 
 it("can display the delete tag form", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
         }),
       ],
@@ -57,10 +53,10 @@ it("can display the delete tag form", () => {
 });
 
 it("can display the update tag form", () => {
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
         }),
       ],

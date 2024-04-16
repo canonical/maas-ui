@@ -1,37 +1,29 @@
 import { createMemoryHistory } from "history";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { HistoryRouter as Router } from "redux-first-history/rr6";
 
 import { DhcpForm } from "./DhcpForm";
 
 import settingsURLs from "@/app/settings/urls";
 import type { RootState } from "@/app/store/root/types";
-import {
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("DhcpForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items: [
-          dhcpSnippetFactory({
-            created: "Thu, 15 Aug. 2019 06:21:39",
+          factory.dhcpSnippet({
             id: 1,
             name: "lease",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
             value: "lease 10",
           }),
-          dhcpSnippetFactory({
-            created: "Thu, 15 Aug. 2019 06:21:39",
+          factory.dhcpSnippet({
             id: 2,
             name: "class",
-            updated: "Thu, 15 Aug. 2019 06:21:39",
           }),
         ],
         loaded: true,
@@ -42,9 +34,7 @@ describe("DhcpForm", () => {
   it("can render", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <DhcpForm />
-        </CompatRouter>
+        <DhcpForm />
       </MemoryRouter>,
       { state }
     );
@@ -60,9 +50,7 @@ describe("DhcpForm", () => {
     });
     renderWithMockStore(
       <Router history={history}>
-        <CompatRouter>
-          <DhcpForm />
-        </CompatRouter>
+        <DhcpForm />
       </Router>,
       { state }
     );
@@ -72,9 +60,7 @@ describe("DhcpForm", () => {
   it("shows the snippet name in the title when editing", () => {
     renderWithMockStore(
       <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
-        </CompatRouter>
+        <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
       </MemoryRouter>,
       { state }
     );

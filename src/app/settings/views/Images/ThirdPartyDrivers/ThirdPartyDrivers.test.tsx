@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as TPDFormLabels } from "../ThirdPartyDriversForm/ThirdPartyDriversForm";
@@ -9,11 +8,7 @@ import ThirdPartyDrivers, { Labels as TPDLabels } from "./ThirdPartyDrivers";
 
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, render } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -22,10 +17,10 @@ describe("ThirdPartyDrivers", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
+    state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
             value: false,
           }),
@@ -41,9 +36,7 @@ describe("ThirdPartyDrivers", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ThirdPartyDrivers />
-          </CompatRouter>
+          <ThirdPartyDrivers />
         </MemoryRouter>
       </Provider>
     );
@@ -58,9 +51,7 @@ describe("ThirdPartyDrivers", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <ThirdPartyDrivers />
-          </CompatRouter>
+          <ThirdPartyDrivers />
         </MemoryRouter>
       </Provider>
     );

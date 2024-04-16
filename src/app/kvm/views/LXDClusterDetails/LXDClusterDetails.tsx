@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
 import {
+  Navigate,
   Route,
   Routes,
   useLocation,
   useNavigate,
-} from "react-router-dom-v5-compat";
+} from "react-router-dom";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 import LXDClusterDetailsRedirect from "./LXDClusterDetailsRedirect";
@@ -27,9 +27,9 @@ import urls from "@/app/base/urls";
 import KVMForms from "@/app/kvm/components/KVMForms/KVMForms";
 import { getFormTitle } from "@/app/kvm/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { actions as podActions } from "@/app/store/pod";
+import { podActions } from "@/app/store/pod";
 import type { RootState } from "@/app/store/root/types";
-import { actions as vmClusterActions } from "@/app/store/vmcluster";
+import { vmClusterActions } from "@/app/store/vmcluster";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import { VMClusterMeta } from "@/app/store/vmcluster/types";
 import { getRelativeRoute, isId } from "@/app/utils";
@@ -163,7 +163,9 @@ const LXDClusterDetails = (): JSX.Element => {
           path={getRelativeRoute(urls.kvm.lxd.cluster.host.edit(null), base)}
         />
         <Route
-          element={<Redirect to={urls.kvm.lxd.cluster.hosts({ clusterId })} />}
+          element={
+            <Navigate replace to={urls.kvm.lxd.cluster.hosts({ clusterId })} />
+          }
           path={getRelativeRoute(urls.kvm.lxd.cluster.index(null), base)}
         />
         <Route

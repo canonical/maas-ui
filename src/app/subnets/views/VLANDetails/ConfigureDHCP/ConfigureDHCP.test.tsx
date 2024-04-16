@@ -4,19 +4,8 @@ import ConfigureDHCP from "./ConfigureDHCP";
 
 import type { RootState } from "@/app/store/root/types";
 import { getSubnetDisplay } from "@/app/store/subnet/utils";
-import { actions as vlanActions } from "@/app/store/vlan";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  fabricState as fabricStateFactory,
-  ipRangeState as ipRangeStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  subnetStatistics as subnetStatisticsFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import { vlanActions } from "@/app/store/vlan";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -27,9 +16,9 @@ import {
 const mockStore = configureStore<RootState>();
 
 it("shows a spinner while data is loading", () => {
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: [], loading: true }),
-    vlan: vlanStateFactory({ items: [] }),
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: [], loading: true }),
+    vlan: factory.vlanState({ items: [] }),
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
@@ -39,20 +28,20 @@ it("shows a spinner while data is loading", () => {
 });
 
 it("correctly initialises data if the VLAN has DHCP from rack controllers", async () => {
-  const primary = controllerFactory({ system_id: "abc123" });
-  const secondary = controllerFactory({ system_id: "def456" });
-  const vlan = vlanFactory({
+  const primary = factory.controller({ system_id: "abc123" });
+  const secondary = factory.controller({ system_id: "def456" });
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: primary.system_id,
     rack_sids: [primary.system_id, secondary.system_id],
     relay_vlan: null,
     secondary_rack: secondary.system_id,
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
-      items: [primary, secondary, controllerFactory(), controllerFactory()],
+  const state = factory.rootState({
+    controller: factory.controllerState({
+      items: [primary, secondary, factory.controller(), factory.controller()],
     }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
@@ -61,7 +50,7 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", asyn
   // Wait for Formik validateOnMount to run.
   await waitFor(() => {
     expect(
-      screen.getByRole("region", { name: "Configure DHCP" })
+      screen.getByRole("form", { name: "Configure DHCP" })
     ).toBeInTheDocument();
   });
 
@@ -83,16 +72,16 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", asyn
 });
 
 it("correctly initialises data if the VLAN has relayed DHCP", async () => {
-  const relay = vlanFactory({ dhcp_on: true, id: 2 });
-  const vlan = vlanFactory({
+  const relay = factory.vlan({ dhcp_on: true, id: 2 });
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [],
     relay_vlan: relay.id,
     secondary_rack: null,
   });
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [relay, vlan] }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [relay, vlan] }),
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
@@ -101,7 +90,7 @@ it("correctly initialises data if the VLAN has relayed DHCP", async () => {
   // Wait for Formik validateOnMount to run.
   await waitFor(() => {
     expect(
-      screen.getByRole("region", { name: "Configure DHCP" })
+      screen.getByRole("form", { name: "Configure DHCP" })
     ).toBeInTheDocument();
   });
 
@@ -123,22 +112,22 @@ it("correctly initialises data if the VLAN has relayed DHCP", async () => {
 });
 
 it("shows an error if no rack controllers are connected to the VLAN", async () => {
-  const vlan = vlanFactory({
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [],
     relay_vlan: null,
     secondary_rack: null,
   });
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
   });
 
   expect(
-    screen.getByRole("region", { name: "Configure DHCP" })
+    screen.getByRole("form", { name: "Configure DHCP" })
   ).toBeInTheDocument();
 
   expect(
@@ -157,21 +146,21 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
 
 it(`shows an error if the subnet selected for reserving a dynamic range has no
     available IP addresses`, async () => {
-  const relay = vlanFactory({ dhcp_on: true, id: 2 });
-  const vlan = vlanFactory({
+  const relay = factory.vlan({ dhcp_on: true, id: 2 });
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [],
     relay_vlan: relay.id,
     secondary_rack: null,
   });
-  const subnet = subnetFactory({
-    statistics: subnetStatisticsFactory({ num_available: 0 }),
+  const subnet = factory.subnet({
+    statistics: factory.subnetStatistics({ num_available: 0 }),
     vlan: vlan.id,
   });
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet], loaded: true }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
@@ -192,15 +181,15 @@ it(`shows an error if the subnet selected for reserving a dynamic range has no
 });
 
 it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
-  const vlan = vlanFactory({
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [],
     relay_vlan: null,
     secondary_rack: null,
   });
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
@@ -218,26 +207,26 @@ it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
 });
 
 it("can configure DHCP with rack controllers", async () => {
-  const primary = controllerFactory({ system_id: "abc123" });
-  const secondary = controllerFactory({ system_id: "def456" });
-  const vlan = vlanFactory({
+  const primary = factory.controller({ system_id: "abc123" });
+  const secondary = factory.controller({ system_id: "def456" });
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [primary.system_id, secondary.system_id],
     relay_vlan: null,
     secondary_rack: null,
   });
-  const subnet = subnetFactory({
-    statistics: subnetStatisticsFactory(),
+  const subnet = factory.subnet({
+    statistics: factory.subnetStatistics(),
     vlan: vlan.id,
   });
 
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet], loaded: true }),
+    controller: factory.controllerState({
       items: [primary, secondary],
     }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
@@ -308,26 +297,26 @@ it("can configure DHCP with rack controllers", async () => {
 });
 
 it("displays an error when no subnet is selected", async () => {
-  const primary = controllerFactory({ system_id: "abc123" });
-  const secondary = controllerFactory({ system_id: "def456" });
-  const vlan = vlanFactory({
+  const primary = factory.controller({ system_id: "abc123" });
+  const secondary = factory.controller({ system_id: "def456" });
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [primary.system_id, secondary.system_id],
     relay_vlan: null,
     secondary_rack: null,
   });
-  const subnet = subnetFactory({
-    statistics: subnetStatisticsFactory(),
+  const subnet = factory.subnet({
+    statistics: factory.subnetStatistics(),
     vlan: vlan.id,
   });
 
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet], loaded: true }),
+    controller: factory.controllerState({
       items: [primary, secondary],
     }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
     state,
@@ -343,16 +332,16 @@ it("displays an error when no subnet is selected", async () => {
 });
 
 it("can configure relayed DHCP", async () => {
-  const relay = vlanFactory({ dhcp_on: true, id: 2 });
-  const vlan = vlanFactory({
+  const relay = factory.vlan({ dhcp_on: true, id: 2 });
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [],
     relay_vlan: null,
     secondary_rack: null,
   });
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [relay, vlan] }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [relay, vlan] }),
   });
   const store = mockStore(state);
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {
@@ -386,19 +375,19 @@ it("can configure relayed DHCP", async () => {
 });
 
 it("can configure DHCP while also defining a dynamic IP range", async () => {
-  const relay = vlanFactory({ dhcp_on: true, id: 2 });
-  const vlan = vlanFactory({
+  const relay = factory.vlan({ dhcp_on: true, id: 2 });
+  const vlan = factory.vlan({
     id: 1,
     primary_rack: null,
     rack_sids: [],
     relay_vlan: null,
     secondary_rack: null,
   });
-  const subnet = subnetFactory({ vlan: vlan.id });
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({ items: [] }),
-    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
-    vlan: vlanStateFactory({ items: [relay, vlan] }),
+  const subnet = factory.subnet({ vlan: vlan.id });
+  const state = factory.rootState({
+    iprange: factory.ipRangeState({ items: [] }),
+    subnet: factory.subnetState({ items: [subnet], loaded: true }),
+    vlan: factory.vlanState({ items: [relay, vlan] }),
   });
   const store = mockStore(state);
   renderWithBrowserRouter(<ConfigureDHCP closeForm={vi.fn()} id={1} />, {

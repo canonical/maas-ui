@@ -1,38 +1,25 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DHCPStatus from "./DHCPStatus";
 
 import urls from "@/app/base/urls";
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("shows a spinner if data is loading", () => {
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [], loading: true }),
-    vlan: vlanStateFactory({ items: [] }),
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [], loading: true }),
+    vlan: factory.vlanState({ items: [] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={1} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={1} />
       </MemoryRouter>
     </Provider>
   );
@@ -42,18 +29,16 @@ it("shows a spinner if data is loading", () => {
 
 it(`shows a warning and disables Configure DHCP button if there are no subnets
     attached to the VLAN`, () => {
-  const vlan = vlanFactory();
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [] }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const vlan = factory.vlan();
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -71,19 +56,17 @@ it(`shows a warning and disables Configure DHCP button if there are no subnets
 
 it("does not show a warning if there are subnets attached to the VLAN", () => {
   const subnetId = 1;
-  const vlan = vlanFactory({ subnet_ids: [subnetId] });
-  const subnet = subnetFactory({ id: subnetId, vlan: vlan.id });
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({ items: [subnet] }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const vlan = factory.vlan({ subnet_ids: [subnetId] });
+  const subnet = factory.subnet({ id: subnetId, vlan: vlan.id });
+  const state = factory.rootState({
+    subnet: factory.subnetState({ items: [subnet] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -97,21 +80,19 @@ it("does not show a warning if there are subnets attached to the VLAN", () => {
 });
 
 it("renders correctly when a VLAN does not have DHCP enabled", () => {
-  const vlan = vlanFactory({
+  const vlan = factory.vlan({
     dhcp_on: false,
     external_dhcp: null,
     relay_vlan: null,
   });
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -123,21 +104,19 @@ it("renders correctly when a VLAN does not have DHCP enabled", () => {
 });
 
 it("renders correctly when a VLAN has external DHCP", () => {
-  const vlan = vlanFactory({
+  const vlan = factory.vlan({
     dhcp_on: false,
     external_dhcp: "192.168.1.1",
     relay_vlan: null,
   });
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -149,29 +128,27 @@ it("renders correctly when a VLAN has external DHCP", () => {
 });
 
 it("renders correctly when a VLAN has relayed DHCP", () => {
-  const fabric = fabricFactory({ name: "fabrice" });
-  const relayVLAN = vlanFactory({
+  const fabric = factory.fabric({ name: "fabrice" });
+  const relayVLAN = factory.vlan({
     dhcp_on: true,
     fabric: fabric.id,
     name: "relay-vlan",
     vid: 101,
   });
-  const vlan = vlanFactory({
+  const vlan = factory.vlan({
     dhcp_on: false,
     external_dhcp: null,
     relay_vlan: relayVLAN.id,
   });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: [fabric] }),
-    vlan: vlanStateFactory({ items: [vlan, relayVLAN] }),
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: [fabric] }),
+    vlan: factory.vlanState({ items: [vlan, relayVLAN] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -183,27 +160,25 @@ it("renders correctly when a VLAN has relayed DHCP", () => {
 });
 
 it("renders correctly when a VLAN has MAAS-configured DHCP without high availability", () => {
-  const controller = controllerFactory({
+  const controller = factory.controller({
     hostname: "primary-rack",
     system_id: "abc123",
   });
-  const vlan = vlanFactory({
+  const vlan = factory.vlan({
     dhcp_on: true,
     external_dhcp: null,
     primary_rack: "abc123",
     relay_vlan: null,
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({ items: [controller] }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    controller: factory.controllerState({ items: [controller] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -225,32 +200,32 @@ it("renders correctly when a VLAN has MAAS-configured DHCP without high availabi
 });
 
 it("renders correctly when a VLAN has MAAS-configured DHCP with high availability", () => {
-  const primaryRack = controllerFactory({
+  const primaryRack = factory.controller({
     hostname: "primary-rack",
     system_id: "abc123",
   });
-  const secondaryRack = controllerFactory({
+  const secondaryRack = factory.controller({
     hostname: "secondary-rack",
     system_id: "def456",
   });
-  const vlan = vlanFactory({
+  const vlan = factory.vlan({
     dhcp_on: true,
     external_dhcp: null,
     primary_rack: "abc123",
     relay_vlan: null,
     secondary_rack: "def456",
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({ items: [primaryRack, secondaryRack] }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    controller: factory.controllerState({
+      items: [primaryRack, secondaryRack],
+    }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DHCPStatus id={vlan.id} openForm={vi.fn()} />
-        </CompatRouter>
+        <DHCPStatus id={vlan.id} />
       </MemoryRouter>
     </Provider>
   );

@@ -13,12 +13,13 @@ import ScriptStatus from "@/app/base/components/ScriptStatus";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useSendAnalytics } from "@/app/base/hooks";
 import type { ControllerDetails } from "@/app/store/controller/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { MachineDetails } from "@/app/store/machine/types";
 import type { ScriptResult } from "@/app/store/scriptresult/types";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
 import { canBeSuppressed } from "@/app/store/scriptresult/utils";
 import { nodeIsMachine } from "@/app/store/utils";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 export enum ScriptResultAction {
   VIEW_METRICS = "viewMetrics",
@@ -131,7 +132,7 @@ const NodeTestsTable = ({ node, scriptResults }: Props): JSX.Element => {
         },
         {
           className: "date-col",
-          content: result.updated,
+          content: formatUtcDatetime(result.updated),
         },
         {
           className: "runtime-col",

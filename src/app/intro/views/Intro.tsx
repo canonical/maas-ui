@@ -2,12 +2,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import {
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom-v5-compat";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import { useExitURL } from "../hooks";
 

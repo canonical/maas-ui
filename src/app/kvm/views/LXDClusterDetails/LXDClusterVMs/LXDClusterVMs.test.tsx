@@ -4,20 +4,10 @@ import configureStore from "redux-mock-store";
 import LXDClusterVMs from "./LXDClusterVMs";
 
 import urls from "@/app/base/urls";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  virtualMachine as clusterVMFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-  vmHost as vmHostFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
@@ -41,29 +31,29 @@ describe("LXDClusterVMs", () => {
   });
 
   it("renders a link to a cluster's host's VM page", () => {
-    const machine = machineFactory({
+    const machine = factory.machine({
       pod: { id: 11, name: "podrick" },
       system_id: "abc123",
     });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [machine],
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loaded: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machine.system_id],
               }),
             ],
           }),
         },
       }),
-      vmcluster: vmClusterStateFactory({
+      vmcluster: factory.vmClusterState({
         items: [
-          vmClusterFactory({
+          factory.vmCluster({
             id: 1,
-            virtual_machines: [clusterVMFactory({ system_id: "abc123" })],
+            virtual_machines: [factory.virtualMachine({ system_id: "abc123" })],
           }),
         ],
         loaded: true,
@@ -86,14 +76,14 @@ describe("LXDClusterVMs", () => {
   });
 
   it("fetches VMs for the hosts", () => {
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
+    const state = factory.rootState({
+      vmcluster: factory.vmClusterState({
         items: [
-          vmClusterFactory({
+          factory.vmCluster({
             id: 1,
             hosts: [
-              vmHostFactory({ name: "host 1" }),
-              vmHostFactory({ name: "host 2" }),
+              factory.vmHost({ name: "host 1" }),
+              factory.vmHost({ name: "host 2" }),
             ],
           }),
         ],

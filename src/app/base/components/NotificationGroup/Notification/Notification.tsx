@@ -1,11 +1,11 @@
 import { Notification } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import settingsURLs from "@/app/settings/urls";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as notificationActions } from "@/app/store/notification";
+import { notificationActions } from "@/app/store/notification";
 import notificationSelectors from "@/app/store/notification/selectors";
 import type { Notification as NotificationType } from "@/app/store/notification/types";
 import {
@@ -13,6 +13,7 @@ import {
   isUpgradeNotification,
 } from "@/app/store/notification/utils";
 import type { RootState } from "@/app/store/root/types";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = {
   className?: string | null;
@@ -31,6 +32,7 @@ const NotificationGroupNotification = ({
   const notification = useSelector((state: RootState) =>
     notificationSelectors.getById(state, id)
   );
+  const createdTimestamp = formatUtcDatetime(notification?.created);
   if (!notification) {
     return null;
   }
@@ -59,7 +61,7 @@ const NotificationGroupNotification = ({
           : undefined
       }
       severity={severity}
-      timestamp={showDate ? notification.created : null}
+      timestamp={showDate ? createdTimestamp : null}
     >
       <span
         dangerouslySetInnerHTML={{ __html: notification.message }}

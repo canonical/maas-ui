@@ -4,18 +4,14 @@ import DomainsList from "./DomainsList";
 import { Labels as DomainsTableLabels } from "./DomainsTable/DomainsTable";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  domain as domainFactory,
-  domainState as domainStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("DomainsList", () => {
   it("correctly fetches the necessary data", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     renderWithBrowserRouter(<DomainsList />, { route: "/domains", store });
     const expectedActions = ["domain/fetch"];
@@ -28,9 +24,9 @@ describe("DomainsList", () => {
   });
 
   it("shows a domains table if there are any domains", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [domainFactory({ name: "test" })],
+    const state = factory.rootState({
+      domain: factory.domainState({
+        items: [factory.domain({ name: "test" })],
       }),
     });
     renderWithBrowserRouter(<DomainsList />, {

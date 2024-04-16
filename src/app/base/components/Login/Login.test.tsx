@@ -1,17 +1,11 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import Login, { Labels } from "./Login";
 
 import type { RootState } from "@/app/store/root/types";
-import { actions as statusActions } from "@/app/store/status";
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-} from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import { statusActions } from "@/app/store/status";
+import * as factory from "@/testing/factories";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -19,24 +13,23 @@ describe("Login", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
     });
   });
 
+  it("can display a login error message", () => {
+    const authenticationError =
+      "Please enter a correct username and password. Note that both fields may be case-sensitive.";
+    state.status.authenticationError = authenticationError;
+    renderWithBrowserRouter(<Login />, { route: "/", state });
+    expect(screen.getByRole("alert")).toHaveTextContent(authenticationError);
+  });
+
   it("can render api login", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Login />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<Login />, { route: "/", state });
 
     expect(
       screen.getByRole("form", { name: Labels.APILoginForm })
@@ -45,16 +38,7 @@ describe("Login", () => {
 
   it("can render external login link", () => {
     state.status.externalAuthURL = "http://login.example.com";
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Login />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<Login />, { route: "/", state });
 
     expect(
       screen.getByRole("link", { name: Labels.ExternalLoginButton })
@@ -63,15 +47,7 @@ describe("Login", () => {
 
   it("can login via the api", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Login />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<Login />, { route: "/", store });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.Username }),
@@ -91,16 +67,7 @@ describe("Login", () => {
 
   it("shows a warning if no users have been added yet", () => {
     state.status.noUsers = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Login />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<Login />, { route: "/", state });
 
     expect(
       screen.getByRole("heading", { name: Labels.NoUsers })

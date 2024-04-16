@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceConfiguration, { Label } from "./DeviceConfiguration";
@@ -9,18 +8,9 @@ import { Labels as EditableSectionLabels } from "@/app/base/components/EditableS
 import { Label as DeviceConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
 import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneSelect";
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
-import {
-  deviceDetails as deviceDetailsFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -29,20 +19,20 @@ describe("DeviceConfiguration", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      device: deviceStateFactory({
-        items: [deviceDetailsFactory({ system_id: "abc123" })],
+    state = factory.rootState({
+      device: factory.deviceState({
+        items: [factory.deviceDetails({ system_id: "abc123" })],
         loaded: true,
       }),
-      tag: tagStateFactory({
+      tag: factory.tagState({
         items: [
-          tagFactory({ id: 1, name: "tag1" }),
-          tagFactory({ id: 2, name: "tag2" }),
+          factory.tag({ id: 1, name: "tag1" }),
+          factory.tag({ id: 2, name: "tag2" }),
         ],
       }),
-      zone: zoneStateFactory({
-        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-        items: [zoneFactory({ name: "twilight" })],
+      zone: factory.zoneState({
+        genericActions: factory.zoneGenericActions({ fetch: "success" }),
+        items: [factory.zone({ name: "twilight" })],
       }),
     });
   });
@@ -53,9 +43,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -68,9 +56,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -86,9 +72,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );
@@ -108,9 +92,7 @@ describe("DeviceConfiguration", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <DeviceConfiguration systemId="abc123" />
-          </CompatRouter>
+          <DeviceConfiguration systemId="abc123" />
         </MemoryRouter>
       </Provider>
     );

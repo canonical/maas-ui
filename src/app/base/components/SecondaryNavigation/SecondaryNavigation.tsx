@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import type { Location } from "react-router-dom-v5-compat";
-import { Link, matchPath, useLocation } from "react-router-dom-v5-compat";
+import type { Location } from "react-router-dom";
+import { Link, matchPath, useLocation } from "react-router-dom";
 
 import { useThemeContext } from "@/app/base/theme-context";
 

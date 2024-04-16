@@ -2,13 +2,13 @@ import { memo, useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
 import { useToggleMenu } from "@/app/machines/hooks";
 import type { MachineMenuToggleHandler } from "@/app/machines/types";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";

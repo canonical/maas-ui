@@ -9,7 +9,7 @@ import Fields from "./IpmiFormFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
 import { useWindowTitle } from "@/app/base/hooks";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 import { AutoIpmiPrivilegeLevel } from "@/app/store/config/types";
 

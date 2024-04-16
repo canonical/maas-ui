@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import WindowsForm from "../WindowsForm";
 
 import { useWindowTitle } from "@/app/base/hooks";
-import { actions as configActions } from "@/app/store/config";
+import { configActions } from "@/app/store/config";
 import configSelectors from "@/app/store/config/selectors";
 
 export enum Labels {

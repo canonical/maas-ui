@@ -4,28 +4,23 @@ import configureStore from "redux-mock-store";
 
 import FabricControllers from "./FabricControllers";
 
-import {
-  controller as controllerFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-  fabric as fabricFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("displays a spinner when loading controllers", () => {
-  const controller = controllerFactory({
+  const controller = factory.controller({
     hostname: "controller-1",
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       loaded: true,
       items: [controller],
     }),
   });
   const store = mockStore(state);
-  const fabric = fabricFactory({ id: 1 });
+  const fabric = factory.fabric({ id: 1 });
 
   render(
     <Provider store={store}>

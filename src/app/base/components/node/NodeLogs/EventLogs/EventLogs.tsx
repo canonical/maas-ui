@@ -10,7 +10,7 @@ import ArrowPagination from "@/app/base/components/ArrowPagination";
 import { MAIN_CONTENT_SECTION_ID } from "@/app/base/components/MainContentSection/MainContentSection";
 import SearchBox from "@/app/base/components/SearchBox";
 import type { ControllerDetails } from "@/app/store/controller/types";
-import { actions as eventActions } from "@/app/store/event";
+import { eventActions } from "@/app/store/event";
 import eventSelectors from "@/app/store/event/selectors";
 import type { EventRecord } from "@/app/store/event/types";
 import type { MachineDetails } from "@/app/store/machine/types";

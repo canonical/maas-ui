@@ -3,11 +3,7 @@ import { UserForm } from "./UserForm";
 import type { RootState } from "@/app/store/root/types";
 import userSelectors from "@/app/store/user/selectors";
 import type { User } from "@/app/store/user/types";
-import {
-  rootState as rootStateFactory,
-  statusState as statusStateFactory,
-  user as userFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("UserForm", () => {
@@ -15,15 +11,15 @@ describe("UserForm", () => {
   let user: User;
 
   beforeEach(() => {
-    user = userFactory({
+    user = factory.user({
       email: "old@example.com",
       id: 808,
       is_superuser: true,
       last_name: "Miss Wallaby",
       username: "admin",
     });
-    state = rootStateFactory({
-      status: statusStateFactory({
+    state = factory.rootState({
+      status: factory.statusState({
         externalAuthURL: null,
       }),
     });

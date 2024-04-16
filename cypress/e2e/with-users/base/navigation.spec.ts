@@ -77,6 +77,18 @@ context("Navigation - admin - collapse", () => {
       .within(() => cy.findByRole("button", { name: /close menu/i }).click());
     cy.getMainNavigation().should("not.be.visible");
   });
+
+  it("automatically closes the menu on mobile when a link is clicked", () => {
+    cy.viewport("iphone-8");
+    cy.getMainNavigation().should("not.be.visible");
+    cy.findByRole("banner", { name: "navigation" }).within(() =>
+      cy.findByRole("button", { name: "Menu" }).click()
+    );
+    cy.getMainNavigation()
+      .should("be.visible")
+      .within(() => cy.findByRole("link", { name: /devices/i }).click());
+    cy.getMainNavigation().should("not.be.visible");
+  });
 });
 
 context("Navigation - admin", () => {

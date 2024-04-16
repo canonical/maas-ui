@@ -24,14 +24,14 @@ import {
   MachineColumns,
   groupOptions,
 } from "@/app/machines/constants";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
-import { actions as tagActions } from "@/app/store/tag";
-import { actions as userActions } from "@/app/store/user";
-import { actions as zoneActions } from "@/app/store/zone";
+import { resourcePoolActions } from "@/app/store/resourcepool";
+import { tagActions } from "@/app/store/tag";
+import { userActions } from "@/app/store/user";
+import { zoneActions } from "@/app/store/zone";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
 
 export enum Label {

@@ -1,31 +1,24 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceLink, { Labels } from "./DeviceLink";
 
 import urls from "@/app/base/urls";
-import {
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("handles when devices are loading", () => {
-  const state = rootStateFactory({
-    device: deviceStateFactory({ items: [], loading: true }),
+  const state = factory.rootState({
+    device: factory.deviceState({ items: [], loading: true }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DeviceLink systemId="abc123" />
-        </CompatRouter>
+        <DeviceLink systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -34,16 +27,14 @@ it("handles when devices are loading", () => {
 });
 
 it("handles when a device does not exist", () => {
-  const state = rootStateFactory({
-    device: deviceStateFactory({ items: [], loading: false }),
+  const state = factory.rootState({
+    device: factory.deviceState({ items: [], loading: false }),
   });
   const store = mockStore(state);
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DeviceLink systemId="abc123" />
-        </CompatRouter>
+        <DeviceLink systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -52,17 +43,15 @@ it("handles when a device does not exist", () => {
 });
 
 it("renders a link if devices have loaded and it exists", () => {
-  const device = deviceFactory();
-  const state = rootStateFactory({
-    device: deviceStateFactory({ items: [device], loading: false }),
+  const device = factory.device();
+  const state = factory.rootState({
+    device: factory.deviceState({ items: [device], loading: false }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <DeviceLink systemId={device.system_id} />
-        </CompatRouter>
+        <DeviceLink systemId={device.system_id} />
       </MemoryRouter>
     </Provider>
   );

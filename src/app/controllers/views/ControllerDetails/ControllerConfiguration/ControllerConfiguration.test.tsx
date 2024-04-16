@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerConfiguration from "./ControllerConfiguration";
@@ -11,64 +10,50 @@ import { Labels as EditableSectionLabels } from "@/app/base/components/EditableS
 import { Label as NodeConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
 import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneSelect";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  generalState as generalStateFactory,
-  generatedCertificateState as generatedCertificateStateFactory,
-  powerField as powerFieldFactory,
-  powerType as powerTypeFactory,
-  powerTypesState as powerTypesStateFactory,
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  zone as zoneFactory,
-  zoneGenericActions as zoneGenericActionsFactory,
-  zoneState as zoneStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
-const controller = controllerDetailsFactory({ system_id: "abc123" });
+const controller = factory.controllerDetails({ system_id: "abc123" });
 
 beforeEach(() => {
-  state = rootStateFactory({
-    controller: controllerStateFactory({
+  state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
       loaded: true,
       loading: false,
     }),
-    general: generalStateFactory({
-      generatedCertificate: generatedCertificateStateFactory({
+    general: factory.generalState({
+      generatedCertificate: factory.generatedCertificateState({
         data: null,
       }),
-      powerTypes: powerTypesStateFactory({
+      powerTypes: factory.powerTypesState({
         data: [
-          powerTypeFactory({
+          factory.powerType({
             name: PodType.LXD,
             fields: [
-              powerFieldFactory({ name: "power_address" }),
-              powerFieldFactory({ name: "password" }),
+              factory.powerField({ name: "power_address" }),
+              factory.powerField({ name: "password" }),
             ],
           }),
         ],
         loaded: true,
       }),
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       loaded: true,
       items: [
-        tagFactory({ id: 1, name: "tag1" }),
-        tagFactory({ id: 2, name: "tag2" }),
+        factory.tag({ id: 1, name: "tag1" }),
+        factory.tag({ id: 2, name: "tag2" }),
       ],
     }),
-    zone: zoneStateFactory({
-      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
-      items: [zoneFactory({ name: "twilight" })],
+    zone: factory.zoneState({
+      genericActions: factory.zoneGenericActions({ fetch: "success" }),
+      items: [factory.zone({ name: "twilight" })],
     }),
   });
 });
@@ -78,9 +63,7 @@ it("displays controller configuration sections", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -99,9 +82,7 @@ it("displays a loading indicator if the controller has not loaded", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -116,9 +97,7 @@ it("displays non-editable controller details by default", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -142,9 +121,7 @@ it("can switch to controller configuration forms", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId={controller.system_id} />
-        </CompatRouter>
+        <ControllerConfiguration systemId={controller.system_id} />
       </MemoryRouter>
     </Provider>
   );
@@ -180,9 +157,7 @@ it("correctly dispatches an action to update a controller", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId="abc123" />
-        </CompatRouter>
+        <ControllerConfiguration systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );
@@ -228,9 +203,7 @@ it("displays an alert on edit when controller manages more than 1 node", async (
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <ControllerConfiguration systemId="abc123" />
-        </CompatRouter>
+        <ControllerConfiguration systemId="abc123" />
       </MemoryRouter>
     </Provider>
   );

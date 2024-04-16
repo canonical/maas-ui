@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
@@ -11,7 +11,7 @@ import { useAddMessage, useScrollToTop } from "@/app/base/hooks";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 

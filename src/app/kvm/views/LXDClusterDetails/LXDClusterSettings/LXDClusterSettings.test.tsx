@@ -3,30 +3,23 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterSettings from "./LXDClusterSettings";
 
-import { actions as podActions } from "@/app/store/pod";
-import {
-  pod as podFactory,
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-  vmCluster as vmClusterFactory,
-  vmClusterState as vmClusterStateFactory,
-  vmHost as vmHostFactory,
-} from "@/testing/factories";
+import { podActions } from "@/app/store/pod";
+import * as factory from "@/testing/factories";
 import { render } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("LXDClusterSettings", () => {
   it("sets the cluster's first host as active", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
-        items: [podFactory({ id: 11 }), podFactory({ id: 22 })],
+    const state = factory.rootState({
+      pod: factory.podState({
+        items: [factory.pod({ id: 11 }), factory.pod({ id: 22 })],
       }),
-      vmcluster: vmClusterStateFactory({
+      vmcluster: factory.vmClusterState({
         items: [
-          vmClusterFactory({
+          factory.vmCluster({
             id: 1,
-            hosts: [vmHostFactory({ id: 11 }), vmHostFactory({ id: 22 })],
+            hosts: [factory.vmHost({ id: 11 }), factory.vmHost({ id: 22 })],
           }),
         ],
       }),

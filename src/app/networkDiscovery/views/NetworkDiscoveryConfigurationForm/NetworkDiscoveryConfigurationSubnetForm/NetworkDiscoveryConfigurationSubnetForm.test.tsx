@@ -6,23 +6,16 @@ import NetworkDiscoveryConfigurationSubnetForm, {
 
 import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
-import { actions as subnetActions } from "@/app/store/subnet";
-import {
-  configState as configStateFactory,
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import { subnetActions } from "@/app/store/subnet";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
 describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   it("displays a spinner if subnets have not loaded", () => {
-    const state = rootStateFactory({
-      subnet: subnetStateFactory({ loaded: false }),
+    const state = factory.rootState({
+      subnet: factory.subnetState({ loaded: false }),
     });
     renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
@@ -32,8 +25,8 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   });
 
   it("displays a spinner if fabrics have not loaded", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({ loaded: false }),
+    const state = factory.rootState({
+      fabric: factory.fabricState({ loaded: false }),
     });
     renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
@@ -43,9 +36,9 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   });
 
   it("renders the form if fabrics and subnets have loaded", () => {
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({ loaded: true }),
-      subnet: subnetStateFactory({ loaded: true }),
+    const state = factory.rootState({
+      fabric: factory.fabricState({ loaded: true }),
+      subnet: factory.subnetState({ loaded: true }),
     });
     renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
@@ -57,8 +50,8 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   });
 
   it("disables the form if discovery is disabled", () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
           {
             name: ConfigNames.NETWORK_DISCOVERY,
@@ -66,8 +59,8 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
           },
         ],
       }),
-      fabric: fabricStateFactory({ loaded: true }),
-      subnet: subnetStateFactory({ items: [subnetFactory()], loaded: true }),
+      fabric: factory.fabricState({ loaded: true }),
+      subnet: factory.subnetState({ items: [factory.subnet()], loaded: true }),
     });
     renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
@@ -81,11 +74,11 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
   });
 
   it("displays links for the subnet and its fabric", () => {
-    const subnet = subnetFactory({ id: 1, active_discovery: true, vlan: 2 });
-    const fabric = fabricFactory({ id: 3, vlan_ids: [2] });
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({ items: [fabric], loaded: true }),
-      subnet: subnetStateFactory({ items: [subnet], loaded: true }),
+    const subnet = factory.subnet({ id: 1, active_discovery: true, vlan: 2 });
+    const fabric = factory.fabric({ id: 3, vlan_ids: [2] });
+    const state = factory.rootState({
+      fabric: factory.fabricState({ items: [fabric], loaded: true }),
+      subnet: factory.subnetState({ items: [subnet], loaded: true }),
     });
     renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {
       state,
@@ -103,14 +96,14 @@ describe("NetworkDiscoveryConfigurationSubnetForm", () => {
 
   it("dispatches actions to update subnet active discovery if they have changed", async () => {
     const subnets = [
-      subnetFactory({ id: 1, active_discovery: true }),
-      subnetFactory({ id: 2, active_discovery: true }),
-      subnetFactory({ id: 3, active_discovery: false }),
-      subnetFactory({ id: 4, active_discovery: false }),
+      factory.subnet({ id: 1, active_discovery: true }),
+      factory.subnet({ id: 2, active_discovery: true }),
+      factory.subnet({ id: 3, active_discovery: false }),
+      factory.subnet({ id: 4, active_discovery: false }),
     ];
-    const state = rootStateFactory({
-      fabric: fabricStateFactory({ loaded: true }),
-      subnet: subnetStateFactory({ items: subnets, loaded: true }),
+    const state = factory.rootState({
+      fabric: factory.fabricState({ loaded: true }),
+      subnet: factory.subnetState({ items: subnets, loaded: true }),
     });
     const store = mockStore(state);
     renderWithBrowserRouter(<NetworkDiscoveryConfigurationSubnetForm />, {

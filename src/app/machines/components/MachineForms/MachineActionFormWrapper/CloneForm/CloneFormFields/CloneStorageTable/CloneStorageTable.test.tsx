@@ -1,11 +1,6 @@
 import CloneStorageTable from "./CloneStorageTable";
 
-import {
-  machineDetails as machineDetailsFactory,
-  nodeDisk as diskFactory,
-  nodeFilesystem as fsFactory,
-  nodePartition as partitionFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen, within } from "@/testing/utils";
 
 describe("CloneStorageTable", () => {
@@ -39,8 +34,8 @@ describe("CloneStorageTable", () => {
   });
 
   it("renders machine storage details if machine is provided", () => {
-    const machine = machineDetailsFactory({
-      disks: [diskFactory({ name: "Disk 1" })],
+    const machine = factory.machineDetails({
+      disks: [factory.nodeDisk({ name: "Disk 1" })],
     });
     render(<CloneStorageTable machine={machine} selected={false} />);
     expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
@@ -49,8 +44,10 @@ describe("CloneStorageTable", () => {
   });
 
   it("shows a tick for available disks", () => {
-    const machine = machineDetailsFactory({
-      disks: [diskFactory({ available_size: 1000000000, size: 1000000000 })],
+    const machine = factory.machineDetails({
+      disks: [
+        factory.nodeDisk({ available_size: 1000000000, size: 1000000000 }),
+      ],
     });
     render(<CloneStorageTable machine={machine} selected={false} />);
     expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--tick");
@@ -60,8 +57,8 @@ describe("CloneStorageTable", () => {
   });
 
   it("shows a cross for unavailable disks", () => {
-    const machine = machineDetailsFactory({
-      disks: [diskFactory({ available_size: 0, size: 1000000000 })],
+    const machine = factory.machineDetails({
+      disks: [factory.nodeDisk({ available_size: 0, size: 1000000000 })],
     });
     render(<CloneStorageTable machine={machine} selected={false} />);
     expect(screen.getByTestId("disk-available")).toHaveClass("p-icon--close");
@@ -71,9 +68,11 @@ describe("CloneStorageTable", () => {
   });
 
   it("shows a tick for available partitions", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [
-        diskFactory({ partitions: [partitionFactory({ filesystem: null })] }),
+        factory.nodeDisk({
+          partitions: [factory.nodePartition({ filesystem: null })],
+        }),
       ],
     });
     render(<CloneStorageTable machine={machine} selected={false} />);
@@ -86,10 +85,12 @@ describe("CloneStorageTable", () => {
   });
 
   it("shows a cross for unavailable partitions", () => {
-    const machine = machineDetailsFactory({
+    const machine = factory.machineDetails({
       disks: [
-        diskFactory({
-          partitions: [partitionFactory({ filesystem: fsFactory() })],
+        factory.nodeDisk({
+          partitions: [
+            factory.nodePartition({ filesystem: factory.nodeFilesystem() }),
+          ],
         }),
       ],
     });

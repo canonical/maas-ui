@@ -1,26 +1,19 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricDeleteForm from "./FabricDeleteForm";
 
-import { actions as fabricActions } from "@/app/store/fabric";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-} from "@/testing/factories";
+import { fabricActions } from "@/app/store/fabric";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("does not allow deletion if the fabric is the default fabric", () => {
-  const fabric = fabricFactory({ id: 0 });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({
+  const fabric = factory.fabric({ id: 0 });
+  const state = factory.rootState({
+    fabric: factory.fabricState({
       items: [fabric],
     }),
   });
@@ -28,9 +21,7 @@ it("does not allow deletion if the fabric is the default fabric", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-        </CompatRouter>
+        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -43,13 +34,13 @@ it("does not allow deletion if the fabric is the default fabric", () => {
 });
 
 it("does not allow deletion if the fabric has subnets attached", () => {
-  const subnet = subnetFactory({ vlan: 101 });
-  const fabric = fabricFactory({ id: 1, vlan_ids: [subnet.vlan] });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({
+  const subnet = factory.subnet({ vlan: 101 });
+  const fabric = factory.fabric({ id: 1, vlan_ids: [subnet.vlan] });
+  const state = factory.rootState({
+    fabric: factory.fabricState({
       items: [fabric],
     }),
-    subnet: subnetStateFactory({
+    subnet: factory.subnetState({
       items: [subnet],
     }),
   });
@@ -57,9 +48,7 @@ it("does not allow deletion if the fabric has subnets attached", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-        </CompatRouter>
+        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -73,17 +62,15 @@ it("does not allow deletion if the fabric has subnets attached", () => {
 
 it(`displays a delete confirmation if the fabric is not the default and has no
     subnets attached`, () => {
-  const fabric = fabricFactory({ id: 1 });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: [fabric] }),
+  const fabric = factory.fabric({ id: 1 });
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: [fabric] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-        </CompatRouter>
+        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -94,17 +81,15 @@ it(`displays a delete confirmation if the fabric is not the default and has no
 });
 
 it("deletes the fabric when confirmed", async () => {
-  const fabric = fabricFactory({ id: 1 });
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({ items: [fabric] }),
+  const fabric = factory.fabric({ id: 1 });
+  const state = factory.rootState({
+    fabric: factory.fabricState({ items: [fabric] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
-        </CompatRouter>
+        <FabricDeleteForm closeForm={vi.fn()} id={fabric.id} />
       </MemoryRouter>
     </Provider>
   );

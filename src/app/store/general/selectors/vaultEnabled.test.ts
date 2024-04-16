@@ -1,16 +1,12 @@
 import vaultEnabled from "./vaultEnabled";
 
-import {
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-  vaultEnabledState as vaultEnabledStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("get", () => {
   it("returns vaultEnabled", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        vaultEnabled: vaultEnabledStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        vaultEnabled: factory.vaultEnabledState({
           data: false,
         }),
       }),
@@ -21,9 +17,9 @@ describe("get", () => {
 
 describe("loading", () => {
   it("returns vaultEnabled loading state", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        vaultEnabled: vaultEnabledStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        vaultEnabled: factory.vaultEnabledState({
           loading: true,
         }),
       }),
@@ -34,9 +30,9 @@ describe("loading", () => {
 
 describe("loaded", () => {
   it("returns vaultEnabled loaded state", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        vaultEnabled: vaultEnabledStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        vaultEnabled: factory.vaultEnabledState({
           loaded: true,
         }),
       }),
@@ -48,9 +44,9 @@ describe("loaded", () => {
 describe("errors", () => {
   it("returns vaultEnabled errors state", () => {
     const errors = "Cannot fetch Vault status";
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        vaultEnabled: vaultEnabledStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        vaultEnabled: factory.vaultEnabledState({
           errors,
         }),
       }),

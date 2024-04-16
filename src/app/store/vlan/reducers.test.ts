@@ -1,14 +1,6 @@
-import reducers, { actions } from "./slice";
-
-import { actions as subnetActions } from "@/app/store/subnet/slice";
-import {
-  vlan as vlanFactory,
-  vlanEventError as vlanEventErrorFactory,
-  vlanState as vlanStateFactory,
-  subnet as subnetFactory,
-  vlanStatus as vlanStatusFactory,
-  vlanStatuses as vlanStatusesFactory,
-} from "@/testing/factories";
+import { subnetActions } from "@/app/store/subnet";
+import reducers, { vlanActions } from "@/app/store/vlan";
+import * as factory from "@/testing/factories";
 
 describe("vlan reducer", () => {
   describe("initial", () => {
@@ -31,44 +23,44 @@ describe("vlan reducer", () => {
 
   describe("fetch", () => {
     it("reduces fetchStart", () => {
-      const initialState = vlanStateFactory({ loading: false });
+      const initialState = factory.vlanState({ loading: false });
 
-      expect(reducers(initialState, actions.fetchStart())).toEqual(
-        vlanStateFactory({ loading: true })
+      expect(reducers(initialState, vlanActions.fetchStart())).toEqual(
+        factory.vlanState({ loading: true })
       );
     });
 
     it("reduces fetchSuccess", () => {
-      const initialState = vlanStateFactory({
+      const initialState = factory.vlanState({
         items: [],
         loaded: false,
         loading: true,
       });
-      const vlans = [vlanFactory({ id: 1 }), vlanFactory({ id: 2 })];
+      const vlans = [factory.vlan({ id: 1 }), factory.vlan({ id: 2 })];
 
-      expect(reducers(initialState, actions.fetchSuccess(vlans))).toEqual(
-        vlanStateFactory({
+      expect(reducers(initialState, vlanActions.fetchSuccess(vlans))).toEqual(
+        factory.vlanState({
           items: vlans,
           loaded: true,
           loading: false,
-          statuses: vlanStatusesFactory({
-            1: vlanStatusFactory(),
-            2: vlanStatusFactory(),
+          statuses: factory.vlanStatuses({
+            1: factory.vlanStatus(),
+            2: factory.vlanStatus(),
           }),
         })
       );
     });
 
     it("reduces fetchError", () => {
-      const initialState = vlanStateFactory({ errors: "", loading: true });
+      const initialState = factory.vlanState({ errors: "", loading: true });
 
       expect(
-        reducers(initialState, actions.fetchError("Could not fetch vlans"))
+        reducers(initialState, vlanActions.fetchError("Could not fetch vlans"))
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           errors: "Could not fetch vlans",
           eventErrors: [
-            vlanEventErrorFactory({
+            factory.vlanEventError({
               error: "Could not fetch vlans",
               event: "fetch",
               id: null,
@@ -81,48 +73,48 @@ describe("vlan reducer", () => {
 
   describe("create", () => {
     it("reduces createStart", () => {
-      const initialState = vlanStateFactory({ saving: false });
+      const initialState = factory.vlanState({ saving: false });
 
-      expect(reducers(initialState, actions.createStart())).toEqual(
-        vlanStateFactory({ saving: true })
+      expect(reducers(initialState, vlanActions.createStart())).toEqual(
+        factory.vlanState({ saving: true })
       );
     });
 
     it("reduces createSuccess", () => {
-      const initialState = vlanStateFactory({
+      const initialState = factory.vlanState({
         saved: false,
         saving: true,
       });
 
-      expect(reducers(initialState, actions.createSuccess())).toEqual(
-        vlanStateFactory({ errors: null, saved: true, saving: false })
+      expect(reducers(initialState, vlanActions.createSuccess())).toEqual(
+        factory.vlanState({ errors: null, saved: true, saving: false })
       );
     });
 
     it("reduces createNotify", () => {
-      const initialState = vlanStateFactory({
-        items: [vlanFactory()],
+      const initialState = factory.vlanState({
+        items: [factory.vlan()],
       });
-      const newVLAN = vlanFactory({ id: 1 });
+      const newVLAN = factory.vlan({ id: 1 });
 
-      expect(reducers(initialState, actions.createNotify(newVLAN))).toEqual(
-        vlanStateFactory({
+      expect(reducers(initialState, vlanActions.createNotify(newVLAN))).toEqual(
+        factory.vlanState({
           items: [...initialState.items, newVLAN],
-          statuses: vlanStatusesFactory({ 1: vlanStatusFactory() }),
+          statuses: factory.vlanStatuses({ 1: factory.vlanStatus() }),
         })
       );
     });
 
     it("reduces createError", () => {
-      const initialState = vlanStateFactory({ errors: "", saving: true });
+      const initialState = factory.vlanState({ errors: "", saving: true });
 
       expect(
-        reducers(initialState, actions.createError("Could not create vlan"))
+        reducers(initialState, vlanActions.createError("Could not create vlan"))
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           errors: "Could not create vlan",
           eventErrors: [
-            vlanEventErrorFactory({
+            factory.vlanEventError({
               error: "Could not create vlan",
               event: "create",
               id: null,
@@ -136,48 +128,48 @@ describe("vlan reducer", () => {
 
   describe("update", () => {
     it("reduces updateStart", () => {
-      const initialState = vlanStateFactory({ saving: false });
+      const initialState = factory.vlanState({ saving: false });
 
-      expect(reducers(initialState, actions.updateStart())).toEqual(
-        vlanStateFactory({ saving: true })
+      expect(reducers(initialState, vlanActions.updateStart())).toEqual(
+        factory.vlanState({ saving: true })
       );
     });
 
     it("reduces updateSuccess", () => {
-      const initialState = vlanStateFactory({
+      const initialState = factory.vlanState({
         saved: false,
         saving: true,
       });
 
-      expect(reducers(initialState, actions.updateSuccess())).toEqual(
-        vlanStateFactory({ errors: null, saved: true, saving: false })
+      expect(reducers(initialState, vlanActions.updateSuccess())).toEqual(
+        factory.vlanState({ errors: null, saved: true, saving: false })
       );
     });
 
     it("reduces updateNotify ", () => {
-      const initialState = vlanStateFactory({
-        items: [vlanFactory()],
+      const initialState = factory.vlanState({
+        items: [factory.vlan()],
       });
-      const updatedVLAN = vlanFactory({
+      const updatedVLAN = factory.vlan({
         id: initialState.items[0].id,
         name: "updated-vlan",
       });
 
-      expect(reducers(initialState, actions.updateNotify(updatedVLAN))).toEqual(
-        vlanStateFactory({ items: [updatedVLAN] })
-      );
+      expect(
+        reducers(initialState, vlanActions.updateNotify(updatedVLAN))
+      ).toEqual(factory.vlanState({ items: [updatedVLAN] }));
     });
 
     it("reduces updateError", () => {
-      const initialState = vlanStateFactory({ errors: "", saving: true });
+      const initialState = factory.vlanState({ errors: "", saving: true });
 
       expect(
-        reducers(initialState, actions.updateError("Could not update vlan"))
+        reducers(initialState, vlanActions.updateError("Could not update vlan"))
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           errors: "Could not update vlan",
           eventErrors: [
-            vlanEventErrorFactory({
+            factory.vlanEventError({
               error: "Could not update vlan",
               event: "update",
               id: null,
@@ -191,45 +183,45 @@ describe("vlan reducer", () => {
 
   describe("delete", () => {
     it("reduces deleteStart", () => {
-      const initialState = vlanStateFactory({ saving: false });
+      const initialState = factory.vlanState({ saving: false });
 
-      expect(reducers(initialState, actions.deleteStart())).toEqual(
-        vlanStateFactory({ saving: true })
+      expect(reducers(initialState, vlanActions.deleteStart())).toEqual(
+        factory.vlanState({ saving: true })
       );
     });
 
     it("reduces deleteSuccess", () => {
-      const initialState = vlanStateFactory({
+      const initialState = factory.vlanState({
         saved: false,
         saving: true,
       });
 
-      expect(reducers(initialState, actions.deleteSuccess())).toEqual(
-        vlanStateFactory({ errors: null, saved: true, saving: false })
+      expect(reducers(initialState, vlanActions.deleteSuccess())).toEqual(
+        factory.vlanState({ errors: null, saved: true, saving: false })
       );
     });
 
     it("reduces deleteNotify", () => {
-      const [deleteVLAN, keepVLAN] = [vlanFactory(), vlanFactory()];
-      const initialState = vlanStateFactory({
+      const [deleteVLAN, keepVLAN] = [factory.vlan(), factory.vlan()];
+      const initialState = factory.vlanState({
         items: [deleteVLAN, keepVLAN],
       });
 
       expect(
-        reducers(initialState, actions.deleteNotify(deleteVLAN.id))
-      ).toEqual(vlanStateFactory({ items: [keepVLAN] }));
+        reducers(initialState, vlanActions.deleteNotify(deleteVLAN.id))
+      ).toEqual(factory.vlanState({ items: [keepVLAN] }));
     });
 
     it("reduces deleteError", () => {
-      const initialState = vlanStateFactory({ errors: "", saving: true });
+      const initialState = factory.vlanState({ errors: "", saving: true });
 
       expect(
-        reducers(initialState, actions.deleteError("Could not delete vlan"))
+        reducers(initialState, vlanActions.deleteError("Could not delete vlan"))
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           errors: "Could not delete vlan",
           eventErrors: [
-            vlanEventErrorFactory({
+            factory.vlanEventError({
               error: "Could not delete vlan",
               event: "delete",
               id: null,
@@ -243,20 +235,23 @@ describe("vlan reducer", () => {
 
   describe("get", () => {
     it("reduces getStart", () => {
-      const initialState = vlanStateFactory({ loading: false });
+      const initialState = factory.vlanState({ loading: false });
 
-      expect(reducers(initialState, actions.getStart())).toEqual(
-        vlanStateFactory({ loading: true })
+      expect(reducers(initialState, vlanActions.getStart())).toEqual(
+        factory.vlanState({ loading: true })
       );
     });
 
     it("reduces getError", () => {
-      const initialState = vlanStateFactory({ errors: null, loading: true });
+      const initialState = factory.vlanState({ errors: null, loading: true });
 
       expect(
-        reducers(initialState, actions.getError({ id: "id was not supplied" }))
+        reducers(
+          initialState,
+          vlanActions.getError({ id: "id was not supplied" })
+        )
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           errors: { id: "id was not supplied" },
           loading: false,
         })
@@ -264,17 +259,19 @@ describe("vlan reducer", () => {
     });
 
     it("reduces getSuccess when vlan already exists in state", () => {
-      const initialState = vlanStateFactory({
-        items: [vlanFactory({ id: 0, name: "vlan-1" })],
+      const initialState = factory.vlanState({
+        items: [factory.vlan({ id: 0, name: "vlan-1" })],
         loading: true,
       });
-      const updatedVLAN = vlanFactory({
+      const updatedVLAN = factory.vlan({
         id: 0,
         name: "vlan-1-new",
       });
 
-      expect(reducers(initialState, actions.getSuccess(updatedVLAN))).toEqual(
-        vlanStateFactory({
+      expect(
+        reducers(initialState, vlanActions.getSuccess(updatedVLAN))
+      ).toEqual(
+        factory.vlanState({
           items: [updatedVLAN],
           loading: false,
         })
@@ -282,18 +279,18 @@ describe("vlan reducer", () => {
     });
 
     it("reduces getSuccess when vlan does not exist yet in state", () => {
-      const initialState = vlanStateFactory({
-        items: [vlanFactory({ id: 0 })],
+      const initialState = factory.vlanState({
+        items: [factory.vlan({ id: 0 })],
         loading: true,
       });
-      const newVLAN = vlanFactory({ id: 1 });
+      const newVLAN = factory.vlan({ id: 1 });
 
-      expect(reducers(initialState, actions.getSuccess(newVLAN))).toEqual(
-        vlanStateFactory({
+      expect(reducers(initialState, vlanActions.getSuccess(newVLAN))).toEqual(
+        factory.vlanState({
           items: [...initialState.items, newVLAN],
           loading: false,
-          statuses: vlanStatusesFactory({
-            1: vlanStatusFactory(),
+          statuses: factory.vlanStatuses({
+            1: factory.vlanStatus(),
           }),
         })
       );
@@ -302,23 +299,29 @@ describe("vlan reducer", () => {
 
   describe("setActive", () => {
     it("reduces setActiveSuccess", () => {
-      const initialState = vlanStateFactory({ active: null });
+      const initialState = factory.vlanState({ active: null });
 
       expect(
-        reducers(initialState, actions.setActiveSuccess(vlanFactory({ id: 0 })))
-      ).toEqual(vlanStateFactory({ active: 0 }));
+        reducers(
+          initialState,
+          vlanActions.setActiveSuccess(factory.vlan({ id: 0 }))
+        )
+      ).toEqual(factory.vlanState({ active: 0 }));
     });
 
     it("reduces setActiveError", () => {
-      const initialState = vlanStateFactory({
+      const initialState = factory.vlanState({
         active: 0,
         errors: null,
       });
 
       expect(
-        reducers(initialState, actions.setActiveError("VLAN does not exist"))
+        reducers(
+          initialState,
+          vlanActions.setActiveError("VLAN does not exist")
+        )
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           active: null,
           errors: "VLAN does not exist",
         })
@@ -328,74 +331,77 @@ describe("vlan reducer", () => {
 
   describe("configureDHCP", () => {
     it("reduces configureDHCPStart", () => {
-      const initialState = vlanStateFactory({
-        statuses: vlanStatusesFactory({
-          0: vlanStatusFactory({ configuringDHCP: false }),
+      const initialState = factory.vlanState({
+        statuses: factory.vlanStatuses({
+          0: factory.vlanStatus({ configuringDHCP: false }),
         }),
       });
 
       expect(
-        reducers(initialState, actions.configureDHCPStart({ item: { id: 0 } }))
+        reducers(
+          initialState,
+          vlanActions.configureDHCPStart({ item: { id: 0 } })
+        )
       ).toEqual(
-        vlanStateFactory({
-          statuses: vlanStatusesFactory({
-            0: vlanStatusFactory({ configuringDHCP: true }),
+        factory.vlanState({
+          statuses: factory.vlanStatuses({
+            0: factory.vlanStatus({ configuringDHCP: true }),
           }),
         })
       );
     });
 
     it("reduces configureDHCPSuccess", () => {
-      const initialState = vlanStateFactory({
-        statuses: vlanStatusesFactory({
-          0: vlanStatusFactory({ configuringDHCP: true }),
+      const initialState = factory.vlanState({
+        statuses: factory.vlanStatuses({
+          0: factory.vlanStatus({ configuringDHCP: true }),
         }),
       });
 
       expect(
         reducers(
           initialState,
-          actions.configureDHCPSuccess({
+          vlanActions.configureDHCPSuccess({
             item: { id: 0 },
           })
         )
       ).toEqual(
-        vlanStateFactory({
-          statuses: vlanStatusesFactory({
-            0: vlanStatusFactory({ configuringDHCP: false }),
+        factory.vlanState({
+          statuses: factory.vlanStatuses({
+            0: factory.vlanStatus({ configuringDHCP: false }),
           }),
         })
       );
     });
 
     it("reduces configureDHCPError", () => {
-      const initialState = vlanStateFactory({
-        statuses: vlanStatusesFactory({
-          0: vlanStatusFactory({ configuringDHCP: true }),
+      const initialState = factory.vlanState({
+        statuses: factory.vlanStatuses({
+          0: factory.vlanStatus({ configuringDHCP: true }),
         }),
       });
 
       expect(
         reducers(
           initialState,
-          actions.configureDHCPError({
+          vlanActions.configureDHCPError({
             error: true,
             item: { id: 0 },
             payload: "You broke it",
           })
         )
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           errors: "You broke it",
           eventErrors: [
-            vlanEventErrorFactory({
+            factory.vlanEventError({
               error: "You broke it",
               event: "configureDHCP",
               id: 0,
             }),
           ],
-          statuses: vlanStatusesFactory({
-            0: vlanStatusFactory({ configuringDHCP: false }),
+          statuses: factory.vlanStatuses({
+            0: factory.vlanStatus({ configuringDHCP: false }),
           }),
         })
       );
@@ -404,18 +410,18 @@ describe("vlan reducer", () => {
 
   describe("subnet/createNotify", () => {
     it("updates VLAN subnet_ids when a subnet is created", () => {
-      const vlan1 = vlanFactory({ id: 1, subnet_ids: [] });
-      const vlan2 = vlanFactory({ id: 2, subnet_ids: [] });
-      const initialState = vlanStateFactory({
+      const vlan1 = factory.vlan({ id: 1, subnet_ids: [] });
+      const vlan2 = factory.vlan({ id: 2, subnet_ids: [] });
+      const initialState = factory.vlanState({
         items: [vlan1, vlan2],
       });
-      const subnet = subnetFactory({ id: 3, vlan: 1 });
+      const subnet = factory.subnet({ id: 3, vlan: 1 });
       const expectedVlans = [{ ...vlan1, subnet_ids: [subnet.id] }, vlan2];
 
       expect(
         reducers(initialState, subnetActions.createNotify(subnet))
       ).toEqual(
-        vlanStateFactory({
+        factory.vlanState({
           items: expectedVlans,
         })
       );

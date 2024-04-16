@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FormikForm from "@/app/base/components/FormikForm";
 import type { EmptyObject } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import type { Domain } from "@/app/store/domain/types";
 import type { RootState } from "@/app/store/root/types";

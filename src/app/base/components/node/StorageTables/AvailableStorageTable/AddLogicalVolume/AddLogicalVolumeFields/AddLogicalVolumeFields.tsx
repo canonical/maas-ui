@@ -18,7 +18,7 @@ export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size={5}>
+      <Col size={12}>
         <FormikField label="Name" name="name" required type="text" />
         <Input disabled label="Type" type="text" value="Logical volume" />
         <FormikField
@@ -53,7 +53,7 @@ export const AddLogicalVolumeFields = ({ systemId }: Props): JSX.Element => {
         />
         <TagNameField />
       </Col>
-      <Col emptyLarge={7} size={5}>
+      <Col size={12}>
         <FilesystemFields systemId={systemId} />
       </Col>
     </Row>

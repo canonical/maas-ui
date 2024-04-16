@@ -1,8 +1,7 @@
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { useLocation, Link } from "react-router-dom";
 
 import { NetworkDiscoverySidePanelViews } from "../constants";
 
@@ -10,7 +9,7 @@ import SectionHeader from "@/app/base/components/SectionHeader";
 import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { actions as discoveryActions } from "@/app/store/discovery";
+import { discoveryActions } from "@/app/store/discovery";
 import discoverySelectors from "@/app/store/discovery/selectors";
 
 export enum Labels {

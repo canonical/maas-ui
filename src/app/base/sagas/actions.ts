@@ -9,15 +9,15 @@ import type {
   WebSocketResponseResult,
 } from "../../../websocket-client";
 
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import type {
   DeleteRecordParams,
   UpdateRecordParams,
 } from "@/app/store/domain/types";
 import { isAddressRecord } from "@/app/store/domain/utils";
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FetchFilters, Machine } from "@/app/store/machine/types";
-import { actions as resourcePoolActions } from "@/app/store/resourcepool";
+import { resourcePoolActions } from "@/app/store/resourcepool";
 import type {
   CreateWithMachinesParams,
   ResourcePool,

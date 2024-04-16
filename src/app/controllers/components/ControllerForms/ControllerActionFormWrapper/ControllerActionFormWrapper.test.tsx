@@ -2,23 +2,23 @@ import configureStore from "redux-mock-store";
 
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  controller as controllerFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("ControllerActionFormWrapper", () => {
   it("can set selected controllers to those that can perform action", async () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const controllers = [
-      controllerFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
-      controllerFactory({ system_id: "def456", actions: [] }),
+      factory.controller({
+        system_id: "abc123",
+        actions: [NodeActions.DELETE],
+      }),
+      factory.controller({ system_id: "def456", actions: [] }),
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(

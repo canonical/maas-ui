@@ -5,13 +5,7 @@ import ChangeStorageLayoutMenu, {
 } from "./ChangeStorageLayoutMenu";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -19,11 +13,11 @@ const mockStore = configureStore<RootState>();
 let state: RootState;
 
 beforeAll(() => {
-  state = rootStateFactory({
-    machine: machineStateFactory({
-      items: [machineDetailsFactory({ system_id: "abc123" })],
-      statuses: machineStatusesFactory({
-        abc123: machineStatusFactory(),
+  state = factory.rootState({
+    machine: factory.machineState({
+      items: [factory.machineDetails({ system_id: "abc123" })],
+      statuses: factory.machineStatuses({
+        abc123: factory.machineStatus(),
       }),
     }),
   });

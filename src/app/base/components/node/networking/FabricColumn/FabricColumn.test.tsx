@@ -1,37 +1,27 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricColumn from "./FabricColumn";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  fabric as fabricFactory,
-  fabricState as fabricStateFactory,
-  machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  rootState as rootStateFactory,
-  vlan as vlanFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
 describe("FabricColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      fabric: fabricStateFactory({
+    state = factory.rootState({
+      fabric: factory.fabricState({
         loaded: true,
       }),
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+      machine: factory.machineState({
+        items: [factory.machineDetails({ system_id: "abc123" })],
         loaded: true,
         statuses: {
-          abc123: machineStatusFactory(),
+          abc123: factory.machineStatus(),
         },
       }),
     });
@@ -39,9 +29,9 @@ describe("FabricColumn", () => {
 
   it("displays a spinner if the data is loading", () => {
     state.fabric.loaded = false;
-    const nic = machineInterfaceFactory();
+    const nic = factory.machineInterface();
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -50,9 +40,7 @@ describe("FabricColumn", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FabricColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
         </MemoryRouter>
       </Provider>
     );
@@ -60,15 +48,15 @@ describe("FabricColumn", () => {
   });
 
   it("can display fabric and vlan details", () => {
-    const fabric = fabricFactory({ name: "fabric-name" });
+    const fabric = factory.fabric({ name: "fabric-name" });
     state.fabric.items = [fabric];
-    const vlan = vlanFactory({ fabric: fabric.id, vid: 2, name: "vlan-name" });
+    const vlan = factory.vlan({ fabric: fabric.id, vid: 2, name: "vlan-name" });
     state.vlan.items = [vlan];
-    const nic = machineInterfaceFactory({
+    const nic = factory.machineInterface({
       vlan_id: vlan.id,
     });
     state.machine.items = [
-      machineDetailsFactory({
+      factory.machineDetails({
         interfaces: [nic],
         system_id: "abc123",
       }),
@@ -77,9 +65,7 @@ describe("FabricColumn", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <CompatRouter>
-            <FabricColumn nic={nic} node={state.machine.items[0]} />
-          </CompatRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
         </MemoryRouter>
       </Provider>
     );

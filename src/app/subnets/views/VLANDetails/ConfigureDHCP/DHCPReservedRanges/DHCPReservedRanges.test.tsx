@@ -1,7 +1,6 @@
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
@@ -10,17 +9,7 @@ import { DHCPType } from "../ConfigureDHCP";
 import DHCPReservedRanges, { Headers } from "./DHCPReservedRanges";
 
 import urls from "@/app/base/urls";
-import {
-  ipRange as ipRangeFactory,
-  ipRangeState as ipRangeStateFactory,
-  rootState as rootStateFactory,
-  subnet as subnetFactory,
-  subnetState as subnetStateFactory,
-  subnetStatistics as subnetStatisticsFactory,
-  subnetStatisticsRange as subnetStatisticsRangeFactory,
-  vlan as vlanFactory,
-  vlanState as vlanStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, render, screen, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -42,16 +31,14 @@ beforeEach(() => {
 
 it("does not render if DHCP is selected to be disabled", () => {
   initialValues.enableDHCP = false;
-  const state = rootStateFactory();
+  const state = factory.rootState();
   const store = mockStore(state);
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={1} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={1} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -60,28 +47,26 @@ it("does not render if DHCP is selected to be disabled", () => {
 });
 
 it("renders a table of IP ranges if the VLAN has any defined", () => {
-  const vlan = vlanFactory();
-  const subnet = subnetFactory({ gateway_ip: "192.168.1.11", vlan: vlan.id });
-  const ipRange = ipRangeFactory({
+  const vlan = factory.vlan();
+  const subnet = factory.subnet({ gateway_ip: "192.168.1.11", vlan: vlan.id });
+  const ipRange = factory.ipRange({
     start_ip: "192.168.1.1",
     end_ip: "192.168.1.10",
     subnet: subnet.id,
     vlan: vlan.id,
   });
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({ items: [ipRange] }),
-    subnet: subnetStateFactory({ items: [subnet] }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    iprange: factory.ipRangeState({ items: [ipRange] }),
+    subnet: factory.subnetState({ items: [subnet] }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={vlan.id} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={vlan.id} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -104,22 +89,20 @@ it("renders a table of IP ranges if the VLAN has any defined", () => {
 
 it(`renders only a subnet select field if no IP ranges exist and no subnet is
     selected`, () => {
-  const vlan = vlanFactory();
-  const subnet = subnetFactory({ gateway_ip: "192.168.1.11", vlan: vlan.id });
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({ items: [] }),
-    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const vlan = factory.vlan();
+  const subnet = factory.subnet({ gateway_ip: "192.168.1.11", vlan: vlan.id });
+  const state = factory.rootState({
+    iprange: factory.ipRangeState({ items: [] }),
+    subnet: factory.subnetState({ items: [subnet], loaded: true }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={vlan.id} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={vlan.id} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );
@@ -143,31 +126,29 @@ it(`renders only a subnet select field if no IP ranges exist and no subnet is
 
 it(`renders a subnet select field and prepopulated fields for a reserved range
     if no IP ranges exist and a subnet is selected`, async () => {
-  const vlan = vlanFactory();
-  const subnet = subnetFactory({
+  const vlan = factory.vlan();
+  const subnet = factory.subnet({
     gateway_ip: "192.168.1.11",
-    statistics: subnetStatisticsFactory({
-      suggested_dynamic_range: subnetStatisticsRangeFactory({
+    statistics: factory.subnetStatistics({
+      suggested_dynamic_range: factory.subnetStatisticsRange({
         start: "192.168.1.1",
         end: "192.168.1.5",
       }),
     }),
     vlan: vlan.id,
   });
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({ items: [] }),
-    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
-    vlan: vlanStateFactory({ items: [vlan] }),
+  const state = factory.rootState({
+    iprange: factory.ipRangeState({ items: [] }),
+    subnet: factory.subnetState({ items: [subnet], loaded: true }),
+    vlan: factory.vlanState({ items: [vlan] }),
   });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <CompatRouter>
-          <Formik initialValues={initialValues} onSubmit={vi.fn()}>
-            <DHCPReservedRanges id={vlan.id} />
-          </Formik>
-        </CompatRouter>
+        <Formik initialValues={initialValues} onSubmit={vi.fn()}>
+          <DHCPReservedRanges id={vlan.id} />
+        </Formik>
       </MemoryRouter>
     </Provider>
   );

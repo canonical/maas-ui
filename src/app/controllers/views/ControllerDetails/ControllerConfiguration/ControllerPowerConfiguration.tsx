@@ -11,7 +11,7 @@ import PowerTypeFields from "@/app/base/components/PowerTypeFields";
 import NodePowerParameters from "@/app/base/components/node/NodePowerParameters";
 import { useCanEdit, useWindowTitle } from "@/app/base/hooks";
 import authSelectors from "@/app/store/auth/selectors";
-import { actions as controllerActions } from "@/app/store/controller";
+import { controllerActions } from "@/app/store/controller";
 import controllerSelectors from "@/app/store/controller/selectors";
 import type {
   Controller,

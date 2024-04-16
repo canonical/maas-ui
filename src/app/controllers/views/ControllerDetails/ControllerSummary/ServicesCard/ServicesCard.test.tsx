@@ -3,25 +3,19 @@ import configureStore from "redux-mock-store";
 
 import ServicesCard from "./ServicesCard";
 
-import { actions as serviceActions } from "@/app/store/service";
+import { serviceActions } from "@/app/store/service";
 import { ServiceName, ServiceStatus } from "@/app/store/service/types";
 import { getServiceDisplayName } from "@/app/store/service/utils";
 import { NodeType } from "@/app/store/types/node";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  rootState as rootStateFactory,
-  service as serviceFactory,
-  serviceState as serviceStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 it("fetches services on load", () => {
-  const controller = controllerDetailsFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controllerDetails();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
   });
@@ -40,12 +34,12 @@ it("fetches services on load", () => {
 });
 
 it("shows a spinner if services are loading", () => {
-  const controller = controllerDetailsFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controllerDetails();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    service: serviceStateFactory({
+    service: factory.serviceState({
       loading: true,
     }),
   });
@@ -64,23 +58,23 @@ it("shows a spinner if services are loading", () => {
 
 it("renders the title correctly when at least one service is dead", () => {
   const services = [
-    serviceFactory({ status: ServiceStatus.DEAD }),
-    serviceFactory({ status: ServiceStatus.DEGRADED }),
-    serviceFactory({ status: ServiceStatus.DEGRADED }),
-    serviceFactory({ status: ServiceStatus.RUNNING }),
-    serviceFactory({ status: ServiceStatus.RUNNING }),
-    serviceFactory({ status: ServiceStatus.RUNNING }),
-    serviceFactory({ status: ServiceStatus.OFF }),
-    serviceFactory({ status: ServiceStatus.UNKNOWN }),
+    factory.service({ status: ServiceStatus.DEAD }),
+    factory.service({ status: ServiceStatus.DEGRADED }),
+    factory.service({ status: ServiceStatus.DEGRADED }),
+    factory.service({ status: ServiceStatus.RUNNING }),
+    factory.service({ status: ServiceStatus.RUNNING }),
+    factory.service({ status: ServiceStatus.RUNNING }),
+    factory.service({ status: ServiceStatus.OFF }),
+    factory.service({ status: ServiceStatus.UNKNOWN }),
   ];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     service_ids: services.map(({ id }) => id),
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    service: serviceStateFactory({
+    service: factory.serviceState({
       items: services,
     }),
   });
@@ -100,20 +94,20 @@ it("renders the title correctly when at least one service is dead", () => {
 
 it("renders the title corectly when at least one service is degraded and none are dead", () => {
   const services = [
-    serviceFactory({ status: ServiceStatus.DEGRADED }),
-    serviceFactory({ status: ServiceStatus.RUNNING }),
-    serviceFactory({ status: ServiceStatus.RUNNING }),
-    serviceFactory({ status: ServiceStatus.OFF }),
-    serviceFactory({ status: ServiceStatus.UNKNOWN }),
+    factory.service({ status: ServiceStatus.DEGRADED }),
+    factory.service({ status: ServiceStatus.RUNNING }),
+    factory.service({ status: ServiceStatus.RUNNING }),
+    factory.service({ status: ServiceStatus.OFF }),
+    factory.service({ status: ServiceStatus.UNKNOWN }),
   ];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     service_ids: services.map(({ id }) => id),
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    service: serviceStateFactory({
+    service: factory.serviceState({
       items: services,
     }),
   });
@@ -133,18 +127,18 @@ it("renders the title corectly when at least one service is degraded and none ar
 
 it("renders the title corectly when at least one service is running and none are dead or degraded", () => {
   const services = [
-    serviceFactory({ status: ServiceStatus.RUNNING }),
-    serviceFactory({ status: ServiceStatus.OFF }),
-    serviceFactory({ status: ServiceStatus.UNKNOWN }),
+    factory.service({ status: ServiceStatus.RUNNING }),
+    factory.service({ status: ServiceStatus.OFF }),
+    factory.service({ status: ServiceStatus.UNKNOWN }),
   ];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     service_ids: services.map(({ id }) => id),
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    service: serviceStateFactory({
+    service: factory.serviceState({
       items: services,
     }),
   });
@@ -162,19 +156,19 @@ it("renders the title corectly when at least one service is running and none are
 
 it("only renders rack controller services for a rack controller", () => {
   const services = [
-    serviceFactory({ name: ServiceName.RACKD }),
-    serviceFactory({ name: ServiceName.REGIOND }),
-    serviceFactory({ name: ServiceName.REVERSE_PROXY }),
+    factory.service({ name: ServiceName.RACKD }),
+    factory.service({ name: ServiceName.REGIOND }),
+    factory.service({ name: ServiceName.REVERSE_PROXY }),
   ];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     node_type: NodeType.RACK_CONTROLLER,
     service_ids: services.map(({ id }) => id),
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    service: serviceStateFactory({
+    service: factory.serviceState({
       items: services,
     }),
   });
@@ -199,19 +193,19 @@ it("only renders rack controller services for a rack controller", () => {
 
 it("only renders region controller services for a region controller", () => {
   const services = [
-    serviceFactory({ name: ServiceName.RACKD }),
-    serviceFactory({ name: ServiceName.REGIOND }),
-    serviceFactory({ name: ServiceName.REVERSE_PROXY }),
+    factory.service({ name: ServiceName.RACKD }),
+    factory.service({ name: ServiceName.REGIOND }),
+    factory.service({ name: ServiceName.REVERSE_PROXY }),
   ];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     node_type: NodeType.REGION_CONTROLLER,
     service_ids: services.map(({ id }) => id),
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    service: serviceStateFactory({
+    service: factory.serviceState({
       items: services,
     }),
   });
@@ -236,19 +230,19 @@ it("only renders region controller services for a region controller", () => {
 
 it("renders both region and rack controller services for a region+rack controller", () => {
   const services = [
-    serviceFactory({ name: ServiceName.RACKD }),
-    serviceFactory({ name: ServiceName.REGIOND }),
-    serviceFactory({ name: ServiceName.REVERSE_PROXY }),
+    factory.service({ name: ServiceName.RACKD }),
+    factory.service({ name: ServiceName.REGIOND }),
+    factory.service({ name: ServiceName.REVERSE_PROXY }),
   ];
-  const controller = controllerDetailsFactory({
+  const controller = factory.controllerDetails({
     node_type: NodeType.REGION_AND_RACK_CONTROLLER,
     service_ids: services.map(({ id }) => id),
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    service: serviceStateFactory({
+    service: factory.serviceState({
       items: services,
     }),
   });

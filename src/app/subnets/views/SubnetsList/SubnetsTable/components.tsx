@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import { SubnetsColumns } from "./constants";
 import type {

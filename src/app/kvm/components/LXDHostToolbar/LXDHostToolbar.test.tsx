@@ -1,6 +1,5 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "./LXDHostToolbar";
@@ -10,17 +9,7 @@ import urls from "@/app/base/urls";
 import { ConfigNames } from "@/app/store/config/types";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  pod as podFactory,
-  podNuma as podNumaFactory,
-  podResources as podResourcesFactory,
-  podState as podStateFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { waitFor, render, screen, within, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -29,18 +18,18 @@ describe("LXDHostToolbar", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      pod: podStateFactory({
+    state = factory.rootState({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             id: 1,
             pool: 2,
             type: PodType.LXD,
           }),
         ],
       }),
-      resourcepool: resourcePoolStateFactory({
-        items: [resourcePoolFactory({ id: 2, name: "swimming" })],
+      resourcepool: factory.resourcePoolState({
+        items: [factory.resourcePool({ id: 2, name: "swimming" })],
       }),
     });
   });
@@ -55,14 +44,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -81,14 +68,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -111,15 +96,13 @@ describe("LXDHostToolbar", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              clusterId={2}
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            clusterId={2}
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -140,14 +123,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -164,14 +145,12 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -180,21 +159,19 @@ describe("LXDHostToolbar", () => {
   });
 
   it("shows NUMA view switch if LXD host includes data on at least one NUMA node", async () => {
-    state.pod.items[0].resources = podResourcesFactory({
-      numa: [podNumaFactory()],
+    state.pod.items[0].resources = factory.podResources({
+      numa: [factory.podNuma()],
     });
     const store = mockStore(state);
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -204,20 +181,20 @@ describe("LXDHostToolbar", () => {
   });
 
   it("can send an analytics event when toggling NUMA node view if analytics enabled", async () => {
-    const state = rootStateFactory({
-      config: configStateFactory({
+    const state = factory.rootState({
+      config: factory.configState({
         items: [
-          configFactory({
+          factory.config({
             name: ConfigNames.ENABLE_ANALYTICS,
             value: true,
           }),
         ],
       }),
-      pod: podStateFactory({
+      pod: factory.podState({
         items: [
-          podFactory({
+          factory.pod({
             id: 1,
-            resources: podResourcesFactory({ numa: [podNumaFactory()] }),
+            resources: factory.podResources({ numa: [factory.podNuma()] }),
           }),
         ],
       }),
@@ -227,14 +204,12 @@ describe("LXDHostToolbar", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setSidePanelContent={vi.fn()}
-              setViewByNuma={vi.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
+          <LXDHostToolbar
+            hostId={1}
+            setSidePanelContent={vi.fn()}
+            setViewByNuma={vi.fn()}
+            viewByNuma={false}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -252,9 +227,7 @@ describe("LXDHostToolbar", () => {
             { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <LXDHostToolbar hostId={1} showBasic />
-          </CompatRouter>
+          <LXDHostToolbar hostId={1} showBasic />
         </MemoryRouter>
       </Provider>
     );

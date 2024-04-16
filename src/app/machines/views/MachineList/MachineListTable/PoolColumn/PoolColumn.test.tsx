@@ -4,14 +4,7 @@ import { PoolColumn } from "./PoolColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  modelRef as modelRefFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -19,26 +12,26 @@ const mockStore = configureStore<RootState>();
 describe("PoolColumn", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
-            pool: modelRefFactory({ id: 0, name: "default" }),
+            pool: factory.modelRef({ id: 0, name: "default" }),
             description: "Firmware old",
             actions: [NodeActions.SET_POOL],
           }),
         ],
       }),
-      resourcepool: resourcePoolStateFactory({
+      resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [
-          resourcePoolFactory({
+          factory.resourcePool({
             id: 0,
             name: "default",
           }),
-          resourcePoolFactory({
+          factory.resourcePool({
             id: 1,
             name: "Backup",
           }),
@@ -48,7 +41,7 @@ describe("PoolColumn", () => {
   });
 
   it("displays pool", () => {
-    state.machine.items[0].pool = modelRefFactory({ name: "pool-1" });
+    state.machine.items[0].pool = factory.modelRef({ name: "pool-1" });
 
     renderWithBrowserRouter(
       <PoolColumn onToggleMenu={vi.fn()} systemId="abc123" />,
@@ -77,7 +70,7 @@ describe("PoolColumn", () => {
 
   it("displays a message if there are no additional pools", async () => {
     state.resourcepool.items = [
-      resourcePoolFactory({
+      factory.resourcePool({
         id: 0,
         name: "default",
       }),

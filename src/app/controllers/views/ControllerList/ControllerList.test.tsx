@@ -1,13 +1,12 @@
 import { Provider } from "react-redux";
-import { useLocation } from "react-router";
+import { Routes, useLocation } from "react-router";
 import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerList from "./ControllerList";
 
 import type { RootState } from "@/app/store/root/types";
-import { rootState as rootStateFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, render, waitFor } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -15,7 +14,7 @@ const mockStore = configureStore();
 describe("ControllerList", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("sets the search text from the URL on load", () => {
@@ -31,9 +30,7 @@ describe("ControllerList", () => {
             },
           ]}
         >
-          <CompatRouter>
-            <ControllerList />
-          </CompatRouter>
+          <ControllerList />
         </MemoryRouter>
       </Provider>
     );
@@ -56,10 +53,10 @@ describe("ControllerList", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <CompatRouter>
-            <ControllerList />
-            <Route path="*" render={() => <FetchRoute />} />
-          </CompatRouter>
+          <ControllerList />
+          <Routes>
+            <Route element={<FetchRoute />} path="*" />
+          </Routes>
         </MemoryRouter>
       </Provider>
     );

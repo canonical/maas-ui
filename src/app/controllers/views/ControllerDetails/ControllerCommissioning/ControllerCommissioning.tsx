@@ -9,7 +9,7 @@ import controllerSelectors from "@/app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "@/app/store/controller/types";
 import { isControllerDetails } from "@/app/store/controller/utils";
 import type { RootState } from "@/app/store/root/types";
-import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { scriptResultActions } from "@/app/store/scriptresult";
 import scriptResultSelectors from "@/app/store/scriptresult/selectors";
 import { TestStatusStatus } from "@/app/store/types/node";
 

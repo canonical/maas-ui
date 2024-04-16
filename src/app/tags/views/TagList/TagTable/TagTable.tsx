@@ -7,7 +7,7 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip } from "@canonical/react-components";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import { TAGS_PER_PAGE } from "../constants";
 
@@ -18,12 +18,13 @@ import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useTableSort } from "@/app/base/hooks";
 import { SortDirection } from "@/app/base/types";
 import urls from "@/app/base/urls";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 import type { Tag } from "@/app/store/tag/types";
 import { TagMeta } from "@/app/store/tag/types";
 import AppliedTo from "@/app/tags/components/AppliedTo";
 import { isComparable } from "@/app/utils";
+import { formatUtcDatetime } from "@/app/utils/time";
 
 type Props = PropsWithSpread<
   {
@@ -75,7 +76,7 @@ const generateRows = (
         },
         {
           "aria-label": Label.Updated,
-          content: tag.updated,
+          content: formatUtcDatetime(tag.updated),
         },
         {
           "aria-label": Label.Auto,

@@ -3,10 +3,7 @@ import DiscoveriesFilterAccordion, {
 } from "./DiscoveriesFilterAccordion";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  discoveryState as discoveryStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const route = "/discoveries";
@@ -14,8 +11,8 @@ const route = "/discoveries";
 describe("DiscoveriesFilterAccordion", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    state = factory.rootState({
+      discovery: factory.discoveryState({
         loaded: true,
       }),
     });

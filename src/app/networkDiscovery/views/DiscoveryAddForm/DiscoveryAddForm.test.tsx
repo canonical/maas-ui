@@ -6,7 +6,7 @@ import DiscoveryAddForm, {
 import { Labels as FormFieldLabels } from "./DiscoveryAddFormFields/DiscoveryAddFormFields";
 import { DeviceType } from "./types";
 
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment, DeviceMeta } from "@/app/store/device/types";
 import type { Discovery } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
@@ -16,23 +16,7 @@ import {
   TestStatusStatus,
 } from "@/app/store/types/node";
 import { callId, enableCallIdMocks } from "@/testing/callId-mock";
-import {
-  discovery as discoveryFactory,
-  domain as domainFactory,
-  device as deviceFactory,
-  machine as machineFactory,
-  testStatus as testStatusFactory,
-  modelRef as modelRefFactory,
-  discoveryState as discoveryStateFactory,
-  deviceState as deviceStateFactory,
-  domainState as domainStateFactory,
-  machineState as machineStateFactory,
-  subnetState as subnetStateFactory,
-  vlanState as vlanStateFactory,
-  rootState as rootStateFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
 import {
   userEvent,
@@ -51,15 +35,15 @@ describe("DiscoveryAddForm", () => {
 
   beforeEach(() => {
     const machines = [
-      machineFactory({
+      factory.machine({
         actions: [],
         architecture: "amd64/generic",
         cpu_count: 4,
-        cpu_test_status: testStatusFactory({
+        cpu_test_status: factory.testStatus({
           status: TestStatusStatus.RUNNING,
         }),
         distro_series: "bionic",
-        domain: modelRefFactory({
+        domain: factory.modelRef({
           name: "example",
         }),
         extra_macs: [],
@@ -67,58 +51,60 @@ describe("DiscoveryAddForm", () => {
         hostname: "koala",
         ip_addresses: [],
         memory: 8,
-        memory_test_status: testStatusFactory({
+        memory_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
-        network_test_status: testStatusFactory({
+        network_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         osystem: "ubuntu",
         owner: "admin",
         permissions: ["edit", "delete"],
         physical_disk_count: 1,
-        pool: modelRefFactory(),
+        pool: factory.modelRef(),
         pxe_mac: "00:11:22:33:44:55",
         spaces: [],
         status: NodeStatus.DEPLOYED,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 8,
-        storage_test_status: testStatusFactory({
+        storage_test_status: factory.testStatus({
           status: TestStatusStatus.PASSED,
         }),
         testing_status: TestStatusStatus.PASSED,
         system_id: "abc123",
-        zone: modelRefFactory(),
+        zone: factory.modelRef(),
       }),
     ];
-    discovery = discoveryFactory({
+    discovery = factory.discovery({
       ip: "1.2.3.4",
       mac_address: "aa:bb:cc",
       subnet: 9,
       vlan: 8,
     });
-    state = rootStateFactory({
-      device: deviceStateFactory({
+    state = factory.rootState({
+      device: factory.deviceState({
         loaded: true,
-        items: [deviceFactory({ system_id: "abc123", fqdn: "abc123.example" })],
+        items: [
+          factory.device({ system_id: "abc123", fqdn: "abc123.example" }),
+        ],
       }),
-      discovery: discoveryStateFactory({
+      discovery: factory.discoveryState({
         loaded: true,
         items: [discovery],
       }),
-      domain: domainStateFactory({
+      domain: factory.domainState({
         loaded: true,
-        items: [domainFactory({ name: "local" })],
+        items: [factory.domain({ name: "local" })],
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         loaded: true,
         items: machines,
         lists: {
-          [callId]: machineStateListFactory({
+          [callId]: factory.machineStateList({
             loaded: true,
             groups: [
-              machineStateListGroupFactory({
+              factory.machineStateListGroup({
                 items: [machines[0].system_id],
                 name: "Deployed",
               }),
@@ -126,8 +112,8 @@ describe("DiscoveryAddForm", () => {
           }),
         },
       }),
-      subnet: subnetStateFactory({ loaded: true }),
-      vlan: vlanStateFactory({ loaded: true }),
+      subnet: factory.subnetState({ loaded: true }),
+      vlan: factory.vlanState({ loaded: true }),
     });
   });
 

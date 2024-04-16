@@ -13,7 +13,7 @@ import SpaceSelect from "@/app/base/components/SpaceSelect";
 import type { RootState } from "@/app/store/root/types";
 import { getSpaceDisplay } from "@/app/store/space/utils";
 import { VLANMTURange, VLANVidRange } from "@/app/store/types/enum";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import type { VLAN } from "@/app/store/vlan/types";
 import { VLANMeta } from "@/app/store/vlan/types";
@@ -107,7 +107,7 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
       {...props}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField label="VID" name="vid" required type="text" />
           <FormikField label="Name" name="name" type="text" />
           <FormikField label="MTU" name="mtu" type="text" />
@@ -117,7 +117,7 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
             name="description"
           />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <SpaceSelect
             defaultOption={{ label: getSpaceDisplay(null), value: "" }}
             name="space"

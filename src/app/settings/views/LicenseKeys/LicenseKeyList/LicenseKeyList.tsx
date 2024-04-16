@@ -13,9 +13,9 @@ import {
 } from "@/app/base/hooks";
 import SettingsTable from "@/app/settings/components/SettingsTable";
 import settingsURLs from "@/app/settings/urls";
-import { actions as generalActions } from "@/app/store/general";
+import { generalActions } from "@/app/store/general";
 import { osInfo as osInfoSelectors } from "@/app/store/general/selectors";
-import { actions as licenseKeysActions } from "@/app/store/licensekeys";
+import { licenseKeysActions } from "@/app/store/licensekeys";
 import licenseKeysSelectors from "@/app/store/licensekeys/selectors";
 import type {
   LicenseKeys,

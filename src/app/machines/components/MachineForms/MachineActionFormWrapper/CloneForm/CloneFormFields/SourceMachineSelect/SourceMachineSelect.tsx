@@ -13,7 +13,7 @@ import MachineListPagination from "@/app/machines/views/MachineList/MachineListT
 import type { Machine, MachineDetails } from "@/app/store/machine/types";
 import { FilterMachines } from "@/app/store/machine/utils";
 import { useFetchMachines } from "@/app/store/machine/utils/hooks";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 
 export enum Label {
   Loading = "Loading...",

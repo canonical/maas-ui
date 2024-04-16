@@ -5,17 +5,14 @@ import configureStore from "redux-mock-store";
 
 import VirshResources from "./VirshResources";
 
-import {
-  podState as podStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const mockStore = configureStore();
 
 describe("VirshResources", () => {
   it("shows a spinner if pods have not loaded yet", () => {
-    const state = rootStateFactory({
-      pod: podStateFactory({
+    const state = factory.rootState({
+      pod: factory.podState({
         items: [],
         loaded: false,
       }),

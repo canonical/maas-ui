@@ -1,12 +1,12 @@
 import { MainTable, ContextualMenu } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import { DomainListSidePanelViews } from "../constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
 import urls from "@/app/base/urls";
-import { actions as domainActions } from "@/app/store/domain";
+import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 
 export enum Labels {

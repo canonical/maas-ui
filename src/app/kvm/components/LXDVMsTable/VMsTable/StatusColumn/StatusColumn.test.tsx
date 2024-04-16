@@ -2,20 +2,13 @@ import StatusColumn from "./StatusColumn";
 
 import { PowerState } from "@/app/store/types/enum";
 import { NodeStatusCode } from "@/app/store/types/node";
-import {
-  generalState as generalStateFactory,
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  osInfo as osInfoFactory,
-  osInfoState as osInfoStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithMockStore, screen } from "@/testing/utils";
 
 describe("StatusColumn", () => {
   it("shows a spinner if the machine is still loading", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [],
       }),
     });
@@ -25,10 +18,10 @@ describe("StatusColumn", () => {
   });
 
   it("shows a spinner if the VM is in a transient state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineFactory({
+          factory.machine({
             status_code: NodeStatusCode.COMMISSIONING,
             system_id: "abc123",
           }),
@@ -43,10 +36,10 @@ describe("StatusColumn", () => {
   });
 
   it("shows a power icon if the VM is not in a transient state", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineFactory({
+          factory.machine({
             power_state: PowerState.OFF,
             status_code: NodeStatusCode.READY,
             system_id: "abc123",
@@ -62,17 +55,17 @@ describe("StatusColumn", () => {
   });
 
   it("can show a VM's OS info", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: osInfoStateFactory({
-          data: osInfoFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        osInfo: factory.osInfoState({
+          data: factory.osInfo({
             releases: [["ubuntu/focal", 'Ubuntu 20.04 LTS "Focal Fossa"']],
           }),
         }),
       }),
-      machine: machineStateFactory({
+      machine: factory.machineState({
         items: [
-          machineFactory({
+          factory.machine({
             distro_series: "focal",
             osystem: "ubuntu",
             status_code: NodeStatusCode.DEPLOYED,

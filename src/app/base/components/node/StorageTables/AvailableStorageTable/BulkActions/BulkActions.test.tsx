@@ -5,16 +5,7 @@ import BulkActions from "./BulkActions";
 import * as sidePanelHooks from "@/app/base/side-panel-context";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { DiskTypes, StorageLayout } from "@/app/store/types/enum";
-import {
-  machineDetails as machineDetailsFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeDisk as diskFactory,
-  nodeFilesystem as fsFactory,
-  nodePartition as partitionFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   expectTooltipOnHover,
   renderWithBrowserRouter,
@@ -34,30 +25,26 @@ describe("BulkActions", () => {
   });
   it("disables create volume group button with tooltip if selected devices are not eligible", async () => {
     const selected = [
-      diskFactory({
-        partitions: [partitionFactory()],
+      factory.nodeDisk({
+        partitions: [factory.nodePartition()],
         type: DiskTypes.PHYSICAL,
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             disks: selected,
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
     const createVolumeGroupButton = screen.getByRole("button", {
@@ -72,27 +59,23 @@ describe("BulkActions", () => {
 
   it("enables create volume group button if selected devices are eligible", () => {
     const selected = [
-      diskFactory({ partitions: null, type: DiskTypes.PHYSICAL }),
-      partitionFactory({ filesystem: null }),
+      factory.nodeDisk({ partitions: null, type: DiskTypes.PHYSICAL }),
+      factory.nodePartition({ filesystem: null }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -102,51 +85,44 @@ describe("BulkActions", () => {
   });
 
   it("renders datastore bulk actions if the detected layout is a VMWare layout", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             detected_storage_layout: StorageLayout.VMFS7,
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
-    renderWithBrowserRouter(
-      <BulkActions selected={[]} setBulkAction={vi.fn()} systemId="abc123" />,
-      {
-        state,
-      }
-    );
+    renderWithBrowserRouter(<BulkActions selected={[]} systemId="abc123" />, {
+      state,
+    });
 
     expect(screen.getByTestId("vmware-bulk-actions")).toBeInTheDocument();
   });
 
   it(`enables the create datastore button if at least one unpartitioned and
     unformatted device is selected`, () => {
-    const selected = [diskFactory({ filesystem: null, partitions: null })];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const selected = [factory.nodeDisk({ filesystem: null, partitions: null })];
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             detected_storage_layout: StorageLayout.VMFS6,
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -157,30 +133,26 @@ describe("BulkActions", () => {
 
   it(`enables the add to existing datastore button if at least one unpartitioned
     and unformatted device is selected and at least one datastore exists`, () => {
-    const datastore = diskFactory({
-      filesystem: fsFactory({ fstype: "vmfs6" }),
+    const datastore = factory.nodeDisk({
+      filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
     });
-    const selected = diskFactory({ filesystem: null, partitions: null });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const selected = factory.nodeDisk({ filesystem: null, partitions: null });
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             detected_storage_layout: StorageLayout.VMFS6,
             disks: [datastore, selected],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={[selected]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
 
@@ -190,30 +162,26 @@ describe("BulkActions", () => {
   });
 
   it("can trigger the create datastore sidepanel", async () => {
-    const datastore = diskFactory({
-      filesystem: fsFactory({ fstype: "vmfs6" }),
+    const datastore = factory.nodeDisk({
+      filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
     });
-    const selected = diskFactory({ filesystem: null, partitions: null });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const selected = factory.nodeDisk({ filesystem: null, partitions: null });
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             detected_storage_layout: StorageLayout.VMFS6,
             disks: [datastore, selected],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={[selected]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
 
@@ -229,35 +197,31 @@ describe("BulkActions", () => {
 
   it("can trigger the create RAID sidepanel", async () => {
     const selected = [
-      diskFactory({
+      factory.nodeDisk({
         filesystem: null,
         type: DiskTypes.VIRTUAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         filesystem: null,
         type: DiskTypes.VIRTUAL,
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             detected_storage_layout: StorageLayout.FLAT,
             disks: selected,
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -271,35 +235,31 @@ describe("BulkActions", () => {
 
   it("can trigger the create volume group sidepanel", async () => {
     const selected = [
-      diskFactory({
+      factory.nodeDisk({
         filesystem: null,
         type: DiskTypes.VIRTUAL,
       }),
-      diskFactory({
+      factory.nodeDisk({
         filesystem: null,
         type: DiskTypes.VIRTUAL,
       }),
     ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             detected_storage_layout: StorageLayout.FLAT,
             disks: selected,
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
     renderWithBrowserRouter(
-      <BulkActions
-        selected={selected}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={selected} systemId="abc123" />,
       { state }
     );
 
@@ -314,31 +274,27 @@ describe("BulkActions", () => {
   });
 
   it("can trigger the update datastore sidepanel", async () => {
-    const datastore = diskFactory({
-      filesystem: fsFactory({ fstype: "vmfs6" }),
+    const datastore = factory.nodeDisk({
+      filesystem: factory.nodeFilesystem({ fstype: "vmfs6" }),
     });
-    const selected = diskFactory({ filesystem: null, partitions: null });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
+    const selected = factory.nodeDisk({ filesystem: null, partitions: null });
+    const state = factory.rootState({
+      machine: factory.machineState({
         items: [
-          machineDetailsFactory({
+          factory.machineDetails({
             detected_storage_layout: StorageLayout.VMFS6,
             disks: [datastore, selected],
             system_id: "abc123",
           }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
         }),
       }),
     });
 
     renderWithBrowserRouter(
-      <BulkActions
-        selected={[selected]}
-        setBulkAction={vi.fn()}
-        systemId="abc123"
-      />,
+      <BulkActions selected={[selected]} systemId="abc123" />,
       { state }
     );
 

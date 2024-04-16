@@ -9,13 +9,7 @@ import DiscoveryAddFormFields, {
 import { DeviceMeta } from "@/app/store/device/types";
 import type { Discovery } from "@/app/store/discovery/types";
 import type { RootState } from "@/app/store/root/types";
-import {
-  device as deviceFactory,
-  deviceState as deviceStateFactory,
-  discovery as discoveryFactory,
-  discoveryState as discoveryStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import {
   userEvent,
   screen,
@@ -28,9 +22,9 @@ describe("DiscoveryAddFormFields", () => {
   let discovery: Discovery;
 
   beforeEach(() => {
-    discovery = discoveryFactory();
-    state = rootStateFactory({
-      discovery: discoveryStateFactory({
+    discovery = factory.discovery();
+    state = factory.rootState({
+      discovery: factory.discoveryState({
         loaded: true,
         items: [discovery],
       }),
@@ -166,10 +160,10 @@ describe("DiscoveryAddFormFields", () => {
   it("calls the callback with the selected device type", async () => {
     const setDeviceType = vi.fn();
     const setDevice = vi.fn();
-    state.device = deviceStateFactory({
+    state.device = factory.deviceState({
       items: [
-        deviceFactory({ [DeviceMeta.PK]: "abc123" }),
-        deviceFactory({ [DeviceMeta.PK]: "def456" }),
+        factory.device({ [DeviceMeta.PK]: "abc123" }),
+        factory.device({ [DeviceMeta.PK]: "def456" }),
       ],
     });
     renderWithBrowserRouter(
@@ -200,10 +194,10 @@ describe("DiscoveryAddFormFields", () => {
 
   it("calls the callback with the device id when selecting a device", async () => {
     const setDevice = vi.fn();
-    state.device = deviceStateFactory({
+    state.device = factory.deviceState({
       items: [
-        deviceFactory({ [DeviceMeta.PK]: "abc123" }),
-        deviceFactory({ [DeviceMeta.PK]: "def456" }),
+        factory.device({ [DeviceMeta.PK]: "abc123" }),
+        factory.device({ [DeviceMeta.PK]: "def456" }),
       ],
     });
     renderWithBrowserRouter(

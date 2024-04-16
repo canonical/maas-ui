@@ -3,10 +3,7 @@ import configureStore from "redux-mock-store";
 import DeleteForm from "./DeleteForm";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -15,14 +12,14 @@ describe("DeleteForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory();
+    state = factory.rootState();
   });
 
   it("correctly runs function to delete given nodes", async () => {
     const onSubmit = vi.fn();
     const nodes = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
+      factory.machine({ system_id: "abc123" }),
+      factory.machine({ system_id: "def456" }),
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -48,7 +45,7 @@ describe("DeleteForm", () => {
   });
 
   it("redirects when a node is deleted from details view", () => {
-    const nodes = [machineFactory({ system_id: "abc123" })];
+    const nodes = [factory.machine({ system_id: "abc123" })];
     const store = mockStore(state);
     const Proxy = ({ processingCount }: { processingCount: number }) => (
       <DeleteForm
@@ -72,7 +69,7 @@ describe("DeleteForm", () => {
   });
 
   it("does not redirect from details view if there are errors", () => {
-    const nodes = [machineFactory({ system_id: "abc123" })];
+    const nodes = [factory.machine({ system_id: "abc123" })];
     const store = mockStore(state);
     const Proxy = ({
       errors,

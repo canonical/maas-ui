@@ -6,18 +6,10 @@ import configureStore from "redux-mock-store";
 import ControllerCommissioning from "./ControllerCommissioning";
 
 import { HardwareType } from "@/app/base/enum";
-import { actions as scriptResultActions } from "@/app/store/scriptresult";
+import { scriptResultActions } from "@/app/store/scriptresult";
 import { ScriptResultType } from "@/app/store/scriptresult/types";
 import { TestStatusStatus } from "@/app/store/types/node";
-import {
-  controllerDetails as controllerDetailsFactory,
-  controllerState as controllerStateFactory,
-  nodeScriptResultState as nodeScriptResultStateFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultState as scriptResultStateFactory,
-  testStatus as testStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 vi.mock("@canonical/react-components", async () => {
@@ -33,8 +25,8 @@ vi.mock("@canonical/react-components", async () => {
 const mockStore = configureStore();
 
 it("renders a spinner while script results are loading", () => {
-  const state = rootStateFactory({
-    scriptresult: scriptResultStateFactory({
+  const state = factory.rootState({
+    scriptresult: factory.scriptResultState({
       loading: true,
     }),
   });
@@ -51,17 +43,17 @@ it("renders a spinner while script results are loading", () => {
 });
 
 it("fetches script results if they haven't been fetched", () => {
-  const controller = controllerDetailsFactory();
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const controller = factory.controllerDetails();
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    nodescriptresult: nodeScriptResultStateFactory({
+    nodescriptresult: factory.nodeScriptResultState({
       items: {
         [controller.system_id]: [],
       },
     }),
-    scriptresult: scriptResultStateFactory({
+    scriptresult: factory.scriptResultState({
       items: [],
       loading: false,
     }),
@@ -86,25 +78,25 @@ it("fetches script results if the commissioning status changes to pending", () =
   vi.spyOn(reactComponents, "usePrevious").mockImplementation(
     () => TestStatusStatus.PASSED
   );
-  const controller = controllerDetailsFactory({
-    commissioning_status: testStatusFactory({
+  const controller = factory.controllerDetails({
+    commissioning_status: factory.testStatus({
       status: TestStatusStatus.PENDING, // "new" status is pending
     }),
   });
-  const scriptResult = scriptResultFactory({
+  const scriptResult = factory.scriptResult({
     hardware_type: HardwareType.Node,
     result_type: ScriptResultType.COMMISSIONING,
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    nodescriptresult: nodeScriptResultStateFactory({
+    nodescriptresult: factory.nodeScriptResultState({
       items: {
         [controller.system_id]: [scriptResult.id],
       },
     }),
-    scriptresult: scriptResultStateFactory({
+    scriptresult: factory.scriptResultState({
       items: [scriptResult],
     }),
   });
@@ -125,25 +117,25 @@ it("fetches script results if the commissioning status changes to pending", () =
 
 it(`does not fetch script results if script results exist and commissioning
     status does not change to pending`, () => {
-  const controller = controllerDetailsFactory({
-    commissioning_status: testStatusFactory({
+  const controller = factory.controllerDetails({
+    commissioning_status: factory.testStatus({
       status: TestStatusStatus.PASSED,
     }),
   });
-  const scriptResult = scriptResultFactory({
+  const scriptResult = factory.scriptResult({
     hardware_type: HardwareType.Node,
     result_type: ScriptResultType.COMMISSIONING,
   });
-  const state = rootStateFactory({
-    controller: controllerStateFactory({
+  const state = factory.rootState({
+    controller: factory.controllerState({
       items: [controller],
     }),
-    nodescriptresult: nodeScriptResultStateFactory({
+    nodescriptresult: factory.nodeScriptResultState({
       items: {
         [controller.system_id]: [scriptResult.id],
       },
     }),
-    scriptresult: scriptResultStateFactory({
+    scriptresult: factory.scriptResultState({
       items: [scriptResult],
       loaded: true,
       loading: false,

@@ -3,7 +3,7 @@ import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FetchFilters } from "@/app/store/machine/types";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import { selectedToFilters } from "@/app/store/machine/utils";
@@ -14,19 +14,7 @@ import {
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  nodeScriptResultState as nodeScriptResultStateFactory,
-  rootState as rootStateFactory,
-  scriptResult as scriptResultFactory,
-  scriptResultResult as scriptResultResultFactory,
-  machineStateDetails as machineStateDetailsFactory,
-  machineStateDetailsItem as machineStateDetailsItemFactory,
-  scriptResultState as scriptResultStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -45,48 +33,48 @@ describe("OverrideTestForm", () => {
   beforeEach(() => {
     vi.spyOn(query, "generateCallId").mockReturnValue("123456");
     vi.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
-        details: machineStateDetailsFactory({
-          "123456": machineStateDetailsItemFactory({
+        details: factory.machineStateDetails({
+          "123456": factory.machineStateDetailsItem({
             system_id: "abc123",
           }),
         }),
         items: [
-          machineFactory({ hostname: "host1", system_id: "abc123" }),
-          machineFactory({ hostname: "host2", system_id: "def456" }),
+          factory.machine({ hostname: "host1", system_id: "abc123" }),
+          factory.machine({ hostname: "host2", system_id: "def456" }),
         ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
+        statuses: factory.machineStatuses({
+          abc123: factory.machineStatus(),
+          def456: factory.machineStatus(),
         }),
       }),
-      nodescriptresult: nodeScriptResultStateFactory({
+      nodescriptresult: factory.nodeScriptResultState({
         items: { abc123: [1], def456: [2] },
       }),
-      scriptresult: scriptResultStateFactory({
+      scriptresult: factory.scriptResultState({
         loaded: true,
         loading: false,
         items: [
-          scriptResultFactory({
+          factory.scriptResult({
             status: ScriptResultStatus.FAILED,
             id: 1,
             result_type: ScriptResultType.TESTING,
             results: [
-              scriptResultResultFactory({
+              factory.scriptResultResult({
                 name: "script1",
               }),
-              scriptResultResultFactory({
+              factory.scriptResultResult({
                 name: "script2",
               }),
             ],
           }),
-          scriptResultFactory({
+          factory.scriptResult({
             status: ScriptResultStatus.FAILED,
             id: 2,
             result_type: ScriptResultType.TESTING,
-            results: [scriptResultResultFactory()],
+            results: [factory.scriptResultResult()],
           }),
         ],
       }),

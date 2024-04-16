@@ -1,28 +1,23 @@
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { DhcpEdit } from "./DhcpEdit";
 
 import { Labels as DhcpFormFieldsLabels } from "@/app/base/components/DhcpFormFields/DhcpFormFields";
 import type { RootState } from "@/app/store/root/types";
-import {
-  dhcpSnippet as dhcpSnippetFactory,
-  dhcpSnippetState as dhcpSnippetStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { screen, renderWithMockStore } from "@/testing/utils";
 
 describe("DhcpEdit", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      dhcpsnippet: dhcpSnippetStateFactory({
+    state = factory.rootState({
+      dhcpsnippet: factory.dhcpSnippetState({
         items: [
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             id: 1,
           }),
-          dhcpSnippetFactory({
+          factory.dhcpSnippet({
             id: 2,
           }),
         ],
@@ -38,9 +33,7 @@ describe("DhcpEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <DhcpEdit />
-        </CompatRouter>
+        <DhcpEdit />
       </MemoryRouter>,
       { state }
     );
@@ -54,9 +47,7 @@ describe("DhcpEdit", () => {
           { pathname: "/settings/dhcp/99999/edit", key: "testKey" },
         ]}
       >
-        <CompatRouter>
-          <DhcpEdit />
-        </CompatRouter>
+        <DhcpEdit />
       </MemoryRouter>,
       { state }
     );
@@ -68,11 +59,9 @@ describe("DhcpEdit", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
       >
-        <CompatRouter>
-          <Routes>
-            <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
-          </Routes>
-        </CompatRouter>
+        <Routes>
+          <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
+        </Routes>
       </MemoryRouter>,
       { state }
     );

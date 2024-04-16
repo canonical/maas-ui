@@ -1,6 +1,6 @@
 import type { ContextualMenuProps } from "@canonical/react-components";
 import type { LinkProps } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Link } from "react-router-dom";
 
 import type { SetExpanded } from "../NodeTestsTable";
 import { ScriptResultAction } from "../NodeTestsTable";

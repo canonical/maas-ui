@@ -1,16 +1,12 @@
 import space from "./selectors";
 
-import {
-  space as spaceFactory,
-  spaceState as spaceStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 describe("space selectors", () => {
   it("can get all items", () => {
-    const items = [spaceFactory()];
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const items = [factory.space()];
+    const state = factory.rootState({
+      space: factory.spaceState({
         items,
       }),
     });
@@ -18,8 +14,8 @@ describe("space selectors", () => {
   });
 
   it("can get the loading state", () => {
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const state = factory.rootState({
+      space: factory.spaceState({
         loading: true,
       }),
     });
@@ -27,8 +23,8 @@ describe("space selectors", () => {
   });
 
   it("can get the loaded state", () => {
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const state = factory.rootState({
+      space: factory.spaceState({
         loaded: true,
       }),
     });
@@ -36,8 +32,8 @@ describe("space selectors", () => {
   });
 
   it("can get the saving state", () => {
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const state = factory.rootState({
+      space: factory.spaceState({
         saving: true,
       }),
     });
@@ -45,8 +41,8 @@ describe("space selectors", () => {
   });
 
   it("can get the saved state", () => {
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const state = factory.rootState({
+      space: factory.spaceState({
         saved: true,
       }),
     });
@@ -54,8 +50,8 @@ describe("space selectors", () => {
   });
 
   it("can get the errors state", () => {
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const state = factory.rootState({
+      space: factory.spaceState({
         errors: "errors!",
       }),
     });
@@ -63,9 +59,9 @@ describe("space selectors", () => {
   });
 
   it("can get a space by id", () => {
-    const items = [spaceFactory({ id: 10 }), spaceFactory({ id: 42 })];
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const items = [factory.space({ id: 10 }), factory.space({ id: 42 })];
+    const state = factory.rootState({
+      space: factory.spaceState({
         items,
       }),
     });
@@ -74,11 +70,11 @@ describe("space selectors", () => {
 
   it("can filter spaces by name", () => {
     const items = [
-      spaceFactory({ name: "abc" }),
-      spaceFactory({ name: "def" }),
+      factory.space({ name: "abc" }),
+      factory.space({ name: "def" }),
     ];
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const state = factory.rootState({
+      space: factory.spaceState({
         items,
       }),
     });
@@ -86,8 +82,8 @@ describe("space selectors", () => {
   });
 
   it("can get the active space's id", () => {
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const state = factory.rootState({
+      space: factory.spaceState({
         active: 0,
       }),
     });
@@ -95,9 +91,9 @@ describe("space selectors", () => {
   });
 
   it("can get the active space", () => {
-    const activeFabric = spaceFactory();
-    const state = rootStateFactory({
-      space: spaceStateFactory({
+    const activeFabric = factory.space();
+    const state = factory.rootState({
+      space: factory.spaceState({
         active: activeFabric.id,
         items: [activeFabric],
       }),

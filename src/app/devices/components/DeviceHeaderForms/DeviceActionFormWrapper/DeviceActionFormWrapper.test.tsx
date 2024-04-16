@@ -2,23 +2,20 @@ import configureStore from "redux-mock-store";
 
 import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 
-import { actions as deviceActions } from "@/app/store/device";
+import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import {
-  device as deviceFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("DeviceActionFormWrapper", () => {
   it("can set selected devices to those that can perform action", async () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const devices = [
-      deviceFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
-      deviceFactory({ system_id: "def456", actions: [] }),
+      factory.device({ system_id: "abc123", actions: [NodeActions.DELETE] }),
+      factory.device({ system_id: "def456", actions: [] }),
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(

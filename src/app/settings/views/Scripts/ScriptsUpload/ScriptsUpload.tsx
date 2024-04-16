@@ -5,14 +5,14 @@ import classNames from "classnames";
 import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
 
 import FormikForm from "@/app/base/components/FormikForm";
-import { actions as messageActions } from "@/app/store/message";
-import { actions as scriptActions } from "@/app/store/script";
+import { messageActions } from "@/app/store/message";
+import { scriptActions } from "@/app/store/script";
 import scriptSelectors from "@/app/store/script/selectors";
 import { ScriptType } from "@/app/store/script/types";
 

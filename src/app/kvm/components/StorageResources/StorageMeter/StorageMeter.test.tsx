@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 
 import StorageMeter from "./StorageMeter";
 
-import { podStoragePoolResource as storagePoolResourceFactory } from "@/testing/factories";
+import * as factory from "@/testing/factories";
 
 const pools = {
-  "pool-1": storagePoolResourceFactory({
+  "pool-1": factory.podStoragePoolResource({
     allocated_other: 1,
     allocated_tracked: 2,
     backend: "zfs",
@@ -25,7 +25,7 @@ describe("StorageMeter", () => {
   it("does not render if more than one pool present", () => {
     render(
       <StorageMeter
-        pools={{ ...pools, "pool-2": storagePoolResourceFactory() }}
+        pools={{ ...pools, "pool-2": factory.podStoragePoolResource() }}
       />
     );
 

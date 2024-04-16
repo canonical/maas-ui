@@ -4,18 +4,14 @@ import configureStore from "redux-mock-store";
 
 import ArchitectureSelect, { Labels } from "./ArchitectureSelect";
 
-import {
-  architecturesState as architecturesStateFactory,
-  generalState as generalStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
 describe("ArchitectureSelect", () => {
   it("dispatches action to fetch architectures on load", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -33,9 +29,9 @@ describe("ArchitectureSelect", () => {
   });
 
   it("disables select if architectures have not loaded", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        architectures: architecturesStateFactory({
+    const state = factory.rootState({
+      general: factory.generalState({
+        architectures: factory.architecturesState({
           loaded: false,
         }),
       }),

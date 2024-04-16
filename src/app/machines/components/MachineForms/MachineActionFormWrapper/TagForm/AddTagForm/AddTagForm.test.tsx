@@ -3,20 +3,13 @@ import configureStore from "redux-mock-store";
 import AddTagForm from "./AddTagForm";
 import type { Props } from "./AddTagForm";
 
-import { actions as machineActions } from "@/app/store/machine";
+import { machineActions } from "@/app/store/machine";
 import type { FetchFilters } from "@/app/store/machine/types";
 import { FetchGroupKey } from "@/app/store/machine/types";
 import * as query from "@/app/store/machine/utils/query";
 import type { RootState } from "@/app/store/root/types";
 import { FetchNodeStatus } from "@/app/store/types/node";
-import {
-  rootState as rootStateFactory,
-  machineState as machineStateFactory,
-  machineStateCount as machineStateCountFactory,
-  machineStateCounts as machineStateCountsFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter } from "@/testing/utils";
 
 const mockBaseAddTagForm = vi.fn();
@@ -30,26 +23,26 @@ let state: RootState;
 
 beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValueOnce("mocked-nanoid");
-  state = rootStateFactory({
-    machine: machineStateFactory({
-      counts: machineStateCountsFactory({
-        "mocked-nanoid": machineStateCountFactory({
+  state = factory.rootState({
+    machine: factory.machineState({
+      counts: factory.machineStateCounts({
+        "mocked-nanoid": factory.machineStateCount({
           count: 1,
           loaded: true,
         }),
-        "mocked-nanoid-1": machineStateCountFactory({
+        "mocked-nanoid-1": factory.machineStateCount({
           count: 1,
           loaded: true,
         }),
-        "mocked-nanoid-2": machineStateCountFactory({
+        "mocked-nanoid-2": factory.machineStateCount({
           count: 1,
           loaded: true,
         }),
       }),
     }),
-    tag: tagStateFactory({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           id: 1,
           name: "rad",
         }),

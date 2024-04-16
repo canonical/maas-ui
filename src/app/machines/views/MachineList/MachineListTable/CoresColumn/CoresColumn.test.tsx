@@ -1,27 +1,22 @@
 import { CoresColumn } from "./CoresColumn";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
-  rootState as rootStateFactory,
-  testStatus as testStatusFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 describe("CoresColumn", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      machine: machineStateFactory({
+    state = factory.rootState({
+      machine: factory.machineState({
         loaded: true,
         items: [
-          machineFactory({
+          factory.machine({
             system_id: "abc123",
             architecture: "amd64/generic",
             cpu_count: 4,
-            cpu_test_status: testStatusFactory({
+            cpu_test_status: factory.testStatus({
               status: 1,
             }),
           }),

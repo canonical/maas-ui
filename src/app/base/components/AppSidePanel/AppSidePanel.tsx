@@ -1,11 +1,12 @@
 import { useEffect, type ReactNode } from "react";
 
-import { Col, Row, useOnEscapePressed } from "@canonical/react-components";
+import { ContentSection } from "@canonical/maas-react-components";
+import { useOnEscapePressed } from "@canonical/react-components";
 import classNames from "classnames";
-import { useHistory } from "react-router-dom";
 
 import type { SidePanelSize } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { history } from "@/redux-store";
 
 export type AppSidePanelProps = {
   title: string | null;
@@ -15,7 +16,6 @@ export type AppSidePanelProps = {
 
 const useCloseSidePanelOnRouteChange = (): void => {
   const { setSidePanelContent } = useSidePanel();
-  const history = useHistory();
 
   // close side panel on route change
   useEffect(() => {
@@ -24,7 +24,7 @@ const useCloseSidePanelOnRouteChange = (): void => {
     return () => {
       unlisten();
     };
-  }, [history, setSidePanelContent]);
+  }, [setSidePanelContent]);
 };
 
 const useResetSidePanelOnUnmount = (): void => {
@@ -60,20 +60,18 @@ const AppSidePanelContent = ({
       data-testid="app-side-panel"
       id="aside-panel"
     >
-      <Row>
-        <Col size={12}>
-          {title ? (
-            <div className="row section-header">
-              <div className="col-12">
-                <h3 className="section-header__title u-flex--no-shrink p-heading--4">
-                  {title}
-                </h3>
-              </div>
+      <ContentSection>
+        {title ? (
+          <div className="row section-header section-header--side-panel">
+            <div className="col-12">
+              <h3 className="section-header__title u-flex--no-shrink p-heading--4">
+                {title}
+              </h3>
             </div>
-          ) : null}
-          {content}
-        </Col>
-      </Row>
+          </div>
+        ) : null}
+        {content}
+      </ContentSection>
     </aside>
   );
 };

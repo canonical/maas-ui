@@ -1,30 +1,25 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagList from "./TagList";
 
 import type { RootState } from "@/app/store/root/types";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory({
+  state = factory.rootState({
+    tag: factory.tagState({
       items: [
-        tagFactory({
+        factory.tag({
           name: "rad",
         }),
-        tagFactory({
+        factory.tag({
           name: "cool",
         }),
       ],
@@ -37,18 +32,16 @@ it("renders", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags" }]}>
-        <CompatRouter>
-          <TagList
-            currentPage={1}
-            filter={TagSearchFilter.All}
-            onDelete={vi.fn()}
-            onUpdate={vi.fn()}
-            searchText=""
-            setCurrentPage={vi.fn()}
-            tableId="test-table"
-            tags={[]}
-          />
-        </CompatRouter>
+        <TagList
+          currentPage={1}
+          filter={TagSearchFilter.All}
+          onDelete={vi.fn()}
+          onUpdate={vi.fn()}
+          searchText=""
+          setCurrentPage={vi.fn()}
+          tableId="test-table"
+          tags={[]}
+        />
       </MemoryRouter>
     </Provider>
   );

@@ -3,18 +3,14 @@ import configureStore from "redux-mock-store";
 import ZonesList, { TestIds } from "./ZonesListTable/ZonesListTable";
 
 import type { RootState } from "@/app/store/root/types";
-import {
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
-  rootState as rootStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
 describe("ZonesList", () => {
   it("correctly fetches the necessary data", () => {
-    const state = rootStateFactory();
+    const state = factory.rootState();
     const store = mockStore(state);
     renderWithBrowserRouter(<ZonesList />, { route: "/zones", store });
     const expectedActions = ["zone/fetch"];
@@ -27,9 +23,9 @@ describe("ZonesList", () => {
   });
 
   it("shows a zones table if there are any zones", () => {
-    const state = rootStateFactory({
-      zone: zoneStateFactory({
-        items: [zoneFactory({ name: "test" })],
+    const state = factory.rootState({
+      zone: factory.zoneState({
+        items: [factory.zone({ name: "test" })],
       }),
     });
     renderWithBrowserRouter(<ZonesList />, { route: "/zones", state });
@@ -38,8 +34,8 @@ describe("ZonesList", () => {
   });
 
   it("shows a message if there are no zones", () => {
-    const state = rootStateFactory({
-      zone: zoneStateFactory({
+    const state = factory.rootState({
+      zone: factory.zoneState({
         items: [],
       }),
     });

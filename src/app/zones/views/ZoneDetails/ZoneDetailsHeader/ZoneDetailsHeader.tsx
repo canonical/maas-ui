@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom";
 
 import DeleteConfirm from "./DeleteConfirm";
 
@@ -11,7 +11,7 @@ import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import type { RootState } from "@/app/store/root/types";
-import { actions as zoneActions } from "@/app/store/zone";
+import { zoneActions } from "@/app/store/zone";
 import { ZONE_ACTIONS } from "@/app/store/zone/constants";
 import zoneSelectors from "@/app/store/zone/selectors";
 

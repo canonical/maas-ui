@@ -8,7 +8,7 @@ import ModelNotFound from "@/app/base/components/ModelNotFound";
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import type { RootState } from "@/app/store/root/types";
-import { actions as tagActions } from "@/app/store/tag";
+import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
 import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { isId } from "@/app/utils";

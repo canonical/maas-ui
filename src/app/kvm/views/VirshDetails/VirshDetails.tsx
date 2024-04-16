@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { Route, Routes, useNavigate } from "react-router-dom-v5-compat";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 import VirshDetailsHeader from "./VirshDetailsHeader";
 import VirshResources from "./VirshResources";
@@ -83,7 +82,9 @@ const VirshDetails = (): JSX.Element => {
             path={getRelativeRoute(urls.kvm.virsh.details.edit(null), base)}
           />
           <Route
-            element={<Redirect to={urls.kvm.virsh.details.resources({ id })} />}
+            element={
+              <Navigate replace to={urls.kvm.virsh.details.resources({ id })} />
+            }
             path="/"
           />
         </Routes>

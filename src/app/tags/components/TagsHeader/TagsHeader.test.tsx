@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom-v5-compat";
+import { Route, Routes } from "react-router-dom";
 import type { Mock } from "vitest";
 
 import TagsHeader, { Label } from "./TagsHeader";
@@ -6,11 +6,7 @@ import TagsHeader, { Label } from "./TagsHeader";
 import urls from "@/app/base/urls";
 import { TagSearchFilter } from "@/app/store/tag/selectors";
 import { TagSidePanelViews } from "@/app/tags/constants";
-import {
-  rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 let scrollToSpy: Mock;
@@ -39,7 +35,7 @@ it("displays the searchbox and group select when isDetails is false", () => {
     />,
     {
       route: "/tags",
-      state: rootStateFactory(),
+      state: factory.rootState(),
     }
   );
 
@@ -58,9 +54,9 @@ it("displays the searchbox and group select when isDetails is false", () => {
 });
 
 it("displays edit and delete buttons, and a return link when isDetails is true", () => {
-  const tag = tagFactory({ id: 1 });
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const tag = factory.tag({ id: 1 });
+  const state = factory.rootState({
+    tag: factory.tagState({
       loaded: true,
       loading: false,
       items: [tag],
@@ -121,7 +117,7 @@ it("can call a function to display the add tag form", async () => {
     />,
     {
       route: "/tags",
-      state: rootStateFactory(),
+      state: factory.rootState(),
     }
   );
 
@@ -145,7 +141,7 @@ it("displays the default title", () => {
     />,
     {
       route: "/tags",
-      state: rootStateFactory(),
+      state: factory.rootState(),
     }
   );
   expect(
@@ -169,7 +165,7 @@ it("can update the filter", async () => {
     />,
     {
       route: "/tags",
-      state: rootStateFactory(),
+      state: factory.rootState(),
     }
   );
 
@@ -179,9 +175,9 @@ it("can update the filter", async () => {
 
 it("triggers onUpdate with the correct tag ID", async () => {
   const onUpdate = vi.fn();
-  const tag = tagFactory({ id: 1 });
-  const state = rootStateFactory({
-    tag: tagStateFactory({
+  const tag = factory.tag({ id: 1 });
+  const state = factory.rootState({
+    tag: factory.tagState({
       loaded: true,
       loading: false,
       items: [tag],

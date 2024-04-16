@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import ConfigureDHCP from "./ConfigureDHCP";
 import DHCPStatus from "./DHCPStatus";
-import VLANDeleteForm from "./VLANDeleteForm";
+import VLANActionForms from "./VLANActionForms";
 import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
-import { VLANDetailsSidePanelViews } from "./constants";
+import {
+  VLANActionTypes,
+  type VLANActionType,
+  vlanActionLabels,
+} from "./constants";
 
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
@@ -17,7 +20,7 @@ import { useGetURLId, useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import { actions as vlanActions } from "@/app/store/vlan";
+import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 import { VLANMeta } from "@/app/store/vlan/types";
 import DHCPSnippets from "@/app/subnets/components/DHCPSnippets";
@@ -36,7 +39,6 @@ const VLANDetails = (): JSX.Element => {
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByIds(state, vlan?.subnet_ids || [])
   );
-  const [showDHCPForm, setShowDHCPForm] = useState(false);
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
 
   useEffect(() => {
@@ -72,28 +74,31 @@ const VLANDetails = (): JSX.Element => {
       />
     );
   }
+  const [, name] = sidePanelContent?.view || [];
+  const activeForm =
+    name && Object.keys(VLANActionTypes).includes(name)
+      ? (name as VLANActionType)
+      : null;
 
   return (
     <PageContent
       header={<VLANDetailsHeader id={id} />}
       sidePanelContent={
-        sidePanelContent &&
-        sidePanelContent.view === VLANDetailsSidePanelViews.DELETE_VLAN ? (
-          <VLANDeleteForm closeForm={() => setSidePanelContent(null)} id={id} />
+        activeForm ? (
+          <VLANActionForms
+            activeForm={activeForm}
+            setSidePanelContent={setSidePanelContent}
+            vlanId={vlan.id}
+            {...sidePanelContent?.extras}
+          />
         ) : null
       }
-      sidePanelTitle="Delete VLAN"
+      sidePanelTitle={activeForm ? vlanActionLabels[activeForm] : ""}
     >
-      {showDHCPForm ? (
-        <ConfigureDHCP closeForm={() => setShowDHCPForm(false)} id={id} />
-      ) : (
-        <>
-          <VLANSummary id={id} />
-          <DHCPStatus id={id} openForm={() => setShowDHCPForm(true)} />
-          <ReservedRanges hasVLANSubnets={subnets.length > 0} vlanId={id} />
-          <VLANSubnets id={id} />
-        </>
-      )}
+      <VLANSummary id={id} />
+      <DHCPStatus id={id} />
+      <ReservedRanges hasVLANSubnets={subnets.length > 0} vlanId={id} />
+      <VLANSubnets id={id} />
       <DHCPSnippets modelName={VLANMeta.MODEL} subnetIds={vlan.subnet_ids} />
     </PageContent>
   );

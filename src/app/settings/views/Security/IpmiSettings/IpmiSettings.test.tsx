@@ -5,10 +5,7 @@ import IpmiSettings, { Labels as IpmiSettingsLabels } from "./IpmiSettings";
 
 import { Labels as FormikButtonLabels } from "@/app/base/components/FormikFormButtons/FormikFormButtons";
 import type { RootState } from "@/app/store/root/types";
-import {
-  rootState as rootStateFactory,
-  configState as configStateFactory,
-} from "@/testing/factories";
+import * as factory from "@/testing/factories";
 import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -17,8 +14,8 @@ describe("IpmiSettings", () => {
   let initialState: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      config: configStateFactory({
+    initialState = factory.rootState({
+      config: factory.configState({
         loading: false,
         loaded: true,
       }),
