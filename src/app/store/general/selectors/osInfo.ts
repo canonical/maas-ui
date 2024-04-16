@@ -2,7 +2,7 @@
  * Selector for os info.
  */
 import { createSelector } from "@reduxjs/toolkit";
-import createCachedSelector from "re-reselect";
+import { createCachedSelector } from "re-reselect";
 
 import { generateGeneralSelector } from "./utils";
 
