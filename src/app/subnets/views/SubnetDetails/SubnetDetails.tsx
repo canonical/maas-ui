@@ -123,7 +123,9 @@ const SubnetDetails = (): JSX.Element => {
         <Route
           element={
             <>
-              <SubnetStaticIPs />
+              {import.meta.env.VITE_APP_STATIC_IPS_ENABLED === "true" && (
+                <SubnetStaticIPs />
+              )}
               <ReservedRanges subnetId={id} />
             </>
           }
