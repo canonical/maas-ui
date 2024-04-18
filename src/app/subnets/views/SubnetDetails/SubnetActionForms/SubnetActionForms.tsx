@@ -26,6 +26,9 @@ const FormComponents: Record<
   [SubnetActionTypes.DeleteStaticRoute]: DeleteStaticRouteForm,
   [SubnetActionTypes.ReserveRange]: ReservedRangeForm,
   [SubnetActionTypes.DeleteReservedRange]: ReservedRangeDeleteForm,
+  [SubnetActionTypes.ReserveStaticIP]: () => null,
+  [SubnetActionTypes.EditStaticIP]: () => null,
+  [SubnetActionTypes.DeleteStaticIP]: () => null,
 };
 
 const SubnetActionForms = ({

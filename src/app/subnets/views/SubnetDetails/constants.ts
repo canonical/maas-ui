@@ -12,6 +12,9 @@ export const SubnetActionTypes = {
   DeleteStaticRoute: "DeleteStaticRoute",
   ReserveRange: "ReserveRange",
   DeleteReservedRange: "DeleteReservedRange",
+  ReserveStaticIP: "ReserveStaticIP",
+  EditStaticIP: "EditStaticIP",
+  DeleteStaticIP: "DeleteStaticIP",
 } as const;
 export type SubnetActionType = ValueOf<typeof SubnetActionTypes>;
 
@@ -24,6 +27,9 @@ export const subnetActionLabels = {
   [SubnetActionTypes.DeleteStaticRoute]: "Delete static route",
   [SubnetActionTypes.ReserveRange]: "Reserve range",
   [SubnetActionTypes.DeleteReservedRange]: "Delete Reserved Range",
+  [SubnetActionTypes.ReserveStaticIP]: "Reserve static IP",
+  [SubnetActionTypes.EditStaticIP]: "Edit static IP",
+  [SubnetActionTypes.DeleteStaticIP]: "Delete static IP",
 } as const;
 
 export const SubnetDetailsSidePanelViews = {
@@ -44,6 +50,9 @@ export const SubnetDetailsSidePanelViews = {
     "",
     SubnetActionTypes.DeleteReservedRange,
   ],
+  [SubnetActionTypes.ReserveStaticIP]: ["", SubnetActionTypes.ReserveStaticIP],
+  [SubnetActionTypes.EditStaticIP]: ["", SubnetActionTypes.EditStaticIP],
+  [SubnetActionTypes.DeleteStaticIP]: ["", SubnetActionTypes.DeleteStaticIP],
 } as const;
 
 export type SubnetDetailsSidePanelContent = SidePanelContent<
