@@ -14,4 +14,5 @@ export interface SubnetActionProps {
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
   activeForm: SubnetAction;
   setSidePanelContent: SetSidePanelContent;
+  macAddress?: string;
 }

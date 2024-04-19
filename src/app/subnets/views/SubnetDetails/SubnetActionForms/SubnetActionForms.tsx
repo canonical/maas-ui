@@ -1,6 +1,7 @@
 import AddStaticRouteForm from "../StaticRoutes/AddStaticRouteForm";
 import DeleteStaticRouteForm from "../StaticRoutes/DeleteStaticRouteform";
 import EditStaticRouteForm from "../StaticRoutes/EditStaticRouteForm";
+import DeleteStaticIP from "../SubnetStaticIPs/DeleteStaticIP";
 
 import DeleteSubnet from "./components/DeleteSubnet";
 import EditBootArchitectures from "./components/EditBootArchitectures";
@@ -28,7 +29,7 @@ const FormComponents: Record<
   [SubnetActionTypes.DeleteReservedRange]: ReservedRangeDeleteForm,
   [SubnetActionTypes.ReserveStaticIP]: () => null,
   [SubnetActionTypes.EditStaticIP]: () => null,
-  [SubnetActionTypes.DeleteStaticIP]: () => null,
+  [SubnetActionTypes.DeleteStaticIP]: DeleteStaticIP,
 };
 
 const SubnetActionForms = ({
@@ -36,12 +37,14 @@ const SubnetActionForms = ({
   activeForm,
   setSidePanelContent,
   staticRouteId,
+  macAddress,
 }: SubnetActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (
     <FormComponent
       activeForm={activeForm}
+      macAddress={macAddress}
       setSidePanelContent={setSidePanelContent}
       staticRouteId={staticRouteId}
       subnetId={subnetId}
