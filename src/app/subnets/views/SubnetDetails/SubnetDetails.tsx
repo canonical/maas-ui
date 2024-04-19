@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import StaticRoutes from "./StaticRoutes";
 import SubnetDetailsHeader from "./SubnetDetailsHeader";
+import SubnetStaticIPs from "./SubnetStaticIPs";
 import SubnetSummary from "./SubnetSummary";
 import SubnetUsedIPs from "./SubnetUsedIPs";
 import Utilisation from "./Utilisation";
@@ -120,7 +121,14 @@ const SubnetDetails = (): JSX.Element => {
           path={getRelativeRoute(urls.subnets.subnet.staticRoutes(null), base)}
         />
         <Route
-          element={<ReservedRanges subnetId={id} />}
+          element={
+            <>
+              {import.meta.env.VITE_APP_STATIC_IPS_ENABLED === "true" && (
+                <SubnetStaticIPs />
+              )}
+              <ReservedRanges subnetId={id} />
+            </>
+          }
           path={getRelativeRoute(
             urls.subnets.subnet.reservedIpAddresses(null),
             base
