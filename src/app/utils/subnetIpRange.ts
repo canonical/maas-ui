@@ -14,22 +14,13 @@ export const getIpRangeFromCidr = (cidr: Subnet["cidr"]) => {
   const [startIp, mask] = cidr.split("/");
   const numberOfAddresses = (1 << (32 - parseInt(mask))) - 1;
 
-  // Split start IP into octets
-  const startIpOctetList = startIp.split(".").map((a) => parseInt(a));
-
   // IPv4 can be represented by an unsigned 32-bit integer, so we can use a Uint32Array to store the IP
   const buffer = new ArrayBuffer(4); //4 octets
   const int32 = new Uint32Array(buffer);
 
   // Convert starting IP to Uint32 and add the number of addresses to get the end IP.
   // Subtract 1 from the number of addresses to exclude the broadcast address.
-  int32[0] =
-    (startIpOctetList[0] << 24) +
-    (startIpOctetList[1] << 16) +
-    (startIpOctetList[2] << 8) +
-    startIpOctetList[3] +
-    numberOfAddresses -
-    1;
+  int32[0] = convertIpToUint32(startIp) + numberOfAddresses - 1;
 
   // Convert the buffer to a Uint8Array to get the octets, then convert it to an array
   const arrayApplyBuffer = Array.from(new Uint8Array(buffer));
@@ -43,25 +34,18 @@ export const getIpRangeFromCidr = (cidr: Subnet["cidr"]) => {
 };
 
 const getFirstValidIp = (ip: string) => {
-  const startIpOctetList = ip.split(".").map((a) => parseInt(a));
-
   const buffer = new ArrayBuffer(4); //4 octets
   const int32 = new Uint32Array(buffer);
 
   // add 1 because the first IP is the network address
-  int32[0] =
-    (startIpOctetList[0] << 24) +
-    (startIpOctetList[1] << 16) +
-    (startIpOctetList[2] << 8) +
-    startIpOctetList[3] +
-    1;
+  int32[0] = convertIpToUint32(ip) + 1;
 
   const arrayApplyBuffer = Array.from(new Uint8Array(buffer));
 
   return arrayApplyBuffer.reverse().join(".");
 };
 
-const getIpAsUint32 = (ip: string) => {
+const convertIpToUint32 = (ip: string) => {
   const octets = ip.split(".").map((a) => parseInt(a));
   const buffer = new ArrayBuffer(4);
   const int32 = new Uint32Array(buffer);
@@ -80,9 +64,9 @@ const getIpAsUint32 = (ip: string) => {
 export const isIpInSubnet = (ip: string, cidr: Subnet["cidr"]) => {
   const [startIP, endIP] = getIpRangeFromCidr(cidr);
 
-  const ipUint32 = getIpAsUint32(ip);
-  const startIPUint32 = getIpAsUint32(startIP);
-  const endIPUint32 = getIpAsUint32(endIP);
+  const ipUint32 = convertIpToUint32(ip);
+  const startIPUint32 = convertIpToUint32(startIP);
+  const endIPUint32 = convertIpToUint32(endIP);
 
   return ipUint32 >= startIPUint32 && ipUint32 <= endIPUint32;
 };
