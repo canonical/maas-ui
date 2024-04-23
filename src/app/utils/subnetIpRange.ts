@@ -11,8 +11,8 @@ export const getIpRangeFromCidr = (cidr: Subnet["cidr"]) => {
   // https://gist.github.com/binarymax/6114792
 
   // Get start IP and number of valid addresses
-  const startIp = cidr.split("/")[0];
-  const numberOfAddresses = (1 << (32 - parseInt(cidr.split("/")[1]))) - 1;
+  const [startIp, mask] = cidr.split("/");
+  const numberOfAddresses = (1 << (32 - parseInt(mask))) - 1;
 
   // Split start IP into octets
   const startIpOctetList = startIp.split(".").map((a) => parseInt(a));
