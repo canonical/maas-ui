@@ -1,5 +1,12 @@
 import type { Subnet } from "../store/subnet/types";
 
+/**
+ * Takes a subnet CIDR notation (IPv4) and returns the first and last IP of the subnet.
+ * The network and host addresses are excluded.
+ *
+ * @param cidr The CIDR notation of the subnet
+ * @returns The first and last valid IP addresses as two strings in a list.
+ */
 export const getIpRangeFromCidr = (cidr: Subnet["cidr"]) => {
   // https://gist.github.com/binarymax/6114792
 
@@ -63,6 +70,13 @@ const getIpAsUint32 = (ip: string) => {
   return int32[0];
 };
 
+/**
+ * Checks if an IPv4 address is valid for the given subnet.
+ *
+ * @param ip The IPv4 address to check, as a string
+ * @param cidr The subnet's CIDR notation e.g. 192.168.0.0/24
+ * @returns True if the IP is in the subnet, false otherwise
+ */
 export const isIpInSubnet = (ip: string, cidr: Subnet["cidr"]) => {
   const [startIP, endIP] = getIpRangeFromCidr(cidr);
 
