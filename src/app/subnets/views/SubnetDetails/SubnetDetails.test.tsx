@@ -34,7 +34,7 @@ beforeEach(() => {
   },
   {
     component: "ReservedRanges",
-    path: urls.subnets.subnet.reservedIpAddresses({ id: 1 }),
+    path: urls.subnets.subnet.addressReservation({ id: 1 }),
     title: "Reserved ranges",
   },
   {

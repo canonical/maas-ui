@@ -23,7 +23,7 @@ const urls = {
   subnet: {
     summary: withSubnetId("/subnet/:id/summary"),
     staticRoutes: withSubnetId("/subnet/:id/static-routes"),
-    reservedIpAddresses: withSubnetId("/subnet/:id/reserved-ip-addresses"),
+    addressReservation: withSubnetId("/subnet/:id/address-reservation"),
     dhcpSnippets: withSubnetId("/subnet/:id/dhcp-snippets"),
     usedIpAddresses: withSubnetId("/subnet/:id/used-ip-addresses"),
     index: argPath<{ id: Subnet[SubnetMeta.PK] }>("/subnet/:id"),
