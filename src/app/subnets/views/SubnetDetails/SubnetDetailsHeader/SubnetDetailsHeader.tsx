@@ -44,7 +44,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
         {
           active: pathname.startsWith(`${urlBase}/summary`),
           component: Link,
-          label: "Summary",
+          label: "Subnet summary",
           to: `${urlBase}/summary`,
         },
         {
@@ -54,10 +54,10 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
           to: `${urlBase}/static-routes`,
         },
         {
-          active: pathname.startsWith(`${urlBase}/reserved-ip-addresses`),
+          active: pathname.startsWith(`${urlBase}/address-reservation`),
           component: Link,
-          label: "Reserved IPs",
-          to: `${urlBase}/reserved-ip-addresses`,
+          label: "Address reservation",
+          to: `${urlBase}/address-reservation`,
         },
         {
           active: pathname.startsWith(`${urlBase}/dhcp-snippets`),

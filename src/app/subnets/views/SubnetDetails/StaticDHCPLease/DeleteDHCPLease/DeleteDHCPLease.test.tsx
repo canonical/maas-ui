@@ -1,10 +1,10 @@
-import DeleteStaticIPs from "./DeleteStaticIP";
+import DeleteDHCPLease from "./DeleteDHCPLease";
 
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("renders a delete confirmation form", () => {
   renderWithBrowserRouter(
-    <DeleteStaticIPs
+    <DeleteDHCPLease
       macAddress="91:2a:95:aa:2e:50"
       setSidePanelContent={vi.fn()}
     />

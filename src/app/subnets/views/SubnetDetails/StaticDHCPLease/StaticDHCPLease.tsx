@@ -5,25 +5,25 @@ import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
 
-const SubnetStaticIPs = () => {
+const StaticDHCPLease = () => {
   const { setSidePanelContent } = useSidePanel();
 
   return (
     <>
       <MainToolbar>
-        <MainToolbar.Title>Static IPs</MainToolbar.Title>
+        <MainToolbar.Title>Static DHCP leases</MainToolbar.Title>
         <MainToolbar.Controls>
           <Button
             appearance="positive"
             onClick={() =>
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.ReserveStaticIP
+                  SubnetActionTypes.ReserveStaticDHCPLease
                 ],
               })
             }
           >
-            Reserve static IP
+            Reserve static DHCP lease
           </Button>
         </MainToolbar.Controls>
       </MainToolbar>
@@ -31,4 +31,4 @@ const SubnetStaticIPs = () => {
   );
 };
 
-export default SubnetStaticIPs;
+export default StaticDHCPLease;

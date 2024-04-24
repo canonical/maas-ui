@@ -12,9 +12,9 @@ export const SubnetActionTypes = {
   DeleteStaticRoute: "DeleteStaticRoute",
   ReserveRange: "ReserveRange",
   DeleteReservedRange: "DeleteReservedRange",
-  ReserveStaticIP: "ReserveStaticIP",
-  EditStaticIP: "EditStaticIP",
-  DeleteStaticIP: "DeleteStaticIP",
+  ReserveStaticDHCPLease: "ReserveStaticDHCPLease",
+  EditStaticDHCPLease: "EditStaticDHCPLease",
+  DeleteDHCPLease: "DeleteDHCPLease",
 } as const;
 export type SubnetActionType = ValueOf<typeof SubnetActionTypes>;
 
@@ -27,9 +27,9 @@ export const subnetActionLabels = {
   [SubnetActionTypes.DeleteStaticRoute]: "Delete static route",
   [SubnetActionTypes.ReserveRange]: "Reserve range",
   [SubnetActionTypes.DeleteReservedRange]: "Delete Reserved Range",
-  [SubnetActionTypes.ReserveStaticIP]: "Reserve static IP",
-  [SubnetActionTypes.EditStaticIP]: "Edit static IP",
-  [SubnetActionTypes.DeleteStaticIP]: "Delete static IP",
+  [SubnetActionTypes.ReserveStaticDHCPLease]: "Reserve static DHCP lease",
+  [SubnetActionTypes.EditStaticDHCPLease]: "Edit static DHCP lease",
+  [SubnetActionTypes.DeleteDHCPLease]: "Delete static DHCP lease",
 } as const;
 
 export const SubnetDetailsSidePanelViews = {
@@ -50,9 +50,15 @@ export const SubnetDetailsSidePanelViews = {
     "",
     SubnetActionTypes.DeleteReservedRange,
   ],
-  [SubnetActionTypes.ReserveStaticIP]: ["", SubnetActionTypes.ReserveStaticIP],
-  [SubnetActionTypes.EditStaticIP]: ["", SubnetActionTypes.EditStaticIP],
-  [SubnetActionTypes.DeleteStaticIP]: ["", SubnetActionTypes.DeleteStaticIP],
+  [SubnetActionTypes.ReserveStaticDHCPLease]: [
+    "",
+    SubnetActionTypes.ReserveStaticDHCPLease,
+  ],
+  [SubnetActionTypes.EditStaticDHCPLease]: [
+    "",
+    SubnetActionTypes.EditStaticDHCPLease,
+  ],
+  [SubnetActionTypes.DeleteDHCPLease]: ["", SubnetActionTypes.DeleteDHCPLease],
 } as const;
 
 export type SubnetDetailsSidePanelContent = SidePanelContent<

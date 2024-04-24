@@ -3,7 +3,7 @@ import type { SubnetActionProps } from "../../types";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 
 type Props = Pick<SubnetActionProps, "setSidePanelContent" | "macAddress">;
-const DeleteStaticIP = ({ setSidePanelContent, macAddress }: Props) => {
+const DeleteDHCPLease = ({ setSidePanelContent, macAddress }: Props) => {
   if (!macAddress) return null;
   const handleClose = () => setSidePanelContent(null);
   // TODO: Implement onSubmit function and passing IDs when API supports it.
@@ -19,4 +19,4 @@ const DeleteStaticIP = ({ setSidePanelContent, macAddress }: Props) => {
   );
 };
 
-export default DeleteStaticIP;
+export default DeleteDHCPLease;
