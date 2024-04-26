@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { useSelector } from "react-redux";
 
 import { getHasIPAddresses } from "./utils";
@@ -7,6 +9,7 @@ import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type { StaticDHCPLease } from "@/app/store/subnet/types/base";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 
@@ -42,4 +45,28 @@ export const useCanBeDeleted = (id?: Subnet[SubnetMeta.PK] | null): boolean => {
   useFetchActions([subnetActions.fetch]);
 
   return !isDHCPEnabled || (isDHCPEnabled && !getHasIPAddresses(subnet));
+};
+
+export const useStaticDHCPLeases = (
+  _subnetId: Subnet[SubnetMeta.PK] | null
+) => {
+  const [staticDHCPLeases, setStaticDHCPLeases] = useState<StaticDHCPLease[]>(
+    []
+  );
+
+  // TODO: replace mock implementation with API call https://warthogs.atlassian.net/browse/MAASENG-2983
+  const fetchStaticDHCPLeases = async () => {
+    if (import.meta.env.VITE_APP_STATIC_IPS_ENABLED === "true") {
+      const { array } = await import("cooky-cutter");
+      const { staticDHCPLease } = await import("@/testing/factories/subnet");
+      return array(staticDHCPLease, 5)();
+    }
+    return [];
+  };
+
+  useEffect(() => {
+    fetchStaticDHCPLeases().then(setStaticDHCPLeases);
+  }, []);
+
+  return staticDHCPLeases;
 };

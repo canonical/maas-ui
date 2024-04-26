@@ -3,7 +3,7 @@ import StaticDHCPLease from "./StaticDHCPLease";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("renders", () => {
-  renderWithBrowserRouter(<StaticDHCPLease />);
+  renderWithBrowserRouter(<StaticDHCPLease subnetId={1} />);
   expect(
     screen.getByRole("heading", { name: "Static DHCP leases" })
   ).toBeInTheDocument();
