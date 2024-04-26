@@ -9,7 +9,12 @@ import type {
   TimestampedModel,
   TimestampFields,
 } from "@/app/store/types/model";
-import type { NetworkInterface, Node, NodeType } from "@/app/store/types/node";
+import type {
+  NetworkInterface,
+  Node,
+  NodeType,
+  SimpleNode,
+} from "@/app/store/types/node";
 import type { EventError, GenericState } from "@/app/store/types/state";
 import type { User } from "@/app/store/user/types";
 import type { VLAN } from "@/app/store/vlan/types";
@@ -119,4 +124,15 @@ export type SubnetState = GenericState<Subnet, APIError> & {
   active: Subnet[SubnetMeta.PK] | null;
   eventErrors: EventError<Subnet, APIError, SubnetMeta.PK>[];
   statuses: SubnetStatuses;
+};
+
+export type StaticDHCPLease = {
+  id: number;
+  comment?: string | null;
+  ip_address: string;
+  mac_address: string;
+  interface?: string | null;
+  node?: SimpleNode | null;
+  usage?: string | null;
+  owner: string;
 };

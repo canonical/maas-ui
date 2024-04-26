@@ -100,7 +100,7 @@ const storage_tags = () => [];
 const subnets = () => [];
 const tags = () => [];
 
-const simpleNode = extend<Model, SimpleNode>(model, {
+export const simpleNode = extend<Model, SimpleNode>(model, {
   domain: modelRef,
   hostname: (i: number) => `test-machine-${i}`,
   fqdn: (i: number) => `test-machine-${i}.maas`,
