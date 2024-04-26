@@ -70,3 +70,31 @@ export const isIpInSubnet = (ip: string, cidr: Subnet["cidr"]) => {
 
   return ipUint32 >= startIPUint32 && ipUint32 <= endIPUint32;
 };
+
+/**
+ * Separates the immutable and editable octets of a subnet range.
+ *
+ * @param startIp The start IP of the subnet
+ * @param endIp The end IP of the subnet
+ * @returns The immutable and editable octects as two strings in a list
+ */
+export const getImmutableAndEditableOctets = (
+  startIp: string,
+  endIp: string
+) => {
+  const startIpOctetList = startIp.split(".");
+  const endIpOctetList = endIp.split(".");
+
+  let immutable: string[] = [];
+  let editable: string[] = [];
+
+  startIpOctetList.forEach((octet, index) => {
+    if (octet === endIpOctetList[index]) {
+      immutable.push(octet);
+    } else {
+      editable.push(`[${octet}-${endIpOctetList[index]}]`);
+    }
+  });
+
+  return [immutable.join("."), editable.join(".")];
+};
