@@ -8,6 +8,7 @@ import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import LimitedIpInput from "@/app/base/components/LimitedIpInput";
 import MacAddressField from "@/app/base/components/MacAddressField";
+import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import {
@@ -30,16 +31,14 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
   );
   const loading = useSelector(subnetSelectors.loading);
 
-  const onCancel = () => {
-    setSidePanelContent(null);
-  };
+  const onCancel = () => setSidePanelContent(null);
 
   if (loading) {
     return <Spinner text="Loading..." />;
   }
 
   if (!subnet) {
-    return <div>uh oh</div>;
+    return;
   }
 
   const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
@@ -76,7 +75,9 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
             subnet?.cidr as string
           ),
       }),
-    mac_address: Yup.string().required("MAC address is required"),
+    mac_address: Yup.string()
+      .required("MAC address is required")
+      .matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
     comment: Yup.string(),
   });
 
