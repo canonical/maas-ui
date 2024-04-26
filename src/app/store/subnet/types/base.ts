@@ -128,11 +128,11 @@ export type SubnetState = GenericState<Subnet, APIError> & {
 
 export type StaticDHCPLease = {
   id: number;
-  comment?: string | null;
+  comment: string | null;
   ip_address: string;
   mac_address: string;
-  interface?: string | null;
-  node?: SimpleNode | null;
+  interface: string | null;
+  node: SimpleNode | null;
   usage?: string | null;
   owner: string;
 };
