@@ -89,6 +89,7 @@
 @import "@/app/base/components/FilterAccordion";
 @import "@/app/base/components/FormCard";
 @import "@/app/base/components/LabelledList";
+@import "@/app/base/components/LimitedIpInput";
 @import "@/app/base/components/Login";
 @import "@/app/base/components/MachineSelectTable";
 @import "@/app/base/components/ListDisplayCount";
@@ -127,6 +128,7 @@
 @include FormCard;
 @include HardwareCard;
 @include LabelledList;
+@include LimitedIpInput;
 @include Login;
 @include MachineSelectTable;
 @include NetworkCardTable;
