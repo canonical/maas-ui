@@ -1,16 +1,21 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
-import { array } from "cooky-cutter";
 
 import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { useStaticDHCPLeases } from "@/app/store/subnet/hooks";
+import type { SubnetMeta } from "@/app/store/subnet/types";
+import type { Subnet } from "@/app/store/subnet/types/base";
 import StaticDHCPTable from "@/app/subnets/views/SubnetDetails/StaticDHCPLease/StaticDHCPTable";
-import { staticDHCPLease } from "@/testing/factories/subnet";
 
-const StaticDHCPLease = () => {
+type StaticDHCPLeaseProps = {
+  subnetId: Subnet[SubnetMeta.PK] | null;
+};
+
+const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
   const { setSidePanelContent } = useSidePanel();
-  const getMockStaticDHCPLeases = array(staticDHCPLease, 5);
+  const staticDHCPLeases = useStaticDHCPLeases(subnetId);
 
   return (
     <>
@@ -31,7 +36,7 @@ const StaticDHCPLease = () => {
           </Button>
         </MainToolbar.Controls>
       </MainToolbar>
-      <StaticDHCPTable staticDHCPLeases={getMockStaticDHCPLeases()} />
+      <StaticDHCPTable staticDHCPLeases={staticDHCPLeases} />
     </>
   );
 };

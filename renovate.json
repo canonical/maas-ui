@@ -17,6 +17,7 @@
       "groupName": "React ecosystem",
       "groupSlug": "react-ecosystem",
       "matchPackagePatterns": ["^react", "^@types/react"],
+      "excludePackagePatterns": ["^@canonical"],
       "schedule": ["before 5am on monday"]
     },
     {
