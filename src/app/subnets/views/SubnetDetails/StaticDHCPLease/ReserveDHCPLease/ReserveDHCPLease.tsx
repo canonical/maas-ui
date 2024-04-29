@@ -38,7 +38,7 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
   }
 
   if (!subnet) {
-    return;
+    return null;
   }
 
   const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
