@@ -13,6 +13,7 @@ const { getComputedStyle } = window;
 let state: RootState;
 
 beforeAll(() => {
+  // getComputedStyle is not implemeneted in jsdom, so we need to do this.
   window.getComputedStyle = (elt) => getComputedStyle(elt);
 });
 
@@ -26,6 +27,7 @@ beforeEach(() => {
 });
 
 afterAll(() => {
+  // Reset to original implementation
   window.getComputedStyle = getComputedStyle;
 });
 

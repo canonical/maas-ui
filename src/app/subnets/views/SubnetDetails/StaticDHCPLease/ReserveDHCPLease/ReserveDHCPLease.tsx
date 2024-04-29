@@ -54,10 +54,12 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
           let valid = true;
           const octets = `${ip_address}`.split(".");
           octets.forEach((octet) => {
+            // IP address is not valid if the octet is not a number
             if (isNaN(parseInt(octet))) {
               valid = false;
             } else {
               const octetInt = parseInt(octet);
+              // Unsigned 8-bit integer cannot be less than 0 or greater than 255
               if (octetInt < 0 || octetInt > 255) {
                 valid = false;
               }

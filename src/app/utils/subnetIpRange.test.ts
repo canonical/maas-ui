@@ -1,4 +1,8 @@
-import { getIpRangeFromCidr, isIpInSubnet } from "./subnetIpRange";
+import {
+  getImmutableAndEditableOctets,
+  getIpRangeFromCidr,
+  isIpInSubnet,
+} from "./subnetIpRange";
 
 describe("getIpRangeFromCidr", () => {
   it("returns the start and end IP of a subnet", () => {
@@ -51,5 +55,24 @@ describe("isIpInSubnet", () => {
   it("returns false for the network and broadcast addresses", () => {
     expect(isIpInSubnet("10.0.0.0", "10.0.0.0/24")).toBe(false);
     expect(isIpInSubnet("10.0.0.255", "10.0.0.0/24")).toBe(false);
+  });
+});
+
+describe("getImmutableAndEditableOctets", () => {
+  it("returns the immutable and editable octets for a given subnet range", () => {
+    expect(getImmutableAndEditableOctets("10.0.0.1", "10.0.0.254")).toEqual([
+      "10.0.0",
+      "[1-254]",
+    ]);
+    expect(getImmutableAndEditableOctets("10.0.0.1", "10.0.255.254")).toEqual([
+      "10.0",
+      "[0-255].[1-254]",
+    ]);
+    expect(getImmutableAndEditableOctets("10.0.0.1", "10.255.255.254")).toEqual(
+      ["10", "[0-255].[0-255].[1-254]"]
+    );
+    expect(getImmutableAndEditableOctets("10.0.0.1", "20.255.255.254")).toEqual(
+      ["", "[10-20].[0-255].[0-255].[1-254]"]
+    );
   });
 });

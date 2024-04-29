@@ -72,7 +72,7 @@ export const isIpInSubnet = (ip: string, cidr: Subnet["cidr"]) => {
 };
 
 /**
- * Separates the immutable and editable octets of a subnet range.
+ * Separates the immutable and editable octets of an IPv4 subnet range.
  *
  * @param startIp The start IP of the subnet
  * @param endIp The end IP of the subnet

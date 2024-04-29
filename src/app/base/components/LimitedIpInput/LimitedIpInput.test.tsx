@@ -12,10 +12,12 @@ import { renderWithBrowserRouter } from "@/testing/utils";
 const { getComputedStyle } = window;
 
 beforeAll(() => {
+  // getComputedStyle is not implemeneted in jsdom, so we need to do this.
   window.getComputedStyle = (elt) => getComputedStyle(elt);
 });
 
 afterAll(() => {
+  // Reset to original implementation
   window.getComputedStyle = getComputedStyle;
 });
 

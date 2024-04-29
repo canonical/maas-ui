@@ -28,13 +28,13 @@ const LimitedIpInput = ({ cidr, name, ...props }: Props) => {
     const immutableOctetsLength = immutable.split(".").length;
 
     if (immutableOctetsLength === 3) {
-      return 3;
+      return 3; // 3 digits, no dots
     } else if (immutableOctetsLength === 2) {
-      return 7;
+      return 7; // 6 digits, 1 dot
     } else if (immutableOctetsLength === 1) {
-      return 11;
+      return 11; // 9 digits, 2 dots
     } else {
-      return 15;
+      return 15; // 12 digits, 3 dots
     }
   };
 
@@ -44,14 +44,18 @@ const LimitedIpInput = ({ cidr, name, ...props }: Props) => {
     if (inputWrapper) {
       const width = window.getComputedStyle(inputWrapper, ":before").width;
       setImmutableWidth(width);
+      // CSS variable "--immutable" is the content of the :before element, which shows the immutable octets
       inputWrapper.setAttribute("style", `--immutable: '${immutable}.'`);
     } else {
+      // Element won't be present until first render is completed, so we need to set it again.
       setInputWrapper(
         document.querySelector(".limited-ip-input__input-wrapper")
       );
     }
 
     if (inputElement) {
+      // Adjust the left padding of the input to be the same width as the immutable octets.
+      // This displays the user input and the unchangeable text together as one IP address.
       inputElement.setAttribute("style", `padding-left: ${immutableWidth}`);
     } else {
       setInputElement(document.querySelector(".limited-ip-input__input"));
