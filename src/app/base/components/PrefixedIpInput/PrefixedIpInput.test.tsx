@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
@@ -5,7 +6,7 @@ import { Formik } from "formik";
 import FormikField from "../FormikField";
 import FormikForm from "../FormikForm";
 
-import LimitedIpInput from "./LimitedIpInput";
+import PrefixedIpInput from "./PrefixedIpInput";
 
 import { renderWithBrowserRouter } from "@/testing/utils";
 
@@ -24,7 +25,7 @@ afterAll(() => {
 it("displays the correct range help text for a subnet", () => {
   render(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
-      <LimitedIpInput cidr="10.0.0.0/24" name="ip" />
+      <PrefixedIpInput cidr="10.0.0.0/24" name="ip" />
     </Formik>
   );
   expect(screen.getByText("10.0.0.[1-254]")).toBeInTheDocument();
@@ -33,21 +34,21 @@ it("displays the correct range help text for a subnet", () => {
 it("sets the --immutable css variable to the immutable octets of the subnet", () => {
   render(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
-      <LimitedIpInput cidr="10.0.0.0/24" name="ip" />
+      <PrefixedIpInput aria-label="IP address" cidr="10.0.0.0/24" name="ip" />
     </Formik>
   );
 
-  // We have to directly access this node since it's just a wrapper
+  // Direct node access is needed here to check the CSS variable
   expect(
-    // eslint-disable-next-line testing-library/no-node-access
-    document.querySelector(".limited-ip-input__input-wrapper")
-  ).toHaveStyle("--immutable: '10.0.0.'");
+    screen.getByRole("textbox", { name: "IP address" }).parentElement
+      ?.parentElement
+  ).toHaveStyle(`--immutable: "10.0.0."`);
 });
 
 it("displays the correct placeholder for a subnet", () => {
   render(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
-      <LimitedIpInput cidr="10.0.0.0/24" name="ip" />
+      <PrefixedIpInput cidr="10.0.0.0/24" name="ip" />
     </Formik>
   );
 
@@ -57,7 +58,7 @@ it("displays the correct placeholder for a subnet", () => {
 it("trims the immutable octets from a pasted IP address", async () => {
   renderWithBrowserRouter(
     <FormikForm initialValues={{ ip: "" }} onSubmit={vi.fn()}>
-      <FormikField cidr="10.0.0.0/24" component={LimitedIpInput} name="ip" />
+      <FormikField cidr="10.0.0.0/24" component={PrefixedIpInput} name="ip" />
     </FormikForm>
   );
 

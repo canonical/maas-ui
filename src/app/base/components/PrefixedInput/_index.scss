@@ -1,13 +1,15 @@
-@mixin LimitedIpInput {
-  .limited-ip-input {
-    &__input-wrapper::before {
+@mixin PrefixedInput {
+  .prefixed-input {
+    position: relative;
+
+    &__wrapper::before {
       position: absolute;
       pointer-events: none;
       padding-left: $spv--small;
       padding-bottom: calc(0.4rem - 1px);
       padding-top: calc(0.4rem - 1px);
       content: var(--immutable, "");
-      top: 2.5rem;
+      top: var(--top, "inherit");
     }
   }
 }

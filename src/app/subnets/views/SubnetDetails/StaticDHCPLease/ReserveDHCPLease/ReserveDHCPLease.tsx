@@ -6,8 +6,8 @@ import type { SubnetActionProps } from "../../types";
 
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import LimitedIpInput from "@/app/base/components/LimitedIpInput";
 import MacAddressField from "@/app/base/components/MacAddressField";
+import PrefixedIpInput from "@/app/base/components/PrefixedIpInput";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
@@ -98,7 +98,7 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
     >
       <FormikField
         cidr={subnet.cidr}
-        component={LimitedIpInput}
+        component={PrefixedIpInput}
         label="IP address"
         name="ip_address"
         required
