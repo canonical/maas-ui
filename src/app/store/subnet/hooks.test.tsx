@@ -13,8 +13,9 @@ const mockStore = configureStore();
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
-  ({ children }: { children: ReactNode }) =>
-    <Provider store={store}>{children}</Provider>;
+  ({ children }: { children: ReactNode }) => (
+    <Provider store={store}>{children}</Provider>
+  );
 
 describe("useCanBeDeleted", () => {
   it("can be deleted if DHCP is disabled and the subnet has no ips", () => {

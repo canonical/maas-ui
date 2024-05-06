@@ -27,7 +27,7 @@ type BaseSelectors<
   // See: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-1.html#keyof-and-lookup-types
   I extends S["items"][0],
   // A model key as a reference to the supplied state item.
-  K extends keyof I
+  K extends keyof I,
 > = {
   all: (state: RootState) => S["items"];
   // This method is generated using createSelector so it results
@@ -72,7 +72,7 @@ export const generateBaseSelectors = <
   // see the BaseSelectors type definition above.
   I extends S["items"][0],
   // A model key as a reference from the supplied model.
-  K extends keyof I
+  K extends keyof I,
 >(
   name: keyof CommonStates,
   indexKey: K,

@@ -58,8 +58,8 @@ const generateOptions = (
             type === "iprange" && "start_ip" in model
               ? `${model?.start_ip} - ${model?.end_ip}`
               : type === "subnet"
-              ? ("name" in model && model.name) || ""
-              : ("fqdn" in model && model.fqdn) || "",
+                ? ("name" in model && model.name) || ""
+                : ("fqdn" in model && model.fqdn) || "",
         }))
       )
     : null;

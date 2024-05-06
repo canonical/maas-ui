@@ -56,8 +56,8 @@ const getImageSyncStatus = (
           !status
             ? Labels.NoStatus
             : checkingImages
-            ? Labels.CheckingImages
-            : status
+              ? Labels.CheckingImages
+              : status
         }
       />
     );

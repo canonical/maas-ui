@@ -46,9 +46,8 @@ const EditInterface = ({
     useSelector((state: RootState) =>
       deviceSelectors.eventErrorsForDevices(state, systemId, "updateInterface")
     ).length > 0;
-  const [updatedInterface, resetUpdatedInterface] = useCycled(
-    !updatingInterface
-  );
+  const [updatedInterface, resetUpdatedInterface] =
+    useCycled(!updatingInterface);
   const saved = updatedInterface && !updateInterfaceErrored;
   if (!isDeviceDetails(device) || !nic) {
     return <Spinner data-testid="loading-device-details" text="Loading..." />;

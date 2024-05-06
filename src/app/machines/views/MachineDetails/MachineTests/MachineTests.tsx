@@ -116,7 +116,7 @@ const MachineTests = (): JSX.Element => {
             ).map(
               ([physical_blockdevice, scriptResults]: [
                 string,
-                ScriptResult[]
+                ScriptResult[],
               ]) => {
                 const { model, name, serial } =
                   scriptResults[0]?.parameters?.storage?.value || {};

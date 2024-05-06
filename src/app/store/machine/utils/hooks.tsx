@@ -91,7 +91,7 @@ type MachineActionData = {
 };
 
 export const useMachineActionDispatch = <
-  A extends AnyAction
+  A extends AnyAction,
 >(): MachineActionData & {
   dispatch: (args: A) => void;
 } => {
@@ -356,8 +356,8 @@ export const useFetchSelectedMachines = (
     loaded: groupFilters
       ? groupData.loaded
       : true && itemFilters
-      ? itemsData.loaded
-      : true,
+        ? itemsData.loaded
+        : true,
     machineCount: groupData.machineCount || 0 + (itemsData?.machineCount || 0),
     machinesErrors: groupData.machinesErrors || itemsData.machinesErrors,
   };

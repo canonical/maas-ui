@@ -55,15 +55,15 @@ const PageContent = ({
                 isSettingsPage
                   ? settingsNavItems
                   : isPreferencesPage
-                  ? preferencesNavItems
-                  : []
+                    ? preferencesNavItems
+                    : []
               }
               title={
                 isSettingsPage
                   ? "Settings"
                   : isPreferencesPage
-                  ? "My preferences"
-                  : ""
+                    ? "My preferences"
+                    : ""
               }
             />
           </div>

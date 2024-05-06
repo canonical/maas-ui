@@ -32,9 +32,8 @@ const AddInterface = ({ closeForm, systemId }: Props): JSX.Element => {
     useSelector((state: RootState) =>
       deviceSelectors.eventErrorsForDevices(state, systemId, "createInterface")
     ).length > 0;
-  const [createdInterface, resetCreatedInterface] = useCycled(
-    !creatingInterface
-  );
+  const [createdInterface, resetCreatedInterface] =
+    useCycled(!creatingInterface);
   const saved = createdInterface && !createInterfaceErrored;
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
 

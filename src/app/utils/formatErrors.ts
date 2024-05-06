@@ -117,7 +117,7 @@ export const formatErrors = <E, I, K extends keyof I>(
     if (typeof errors === "string" && isHTMLContent(errors)) {
       return "html";
     }
-    return typeof errors in errorTypeFormatters
+    return (typeof errors) in errorTypeFormatters
       ? (typeof errors as ErrorTypeFormat)
       : "string";
   };
