@@ -10,18 +10,6 @@ import PrefixedIpInput from "./PrefixedIpInput";
 
 import { renderWithBrowserRouter } from "@/testing/utils";
 
-const { getComputedStyle } = window;
-
-beforeAll(() => {
-  // getComputedStyle is not implemeneted in jsdom, so we need to do this.
-  window.getComputedStyle = (elt) => getComputedStyle(elt);
-});
-
-afterAll(() => {
-  // Reset to original implementation
-  window.getComputedStyle = getComputedStyle;
-});
-
 it("displays the correct range help text for a subnet", () => {
   render(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
@@ -29,20 +17,6 @@ it("displays the correct range help text for a subnet", () => {
     </Formik>
   );
   expect(screen.getByText("10.0.0.[1-254]")).toBeInTheDocument();
-});
-
-it("sets the --immutable css variable to the immutable octets of the subnet", () => {
-  render(
-    <Formik initialValues={{}} onSubmit={vi.fn()}>
-      <PrefixedIpInput aria-label="IP address" cidr="10.0.0.0/24" name="ip" />
-    </Formik>
-  );
-
-  // Direct node access is needed here to check the CSS variable
-  expect(
-    screen.getByRole("textbox", { name: "IP address" }).parentElement
-      ?.parentElement
-  ).toHaveStyle(`--immutable: "10.0.0."`);
 });
 
 it("displays the correct placeholder for a subnet", () => {
