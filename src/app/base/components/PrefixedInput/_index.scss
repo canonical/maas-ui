@@ -2,15 +2,18 @@
   .prefixed-input {
     position: relative;
 
-    &__wrapper::before {
+    .prefixed-input__text {
       position: absolute;
       pointer-events: none;
       padding-left: $spv--small;
       padding-bottom: calc(0.4rem - 1px);
       padding-top: calc(0.4rem - 1px);
-      // TODO: Investigate replacement for using these variables https://warthogs.atlassian.net/browse/MAASENG-3116
-      content: var(--immutable, "");
-      top: var(--top, "inherit");
+    }
+
+    &--with-label {
+      .prefixed-input__text {
+        top: 2.5rem;
+      }
     }
   }
 }

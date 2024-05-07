@@ -1,18 +1,24 @@
 /* eslint-disable testing-library/no-node-access */
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import PrefixedInput from "./PrefixedInput";
 
-const { getComputedStyle } = window;
-
 beforeAll(() => {
-  // getComputedStyle is not implemeneted in jsdom, so we need to do this.
-  window.getComputedStyle = (elt) => getComputedStyle(elt);
+  Element.prototype.getBoundingClientRect = vi.fn(() => ({
+    width: 100,
+    height: 0,
+    x: 0,
+    y: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    toJSON: vi.fn(),
+  }));
 });
 
 afterAll(() => {
-  // Reset to original implementation
-  window.getComputedStyle = getComputedStyle;
+  vi.restoreAllMocks();
 });
 
 it("renders without crashing", async () => {
@@ -25,18 +31,19 @@ it("renders without crashing", async () => {
   ).toBeInTheDocument();
 });
 
-it("sets the --immutable css variable to the provided immutable text", async () => {
-  const { rerender } = render(
+it("displays the immutable text", async () => {
+  render(
     <PrefixedInput aria-label="Limited input" immutableText="Some text" />
   );
 
-  rerender(
+  expect(screen.getByText("Some text")).toBeInTheDocument();
+});
+
+it("adjusts input padding", async () => {
+  render(
     <PrefixedInput aria-label="Limited input" immutableText="Some text" />
   );
+  const inputElement = screen.getByRole("textbox", { name: "Limited input" });
 
-  // Direct node access is needed here to check the CSS variable
-  expect(
-    screen.getByRole("textbox", { name: "Limited input" }).parentElement
-      ?.parentElement
-  ).toHaveStyle(`--immutable: "Some text";`);
+  await waitFor(() => expect(inputElement).toHaveStyle("padding-left: 100px"));
 });
