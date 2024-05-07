@@ -22,7 +22,7 @@ const generateRows = (sslkeys: SSLKey[]) =>
       columns: [
         {
           className: "u-truncate",
-          content: display,
+          content: <span title={display}></span>,
           role: "rowheader",
         },
         {

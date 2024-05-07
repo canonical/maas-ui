@@ -86,12 +86,22 @@ describe("SSHKeyList", () => {
     // Two of the keys should be grouped together.
     expect(rows).toHaveLength(state.sshkey.items.length - 1);
     // The grouped keys should be displayed in sub cols.
-    expect(within(rows[0]).getByText("ssh-rsa aabb...")).toBeInTheDocument();
+    expect(within(rows[0]).getByText("ssh-rsa aabb")).toBeInTheDocument();
 
-    expect(within(rows[1]).getByText("ssh-rsa ccdd...")).toBeInTheDocument();
-    expect(within(rows[1]).getByText("ssh-rsa gghh...")).toBeInTheDocument();
+    expect(within(rows[1]).getByText("ssh-rsa ccdd")).toBeInTheDocument();
+    expect(within(rows[1]).getByText("ssh-rsa gghh")).toBeInTheDocument();
 
-    expect(within(rows[2]).getByText("ssh-rsa eeff...")).toBeInTheDocument();
+    expect(within(rows[2]).getByText("ssh-rsa eeff")).toBeInTheDocument();
+  });
+
+  it("full SSH key value is displayed", () => {
+    renderWithBrowserRouter(<SSHKeyList />, {
+      route: "/account/prefs/ssh-keys",
+      state,
+    });
+    const keyValue = "ssh-rsa eeff";
+    // verifies that the full value is exposed in the title attribute
+    expect(screen.getByText(keyValue)).toHaveAccessibleName(keyValue);
   });
 
   it("can display uploaded keys", () => {
@@ -103,7 +113,7 @@ describe("SSHKeyList", () => {
 
     expect(within(uploadedKeyRow).getByText("Upload")).toBeInTheDocument();
     expect(
-      within(uploadedKeyRow).getByText("ssh-rsa gghh...")
+      within(uploadedKeyRow).getByText("ssh-rsa gghh")
     ).toBeInTheDocument();
   });
 
@@ -117,7 +127,7 @@ describe("SSHKeyList", () => {
     expect(within(importedKeyRow).getByText("Launchpad")).toBeInTheDocument();
     expect(within(importedKeyRow).getByText("koalaparty")).toBeInTheDocument();
     expect(
-      within(importedKeyRow).getByText("ssh-rsa aabb...")
+      within(importedKeyRow).getByText("ssh-rsa aabb")
     ).toBeInTheDocument();
   });
 

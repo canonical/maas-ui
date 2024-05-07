@@ -17,17 +17,22 @@
   .sshkey-list th {
     // Source
     &:nth-child(1) {
-      flex: 0.3 0 0;
+      flex: 0.2 0 0;
     }
 
     // ID
     &:nth-child(2) {
-      flex: 0.3 0 0;
+      flex: 0.2 0 0;
     }
 
-    // Key + actions
+    // Key
     &:nth-child(3) {
-      flex: 0.4 0 0;
+      flex: 0.5 0 0;
+    }
+
+    // Actions
+    &:nth-child(4) {
+      flex: 0.1 0 0;
     }
   }
 
