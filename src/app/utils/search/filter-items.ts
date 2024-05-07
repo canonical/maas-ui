@@ -29,7 +29,7 @@ export const getSelectedValue = (terms: FilterValue[]): FilterSelected => {
 export default class FilterItems<
   I,
   PK extends keyof I,
-  D = void
+  D = void,
 > extends FilterHandlers {
   getValue: GetValue<I, D>;
   primaryKey: PK;

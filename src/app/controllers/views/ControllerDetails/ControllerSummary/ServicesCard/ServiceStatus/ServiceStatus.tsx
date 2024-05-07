@@ -13,10 +13,10 @@ const ServiceStatus = ({ service }: Props): JSX.Element => {
     service.status === ServiceStatusType.RUNNING
       ? "success"
       : service.status === ServiceStatusType.DEAD
-      ? "error"
-      : service.status === ServiceStatusType.DEGRADED
-      ? "warning"
-      : null;
+        ? "error"
+        : service.status === ServiceStatusType.DEGRADED
+          ? "warning"
+          : null;
 
   return (
     <span>

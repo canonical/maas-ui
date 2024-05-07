@@ -298,8 +298,9 @@ export const expectTooltipOnHover = async (
 
 const generateWrapper =
   (store = configureStore()(rootStateFactory())) =>
-  ({ children }: { children: ReactNode }) =>
-    <Provider store={store}>{children}</Provider>;
+  ({ children }: { children: ReactNode }) => (
+    <Provider store={store}>{children}</Provider>
+  );
 
 type Hook = Parameters<typeof renderHook>[0];
 export const renderHookWithMockStore = (hook: Hook) => {
