@@ -31,7 +31,9 @@ const PrefixedInput = ({ immutableText, ...props }: PrefixedInputProps) => {
 
       // Adjust the left padding of the input to be the same width as the immutable octets.
       // This displays the user input and the unchangeable text together as one IP address.
-      inputWrapper.lastElementChild?.firstElementChild?.setAttribute(
+      inputWrapper
+        .querySelector("input")
+        ?.setAttribute("style", `padding-left: ${width}`);
         "style",
         `padding-left: ${width}`
       );
