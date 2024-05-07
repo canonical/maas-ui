@@ -25,7 +25,7 @@ const generateRows = (tokens: Token[]) =>
           role: "rowheader",
         },
         {
-          content: token,
+          content: <span title={token}>{token}</span>,
         },
         {
           content: (

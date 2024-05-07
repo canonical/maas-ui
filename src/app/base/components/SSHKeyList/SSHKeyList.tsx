@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 import { Button, Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import type { NavigateFunction } from "react-router-dom";
@@ -17,10 +15,10 @@ type Props = Partial<SettingsTableProps>;
 
 const formatKey = (key: SSHKey["key"]) => {
   const parts = key.split(" ");
-  if (parts.length === 3) {
-    return parts[2];
+  if (parts.length >= 3) {
+    return parts.slice(2).join(" ");
   }
-  return `${key.slice(0, 20)}...`;
+  return key;
 };
 
 const groupBySource = (sshkeys: SSHKey[]) => {
@@ -57,14 +55,13 @@ const groupBySource = (sshkeys: SSHKey[]) => {
   return Array.from(groups);
 };
 
-const generateKeyCols = (keys: SSHKey[], deleteButton: ReactNode) => {
+const generateKeyCols = (keys: SSHKey[]) => {
   return (
     <ul className="p-table-sub-cols__list">
-      {keys.map((key, i) => (
+      {keys.map((key) => (
         <div className="p-table-sub-cols__item sshkey-list__keys" key={key.key}>
-          <div className="sshkey-list__keys-key">{formatKey(key.key)}</div>
-          <div className="sshkey-list__keys-delete">
-            {i === 0 && deleteButton}
+          <div className="sshkey-list__keys-key" title={key.key}>
+            {formatKey(key.key)}
           </div>
         </div>
       ))}
@@ -84,8 +81,10 @@ const generateRows = (sshkeys: SSHKey[], navigate: NavigateFunction) =>
         { content: group.id },
         {
           className: "p-table-sub-cols",
-          content: generateKeyCols(
-            group.keys,
+          content: generateKeyCols(group.keys),
+        },
+        {
+          content: (
             <Button
               appearance="base"
               className="is-dense u-table-cell-padding-overlap"
@@ -100,6 +99,7 @@ const generateRows = (sshkeys: SSHKey[], navigate: NavigateFunction) =>
               <i className="p-icon--delete">Delete</i>
             </Button>
           ),
+          className: "u-align--right",
         },
       ],
       "data-testid": "sshkey-row",
@@ -140,13 +140,9 @@ const SSHKeyList = ({ ...tableProps }: Props): JSX.Element => {
             sortKey: "id",
           },
           {
-            content: (
-              <>
-                Key
-                <span className="sshkey-list__header-action">Actions</span>
-              </>
-            ),
+            content: "Key",
           },
+          { content: "Actions", className: "u-align--right" },
         ]}
         loaded={sshkeyLoaded}
         loading={sshkeyLoading}
