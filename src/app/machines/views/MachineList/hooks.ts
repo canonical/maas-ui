@@ -76,7 +76,7 @@ export const useResponsiveColumns = () => {
 
 export const useGrouping = (): [
   FetchGroupKey,
-  (group: FetchGroupKey | null) => void
+  (group: FetchGroupKey | null) => void,
 ] => {
   const dispatch = useDispatch();
   const [storedGrouping, setStoredGrouping] =

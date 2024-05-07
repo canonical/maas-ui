@@ -122,7 +122,7 @@ export const genericInitialState = {
  */
 export const updateErrors = <
   S extends EventErrorStateTypes,
-  K extends keyof S["items"][0]
+  K extends keyof S["items"][0],
 >(
   state: S,
   action: {
@@ -180,7 +180,7 @@ export const generateCommonReducers = <
   S extends CommonStateTypes,
   K extends keyof S["items"][0],
   CreateParams,
-  UpdateParams
+  UpdateParams,
 >(
   name: keyof SliceState<S>,
   indexKey: K,
@@ -369,7 +369,7 @@ export type StatusHandlers<
   S extends StatusStateTypes,
   I extends S["items"][0],
   // alternative success payload type
-  A = void
+  A = void,
 > = {
   method?: string;
   status: string;
@@ -403,7 +403,7 @@ export const generateStatusHandlers = <
   // A model key as a reference to the supplied state item.
   K extends keyof I,
   // optional alternative success payload type
-  A = void
+  A = void,
 >(
   indexKey: K,
   handlers: StatusHandlers<S, I, A>[],

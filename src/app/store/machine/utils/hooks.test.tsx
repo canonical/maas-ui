@@ -86,8 +86,9 @@ describe("machine hook utils", () => {
   describe("useFetchMachineCount", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode; filters?: FetchFilters }) =>
-        <Provider store={store}>{children}</Provider>;
+      ({ children }: { children?: ReactNode; filters?: FetchFilters }) => (
+        <Provider store={store}>{children}</Provider>
+      );
 
     it("can dispatch machine count action", () => {
       const store = mockStore(state);
@@ -252,8 +253,9 @@ describe("machine hook utils", () => {
 
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+      ({ children }: { children?: ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
+      );
 
     it("can fetch machines", () => {
       const store = mockStore(state);
@@ -486,8 +488,9 @@ describe("machine hook utils", () => {
 
   const generateWrapper =
     (store: MockStoreEnhanced<unknown>) =>
-    ({ children }: { children?: ReactNode }) =>
-      <Provider store={store}>{children}</Provider>;
+    ({ children }: { children?: ReactNode }) => (
+      <Provider store={store}>{children}</Provider>
+    );
 
   describe("useFetchSelectedMachines", () => {
     afterEach(() => {
@@ -496,8 +499,9 @@ describe("machine hook utils", () => {
 
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+      ({ children }: { children?: ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
+      );
 
     it("can fetch selected machines", async () => {
       vi.spyOn(query, "generateCallId").mockReturnValueOnce(mockCallId);
@@ -523,8 +527,9 @@ describe("machine hook utils", () => {
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+      ({ children }: { children?: ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
+      );
 
     it("adds a callId to redux dispatch function", async () => {
       const store = mockStore(state);
@@ -563,8 +568,9 @@ describe("machine hook utils", () => {
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+      ({ children }: { children?: ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
+      );
 
     it("adds a callId to redux dispatch function and returns action state", async () => {
       state.machine.actions["mocked-nanoid"] = factory.machineActionState({
@@ -622,8 +628,9 @@ describe("machine hook utils", () => {
   describe("useSelectedMachinesActionsDispatch", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+      ({ children }: { children?: ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
+      );
 
     it("dispatches separate calls when there are selected both groups and items", async () => {
       vi.spyOn(reduxToolkit, "nanoid")
@@ -773,8 +780,9 @@ describe("machine hook utils", () => {
     });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode }) =>
-        <Provider store={store}>{children}</Provider>;
+      ({ children }: { children?: ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
+      );
 
     it("can get a machine", () => {
       vi.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");

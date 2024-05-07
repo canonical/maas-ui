@@ -31,12 +31,12 @@ export type BondModeOptions = [
   [BondMode.BROADCAST, BondMode.BROADCAST],
   [BondMode.LINK_AGGREGATION, BondMode.LINK_AGGREGATION],
   [BondMode.BALANCE_TLB, BondMode.BALANCE_TLB],
-  [BondMode.BALANCE_ALB, BondMode.BALANCE_ALB]
+  [BondMode.BALANCE_ALB, BondMode.BALANCE_ALB],
 ];
 
 export type BondLacpRateOptions = [
   [BondLacpRate.FAST, BondLacpRate.FAST],
-  [BondLacpRate.SLOW, BondLacpRate.SLOW]
+  [BondLacpRate.SLOW, BondLacpRate.SLOW],
 ];
 
 export type BondXmitHashPolicyOptions = [
@@ -44,7 +44,7 @@ export type BondXmitHashPolicyOptions = [
   [BondXmitHashPolicy.LAYER2_3, BondXmitHashPolicy.LAYER2_3],
   [BondXmitHashPolicy.LAYER3_4, BondXmitHashPolicy.LAYER3_4],
   [BondXmitHashPolicy.ENCAP2_3, BondXmitHashPolicy.ENCAP2_3],
-  [BondXmitHashPolicy.ENCAP3_4, BondXmitHashPolicy.ENCAP3_4]
+  [BondXmitHashPolicy.ENCAP3_4, BondXmitHashPolicy.ENCAP3_4],
 ];
 
 export type BondOptions = {
@@ -224,8 +224,8 @@ export type PowerTypesState = {
   loading: boolean;
 };
 
-export type TLSCertificate =
-  | Omit<CertificateData, "private_key"> & CertificateMetadata;
+export type TLSCertificate = Omit<CertificateData, "private_key"> &
+  CertificateMetadata;
 
 export type TLSCertificateState = {
   errors: APIError;

@@ -13,16 +13,15 @@ const mockStore = configureStore();
 
 const generateWrapper =
   (pathname: string, route: string) =>
-  ({ children }: { children: ReactNode }) =>
-    (
-      <Provider store={mockStore(factory.rootState())}>
-        <MemoryRouter initialEntries={[{ pathname }]}>
-          <Routes>
-            <Route element={<>{children}</>} path={route} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+  ({ children }: { children: ReactNode }) => (
+    <Provider store={mockStore(factory.rootState())}>
+      <MemoryRouter initialEntries={[{ pathname }]}>
+        <Routes>
+          <Route element={<>{children}</>} path={route} />
+        </Routes>
+      </MemoryRouter>
+    </Provider>
+  );
 
 describe("url hooks", () => {
   describe("useGetURLId", () => {

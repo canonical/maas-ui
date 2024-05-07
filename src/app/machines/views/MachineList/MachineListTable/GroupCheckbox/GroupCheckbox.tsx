@@ -47,8 +47,8 @@ const GroupCheckbox = ({
         allSelected || groupSelected
           ? Checked.Checked
           : childrenSelected
-          ? Checked.Mixed
-          : Checked.Unchecked
+            ? Checked.Mixed
+            : Checked.Unchecked
       }
       isDisabled={group?.count === 0 || allSelected}
       onGenerateSelected={(checked) => {

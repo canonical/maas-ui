@@ -17,12 +17,11 @@ const mockStore = configureStore();
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>, pathname = "") =>
-  ({ children }: { children: ReactNode }) =>
-    (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname }]}>{children}</MemoryRouter>
-      </Provider>
-    );
+  ({ children }: { children: ReactNode }) => (
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname }]}>{children}</MemoryRouter>
+    </Provider>
+  );
 
 describe("kvm hooks", () => {
   describe("useActivePod", () => {

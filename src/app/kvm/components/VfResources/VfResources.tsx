@@ -23,7 +23,7 @@ const VfResources = ({
       [
         PodResource["allocated_tracked"],
         PodResource["free"],
-        PodResource["allocated_other"]
+        PodResource["allocated_other"],
       ]
     >(
       ([allocated, free, other], { virtual_functions }) => {

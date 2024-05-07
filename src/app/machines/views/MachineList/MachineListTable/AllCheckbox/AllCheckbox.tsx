@@ -38,8 +38,8 @@ const AllCheckbox = ({ callId, filter }: Props): JSX.Element => {
           allSelected
             ? Checked.Checked
             : someSelected
-            ? Checked.Mixed
-            : Checked.Unchecked
+              ? Checked.Mixed
+              : Checked.Unchecked
         }
         onGenerateSelected={(checked) =>
           generateSelectedAll({ checked, filter })
