@@ -27,7 +27,7 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
             onClick={() =>
               setSidePanelContent({
                 view: SubnetDetailsSidePanelViews[
-                  SubnetActionTypes.ReserveStaticDHCPLease
+                  SubnetActionTypes.ReserveDHCPLease
                 ],
               })
             }
