@@ -34,9 +34,6 @@ const PrefixedInput = ({ immutableText, ...props }: PrefixedInputProps) => {
       inputWrapper
         .querySelector("input")
         ?.setAttribute("style", `padding-left: ${width}`);
-        "style",
-        `padding-left: ${width}`
-      );
     }
   }, [prefixedInputRef, immutableText, props.label]);
 
