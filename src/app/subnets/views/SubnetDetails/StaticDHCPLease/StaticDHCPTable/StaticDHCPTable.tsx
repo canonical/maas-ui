@@ -2,7 +2,7 @@ import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Link } from "react-router-dom";
 
 import TableActions from "@/app/base/components/TableActions";
-import type { StaticDHCPLease } from "@/app/store/reservedip/types/base";
+import type { ReservedIp } from "@/app/store/reservedip/types/base";
 
 const headers = [
   { content: "IP Address", className: "ip-col", sortKey: "ip_address" },
@@ -14,31 +14,29 @@ const headers = [
     sortKey: "interface",
   },
   { content: "Usage", className: "usage-col", sortKey: "usage" },
-  { content: "Owner", className: "oner-col", sortKey: "owner" },
   { content: "Comment", className: "comment-col", sortKey: "comment" },
   { content: "Actions", className: "actions-col" },
 ] as const;
 
-const generateRows = (dhcpLeases: StaticDHCPLease[]) =>
-  dhcpLeases.map((dhcpLease) => {
+const generateRows = (reservedIps: ReservedIp[]) =>
+  reservedIps.map((reservedIp) => {
     return (
-      <tr key={dhcpLease.mac_address}>
-        <td>{dhcpLease.ip_address}</td>
-        <td>{dhcpLease.mac_address}</td>
+      <tr key={reservedIp.mac_address}>
+        <td>{reservedIp.ip}</td>
+        <td>{reservedIp.mac_address}</td>
         <td>
-          {dhcpLease?.node ? (
+          {reservedIp?.node_summary ? (
             <Link to="#">
-              <strong>{dhcpLease.node.hostname}</strong>.
-              {dhcpLease.node.fqdn.split(".")[1]}
+              <strong>{reservedIp.node_summary.hostname}</strong>.
+              {reservedIp.node_summary.fqdn.split(".")[1]}
             </Link>
           ) : (
             "—"
           )}
         </td>
-        <td>{dhcpLease.interface}</td>
-        <td>{dhcpLease.usage || "—"}</td>
-        <td>{dhcpLease.owner}</td>
-        <td>{dhcpLease.comment || "—"}</td>
+        <td>{reservedIp.node_summary?.via || "—"}</td>
+        <td>{reservedIp.node_summary?.node_type || "—"}</td>
+        <td>{reservedIp.comment || "—"}</td>
         <td>
           <TableActions onDelete={() => {}} onEdit={() => {}} />
         </td>
@@ -47,10 +45,10 @@ const generateRows = (dhcpLeases: StaticDHCPLease[]) =>
   });
 
 type Props = {
-  staticDHCPLeases: StaticDHCPLease[];
+  reservedIps: ReservedIp[];
 };
 
-const StaticDHCPTable = ({ staticDHCPLeases }: Props) => {
+const StaticDHCPTable = ({ reservedIps }: Props) => {
   return (
     <DynamicTable
       aria-label="Static DHCP leases"
@@ -66,8 +64,8 @@ const StaticDHCPTable = ({ staticDHCPLeases }: Props) => {
           ))}
         </tr>
       </thead>
-      {staticDHCPLeases.length ? (
-        <DynamicTable.Body>{generateRows(staticDHCPLeases)}</DynamicTable.Body>
+      {reservedIps.length ? (
+        <DynamicTable.Body>{generateRows(reservedIps)}</DynamicTable.Body>
       ) : (
         <TableCaption>
           <TableCaption.Title>

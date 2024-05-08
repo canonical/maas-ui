@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
-
 import { useSelector } from "react-redux";
+
+import { reservedIpActions } from "../reservedip";
 
 import { getHasIPAddresses } from "./utils";
 
 import { useFetchActions } from "@/app/base/hooks";
-import type { StaticDHCPLease } from "@/app/store/reservedip/types/base";
+import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
+import { reservedIp } from "@/testing/factories/reservedip";
 
 /**
  * Get if DHCP is enabled on a given subnet
@@ -47,26 +48,16 @@ export const useCanBeDeleted = (id?: Subnet[SubnetMeta.PK] | null): boolean => {
   return !isDHCPEnabled || (isDHCPEnabled && !getHasIPAddresses(subnet));
 };
 
-export const useStaticDHCPLeases = (
-  _subnetId: Subnet[SubnetMeta.PK] | null
-) => {
-  const [staticDHCPLeases, setStaticDHCPLeases] = useState<StaticDHCPLease[]>(
-    []
+export const useReservedIps = (subnetId: Subnet[SubnetMeta.PK]) => {
+  const reservedIps = useSelector((state: RootState) =>
+    reservedIpSelectors.getBySubnet(state, subnetId)
   );
 
-  // TODO: replace mock implementation with API call https://warthogs.atlassian.net/browse/MAASENG-2983
-  const fetchStaticDHCPLeases = async () => {
-    if (import.meta.env.VITE_APP_STATIC_IPS_ENABLED === "true") {
-      const { array } = await import("cooky-cutter");
-      const { staticDHCPLease } = await import("@/testing/factories/subnet");
-      return array(staticDHCPLease, 5)();
-    }
-    return [];
-  };
+  useFetchActions([reservedIpActions.fetch]);
 
-  useEffect(() => {
-    fetchStaticDHCPLeases().then(setStaticDHCPLeases);
-  }, []);
+  if (reservedIps.length === 0) {
+    return [reservedIp(), reservedIp(), reservedIp()];
+  }
 
-  return staticDHCPLeases;
+  return reservedIps;
 };

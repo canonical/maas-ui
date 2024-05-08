@@ -4,18 +4,18 @@ import { Button } from "@canonical/react-components";
 import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { useStaticDHCPLeases } from "@/app/store/subnet/hooks";
+import { useReservedIps } from "@/app/store/subnet/hooks";
 import type { SubnetMeta } from "@/app/store/subnet/types";
 import type { Subnet } from "@/app/store/subnet/types/base";
 import StaticDHCPTable from "@/app/subnets/views/SubnetDetails/StaticDHCPLease/StaticDHCPTable";
 
 type StaticDHCPLeaseProps = {
-  subnetId: Subnet[SubnetMeta.PK] | null;
+  subnetId: Subnet[SubnetMeta.PK];
 };
 
 const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
   const { setSidePanelContent } = useSidePanel();
-  const staticDHCPLeases = useStaticDHCPLeases(subnetId);
+  const staticDHCPLeases = useReservedIps(subnetId);
 
   return (
     <>
@@ -36,7 +36,7 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
           </Button>
         </MainToolbar.Controls>
       </MainToolbar>
-      <StaticDHCPTable staticDHCPLeases={staticDHCPLeases} />
+      <StaticDHCPTable reservedIps={staticDHCPLeases} />
     </>
   );
 };
