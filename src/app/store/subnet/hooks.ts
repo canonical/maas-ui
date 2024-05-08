@@ -5,11 +5,11 @@ import { useSelector } from "react-redux";
 import { getHasIPAddresses } from "./utils";
 
 import { useFetchActions } from "@/app/base/hooks";
+import type { StaticDHCPLease } from "@/app/store/reservedip/types/base";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
-import type { StaticDHCPLease } from "@/app/store/subnet/types/base";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
 

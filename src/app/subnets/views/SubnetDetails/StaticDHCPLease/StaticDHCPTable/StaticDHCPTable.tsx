@@ -2,7 +2,7 @@ import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Link } from "react-router-dom";
 
 import TableActions from "@/app/base/components/TableActions";
-import type { StaticDHCPLease } from "@/app/store/subnet/types/base";
+import type { StaticDHCPLease } from "@/app/store/reservedip/types/base";
 
 const headers = [
   { content: "IP Address", className: "ip-col", sortKey: "ip_address" },

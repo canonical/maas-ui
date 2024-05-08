@@ -76,6 +76,7 @@ import type { NotificationState } from "@/app/store/notification/types";
 import type { PackageRepositoryState } from "@/app/store/packagerepository/types";
 import { DEFAULT_STATUSES as DEFAULT_POD_STATUSES } from "@/app/store/pod/slice";
 import type { PodState, PodStatus, PodStatuses } from "@/app/store/pod/types";
+import type { ReservedIpState } from "@/app/store/reservedip/types";
 import type { ResourcePoolState } from "@/app/store/resourcepool/types";
 import type { RootState } from "@/app/store/root/types";
 import type { ScriptState } from "@/app/store/script/types";
@@ -536,6 +537,10 @@ export const nodeScriptResultState = define<NodeScriptResultState>({
   items: () => ({}),
 });
 
+export const reservedIpState = define<ReservedIpState>({
+  ...defaultState,
+});
+
 export const resourcePoolState = define<ResourcePoolState>({
   ...defaultState,
 });
@@ -680,6 +685,7 @@ export const rootState = define<RootState>({
   nodescriptresult: nodeScriptResultState,
   packagerepository: packageRepositoryState,
   pod: podState,
+  reservedip: reservedIpState,
   resourcepool: resourcePoolState,
   router: routerState,
   scriptresult: scriptResultState,

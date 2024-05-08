@@ -5,6 +5,7 @@ import { model, timestampedModel } from "./model";
 import { simpleNode } from "./nodes";
 
 import { PodType } from "@/app/store/pod/constants";
+import type { StaticDHCPLease } from "@/app/store/reservedip/types/base";
 import { IPAddressType } from "@/app/store/subnet/types";
 import type {
   BaseSubnet,
@@ -19,7 +20,6 @@ import type {
   SubnetScanFailure,
   SubnetScanResult,
 } from "@/app/store/subnet/types";
-import type { StaticDHCPLease } from "@/app/store/subnet/types/base";
 import type { Model, TimestampedModel } from "@/app/store/types/model";
 import type { SimpleNode } from "@/app/store/types/node";
 import { NodeType } from "@/app/store/types/node";
