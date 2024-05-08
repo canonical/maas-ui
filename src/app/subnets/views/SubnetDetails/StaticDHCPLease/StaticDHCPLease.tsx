@@ -1,9 +1,12 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import { SubnetActionTypes, SubnetDetailsSidePanelViews } from "../constants";
 
 import { useSidePanel } from "@/app/base/side-panel-context";
+import reservedIpSelectors from "@/app/store/reservedip/selectors";
+import type { RootState } from "@/app/store/root/types";
 import { useReservedIps } from "@/app/store/subnet/hooks";
 import type { SubnetMeta } from "@/app/store/subnet/types";
 import type { Subnet } from "@/app/store/subnet/types/base";
@@ -16,6 +19,9 @@ type StaticDHCPLeaseProps = {
 const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
   const { setSidePanelContent } = useSidePanel();
   const staticDHCPLeases = useReservedIps(subnetId);
+  const loading = useSelector((state: RootState) =>
+    reservedIpSelectors.loading(state)
+  );
 
   return (
     <>
@@ -36,7 +42,7 @@ const StaticDHCPLease = ({ subnetId }: StaticDHCPLeaseProps) => {
           </Button>
         </MainToolbar.Controls>
       </MainToolbar>
-      <StaticDHCPTable reservedIps={staticDHCPLeases} />
+      <StaticDHCPTable loading={loading} reservedIps={staticDHCPLeases} />
     </>
   );
 };

@@ -57,9 +57,10 @@ const generateRows = (reservedIps: ReservedIp[]) =>
 
 type Props = {
   reservedIps: ReservedIp[];
+  loading: boolean;
 };
 
-const StaticDHCPTable = ({ reservedIps }: Props) => {
+const StaticDHCPTable = ({ reservedIps, loading }: Props) => {
   return (
     <DynamicTable
       aria-label="Static DHCP leases"
@@ -75,7 +76,9 @@ const StaticDHCPTable = ({ reservedIps }: Props) => {
           ))}
         </tr>
       </thead>
-      {reservedIps.length ? (
+      {loading ? (
+        <DynamicTable.Loading />
+      ) : reservedIps.length ? (
         <DynamicTable.Body>{generateRows(reservedIps)}</DynamicTable.Body>
       ) : (
         <TableCaption>
