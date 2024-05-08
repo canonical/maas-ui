@@ -2,10 +2,8 @@ import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Link } from "react-router-dom";
 
 import TableActions from "@/app/base/components/TableActions";
-import urls from "@/app/base/urls";
 import type { ReservedIp } from "@/app/store/reservedip/types/base";
-import type { Node } from "@/app/store/types/node";
-import { NodeType } from "@/app/store/types/node";
+import { getNodeUrl } from "@/app/store/reservedip/utils";
 import { getNodeTypeDisplay } from "@/app/store/utils";
 
 const headers = [
@@ -21,17 +19,6 @@ const headers = [
   { content: "Comment", className: "comment-col", sortKey: "comment" },
   { content: "Actions", className: "actions-col" },
 ] as const;
-
-const getNodeUrl = (type: NodeType, system_id: Node["system_id"]) => {
-  switch (type) {
-    case NodeType.MACHINE:
-      return urls.machines.machine.index({ id: system_id });
-    case NodeType.DEVICE:
-      return urls.devices.device.index({ id: system_id });
-    default:
-      return urls.controllers.controller.index({ id: system_id });
-  }
-};
 
 const generateRows = (reservedIps: ReservedIp[]) =>
   reservedIps.map((reservedIp) => {
