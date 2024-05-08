@@ -8,8 +8,8 @@ import type { TimestampedModel } from "@/app/store/types/model";
 import { NodeType } from "@/app/store/types/node";
 
 export const reservedIpNodeSummary = define<ReservedIpNodeSummary>({
-  fqdn: "node.example.com",
-  hostname: "node",
+  fqdn: "springbok.maas",
+  hostname: "springbok",
   node_type: NodeType.MACHINE,
   system_id: "abc123",
   via: "eth0",
