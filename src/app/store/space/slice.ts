@@ -6,6 +6,7 @@ import type { CreateParams, Space, SpaceState, UpdateParams } from "./types";
 
 import {
   generateCommonReducers,
+  generateGetReducers,
   genericInitialState,
 } from "@/app/store/utils/slice";
 
@@ -22,45 +23,10 @@ const spaceSlice = createSlice({
       CreateParams,
       UpdateParams
     >(SpaceMeta.MODEL, SpaceMeta.PK),
-    get: {
-      prepare: (id: Space[SpaceMeta.PK]) => ({
-        meta: {
-          model: SpaceMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { [SpaceMeta.PK]: id },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    getError: (
-      state: SpaceState,
-      action: PayloadAction<SpaceState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.loading = false;
-      state.saving = false;
-    },
-    getStart: (state: SpaceState) => {
-      state.loading = true;
-    },
-    getSuccess: (state: SpaceState, action: PayloadAction<Space>) => {
-      const space = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Space) => draftItem[SpaceMeta.PK] === space[SpaceMeta.PK]
-      );
-      if (i !== -1) {
-        state.items[i] = space;
-      } else {
-        state.items.push(space);
-      }
-      state.loading = false;
-    },
+    ...generateGetReducers<SpaceState, Space, SpaceMeta.PK>(
+      SpaceMeta.MODEL,
+      SpaceMeta.PK
+    ),
     setActive: {
       prepare: (id: Space[SpaceMeta.PK] | null) => ({
         meta: {

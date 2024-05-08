@@ -500,3 +500,52 @@ export const generateStatusHandlers = <
     },
     {}
   );
+
+export const generateGetReducers = <
+  S extends CommonStateTypes,
+  T extends S["items"][0],
+  K extends keyof T,
+>(
+  name: keyof SliceState<S>,
+  indexKey: K
+) => {
+  return {
+    get: {
+      prepare: (id: T[K]) => ({
+        meta: {
+          model: name,
+          method: "get",
+        },
+        payload: {
+          params: {
+            id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getStart: (state: S) => {
+      state.loading = true;
+    },
+    getError: (state: S, action: PayloadAction<S["errors"]>) => {
+      state.errors = action.payload;
+      state.loading = false;
+      state.saving = false;
+    },
+    getSuccess: (state: S, action: PayloadAction<T>) => {
+      const item = action.payload;
+      const i = (state.items as T[]).findIndex(
+        (draftItem) => draftItem[indexKey] === item[indexKey]
+      );
+      if (i !== -1) {
+        state.items[i] = item;
+      } else {
+        (state.items as T[]).push(item);
+      }
+      state.loading = false;
+      state.saving = false;
+    },
+  };
+};
