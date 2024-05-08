@@ -60,7 +60,6 @@ type Props = {
 };
 
 const StaticDHCPTable = ({ reservedIps }: Props) => {
-  console.log(reservedIps);
   return (
     <DynamicTable
       aria-label="Static DHCP leases"
