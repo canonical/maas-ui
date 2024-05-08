@@ -23,11 +23,10 @@ const fabricSlice = createSlice({
       CreateParams,
       UpdateParams
     >(FabricMeta.MODEL, FabricMeta.PK),
-    ...generateGetReducers<FabricState, Fabric, FabricMeta.PK>(
-      FabricMeta.MODEL,
-      FabricMeta.PK,
-      null
-    ),
+    ...generateGetReducers<FabricState, Fabric, FabricMeta.PK>({
+      modelName: FabricMeta.MODEL,
+      primaryKey: FabricMeta.PK,
+    }),
     setActive: {
       prepare: (id: Fabric[FabricMeta.PK] | null) => ({
         meta: {

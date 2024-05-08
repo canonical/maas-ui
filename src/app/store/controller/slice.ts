@@ -290,12 +290,12 @@ const controllerSlice = createSlice({
       state.loading = false;
       state.loaded = true;
     },
-    ...generateGetReducers<ControllerState, Controller, ControllerMeta.PK>(
-      ControllerMeta.MODEL,
-      ControllerMeta.PK,
-      DEFAULT_STATUSES,
-      setErrors
-    ),
+    ...generateGetReducers<ControllerState, Controller, ControllerMeta.PK>({
+      modelName: ControllerMeta.MODEL,
+      primaryKey: ControllerMeta.PK,
+      defaultStatuses: DEFAULT_STATUSES,
+      setErrors,
+    }),
     getSummaryXml: {
       prepare: (params: GetSummaryXmlParams) => ({
         meta: {

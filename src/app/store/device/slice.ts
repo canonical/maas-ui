@@ -226,12 +226,12 @@ const deviceSlice = createSlice({
     deleteInterfaceError: statusHandlers.deleteInterface.error,
     deleteInterfaceStart: statusHandlers.deleteInterface.start,
     deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
-    ...generateGetReducers(
-      DeviceMeta.MODEL,
-      DeviceMeta.PK,
-      DEFAULT_STATUSES,
-      setErrors
-    ),
+    ...generateGetReducers({
+      modelName: DeviceMeta.MODEL,
+      primaryKey: DeviceMeta.PK,
+      defaultStatuses: DEFAULT_STATUSES,
+      setErrors,
+    }),
     linkSubnet: {
       prepare: (params: LinkSubnetParams) => ({
         meta: {

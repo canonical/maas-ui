@@ -152,11 +152,11 @@ const podSlice = createSlice({
         }
       });
     },
-    ...generateGetReducers<PodState, Pod, PodMeta.PK>(
-      PodMeta.MODEL,
-      PodMeta.PK,
-      DEFAULT_STATUSES
-    ),
+    ...generateGetReducers<PodState, Pod, PodMeta.PK>({
+      modelName: PodMeta.MODEL,
+      primaryKey: PodMeta.PK,
+      defaultStatuses: DEFAULT_STATUSES,
+    }),
     getProjects: {
       prepare: (params: GetProjectsParams) => ({
         meta: {

@@ -93,11 +93,11 @@ const subnetSlice = createSlice({
       state.loading = false;
       state.loaded = true;
     },
-    ...generateGetReducers<SubnetState, Subnet, SubnetMeta.PK>(
-      SubnetMeta.MODEL,
-      SubnetMeta.PK,
-      DEFAULT_STATUSES
-    ),
+    ...generateGetReducers<SubnetState, Subnet, SubnetMeta.PK>({
+      modelName: SubnetMeta.MODEL,
+      primaryKey: SubnetMeta.PK,
+      defaultStatuses: DEFAULT_STATUSES,
+    }),
     scan: {
       prepare: (id: Subnet[SubnetMeta.PK]) => ({
         meta: {

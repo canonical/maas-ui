@@ -103,11 +103,11 @@ const vlanSlice = createSlice({
       state.loading = false;
       state.loaded = true;
     },
-    ...generateGetReducers<VLANState, VLAN, VLANMeta.PK>(
-      VLANMeta.MODEL,
-      VLANMeta.PK,
-      DEFAULT_STATUSES
-    ),
+    ...generateGetReducers<VLANState, VLAN, VLANMeta.PK>({
+      modelName: VLANMeta.MODEL,
+      primaryKey: VLANMeta.PK,
+      defaultStatuses: DEFAULT_STATUSES,
+    }),
     setActive: {
       prepare: (id: VLAN[VLANMeta.PK] | null) => ({
         meta: {

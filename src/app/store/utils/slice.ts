@@ -505,28 +505,33 @@ export const generateGetReducers = <
   S extends CommonStateTypes | StatusStateTypes | EventErrorStateTypes,
   T extends S["items"][0],
   K extends keyof T,
->(
-  name: keyof SliceState<S>,
-  indexKey: K,
-  defaultStatuses: S extends StatusStateTypes
+>({
+  modelName,
+  primaryKey,
+  defaultStatuses,
+  setErrors,
+}: {
+  modelName: keyof SliceState<S>;
+  primaryKey: K;
+  defaultStatuses?: S extends StatusStateTypes
     ? S["statuses"][T[K] & keyof S["statuses"]]
-    : null,
+    : never;
   setErrors?: (
     state: S,
     action: PayloadAction<S["errors"]> | null,
     event: string | null
-  ) => S
-) => {
+  ) => S;
+}) => {
   return {
     get: {
       prepare: (id: T[K]) => ({
         meta: {
-          model: name,
+          model: modelName,
           method: "get",
         },
         payload: {
           params: {
-            [indexKey]: id,
+            [primaryKey]: id,
           },
         },
       }),
@@ -548,7 +553,7 @@ export const generateGetReducers = <
     getSuccess: (state: S, action: PayloadAction<T>) => {
       const item = action.payload;
       const index = (state.items as T[]).findIndex(
-        (draftItem: T) => draftItem[indexKey] === item[indexKey]
+        (draftItem: T) => draftItem[primaryKey] === item[primaryKey]
       );
       if (index !== -1) {
         state.items[index] = item;
@@ -556,7 +561,7 @@ export const generateGetReducers = <
         (state.items as T[]).push(item);
         if ("statuses" in state && defaultStatuses) {
           (state.statuses as StatusStateTypes["statuses"])[
-            item[indexKey] as keyof StatusStateTypes["statuses"]
+            item[primaryKey] as keyof StatusStateTypes["statuses"]
           ] = defaultStatuses;
         }
       }

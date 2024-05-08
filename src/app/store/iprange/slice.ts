@@ -24,11 +24,10 @@ const ipRangeSlice = createSlice({
       CreateParams,
       UpdateParams
     >(IPRangeMeta.MODEL, IPRangeMeta.PK),
-    ...generateGetReducers<IPRangeState, IPRange, IPRangeMeta.PK>(
-      IPRangeMeta.MODEL,
-      IPRangeMeta.PK,
-      null
-    ),
+    ...generateGetReducers<IPRangeState, IPRange, IPRangeMeta.PK>({
+      modelName: IPRangeMeta.MODEL,
+      primaryKey: IPRangeMeta.PK,
+    }),
   },
 });
 
