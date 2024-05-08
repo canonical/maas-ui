@@ -12,7 +12,6 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
-import { reservedIp } from "@/testing/factories/reservedip";
 
 /**
  * Get if DHCP is enabled on a given subnet
@@ -54,10 +53,6 @@ export const useReservedIps = (subnetId: Subnet[SubnetMeta.PK]) => {
   );
 
   useFetchActions([reservedIpActions.fetch]);
-
-  if (reservedIps.length === 0) {
-    return [reservedIp(), reservedIp(), reservedIp()];
-  }
 
   return reservedIps;
 };
