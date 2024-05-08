@@ -2,7 +2,11 @@ import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Link } from "react-router-dom";
 
 import TableActions from "@/app/base/components/TableActions";
+import urls from "@/app/base/urls";
 import type { ReservedIp } from "@/app/store/reservedip/types/base";
+import type { Node } from "@/app/store/types/node";
+import { NodeType } from "@/app/store/types/node";
+import { getNodeTypeDisplay } from "@/app/store/utils";
 
 const headers = [
   { content: "IP Address", className: "ip-col", sortKey: "ip_address" },
@@ -18,6 +22,17 @@ const headers = [
   { content: "Actions", className: "actions-col" },
 ] as const;
 
+const getNodeUrl = (type: NodeType, system_id: Node["system_id"]) => {
+  switch (type) {
+    case NodeType.MACHINE:
+      return urls.machines.machine.index({ id: system_id });
+    case NodeType.DEVICE:
+      return urls.devices.device.index({ id: system_id });
+    default:
+      return urls.controllers.controller.index({ id: system_id });
+  }
+};
+
 const generateRows = (reservedIps: ReservedIp[]) =>
   reservedIps.map((reservedIp) => {
     return (
@@ -26,7 +41,12 @@ const generateRows = (reservedIps: ReservedIp[]) =>
         <td>{reservedIp.mac_address}</td>
         <td>
           {reservedIp?.node_summary ? (
-            <Link to="#">
+            <Link
+              to={getNodeUrl(
+                reservedIp.node_summary.node_type,
+                reservedIp.node_summary.system_id
+              )}
+            >
               <strong>{reservedIp.node_summary.hostname}</strong>.
               {reservedIp.node_summary.fqdn.split(".")[1]}
             </Link>
@@ -35,7 +55,11 @@ const generateRows = (reservedIps: ReservedIp[]) =>
           )}
         </td>
         <td>{reservedIp.node_summary?.via || "—"}</td>
-        <td>{reservedIp.node_summary?.node_type || "—"}</td>
+        <td>
+          {reservedIp.node_summary?.node_type !== undefined
+            ? getNodeTypeDisplay(reservedIp.node_summary.node_type)
+            : "—"}
+        </td>
         <td>{reservedIp.comment || "—"}</td>
         <td>
           <TableActions onDelete={() => {}} onEdit={() => {}} />
@@ -49,6 +73,7 @@ type Props = {
 };
 
 const StaticDHCPTable = ({ reservedIps }: Props) => {
+  console.log(reservedIps);
   return (
     <DynamicTable
       aria-label="Static DHCP leases"
