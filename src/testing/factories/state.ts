@@ -539,6 +539,7 @@ export const nodeScriptResultState = define<NodeScriptResultState>({
 
 export const reservedIpState = define<ReservedIpState>({
   ...defaultState,
+  errors: null,
 });
 
 export const resourcePoolState = define<ResourcePoolState>({
