@@ -19,6 +19,7 @@ import { generateStatusHandlers } from "@/app/store/utils";
 import type { GenericItemMeta } from "@/app/store/utils";
 import {
   generateCommonReducers,
+  generateGetReducers,
   genericInitialState,
 } from "@/app/store/utils/slice";
 
@@ -151,44 +152,11 @@ const podSlice = createSlice({
         }
       });
     },
-    get: {
-      prepare: (podID: Pod[PodMeta.PK]) => ({
-        meta: {
-          model: PodMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { id: podID },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    getStart: (state: PodState) => {
-      state.loading = true;
-    },
-    getError: (state: PodState, action: PayloadAction<PodState["errors"]>) => {
-      state.errors = action.payload;
-      state.loading = false;
-      state.saving = false;
-    },
-    getSuccess: (state: PodState, action: PayloadAction<Pod>) => {
-      const pod = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Pod) => draftItem.id === pod.id
-      );
-      if (i !== -1) {
-        state.items[i] = pod;
-      } else {
-        state.items.push(pod);
-        // Set up the statuses for this pod.
-        state.statuses[pod.id] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
-    },
+    ...generateGetReducers<PodState, Pod, PodMeta.PK>(
+      PodMeta.MODEL,
+      PodMeta.PK,
+      DEFAULT_STATUSES
+    ),
     getProjects: {
       prepare: (params: GetProjectsParams) => ({
         meta: {

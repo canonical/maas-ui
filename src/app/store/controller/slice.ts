@@ -25,6 +25,7 @@ import { NodeActions } from "@/app/store/types/node";
 import type { GenericItemMeta, StatusHandlers } from "@/app/store/utils/slice";
 import {
   generateCommonReducers,
+  generateGetReducers,
   generateStatusHandlers,
   genericInitialState,
   updateErrors,
@@ -289,49 +290,12 @@ const controllerSlice = createSlice({
       state.loading = false;
       state.loaded = true;
     },
-    get: {
-      prepare: (id: Controller[ControllerMeta.PK]) => ({
-        meta: {
-          model: ControllerMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { [ControllerMeta.PK]: id },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    getError: (
-      state: ControllerState,
-      action: PayloadAction<ControllerState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state = setErrors(state, action, "get");
-      state.loading = false;
-      state.saving = false;
-    },
-    getStart: (state: ControllerState) => {
-      state.loading = true;
-    },
-    getSuccess: (state: ControllerState, action: PayloadAction<Controller>) => {
-      const controller = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Controller) =>
-          draftItem[ControllerMeta.PK] === controller[ControllerMeta.PK]
-      );
-      if (i !== -1) {
-        state.items[i] = controller;
-      } else {
-        state.items.push(controller);
-        // Set up the statuses for this controller.
-        state.statuses[controller[ControllerMeta.PK]] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
-    },
+    ...generateGetReducers<ControllerState, Controller, ControllerMeta.PK>(
+      ControllerMeta.MODEL,
+      ControllerMeta.PK,
+      DEFAULT_STATUSES,
+      setErrors
+    ),
     getSummaryXml: {
       prepare: (params: GetSummaryXmlParams) => ({
         meta: {

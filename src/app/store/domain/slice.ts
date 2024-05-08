@@ -42,7 +42,8 @@ const domainSlice = createSlice({
     >(DomainMeta.MODEL, DomainMeta.PK),
     ...generateGetReducers<DomainState, Domain, DomainMeta.PK>(
       DomainMeta.MODEL,
-      DomainMeta.PK
+      DomainMeta.PK,
+      null
     ),
     setDefault: {
       prepare: (id: Domain[DomainMeta.PK]) => ({
@@ -67,16 +68,7 @@ const domainSlice = createSlice({
       action: PayloadAction<SetDefaultErrors>
     ) => {
       state.saving = false;
-      // API seems to return the domain id in payload.error not an error message
-      // when the domain can't be found. This override can be removed when the
-      // bug is fixed: https://bugs.launchpad.net/maas/+bug/1931654.
-      if (!isNaN(Number(action.payload))) {
-        // returned error string is a number (id of the domain)
-        state.errors = "There was an error when setting default domain.";
-      } else {
-        // returned error string is an error message
-        state.errors = action.payload;
-      }
+      state.errors = action.payload;
     },
     setDefaultSuccess: (state: DomainState, action: PayloadAction<Domain>) => {
       state.saving = false;
@@ -112,16 +104,7 @@ const domainSlice = createSlice({
       action: PayloadAction<DomainState["errors"]>
     ) => {
       state.active = null;
-      // API seems to return the domain id in payload.error not an error message
-      // when the domain can't be found. This override can be removed when the
-      // bug is fixed: https://bugs.launchpad.net/maas/+bug/1931654.
-      if (!isNaN(Number(action.payload))) {
-        // returned error string is a number (id of the domain)
-        state.errors = "There was an error when setting active domain.";
-      } else {
-        // returned error string is an error message
-        state.errors = action.payload;
-      }
+      state.errors = action.payload;
     },
     setActiveSuccess: (
       state: DomainState,

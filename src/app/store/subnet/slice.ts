@@ -15,6 +15,7 @@ import {
   genericInitialState,
   generateStatusHandlers,
   updateErrors,
+  generateGetReducers,
 } from "@/app/store/utils/slice";
 import type { GenericItemMeta } from "@/app/store/utils/slice";
 import { isId } from "@/app/utils";
@@ -92,47 +93,11 @@ const subnetSlice = createSlice({
       state.loading = false;
       state.loaded = true;
     },
-    get: {
-      prepare: (id: Subnet[SubnetMeta.PK]) => ({
-        meta: {
-          model: SubnetMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { [SubnetMeta.PK]: id },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    getError: (
-      state: SubnetState,
-      action: PayloadAction<SubnetState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.loading = false;
-      state.saving = false;
-    },
-    getStart: (state: SubnetState) => {
-      state.loading = true;
-    },
-    getSuccess: (state: SubnetState, action: PayloadAction<Subnet>) => {
-      const subnet = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Subnet) =>
-          draftItem[SubnetMeta.PK] === subnet[SubnetMeta.PK]
-      );
-      if (i !== -1) {
-        state.items[i] = subnet;
-      } else {
-        state.items.push(subnet);
-        state.statuses[subnet[SubnetMeta.PK]] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
-    },
+    ...generateGetReducers<SubnetState, Subnet, SubnetMeta.PK>(
+      SubnetMeta.MODEL,
+      SubnetMeta.PK,
+      DEFAULT_STATUSES
+    ),
     scan: {
       prepare: (id: Subnet[SubnetMeta.PK]) => ({
         meta: {

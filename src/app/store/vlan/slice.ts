@@ -14,6 +14,7 @@ import type {
 
 import {
   generateCommonReducers,
+  generateGetReducers,
   generateStatusHandlers,
   genericInitialState,
   updateErrors,
@@ -102,46 +103,11 @@ const vlanSlice = createSlice({
       state.loading = false;
       state.loaded = true;
     },
-    get: {
-      prepare: (id: VLAN[VLANMeta.PK]) => ({
-        meta: {
-          model: VLANMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { [VLANMeta.PK]: id },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    getError: (
-      state: VLANState,
-      action: PayloadAction<VLANState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.loading = false;
-      state.saving = false;
-    },
-    getStart: (state: VLANState) => {
-      state.loading = true;
-    },
-    getSuccess: (state: VLANState, action: PayloadAction<VLAN>) => {
-      const vlan = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: VLAN) => draftItem[VLANMeta.PK] === vlan[VLANMeta.PK]
-      );
-      if (i !== -1) {
-        state.items[i] = vlan;
-      } else {
-        state.items.push(vlan);
-        state.statuses[vlan[VLANMeta.PK]] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
-    },
+    ...generateGetReducers<VLANState, VLAN, VLANMeta.PK>(
+      VLANMeta.MODEL,
+      VLANMeta.PK,
+      DEFAULT_STATUSES
+    ),
     setActive: {
       prepare: (id: VLAN[VLANMeta.PK] | null) => ({
         meta: {

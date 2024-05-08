@@ -502,12 +502,20 @@ export const generateStatusHandlers = <
   );
 
 export const generateGetReducers = <
-  S extends CommonStateTypes,
+  S extends CommonStateTypes | StatusStateTypes | EventErrorStateTypes,
   T extends S["items"][0],
   K extends keyof T,
 >(
   name: keyof SliceState<S>,
-  indexKey: K
+  indexKey: K,
+  defaultStatuses: S extends StatusStateTypes
+    ? S["statuses"][T[K] & keyof S["statuses"]]
+    : null,
+  setErrors?: (
+    state: S,
+    action: PayloadAction<S["errors"]> | null,
+    event: string | null
+  ) => S
 ) => {
   return {
     get: {
@@ -518,7 +526,7 @@ export const generateGetReducers = <
         },
         payload: {
           params: {
-            id,
+            [indexKey]: id,
           },
         },
       }),
@@ -531,18 +539,26 @@ export const generateGetReducers = <
     },
     getError: (state: S, action: PayloadAction<S["errors"]>) => {
       state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "get");
+      }
       state.loading = false;
       state.saving = false;
     },
     getSuccess: (state: S, action: PayloadAction<T>) => {
       const item = action.payload;
-      const i = (state.items as T[]).findIndex(
-        (draftItem) => draftItem[indexKey] === item[indexKey]
+      const index = (state.items as T[]).findIndex(
+        (draftItem: T) => draftItem[indexKey] === item[indexKey]
       );
-      if (i !== -1) {
-        state.items[i] = item;
+      if (index !== -1) {
+        state.items[index] = item;
       } else {
         (state.items as T[]).push(item);
+        if ("statuses" in state && defaultStatuses) {
+          (state.statuses as StatusStateTypes["statuses"])[
+            item[indexKey] as keyof StatusStateTypes["statuses"]
+          ] = defaultStatuses;
+        }
       }
       state.loading = false;
       state.saving = false;

@@ -26,7 +26,8 @@ const ipRangeSlice = createSlice({
     >(IPRangeMeta.MODEL, IPRangeMeta.PK),
     ...generateGetReducers<IPRangeState, IPRange, IPRangeMeta.PK>(
       IPRangeMeta.MODEL,
-      IPRangeMeta.PK
+      IPRangeMeta.PK,
+      null
     ),
   },
 });

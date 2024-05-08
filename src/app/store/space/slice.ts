@@ -25,7 +25,8 @@ const spaceSlice = createSlice({
     >(SpaceMeta.MODEL, SpaceMeta.PK),
     ...generateGetReducers<SpaceState, Space, SpaceMeta.PK>(
       SpaceMeta.MODEL,
-      SpaceMeta.PK
+      SpaceMeta.PK,
+      null
     ),
     setActive: {
       prepare: (id: Space[SpaceMeta.PK] | null) => ({

@@ -25,7 +25,8 @@ const fabricSlice = createSlice({
     >(FabricMeta.MODEL, FabricMeta.PK),
     ...generateGetReducers<FabricState, Fabric, FabricMeta.PK>(
       FabricMeta.MODEL,
-      FabricMeta.PK
+      FabricMeta.PK,
+      null
     ),
     setActive: {
       prepare: (id: Fabric[FabricMeta.PK] | null) => ({
