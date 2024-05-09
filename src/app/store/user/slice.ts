@@ -49,9 +49,7 @@ const userSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     markIntroCompleteError: (
       state: UserState,

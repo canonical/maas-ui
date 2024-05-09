@@ -239,9 +239,7 @@ const generateActionParams = <P extends BaseMachineActionParams>(
       },
     };
   },
-  reducer: () => {
-    // No state changes need to be handled for this action.
-  },
+  reducer: () => {},
 });
 
 const invalidateQueries = (state: MachineState) => {
@@ -298,9 +296,7 @@ const machineSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     addChassisError: (
       state: MachineState,
@@ -333,9 +329,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     applyStorageLayoutError: statusHandlers.applyStorageLayout.error,
     applyStorageLayoutStart: statusHandlers.applyStorageLayout.start,
@@ -352,9 +346,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     checkPowerError: statusHandlers.checkPower.error,
     checkPowerStart: statusHandlers.checkPower.start,
@@ -387,9 +379,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     count: {
       prepare: (callId: string, filters?: FetchFilters | null) => ({
@@ -404,9 +394,7 @@ const machineSlice = createSlice({
             }
           : null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     countError: {
       prepare: (callId: string, errors: MachineStateCount["errors"]) => ({
@@ -499,9 +487,7 @@ const machineSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createBondError: statusHandlers.createBond.error,
     createBondStart: statusHandlers.createBond.start,
@@ -516,9 +502,7 @@ const machineSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createBridgeError: statusHandlers.createBridge.error,
     createBridgeStart: statusHandlers.createBridge.start,
@@ -537,9 +521,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createCacheSetError: statusHandlers.createCacheSet.error,
     createCacheSetStart: statusHandlers.createCacheSet.start,
@@ -559,9 +541,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createLogicalVolumeError: statusHandlers.createLogicalVolume.error,
     createLogicalVolumeStart: statusHandlers.createLogicalVolume.start,
@@ -583,9 +563,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createPartitionError: statusHandlers.createPartition.error,
     createPartitionStart: statusHandlers.createPartition.start,
@@ -600,9 +578,7 @@ const machineSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createPhysicalError: statusHandlers.createPhysical.error,
     createPhysicalStart: statusHandlers.createPhysical.start,
@@ -625,9 +601,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createRaidError: statusHandlers.createRaid.error,
     createRaidStart: statusHandlers.createRaid.start,
@@ -642,9 +616,7 @@ const machineSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createVlanError: statusHandlers.createVlan.error,
     createVlanStart: statusHandlers.createVlan.start,
@@ -663,9 +635,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createVmfsDatastoreError: statusHandlers.createVmfsDatastore.error,
     createVmfsDatastoreStart: statusHandlers.createVmfsDatastore.start,
@@ -684,9 +654,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createVolumeGroupError: statusHandlers.createVolumeGroup.error,
     createVolumeGroupStart: statusHandlers.createVolumeGroup.start,
@@ -757,9 +725,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteCacheSetError: statusHandlers.deleteCacheSet.error,
     deleteCacheSetStart: statusHandlers.deleteCacheSet.start,
@@ -777,9 +743,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteDiskError: statusHandlers.deleteDisk.error,
     deleteDiskStart: statusHandlers.deleteDisk.start,
@@ -799,9 +763,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteFilesystemError: statusHandlers.deleteFilesystem.error,
     deleteFilesystemStart: statusHandlers.deleteFilesystem.start,
@@ -819,9 +781,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteInterfaceError: statusHandlers.deleteInterface.error,
     deleteInterfaceStart: statusHandlers.deleteInterface.start,
@@ -839,9 +799,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deletePartitionError: statusHandlers.deletePartition.error,
     deletePartitionStart: statusHandlers.deletePartition.start,
@@ -859,9 +817,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteVolumeGroupError: statusHandlers.deleteVolumeGroup.error,
     deleteVolumeGroupStart: statusHandlers.deleteVolumeGroup.start,
@@ -892,9 +848,7 @@ const machineSlice = createSlice({
             }
           : null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchError: {
       prepare: (callId: string, errors: MachineStateList["errors"]) => ({
@@ -1007,9 +961,7 @@ const machineSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     filterGroupsError: (
       state: MachineState,
@@ -1048,9 +1000,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     filterOptionsError: {
       prepare: (
@@ -1176,9 +1126,7 @@ const machineSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     get: {
       prepare: (machineID: Machine[MachineMeta.PK], callId: string) => ({
@@ -1191,9 +1139,7 @@ const machineSlice = createSlice({
           params: { system_id: machineID },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getError: {
       prepare: (
@@ -1313,9 +1259,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getSummaryXmlError: statusHandlers.getSummaryXml.error,
     getSummaryXmlStart: statusHandlers.getSummaryXml.start,
@@ -1335,9 +1279,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getSummaryYamlError: statusHandlers.getSummaryYaml.error,
     getSummaryYamlStart: statusHandlers.getSummaryYaml.start,
@@ -1352,9 +1294,7 @@ const machineSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     linkSubnetError: statusHandlers.linkSubnet.error,
     linkSubnetStart: statusHandlers.linkSubnet.start,
@@ -1390,9 +1330,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     mountSpecialError: statusHandlers.mountSpecial.error,
     mountSpecialStart: statusHandlers.mountSpecial.start,
@@ -1459,9 +1397,7 @@ const machineSlice = createSlice({
           params: system_id ? { system_id } : null,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: MachineState,
@@ -1490,9 +1426,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setBootDiskError: statusHandlers.setBootDisk.error,
     setBootDiskStart: statusHandlers.setBootDisk.start,
@@ -1545,9 +1479,7 @@ const machineSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     softOffError: statusHandlers.softOff.error,
     softOffStart: statusHandlers.softOff.start,
@@ -1568,9 +1500,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     [NodeActions.TAG]: generateActionParams<TagParams>(NodeActions.TAG),
     [`${NodeActions.TAG}Error`]: statusHandlers.tag.error,
@@ -1600,9 +1530,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     unlinkSubnetError: statusHandlers.unlinkSubnet.error,
     unlinkSubnetStart: statusHandlers.unlinkSubnet.start,
@@ -1620,9 +1548,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     unmountSpecialError: statusHandlers.unmountSpecial.error,
     unmountSpecialStart: statusHandlers.unmountSpecial.start,
@@ -1643,9 +1569,7 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     unsubscribe: {
       prepare: (ids: Machine[MachineMeta.PK][]) => ({
@@ -1657,9 +1581,7 @@ const machineSlice = createSlice({
           params: { system_ids: ids },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     unsubscribeError: (
       state: MachineState,
@@ -1718,9 +1640,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateDiskError: statusHandlers.updateDisk.error,
     updateDiskStart: statusHandlers.updateDisk.start,
@@ -1741,9 +1661,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateFilesystemError: statusHandlers.updateFilesystem.error,
     updateFilesystemStart: statusHandlers.updateFilesystem.start,
@@ -1762,9 +1680,7 @@ const machineSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateInterfaceError: statusHandlers.updateInterface.error,
     updateInterfaceStart: statusHandlers.updateInterface.start,
@@ -1887,9 +1803,7 @@ const machineSlice = createSlice({
           }),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,

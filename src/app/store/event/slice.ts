@@ -41,9 +41,7 @@ const eventSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchSuccess: (
       state: EventState,

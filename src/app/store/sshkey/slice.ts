@@ -27,9 +27,7 @@ const sshKeySlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     importStart: (state: SSHKeyState, _action: PayloadAction<void>) => {
       state.saved = false;

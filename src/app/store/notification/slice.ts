@@ -34,9 +34,7 @@ const notificationSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     dismissStart: (state: NotificationState) => {
       state.saved = false;

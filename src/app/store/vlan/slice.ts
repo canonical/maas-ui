@@ -71,9 +71,7 @@ const vlanSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     configureDHCPError: statusHandlers.configureDHCP.error,
     configureDHCPStart: statusHandlers.configureDHCP.start,
@@ -123,9 +121,7 @@ const vlanSlice = createSlice({
           params: id === null ? null : { [VLANMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: VLANState,

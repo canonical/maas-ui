@@ -122,9 +122,7 @@ const deviceSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createInterfaceError: statusHandlers.createInterface.error,
     createInterfaceStart: statusHandlers.createInterface.start,
@@ -153,9 +151,7 @@ const deviceSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createPhysicalError: statusHandlers.createPhysical.error,
     createPhysicalStart: statusHandlers.createPhysical.start,
@@ -192,9 +188,7 @@ const deviceSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteError: statusHandlers.delete.error,
     deleteNotify: (
@@ -223,9 +217,7 @@ const deviceSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteInterfaceError: statusHandlers.deleteInterface.error,
     deleteInterfaceStart: statusHandlers.deleteInterface.start,
@@ -246,9 +238,7 @@ const deviceSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     linkSubnetError: statusHandlers.linkSubnet.error,
     linkSubnetStart: statusHandlers.linkSubnet.start,
@@ -264,9 +254,7 @@ const deviceSlice = createSlice({
           params: system_id ? { system_id } : null,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: DeviceState,
@@ -304,9 +292,7 @@ const deviceSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
@@ -321,9 +307,7 @@ const deviceSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     unlinkSubnetError: statusHandlers.unlinkSubnet.error,
     unlinkSubnetStart: statusHandlers.unlinkSubnet.start,
@@ -342,9 +326,7 @@ const deviceSlice = createSlice({
           params: preparePayloadParams(params),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateInterfaceError: statusHandlers.updateInterface.error,
     updateInterfaceStart: statusHandlers.updateInterface.start,

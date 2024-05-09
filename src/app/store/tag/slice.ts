@@ -44,9 +44,7 @@ const tagSlice = createSlice({
             : null,
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchError: {
       prepare: (errors: TagStateList["errors"], callId?: string) => ({

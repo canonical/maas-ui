@@ -53,9 +53,7 @@ const bootResourceSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteImageError: (
       state: BootResourceState,
@@ -83,9 +81,7 @@ const bootResourceSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchError: (
       state: BootResourceState,
@@ -116,9 +112,7 @@ const bootResourceSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     pollError: (
       state: BootResourceState,
@@ -170,9 +164,7 @@ const bootResourceSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     saveOtherError: (
       state: BootResourceState,
@@ -201,9 +193,7 @@ const bootResourceSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     saveUbuntuError: (
       state: BootResourceState,
@@ -231,9 +221,7 @@ const bootResourceSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     saveUbuntuCoreError: (
       state: BootResourceState,
@@ -259,9 +247,7 @@ const bootResourceSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     stopImportError: (
       state: BootResourceState,

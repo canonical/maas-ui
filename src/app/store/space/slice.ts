@@ -41,9 +41,7 @@ const spaceSlice = createSlice({
           params: id === null ? null : { [SpaceMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: SpaceState,

@@ -205,9 +205,7 @@ export const generateCommonReducers = <
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchStart: (state: S) => {
       state.loading = true;
@@ -234,9 +232,7 @@ export const generateCommonReducers = <
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createStart: (state: S) => {
       state.saved = false;
@@ -285,9 +281,7 @@ export const generateCommonReducers = <
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateStart: (state: S) => {
       state.saved = false;
@@ -326,9 +320,7 @@ export const generateCommonReducers = <
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteStart: (state: S) => {
       state.saved = false;
@@ -539,9 +531,7 @@ export const generateGetReducers = <
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getStart: (state: S) => {
       state.loading = true;

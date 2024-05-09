@@ -57,9 +57,7 @@ const domainSlice = createSlice({
           params: { domain: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setDefaultStart: (state: DomainState) => {
       state.saving = true;
@@ -97,9 +95,7 @@ const domainSlice = createSlice({
           params: id === null ? null : { id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: DomainState,
@@ -124,9 +120,7 @@ const domainSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createAddressRecordStart: (state: DomainState) => {
       state.saving = true;
@@ -154,9 +148,7 @@ const domainSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createDNSDataStart: (state: DomainState) => {
       state.saving = true;
@@ -186,9 +178,7 @@ const domainSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteAddressRecordStart: (state: DomainState) => {
       state.saving = true;
@@ -218,9 +208,7 @@ const domainSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteDNSDataStart: (state: DomainState) => {
       state.saving = true;
@@ -250,9 +238,7 @@ const domainSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteDNSResourceError: (
       state: DomainState,
@@ -269,9 +255,7 @@ const domainSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateAddressRecord: {
       prepare: (params: UpdateAddressRecordParams) => {
@@ -285,9 +269,7 @@ const domainSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateAddressRecordStart: (state: DomainState) => {
       state.saving = true;
@@ -317,9 +299,7 @@ const domainSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateDNSDataStart: (state: DomainState) => {
       state.saving = true;
@@ -349,9 +329,7 @@ const domainSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateDNSResourceStart: (state: DomainState) => {
       state.saving = true;
@@ -375,9 +353,7 @@ const domainSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
   },
 });

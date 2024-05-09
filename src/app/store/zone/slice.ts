@@ -114,9 +114,7 @@ const zoneSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     createError: (state, action: PayloadAction<APIError>) => {
       addError(state, create, action.payload);
@@ -150,9 +148,7 @@ const zoneSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteError: {
       prepare: (action: ZonePayloadActionWithIdentifier<APIError>) => action,
@@ -183,9 +179,7 @@ const zoneSlice = createSlice({
       prepare: () => ({
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchError: (state, action: PayloadAction<APIError>) => {
       addError(state, fetch, action.payload);
@@ -209,9 +203,7 @@ const zoneSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateError: {
       prepare: (action: ZonePayloadActionWithIdentifier<APIError>) => action,

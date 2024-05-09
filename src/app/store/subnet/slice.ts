@@ -112,9 +112,7 @@ const subnetSlice = createSlice({
           params: { [SubnetMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     scanError: statusHandlers.scan.error,
     scanStart: statusHandlers.scan.start,
@@ -160,9 +158,7 @@ const subnetSlice = createSlice({
           params: id === null ? null : { [SubnetMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: SubnetState,

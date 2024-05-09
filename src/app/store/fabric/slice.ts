@@ -41,9 +41,7 @@ const fabricSlice = createSlice({
           params: id === null ? null : { [FabricMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: FabricState,

@@ -17,9 +17,7 @@ const statusSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchStart: (state: ConfigState) => {
       state.loading = true;
@@ -56,9 +54,7 @@ const statusSlice = createSlice({
           },
         };
       },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateStart: (state: ConfigState) => {
       state.saved = false;
