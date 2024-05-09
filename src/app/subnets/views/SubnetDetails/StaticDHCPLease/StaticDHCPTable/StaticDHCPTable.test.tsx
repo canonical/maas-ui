@@ -4,7 +4,7 @@ import { reservedIp } from "@/testing/factories/reservedip";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("renders a static DHCP table with no data", () => {
-  renderWithBrowserRouter(<StaticDHCPTable reservedIps={[]} />);
+  renderWithBrowserRouter(<StaticDHCPTable loading={false} reservedIps={[]} />);
 
   expect(
     screen.getByRole("table", { name: "Static DHCP leases" })
@@ -16,7 +16,9 @@ it("renders a static DHCP table with no data", () => {
 
 it("renders a static DHCP table when data is provided", () => {
   const reservedIps = [reservedIp(), reservedIp()];
-  renderWithBrowserRouter(<StaticDHCPTable reservedIps={reservedIps} />);
+  renderWithBrowserRouter(
+    <StaticDHCPTable loading={false} reservedIps={reservedIps} />
+  );
 
   expect(
     screen.getByRole("table", { name: "Static DHCP leases" })
