@@ -1,10 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { CreateParams, ReservedIpState, UpdateParams } from "./types";
+import type {
+  CreateParams,
+  ReservedIp,
+  ReservedIpState,
+  UpdateParams,
+} from "./types";
 import { ReservedIpMeta } from "./types/enum";
 
 import {
   generateCommonReducers,
+  generateGetReducers,
   genericInitialState,
 } from "@/app/store/utils/slice";
 
@@ -18,6 +24,10 @@ const reservedIpSlice = createSlice({
       CreateParams,
       UpdateParams
     >({ modelName: ReservedIpMeta.MODEL, primaryKey: ReservedIpMeta.PK }),
+    ...generateGetReducers<ReservedIpState, ReservedIp, ReservedIpMeta.PK>({
+      modelName: ReservedIpMeta.MODEL,
+      primaryKey: ReservedIpMeta.PK,
+    }),
   },
 });
 
