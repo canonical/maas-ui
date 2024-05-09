@@ -20,10 +20,10 @@ describe("slice", () => {
       slice = createSlice({
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
-        reducers: generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
-          TokenMeta.MODEL,
-          TokenMeta.PK
-        ),
+        reducers: generateCommonReducers<TokenState, TokenMeta.PK, void, void>({
+          modelName: TokenMeta.MODEL,
+          primaryKey: TokenMeta.PK,
+        }),
       });
     });
 
@@ -258,10 +258,10 @@ describe("slice", () => {
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
         reducers: {
-          ...generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
-            TokenMeta.MODEL,
-            TokenMeta.PK
-          ),
+          ...generateCommonReducers<TokenState, TokenMeta.PK, void, void>({
+            modelName: TokenMeta.MODEL,
+            primaryKey: TokenMeta.PK,
+          }),
           custom: (state: TokenState, _action: PayloadAction<undefined>) => {
             state.errors = "small potato";
           },
@@ -284,10 +284,10 @@ describe("slice", () => {
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
         reducers: {
-          ...generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
-            TokenMeta.MODEL,
-            TokenMeta.PK
-          ),
+          ...generateCommonReducers<TokenState, TokenMeta.PK, void, void>({
+            modelName: TokenMeta.MODEL,
+            primaryKey: TokenMeta.PK,
+          }),
           fetchError: (state: TokenState, action: PayloadAction<string>) => {
             state.errors = `${action.payload} potato`;
           },
@@ -314,10 +314,10 @@ describe("slice", () => {
       slice = createSlice({
         name: TokenMeta.MODEL,
         initialState: genericInitialState as TokenState,
-        reducers: generateCommonReducers<TokenState, TokenMeta.PK, void, void>(
-          TokenMeta.MODEL,
-          TokenMeta.PK
-        ),
+        reducers: generateCommonReducers<TokenState, TokenMeta.PK, void, void>({
+          modelName: TokenMeta.MODEL,
+          primaryKey: TokenMeta.PK,
+        }),
       });
     });
 
@@ -414,10 +414,10 @@ describe("slice", () => {
           statuses: {},
         } as PodState,
         reducers: {
-          ...generateCommonReducers<PodState, PodMeta.PK, void, void>(
-            PodMeta.MODEL,
-            PodMeta.PK
-          ),
+          ...generateCommonReducers<PodState, PodMeta.PK, void, void>({
+            modelName: PodMeta.MODEL,
+            primaryKey: PodMeta.PK,
+          }),
           refreshStart: statusHandlers.refresh.start,
           refreshSuccess: statusHandlers.refresh.success,
           refreshError: statusHandlers.refresh.error,

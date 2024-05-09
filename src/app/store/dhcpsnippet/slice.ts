@@ -16,7 +16,7 @@ const dhcpSnippetSlice = createSlice({
     DHCPSnippetMeta.PK,
     CreateParams,
     UpdateParams
-  >(DHCPSnippetMeta.MODEL, DHCPSnippetMeta.PK),
+  >({ modelName: DHCPSnippetMeta.MODEL, primaryKey: DHCPSnippetMeta.PK }),
 });
 
 export const { actions } = dhcpSnippetSlice;

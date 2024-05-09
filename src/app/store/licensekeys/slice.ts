@@ -23,7 +23,10 @@ const licenseKeysSlice = createSlice({
       LicenseKeysMeta.PK,
       CreateParams,
       UpdateParams
-    >(LicenseKeysMeta.MODEL, LicenseKeysMeta.PK),
+    >({
+      modelName: LicenseKeysMeta.MODEL,
+      primaryKey: LicenseKeysMeta.PK,
+    }),
     create: {
       prepare: (params: CreateParams) => ({
         payload: params,

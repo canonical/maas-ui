@@ -22,7 +22,10 @@ const fabricSlice = createSlice({
       FabricMeta.PK,
       CreateParams,
       UpdateParams
-    >(FabricMeta.MODEL, FabricMeta.PK),
+    >({
+      modelName: FabricMeta.MODEL,
+      primaryKey: FabricMeta.PK,
+    }),
     ...generateGetReducers<FabricState, Fabric, FabricMeta.PK>({
       modelName: FabricMeta.MODEL,
       primaryKey: FabricMeta.PK,

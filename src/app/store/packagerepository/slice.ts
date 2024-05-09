@@ -20,7 +20,10 @@ const packageRepositorySlice = createSlice({
     PackageRepositoryMeta.PK,
     CreateParams,
     UpdateParams
-  >(PackageRepositoryMeta.MODEL, PackageRepositoryMeta.PK),
+  >({
+    modelName: PackageRepositoryMeta.MODEL,
+    primaryKey: PackageRepositoryMeta.PK,
+  }),
 });
 
 export const { actions } = packageRepositorySlice;

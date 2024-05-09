@@ -132,7 +132,7 @@ export const updateErrors = <
     error?: boolean;
   } | null,
   event: string | null,
-  indexKey: K
+  primaryKey: K
 ): S => {
   // If no action and event have been provided then clean up the errors.
   if (!action && !event) {
@@ -143,7 +143,7 @@ export const updateErrors = <
   const items = Array.isArray(item) ? item : [item];
   let newErrors = state.eventErrors as S["eventErrors"][0][];
   items.forEach((item) => {
-    const metaId = item ? item[indexKey] : null;
+    const metaId = item ? item[primaryKey] : null;
     // Clean any existing errors that match the event and machine.
     newErrors = newErrors.filter(
       (errorItem) => errorItem.event !== event || errorItem.id !== metaId
@@ -167,7 +167,7 @@ export const updateErrors = <
  * @template E - The type of the errors for a model's state.
  * @template R - The type of the model's reducers.
  * @param name - The name of the model that matches the name in MAAS.
- * @param indexKey - The key used to index a model e.g. "system_id".
+ * @param primaryKey - The key used to index a model e.g. "system_id".
  * @param initialState - Any additional initial state that doesn't
  *                       exist on all models.
  * @param reducers - Additional reducers or overrides for
@@ -181,22 +181,26 @@ export const generateCommonReducers = <
   K extends keyof S["items"][0],
   CreateParams,
   UpdateParams,
->(
-  name: keyof SliceState<S>,
-  indexKey: K,
+>({
+  modelName,
+  primaryKey,
+  setErrors,
+}: {
+  modelName: keyof SliceState<S>;
+  primaryKey: K;
   setErrors?: (
     state: S,
     action: PayloadAction<S["errors"]> | null,
     event: string | null
-  ) => S
-) => {
+  ) => S;
+}) => {
   return {
     fetch: {
       // Slices that need to pass params to the payload should overwrite this
       // action and reducer.
       prepare: () => ({
         meta: {
-          model: name,
+          model: modelName,
           method: "list",
         },
         payload: null,
@@ -223,7 +227,7 @@ export const generateCommonReducers = <
     create: {
       prepare: (params: CreateParams) => ({
         meta: {
-          model: name,
+          model: modelName,
           method: "create",
         },
         payload: {
@@ -256,7 +260,7 @@ export const generateCommonReducers = <
       // of creating duplicates.
       const existingIdx = state.items.findIndex(
         (existingItem: S["items"][0]) =>
-          existingItem[indexKey] === action.payload[indexKey]
+          existingItem[primaryKey] === action.payload[primaryKey]
       );
       if (existingIdx !== -1) {
         state.items[existingIdx] = action.payload;
@@ -274,7 +278,7 @@ export const generateCommonReducers = <
     update: {
       prepare: (params: UpdateParams) => ({
         meta: {
-          model: name,
+          model: modelName,
           method: "update",
         },
         payload: {
@@ -303,7 +307,7 @@ export const generateCommonReducers = <
     },
     updateNotify: (state: S, action: PayloadAction<S["items"][0]>) => {
       state.items.forEach((item: S["items"][0], i: number) => {
-        if (item[indexKey] === action.payload[indexKey]) {
+        if (item[primaryKey] === action.payload[primaryKey]) {
           state.items[i] = action.payload;
         }
       });
@@ -313,7 +317,7 @@ export const generateCommonReducers = <
       // action and reducer.
       prepare: (id: S["items"][0][K]) => ({
         meta: {
-          model: name,
+          model: modelName,
           method: "delete",
         },
         payload: {
@@ -344,7 +348,7 @@ export const generateCommonReducers = <
     },
     deleteNotify: (state: S, action: PayloadAction<S["items"][0][K]>) => {
       const index = state.items.findIndex(
-        (item: S["items"][0]) => item[indexKey] === action.payload
+        (item: S["items"][0]) => item[primaryKey] === action.payload
       );
       state.items.splice(index, 1);
     },
@@ -392,7 +396,7 @@ export type StatusHandlers<
  *               state e.g. DHCPSnippet
  * @template K - A model key e.g. "id"
  * @param name - The name of the model that matches the name in MAAS.
- * @param indexKey - The key used to index a model e.g. "id"
+ * @param primaryKey - The key used to index a model e.g. "id"
  *                            or "system_id".
  * @param handlers - A collection of status handlers.
  * @param setErrors - A function to update eventErrors.
@@ -405,7 +409,7 @@ export const generateStatusHandlers = <
   // optional alternative success payload type
   A = void,
 >(
-  indexKey: K,
+  primaryKey: K,
   handlers: StatusHandlers<S, I, A>[],
   setErrors?: (
     state: Draft<S>,
@@ -432,7 +436,7 @@ export const generateStatusHandlers = <
             status.start && status.start(state, action);
             if (action.meta.item) {
               const statusItem =
-                state.statuses[String(action.meta.item[indexKey])];
+                state.statuses[String(action.meta.item[primaryKey])];
               const statusKey = status.statusKey;
               if (objectHasKey(statusKey as string, statusItem)) {
                 statusItem[statusKey] = true;
@@ -456,7 +460,7 @@ export const generateStatusHandlers = <
             status.success && status.success(state, action);
             if (action.meta.item) {
               const statusItem =
-                state.statuses[String(action.meta.item[indexKey])];
+                state.statuses[String(action.meta.item[primaryKey])];
               // Sometimes the server will respond with "machine/deleteNotify"
               // before "machine/deleteSuccess", which removes the machine
               // system_id from statuses so check the item exists, to be safe.
@@ -487,7 +491,7 @@ export const generateStatusHandlers = <
             }
             if (action.meta.item) {
               const statusItem =
-                state.statuses[String(action.meta.item[indexKey])];
+                state.statuses[String(action.meta.item[primaryKey])];
               const statusKey = status.statusKey;
               if (objectHasKey(statusKey as string, statusItem)) {
                 statusItem[statusKey] = false;

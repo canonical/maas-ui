@@ -56,7 +56,11 @@ const vlanSlice = createSlice({
       VLANMeta.PK,
       CreateParams,
       UpdateParams
-    >(VLANMeta.MODEL, VLANMeta.PK, setErrors),
+    >({
+      modelName: VLANMeta.MODEL,
+      primaryKey: VLANMeta.PK,
+      setErrors,
+    }),
     configureDHCP: {
       prepare: (params: ConfigureDHCPParams) => ({
         meta: {

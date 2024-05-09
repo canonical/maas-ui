@@ -24,8 +24,10 @@ const tagSlice = createSlice({
   initialState: { ...genericInitialState, lists: {} } as TagState,
   reducers: {
     ...generateCommonReducers<TagState, TagMeta.PK, CreateParams, UpdateParams>(
-      TagMeta.MODEL,
-      TagMeta.PK
+      {
+        modelName: TagMeta.MODEL,
+        primaryKey: TagMeta.PK,
+      }
     ),
     fetch: {
       prepare: (params?: { node_filter: FetchFilters }, callId?: string) => {

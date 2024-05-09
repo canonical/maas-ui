@@ -65,8 +65,10 @@ const podSlice = createSlice({
   } as PodState,
   reducers: {
     ...generateCommonReducers<PodState, PodMeta.PK, CreateParams, UpdateParams>(
-      PodMeta.MODEL,
-      PodMeta.PK
+      {
+        modelName: PodMeta.MODEL,
+        primaryKey: PodMeta.PK,
+      }
     ),
     clearProjects: (state: PodState) => {
       state.projects = {};

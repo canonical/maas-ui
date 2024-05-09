@@ -133,7 +133,11 @@ const controllerSlice = createSlice({
       ControllerMeta.PK,
       CreateParams,
       UpdateParams
-    >(ControllerMeta.MODEL, ControllerMeta.PK, setErrors),
+    >({
+      modelName: ControllerMeta.MODEL,
+      primaryKey: ControllerMeta.PK,
+      setErrors,
+    }),
     checkImages: {
       prepare: (ids: Controller[ControllerMeta.PK][]) => ({
         meta: {

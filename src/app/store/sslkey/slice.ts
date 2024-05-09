@@ -16,7 +16,10 @@ const sslKeySlice = createSlice({
     SSLKeyMeta.PK,
     CreateParams,
     void
-  >(SSLKeyMeta.MODEL, SSLKeyMeta.PK),
+  >({
+    modelName: SSLKeyMeta.MODEL,
+    primaryKey: SSLKeyMeta.PK,
+  }),
 });
 
 export const { actions } = sslKeySlice;

@@ -16,7 +16,10 @@ const staticRouteSlice = createSlice({
     StaticRouteMeta.PK,
     CreateParams,
     UpdateParams
-  >(StaticRouteMeta.MODEL, StaticRouteMeta.PK),
+  >({
+    modelName: StaticRouteMeta.MODEL,
+    primaryKey: StaticRouteMeta.PK,
+  }),
 });
 
 export const { actions } = staticRouteSlice;

@@ -34,7 +34,10 @@ const userSlice = createSlice({
       UserMeta.PK,
       CreateParams,
       UpdateParams
-    >(UserMeta.MODEL, UserMeta.PK),
+    >({
+      modelName: UserMeta.MODEL,
+      primaryKey: UserMeta.PK,
+    }),
     /**
      * Mark the intro as completed for the authenticated user.
      */

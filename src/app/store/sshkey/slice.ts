@@ -13,10 +13,10 @@ const sshKeySlice = createSlice({
   name: SSHKeyMeta.MODEL,
   initialState: genericInitialState as SSHKeyState,
   reducers: {
-    ...generateCommonReducers<SSHKeyState, SSHKeyMeta.PK, CreateParams, void>(
-      SSHKeyMeta.MODEL,
-      SSHKeyMeta.PK
-    ),
+    ...generateCommonReducers<SSHKeyState, SSHKeyMeta.PK, CreateParams, void>({
+      modelName: SSHKeyMeta.MODEL,
+      primaryKey: SSHKeyMeta.PK,
+    }),
     import: {
       prepare: (params: ImportParams) => ({
         meta: {

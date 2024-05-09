@@ -11,10 +11,10 @@ import {
 const serviceSlice = createSlice({
   name: ServiceMeta.MODEL,
   initialState: genericInitialState as ServiceState,
-  reducers: generateCommonReducers<ServiceState, ServiceMeta.PK, void, void>(
-    ServiceMeta.MODEL,
-    ServiceMeta.PK
-  ),
+  reducers: generateCommonReducers<ServiceState, ServiceMeta.PK, void, void>({
+    modelName: ServiceMeta.MODEL,
+    primaryKey: ServiceMeta.PK,
+  }),
 });
 
 export const { actions } = serviceSlice;

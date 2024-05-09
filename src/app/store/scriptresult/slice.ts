@@ -36,7 +36,10 @@ const scriptResultSlice = createSlice({
       ScriptResultMeta.PK,
       void,
       void
-    >(ScriptResultMeta.MODEL, ScriptResultMeta.PK),
+    >({
+      modelName: ScriptResultMeta.MODEL,
+      primaryKey: ScriptResultMeta.PK,
+    }),
     get: {
       prepare: (id: ScriptResult[ScriptResultMeta.PK]) => ({
         meta: {

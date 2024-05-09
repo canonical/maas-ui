@@ -39,7 +39,10 @@ const domainSlice = createSlice({
       DomainMeta.PK,
       CreateParams,
       UpdateParams
-    >(DomainMeta.MODEL, DomainMeta.PK),
+    >({
+      modelName: DomainMeta.MODEL,
+      primaryKey: DomainMeta.PK,
+    }),
     ...generateGetReducers<DomainState, Domain, DomainMeta.PK>({
       modelName: DomainMeta.MODEL,
       primaryKey: DomainMeta.PK,

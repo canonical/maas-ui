@@ -18,7 +18,10 @@ const notificationSlice = createSlice({
       NotificationMeta.PK,
       CreateParams,
       void
-    >(NotificationMeta.MODEL, NotificationMeta.PK),
+    >({
+      modelName: NotificationMeta.MODEL,
+      primaryKey: NotificationMeta.PK,
+    }),
     dismiss: {
       prepare: (id: Notification[NotificationMeta.PK]) => ({
         meta: {

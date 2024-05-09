@@ -275,7 +275,11 @@ const machineSlice = createSlice({
       MachineMeta.PK,
       CreateParams,
       UpdateParams
-    >(MachineMeta.MODEL, MachineMeta.PK, setErrors),
+    >({
+      modelName: MachineMeta.MODEL,
+      primaryKey: MachineMeta.PK,
+      setErrors,
+    }),
     [NodeActions.ABORT]: generateActionParams<BaseMachineActionParams>(
       NodeActions.ABORT
     ),
@@ -1774,10 +1778,11 @@ const machineSlice = createSlice({
         MachineMeta.PK,
         CreateParams,
         UpdateParams
-      >(MachineMeta.MODEL, MachineMeta.PK, setErrors).updateNotify(
-        state,
-        action
-      );
+      >({
+        modelName: MachineMeta.MODEL,
+        primaryKey: MachineMeta.PK,
+        setErrors,
+      }).updateNotify(state, action);
       // infer the new grouping value for each machine list
       // based on machine details sent as notification payload
       Object.keys(state.lists).forEach((callId: string) => {

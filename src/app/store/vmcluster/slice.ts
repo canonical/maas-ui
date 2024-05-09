@@ -26,10 +26,10 @@ const vmClusterSlice = createSlice({
     },
   } as VMClusterState,
   reducers: {
-    ...generateCommonReducers<VMClusterState, VMClusterMeta.PK, void, void>(
-      VMClusterMeta.MODEL,
-      VMClusterMeta.PK
-    ),
+    ...generateCommonReducers<VMClusterState, VMClusterMeta.PK, void, void>({
+      modelName: VMClusterMeta.MODEL,
+      primaryKey: VMClusterMeta.PK,
+    }),
     cleanup: (state: VMClusterState) => {
       state.errors = null;
       state.eventErrors = [];
