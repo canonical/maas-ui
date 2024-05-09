@@ -6,6 +6,7 @@ import type { CreateParams, Fabric, FabricState, UpdateParams } from "./types";
 
 import {
   generateCommonReducers,
+  generateGetReducers,
   genericInitialState,
 } from "@/app/store/utils/slice";
 
@@ -22,46 +23,10 @@ const fabricSlice = createSlice({
       CreateParams,
       UpdateParams
     >(FabricMeta.MODEL, FabricMeta.PK),
-    get: {
-      prepare: (id: Fabric[FabricMeta.PK]) => ({
-        meta: {
-          model: FabricMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { [FabricMeta.PK]: id },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    getError: (
-      state: FabricState,
-      action: PayloadAction<FabricState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.loading = false;
-      state.saving = false;
-    },
-    getStart: (state: FabricState) => {
-      state.loading = true;
-    },
-    getSuccess: (state: FabricState, action: PayloadAction<Fabric>) => {
-      const fabric = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Fabric) =>
-          draftItem[FabricMeta.PK] === fabric[FabricMeta.PK]
-      );
-      if (i !== -1) {
-        state.items[i] = fabric;
-      } else {
-        state.items.push(fabric);
-      }
-      state.loading = false;
-    },
+    ...generateGetReducers<FabricState, Fabric, FabricMeta.PK>({
+      modelName: FabricMeta.MODEL,
+      primaryKey: FabricMeta.PK,
+    }),
     setActive: {
       prepare: (id: Fabric[FabricMeta.PK] | null) => ({
         meta: {

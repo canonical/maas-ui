@@ -500,3 +500,73 @@ export const generateStatusHandlers = <
     },
     {}
   );
+
+export const generateGetReducers = <
+  S extends CommonStateTypes | StatusStateTypes | EventErrorStateTypes,
+  T extends S["items"][0],
+  K extends keyof T,
+>({
+  modelName,
+  primaryKey,
+  defaultStatuses,
+  setErrors,
+}: {
+  modelName: keyof SliceState<S>;
+  primaryKey: K;
+  defaultStatuses?: S extends StatusStateTypes
+    ? S["statuses"][T[K] & keyof S["statuses"]]
+    : never;
+  setErrors?: (
+    state: S,
+    action: PayloadAction<S["errors"]> | null,
+    event: string | null
+  ) => S;
+}) => {
+  return {
+    get: {
+      prepare: (id: T[K]) => ({
+        meta: {
+          model: modelName,
+          method: "get",
+        },
+        payload: {
+          params: {
+            [primaryKey]: id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getStart: (state: S) => {
+      state.loading = true;
+    },
+    getError: (state: S, action: PayloadAction<S["errors"]>) => {
+      state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "get");
+      }
+      state.loading = false;
+      state.saving = false;
+    },
+    getSuccess: (state: S, action: PayloadAction<T>) => {
+      const item = action.payload;
+      const index = (state.items as T[]).findIndex(
+        (draftItem: T) => draftItem[primaryKey] === item[primaryKey]
+      );
+      if (index !== -1) {
+        state.items[index] = item;
+      } else {
+        (state.items as T[]).push(item);
+        if ("statuses" in state && defaultStatuses) {
+          (state.statuses as StatusStateTypes["statuses"])[
+            item[primaryKey] as keyof StatusStateTypes["statuses"]
+          ] = defaultStatuses;
+        }
+      }
+      state.loading = false;
+      state.saving = false;
+    },
+  };
+};

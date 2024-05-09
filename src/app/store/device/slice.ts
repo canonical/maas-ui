@@ -24,6 +24,7 @@ import type {
 import { NodeActions } from "@/app/store/types/node";
 import {
   generateCommonReducers,
+  generateGetReducers,
   generateStatusHandlers,
   genericInitialState,
   updateErrors,
@@ -225,49 +226,12 @@ const deviceSlice = createSlice({
     deleteInterfaceError: statusHandlers.deleteInterface.error,
     deleteInterfaceStart: statusHandlers.deleteInterface.start,
     deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
-    get: {
-      prepare: (id: Device[DeviceMeta.PK]) => ({
-        meta: {
-          model: DeviceMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { [DeviceMeta.PK]: id },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    getError: (
-      state: DeviceState,
-      action: PayloadAction<DeviceState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state = setErrors(state, action, "get");
-      state.loading = false;
-      state.saving = false;
-    },
-    getStart: (state: DeviceState) => {
-      state.loading = true;
-    },
-    getSuccess: (state: DeviceState, action: PayloadAction<Device>) => {
-      const device = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Device) =>
-          draftItem[DeviceMeta.PK] === device[DeviceMeta.PK]
-      );
-      if (i !== -1) {
-        state.items[i] = device;
-      } else {
-        state.items.push(device);
-        // Set up the statuses for this device.
-        state.statuses[device[DeviceMeta.PK]] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
-    },
+    ...generateGetReducers({
+      modelName: DeviceMeta.MODEL,
+      primaryKey: DeviceMeta.PK,
+      defaultStatuses: DEFAULT_STATUSES,
+      setErrors,
+    }),
     linkSubnet: {
       prepare: (params: LinkSubnetParams) => ({
         meta: {

@@ -199,21 +199,6 @@ describe("domain reducer", () => {
     );
   });
 
-  // Related to: https://bugs.launchpad.net/maas/+bug/1931654.
-  it("reduces getError when the error when a domain can't be found", () => {
-    const domainState = factory.domainState({
-      errors: null,
-      saving: true,
-    });
-
-    expect(reducers(domainState, actions.getError("9"))).toEqual(
-      factory.domainState({
-        errors: "There was an error getting the domain.",
-        saving: false,
-      })
-    );
-  });
-
   it("reduces setDefaultError", () => {
     const domainState = factory.domainState({
       errors: null,
@@ -225,21 +210,6 @@ describe("domain reducer", () => {
     ).toEqual(
       factory.domainState({
         errors: "It didn't work",
-        saving: false,
-      })
-    );
-  });
-
-  // Related to: https://bugs.launchpad.net/maas/+bug/1931654.
-  it("reduces setDefaultError when the error when a domain can't be found", () => {
-    const domainState = factory.domainState({
-      errors: null,
-      saving: true,
-    });
-
-    expect(reducers(domainState, actions.setDefaultError("9"))).toEqual(
-      factory.domainState({
-        errors: "There was an error when setting default domain.",
         saving: false,
       })
     );
@@ -287,20 +257,6 @@ describe("domain reducer", () => {
       factory.domainState({
         active: null,
         errors: "Domain with this id does not exist",
-      })
-    );
-  });
-
-  // Related to: https://bugs.launchpad.net/maas/+bug/1931654.
-  it("reduces setActiveError when the error when a domain can't be found", () => {
-    const domainState = factory.domainState({
-      errors: null,
-    });
-
-    expect(reducers(domainState, actions.setActiveError("9"))).toEqual(
-      factory.domainState({
-        errors: "There was an error when setting active domain.",
-        saving: false,
       })
     );
   });
