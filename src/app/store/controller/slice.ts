@@ -133,7 +133,11 @@ const controllerSlice = createSlice({
       ControllerMeta.PK,
       CreateParams,
       UpdateParams
-    >(ControllerMeta.MODEL, ControllerMeta.PK, setErrors),
+    >({
+      modelName: ControllerMeta.MODEL,
+      primaryKey: ControllerMeta.PK,
+      setErrors,
+    }),
     checkImages: {
       prepare: (ids: Controller[ControllerMeta.PK][]) => ({
         meta: {
@@ -144,9 +148,7 @@ const controllerSlice = createSlice({
           params: ids.map((id) => ({ [ControllerMeta.PK]: id })),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     checkImagesError: {
       prepare: (item: CheckImagesItem[], error: ControllerState["errors"]) => ({
@@ -247,9 +249,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteError: statusHandlers.delete.error,
     deleteNotify: (
@@ -311,9 +311,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getSummaryXmlError: statusHandlers.getSummaryXml.error,
     getSummaryXmlStart: statusHandlers.getSummaryXml.start,
@@ -333,9 +331,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getSummaryYamlError: statusHandlers.getSummaryYaml.error,
     getSummaryYamlStart: statusHandlers.getSummaryYaml.start,
@@ -354,9 +350,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     importImagesError: statusHandlers.importImages.error,
     importImagesStart: statusHandlers.importImages.start,
@@ -375,9 +369,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     offError: statusHandlers.off.error,
     offStart: statusHandlers.off.start,
@@ -396,9 +388,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     onError: statusHandlers.on.error,
     onStart: statusHandlers.on.start,
@@ -417,9 +407,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
     overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
@@ -439,9 +427,7 @@ const controllerSlice = createSlice({
           params: ids.map((id) => ({ [ControllerMeta.PK]: id })),
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     pollCheckImagesError: {
       prepare: (item: CheckImagesItem[], error: ControllerState["errors"]) => ({
@@ -494,9 +480,7 @@ const controllerSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     pollCheckImagesSuccess: {
       prepare: (item: CheckImagesItem[], payload: ImageSyncStatuses) => ({
@@ -536,9 +520,7 @@ const controllerSlice = createSlice({
           params: system_id ? { system_id } : null,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: ControllerState,
@@ -576,9 +558,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
@@ -601,9 +581,7 @@ const controllerSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     testError: statusHandlers.test.error,
     testStart: statusHandlers.test.start,

@@ -25,9 +25,7 @@ const statusSlice = createSlice({
       prepare: () => ({
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     checkAuthenticatedStart: (state: StatusState) => {
       state.authenticating = true;
@@ -49,9 +47,7 @@ const statusSlice = createSlice({
       prepare: (params: { password: string; username: string }) => ({
         payload: params,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     loginStart: (state: StatusState) => {
       state.authenticating = true;
@@ -73,9 +69,7 @@ const statusSlice = createSlice({
       prepare: () => ({
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     externalLoginSuccess: (state: StatusState) => {
       state.authenticated = true;
@@ -94,9 +88,7 @@ const statusSlice = createSlice({
       prepare: () => ({
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     logoutSuccess: (state: StatusState) => {
       state.authenticated = false;

@@ -23,22 +23,21 @@ const licenseKeysSlice = createSlice({
       LicenseKeysMeta.PK,
       CreateParams,
       UpdateParams
-    >(LicenseKeysMeta.MODEL, LicenseKeysMeta.PK),
+    >({
+      modelName: LicenseKeysMeta.MODEL,
+      primaryKey: LicenseKeysMeta.PK,
+    }),
     create: {
       prepare: (params: CreateParams) => ({
         payload: params,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     delete: {
       prepare: (params: LicenseKeys) => ({
         payload: params,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     dismissStart: (state: LicenseKeysState) => {
       state.saved = false;
@@ -66,17 +65,13 @@ const licenseKeysSlice = createSlice({
       prepare: () => ({
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     update: {
       prepare: (params: UpdateParams) => ({
         payload: params,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     updateSuccess: (state: LicenseKeysState, action) => {
       state.errors = null;

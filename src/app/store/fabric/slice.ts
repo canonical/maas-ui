@@ -22,7 +22,10 @@ const fabricSlice = createSlice({
       FabricMeta.PK,
       CreateParams,
       UpdateParams
-    >(FabricMeta.MODEL, FabricMeta.PK),
+    >({
+      modelName: FabricMeta.MODEL,
+      primaryKey: FabricMeta.PK,
+    }),
     ...generateGetReducers<FabricState, Fabric, FabricMeta.PK>({
       modelName: FabricMeta.MODEL,
       primaryKey: FabricMeta.PK,
@@ -38,9 +41,7 @@ const fabricSlice = createSlice({
           params: id === null ? null : { [FabricMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: FabricState,

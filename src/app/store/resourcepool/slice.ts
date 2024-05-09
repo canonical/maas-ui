@@ -22,7 +22,10 @@ const resourcePoolSlice = createSlice({
       ResourcePoolMeta.PK,
       CreateParams,
       UpdateParams
-    >(ResourcePoolMeta.MODEL, ResourcePoolMeta.PK),
+    >({
+      modelName: ResourcePoolMeta.MODEL,
+      primaryKey: ResourcePoolMeta.PK,
+    }),
     createWithMachines: {
       prepare: (params: CreateWithMachinesParams) => ({
         payload: {

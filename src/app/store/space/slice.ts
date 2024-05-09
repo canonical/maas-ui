@@ -22,7 +22,10 @@ const spaceSlice = createSlice({
       SpaceMeta.PK,
       CreateParams,
       UpdateParams
-    >(SpaceMeta.MODEL, SpaceMeta.PK),
+    >({
+      modelName: SpaceMeta.MODEL,
+      primaryKey: SpaceMeta.PK,
+    }),
     ...generateGetReducers<SpaceState, Space, SpaceMeta.PK>({
       modelName: SpaceMeta.MODEL,
       primaryKey: SpaceMeta.PK,
@@ -38,9 +41,7 @@ const spaceSlice = createSlice({
           params: id === null ? null : { [SpaceMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: SpaceState,

@@ -26,10 +26,10 @@ const vmClusterSlice = createSlice({
     },
   } as VMClusterState,
   reducers: {
-    ...generateCommonReducers<VMClusterState, VMClusterMeta.PK, void, void>(
-      VMClusterMeta.MODEL,
-      VMClusterMeta.PK
-    ),
+    ...generateCommonReducers<VMClusterState, VMClusterMeta.PK, void, void>({
+      modelName: VMClusterMeta.MODEL,
+      primaryKey: VMClusterMeta.PK,
+    }),
     cleanup: (state: VMClusterState) => {
       state.errors = null;
       state.eventErrors = [];
@@ -46,9 +46,7 @@ const vmClusterSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteError: (
       state: VMClusterState,
@@ -85,9 +83,7 @@ const vmClusterSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchError: (
       state: VMClusterState,
@@ -129,9 +125,7 @@ const vmClusterSlice = createSlice({
           params: { id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getError: (
       state: VMClusterState,

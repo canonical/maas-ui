@@ -16,7 +16,10 @@ const tokenSlice = createSlice({
     TokenMeta.PK,
     CreateParams,
     UpdateParams
-  >(TokenMeta.MODEL, TokenMeta.PK),
+  >({
+    modelName: TokenMeta.MODEL,
+    primaryKey: TokenMeta.PK,
+  }),
 });
 
 export const { actions } = tokenSlice;

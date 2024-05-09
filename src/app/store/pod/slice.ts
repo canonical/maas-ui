@@ -65,8 +65,10 @@ const podSlice = createSlice({
   } as PodState,
   reducers: {
     ...generateCommonReducers<PodState, PodMeta.PK, CreateParams, UpdateParams>(
-      PodMeta.MODEL,
-      PodMeta.PK
+      {
+        modelName: PodMeta.MODEL,
+        primaryKey: PodMeta.PK,
+      }
     ),
     clearProjects: (state: PodState) => {
       state.projects = {};
@@ -94,9 +96,7 @@ const podSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     composeError: statusHandlers.compose.error,
     composeStart: statusHandlers.compose.start,
@@ -111,9 +111,7 @@ const podSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteError: statusHandlers.delete.error,
     deleteStart: statusHandlers.delete.start,
@@ -167,9 +165,7 @@ const podSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     getProjectsSuccess: {
       prepare: (
@@ -219,9 +215,7 @@ const podSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     pollLxdServerStop: {
       prepare: () => ({
@@ -232,9 +226,7 @@ const podSlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     pollLxdServerError: (
       state: PodState,
@@ -284,9 +276,7 @@ const podSlice = createSlice({
           params: { id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     refreshError: statusHandlers.refresh.error,
     refreshStart: statusHandlers.refresh.start,
@@ -302,9 +292,7 @@ const podSlice = createSlice({
           params: id === null ? null : { id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: PodState,

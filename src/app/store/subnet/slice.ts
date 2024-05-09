@@ -60,7 +60,11 @@ const subnetSlice = createSlice({
       SubnetMeta.PK,
       CreateParams,
       UpdateParams
-    >(SubnetMeta.MODEL, SubnetMeta.PK, setErrors),
+    >({
+      modelName: SubnetMeta.MODEL,
+      primaryKey: SubnetMeta.PK,
+      setErrors,
+    }),
     createNotify: (state: SubnetState, action: PayloadAction<Subnet>) => {
       // In the event that the server erroneously attempts to create an existing
       // subnet, due to a race condition etc., ensure we update instead of
@@ -108,9 +112,7 @@ const subnetSlice = createSlice({
           params: { [SubnetMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     scanError: statusHandlers.scan.error,
     scanStart: statusHandlers.scan.start,
@@ -156,9 +158,7 @@ const subnetSlice = createSlice({
           params: id === null ? null : { [SubnetMeta.PK]: id },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     setActiveError: (
       state: SubnetState,

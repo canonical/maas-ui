@@ -22,9 +22,7 @@ const generatePrepareReducer = (method: string) => ({
     },
     payload: null,
   }),
-  reducer: () => {
-    // No state changes need to be handled for this action.
-  },
+  reducer: () => {},
 });
 
 const generateStartReducer =
@@ -161,9 +159,7 @@ const generalSlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     generateCertificateStart: generateStartReducer("generatedCertificate"),
     generateCertificateError: generateErrorReducer("generatedCertificate"),

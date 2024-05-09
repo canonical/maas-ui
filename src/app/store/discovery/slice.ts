@@ -20,9 +20,7 @@ const discoverySlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchStart: (state: DiscoveryState) => {
       state.loading = true;
@@ -52,9 +50,7 @@ const discoverySlice = createSlice({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     deleteStart: (state: DiscoveryState) => {
       state.saved = false;
@@ -98,9 +94,7 @@ const discoverySlice = createSlice({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     clearStart: (state: DiscoveryState) => {
       state.saved = false;

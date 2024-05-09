@@ -20,10 +20,10 @@ const nodeDeviceSlice = createSlice({
   name: NodeDeviceMeta.MODEL,
   initialState: genericInitialState as NodeDeviceState,
   reducers: {
-    ...generateCommonReducers<NodeDeviceState, NodeDeviceMeta.PK, void, void>(
-      NodeDeviceMeta.MODEL,
-      NodeDeviceMeta.PK
-    ),
+    ...generateCommonReducers<NodeDeviceState, NodeDeviceMeta.PK, void, void>({
+      modelName: NodeDeviceMeta.MODEL,
+      primaryKey: NodeDeviceMeta.PK,
+    }),
     getByNodeId: {
       prepare: (nodeID: Node["system_id"]) => ({
         meta: {

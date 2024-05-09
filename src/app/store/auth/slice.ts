@@ -47,9 +47,7 @@ const authSlice = createSlice<UserState, Reducers>({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     adminChangePasswordStart: (state: UserState) => {
       state.auth.saved = false;
@@ -82,9 +80,7 @@ const authSlice = createSlice<UserState, Reducers>({
           params,
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     changePasswordStart: (state: UserState) => {
       state.auth.saved = false;
@@ -116,9 +112,7 @@ const authSlice = createSlice<UserState, Reducers>({
         },
         payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+      reducer: () => {},
     },
     fetchStart: (state: UserState) => {
       state.auth.loading = true;
