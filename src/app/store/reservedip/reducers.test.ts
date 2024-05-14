@@ -86,10 +86,18 @@ describe("create reducers", () => {
       saving: true,
       saved: false,
     });
-    expect(reducers(initialState, actions.createSuccess())).toEqual(
+
+    const reservedIp = factory.reservedIp();
+    expect(
+      reducers(
+        initialState,
+        actions.createSuccess(factory.reservedIp(reservedIp))
+      )
+    ).toEqual(
       factory.reservedIpState({
         saving: false,
         saved: true,
+        items: [reservedIp],
       })
     );
   });
@@ -135,7 +143,7 @@ describe("delete reducers", () => {
       saving: true,
       saved: false,
     });
-    expect(reducers(initialState, actions.deleteSuccess())).toEqual(
+    expect(reducers(initialState, actions.deleteSuccess({ id: 1 }))).toEqual(
       factory.reservedIpState({
         saving: false,
         saved: true,
