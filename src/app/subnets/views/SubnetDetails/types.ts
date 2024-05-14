@@ -1,7 +1,7 @@
 import type { SubnetActionTypes } from "./constants";
 
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { ReservedIp } from "@/app/store/reservedip/types";
+import type { ReservedIp } from "@/app/store/reservedip/types";
 import type {
   StaticRoute,
   StaticRouteMeta,
