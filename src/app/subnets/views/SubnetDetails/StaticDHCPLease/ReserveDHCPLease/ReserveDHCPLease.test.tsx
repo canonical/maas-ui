@@ -1,3 +1,5 @@
+import configureStore from "redux-mock-store";
+
 import ReserveDHCPLease from "./ReserveDHCPLease";
 
 import type { RootState } from "@/app/store/root/types";
@@ -11,6 +13,8 @@ import {
 
 const { getComputedStyle } = window;
 let state: RootState;
+
+const mockStore = configureStore();
 
 beforeAll(() => {
   // getComputedStyle is not implemeneted in jsdom, so we need to do this.
@@ -76,4 +80,49 @@ it("closes the side panel when the cancel button is clicked", async () => {
   await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
   expect(setSidePanelContent).toHaveBeenCalledWith(null);
+});
+
+it("dispatches an action to create a reserved IP", async () => {
+  const store = mockStore(state);
+  renderWithBrowserRouter(
+    <ReserveDHCPLease setSidePanelContent={vi.fn()} subnetId={1} />,
+    { store }
+  );
+
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "IP address" }),
+    "69"
+  );
+
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "MAC address" }),
+    "FF:FF:FF:FF:FF:FF"
+  );
+
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "Comment" }),
+    "bla bla bla"
+  );
+
+  await userEvent.click(
+    screen.getByRole("button", { name: "Reserve static DHCP lease" })
+  );
+
+  expect(
+    store.getActions().find((action) => action.type === "reservedip/create")
+  ).toEqual({
+    meta: {
+      method: "create",
+      model: "reservedip",
+    },
+    payload: {
+      params: {
+        subnet: 1,
+        ip: "10.0.0.69",
+        mac_address: "FF:FF:FF:FF:FF:FF",
+        comment: "bla bla bla",
+      },
+    },
+    type: "reservedip/create",
+  });
 });

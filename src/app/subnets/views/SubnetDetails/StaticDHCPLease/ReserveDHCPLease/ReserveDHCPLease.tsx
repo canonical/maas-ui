@@ -1,5 +1,7 @@
+import { useCallback } from "react";
+
 import { Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import type { SubnetActionProps } from "../../types";
@@ -9,6 +11,8 @@ import FormikForm from "@/app/base/components/FormikForm";
 import MacAddressField from "@/app/base/components/MacAddressField";
 import PrefixedIpInput from "@/app/base/components/PrefixedIpInput";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
+import { reservedIpActions } from "@/app/store/reservedip";
+import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import {
@@ -29,9 +33,18 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
   );
-  const loading = useSelector(subnetSelectors.loading);
+  const subnetLoading = useSelector(subnetSelectors.loading);
+  const reservedIpLoading = useSelector(reservedIpSelectors.loading);
+  const errors = useSelector(reservedIpSelectors.errors);
+  const saving = useSelector(reservedIpSelectors.saving);
+  const saved = useSelector(reservedIpSelectors.saved);
 
-  const onCancel = () => setSidePanelContent(null);
+  const loading = subnetLoading || reservedIpLoading;
+
+  const dispatch = useDispatch();
+  const cleanup = useCallback(() => reservedIpActions.cleanup(), []);
+
+  const onClose = () => setSidePanelContent(null);
 
   if (loading) {
     return <Spinner text="Loading..." />;
@@ -77,22 +90,39 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
             subnet?.cidr as string
           ),
       }),
-    mac_address: Yup.string()
-      .required("MAC address is required")
-      .matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
+    mac_address: Yup.string().matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
     comment: Yup.string(),
   });
+
+  const handleSubmit = (values: FormValues) => {
+    dispatch(cleanup());
+
+    dispatch(
+      reservedIpActions.create({
+        comment: values.comment,
+        ip: `${immutableOctets}.${values.ip_address}`,
+        mac_address: values.mac_address,
+        subnet: subnetId,
+      })
+    );
+  };
 
   return (
     <FormikForm<FormValues>
       aria-label="Reserve static DHCP lease"
+      cleanup={cleanup}
+      errors={errors}
       initialValues={{
         ip_address: "",
         mac_address: "",
         comment: "",
       }}
-      onCancel={onCancel}
-      onSubmit={() => {}}
+      onCancel={onClose}
+      onSubmit={handleSubmit}
+      onSuccess={onClose}
+      resetOnSave
+      saved={saved}
+      saving={saving}
       submitLabel="Reserve static DHCP lease"
       validationSchema={ReserveDHCPLeaseSchema}
     >
@@ -103,7 +133,7 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
         name="ip_address"
         required
       />
-      <MacAddressField label="MAC address" name="mac_address" required />
+      <MacAddressField label="MAC address" name="mac_address" />
       <FormikField
         label="Comment"
         name="comment"
