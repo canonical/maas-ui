@@ -1,7 +1,11 @@
 import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Link } from "react-router-dom";
 
+import { SubnetDetailsSidePanelViews } from "../../constants";
+
 import TableActions from "@/app/base/components/TableActions";
+import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ReservedIp } from "@/app/store/reservedip/types/base";
 import { getNodeUrl } from "@/app/store/reservedip/utils";
 import { getNodeTypeDisplay } from "@/app/store/utils";
@@ -20,12 +24,15 @@ const headers = [
   { content: "Actions", className: "actions-col" },
 ] as const;
 
-const generateRows = (reservedIps: ReservedIp[]) =>
+const generateRows = (
+  reservedIps: ReservedIp[],
+  setSidePanelContent: SetSidePanelContent
+) =>
   reservedIps.map((reservedIp) => {
     return (
-      <tr key={reservedIp.mac_address}>
+      <tr key={reservedIp.id}>
         <td>{reservedIp.ip}</td>
-        <td>{reservedIp.mac_address}</td>
+        <td>{reservedIp.mac_address || "—"}</td>
         <td>
           {reservedIp?.node_summary ? (
             <Link
@@ -49,7 +56,15 @@ const generateRows = (reservedIps: ReservedIp[]) =>
         </td>
         <td>{reservedIp.comment || "—"}</td>
         <td>
-          <TableActions onDelete={() => {}} onEdit={() => {}} />
+          <TableActions
+            onDelete={() =>
+              setSidePanelContent({
+                view: SubnetDetailsSidePanelViews.DeleteDHCPLease,
+                extras: { reservedIpId: reservedIp.id },
+              })
+            }
+            onEdit={() => {}}
+          />
         </td>
       </tr>
     );
@@ -61,6 +76,7 @@ type Props = {
 };
 
 const StaticDHCPTable = ({ reservedIps, loading }: Props) => {
+  const { setSidePanelContent } = useSidePanel();
   return (
     <DynamicTable
       aria-label="Static DHCP leases"
@@ -79,7 +95,9 @@ const StaticDHCPTable = ({ reservedIps, loading }: Props) => {
       {loading ? (
         <DynamicTable.Loading />
       ) : reservedIps.length ? (
-        <DynamicTable.Body>{generateRows(reservedIps)}</DynamicTable.Body>
+        <DynamicTable.Body>
+          {generateRows(reservedIps, setSidePanelContent)}
+        </DynamicTable.Body>
       ) : (
         <TableCaption>
           <TableCaption.Title>
