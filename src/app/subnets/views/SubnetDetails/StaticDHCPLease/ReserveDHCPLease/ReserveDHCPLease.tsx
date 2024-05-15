@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,7 +56,7 @@ const ReserveDHCPLease = ({
   const loading = subnetLoading || reservedIpLoading;
   const isEditing = !!reservedIpId;
 
-  const initialValues = useMemo(() => {
+  const getInitialValues = () => {
     if (reservedIp && subnet) {
       const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
       const [immutableOctets, _] = getImmutableAndEditableOctets(
@@ -75,7 +75,9 @@ const ReserveDHCPLease = ({
         comment: "",
       };
     }
-  }, [reservedIp, subnet]);
+  };
+
+  const initialValues = getInitialValues();
 
   const onClose = () => setSidePanelContent(null);
 
