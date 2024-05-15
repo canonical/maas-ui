@@ -1,3 +1,4 @@
+import { isIP } from "is-ip";
 import * as Yup from "yup";
 import type { ObjectShape } from "yup/lib/object";
 
@@ -66,7 +67,13 @@ export const generatePowerParametersSchema = (
       let fieldSchema =
         field.field_type === PowerFieldType.MULTIPLE_CHOICE
           ? Yup.array().of(Yup.string())
-          : Yup.string();
+          : field.field_type === PowerFieldType.IP_ADDRESS
+            ? Yup.string().test({
+                name: "is-ip-address",
+                message: "Please enter a valid IP address.",
+                test: (value) => isIP(value as string),
+              })
+            : Yup.string();
       if (field.required) {
         fieldSchema = fieldSchema.required(`${field.label} required`);
       }
