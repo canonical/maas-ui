@@ -1,8 +1,7 @@
-import { array, define, derive, extend, random, sequence } from "cooky-cutter";
+import { array, define, extend, random } from "cooky-cutter";
 
 import { timestamp } from "./general";
 import { model, timestampedModel } from "./model";
-import { simpleNode } from "./nodes";
 
 import { PodType } from "@/app/store/pod/constants";
 import { IPAddressType } from "@/app/store/subnet/types";
@@ -19,9 +18,7 @@ import type {
   SubnetScanFailure,
   SubnetScanResult,
 } from "@/app/store/subnet/types";
-import type { StaticDHCPLease } from "@/app/store/subnet/types/base";
 import type { Model, TimestampedModel } from "@/app/store/types/model";
-import type { SimpleNode } from "@/app/store/types/node";
 import { NodeType } from "@/app/store/types/node";
 
 export const subnetStatisticsRange = define<SubnetStatisticsRange>({
@@ -112,15 +109,4 @@ export const subnet = extend<TimestampedModel, BaseSubnet>(timestampedModel, {
 
 export const subnetDetails = extend<BaseSubnet, SubnetDetails>(subnet, {
   ip_addresses: () => [],
-});
-
-export const staticDHCPLease = define<StaticDHCPLease>({
-  id: sequence,
-  comment: "random comment",
-  ip_address: (i: number) => `192.168.1.${i}`,
-  mac_address: (i: number) => `00:00:00:00:00:${i}`,
-  interface: (i: number) => `eth${i}`,
-  usage: "Device",
-  node: derive<StaticDHCPLease, SimpleNode | null>(simpleNode),
-  owner: "test-owner",
 });

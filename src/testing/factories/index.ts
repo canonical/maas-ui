@@ -54,6 +54,7 @@ export {
   podStatus,
   podStatuses,
   powerTypesState,
+  reservedIpState,
   resourcePoolState,
   rootState,
   routerState,
@@ -180,6 +181,7 @@ export { modelRef } from "./model";
 export { nodeDevice } from "./nodedevice";
 export { notification } from "./notification";
 export { packageRepository } from "./packagerepository";
+export { reservedIp, reservedIpNodeSummary } from "./reservedip";
 export { resourcePool } from "./resourcepool";
 export {
   partialScriptResult,

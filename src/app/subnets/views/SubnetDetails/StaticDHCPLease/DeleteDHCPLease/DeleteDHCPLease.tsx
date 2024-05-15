@@ -1,20 +1,41 @@
+import { useDispatch, useSelector } from "react-redux";
+
 import type { SubnetActionProps } from "../../types";
 
 import ModelActionForm from "@/app/base/components/ModelActionForm";
+import { reservedIpActions } from "@/app/store/reservedip";
+import reservedIpSelectors from "@/app/store/reservedip/selectors";
+import type { RootState } from "@/app/store/root/types";
 
-type Props = Pick<SubnetActionProps, "setSidePanelContent" | "macAddress">;
-const DeleteDHCPLease = ({ setSidePanelContent, macAddress }: Props) => {
-  if (!macAddress) return null;
+type Props = Pick<SubnetActionProps, "setSidePanelContent" | "reservedIpId">;
+const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
+  const dispatch = useDispatch();
+  const errors = useSelector(reservedIpSelectors.errors);
+  const saving = useSelector(reservedIpSelectors.saving);
+  const saved = useSelector(reservedIpSelectors.saved);
+
+  const reservedIp = useSelector((state: RootState) =>
+    reservedIpSelectors.getById(state, reservedIpId)
+  );
+
   const handleClose = () => setSidePanelContent(null);
-  // TODO: Implement onSubmit function and passing IDs when API supports it.
-  // https://warthogs.atlassian.net/browse/MAASENG-2983
+
+  if (!reservedIpId) return null;
+
   return (
     <ModelActionForm
       aria-label="Delete static IP"
+      errors={errors}
       initialValues={{}}
+      message={`Are you sure you want to delete ${reservedIp?.ip}? This action is permanent and cannot be undone.`}
       modelType="static IP"
       onCancel={handleClose}
-      onSubmit={() => {}}
+      onSubmit={() => {
+        dispatch(reservedIpActions.delete(reservedIpId));
+      }}
+      onSuccess={handleClose}
+      saved={saved}
+      saving={saving}
     />
   );
 };

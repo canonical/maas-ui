@@ -266,6 +266,14 @@ exports[`rootReducer > should reset app to initial state on LOGOUT_SUCCESS, exce
     "saving": false,
     "statuses": {},
   },
+  "reservedip": {
+    "errors": null,
+    "items": [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "resourcepool": {
     "errors": null,
     "items": [],

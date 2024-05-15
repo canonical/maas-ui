@@ -1,5 +1,7 @@
 import type { RouterState } from "redux-first-history";
 
+import type { ReservedIpState } from "../reservedip/types";
+import type { ReservedIpMeta } from "../reservedip/types/enum";
 import type { VMClusterMeta, VMClusterState } from "../vmcluster/types";
 
 import type {
@@ -93,6 +95,7 @@ export type RootState = {
   [NotificationMeta.MODEL]: NotificationState;
   [PackageRepositoryMeta.MODEL]: PackageRepositoryState;
   [PodMeta.MODEL]: PodState;
+  [ReservedIpMeta.MODEL]: ReservedIpState;
   [ResourcePoolMeta.MODEL]: ResourcePoolState;
   router: RouterState;
   [ScriptResultMeta.MODEL]: ScriptResultState;

@@ -1,10 +1,10 @@
 import StaticDHCPTable from "./StaticDHCPTable";
 
-import { staticDHCPLease } from "@/testing/factories/subnet";
+import { reservedIp } from "@/testing/factories/reservedip";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 it("renders a static DHCP table with no data", () => {
-  renderWithBrowserRouter(<StaticDHCPTable staticDHCPLeases={[]} />);
+  renderWithBrowserRouter(<StaticDHCPTable loading={false} reservedIps={[]} />);
 
   expect(
     screen.getByRole("table", { name: "Static DHCP leases" })
@@ -15,13 +15,15 @@ it("renders a static DHCP table with no data", () => {
 });
 
 it("renders a static DHCP table when data is provided", () => {
-  const dhcpLeases = [staticDHCPLease(), staticDHCPLease()];
-  renderWithBrowserRouter(<StaticDHCPTable staticDHCPLeases={dhcpLeases} />);
+  const reservedIps = [reservedIp(), reservedIp()];
+  renderWithBrowserRouter(
+    <StaticDHCPTable loading={false} reservedIps={reservedIps} />
+  );
 
   expect(
     screen.getByRole("table", { name: "Static DHCP leases" })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("cell", { name: dhcpLeases[0].ip_address })
+    screen.getByRole("cell", { name: reservedIps[0].ip })
   ).toBeInTheDocument();
 });

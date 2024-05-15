@@ -37,14 +37,14 @@ const SubnetActionForms = ({
   activeForm,
   setSidePanelContent,
   staticRouteId,
-  macAddress,
+  reservedIpId,
 }: SubnetActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (
     <FormComponent
       activeForm={activeForm}
-      macAddress={macAddress}
+      reservedIpId={reservedIpId}
       setSidePanelContent={setSidePanelContent}
       staticRouteId={staticRouteId}
       subnetId={subnetId}

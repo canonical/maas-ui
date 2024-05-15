@@ -2,6 +2,7 @@ import type { ValueOf } from "@canonical/react-components";
 
 import type { SidePanelContent } from "@/app/base/types";
 import type { IPRangeType } from "@/app/store/iprange/types";
+import type { ReservedIp } from "@/app/store/reservedip/types";
 
 export const SubnetActionTypes = {
   MapSubnet: "MapSubnet",
@@ -60,5 +61,10 @@ export const SubnetDetailsSidePanelViews = {
 
 export type SubnetDetailsSidePanelContent = SidePanelContent<
   ValueOf<typeof SubnetDetailsSidePanelViews>,
-  { createType?: IPRangeType; ipRangeId?: number; staticRouteId?: number }
+  {
+    createType?: IPRangeType;
+    ipRangeId?: number;
+    staticRouteId?: number;
+    reservedIpId?: ReservedIp["id"];
+  }
 >;

@@ -1,6 +1,7 @@
 import type { SubnetActionTypes } from "./constants";
 
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
+import type { ReservedIp } from "@/app/store/reservedip/types";
 import type {
   StaticRoute,
   StaticRouteMeta,
@@ -14,5 +15,5 @@ export interface SubnetActionProps {
   staticRouteId?: StaticRoute[StaticRouteMeta.PK];
   activeForm: SubnetAction;
   setSidePanelContent: SetSidePanelContent;
-  macAddress?: string;
+  reservedIpId?: ReservedIp["id"];
 }
