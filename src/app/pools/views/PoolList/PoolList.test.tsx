@@ -109,8 +109,7 @@ describe("PoolList", () => {
       { state }
     );
     expect(screen.getByRole("link", { name: "Delete" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
+      "aria-disabled"
     );
   });
 
@@ -132,8 +131,7 @@ describe("PoolList", () => {
       { state }
     );
     expect(screen.getByRole("link", { name: "Delete" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
+      "aria-disabled"
     );
   });
 

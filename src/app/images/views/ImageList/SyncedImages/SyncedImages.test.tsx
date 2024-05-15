@@ -9,6 +9,7 @@ import {
   screen,
   within,
   renderWithBrowserRouter,
+  expectTooltipOnHover,
 } from "@/testing/utils";
 
 describe("SyncedImages", () => {
@@ -126,16 +127,10 @@ describe("SyncedImages", () => {
     renderWithBrowserRouter(<SyncedImages />, { state });
     expect(
       screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource })
-    ).toBeDisabled();
-    await userEvent.hover(
-      screen
-        .getByRole("button", { name: SyncedImagesLabels.ChangeSource })
-        .querySelector("i")!
+    ).toHaveAttribute("aria-disabled");
+    await expectTooltipOnHover(
+      screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource }),
+      "Cannot change source while images are downloading."
     );
-    expect(
-      screen.getByRole("tooltip", {
-        name: "Cannot change source while images are downloading.",
-      })
-    ).toBeInTheDocument();
   });
 });

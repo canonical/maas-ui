@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
-import { render, screen, renderHook } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, renderHook, waitFor } from "@testing-library/react";
+import userEventLib from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -38,6 +38,14 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "@/testing/factories";
+
+const userEvent = userEventLib.setup(
+  vi.isFakeTimers()
+    ? {
+        advanceTimers: vi.runAllTimersAsync,
+      }
+    : undefined
+);
 
 /**
  * Replace objects in an array with objects that have new values, given a match
@@ -266,34 +274,17 @@ export const expectTooltipOnHover = async (
     screen.queryByRole("tooltip", { name: tooltipText })
   ).not.toBeInTheDocument();
 
-  if (!element) {
-    return {
-      message: () => `expected the element to exist`,
-      pass: false,
-    };
+  expect(element).toBeInTheDocument();
+
+  await userEvent.hover(element!);
+
+  if (element!.querySelector("i")) {
+    await userEvent.hover(element!.querySelector("i")!);
   }
 
-  await userEvent.hover(element);
-
-  if (element.querySelector("i")) {
-    await userEvent.hover(element.querySelector("i")!);
-  }
-
-  const pass =
-    screen.getAllByRole("tooltip", { name: tooltipText }).length === 1;
-
-  if (pass) {
-    return {
-      message: () =>
-        `expected the element not to have tooltip '${tooltipText}'`,
-      pass: true,
-    };
-  } else {
-    return {
-      message: () => `expected the element to have tooltip '${tooltipText}'`,
-      pass: false,
-    };
-  }
+  await waitFor(
+    () => screen.getAllByRole("tooltip", { name: tooltipText }).length === 1
+  );
 };
 
 const generateWrapper =
@@ -308,4 +299,4 @@ export const renderHookWithMockStore = (hook: Hook) => {
 };
 
 export * from "@testing-library/react";
-export { default as userEvent } from "@testing-library/user-event";
+export { userEvent };

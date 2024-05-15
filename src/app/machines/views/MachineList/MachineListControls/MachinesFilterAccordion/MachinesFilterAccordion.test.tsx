@@ -32,7 +32,9 @@ describe("MachinesFilterAccordion", () => {
       <MachinesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { state }
     );
-    expect(screen.getByRole("button", { name: Label.Toggle })).toBeDisabled();
+    expect(screen.getByRole("button", { name: Label.Toggle })).toHaveAttribute(
+      "aria-disabled"
+    );
   });
 
   it("does not fetch filters if filters have been loaded", async () => {

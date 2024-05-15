@@ -228,7 +228,10 @@ it("disables the action menu if node is a machine and storage can't be edited", 
       </MemoryRouter>
     </Provider>
   );
-  expect(screen.getByRole("button", { name: /Take action/ })).toBeDisabled();
+  expect(screen.getByRole("button", { name: /Take action/ })).toHaveAttribute(
+    "aria-disabled",
+    "true"
+  );
 });
 
 it("can remove a disk's filesystem if node is a machine", async () => {

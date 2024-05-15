@@ -10,7 +10,7 @@ import {
   screen,
   render,
   renderWithBrowserRouter,
-  userEvent,
+  expectTooltipOnHover,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
@@ -66,11 +66,8 @@ describe("ImagesIntro", () => {
     const button = screen.getByRole("button", {
       name: ImagesIntroLabels.Continue,
     });
-    expect(button).toBeDisabled();
-    await userEvent.hover(button.querySelector("i")!);
-    expect(
-      screen.getByRole("tooltip", { name: ImagesIntroLabels.CantContinue })
-    ).toBeInTheDocument();
+    expect(button).toHaveAttribute("aria-disabled", "true");
+    await expectTooltipOnHover(button, ImagesIntroLabels.CantContinue);
   });
 
   it("enables the continue button if an image and source has been configured", () => {
@@ -85,6 +82,6 @@ describe("ImagesIntro", () => {
 
     expect(
       screen.getByRole("button", { name: ImagesIntroLabels.Continue })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled");
   });
 });

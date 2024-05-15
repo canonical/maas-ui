@@ -24,7 +24,9 @@ describe("DiscoveriesFilterAccordion", () => {
       <DiscoveriesFilterAccordion searchText="" setSearchText={vi.fn()} />,
       { route, state }
     );
-    expect(screen.getByRole("button", { name: "Filters" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Filters" })).toHaveAttribute(
+      "aria-disabled"
+    );
   });
 
   it("displays a filter accordion", () => {

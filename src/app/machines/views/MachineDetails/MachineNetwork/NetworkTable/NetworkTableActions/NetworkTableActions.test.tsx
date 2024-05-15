@@ -64,7 +64,9 @@ describe("NetworkTableActions", () => {
     renderWithMockStore(<NetworkTableActions nic={nic} systemId="abc123" />, {
       state,
     });
-    expect(screen.getByRole("button", { name: "Take action:" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Take action:" })
+    ).toHaveAttribute("aria-disabled", "true");
   });
 
   it("can display an item to mark an interface as connected", async () => {
@@ -198,7 +200,7 @@ describe("NetworkTableActions", () => {
       name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
-    expect(addAlias).not.toBeDisabled();
+    expect(addAlias).not.toHaveAttribute("aria-disabled");
     await userEvent.hover(addAlias);
     expect(
       screen.queryByRole("tooltip", {
@@ -220,13 +222,11 @@ describe("NetworkTableActions", () => {
       name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
-    expect(addAlias).toBeDisabled();
-    await userEvent.hover(addAlias.querySelector("i")!);
-    expect(
-      screen.getByRole("tooltip", {
-        name: "IP mode needs to be configured for this interface.",
-      })
-    ).toBeInTheDocument();
+    expect(addAlias).toHaveAttribute("aria-disabled", "true");
+    await expectTooltipOnHover(
+      addAlias.querySelector("i")!,
+      "IP mode needs to be configured for this interface."
+    );
   });
 
   it("can display an action to add a VLAN", async () => {
@@ -244,7 +244,7 @@ describe("NetworkTableActions", () => {
     await openMenu();
     const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
-    expect(addVLAN).not.toBeDisabled();
+    expect(addVLAN).not.toHaveAttribute("aria-disabled");
     expect(
       screen.queryByRole("tooltip", {
         name: "There are no unused VLANS for this interface.",
@@ -263,7 +263,7 @@ describe("NetworkTableActions", () => {
     await openMenu();
     const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
-    expect(addVLAN).toBeDisabled();
+    expect(addVLAN).toHaveAttribute("aria-disabled", "true");
     await expectTooltipOnHover(
       addVLAN,
       "There are no unused VLANS for this interface."

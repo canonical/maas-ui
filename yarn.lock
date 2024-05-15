@@ -1980,10 +1980,10 @@
     "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
-"@canonical/react-components@0.53.0":
-  version "0.53.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.53.0.tgz#10217042a7398efb6652e7d9e2b110eb996d7270"
-  integrity sha512-P5kbBi1iozZnxABDbZjtoMivVOgC63GZquCH9nF7TJW6qH2wXZxOhKQud+ZYAbQldLaNzz63vd2I13baVperhg==
+"@canonical/react-components@0.53.1":
+  version "0.53.1"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.53.1.tgz#c33a0705d70121bb1cbe9911c993ff06d0994dcf"
+  integrity sha512-nz3/MFLq/dNrxZqLA04dNdBKn1bH8saZD4cQjMjPjq0qvHon9C34Pc9Qs+gNfJhyHt8WBp0BSkXvQqq7Jpjxqw==
   dependencies:
     "@types/jest" "29.5.12"
     "@types/node" "20.12.11"
@@ -13359,10 +13359,10 @@ validate-npm-package-name@^5.0.0:
   dependencies:
     builtins "^5.0.0"
 
-vanilla-framework@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.0.0.tgz#a2fee9bd9763ebd6932b764f9d66484dc177d4cc"
-  integrity sha512-fiPnmaTUe15l5MRNJ6IsiJ8qiunfmgtLETOFltaYiE/bQKL7xTI+riBak2iygBKeF1y0Gi/GxUNt4hyb6xDPKA==
+vanilla-framework@4.11.0:
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.11.0.tgz#81636d58bacbd3320a4eb6bf5bef00409cfdc008"
+  integrity sha512-S0AAHNVphn3YJ7BQhyHmvKhrqiZcncQBPedwMan18uavB4VfAT8UN0dwgrHQvY/ypUuJiq/GPA0Xe1xcd+E7dg==
 
 vary@~1.1.2:
   version "1.1.2"

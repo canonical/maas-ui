@@ -50,6 +50,7 @@ describe("websocket sagas", () => {
   const getCookieMock = getCookie as Mock;
 
   beforeEach(() => {
+    vi.useRealTimers();
     getCookieMock.mockImplementation(() => "abc123");
     socketClient = new WebSocketClient();
     socketClient.connect();

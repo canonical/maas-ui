@@ -15,12 +15,12 @@ describe("TableActionsDropdown", () => {
         onActionClick={vi.fn()}
       />
     );
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.getByRole("button")).toHaveAttribute("aria-disabled", "true");
   });
 
   it("is disabled if no actions are provided", () => {
     render(<TableActionsDropdown actions={[]} onActionClick={vi.fn()} />);
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.getByRole("button")).toHaveAttribute("aria-disabled", "true");
   });
 
   it("can conditionally show actions", async () => {

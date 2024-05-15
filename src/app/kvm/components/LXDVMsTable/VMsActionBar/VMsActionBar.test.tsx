@@ -57,8 +57,8 @@ describe("VMsActionBar", () => {
 
     expect(
       within(screen.getByTestId("take-action-dropdown")).getByRole("button")
-    ).toBeDisabled();
-    expect(screen.getByTestId("delete-vm")).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByTestId("delete-vm")).toHaveAttribute("aria-disabled");
   });
 
   it("enables VM actions if at least one is selected", () => {

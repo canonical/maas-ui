@@ -57,7 +57,7 @@ describe("NetworkActionRow", () => {
       const addInterfaceButton = screen.getByRole("button", {
         name: "Add interface",
       });
-      expect(addInterfaceButton).toBeDisabled();
+      expect(addInterfaceButton).toHaveAttribute("aria-disabled", "true");
       await expectTooltipOnHover(
         addInterfaceButton,
         "Network can't be modified for this machine."

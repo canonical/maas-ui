@@ -23,6 +23,7 @@ describe("ComposeFormFields", () => {
   let initialState: RootState;
 
   beforeEach(() => {
+    vi.useFakeTimers();
     initialState = factory.rootState({
       domain: factory.domainState({
         loaded: true,
@@ -201,6 +202,7 @@ describe("ComposeFormFields", () => {
     const enableHugepages = screen.getByLabelText("Enable hugepages");
     expect(enableHugepages).toBeDisabled();
     await userEvent.hover(enableHugepages);
+    await vi.runAllTicks();
     await vi.waitFor(() => {
       expect(
         screen.getByRole("tooltip", {
@@ -239,9 +241,7 @@ describe("ComposeFormFields", () => {
     );
 
     expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
-    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.mouseOver(screen.getByLabelText("Enable hugepages"));
+    await userEvent.hover(screen.getByLabelText("Enable hugepages"));
     expect(
       screen.getByRole("tooltip", {
         name: "There are no free hugepages on this system.",
@@ -360,9 +360,7 @@ describe("ComposeFormFields", () => {
     expect(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     ).toBeDisabled();
-    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.mouseOver(
+    await userEvent.hover(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     );
     expect(
