@@ -159,6 +159,7 @@ const ReserveDHCPLease = ({
         isEditing ? "Edit static DHCP lease" : "Reserve static DHCP lease"
       }
       cleanup={cleanup}
+      enableReinitialize
       errors={errors}
       initialValues={initialValues}
       onCancel={onClose}
