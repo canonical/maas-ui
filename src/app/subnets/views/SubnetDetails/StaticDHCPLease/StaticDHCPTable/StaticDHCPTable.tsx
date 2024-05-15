@@ -62,7 +62,12 @@ const generateRows = (
                 extras: { reservedIpId: reservedIp.id },
               })
             }
-            onEdit={() => {}}
+            onEdit={() =>
+              setSidePanelContent({
+                view: SubnetDetailsSidePanelViews.ReserveDHCPLease,
+                extras: { reservedIpId: reservedIp.id },
+              })
+            }
           />
         </td>
       </tr>

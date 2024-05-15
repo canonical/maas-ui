@@ -128,6 +128,56 @@ describe("create reducers", () => {
   });
 });
 
+describe("update reducers", () => {
+  it("should correctly reduce updateStart", () => {
+    const initialState = factory.reservedIpState({ saving: false });
+    expect(reducers(initialState, actions.updateStart())).toEqual(
+      factory.reservedIpState({
+        saving: true,
+      })
+    );
+  });
+
+  it("should correctly reduce updateSuccess", () => {
+    const reservedIp = factory.reservedIp();
+    const initialState = factory.reservedIpState({
+      items: [reservedIp],
+      saving: true,
+      saved: false,
+    });
+    expect(reducers(initialState, actions.updateSuccess(reservedIp))).toEqual(
+      factory.reservedIpState({
+        saving: false,
+        saved: true,
+        items: [reservedIp],
+      })
+    );
+  });
+
+  it("should correctly reduce updateError", () => {
+    const initialState = factory.reservedIpState({
+      saving: true,
+      saved: false,
+    });
+    expect(reducers(initialState, actions.updateError("Error"))).toEqual(
+      factory.reservedIpState({
+        saving: false,
+        errors: "Error",
+      })
+    );
+  });
+
+  it("should correctly reduce updateNotify", () => {
+    const items = [factory.reservedIp(), factory.reservedIp()];
+    const initialState = factory.reservedIpState({
+      items,
+    });
+    expect(
+      reducers(initialState, actions.updateNotify(items[1])).items
+    ).toEqual(items);
+  });
+});
+
 describe("delete reducers", () => {
   it("should correctly reduce deleteStart", () => {
     const initialState = factory.reservedIpState({ saving: false });
