@@ -17,16 +17,18 @@ import {
   genericInitialState,
 } from "@/app/store/utils/slice";
 
+const commonReducers = generateCommonReducers<
+  ReservedIpState,
+  ReservedIpMeta.PK,
+  CreateParams,
+  UpdateParams
+>({ modelName: ReservedIpMeta.MODEL, primaryKey: ReservedIpMeta.PK });
+
 const reservedIpSlice = createSlice({
   name: ReservedIpMeta.MODEL,
   initialState: genericInitialState as ReservedIpState,
   reducers: {
-    ...generateCommonReducers<
-      ReservedIpState,
-      ReservedIpMeta.PK,
-      CreateParams,
-      UpdateParams
-    >({ modelName: ReservedIpMeta.MODEL, primaryKey: ReservedIpMeta.PK }),
+    ...commonReducers,
     ...generateGetReducers<ReservedIpState, ReservedIp, ReservedIpMeta.PK>({
       modelName: ReservedIpMeta.MODEL,
       primaryKey: ReservedIpMeta.PK,
@@ -35,15 +37,7 @@ const reservedIpSlice = createSlice({
       state: ReservedIpState,
       action: PayloadAction<ReservedIp>
     ) => {
-      generateCommonReducers<
-        ReservedIpState,
-        ReservedIpMeta.PK,
-        CreateParams,
-        UpdateParams
-      >({
-        modelName: ReservedIpMeta.MODEL,
-        primaryKey: ReservedIpMeta.PK,
-      }).createSuccess(state);
+      commonReducers.createSuccess(state);
       const item = action.payload;
       const index = (state.items as ReservedIp[]).findIndex(
         (draftItem: ReservedIp) =>
@@ -66,15 +60,7 @@ const reservedIpSlice = createSlice({
         state: ReservedIpState,
         action: PayloadAction<null, string, GenericItemMeta<DeleteParams>>
       ) => {
-        generateCommonReducers<
-          ReservedIpState,
-          ReservedIpMeta.PK,
-          CreateParams,
-          UpdateParams
-        >({
-          modelName: ReservedIpMeta.MODEL,
-          primaryKey: ReservedIpMeta.PK,
-        }).deleteSuccess(state);
+        commonReducers.deleteSuccess(state);
         const id = action.meta.item.id;
         const index = (state.items as ReservedIp[]).findIndex(
           (draftItem: ReservedIp) => draftItem[ReservedIpMeta.PK] === id
