@@ -21,6 +21,8 @@ import {
   isIpInSubnet,
 } from "@/app/utils/subnetIpRange";
 
+const MAX_COMMENT_LENGTH = 255;
+
 type Props = Pick<
   SubnetActionProps,
   "subnetId" | "setSidePanelContent" | "reservedIpId"
@@ -168,20 +170,29 @@ const ReserveDHCPLease = ({
       }
       validationSchema={ReserveDHCPLeaseSchema}
     >
-      <FormikField
-        cidr={subnet.cidr}
-        component={PrefixedIpInput}
-        label="IP address"
-        name="ip_address"
-        required
-      />
-      <MacAddressField label="MAC address" name="mac_address" />
-      <FormikField
-        label="Comment"
-        name="comment"
-        placeholder="Static DHCP lease purpose"
-        type="text"
-      />
+      {({ values }: { values: FormValues }) => (
+        <>
+          <FormikField
+            cidr={subnet.cidr}
+            component={PrefixedIpInput}
+            label="IP address"
+            name="ip_address"
+            required
+          />
+          <MacAddressField label="MAC address" name="mac_address" />
+          <FormikField
+            className="u-margin-bottom--x-small"
+            label="Comment"
+            maxLength={MAX_COMMENT_LENGTH}
+            name="comment"
+            placeholder="Static DHCP lease purpose"
+            type="text"
+          />
+          <small className="u-flex--end">
+            {values.comment.length}/{MAX_COMMENT_LENGTH}
+          </small>
+        </>
+      )}
     </FormikForm>
   );
 };
