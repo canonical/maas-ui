@@ -1,9 +1,8 @@
-import type { Subnet, SubnetMeta } from "../../subnet/types";
-import type { TimestampedModel } from "../../types/model";
-import type { NetworkInterface, Node, NodeType } from "../../types/node";
-import type { GenericState } from "../../types/state";
-
 import type { APIError } from "@/app/base/types";
+import type { Subnet, SubnetMeta } from "@/app/store/subnet/types";
+import type { TimestampedModel } from "@/app/store/types/model";
+import type { NetworkInterface, Node, NodeType } from "@/app/store/types/node";
+import type { GenericState } from "@/app/store/types/state";
 
 export type ReservedIp = TimestampedModel & {
   ip: string;

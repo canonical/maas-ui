@@ -1,14 +1,13 @@
 import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Link } from "react-router-dom";
 
-import { SubnetDetailsSidePanelViews } from "../../constants";
-
 import TableActions from "@/app/base/components/TableActions";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import type { ReservedIp } from "@/app/store/reservedip/types/base";
 import { getNodeUrl } from "@/app/store/reservedip/utils";
 import { getNodeTypeDisplay } from "@/app/store/utils";
+import { SubnetDetailsSidePanelViews } from "@/app/subnets/views/SubnetDetails/constants";
 
 const headers = [
   { content: "IP Address", className: "ip-col", sortKey: "ip_address" },
