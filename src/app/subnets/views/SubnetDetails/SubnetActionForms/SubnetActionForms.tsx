@@ -28,7 +28,7 @@ const FormComponents: Record<
   [SubnetActionTypes.ReserveRange]: ReservedRangeForm,
   [SubnetActionTypes.DeleteReservedRange]: ReservedRangeDeleteForm,
   [SubnetActionTypes.ReserveDHCPLease]: ReserveDHCPLease,
-  [SubnetActionTypes.EditDHCPLease]: () => null,
+  [SubnetActionTypes.EditDHCPLease]: ReserveDHCPLease,
   [SubnetActionTypes.DeleteDHCPLease]: DeleteDHCPLease,
 };
 

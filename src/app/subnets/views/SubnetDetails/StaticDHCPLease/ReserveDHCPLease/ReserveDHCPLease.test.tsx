@@ -37,7 +37,10 @@ afterAll(() => {
 
 it("displays an error if an invalid IP address is entered", async () => {
   renderWithBrowserRouter(
-    <ReserveDHCPLease setSidePanelContent={vi.fn()} subnetId={1} />,
+    <ReserveDHCPLease
+      setSidePanelContent={vi.fn()}
+      subnetId={state.subnet.items[0].id}
+    />,
     { state }
   );
 
@@ -55,7 +58,10 @@ it("displays an error if an invalid IP address is entered", async () => {
 it("displays an error if an out-of-range IP address is entered", async () => {
   state.subnet.items = [factory.subnet({ id: 1, cidr: "10.0.0.0/25" })];
   renderWithBrowserRouter(
-    <ReserveDHCPLease setSidePanelContent={vi.fn()} subnetId={1} />,
+    <ReserveDHCPLease
+      setSidePanelContent={vi.fn()}
+      subnetId={state.subnet.items[0].id}
+    />,
     { state }
   );
 
@@ -73,7 +79,10 @@ it("displays an error if an out-of-range IP address is entered", async () => {
 it("closes the side panel when the cancel button is clicked", async () => {
   const setSidePanelContent = vi.fn();
   renderWithBrowserRouter(
-    <ReserveDHCPLease setSidePanelContent={setSidePanelContent} subnetId={1} />,
+    <ReserveDHCPLease
+      setSidePanelContent={setSidePanelContent}
+      subnetId={state.subnet.items[0].id}
+    />,
     { state }
   );
 
@@ -85,7 +94,10 @@ it("closes the side panel when the cancel button is clicked", async () => {
 it("dispatches an action to create a reserved IP", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
-    <ReserveDHCPLease setSidePanelContent={vi.fn()} subnetId={1} />,
+    <ReserveDHCPLease
+      setSidePanelContent={vi.fn()}
+      subnetId={state.subnet.items[0].id}
+    />,
     { store }
   );
 
@@ -124,5 +136,90 @@ it("dispatches an action to create a reserved IP", async () => {
       },
     },
     type: "reservedip/create",
+  });
+});
+
+it("pre-fills the form if a reserved IP's ID is present", async () => {
+  const reservedIp = factory.reservedIp({
+    id: 1,
+    ip: "10.0.0.2",
+    mac_address: "FF:FF:FF:FF:FF:FF",
+    comment: "bla bla bla",
+  });
+  state.reservedip = factory.reservedIpState({
+    loading: false,
+    loaded: true,
+    items: [reservedIp],
+  });
+
+  renderWithBrowserRouter(
+    <ReserveDHCPLease
+      reservedIpId={reservedIp.id}
+      setSidePanelContent={vi.fn()}
+      subnetId={state.subnet.items[0].id}
+    />,
+    { state }
+  );
+
+  expect(screen.getByRole("textbox", { name: "IP address" })).toHaveValue("2");
+  expect(screen.getByRole("textbox", { name: "MAC address" })).toHaveValue(
+    reservedIp.mac_address
+  );
+  expect(screen.getByRole("textbox", { name: "Comment" })).toHaveValue(
+    reservedIp.comment
+  );
+});
+
+it("dispatches an action to update a reserved IP", async () => {
+  const reservedIp = factory.reservedIp({
+    id: 1,
+    ip: "10.0.0.69",
+    mac_address: "FF:FF:FF:FF:FF:FF",
+    comment: "bla bla bla",
+  });
+  state.reservedip = factory.reservedIpState({
+    loading: false,
+    loaded: true,
+    items: [reservedIp],
+  });
+
+  const store = mockStore(state);
+  renderWithBrowserRouter(
+    <ReserveDHCPLease
+      reservedIpId={reservedIp.id}
+      setSidePanelContent={vi.fn()}
+      subnetId={state.subnet.items[0].id}
+    />,
+    { store }
+  );
+
+  await userEvent.clear(screen.getByRole("textbox", { name: "Comment" }));
+
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "Comment" }),
+    "something imaginative and funny"
+  );
+
+  await userEvent.click(
+    screen.getByRole("button", { name: "Update static DHCP lease" })
+  );
+
+  expect(
+    store.getActions().find((action) => action.type === "reservedip/update")
+  ).toEqual({
+    meta: {
+      method: "update",
+      model: "reservedip",
+    },
+    payload: {
+      params: {
+        subnet: 1,
+        id: reservedIp.id,
+        ip: "10.0.0.69",
+        mac_address: "FF:FF:FF:FF:FF:FF",
+        comment: "something imaginative and funny",
+      },
+    },
+    type: "reservedip/update",
   });
 });

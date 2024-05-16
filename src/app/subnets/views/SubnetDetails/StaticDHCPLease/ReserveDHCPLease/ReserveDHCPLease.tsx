@@ -21,7 +21,12 @@ import {
   isIpInSubnet,
 } from "@/app/utils/subnetIpRange";
 
-type Props = Pick<SubnetActionProps, "subnetId" | "setSidePanelContent">;
+const MAX_COMMENT_LENGTH = 255;
+
+type Props = Pick<
+  SubnetActionProps,
+  "subnetId" | "setSidePanelContent" | "reservedIpId"
+>;
 
 type FormValues = {
   ip_address: string;
@@ -29,20 +34,50 @@ type FormValues = {
   comment: string;
 };
 
-const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
+const ReserveDHCPLease = ({
+  subnetId,
+  setSidePanelContent,
+  reservedIpId,
+}: Props) => {
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
+  );
+  const reservedIp = useSelector((state: RootState) =>
+    reservedIpSelectors.getById(state, reservedIpId)
   );
   const subnetLoading = useSelector(subnetSelectors.loading);
   const reservedIpLoading = useSelector(reservedIpSelectors.loading);
   const errors = useSelector(reservedIpSelectors.errors);
   const saving = useSelector(reservedIpSelectors.saving);
   const saved = useSelector(reservedIpSelectors.saved);
-
-  const loading = subnetLoading || reservedIpLoading;
-
   const dispatch = useDispatch();
   const cleanup = useCallback(() => reservedIpActions.cleanup(), []);
+
+  const loading = subnetLoading || reservedIpLoading;
+  const isEditing = !!reservedIpId;
+
+  const getInitialValues = () => {
+    if (reservedIp && subnet) {
+      const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
+      const [immutableOctets, _] = getImmutableAndEditableOctets(
+        startIp,
+        endIp
+      );
+      return {
+        ip_address: reservedIp.ip.replace(`${immutableOctets}.`, ""),
+        mac_address: reservedIp.mac_address || "",
+        comment: reservedIp.comment || "",
+      };
+    } else {
+      return {
+        ip_address: "",
+        mac_address: "",
+        comment: "",
+      };
+    }
+  };
+
+  const initialValues = getInitialValues();
 
   const onClose = () => setSidePanelContent(null);
 
@@ -96,50 +131,71 @@ const ReserveDHCPLease = ({ subnetId, setSidePanelContent }: Props) => {
 
   const handleSubmit = (values: FormValues) => {
     dispatch(cleanup());
-
-    dispatch(
-      reservedIpActions.create({
-        comment: values.comment,
-        ip: `${immutableOctets}.${values.ip_address}`,
-        mac_address: values.mac_address,
-        subnet: subnetId,
-      })
-    );
+    if (isEditing) {
+      dispatch(
+        reservedIpActions.update({
+          comment: values.comment,
+          ip: `${immutableOctets}.${values.ip_address}`,
+          mac_address: values.mac_address,
+          subnet: subnetId,
+          id: reservedIpId,
+        })
+      );
+    } else {
+      dispatch(
+        reservedIpActions.create({
+          comment: values.comment,
+          ip: `${immutableOctets}.${values.ip_address}`,
+          mac_address: values.mac_address,
+          subnet: subnetId,
+        })
+      );
+    }
   };
 
   return (
     <FormikForm<FormValues>
-      aria-label="Reserve static DHCP lease"
+      aria-label={
+        isEditing ? "Edit static DHCP lease" : "Reserve static DHCP lease"
+      }
       cleanup={cleanup}
+      enableReinitialize
       errors={errors}
-      initialValues={{
-        ip_address: "",
-        mac_address: "",
-        comment: "",
-      }}
+      initialValues={initialValues}
       onCancel={onClose}
       onSubmit={handleSubmit}
       onSuccess={onClose}
       resetOnSave
       saved={saved}
       saving={saving}
-      submitLabel="Reserve static DHCP lease"
+      submitLabel={
+        isEditing ? "Update static DHCP lease" : "Reserve static DHCP lease"
+      }
       validationSchema={ReserveDHCPLeaseSchema}
     >
-      <FormikField
-        cidr={subnet.cidr}
-        component={PrefixedIpInput}
-        label="IP address"
-        name="ip_address"
-        required
-      />
-      <MacAddressField label="MAC address" name="mac_address" />
-      <FormikField
-        label="Comment"
-        name="comment"
-        placeholder="Static DHCP lease purpose"
-        type="text"
-      />
+      {({ values }: { values: FormValues }) => (
+        <>
+          <FormikField
+            cidr={subnet.cidr}
+            component={PrefixedIpInput}
+            label="IP address"
+            name="ip_address"
+            required
+          />
+          <MacAddressField label="MAC address" name="mac_address" />
+          <FormikField
+            className="u-margin-bottom--x-small"
+            label="Comment"
+            maxLength={MAX_COMMENT_LENGTH}
+            name="comment"
+            placeholder="Static DHCP lease purpose"
+            type="text"
+          />
+          <small className="u-flex--end">
+            {values.comment.length}/{MAX_COMMENT_LENGTH}
+          </small>
+        </>
+      )}
     </FormikForm>
   );
 };

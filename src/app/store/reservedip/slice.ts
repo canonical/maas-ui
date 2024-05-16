@@ -71,6 +71,20 @@ const reservedIpSlice = createSlice({
         }
       },
     },
+    updateSuccess: (
+      state: ReservedIpState,
+      action: PayloadAction<ReservedIp>
+    ) => {
+      commonReducers.updateSuccess(state);
+      const item = action.payload;
+      const index = (state.items as ReservedIp[]).findIndex(
+        (draftItem: ReservedIp) =>
+          draftItem[ReservedIpMeta.PK] === item[ReservedIpMeta.PK]
+      );
+      if (index !== -1) {
+        state.items[index] = item;
+      }
+    },
   },
 });
 
