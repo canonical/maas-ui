@@ -105,11 +105,13 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(actionsMenu, NodeActions.DEPLOY)
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled");
     expect(
       getActionButton(actionsMenu, NodeActions.RELEASE)
     ).toBeInTheDocument();
-    expect(getActionButton(actionsMenu, NodeActions.RELEASE)).toBeDisabled();
+    expect(getActionButton(actionsMenu, NodeActions.RELEASE)).toHaveAttribute(
+      "aria-disabled"
+    );
   });
 
   it(`disables the actions that cannot be performed when nodes are provided`, async () => {
@@ -132,11 +134,13 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(actionsMenu, NodeActions.DEPLOY)
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled");
     expect(
       getActionButton(actionsMenu, NodeActions.RELEASE)
     ).toBeInTheDocument();
-    expect(getActionButton(actionsMenu, NodeActions.RELEASE)).toBeDisabled();
+    expect(getActionButton(actionsMenu, NodeActions.RELEASE)).toHaveAttribute(
+      "aria-disabled"
+    );
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {
@@ -147,7 +151,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: Labels.Delete })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled");
 
     await openMenu(Labels.Categorise);
     const categoriseMenu = getSubMenu(Labels.Categorise);
@@ -157,7 +161,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(categoriseMenu, NodeActions.SET_ZONE)
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled");
 
     await openMenu(Labels.Troubleshoot);
     const troubleshootMenu = getSubMenu(Labels.Troubleshoot);
@@ -167,7 +171,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(troubleshootMenu, NodeActions.TEST)
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled");
   });
 
   it("correctly calculates number of nodes that can perform each action", async () => {

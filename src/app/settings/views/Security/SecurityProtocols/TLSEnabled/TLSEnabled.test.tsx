@@ -154,7 +154,7 @@ it("shows an error if TLS notification is enabled but interval is invalid", asyn
 
   await waitFor(() => {
     expect(intervalInput).toHaveAccessibleErrorMessage(
-      "Error: Notification interval is required."
+      "Notification interval is required."
     );
   });
 });

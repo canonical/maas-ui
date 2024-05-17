@@ -214,8 +214,6 @@ it("shows an error if tag name is invalid", async () => {
   await userEvent.tab();
 
   await waitFor(() =>
-    expect(nameInput).toHaveAccessibleErrorMessage(
-      `Error: ${Label.NameValidation}`
-    )
+    expect(nameInput).toHaveAccessibleErrorMessage(Label.NameValidation)
   );
 });

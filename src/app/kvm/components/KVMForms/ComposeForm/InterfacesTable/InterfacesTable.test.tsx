@@ -66,7 +66,9 @@ describe("InterfacesTable", () => {
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
 
-    expect(screen.queryByRole("button", { name: /define/i })).toBeDisabled();
+    expect(screen.queryByRole("button", { name: /define/i })).toHaveAttribute(
+      "aria-disabled"
+    );
     await userEvent.hover(screen.getByRole("button", { name: /define/i }));
     expect(
       screen.getByText("There are no available networks seen by this KVM host.")
@@ -91,7 +93,9 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    expect(screen.getByRole("button", { name: /define/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /define/i })).toHaveAttribute(
+      "aria-disabled"
+    );
     await userEvent.hover(screen.getByRole("button", { name: /define/i }));
     expect(
       screen.getByText(
@@ -116,7 +120,9 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    expect(screen.queryByRole("button", { name: /define/i })).toBeDisabled();
+    expect(screen.queryByRole("button", { name: /define/i })).toHaveAttribute(
+      "aria-disabled"
+    );
   });
 
   it("can add and remove interfaces if KVM has PXE-enabled subnets", async () => {

@@ -64,9 +64,10 @@ describe("TableActions ", () => {
       />
     );
     expect(screen.getByRole("link", { name: /edit/i })).toHaveAttribute(
-      "aria-disabled",
-      "true"
+      "aria-disabled"
     );
-    expect(screen.getByRole("button", { name: /delete/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /delete/i })).toHaveAttribute(
+      "aria-disabled"
+    );
   });
 });

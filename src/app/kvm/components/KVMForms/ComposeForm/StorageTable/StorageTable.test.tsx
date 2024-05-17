@@ -66,7 +66,9 @@ describe("StorageTable", () => {
     state.pod.statuses = { [pod.id]: factory.podStatus({ composing: true }) };
     generateWrapper(state, pod);
 
-    expect(screen.getByRole("button", { name: /add disk/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /add disk/i })).toHaveAttribute(
+      "aria-disabled"
+    );
   });
 
   it("can add disks and remove all but last disk", async () => {
