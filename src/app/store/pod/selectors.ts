@@ -25,18 +25,18 @@ const defaultSelectors = generateBaseSelectors<PodState, Pod, PodMeta.PK>(
  * @param {RootState} state - The redux state.
  * @returns {Pod[]} A list of all KVMs.
  */
-const kvms = (state: RootState): Pod[] =>
-  state.pod.items.filter((pod) =>
-    [PodType.LXD, PodType.VIRSH].includes(pod.type)
-  );
+const kvms = createSelector([defaultSelectors.all], (pods) =>
+  pods.filter((pod) => [PodType.LXD, PodType.VIRSH].includes(pod.type))
+);
 
 /**
  * Returns all LXD pods.
  * @param state - The redux state.
  * @returns A list of all LXD pods.
  */
-const lxd = (state: RootState): Pod[] =>
-  state.pod.items.filter((pod) => pod.type === PodType.LXD);
+const lxd = createSelector([defaultSelectors.all], (pods) =>
+  pods.filter((pod) => pod.type === PodType.LXD)
+);
 
 /**
  * Returns all LXD single hosts (i.e. LXD pods that are not cluster hosts).
@@ -101,8 +101,9 @@ const searchInCluster = createSelector(
  * @param state - The redux state.
  * @returns A list of all virsh pods.
  */
-const virsh = (state: RootState): Pod[] =>
-  state.pod.items.filter((pod) => pod.type === PodType.VIRSH);
+const virsh = createSelector([defaultSelectors.all], (pods) =>
+  pods.filter((pod) => pod.type === PodType.VIRSH)
+);
 
 /**
  * Returns active pod id.
