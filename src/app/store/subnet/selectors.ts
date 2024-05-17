@@ -60,10 +60,10 @@ const active = createSelector(
 const getByIds = createSelector(
   [
     defaultSelectors.all,
-    (_state: RootState, ids: Subnet[SubnetMeta.PK][]) => ids,
+    (_state: RootState, ids: Subnet[SubnetMeta.PK][] | null) => ids,
   ],
-  (subnets, ids) => {
-    return subnets.filter(({ id }) => ids.includes(id));
+  (subnets, ids = []) => {
+    return subnets.filter(({ id }) => ids?.includes(id));
   }
 );
 

@@ -21,7 +21,7 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
     machineSelectors.getById(state, systemId)
   );
   const tags = useSelector((state: RootState) =>
-    tagSelectors.getByIDs(state, machine?.tags || [])
+    tagSelectors.getByIDs(state, machine?.tags || null)
   );
   const tagsLoading = useSelector(tagSelectors.loading);
   const taggingMachines = useSelector(machineSelectors.updatingTags);
