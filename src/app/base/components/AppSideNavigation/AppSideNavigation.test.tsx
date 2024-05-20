@@ -349,17 +349,21 @@ describe("GlobalSideNav", () => {
     );
   });
 
-  it("hides the 'Virsh' link if the user does not have any Virsh KVM hosts", () => {
-    const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
+  it("displays 'Virsh' link if user has Virsh KVM hosts", () => {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machines",
       state,
     });
 
     expect(screen.getByRole("link", { name: "Virsh" })).toBeInTheDocument();
+  });
 
+  it("hides 'Virsh' link if user has no Virsh KVM hosts", () => {
     state.pod.items = [];
-
-    rerender(<AppSideNavigation />);
+    renderWithBrowserRouter(<AppSideNavigation />, {
+      route: "/machines",
+      state,
+    });
 
     expect(
       screen.queryByRole("link", { name: "Virsh" })
