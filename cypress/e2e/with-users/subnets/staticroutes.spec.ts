@@ -52,7 +52,8 @@ context("Static Routes", () => {
     // Verify the change has been saved and side panel closed
     cy.get("@staticRoute").then((staticRoute: unknown) => {
       cy.findByRole("region", { name: /Static routes/i }).within(() => {
-        cy.findByText(staticRoute as string);
+        const newStaticRoute = (staticRoute as string).slice(0, -1) + "2";
+        cy.findByText(newStaticRoute);
       });
     });
     cy.findByRole("complementary", { name: /Edit static route/i }).should(
