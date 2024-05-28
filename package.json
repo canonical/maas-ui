@@ -85,7 +85,7 @@
     "yup": "0.32.11"
   },
   "devDependencies": {
-    "@percy/cli": "1.28.6",
+    "@percy/cli": "1.28.7",
     "@percy/cypress": "3.1.2",
     "@playwright/test": "1.44.0",
     "@storybook/addon-a11y": "7.6.19",
@@ -121,7 +121,7 @@
     "colors": "1.4.0",
     "concurrently": "8.2.2",
     "cooky-cutter": "1.5.4",
-    "cypress": "13.9.0",
+    "cypress": "13.10.0",
     "cypress-axe": "1.5.0",
     "cypress-wait-until": "3.0.1",
     "dotenv-flow": "4.1.0",
