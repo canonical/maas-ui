@@ -37,7 +37,7 @@ const VLANDetails = (): JSX.Element => {
   );
   const vlansLoading = useSelector(vlanSelectors.loading);
   const subnets = useSelector((state: RootState) =>
-    subnetSelectors.getByIds(state, vlan?.subnet_ids || [])
+    subnetSelectors.getByIds(state, vlan?.subnet_ids || null)
   );
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
 

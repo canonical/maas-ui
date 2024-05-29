@@ -25,11 +25,9 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
   );
   const tagsLoading = useSelector(tagSelectors.loading);
   const taggingMachines = useSelector(machineSelectors.updatingTags);
+  const eventActions = [NodeActions.TAG, NodeActions.UNTAG];
   const errors = useSelector((state: RootState) =>
-    machineSelectors.eventErrorsForIds(state, systemId, [
-      NodeActions.TAG,
-      NodeActions.UNTAG,
-    ])
+    machineSelectors.eventErrorsForIds(state, systemId, eventActions)
   )[0]?.error;
   const canEdit = useCanEdit(machine, true);
 
