@@ -46,4 +46,7 @@ export enum PowerFieldType {
   MULTIPLE_CHOICE = "multiple_choice",
   PASSWORD = "password",
   STRING = "string",
+  IP_ADDRESS = "ip_address",
+  VIRSH_ADDRESS = "virsh_address",
+  LXD_ADDRESS = "lxd_address",
 }

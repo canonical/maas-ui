@@ -70,7 +70,11 @@ export const BasePowerField = <V extends AnyObject>({
       }
       required={required}
       type={
-        (field_type === PowerFieldType.STRING && "text") ||
+        ((field_type === PowerFieldType.STRING ||
+          field_type === PowerFieldType.IP_ADDRESS ||
+          field_type === PowerFieldType.VIRSH_ADDRESS ||
+          field_type === PowerFieldType.LXD_ADDRESS) &&
+          "text") ||
         (field_type === PowerFieldType.PASSWORD && "password") ||
         undefined
       }
