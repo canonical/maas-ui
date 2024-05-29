@@ -47,4 +47,6 @@ export enum PowerFieldType {
   PASSWORD = "password",
   STRING = "string",
   IP_ADDRESS = "ip_address",
+  VIRSH_ADDRESS = "virsh_address",
+  LXD_ADDRESS = "lxd_address",
 }

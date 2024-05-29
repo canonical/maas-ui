@@ -67,7 +67,9 @@ export const generatePowerParametersSchema = (
       let fieldSchema =
         field.field_type === PowerFieldType.MULTIPLE_CHOICE
           ? Yup.array().of(Yup.string())
-          : field.field_type === PowerFieldType.IP_ADDRESS
+          : field.field_type === PowerFieldType.IP_ADDRESS ||
+              field.field_type === PowerFieldType.VIRSH_ADDRESS ||
+              field.field_type === PowerFieldType.LXD_ADDRESS
             ? Yup.string().test({
                 name: "is-ip-address",
                 message: "Please enter a valid IP address.",
