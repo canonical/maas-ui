@@ -140,13 +140,11 @@ const DHCPTable = ({
 }: Props): JSX.Element | null => {
   const [expanded, setExpanded] = useState<DHCPSnippet["id"] | null>(null);
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
+  const subnetIds = subnets?.map(({ id }) => id) || null;
   const dhcpsnippets = useSelector((state: RootState) =>
     node
       ? dhcpsnippetSelectors.getByNode(state, node?.system_id)
-      : dhcpsnippetSelectors.getBySubnets(
-          state,
-          subnets?.map(({ id }) => id)
-        )
+      : dhcpsnippetSelectors.getBySubnets(state, subnetIds)
   );
 
   useFetchActions([dhcpsnippetActions.fetch]);
