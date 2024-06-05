@@ -49,6 +49,7 @@ type Props = SidePanelContentTypes & {
   viewingDetails?: boolean;
 } & MachineActionVariableProps;
 
+/* eslint-disable complexity */
 export const MachineForms = ({
   sidePanelContent,
   machines,

@@ -12,6 +12,8 @@ import type { Node } from "@/app/store/types/node";
 import type { GenericState } from "@/app/store/types/state";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
 
+export type PodActions = "compose" | "remove" | "refresh";
+
 export type PodStoragePool = {
   available: number;
   id: string;

@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   root: true,
-  plugins: ["unused-imports", "prettier"],
+  plugins: ["unused-imports", "complexity", "prettier"],
   extends: [
     "react-app",
     "plugin:prettier/recommended",
@@ -50,6 +50,7 @@ module.exports = {
       },
       rules: {
         "prettier/prettier": "error",
+        complexity: ["error", { max: 25 }],
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
