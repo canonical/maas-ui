@@ -49,6 +49,21 @@ const reservedIpSlice = createSlice({
         (state.items as ReservedIp[]).push(item);
       }
     },
+    delete: {
+      prepare: (id: ReservedIp["id"], ip: ReservedIp["ip"]) => ({
+        meta: {
+          model: ReservedIpMeta.MODEL,
+          method: "delete",
+        },
+        payload: {
+          params: {
+            id,
+            ip,
+          },
+        },
+      }),
+      reducer: () => {},
+    },
     deleteSuccess: {
       prepare: (params: DeleteParams) => ({
         meta: {

@@ -20,7 +20,7 @@ const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
 
   const handleClose = () => setSidePanelContent(null);
 
-  if (!reservedIpId) return null;
+  if (!reservedIp) return null;
 
   return (
     <ModelActionForm
@@ -31,7 +31,7 @@ const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
       modelType="static IP"
       onCancel={handleClose}
       onSubmit={() => {
-        dispatch(reservedIpActions.delete(reservedIpId));
+        dispatch(reservedIpActions.delete(reservedIp.id, reservedIp.ip));
       }}
       onSuccess={handleClose}
       saved={saved}
