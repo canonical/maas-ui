@@ -32,7 +32,7 @@ it("can create an action for creating a reserved IP", () => {
 });
 
 it("can create an action for deleting a reserved IP", () => {
-  expect(actions.delete(1)).toEqual({
+  expect(actions.delete(1, "10.0.0.2")).toEqual({
     type: "reservedip/delete",
     meta: {
       model: "reservedip",
@@ -41,6 +41,7 @@ it("can create an action for deleting a reserved IP", () => {
     payload: {
       params: {
         id: 1,
+        ip: "10.0.0.2",
       },
     },
   });
