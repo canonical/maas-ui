@@ -18,31 +18,33 @@ export const memoryWithUnit = (memory: number): string => {
   return `${formatted.value}${formatted.unit}`;
 };
 
+const kvmSidePanelTitleMap = {
+  [KVMSidePanelViews.ADD_LXD_HOST[1]]: "Add LXD host",
+  [KVMSidePanelViews.ADD_VIRSH_HOST[1]]: "Add Virsh host",
+  [KVMSidePanelViews.COMPOSE_VM[1]]: "Compose",
+  [KVMSidePanelViews.DELETE_KVM[1]]: "Delete",
+  [KVMSidePanelViews.REFRESH_KVM[1]]: "Refresh",
+} as const;
+
 /**
  * Get header title depending on header content.
  * @param sidePanelContent - The currently selected header content.
  * @returns Header title.
  */
 export const getFormTitle = (sidePanelContent: SidePanelContent): string => {
-  switch (sidePanelContent && sidePanelContent.view) {
-    case KVMSidePanelViews.ADD_LXD_HOST:
-      return "Add LXD host";
-    case KVMSidePanelViews.ADD_VIRSH_HOST:
-      return "Add Virsh host";
-    case KVMSidePanelViews.COMPOSE_VM:
-      return "Compose";
-    case KVMSidePanelViews.DELETE_KVM:
-      return "Delete";
-    case KVMSidePanelViews.REFRESH_KVM:
-      return "Refresh";
-    default:
-      // We need to explicitly cast sidePanelContent here - TypeScript doesn't
-      // seem to be able to infer remaining object tuple values as with string
-      // values.
-      // https://github.com/canonical/maas-ui/issues/3040
-      const machineSidePanelContent = sidePanelContent;
-      return getSidePanelTitle("", machineSidePanelContent);
+  if (sidePanelContent && sidePanelContent.view) {
+    const [, title] = sidePanelContent.view;
+    if (title && title in kvmSidePanelTitleMap) {
+      return kvmSidePanelTitleMap[title as keyof typeof kvmSidePanelTitleMap];
+    }
   }
+
+  // We need to explicitly cast sidePanelContent here - TypeScript doesn't
+  // seem to be able to infer remaining object tuple values as with string
+  // values.
+  // https://github.com/canonical/maas-ui/issues/3040
+  const machineSidePanelContent = sidePanelContent;
+  return getSidePanelTitle("", machineSidePanelContent);
 };
 
 /**

@@ -6,6 +6,7 @@ import type { FormikFormProps } from "@/app/base/components/FormikForm";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useProcessing } from "@/app/base/hooks";
 import type { ActionState } from "@/app/base/types";
+import type { NodeActions } from "@/app/store/types/node";
 import { getNodeActionLabel } from "@/app/store/utils";
 
 const getLabel = (
@@ -28,7 +29,7 @@ const getLabel = (
     // e.g. "2 machines"
     modelString = `${selectedCount} ${modelName}s`;
   }
-  return getNodeActionLabel(modelString, actionName, processing);
+  return getNodeActionLabel(modelString, actionName as NodeActions, processing);
 };
 
 export type ActionFormProps<V extends object, E = null> = Omit<
