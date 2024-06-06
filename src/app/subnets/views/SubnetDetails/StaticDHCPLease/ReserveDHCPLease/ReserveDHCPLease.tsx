@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import * as ipaddr from "ipaddr.js";
-import { isIPv4, isIPv6 } from "is-ip";
+import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -76,6 +76,14 @@ const ReserveDHCPLease = ({
   const prefixLength = parseInt(subnet.cidr.split("/")[1]);
   const subnetIsIpv4 = isIPv4(networkAddress);
 
+  const formatIp = (ip: string | undefined) => {
+    if (subnetIsIpv4) {
+      return `${immutableOctets}.${ip}`;
+    } else {
+      return `${ipv6Prefix}${ip}`;
+    }
+  };
+
   const getInitialValues = () => {
     if (reservedIp && subnet) {
       return {
@@ -102,26 +110,18 @@ const ReserveDHCPLease = ({
       .test({
         name: "ip-is-valid",
         message: "This is not a valid IP address",
-        test: (ip_address) => {
-          if (subnetIsIpv4) {
-            return isIPv4(`${immutableOctets}.${ip_address}`);
-          } else {
-            return isIPv6(`${ipv6Prefix}${ip_address}`);
-          }
-        },
+        test: (ip_address) => isIP(formatIp(ip_address)),
       })
       .test({
         name: "ip-is-in-subnet",
         message: "The IP address is outside of the subnet's range.",
         test: (ip_address) => {
+          const ip = formatIp(ip_address);
           if (subnetIsIpv4) {
-            return isIpInSubnet(
-              `${immutableOctets}.${ip_address}`,
-              subnet.cidr as string
-            );
+            return isIpInSubnet(ip, subnet.cidr as string);
           } else {
             try {
-              const addr = ipaddr.parse(`${ipv6Prefix}${ip_address}`);
+              const addr = ipaddr.parse(ip);
               const netAddr = ipaddr.parse(networkAddress);
               return addr.match(netAddr, prefixLength);
             } catch (e) {
@@ -135,9 +135,7 @@ const ReserveDHCPLease = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    const ip = subnetIsIpv4
-      ? `${immutableOctets}.${values.ip_address}`
-      : `${ipv6Prefix}${values.ip_address}`;
+    const ip = formatIp(values.ip_address);
     dispatch(cleanup());
     if (isEditing) {
       dispatch(
