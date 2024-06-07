@@ -1,6 +1,8 @@
 import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import * as ipaddr from "ipaddr.js";
+import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -56,15 +58,38 @@ const ReserveDHCPLease = ({
   const loading = subnetLoading || reservedIpLoading;
   const isEditing = !!reservedIpId;
 
+  if (loading) {
+    return <Spinner text="Loading..." />;
+  }
+
+  if (!subnet) {
+    return null;
+  }
+
+  const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
+  const [immutableOctets, _] = getImmutableAndEditableOctets(startIp, endIp);
+  const networkAddress = subnet.cidr.split("/")[0];
+  const ipv6Prefix = networkAddress.substring(
+    0,
+    networkAddress.lastIndexOf(":")
+  );
+  const prefixLength = parseInt(subnet.cidr.split("/")[1]);
+  const subnetIsIpv4 = isIPv4(networkAddress);
+
+  const formatIp = (ip: string | undefined) => {
+    if (subnetIsIpv4) {
+      return `${immutableOctets}.${ip}`;
+    } else {
+      return `${ipv6Prefix}${ip}`;
+    }
+  };
+
   const getInitialValues = () => {
     if (reservedIp && subnet) {
-      const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
-      const [immutableOctets, _] = getImmutableAndEditableOctets(
-        startIp,
-        endIp
-      );
       return {
-        ip_address: reservedIp.ip.replace(`${immutableOctets}.`, ""),
+        ip_address: subnetIsIpv4
+          ? reservedIp.ip.replace(`${immutableOctets}.`, "")
+          : reservedIp.ip.replace(`${ipv6Prefix}`, ""),
         mac_address: reservedIp.mac_address || "",
         comment: reservedIp.comment || "",
       };
@@ -77,20 +102,7 @@ const ReserveDHCPLease = ({
     }
   };
 
-  const initialValues = getInitialValues();
-
   const onClose = () => setSidePanelContent(null);
-
-  if (loading) {
-    return <Spinner text="Loading..." />;
-  }
-
-  if (!subnet) {
-    return null;
-  }
-
-  const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
-  const [immutableOctets, _] = getImmutableAndEditableOctets(startIp, endIp);
 
   const ReserveDHCPLeaseSchema = Yup.object().shape({
     ip_address: Yup.string()
@@ -98,44 +110,38 @@ const ReserveDHCPLease = ({
       .test({
         name: "ip-is-valid",
         message: "This is not a valid IP address",
-        test: (ip_address) => {
-          let valid = true;
-          const octets = `${ip_address}`.split(".");
-          octets.forEach((octet) => {
-            // IP address is not valid if the octet is not a number
-            if (isNaN(parseInt(octet))) {
-              valid = false;
-            } else {
-              const octetInt = parseInt(octet);
-              // Unsigned 8-bit integer cannot be less than 0 or greater than 255
-              if (octetInt < 0 || octetInt > 255) {
-                valid = false;
-              }
-            }
-          });
-          return valid;
-        },
+        test: (ip_address) => isIP(formatIp(ip_address)),
       })
       .test({
         name: "ip-is-in-subnet",
         message: "The IP address is outside of the subnet's range.",
-        test: (ip_address) =>
-          isIpInSubnet(
-            `${immutableOctets}.${ip_address}`,
-            subnet?.cidr as string
-          ),
+        test: (ip_address) => {
+          const ip = formatIp(ip_address);
+          if (subnetIsIpv4) {
+            return isIpInSubnet(ip, subnet.cidr as string);
+          } else {
+            try {
+              const addr = ipaddr.parse(ip);
+              const netAddr = ipaddr.parse(networkAddress);
+              return addr.match(netAddr, prefixLength);
+            } catch (e) {
+              return false;
+            }
+          }
+        },
       }),
     mac_address: Yup.string().matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
     comment: Yup.string(),
   });
 
   const handleSubmit = (values: FormValues) => {
+    const ip = formatIp(values.ip_address);
     dispatch(cleanup());
     if (isEditing) {
       dispatch(
         reservedIpActions.update({
           comment: values.comment,
-          ip: `${immutableOctets}.${values.ip_address}`,
+          ip,
           mac_address: values.mac_address,
           subnet: subnetId,
           id: reservedIpId,
@@ -145,7 +151,7 @@ const ReserveDHCPLease = ({
       dispatch(
         reservedIpActions.create({
           comment: values.comment,
-          ip: `${immutableOctets}.${values.ip_address}`,
+          ip,
           mac_address: values.mac_address,
           subnet: subnetId,
         })
@@ -161,7 +167,7 @@ const ReserveDHCPLease = ({
       cleanup={cleanup}
       enableReinitialize
       errors={errors}
-      initialValues={initialValues}
+      initialValues={getInitialValues()}
       onCancel={onClose}
       onSubmit={handleSubmit}
       onSuccess={onClose}

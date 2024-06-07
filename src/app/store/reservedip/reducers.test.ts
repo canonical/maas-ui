@@ -193,7 +193,9 @@ describe("delete reducers", () => {
       saving: true,
       saved: false,
     });
-    expect(reducers(initialState, actions.deleteSuccess({ id: 1 }))).toEqual(
+    expect(
+      reducers(initialState, actions.deleteSuccess({ id: 1, ip: "10.0.0.2" }))
+    ).toEqual(
       factory.reservedIpState({
         saving: false,
         saved: true,

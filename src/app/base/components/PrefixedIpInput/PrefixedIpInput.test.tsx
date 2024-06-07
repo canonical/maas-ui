@@ -10,16 +10,19 @@ import PrefixedIpInput from "./PrefixedIpInput";
 
 import { renderWithBrowserRouter } from "@/testing/utils";
 
-it("displays the correct range help text for a subnet", () => {
+it("displays the correct range help text for an IPv4 subnet", () => {
   render(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <PrefixedIpInput cidr="10.0.0.0/24" name="ip" />
     </Formik>
   );
+  expect(
+    screen.getByText(/The available range in this subnet is/i)
+  ).toBeInTheDocument();
   expect(screen.getByText("10.0.0.[1-254]")).toBeInTheDocument();
 });
 
-it("displays the correct placeholder for a subnet", () => {
+it("displays the correct placeholder for an IPv4 subnet", () => {
   render(
     <Formik initialValues={{}} onSubmit={vi.fn()}>
       <PrefixedIpInput cidr="10.0.0.0/24" name="ip" />
@@ -29,7 +32,32 @@ it("displays the correct placeholder for a subnet", () => {
   expect(screen.getByRole("textbox")).toHaveAttribute("placeholder", "[1-254]");
 });
 
-it("trims the immutable octets from a pasted IP address", async () => {
+it("hides the range help text for an IPv6 subnet", () => {
+  render(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <PrefixedIpInput cidr="2001:db8::/32" name="ip" />
+    </Formik>
+  );
+
+  expect(
+    screen.queryByText(/The available range in this subnet is/i)
+  ).not.toBeInTheDocument();
+});
+
+it("displays the correct placeholder for an IPv6 subnet", () => {
+  render(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <PrefixedIpInput cidr="2001:db8::/32" name="ip" />
+    </Formik>
+  );
+
+  expect(screen.getByRole("textbox")).toHaveAttribute(
+    "placeholder",
+    "0000:0000:0000:0000:0000:0000"
+  );
+});
+
+it("trims the immutable octets from a pasted IPv4 address", async () => {
   renderWithBrowserRouter(
     <FormikForm initialValues={{ ip: "" }} onSubmit={vi.fn()}>
       <FormikField cidr="10.0.0.0/24" component={PrefixedIpInput} name="ip" />
@@ -40,4 +68,17 @@ it("trims the immutable octets from a pasted IP address", async () => {
   await userEvent.paste("10.0.0.1");
 
   expect(screen.getByRole("textbox")).toHaveValue("1");
+});
+
+it("trims the network address and subnet ID from a pasted IPv6 address", async () => {
+  renderWithBrowserRouter(
+    <FormikForm initialValues={{ ip: "" }} onSubmit={vi.fn()}>
+      <FormikField cidr="2001:db8::/32" component={PrefixedIpInput} name="ip" />
+    </FormikForm>
+  );
+
+  await userEvent.click(screen.getByRole("textbox"));
+  await userEvent.paste("2001:db8::1");
+
+  expect(screen.getByRole("textbox")).toHaveValue(":1");
 });
