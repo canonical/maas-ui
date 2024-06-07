@@ -50,16 +50,13 @@ const reservedIpSlice = createSlice({
       }
     },
     delete: {
-      prepare: (id: ReservedIp["id"], ip: ReservedIp["ip"]) => ({
+      prepare: (params: DeleteParams) => ({
         meta: {
           model: ReservedIpMeta.MODEL,
           method: "delete",
         },
         payload: {
-          params: {
-            id,
-            ip,
-          },
+          params,
         },
       }),
       reducer: () => {},

@@ -20,18 +20,20 @@ const DeleteDHCPLease = ({ setSidePanelContent, reservedIpId }: Props) => {
 
   const handleClose = () => setSidePanelContent(null);
 
-  if (!reservedIp) return null;
-
   return (
     <ModelActionForm
       aria-label="Delete static IP"
+      cleanup={reservedIpActions.cleanup}
       errors={errors}
       initialValues={{}}
       message={`Are you sure you want to delete ${reservedIp?.ip}? This action is permanent and cannot be undone.`}
       modelType="static IP"
       onCancel={handleClose}
       onSubmit={() => {
-        dispatch(reservedIpActions.delete(reservedIp.id, reservedIp.ip));
+        reservedIp &&
+          dispatch(
+            reservedIpActions.delete({ id: reservedIp.id, ip: reservedIp.ip })
+          );
       }}
       onSuccess={handleClose}
       saved={saved}
