@@ -45,8 +45,16 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn test:ci
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 1
 
   publish-coverage-report:
+    name: Publish Coverage Report
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: test
