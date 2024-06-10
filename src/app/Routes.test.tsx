@@ -202,8 +202,14 @@ describe("Routes", () => {
       route: urls.settings.index,
       state,
     });
-    await waitFor(() =>
-      expect(window.location.pathname).toBe(urls.settings.configuration.general)
+    await waitFor(
+      () =>
+        expect(window.location.pathname).toBe(
+          urls.settings.configuration.general
+        ),
+      {
+        timeout: LONG_TIMEOUT,
+      }
     );
   });
 

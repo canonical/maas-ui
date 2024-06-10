@@ -11,5 +11,8 @@ export default defineConfig({
     setupFiles: ["./src/setupTests.ts"],
     exclude: [...configDefaults.exclude, "**/tests/**"],
     clearMocks: true,
+    coverage: {
+      provider: "istanbul",
+    },
   },
 });
