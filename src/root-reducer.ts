@@ -18,6 +18,7 @@ import iprange from "@/app/store/iprange";
 import licensekeys from "@/app/store/licensekeys";
 import machine from "@/app/store/machine";
 import message from "@/app/store/message";
+import msm from "@/app/store/msm";
 import nodedevice from "@/app/store/nodedevice";
 import nodescriptresult from "@/app/store/nodescriptresult";
 import notification from "@/app/store/notification";
@@ -61,6 +62,7 @@ const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
     licensekeys,
     machine,
     message,
+    msm,
     nodedevice,
     nodescriptresult,
     notification,

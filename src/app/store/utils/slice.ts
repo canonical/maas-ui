@@ -5,6 +5,8 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
+import type { MsmMeta } from "../msm/types/enum";
+
 import type { KeysOfUnion } from "@/app/base/types";
 import type { BootResourceMeta } from "@/app/store/bootresource/types";
 import type { ConfigMeta } from "@/app/store/config/types";
@@ -50,6 +52,7 @@ export type CommonStates = Omit<
   | ConfigMeta.MODEL
   | GeneralMeta.MODEL
   | MessageMeta.MODEL
+  | MsmMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL
   | ZoneMeta.MODEL

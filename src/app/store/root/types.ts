@@ -1,9 +1,5 @@
 import type { RouterState } from "redux-first-history";
 
-import type { ReservedIpState } from "../reservedip/types";
-import type { ReservedIpMeta } from "../reservedip/types/enum";
-import type { VMClusterMeta, VMClusterState } from "../vmcluster/types";
-
 import type {
   BootResourceState,
   BootResourceMeta,
@@ -33,6 +29,8 @@ import type {
 } from "@/app/store/licensekeys/types";
 import type { MachineState, MachineMeta } from "@/app/store/machine/types";
 import type { MessageState, MessageMeta } from "@/app/store/message/types";
+import type { MsmState } from "@/app/store/msm/types/base";
+import type { MsmMeta } from "@/app/store/msm/types/enum";
 import type {
   NodeDeviceState,
   NodeDeviceMeta,
@@ -50,6 +48,8 @@ import type {
   PackageRepositoryMeta,
 } from "@/app/store/packagerepository/types";
 import type { PodState, PodMeta } from "@/app/store/pod/types";
+import type { ReservedIpState } from "@/app/store/reservedip/types";
+import type { ReservedIpMeta } from "@/app/store/reservedip/types/enum";
 import type {
   ResourcePoolState,
   ResourcePoolMeta,
@@ -73,6 +73,10 @@ import type { TagState, TagMeta } from "@/app/store/tag/types";
 import type { TokenState, TokenMeta } from "@/app/store/token/types";
 import type { UserState, UserMeta } from "@/app/store/user/types";
 import type { VLANState, VLANMeta } from "@/app/store/vlan/types";
+import type {
+  VMClusterMeta,
+  VMClusterState,
+} from "@/app/store/vmcluster/types";
 import type { ZoneState, ZoneMeta } from "@/app/store/zone/types";
 
 export type RootState = {
@@ -90,6 +94,7 @@ export type RootState = {
   [LicenseKeysMeta.MODEL]: LicenseKeysState;
   [MachineMeta.MODEL]: MachineState;
   [MessageMeta.MODEL]: MessageState;
+  [MsmMeta.MODEL]: MsmState;
   [NodeDeviceMeta.MODEL]: NodeDeviceState;
   [NodeScriptResultMeta.MODEL]: NodeScriptResultState;
   [NotificationMeta.MODEL]: NotificationState;
