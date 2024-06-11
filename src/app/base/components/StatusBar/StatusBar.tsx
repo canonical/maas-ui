@@ -1,11 +1,11 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import { Button, Icon, Link } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import TooltipButton from "../TooltipButton";
 
-import { useUsabilla } from "@/app/base/hooks";
+import { useFetchActions, useUsabilla } from "@/app/base/hooks";
 import configSelectors from "@/app/store/config/selectors";
 import controllerSelectors from "@/app/store/controller/selectors";
 import {
@@ -62,11 +62,8 @@ export const StatusBar = (): JSX.Element | null => {
   const maasName = useSelector(configSelectors.maasName);
   const allowUsabilla = useUsabilla();
   const msmRunning = useSelector(msmSelectors.running);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(msmActions.fetch());
-  }, [dispatch]);
+  useFetchActions([msmActions.fetch]);
 
   if (!(maasName && version)) {
     return null;

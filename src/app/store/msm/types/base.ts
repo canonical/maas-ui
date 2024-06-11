@@ -7,5 +7,6 @@ export interface MsmStatus {
 export interface MsmState {
   status: MsmStatus | null;
   loading: boolean;
+  loaded: boolean;
   errors: string | null;
 }

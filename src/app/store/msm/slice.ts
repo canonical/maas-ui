@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { MsmState, MsmStatus } from "./types/base";
 
-import { genericInitialState } from "@/app/store/utils/slice";
-
 const initialState: MsmState = {
-  ...genericInitialState,
   status: null,
+  errors: null,
+  loading: false,
+  loaded: false,
 };
 
 const msmSlice = createSlice({
@@ -27,6 +27,7 @@ const msmSlice = createSlice({
     fetchSuccess(state, action: PayloadAction<MsmStatus>) {
       state.status = action.payload;
       state.loading = false;
+      state.loaded = true;
       state.errors = null;
     },
     fetchError(state, action: PayloadAction<string>) {
