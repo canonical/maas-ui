@@ -6,7 +6,7 @@
 ![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg)
 ![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![Code Coverage](https://img.shields.io/badge/code--coverage-report-brightgreen.svg)](https://canonical.github.io/maas-ui/coverage/)
+[![Code Coverage](https://img.shields.io/badge/code--coverage-report-brightgreen.svg)](https://canonical.github.io/maas-ui/)
 
 - [About](#about)
 - [MAAS UI Overview](#maas-ui-overview)
