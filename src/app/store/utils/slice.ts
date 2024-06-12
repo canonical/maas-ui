@@ -5,8 +5,6 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import type { MsmMeta } from "../msm/types/enum";
-
 import type { KeysOfUnion } from "@/app/base/types";
 import type { BootResourceMeta } from "@/app/store/bootresource/types";
 import type { ConfigMeta } from "@/app/store/config/types";
@@ -18,6 +16,7 @@ import type { DeviceMeta, DeviceStatus } from "@/app/store/device/types";
 import type { GeneralMeta } from "@/app/store/general/types";
 import type { MachineMeta, MachineStatus } from "@/app/store/machine/types";
 import type { MessageMeta } from "@/app/store/message/types";
+import type { MsmMeta } from "@/app/store/msm/types/enum";
 import type { NodeScriptResultMeta } from "@/app/store/nodescriptresult/types";
 import type { PodMeta, PodStatus } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";

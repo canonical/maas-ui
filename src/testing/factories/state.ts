@@ -425,14 +425,15 @@ export const messageState = define<MessageState>({
   items: () => [],
 });
 
-export const msmStatus = define<MsmStatus>({
+export const msmStatus = define<MsmStatus | null>({
   running: "not_connected",
   smUrl: "http://example.com",
   startTime: "2021-01-01",
 });
 export const msmState = define<MsmState>({
-  status: msmStatus(),
+  status: msmStatus,
   loading: false,
+  loaded: false,
   errors: null,
 });
 

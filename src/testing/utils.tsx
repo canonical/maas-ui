@@ -188,9 +188,14 @@ export const renderWithMockStore = (
   rerender: (ui: React.ReactNode, newOptions?: WithStoreRenderOptions) => void;
 } => {
   const { state, store, ...renderOptions } = options ?? {};
+  const initialState =
+    typeof state === "function"
+      ? produce(rootStateFactory(), state)
+      : state || rootStateFactory();
+
   const rendered = render(ui, {
     wrapper: (props) => (
-      <WithMockStoreProvider {...props} state={state} store={store} />
+      <WithMockStoreProvider {...props} state={initialState} store={store} />
     ),
     ...renderOptions,
   });
