@@ -70,6 +70,7 @@ import type {
 } from "@/app/store/machine/types";
 import { FilterGroupKey, FilterGroupType } from "@/app/store/machine/types";
 import type { MessageState } from "@/app/store/message/types";
+import type { MsmState, MsmStatus } from "@/app/store/msm/types/base";
 import type { NodeDeviceState } from "@/app/store/nodedevice/types";
 import type { NodeScriptResultState } from "@/app/store/nodescriptresult/types";
 import type { NotificationState } from "@/app/store/notification/types";
@@ -424,6 +425,18 @@ export const messageState = define<MessageState>({
   items: () => [],
 });
 
+export const msmStatus = define<MsmStatus | null>({
+  running: "not_connected",
+  smUrl: "http://example.com",
+  startTime: "2021-01-01",
+});
+export const msmState = define<MsmState>({
+  status: msmStatus,
+  loading: false,
+  loaded: false,
+  errors: null,
+});
+
 export const architecturesState = define<ArchitecturesState>({
   ...defaultGeneralState,
 });
@@ -681,6 +694,7 @@ export const rootState = define<RootState>({
   licensekeys: licenseKeysState,
   machine: machineState,
   message: messageState,
+  msm: msmState,
   nodedevice: nodeDeviceState,
   notification: notificationState,
   nodescriptresult: nodeScriptResultState,

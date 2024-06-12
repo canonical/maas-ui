@@ -228,6 +228,12 @@ exports[`rootReducer > should reset app to initial state on LOGOUT_SUCCESS, exce
   "message": {
     "items": [],
   },
+  "msm": {
+    "errors": null,
+    "loaded": false,
+    "loading": false,
+    "status": null,
+  },
   "nodedevice": {
     "errors": null,
     "items": [],

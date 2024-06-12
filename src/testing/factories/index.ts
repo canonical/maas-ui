@@ -44,6 +44,8 @@ export {
   machineStatus,
   machineStatuses,
   messageState,
+  msmState,
+  msmStatus,
   nodeDeviceState,
   nodeScriptResultState,
   notificationState,

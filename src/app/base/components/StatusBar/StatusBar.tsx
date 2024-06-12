@@ -1,9 +1,11 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
-import { Button, Link } from "@canonical/react-components";
+import { Button, Icon, Link } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import { useUsabilla } from "@/app/base/hooks";
+import TooltipButton from "../TooltipButton";
+
+import { useFetchActions, useUsabilla } from "@/app/base/hooks";
 import configSelectors from "@/app/store/config/selectors";
 import controllerSelectors from "@/app/store/controller/selectors";
 import {
@@ -18,6 +20,8 @@ import {
   isDeployedWithHardwareSync,
   isMachineDetails,
 } from "@/app/store/machine/utils";
+import { msmActions } from "@/app/store/msm";
+import msmSelectors from "@/app/store/msm/selectors";
 import type { UtcDatetime } from "@/app/store/types/model";
 import { NodeStatus } from "@/app/store/types/node";
 import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
@@ -57,6 +61,9 @@ export const StatusBar = (): JSX.Element | null => {
   const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
   const allowUsabilla = useUsabilla();
+  const msmRunning = useSelector(msmSelectors.running);
+
+  useFetchActions([msmActions.fetch]);
 
   if (!(maasName && version)) {
     return null;
@@ -100,6 +107,20 @@ export const StatusBar = (): JSX.Element | null => {
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
           :&nbsp;
           <span data-testid="status-bar-version">{version}</span>
+        </div>
+        <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
+          <span data-testid="status-bar-msm-status">
+            {msmRunning === "connected" ? (
+              <TooltipButton
+                message="This MAAS is connected to a MAAS Site Manager.
+It will regularly report to the Site Manager and choose
+Site Manager as its upstream image source."
+              >
+                <Icon name="connected" />
+                Connected to MAAS Site Manager
+              </TooltipButton>
+            ) : null}
+          </span>
         </div>
         <ul className="p-inline-list--middot u-no-margin--bottom">
           <li className="p-inline-list__item">
