@@ -4,6 +4,7 @@ import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { produce } from "immer";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -175,13 +176,17 @@ export const renderWithBrowserRouter = (
   };
 };
 
+interface WithStoreRenderOptions extends RenderOptions {
+  state?: RootState | ((stateDraft: RootState) => void);
+  store?: WrapperProps["store"];
+}
+
 export const renderWithMockStore = (
   ui: React.ReactNode,
-  options?: RenderOptions & {
-    state?: RootState;
-    store?: WrapperProps["store"];
-  }
-): RenderResult => {
+  options?: WithStoreRenderOptions
+): Omit<RenderResult, "rerender"> & {
+  rerender: (ui: React.ReactNode, newOptions?: WithStoreRenderOptions) => void;
+} => {
   const { state, store, ...renderOptions } = options ?? {};
   const rendered = render(ui, {
     wrapper: (props) => (
@@ -191,8 +196,16 @@ export const renderWithMockStore = (
   });
   return {
     ...rendered,
-    rerender: (ui: React.ReactNode) =>
-      renderWithMockStore(ui, { container: rendered.container, ...options }),
+    rerender: (ui: React.ReactNode, newOptions?: WithStoreRenderOptions) =>
+      renderWithMockStore(ui, {
+        container: rendered.container,
+        ...options,
+        ...newOptions,
+        state:
+          state && typeof newOptions?.state === "function"
+            ? produce(state, newOptions.state)
+            : newOptions?.state || state,
+      }),
   };
 };
 

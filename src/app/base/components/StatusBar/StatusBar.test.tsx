@@ -252,11 +252,25 @@ it("hides the feedback link in development environment", () => {
 it("displays the status message when connected to MAAS Site Manager", () => {
   state.msm = factory.msmState({
     status: factory.msmStatus({
-      running: "connected",
+      running: "not_connected",
     }),
   });
 
-  renderWithMockStore(<StatusBar />, { state });
+  const { rerender } = renderWithMockStore(<StatusBar />, { state });
+
+  expect(
+    screen.queryByText("Connected to MAAS Site Manager")
+  ).not.toBeInTheDocument();
+
+  rerender(<StatusBar />, {
+    state: (draft) => {
+      draft.msm = factory.msmState({
+        status: factory.msmStatus({
+          running: "connected",
+        }),
+      });
+    },
+  });
 
   expect(
     screen.getByText("Connected to MAAS Site Manager")
