@@ -1,35 +1,30 @@
 const docsUrls = {
-  aboutNativeTLS:
-    "https://maas.io/docs/how-to-enable-maas-native-tls#heading--how-to-enable-tls",
-  addMachines:
-    "https://maas.io/docs/how-to-make-machines-available#heading--how-to-create-delete-and-configure-machines",
+  aboutNativeTLS: "https://maas.io/docs/how-to-implement-tls#enabling-tls-2",
+  addMachines: "https://maas.io/docs/how-to-manage-machines",
   addNodesViaChassis:
-    "https://maas.io/docs/how-to-make-machines-available#heading--how-to-add-machines-via-a-chassis",
+    "https://maas.io/docs/how-to-manage-machines#add-machines-via-chassis-ui-2",
   autoRenewTLSCert:
     "https://maas.io/docs/how-to-enable-maas-native-tls#heading--how-to-auto-renew-certificates",
   cloudInit:
-    "https://maas.io/docs/how-to-customise-machines#heading--cloud-init",
+    "https://maas.io/docs/how-to-customise-machines#pre-seed-cloud-init-2",
   configurationJourney:
-    "https://maas.io/docs/how-to-do-a-fresh-install-of-maas#heading--configure-maas",
+    "https://maas.io/docs/how-to-install-maas#configure-maas-with-the-ui-10",
   customisingDeployedMachines: "https://maas.io/docs/how-to-customise-machines",
   dhcp: "https://maas.io/docs/how-to-enable-dhcp",
-  ipmi: "https://maas.io/docs/power-drivers-reference#heading--ipmi",
-  ipRanges:
-    "https://maas.io/docs/how-to-enable-dhcp#heading--how-to-manage-ip-ranges",
+  ipmi: "https://maas.io/docs/reference-power-drivers#ipmi-6",
+  ipRanges: "https://maas.io/docs/how-to-enable-dhcp#create-an-ip-range-ui-2",
   kvmIntroduction: "https://maas.io/docs/about-virtual-machines",
   networkDiscovery:
-    "https://maas.io/docs/about-maas-networks#heading--about-network-discovery",
+    "https://maas.io/docs/about-maas-networks#network-discovery-5",
   rackController: "https://maas.io/docs/how-to-configure-controllers",
-  sshKeys: "https://maas.io/docs/how-to-manage-user-accounts#heading--ssh-keys",
-  tagsAutomatic:
-    "https://maas.io/docs/how-to-tag-machines#heading--Automatic-tags",
+  sshKeys: "https://maas.io/docs/how-to-manage-user-access#add-ssh-keys-5",
+  tagsAutomatic: "https://maas.io/docs/how-to-manage-tags#automatic-tags-17",
   tagsKernelOptions:
-    "https://maas.io/docs/how-to-tag-machines#heading--update-tag-kernel-options",
+    "https://maas.io/docs/how-to-manage-tags#update-tag-kernel-options-22",
   tagsXpathExpressions:
-    "https://maas.io/docs/how-to-tag-machines#heading--how-to-create-automatic-tags",
-  vaultIntegration: "https://maas.io/docs/how-to-use-hashicorp-vault-with-maas",
-  windowsImages:
-    "https://maas.io/docs/how-to-customise-images#heading--custom-windows-images",
+    "https://maas.io/docs/how-to-manage-tags#automatic-tags-17",
+  vaultIntegration: "https://maas.io/docs/how-to-integrate-vault",
+  windowsImages: "https://maas.io/docs/how-to-build-a-windows-image",
 } as const;
 
 export default docsUrls;
