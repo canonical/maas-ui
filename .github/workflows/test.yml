@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v3
@@ -22,7 +22,7 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install
@@ -35,17 +35,17 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
     steps:
       - uses: actions/checkout@v3
       - name: Restore node_modules
         id: yarn-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install
@@ -53,18 +53,33 @@ jobs:
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - run: yarn test:ci
 
-  run-dotrun:
+  build:
+    name: Build
     timeout-minutes: 15
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [20.x]
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dotrun
-        uses: canonical/install-dotrun@main
-      - name: Install dependencies
-        run: dotrun install
+      - uses: actions/checkout@v4
+      - name: Restore node_modules
+        id: yarn-cache
+        uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build assets
-        run: dotrun --env CI=false build
-      - name: Run dotrun
-        run: dotrun &
-      - name: Wait for MAAS UI to be ready
-        run: dotrun wait-on-ui
+        env:
+          CI: false
+        run: yarn build
+      - name: Serve build
+        run: yarn serve --host --port=8400 --base=/ &
+      - name: Wait for UI to be ready
+        run: yarn wait-on-ui
