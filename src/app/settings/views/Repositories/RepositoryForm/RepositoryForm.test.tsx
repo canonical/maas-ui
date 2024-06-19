@@ -338,4 +338,52 @@ describe("RepositoryForm", () => {
     ).toBe(true);
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
+
+  it("correctly parses comma-separated distributions and components", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+        >
+          <RepositoryForm type="repository" />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Name }),
+      "name"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.URL }),
+      "http://www.website.com"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Distributions }),
+      "focal, jammy, noble"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Components }),
+      "main, universe, restricted"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save repository" })
+    );
+
+    const createAction = store
+      .getActions()
+      .find((action) => action.type === "packagerepository/create");
+    expect(createAction.payload.params.distributions).toEqual([
+      "focal",
+      "jammy",
+      "noble",
+    ]);
+    expect(createAction.payload.params.components).toEqual([
+      "main",
+      "universe",
+      "restricted",
+    ]);
+  });
 });

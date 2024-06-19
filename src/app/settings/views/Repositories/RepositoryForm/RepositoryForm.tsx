@@ -25,20 +25,30 @@ import type {
   PackageRepository,
 } from "@/app/store/packagerepository/types";
 import { getRepoDisplayName } from "@/app/store/packagerepository/utils";
+import { parseCommaSeparatedValues } from "@/app/utils";
 
 type Props = {
   repository?: PackageRepository | null;
   type: "ppa" | "repository";
 };
 
+const commaSeparated = Yup.string()
+  .transform((value) =>
+    value
+      .split(",")
+      .map((s: string) => s.trim())
+      .join(", ")
+  )
+  .matches(/^(?:[^,\s]+(?:,\s*[^,\s]+)*)?$/, "Must be comma-separated.");
+
 const RepositorySchema = Yup.object().shape({
   arches: Yup.array(),
-  components: Yup.string(),
+  components: commaSeparated,
   default: Yup.boolean().required(),
   disable_sources: Yup.boolean().required(),
   disabled_components: Yup.array(),
   disabled_pockets: Yup.array(),
-  distributions: Yup.string(),
+  distributions: commaSeparated,
   enabled: Yup.boolean().required(),
   key: Yup.string(),
   name: Yup.string().required("Name field required."),
@@ -150,12 +160,12 @@ export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
                 params.disabled_components = values.disabled_components;
                 params.disabled_pockets = values.disabled_pockets;
               } else {
-                params.components = values.components
-                  .split(" ,")
-                  .filter(Boolean);
-                params.distributions = values.distributions
-                  .split(" ,")
-                  .filter(Boolean);
+                params.components = parseCommaSeparatedValues(
+                  values.components
+                );
+                params.distributions = parseCommaSeparatedValues(
+                  values.distributions
+                );
                 params.enabled = values.enabled;
               }
 
