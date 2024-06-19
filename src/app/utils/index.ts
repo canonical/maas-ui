@@ -35,3 +35,4 @@ export {
   timeSpanToSeconds,
   timeSpanToMinutes,
 } from "./timeSpan";
+export { parseCommaSeparatedValues } from "./parseCommaSeparatedValues";
