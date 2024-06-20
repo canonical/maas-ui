@@ -20,7 +20,7 @@ const expectDisabledButtonWithTooltip = async (
   const button = screen.getByRole("button", {
     name: buttonLabel,
   });
-  expect(button).toHaveAttribute("aria-disabled", "true");
+  expect(button).toBeAriaDisabled();
   await expectTooltipOnHover(button, tooltipLabel);
 };
 
@@ -55,7 +55,7 @@ describe("MachineNetworkActions", () => {
 
       expect(
         screen.getByRole("button", { name: /Validate network configuration/i })
-      ).toHaveAttribute("aria-disabled", "true");
+      ).toBeAriaDisabled();
     });
 
     it("shows the test form when clicking the button", async () => {
@@ -146,7 +146,7 @@ describe("MachineNetworkActions", () => {
       );
       expect(
         screen.getByRole("button", { name: /Create bond/i })
-      ).toHaveAttribute("aria-disabled", "true");
+      ).toBeAriaDisabled();
     });
 
     it("disables the button when no interfaces are selected", async () => {
@@ -352,7 +352,7 @@ describe("MachineNetworkActions", () => {
 
       expect(
         screen.getByRole("button", { name: /create bridge/i })
-      ).toHaveAttribute("aria-disabled", "true");
+      ).toBeAriaDisabled();
     });
 
     it("disables the button when more than 1 interface is selected", async () => {

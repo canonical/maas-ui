@@ -57,7 +57,7 @@ describe("VMsActionBar", () => {
 
     expect(
       within(screen.getByTestId("take-action-dropdown")).getByRole("button")
-    ).toHaveAttribute("aria-disabled", "true");
+    ).toBeAriaDisabled();
     expect(screen.getByTestId("delete-vm")).toHaveAttribute(
       "aria-disabled",
       "true"
@@ -90,7 +90,7 @@ describe("VMsActionBar", () => {
 
     expect(
       within(screen.getByTestId("take-action-dropdown")).getByRole("button")
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
     expect(screen.getByTestId("delete-vm")).not.toHaveAttribute(
       "aria-disabled",
       "true"

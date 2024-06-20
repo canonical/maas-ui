@@ -219,7 +219,7 @@ it(`can open the delete image confirmation if the image does not use the
 
   const row = screen.getAllByRole("row", { name: image.title })[1]; // First row has no delete button since it's selected for download
   const delete_button = within(row).getByRole("button", { name: "Delete" });
-  expect(delete_button).not.toHaveAttribute("aria-disabled", "true");
+  expect(delete_button).not.toBeAriaDisabled();
 
   await userEvent.click(delete_button);
 
@@ -260,7 +260,7 @@ it("disables delete for default commissioning release images", async () => {
 
   const row = screen.getByRole("row", { name: "18.04 LTS" });
   const deleteButton = within(row).getByRole("button", { name: "Delete" });
-  expect(deleteButton).toHaveAttribute("aria-disabled", "true");
+  expect(deleteButton).toBeAriaDisabled();
   await userEvent.hover(deleteButton);
 
   // Assert that the delete button has the correct tooltip
@@ -300,7 +300,7 @@ it("disables delete action for images being downloaded", async () => {
 
   const deleteButton = within(row).getByRole("button", { name: "Delete" });
 
-  expect(deleteButton).toHaveAttribute("aria-disabled", "true");
+  expect(deleteButton).toBeAriaDisabled();
   await userEvent.hover(deleteButton);
 
   await vi.waitFor(() => {

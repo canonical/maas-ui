@@ -66,7 +66,7 @@ describe("NetworkTableActions", () => {
     });
     expect(
       screen.getByRole("button", { name: "Take action:" })
-    ).toHaveAttribute("aria-disabled", "true");
+    ).toBeAriaDisabled();
   });
 
   it("can display an item to mark an interface as connected", async () => {
@@ -200,7 +200,7 @@ describe("NetworkTableActions", () => {
       name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
-    expect(addAlias).not.toHaveAttribute("aria-disabled", "true");
+    expect(addAlias).not.toBeAriaDisabled();
     await userEvent.hover(addAlias);
     expect(
       screen.queryByRole("tooltip", {
@@ -222,7 +222,7 @@ describe("NetworkTableActions", () => {
       name: /Add alias/i,
     });
     expect(addAlias).toBeInTheDocument();
-    expect(addAlias).toHaveAttribute("aria-disabled", "true");
+    expect(addAlias).toBeAriaDisabled();
     await expectTooltipOnHover(
       addAlias,
       "IP mode needs to be configured for this interface."
@@ -244,7 +244,7 @@ describe("NetworkTableActions", () => {
     await openMenu();
     const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
-    expect(addVLAN).not.toHaveAttribute("aria-disabled", "true");
+    expect(addVLAN).not.toBeAriaDisabled();
     expect(
       screen.queryByRole("tooltip", {
         name: "There are no unused VLANS for this interface.",
@@ -263,7 +263,7 @@ describe("NetworkTableActions", () => {
     await openMenu();
     const addVLAN = screen.getByRole("button", { name: /Add VLAN/i });
     expect(addVLAN).toBeInTheDocument();
-    expect(addVLAN).toHaveAttribute("aria-disabled", "true");
+    expect(addVLAN).toBeAriaDisabled();
     await expectTooltipOnHover(
       addVLAN,
       "There are no unused VLANS for this interface."

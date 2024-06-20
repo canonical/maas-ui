@@ -105,7 +105,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(actionsMenu, NodeActions.DEPLOY)
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
     expect(
       getActionButton(actionsMenu, NodeActions.RELEASE)
     ).toBeInTheDocument();
@@ -135,7 +135,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(actionsMenu, NodeActions.DEPLOY)
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
     expect(
       getActionButton(actionsMenu, NodeActions.RELEASE)
     ).toBeInTheDocument();
@@ -153,7 +153,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: Labels.Delete })
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
 
     await openMenu(Labels.Categorise);
     const categoriseMenu = getSubMenu(Labels.Categorise);
@@ -163,7 +163,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(categoriseMenu, NodeActions.SET_ZONE)
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
 
     await openMenu(Labels.Troubleshoot);
     const troubleshootMenu = getSubMenu(Labels.Troubleshoot);
@@ -173,7 +173,7 @@ describe("NodeActionMenuGroup", () => {
     ).toBeInTheDocument();
     expect(
       queryActionButton(troubleshootMenu, NodeActions.TEST)
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
   });
 
   it("correctly calculates number of nodes that can perform each action", async () => {

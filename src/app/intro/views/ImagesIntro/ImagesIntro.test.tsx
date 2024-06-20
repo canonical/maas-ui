@@ -66,7 +66,7 @@ describe("ImagesIntro", () => {
     const button = screen.getByRole("button", {
       name: ImagesIntroLabels.Continue,
     });
-    expect(button).toHaveAttribute("aria-disabled", "true");
+    expect(button).toBeAriaDisabled();
 
     await expectTooltipOnHover(button, ImagesIntroLabels.CantContinue);
   });
@@ -83,6 +83,6 @@ describe("ImagesIntro", () => {
 
     expect(
       screen.getByRole("button", { name: ImagesIntroLabels.Continue })
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
   });
 });

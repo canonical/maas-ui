@@ -46,7 +46,7 @@ it(`shows a warning and disables Configure DHCP button if there are no subnets
 
   expect(
     within(dhcpStatus).getByRole("button", { name: "Configure DHCP" })
-  ).toHaveAttribute("aria-disabled", "true");
+  ).toBeAriaDisabled();
   expect(
     within(dhcpStatus).getByText(
       "No subnets are available on this VLAN. DHCP cannot be enabled."

@@ -127,7 +127,7 @@ describe("SyncedImages", () => {
     renderWithBrowserRouter(<SyncedImages />, { state });
     expect(
       screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource })
-    ).toHaveAttribute("aria-disabled", "true");
+    ).toBeAriaDisabled();
 
     await expectTooltipOnHover(
       screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource }),

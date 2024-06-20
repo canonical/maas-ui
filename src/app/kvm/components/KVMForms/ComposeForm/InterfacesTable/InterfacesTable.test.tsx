@@ -68,7 +68,7 @@ describe("InterfacesTable", () => {
     );
 
     const button = screen.getByRole("button", { name: /define/i });
-    expect(button).toHaveAttribute("aria-disabled", "true");
+    expect(button).toBeAriaDisabled();
 
     await expectTooltipOnHover(
       button,
@@ -95,7 +95,7 @@ describe("InterfacesTable", () => {
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
     const button = screen.getByRole("button", { name: /define/i });
-    expect(button).toHaveAttribute("aria-disabled", "true");
+    expect(button).toBeAriaDisabled();
     await expectTooltipOnHover(
       button,
       "There are no PXE-enabled networks seen by this KVM host."

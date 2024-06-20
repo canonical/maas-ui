@@ -36,7 +36,7 @@ describe("NodeActionMenu", () => {
 
     expect(
       screen.getByRole("button", { name: Label.TakeAction })
-    ).toHaveAttribute("aria-disabled", "true");
+    ).toBeAriaDisabled();
   });
 
   it("is enabled if nodes are selected", async () => {
@@ -52,7 +52,7 @@ describe("NodeActionMenu", () => {
 
     expect(
       screen.getByRole("button", { name: Label.TakeAction })
-    ).not.toHaveAttribute("aria-disabled", "true");
+    ).not.toBeAriaDisabled();
   });
 
   it("can only shows actions that can be performed by the nodes", async () => {
