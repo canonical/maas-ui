@@ -118,10 +118,9 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    expect(screen.queryByRole("button", { name: /define/i })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(
+      screen.queryByRole("button", { name: /define/i })
+    ).toBeAriaDisabled();
   });
 
   it("can add and remove interfaces if KVM has PXE-enabled subnets", async () => {

@@ -13,10 +13,9 @@ describe("ArrowPagination", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: Labels.GoBack })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(
+      screen.getByRole("button", { name: Labels.GoBack })
+    ).toBeAriaDisabled();
     expect(
       screen.getByRole("button", { name: Labels.GoForward })
     ).toBeAriaDisabled();
@@ -50,10 +49,9 @@ describe("ArrowPagination", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: Labels.GoBack })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(
+      screen.getByRole("button", { name: Labels.GoBack })
+    ).toBeAriaDisabled();
     expect(
       screen.getByRole("button", { name: Labels.GoForward })
     ).not.toBeAriaDisabled();

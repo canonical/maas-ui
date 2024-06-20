@@ -93,15 +93,9 @@ describe("NodeActionMenu", () => {
     await openMenu();
 
     expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.DEPLOY)).not.toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.RELEASE)).toBeInTheDocument();
-    expect(getActionButton(NodeActions.RELEASE)).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(getActionButton(NodeActions.RELEASE)).toBeAriaDisabled();
   });
 
   it(`disables the actions that cannot be performed when nodes are provided`, async () => {
@@ -119,35 +113,20 @@ describe("NodeActionMenu", () => {
     await openMenu();
 
     expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.DEPLOY)).not.toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.RELEASE)).toBeInTheDocument();
-    expect(getActionButton(NodeActions.RELEASE)).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(getActionButton(NodeActions.RELEASE)).toBeAriaDisabled();
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {
     render(<NodeActionMenu hasSelection onActionClick={vi.fn()} />);
     await openMenu();
     expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.DELETE)).not.toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(queryActionButton(NodeActions.DELETE)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.SET_ZONE)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.SET_ZONE)).not.toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(queryActionButton(NodeActions.SET_ZONE)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.TEST)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.TEST)).not.toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(queryActionButton(NodeActions.TEST)).not.toBeAriaDisabled();
   });
 
   it("correctly calculates number of nodes that can perform each action", async () => {

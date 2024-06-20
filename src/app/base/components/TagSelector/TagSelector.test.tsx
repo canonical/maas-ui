@@ -258,14 +258,8 @@ describe("TagSelector", () => {
       />
     );
 
-    expect(screen.getAllByTestId("selected-tag")[0]).not.toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
-    expect(screen.getAllByTestId("selected-tag")[1]).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(screen.getAllByTestId("selected-tag")[0]).not.toBeAriaDisabled();
+    expect(screen.getAllByTestId("selected-tag")[1]).toBeAriaDisabled();
   });
 
   it("can display a dropdown header", async () => {

@@ -109,10 +109,9 @@ describe("NodeActionMenuGroup", () => {
     expect(
       getActionButton(actionsMenu, NodeActions.RELEASE)
     ).toBeInTheDocument();
-    expect(getActionButton(actionsMenu, NodeActions.RELEASE)).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(
+      getActionButton(actionsMenu, NodeActions.RELEASE)
+    ).toBeAriaDisabled();
   });
 
   it(`disables the actions that cannot be performed when nodes are provided`, async () => {
@@ -139,10 +138,9 @@ describe("NodeActionMenuGroup", () => {
     expect(
       getActionButton(actionsMenu, NodeActions.RELEASE)
     ).toBeInTheDocument();
-    expect(getActionButton(actionsMenu, NodeActions.RELEASE)).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(
+      getActionButton(actionsMenu, NodeActions.RELEASE)
+    ).toBeAriaDisabled();
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {

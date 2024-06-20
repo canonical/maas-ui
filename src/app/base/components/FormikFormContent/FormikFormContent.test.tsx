@@ -56,10 +56,7 @@ describe("FormikFormContent", () => {
       { state }
     );
 
-    expect(screen.getByTestId(TestIds.CancelButton)).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(screen.getByTestId(TestIds.CancelButton)).toBeAriaDisabled();
   });
 
   it("can disable the submit button", async () => {

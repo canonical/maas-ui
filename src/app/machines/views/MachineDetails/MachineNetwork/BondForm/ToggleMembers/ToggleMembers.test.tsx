@@ -32,10 +32,7 @@ describe("ToggleMembers", () => {
       { route: "/machines", store }
     );
 
-    expect(screen.getByTestId("edit-members")).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(screen.getByTestId("edit-members")).toBeAriaDisabled();
   });
 
   it("disables the update button if two interfaces aren't selected", () => {
@@ -64,10 +61,7 @@ describe("ToggleMembers", () => {
       { route: "/machines", store }
     );
 
-    expect(screen.getByTestId("edit-members")).not.toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(screen.getByTestId("edit-members")).not.toBeAriaDisabled();
 
     unmount();
 
@@ -80,9 +74,6 @@ describe("ToggleMembers", () => {
       />,
       { route: "/machines", store }
     );
-    expect(screen.getByTestId("edit-members")).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(screen.getByTestId("edit-members")).toBeAriaDisabled();
   });
 });

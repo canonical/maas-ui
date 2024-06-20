@@ -108,10 +108,7 @@ describe("PoolList", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(screen.getByRole("link", { name: "Delete" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
   });
 
   it("disables the delete button for pools that contain machines", () => {
@@ -131,10 +128,7 @@ describe("PoolList", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(screen.getByRole("link", { name: "Delete" })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(screen.getByRole("link", { name: "Delete" })).toBeAriaDisabled();
   });
 
   it("does not show a machine link for empty pools", () => {
