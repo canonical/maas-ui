@@ -26,14 +26,44 @@ import type { UtcDatetime } from "@/app/store/types/model";
 import { NodeStatus } from "@/app/store/types/node";
 import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 
-const getLastCommissionedString = (machine: MachineDetails) => {
+const getLastCommissionedString = (machine: MachineDetails): string => {
   if (machine.status === NodeStatus.COMMISSIONING) {
     return "Commissioning in progress...";
-  } else if (machine.commissioning_start_time === "") {
+  }
+
+  const lastCommissioningTime = findLastCommissioningTime(machine);
+
+  if (!lastCommissioningTime) {
     return "Not yet commissioned";
   }
+
+  return formatLastCommissionedTime(lastCommissioningTime);
+};
+
+const findLastCommissioningTime = (
+  machine: MachineDetails
+): UtcDatetime | null => {
+  const commissioningEvents = machine.events.filter(
+    (event) => event.type.description === NodeStatus.COMMISSIONING
+  );
+
+  if (commissioningEvents.length > 0) {
+    return commissioningEvents.reduce((latest, event) =>
+      new Date(event.created) > new Date(latest.created) ? event : latest
+    ).created;
+  }
+
+  return machine.commissioning_start_time &&
+    machine.commissioning_start_time !== ""
+    ? machine.commissioning_start_time
+    : null;
+};
+
+const formatLastCommissionedTime = (
+  lastCommissioningTime: UtcDatetime
+): string => {
   try {
-    const distance = getTimeDistanceString(machine.commissioning_start_time);
+    const distance = getTimeDistanceString(lastCommissioningTime);
     return `Last commissioned: ${distance}`;
   } catch (error) {
     return `Unable to parse commissioning timestamp (${
