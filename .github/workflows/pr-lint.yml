@@ -19,6 +19,7 @@ jobs:
           scopes: |
             base
             controllers
+            deps
             devices
             domains
             images
