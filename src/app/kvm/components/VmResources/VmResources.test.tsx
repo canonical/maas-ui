@@ -70,7 +70,7 @@ describe("VmResources", () => {
     renderWithMockStore(<VmResources podId={1} />, { state });
     expect(
       screen.getByRole("button", { name: Label.ResourceVMs })
-    ).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
   });
 
   it("can pass additional filters to the request", () => {

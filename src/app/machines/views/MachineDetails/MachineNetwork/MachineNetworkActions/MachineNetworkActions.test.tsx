@@ -6,7 +6,12 @@ import type { RootState } from "@/app/store/root/types";
 import { NetworkInterfaceTypes } from "@/app/store/types/enum";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  expectTooltipOnHover,
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+} from "@/testing/utils";
 
 const expectDisabledButtonWithTooltip = async (
   buttonLabel: string | RegExp,
@@ -15,13 +20,8 @@ const expectDisabledButtonWithTooltip = async (
   const button = screen.getByRole("button", {
     name: buttonLabel,
   });
-  expect(button).toBeDisabled();
-  await userEvent.hover(button);
-  expect(
-    screen.getByRole("tooltip", {
-      name: tooltipLabel,
-    })
-  ).toBeInTheDocument();
+  expect(button).toHaveAttribute("aria-disabled", "true");
+  await expectTooltipOnHover(button, tooltipLabel);
 };
 
 describe("MachineNetworkActions", () => {
@@ -55,7 +55,7 @@ describe("MachineNetworkActions", () => {
 
       expect(
         screen.getByRole("button", { name: /Validate network configuration/i })
-      ).toBeDisabled();
+      ).toHaveAttribute("aria-disabled", "true");
     });
 
     it("shows the test form when clicking the button", async () => {
@@ -146,7 +146,7 @@ describe("MachineNetworkActions", () => {
       );
       expect(
         screen.getByRole("button", { name: /Create bond/i })
-      ).toBeDisabled();
+      ).toHaveAttribute("aria-disabled", "true");
     });
 
     it("disables the button when no interfaces are selected", async () => {
@@ -352,7 +352,7 @@ describe("MachineNetworkActions", () => {
 
       expect(
         screen.getByRole("button", { name: /create bridge/i })
-      ).toBeDisabled();
+      ).toHaveAttribute("aria-disabled", "true");
     });
 
     it("disables the button when more than 1 interface is selected", async () => {

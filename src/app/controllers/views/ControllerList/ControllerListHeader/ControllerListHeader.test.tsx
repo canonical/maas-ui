@@ -65,7 +65,7 @@ describe("ControllerListHeader", () => {
     );
     expect(
       screen.getByRole("button", { name: "Add rack controller" })
-    ).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
   });
 
   it("can open the add controller form", async () => {

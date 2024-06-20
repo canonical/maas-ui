@@ -11,6 +11,6 @@ describe("AddHardwareMenu", () => {
     render(<AddHardwareMenu disabled setSidePanelContent={vi.fn()} />);
     expect(
       screen.getByRole("button", { name: /Add hardware/i })
-    ).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
   });
 });

@@ -200,7 +200,7 @@ describe("ScriptsList", () => {
           { name: ScriptsListLabels.Actions }
         )
       ).getByRole("button")
-    ).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
 
     expect(
       within(
@@ -209,7 +209,7 @@ describe("ScriptsList", () => {
           { name: ScriptsListLabels.Actions }
         )
       ).getByRole("button")
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it("can delete a script", async () => {

@@ -56,7 +56,10 @@ describe("DeviceListHeader", () => {
       />,
       { state }
     );
-    expect(screen.getByRole("button", { name: "Add device" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Add device" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("can open the add device form", async () => {

@@ -96,7 +96,7 @@ describe("ZoneColumn", () => {
 
     expect(
       screen.getByRole("button", { name: "Cannot change zone of this machine" })
-    ).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
   });
 
   it("can change zones", async () => {

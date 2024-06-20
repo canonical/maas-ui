@@ -50,7 +50,7 @@ describe("BulkActions", () => {
     const createVolumeGroupButton = screen.getByRole("button", {
       name: "Create volume group",
     });
-    expect(createVolumeGroupButton).toBeDisabled();
+    expect(createVolumeGroupButton).toHaveAttribute("aria-disabled", "true");
     await expectTooltipOnHover(
       createVolumeGroupButton,
       "Select one or more unpartitioned and unformatted storage devices to create a volume group."
@@ -81,7 +81,7 @@ describe("BulkActions", () => {
 
     expect(
       screen.getByRole("button", { name: "Create volume group" })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it("renders datastore bulk actions if the detected layout is a VMWare layout", () => {
@@ -128,7 +128,7 @@ describe("BulkActions", () => {
 
     expect(
       screen.getByRole("button", { name: "Create datastore" })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it(`enables the add to existing datastore button if at least one unpartitioned
@@ -158,7 +158,7 @@ describe("BulkActions", () => {
 
     expect(
       screen.getByRole("button", { name: "Add to existing datastore" })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it("can trigger the create datastore sidepanel", async () => {

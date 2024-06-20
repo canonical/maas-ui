@@ -27,7 +27,10 @@ describe("DeviceFilterAccordion", () => {
       { route: "/devices", state }
     );
 
-    expect(screen.getByRole("button", { name: "Filters" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Filters" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("displays tags", async () => {

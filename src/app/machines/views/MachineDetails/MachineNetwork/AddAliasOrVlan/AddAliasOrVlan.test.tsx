@@ -111,7 +111,7 @@ describe("AddAliasOrVlan", () => {
     const secondarySubmit = screen.getByRole("button", {
       name: AddAliasOrVlanLabels.SaveAndAdd,
     });
-    expect(secondarySubmit).not.toBeDisabled();
+    expect(secondarySubmit).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it("displays a save-another button when there are unused VLANS", () => {
@@ -159,7 +159,7 @@ describe("AddAliasOrVlan", () => {
     const saveAndAddButton = screen.getByRole("button", {
       name: AddAliasOrVlanLabels.SaveAndAdd,
     });
-    expect(saveAndAddButton).toBeDisabled();
+    expect(saveAndAddButton).toHaveAttribute("aria-disabled", "true");
     await expectTooltipOnHover(
       saveAndAddButton,
       "There are no more unused VLANS for this interface."

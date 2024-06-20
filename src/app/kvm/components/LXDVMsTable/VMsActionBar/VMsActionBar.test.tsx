@@ -57,8 +57,11 @@ describe("VMsActionBar", () => {
 
     expect(
       within(screen.getByTestId("take-action-dropdown")).getByRole("button")
-    ).toBeDisabled();
-    expect(screen.getByTestId("delete-vm")).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByTestId("delete-vm")).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 
   it("enables VM actions if at least one is selected", () => {
@@ -87,7 +90,10 @@ describe("VMsActionBar", () => {
 
     expect(
       within(screen.getByTestId("take-action-dropdown")).getByRole("button")
-    ).not.toBeDisabled();
-    expect(screen.getByTestId("delete-vm")).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByTestId("delete-vm")).not.toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 });

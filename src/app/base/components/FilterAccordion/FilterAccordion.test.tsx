@@ -174,6 +174,9 @@ describe("FilterAccordion", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: Labels.Toggle })).toBeDisabled();
+    expect(screen.getByRole("button", { name: Labels.Toggle })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 });

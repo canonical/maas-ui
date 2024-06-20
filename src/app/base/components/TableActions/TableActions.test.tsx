@@ -67,6 +67,9 @@ describe("TableActions ", () => {
       "aria-disabled",
       "true"
     );
-    expect(screen.getByRole("button", { name: /delete/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /delete/i })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
   });
 });

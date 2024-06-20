@@ -13,10 +13,13 @@ describe("ArrowPagination", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: Labels.GoBack })).toBeDisabled();
+    expect(screen.getByRole("button", { name: Labels.GoBack })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
     expect(
       screen.getByRole("button", { name: Labels.GoForward })
-    ).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
   });
 
   it("activates both buttons when between the start and end", () => {
@@ -31,10 +34,10 @@ describe("ArrowPagination", () => {
 
     expect(
       screen.getByRole("button", { name: Labels.GoBack })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
     expect(
       screen.getByRole("button", { name: Labels.GoForward })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it("disables the back button when on the first page", () => {
@@ -47,10 +50,13 @@ describe("ArrowPagination", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: Labels.GoBack })).toBeDisabled();
+    expect(screen.getByRole("button", { name: Labels.GoBack })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
     expect(
       screen.getByRole("button", { name: Labels.GoForward })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it("disables the forward button when on the last page", () => {
@@ -65,10 +71,10 @@ describe("ArrowPagination", () => {
 
     expect(
       screen.getByRole("button", { name: Labels.GoBack })
-    ).not.toBeDisabled();
+    ).not.toHaveAttribute("aria-disabled", "true");
     expect(
       screen.getByRole("button", { name: Labels.GoForward })
-    ).toBeDisabled();
+    ).toHaveAttribute("aria-disabled", "true");
   });
 
   it("can show the page bounds when there are no items", () => {
