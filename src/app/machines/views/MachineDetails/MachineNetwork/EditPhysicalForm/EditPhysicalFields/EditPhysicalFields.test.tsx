@@ -74,9 +74,7 @@ describe("EditPhysicalFields", () => {
     await userEvent.tab();
 
     expect(
-      getByTextContent(
-        /Caution: Link speed should not be higher than interface speed/i
-      )
+      getByTextContent(/Link speed should not be higher than interface speed/i)
     ).toBeInTheDocument();
   });
 });

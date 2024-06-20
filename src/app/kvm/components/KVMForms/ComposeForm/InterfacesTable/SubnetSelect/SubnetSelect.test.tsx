@@ -228,7 +228,7 @@ describe("SubnetSelect", () => {
       })
     );
     expect(screen.getByTestId("no-pxe")).toHaveTextContent(
-      "Error: Select at least 1 PXE network when creating multiple interfaces."
+      "Select at least 1 PXE network when creating multiple interfaces."
     );
 
     // Select PXE network for the second interface - error should be removed.
