@@ -15,6 +15,7 @@ import {
   renderWithMockStore,
   userEvent,
   fireEvent,
+  expectTooltipOnHover,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -239,14 +240,11 @@ describe("ComposeFormFields", () => {
     );
 
     expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
-    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.mouseOver(screen.getByLabelText("Enable hugepages"));
-    expect(
-      screen.getByRole("tooltip", {
-        name: "There are no free hugepages on this system.",
-      })
-    ).toBeInTheDocument();
+
+    await expectTooltipOnHover(
+      screen.getByLabelText("Enable hugepages"),
+      "There are no free hugepages on this system."
+    );
   });
 
   it("shows the input for any available cores by default", () => {
@@ -360,16 +358,11 @@ describe("ComposeFormFields", () => {
     expect(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     ).toBeDisabled();
-    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.mouseOver(
-      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+
+    await expectTooltipOnHover(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" }),
+      "Core pinning is only supported on LXD KVMs"
     );
-    expect(
-      screen.getByRole("tooltip", {
-        name: "Core pinning is only supported on LXD KVMs",
-      })
-    ).toBeInTheDocument();
   });
 
   it("can detect duplicate core indices", async () => {

@@ -70,8 +70,11 @@ describe("NameColumn", () => {
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
     const button = screen.getByRole("button", { name: "+1" });
     expect(button).toBeInTheDocument();
+
     await userEvent.hover(button);
-    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+    await vi.waitFor(() => {
+      expect(screen.getByRole("tooltip")).toBeInTheDocument();
+    });
   });
 
   it("can show a PXE ip address", () => {
