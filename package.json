@@ -19,6 +19,7 @@
     "commit": "git-cz",
     "cypress-open": "yarn cypress open",
     "cypress-run-a11y": "yarn cypress run --config specPattern=cypress/e2e/accessibility/**/*.ts",
+    "cypress-run-docs": "yarn cypress run --config specPattern=cypress/e2e/docs-links/**/*.ts ",
     "cypress-run": "yarn cypress run",
     "lint": "npmPkgJsonLint . && eslint src cypress && tsc --project tsconfig.json --noEmit && tsc --project cypress/tsconfig.json --noEmit",
     "link-components": "yarn link \"@canonical/react-components\" && yarn link \"react\" && yarn install",
