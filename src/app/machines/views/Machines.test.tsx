@@ -26,6 +26,7 @@ import {
   within,
   screen,
   render,
+  waitFor,
 } from "@/testing/utils";
 const mockStore = configureStore<RootState>();
 const userEvent = userEventCore.setup({
@@ -271,7 +272,7 @@ describe("Machines", () => {
       screen.getByRole("searchbox", { name: "Search" }),
       "status:new"
     );
-    await vi.waitFor(() => expect(window.location.search).toBe("?status=new"));
+    await waitFor(() => expect(window.location.search).toBe("?status=new"));
   });
 
   it("can hide groups", async () => {
@@ -286,14 +287,14 @@ describe("Machines", () => {
     const getFetchActions = () =>
       store.getActions().filter((action) => action.type === expected.type);
     const initialFetchActions = getFetchActions();
-    await vi.waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
     // Click the button to toggle the group.
     await userEvent.click(
       within(
         screen.getByRole("row", { name: "Failed testing machines group" })
       ).getByRole("button", { name: Label.HideGroup })
     );
-    await vi.waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_collapsed).toStrictEqual([
       "failed_testing",
@@ -328,13 +329,13 @@ describe("Machines", () => {
     renderWithBrowserRouter(<Machines />, { route: "/machines", store });
 
     const initialFetchActions = getFetchActions();
-    await vi.waitFor(() => expect(initialFetchActions).toHaveLength(1));
+    await waitFor(() => expect(initialFetchActions).toHaveLength(1));
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /Group by/i }),
       screen.getByRole("option", { name: "Group by owner" })
     );
-    await vi.waitFor(() => expect(getFetchActions()).toHaveLength(2));
+    await waitFor(() => expect(getFetchActions()).toHaveLength(2));
     const finalFetchAction = getFetchActions()[1];
     expect(finalFetchAction.payload.params.group_key).toBe(FetchGroupKey.Owner);
   });
@@ -452,7 +453,7 @@ describe("Machines", () => {
 
     await userEvent.click(screen.getByRole("checkbox", { name: "animal (1)" }));
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("searchbox")).toHaveValue("workload-animal:()");
     });
 

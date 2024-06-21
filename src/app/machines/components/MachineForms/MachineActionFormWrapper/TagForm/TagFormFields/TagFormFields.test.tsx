@@ -178,7 +178,7 @@ it("updates the new tags after creating a tag", async () => {
   ).not.toBeInTheDocument();
   rerender(<Form tags={[newTag.id]} />);
 
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(changes).getByRole("button", { name: /new-tag/i })
     ).toBeInTheDocument()

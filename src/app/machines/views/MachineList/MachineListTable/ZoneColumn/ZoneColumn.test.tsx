@@ -5,7 +5,12 @@ import { ZoneColumn } from "./ZoneColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -78,7 +83,7 @@ describe("ZoneColumn", () => {
     );
 
     await userEvent.hover(screen.getByTestId("spaces"));
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
         /space1 space2 space3/i
       );

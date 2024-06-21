@@ -5,7 +5,7 @@ import DebounceSearchBox, {
   Labels,
 } from "./DebounceSearchBox";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 describe("DebounceSearchBox", () => {
   beforeEach(() => {
@@ -83,7 +83,7 @@ describe("DebounceSearchBox", () => {
 
     vi.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(
         screen.queryByRole("alert", { name: Labels.Loading })
       ).not.toBeInTheDocument();

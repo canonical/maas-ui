@@ -13,6 +13,7 @@ import {
   screen,
   within,
   renderWithMockStore,
+  waitFor,
 } from "@/testing/utils";
 
 beforeEach(() => {
@@ -264,7 +265,7 @@ it("disables delete for default commissioning release images", async () => {
   await userEvent.hover(deleteButton);
 
   // Assert that the delete button has the correct tooltip
-  await vi.waitFor(() => {
+  await waitFor(() => {
     expect(deleteButton).toHaveAccessibleDescription(
       "Cannot delete images of the default commissioning release."
     );
@@ -303,7 +304,7 @@ it("disables delete action for images being downloaded", async () => {
   expect(deleteButton).toBeAriaDisabled();
   await userEvent.hover(deleteButton);
 
-  await vi.waitFor(() => {
+  await waitFor(() => {
     expect(deleteButton).toHaveAccessibleDescription(
       "Cannot delete images that are currently being imported."
     );

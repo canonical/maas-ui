@@ -16,6 +16,7 @@ import {
   userEvent,
   fireEvent,
   expectTooltipOnHover,
+  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -202,7 +203,7 @@ describe("ComposeFormFields", () => {
     const enableHugepages = screen.getByLabelText("Enable hugepages");
     expect(enableHugepages).toBeDisabled();
     await userEvent.hover(enableHugepages);
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(
         screen.getByRole("tooltip", {
           name: "Hugepages are only supported on LXD KVMs.",

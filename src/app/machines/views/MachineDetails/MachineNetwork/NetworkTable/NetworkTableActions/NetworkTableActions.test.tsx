@@ -13,6 +13,7 @@ import {
   renderWithMockStore,
   screen,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
 
@@ -269,7 +270,7 @@ describe("NetworkTableActions", () => {
       "There are no unused VLANS for this interface."
     );
     await userEvent.hover(within(addVLAN).getByLabelText("help"));
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
         "There are no unused VLANS for this interface."
       );

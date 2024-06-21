@@ -3,7 +3,12 @@ import { NameColumn } from "./NameColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
@@ -72,7 +77,7 @@ describe("NameColumn", () => {
     expect(button).toBeInTheDocument();
 
     await userEvent.hover(button);
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toBeInTheDocument();
     });
   });
