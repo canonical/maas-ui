@@ -172,10 +172,7 @@ it(`can not clear a selected image if it is the last image that uses the
   );
 
   const row = screen.getByRole("row", { name: image.title });
-  expect(within(row).getByRole("button", { name: "Clear" })).toHaveAttribute(
-    "aria-disabled",
-    "true"
-  );
+  expect(within(row).getByRole("button", { name: "Clear" })).toBeAriaDisabled();
 });
 
 it(`can open the delete image confirmation if the image does not use the
