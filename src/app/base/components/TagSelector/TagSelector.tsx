@@ -32,7 +32,7 @@ export type Props = {
 };
 
 // Give an explicit name to the text input so we can exclude it from form submission
-export const TAG_SELECTOR_INPUT_NAME = "tagSelectorInput" as const;
+export const TAG_SELECTOR_INPUT_NAME = "tagSelectorInput";
 
 type UpdateTags = (newSelectedTags: Tag[], clearFilter?: boolean) => void;
 
