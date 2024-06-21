@@ -65,10 +65,9 @@ describe("UsersList", () => {
       { state }
     );
     let row = screen.getAllByTestId("user-row")[0];
-    expect(within(row).getByRole("link", { name: /delete/i })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
+    expect(
+      within(row).getByRole("link", { name: /delete/i })
+    ).toBeAriaDisabled();
   });
 
   it("links to preferences for the current user", () => {

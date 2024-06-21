@@ -56,7 +56,7 @@ describe("FormikFormContent", () => {
       { state }
     );
 
-    expect(screen.getByTestId(TestIds.CancelButton)).toBeDisabled();
+    expect(screen.getByTestId(TestIds.CancelButton)).toBeAriaDisabled();
   });
 
   it("can disable the submit button", async () => {

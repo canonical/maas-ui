@@ -5,7 +5,12 @@ import type { RootState } from "@/app/store/root/types";
 import { PowerState } from "@/app/store/types/enum";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("PowerColumn", () => {
   let state: RootState;
@@ -122,7 +127,7 @@ describe("PowerColumn", () => {
 
     await userEvent.hover(screen.getByLabelText("error"));
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("It's not working");
     });
   });

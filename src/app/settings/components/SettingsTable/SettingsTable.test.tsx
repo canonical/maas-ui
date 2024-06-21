@@ -1,6 +1,10 @@
 import SettingsTable from "./SettingsTable";
 
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  expectTooltipOnHover,
+} from "@/testing/utils";
 
 describe("SettingsTable", () => {
   it("can render", () => {
@@ -96,6 +100,8 @@ it("can render a button with a tooltip", async () => {
     {}
   );
 
-  await userEvent.hover(screen.getByRole("link", { name: "Add User" }));
-  expect(screen.getByRole("tooltip")).toHaveTextContent(tooltip);
+  await expectTooltipOnHover(
+    screen.getByRole("link", { name: "Add User" }),
+    tooltip
+  );
 });

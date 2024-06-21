@@ -274,7 +274,7 @@ it("disables the add button if there are no subnets in a VLAN", () => {
   );
   expect(
     screen.getByRole("button", { name: Labels.ReserveRange })
-  ).toHaveAttribute("disabled");
+  ).toBeAriaDisabled();
 });
 
 it("displays the subnet column when the table is for a VLAN", () => {

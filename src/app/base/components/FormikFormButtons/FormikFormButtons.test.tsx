@@ -2,7 +2,7 @@ import { Formik } from "formik";
 
 import FormikFormButtons from "./FormikFormButtons";
 
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, render, screen, waitFor } from "@/testing/utils";
 
 it("can display a cancel button", () => {
   render(
@@ -65,10 +65,14 @@ it("can display a tooltip for the secondary submit action", async () => {
   await userEvent.hover(
     screen.getByRole("button", { name: "Save and add another" })
   );
-  expect(
-    screen.getByRole("button", { name: "Save and add another" })
-  ).toHaveAccessibleDescription("Will add another");
-  await vi.waitFor(() => {
+
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: "Save and add another" })
+    ).toHaveAccessibleDescription("Will add another");
+  });
+
+  await waitFor(() => {
     expect(
       screen.getByRole("tooltip", { name: "Will add another" })
     ).toBeInTheDocument();

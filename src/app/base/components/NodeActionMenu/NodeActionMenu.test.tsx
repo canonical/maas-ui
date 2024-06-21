@@ -36,7 +36,7 @@ describe("NodeActionMenu", () => {
 
     expect(
       screen.getByRole("button", { name: Label.TakeAction })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("is enabled if nodes are selected", async () => {
@@ -52,7 +52,7 @@ describe("NodeActionMenu", () => {
 
     expect(
       screen.getByRole("button", { name: Label.TakeAction })
-    ).not.toBeDisabled();
+    ).not.toBeAriaDisabled();
   });
 
   it("can only shows actions that can be performed by the nodes", async () => {
@@ -93,9 +93,9 @@ describe("NodeActionMenu", () => {
     await openMenu();
 
     expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeDisabled();
+    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.RELEASE)).toBeInTheDocument();
-    expect(getActionButton(NodeActions.RELEASE)).toBeDisabled();
+    expect(getActionButton(NodeActions.RELEASE)).toBeAriaDisabled();
   });
 
   it(`disables the actions that cannot be performed when nodes are provided`, async () => {
@@ -113,20 +113,20 @@ describe("NodeActionMenu", () => {
     await openMenu();
 
     expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeDisabled();
+    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.RELEASE)).toBeInTheDocument();
-    expect(getActionButton(NodeActions.RELEASE)).toBeDisabled();
+    expect(getActionButton(NodeActions.RELEASE)).toBeAriaDisabled();
   });
 
   it("shows all actions that can be performed when nodes are not provided", async () => {
     render(<NodeActionMenu hasSelection onActionClick={vi.fn()} />);
     await openMenu();
     expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.DELETE)).not.toBeDisabled();
+    expect(queryActionButton(NodeActions.DELETE)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.SET_ZONE)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.SET_ZONE)).not.toBeDisabled();
+    expect(queryActionButton(NodeActions.SET_ZONE)).not.toBeAriaDisabled();
     expect(getActionButton(NodeActions.TEST)).toBeInTheDocument();
-    expect(queryActionButton(NodeActions.TEST)).not.toBeDisabled();
+    expect(queryActionButton(NodeActions.TEST)).not.toBeAriaDisabled();
   });
 
   it("correctly calculates number of nodes that can perform each action", async () => {
