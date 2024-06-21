@@ -297,8 +297,9 @@ export const expectTooltipOnHover = async (
     await userEvent.hover(element.querySelector("i")!);
   }
 
-  const pass =
-    screen.getAllByRole("tooltip", { name: tooltipText }).length === 1;
+  const pass = await vi.waitFor(
+    () => screen.getAllByRole("tooltip", { name: tooltipText }).length === 1
+  );
 
   if (pass) {
     return {
@@ -325,5 +326,15 @@ export const renderHookWithMockStore = (hook: Hook) => {
   return renderHook(hook, { wrapper: generateWrapper() });
 };
 
-export * from "@testing-library/react";
+export const waitFor = vi.waitFor;
+export {
+  act,
+  cleanup,
+  fireEvent,
+  getDefaultNormalizer,
+  screen,
+  render,
+  renderHook,
+  within,
+} from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";
