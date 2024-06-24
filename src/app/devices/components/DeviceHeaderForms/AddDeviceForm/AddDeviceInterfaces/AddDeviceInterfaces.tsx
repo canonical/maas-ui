@@ -1,8 +1,8 @@
 import type { ChangeEvent } from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { Button, Card, Icon } from "@canonical/react-components";
-import { Field, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { AddDeviceInterface, AddDeviceValues } from "../types";
@@ -28,16 +28,18 @@ const AddDeviceInterfaceFields = ({
   index: number;
   removeInterface: (id: number) => void;
 }) => {
-  const { handleChange, setFieldValue, errors } =
-    useFormikContext<AddDeviceValues>();
+  const { handleChange, setFieldValue } = useFormikContext<AddDeviceValues>();
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getById(state, parseInt(iface.subnet))
   );
 
+  useEffect(() => {
+    if (iface.ip_assignment === DeviceIpAssignment.STATIC && subnet) {
+      setFieldValue(`interfaces[${index}].subnet_cidr`, subnet.cidr);
+    }
+  }, [iface.ip_assignment, index, setFieldValue, subnet]);
+
   const showSubnetField = iface.ip_assignment === DeviceIpAssignment.STATIC;
-  const showIpAddressField =
-    iface.ip_assignment === DeviceIpAssignment.STATIC ||
-    iface.ip_assignment === DeviceIpAssignment.EXTERNAL;
 
   return (
     <Card data-testid="interface-card" key={iface.id}>
@@ -66,14 +68,22 @@ const AddDeviceInterfaceFields = ({
           name={`interfaces[${index}].subnet`}
         />
       ) : null}
-      {showIpAddressField && subnet ? (
-        <Field
-          cidr={subnet.cidr}
-          component={PrefixedIpInput}
+      {iface.ip_assignment === DeviceIpAssignment.STATIC ? (
+        subnet ? (
+          <FormikField
+            cidr={subnet.cidr}
+            component={PrefixedIpInput}
+            data-testid="prefixed-ip-address-field"
+            label="IP address"
+            name={`interfaces[${index}].ip_address`}
+          />
+        ) : null
+      ) : iface.ip_assignment === DeviceIpAssignment.EXTERNAL ? (
+        <FormikField
           data-testid="ip-address-field"
-          errors={errors.interfaces?.[index]}
           label="IP address"
           name={`interfaces[${index}].ip_address`}
+          type="text"
         />
       ) : null}
       {!deleteDisabled ? (
