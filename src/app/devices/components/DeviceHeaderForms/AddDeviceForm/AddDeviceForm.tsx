@@ -51,6 +51,7 @@ const AddDeviceSchema = Yup.object().shape({
                 name: "ip-is-valid",
                 message: "This is not a valid IP address",
                 test: (ip_address, context) => {
+                  // Wrap this in a try/catch since the subnet might not be loaded yet
                   try {
                     return isIP(
                       formatIpAddress(
@@ -67,6 +68,7 @@ const AddDeviceSchema = Yup.object().shape({
                 name: "ip-is-in-subnet",
                 message: "The IP address is outside of the subnet's range.",
                 test: (ip_address, context) => {
+                  // Wrap this in a try/catch since the subnet might not be loaded yet
                   try {
                     const cidr: string = context.parent.subnet_cidr;
                     const networkAddress = cidr.split("/")[0];
@@ -174,6 +176,7 @@ export const AddDeviceForm = ({
             mac: "",
             name: "eth0",
             subnet: "",
+            // Capture the subnet CIDR so we can validate the IP address against it.
             subnet_cidr: "",
           },
         ],
@@ -196,6 +199,7 @@ export const AddDeviceForm = ({
                 ? iface.ip_address
                 : null;
 
+          // subnet_cidr is omitted, since it's only needed for validation.
           return {
             ip_address: ip || null,
             ip_assignment: iface.ip_assignment,
