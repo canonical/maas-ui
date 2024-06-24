@@ -20,12 +20,10 @@ import { getNextName } from "@/app/utils";
 const AddDeviceInterfaceFields = ({
   deleteDisabled,
   iface,
-  index,
   removeInterface,
 }: {
   deleteDisabled: boolean;
   iface: AddDeviceInterface;
-  index: number;
   removeInterface: (id: number) => void;
 }) => {
   const { handleChange, setFieldValue } = useFormikContext<AddDeviceValues>();
@@ -35,9 +33,9 @@ const AddDeviceInterfaceFields = ({
 
   useEffect(() => {
     if (iface.ip_assignment === DeviceIpAssignment.STATIC && subnet) {
-      setFieldValue(`interfaces[${index}].subnet_cidr`, subnet.cidr);
+      setFieldValue(`interfaces[${iface.id}].subnet_cidr`, subnet.cidr);
     }
-  }, [iface.ip_assignment, index, setFieldValue, subnet]);
+  }, [iface.id, iface.ip_assignment, setFieldValue, subnet]);
 
   const showSubnetField = iface.ip_assignment === DeviceIpAssignment.STATIC;
 
@@ -45,27 +43,27 @@ const AddDeviceInterfaceFields = ({
     <Card data-testid="interface-card" key={iface.id}>
       <FormikField
         label="Name"
-        name={`interfaces[${index}].name`}
+        name={`interfaces[${iface.id}].name`}
         type="text"
       />
       <MacAddressField
         label="MAC address"
-        name={`interfaces[${index}].mac`}
+        name={`interfaces[${iface.id}].mac`}
         required
       />
       <IpAssignmentSelect
-        name={`interfaces[${index}].ip_assignment`}
+        name={`interfaces[${iface.id}].ip_assignment`}
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           handleChange(e);
-          setFieldValue(`interfaces[${index}].subnet`, "");
-          setFieldValue(`interfaces[${index}].ip_address`, "");
+          setFieldValue(`interfaces[${iface.id}].subnet`, "");
+          setFieldValue(`interfaces[${iface.id}].ip_address`, "");
         }}
         required
       />
       {showSubnetField ? (
         <SubnetSelect
           data-testid="subnet-field"
-          name={`interfaces[${index}].subnet`}
+          name={`interfaces[${iface.id}].subnet`}
         />
       ) : null}
       {iface.ip_assignment === DeviceIpAssignment.STATIC ? (
@@ -75,14 +73,14 @@ const AddDeviceInterfaceFields = ({
             component={PrefixedIpInput}
             data-testid="prefixed-ip-address-field"
             label="IP address"
-            name={`interfaces[${index}].ip_address`}
+            name={`interfaces[${iface.id}].ip_address`}
           />
         ) : null
       ) : iface.ip_assignment === DeviceIpAssignment.EXTERNAL ? (
         <FormikField
           data-testid="ip-address-field"
           label="IP address"
-          name={`interfaces[${index}].ip_address`}
+          name={`interfaces[${iface.id}].ip_address`}
           type="text"
         />
       ) : null}
@@ -132,11 +130,10 @@ export const AddDeviceInterfaces = (): JSX.Element => {
   return (
     <>
       <h4>Interfaces</h4>
-      {interfaces.map((iface, i) => (
+      {interfaces.map((iface) => (
         <AddDeviceInterfaceFields
           deleteDisabled={interfaces.length === 1}
           iface={iface}
-          index={i}
           key={iface.id}
           removeInterface={removeInterface}
         />
