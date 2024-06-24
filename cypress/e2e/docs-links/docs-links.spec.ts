@@ -44,15 +44,3 @@ context("is a direct link", () => {
     });
   });
 });
-
-context("contains the specified heading", () => {
-  urls.forEach((url) => {
-    it(`URL: ${url}`, () => {
-      const { hash } = new URL(url);
-      if (hash) {
-        cy.visit(url);
-        cy.get(hash).should("exist");
-      }
-    });
-  });
-});

@@ -4,7 +4,7 @@ const docsUrls = {
   addNodesViaChassis:
     "https://maas.io/docs/how-to-manage-machines#add-machines-via-chassis-ui-2",
   autoRenewTLSCert:
-    "https://maas.io/docs/how-to-enable-maas-native-tls#heading--how-to-auto-renew-certificates",
+    "https://maas.io/docs/how-to-implement-tls#auto-renew-certs-8",
   cloudInit:
     "https://maas.io/docs/how-to-customise-machines#pre-seed-cloud-init-2",
   configurationJourney:
