@@ -17,6 +17,7 @@ import {
   userEvent,
   screen,
   within,
+  expectTooltipOnHover,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -253,12 +254,11 @@ describe("StatusColumn", () => {
         name: "Unconfigured power type",
       });
       expect(button).toBeInTheDocument();
-      await userEvent.hover(button);
-      expect(
-        screen.getByRole("tooltip", {
-          name: "Unconfigured power type. Go to the configuration tab of this machine.",
-        })
-      ).toBeInTheDocument();
+
+      await expectTooltipOnHover(
+        button,
+        "Unconfigured power type. Go to the configuration tab of this machine."
+      );
     });
   });
 

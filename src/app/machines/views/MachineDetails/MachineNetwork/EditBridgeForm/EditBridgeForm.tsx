@@ -9,6 +9,7 @@ import BridgeFormFields from "../BridgeFormFields";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 
 import FormikForm from "@/app/base/components/FormikForm";
+import { TAG_SELECTOR_INPUT_NAME } from "@/app/base/components/TagSelector/TagSelector";
 import { useFetchActions } from "@/app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { useMachineDetailsForm } from "@/app/machines/hooks";
@@ -92,6 +93,7 @@ const EditBridgeForm = ({
         name: nic.name,
         subnet: link?.subnet_id || "",
         tags: nic.tags,
+        [TAG_SELECTOR_INPUT_NAME]: "",
         vlan: nic.vlan_id,
       }}
       onCancel={close}
@@ -103,8 +105,33 @@ const EditBridgeForm = ({
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
+
+        // Ensure we only submit the necessary values, and not submit the tag selector input.
+        const {
+          bridge_fd,
+          bridge_stp,
+          bridge_type,
+          fabric,
+          ip_address,
+          mac_address,
+          mode,
+          name,
+          subnet,
+          tags,
+          vlan,
+        } = values;
         const payload = preparePayload({
-          ...values,
+          bridge_fd,
+          bridge_stp,
+          bridge_type,
+          fabric,
+          ip_address,
+          mac_address,
+          mode,
+          name,
+          subnet,
+          tags,
+          vlan,
           interface_id: nic.id,
           link_id: link?.id,
           system_id: systemId,

@@ -13,6 +13,7 @@ import {
   screen,
   within,
   renderWithBrowserRouter,
+  waitFor,
 } from "@/testing/utils";
 
 const getMockState = ({ numberOfFabrics } = { numberOfFabrics: 50 }) => {
@@ -139,12 +140,12 @@ it("updates the list of items correctly when navigating to another page", async 
       name: "2",
     })
   );
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(tableBody).getAllByRole("link", { name: /fabric/i })
     ).toHaveLength(25)
   );
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(tableBody).getByRole("link", { name: "fabric-26" })
     ).toBeInTheDocument()
@@ -204,7 +205,7 @@ it("displays correctly paginated rows", async () => {
     })
   );
 
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
         "button",
@@ -244,7 +245,7 @@ it("displays the last available page once the currently active has no items", as
     )
   );
 
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(within(tableBody).getAllByRole("row")).toHaveLength(2)
   );
   expect(
@@ -265,7 +266,7 @@ it("displays the last available page once the currently active has no items", as
   );
 
   const pagination = screen.getByRole("navigation", { name: "pagination" });
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")
@@ -297,7 +298,7 @@ it("remains on the same page once the data is updated and page is still availabl
     })
   );
 
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")
@@ -316,7 +317,7 @@ it("remains on the same page once the data is updated and page is still availabl
     </Provider>
   );
 
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")
@@ -344,7 +345,7 @@ it("displays the table group summary at the top of every page", async () => {
     })
   );
 
-  await vi.waitFor(() =>
+  await waitFor(() =>
     expect(
       within(pagination).getByRole("button", { name: "2" })
     ).toHaveAttribute("aria-current", "page")

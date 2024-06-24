@@ -63,7 +63,7 @@ context("Machine details", () => {
     }).click();
 
     // abort commissioning
-    cy.findByLabelText("submenu").within(() => {
+    cy.findByLabelText("Actions submenu").within(() => {
       cy.findByRole("button", { name: /Abort/i }).click();
     });
     cy.findByRole("button", { name: /Abort actions for machine/i }).click();

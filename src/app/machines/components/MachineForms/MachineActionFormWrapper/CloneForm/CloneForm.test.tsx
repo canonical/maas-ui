@@ -96,7 +96,7 @@ describe("CloneForm", () => {
       screen.getByRole("button", { name: "Clone to machine" })
     ).toBeDisabled();
 
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(
         screen.getByRole("checkbox", { name: "Clone network configuration" })
       ).toBeEnabled();

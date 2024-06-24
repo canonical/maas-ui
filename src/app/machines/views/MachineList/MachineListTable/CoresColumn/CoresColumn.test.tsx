@@ -2,7 +2,12 @@ import { CoresColumn } from "./CoresColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("CoresColumn", () => {
   let state: RootState;
@@ -54,7 +59,7 @@ describe("CoresColumn", () => {
     });
 
     await userEvent.hover(screen.getByTestId("arch"));
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("amd64/generic");
     });
   });

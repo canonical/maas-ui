@@ -63,10 +63,7 @@ describe("TableActions ", () => {
         onDelete={vi.fn()}
       />
     );
-    expect(screen.getByRole("link", { name: /edit/i })).toHaveAttribute(
-      "aria-disabled",
-      "true"
-    );
-    expect(screen.getByRole("button", { name: /delete/i })).toBeDisabled();
+    expect(screen.getByRole("link", { name: /edit/i })).toBeAriaDisabled();
+    expect(screen.getByRole("button", { name: /delete/i })).toBeAriaDisabled();
   });
 });

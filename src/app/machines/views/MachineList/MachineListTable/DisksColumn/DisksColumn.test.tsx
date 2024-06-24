@@ -3,7 +3,12 @@ import { DisksColumn } from "./DisksColumn";
 import type { RootState } from "@/app/store/root/types";
 import { TestStatusStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("DisksColumn", () => {
   let state: RootState;
@@ -47,7 +52,7 @@ describe("DisksColumn", () => {
     expect(screen.getByLabelText("error")).toHaveClass("p-icon--error");
 
     await userEvent.hover(screen.getByRole("button"));
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
         "Machine has failed tests."
       );

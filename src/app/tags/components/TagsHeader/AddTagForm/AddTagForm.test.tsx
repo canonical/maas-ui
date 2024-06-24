@@ -88,7 +88,7 @@ it("redirects to the newly created tag on save", async () => {
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
-  await vi.waitFor(() => {
+  await waitFor(() => {
     expect(window.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
   });
   expect(onClose).toBeCalled();
@@ -214,8 +214,6 @@ it("shows an error if tag name is invalid", async () => {
   await userEvent.tab();
 
   await waitFor(() =>
-    expect(nameInput).toHaveAccessibleErrorMessage(
-      `Error: ${Label.NameValidation}`
-    )
+    expect(nameInput).toHaveAccessibleErrorMessage(Label.NameValidation)
   );
 });

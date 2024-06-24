@@ -235,7 +235,9 @@ describe("performing machine actions", () => {
       </Provider>
     );
 
-    expect(screen.getByRole("button", { name: /Take action/ })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /Take action/ })
+    ).toBeAriaDisabled();
     expect(screen.getByTestId("all-storage-checkbox")).toBeDisabled();
     expect(screen.getByRole("checkbox", { name: disk.name })).toBeDisabled();
   });

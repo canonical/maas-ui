@@ -13,6 +13,7 @@ import {
   screen,
   within,
   renderWithMockStore,
+  waitFor,
 } from "@/testing/utils";
 
 beforeEach(() => {
@@ -171,7 +172,7 @@ it(`can not clear a selected image if it is the last image that uses the
   );
 
   const row = screen.getByRole("row", { name: image.title });
-  expect(within(row).getByRole("button", { name: "Clear" })).toBeDisabled();
+  expect(within(row).getByRole("button", { name: "Clear" })).toBeAriaDisabled();
 });
 
 it(`can open the delete image confirmation if the image does not use the
@@ -216,7 +217,7 @@ it(`can open the delete image confirmation if the image does not use the
 
   const row = screen.getAllByRole("row", { name: image.title })[1]; // First row has no delete button since it's selected for download
   const delete_button = within(row).getByRole("button", { name: "Delete" });
-  expect(delete_button).not.toBeDisabled();
+  expect(delete_button).not.toBeAriaDisabled();
 
   await userEvent.click(delete_button);
 
@@ -257,13 +258,15 @@ it("disables delete for default commissioning release images", async () => {
 
   const row = screen.getByRole("row", { name: "18.04 LTS" });
   const deleteButton = within(row).getByRole("button", { name: "Delete" });
-  expect(deleteButton).toBeDisabled();
+  expect(deleteButton).toBeAriaDisabled();
   await userEvent.hover(deleteButton);
 
   // Assert that the delete button has the correct tooltip
-  expect(deleteButton).toHaveAccessibleDescription(
-    "Cannot delete images of the default commissioning release."
-  );
+  await waitFor(() => {
+    expect(deleteButton).toHaveAccessibleDescription(
+      "Cannot delete images of the default commissioning release."
+    );
+  });
 });
 
 it("disables delete action for images being downloaded", async () => {
@@ -295,12 +298,14 @@ it("disables delete action for images being downloaded", async () => {
 
   const deleteButton = within(row).getByRole("button", { name: "Delete" });
 
-  expect(deleteButton).toBeDisabled();
+  expect(deleteButton).toBeAriaDisabled();
   await userEvent.hover(deleteButton);
 
-  expect(deleteButton).toHaveAccessibleDescription(
-    "Cannot delete images that are currently being imported."
-  );
+  await waitFor(() => {
+    expect(deleteButton).toHaveAccessibleDescription(
+      "Cannot delete images that are currently being imported."
+    );
+  });
 });
 
 it("displays a correct last deployed time and machine count", () => {

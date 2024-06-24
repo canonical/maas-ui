@@ -50,7 +50,7 @@ const openMachineActionDropdown = (groupLabel: string) => {
 
 const openMachineActionForm = (groupLabel: string, action: string) => {
   openMachineActionDropdown(groupLabel);
-  cy.findByLabelText("submenu").within(() => {
+  cy.findByLabelText(`${groupLabel} submenu`).within(() => {
     cy.findAllByRole("button", {
       name: new RegExp(`${action}...`),
     }).click();
@@ -75,7 +75,7 @@ context("Machine listing - actions", () => {
     selectFirstMachine();
     MACHINE_ACTIONS_GROUPS.forEach((actionGroup) => {
       openMachineActionDropdown(actionGroup.label);
-      cy.findByLabelText("submenu").within(() => {
+      cy.findByLabelText(`${actionGroup.label} submenu`).within(() => {
         cy.findAllByRole("button").should(
           "have.length",
           actionGroup.actions.length
