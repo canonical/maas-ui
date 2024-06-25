@@ -6,11 +6,12 @@ export const queryKeys = {
   },
 } as const;
 
-type QueryKeyValue<T> = T extends (...args: any[]) => any ? ReturnType<T> : T;
+type QueryKeys = typeof queryKeys;
+type QueryKeyCategories = keyof QueryKeys;
+type QueryKeySubcategories<T extends QueryKeyCategories> = keyof QueryKeys[T];
 
-export type QueryKey = QueryKeyValue<
-  (typeof queryKeys)[keyof typeof queryKeys][keyof (typeof queryKeys)[keyof typeof queryKeys]]
->;
+export type QueryKey =
+  QueryKeys[QueryKeyCategories][QueryKeySubcategories<QueryKeyCategories>];
 
 export const defaultQueryOptions = {
   staleTime: 5 * 60 * 1000, // 5 minutes
