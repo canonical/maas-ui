@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -39,6 +40,14 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "@/testing/factories";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 /**
  * Replace objects in an array with objects that have new values, given a match
@@ -119,22 +128,28 @@ export const BrowserRouterWithProvider = ({
 
   const route = <Route element={children} path={routePattern} />;
   return (
-    <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      <SidePanelContextProvider
-        initialSidePanelContent={sidePanelContent}
-        initialSidePanelSize={sidePanelSize}
-      >
-        <BrowserRouter>
-          {routePattern ? (
-            <Routes>
-              {parentRoute ? <Route path={parentRoute}>{route}</Route> : route}
-            </Routes>
-          ) : (
-            children
-          )}
-        </BrowserRouter>
-      </SidePanelContextProvider>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store ?? getMockStore(state || rootStateFactory())}>
+        <SidePanelContextProvider
+          initialSidePanelContent={sidePanelContent}
+          initialSidePanelSize={sidePanelSize}
+        >
+          <BrowserRouter>
+            {routePattern ? (
+              <Routes>
+                {parentRoute ? (
+                  <Route path={parentRoute}>{route}</Route>
+                ) : (
+                  route
+                )}
+              </Routes>
+            ) : (
+              children
+            )}
+          </BrowserRouter>
+        </SidePanelContextProvider>
+      </Provider>
+    </QueryClientProvider>
   );
 };
 
@@ -148,9 +163,11 @@ const WithMockStoreProvider = ({
     return mockStore(state);
   };
   return (
-    <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-      <SidePanelContextProvider>{children}</SidePanelContextProvider>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store ?? getMockStore(state || rootStateFactory())}>
+        <SidePanelContextProvider>{children}</SidePanelContextProvider>
+      </Provider>
+    </QueryClientProvider>
   );
 };
 
@@ -195,7 +212,9 @@ export const renderWithMockStore = (
 
   const rendered = render(ui, {
     wrapper: (props) => (
-      <WithMockStoreProvider {...props} state={initialState} store={store} />
+      <QueryClientProvider client={queryClient}>
+        <WithMockStoreProvider {...props} state={initialState} store={store} />
+      </QueryClientProvider>
     ),
     ...renderOptions,
   });
@@ -322,8 +341,13 @@ const generateWrapper =
   );
 
 type Hook = Parameters<typeof renderHook>[0];
-export const renderHookWithMockStore = (hook: Hook) => {
-  return renderHook(hook, { wrapper: generateWrapper() });
+
+export const renderHookWithMockStore = (
+  hook: Hook,
+  options?: { initialState?: RootState }
+) => {
+  const store = configureStore()(options?.initialState || rootStateFactory());
+  return renderHook(hook, { wrapper: generateWrapper(store) });
 };
 
 export const waitFor = vi.waitFor;
