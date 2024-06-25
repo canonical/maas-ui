@@ -32,90 +32,90 @@ type Props = {
   clearSidePanelContent: ClearSidePanelContent;
 };
 
+const AddDeviceInterfaceSchema = Yup.object().shape({
+  mac: Yup.string()
+    .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
+    .required("MAC address is required"),
+  ip_assignment: Yup.string().required("IP assignment is required"),
+  ip_address: Yup.string()
+    .when("ip_assignment", {
+      is: (ipAssignment: DeviceIpAssignment) =>
+        ipAssignment === DeviceIpAssignment.STATIC,
+      then: Yup.string()
+        .test({
+          name: "ip-is-valid",
+          message: "This is not a valid IP address",
+          test: (ip_address, context) => {
+            // Wrap this in a try/catch since the subnet might not be loaded yet
+            try {
+              return isIP(
+                formatIpAddress(
+                  ip_address,
+                  context.parent.subnet_cidr as string
+                )
+              );
+            } catch (e) {
+              return false;
+            }
+          },
+        })
+        .test({
+          name: "ip-is-in-subnet",
+          message: "The IP address is outside of the subnet's range.",
+          test: (ip_address, context) => {
+            // Wrap this in a try/catch since the subnet might not be loaded yet
+            try {
+              const cidr: string = context.parent.subnet_cidr;
+              const networkAddress = cidr.split("/")[0];
+              const prefixLength = parseInt(cidr.split("/")[1]);
+              const subnetIsIpv4 = isIPv4(networkAddress);
+
+              const ip = formatIpAddress(ip_address, cidr);
+              if (subnetIsIpv4) {
+                return isIpInSubnet(ip, cidr);
+              } else {
+                try {
+                  const addr = ipaddr.parse(ip);
+                  const netAddr = ipaddr.parse(networkAddress);
+                  return addr.match(netAddr, prefixLength);
+                } catch (e) {
+                  return false;
+                }
+              }
+            } catch (e) {
+              return false;
+            }
+          },
+        }),
+    })
+    .when("ip_assignment", {
+      is: (ipAssignment: DeviceIpAssignment) =>
+        ipAssignment === DeviceIpAssignment.EXTERNAL,
+      then: Yup.string().test({
+        name: "ip-is-valid",
+        message: "This is not a valid IP address",
+        test: (ip_address) => isIP(`${ip_address}`),
+      }),
+    })
+    .when("ip_assignment", {
+      is: (ipAssignment: DeviceIpAssignment) =>
+        ipAssignment === DeviceIpAssignment.STATIC ||
+        ipAssignment === DeviceIpAssignment.EXTERNAL,
+      then: Yup.string().required("IP address is required"),
+    }),
+  subnet: Yup.number().when("ip_assignment", {
+    is: (ipAssignment: DeviceIpAssignment) =>
+      ipAssignment === DeviceIpAssignment.STATIC,
+    then: Yup.number().required("Subnet is required"),
+  }),
+  subnet_cidr: Yup.string(),
+});
+
 const AddDeviceSchema = Yup.object().shape({
   domain: Yup.string().required("Domain required"),
   hostname: hostnameValidation,
   interfaces: Yup.array()
-    .of(
-      Yup.object().shape({
-        mac: Yup.string()
-          .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
-          .required("MAC address is required"),
-        ip_assignment: Yup.string().required("IP assignment is required"),
-        ip_address: Yup.string()
-          .when("ip_assignment", {
-            is: (ipAssignment: DeviceIpAssignment) =>
-              ipAssignment === DeviceIpAssignment.STATIC,
-            then: Yup.string()
-              .test({
-                name: "ip-is-valid",
-                message: "This is not a valid IP address",
-                test: (ip_address, context) => {
-                  // Wrap this in a try/catch since the subnet might not be loaded yet
-                  try {
-                    return isIP(
-                      formatIpAddress(
-                        ip_address,
-                        context.parent.subnet_cidr as string
-                      )
-                    );
-                  } catch (e) {
-                    return false;
-                  }
-                },
-              })
-              .test({
-                name: "ip-is-in-subnet",
-                message: "The IP address is outside of the subnet's range.",
-                test: (ip_address, context) => {
-                  // Wrap this in a try/catch since the subnet might not be loaded yet
-                  try {
-                    const cidr: string = context.parent.subnet_cidr;
-                    const networkAddress = cidr.split("/")[0];
-                    const prefixLength = parseInt(cidr.split("/")[1]);
-                    const subnetIsIpv4 = isIPv4(networkAddress);
-
-                    const ip = formatIpAddress(ip_address, cidr);
-                    if (subnetIsIpv4) {
-                      return isIpInSubnet(ip, cidr);
-                    } else {
-                      try {
-                        const addr = ipaddr.parse(ip);
-                        const netAddr = ipaddr.parse(networkAddress);
-                        return addr.match(netAddr, prefixLength);
-                      } catch (e) {
-                        return false;
-                      }
-                    }
-                  } catch (e) {
-                    return false;
-                  }
-                },
-              }),
-          })
-          .when("ip_assignment", {
-            is: (ipAssignment: DeviceIpAssignment) =>
-              ipAssignment === DeviceIpAssignment.EXTERNAL,
-            then: Yup.string().test({
-              name: "ip-is-valid",
-              message: "This is not a valid IP address",
-              test: (ip_address) => isIP(`${ip_address}`),
-            }),
-          })
-          .when("ip_assignment", {
-            is: (ipAssignment: DeviceIpAssignment) =>
-              ipAssignment === DeviceIpAssignment.STATIC ||
-              ipAssignment === DeviceIpAssignment.EXTERNAL,
-            then: Yup.string().required("IP address is required"),
-          }),
-        subnet: Yup.number().when("ip_assignment", {
-          is: (ipAssignment: DeviceIpAssignment) =>
-            ipAssignment === DeviceIpAssignment.STATIC,
-          then: Yup.number().required("Subnet is required"),
-        }),
-        subnet_cidr: Yup.string(),
-      })
-    )
+    .of(AddDeviceInterfaceSchema)
     .min(1, "At least one interface must be defined"),
   zone: Yup.string().required("Zone required"),
 });
