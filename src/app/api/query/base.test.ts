@@ -12,10 +12,12 @@ const mockQueryKey = ["zones"] as const;
 
 beforeEach(() => {
   vi.resetAllMocks();
-  const mockQueryClient = {
+  const mockQueryClient: Partial<reactQuery.QueryClient> = {
     invalidateQueries: vi.fn(),
-  } as unknown as reactQuery.QueryClient;
-  vi.mocked(reactQuery.useQueryClient).mockReturnValue(mockQueryClient);
+  };
+  vi.mocked(reactQuery.useQueryClient).mockReturnValue(
+    mockQueryClient as reactQuery.QueryClient
+  );
   vi.mocked(reactQuery.useQuery).mockReturnValue({
     data: "testData",
     isLoading: false,
@@ -42,10 +44,12 @@ it("invalidates queries when connectedCount changes", () => {
   );
 
   const mockInvalidateQueries = vi.fn();
-  const mockQueryClient = {
+  const mockQueryClient: Partial<reactQuery.QueryClient> = {
     invalidateQueries: mockInvalidateQueries,
-  } as unknown as reactQuery.QueryClient;
-  vi.mocked(reactQuery.useQueryClient).mockReturnValue(mockQueryClient);
+  };
+  vi.mocked(reactQuery.useQueryClient).mockReturnValue(
+    mockQueryClient as reactQuery.QueryClient
+  );
 
   rerender({
     initialState: rootState({ status: statusState({ connectedCount: 1 }) }),
