@@ -11,7 +11,9 @@ import type { SubnetActionProps } from "../../types";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import MacAddressField from "@/app/base/components/MacAddressField";
-import PrefixedIpInput from "@/app/base/components/PrefixedIpInput";
+import PrefixedIpInput, {
+  formatIpAddress,
+} from "@/app/base/components/PrefixedIpInput";
 import { MAC_ADDRESS_REGEX } from "@/app/base/validation";
 import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
@@ -76,14 +78,6 @@ const ReserveDHCPLease = ({
   const prefixLength = parseInt(subnet.cidr.split("/")[1]);
   const subnetIsIpv4 = isIPv4(networkAddress);
 
-  const formatIp = (ip: string | undefined) => {
-    if (subnetIsIpv4) {
-      return `${immutableOctets}.${ip}`;
-    } else {
-      return `${ipv6Prefix}${ip}`;
-    }
-  };
-
   const getInitialValues = () => {
     if (reservedIp && subnet) {
       return {
@@ -110,13 +104,13 @@ const ReserveDHCPLease = ({
       .test({
         name: "ip-is-valid",
         message: "This is not a valid IP address",
-        test: (ip_address) => isIP(formatIp(ip_address)),
+        test: (ip_address) => isIP(formatIpAddress(ip_address, subnet.cidr)),
       })
       .test({
         name: "ip-is-in-subnet",
         message: "The IP address is outside of the subnet's range.",
         test: (ip_address) => {
-          const ip = formatIp(ip_address);
+          const ip = formatIpAddress(ip_address, subnet.cidr);
           if (subnetIsIpv4) {
             return isIpInSubnet(ip, subnet.cidr as string);
           } else {
@@ -135,7 +129,7 @@ const ReserveDHCPLease = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    const ip = formatIp(values.ip_address);
+    const ip = formatIpAddress(values.ip_address, subnet.cidr);
     dispatch(cleanup());
     if (isEditing) {
       dispatch(

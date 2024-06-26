@@ -15,6 +15,7 @@ export type AddDeviceInterface = {
   mac: CreateParamsInterface["mac"];
   name: NonNullable<CreateParamsInterface["name"]>;
   subnet: string;
+  subnet_cidr: string;
 };
 
 export type AddDeviceValues = {

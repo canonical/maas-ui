@@ -29,6 +29,7 @@ describe("AddDeviceInterfaces", () => {
         mac: "",
         name: "eth0",
         subnet: "",
+        subnet_cidr: "",
       },
     ];
     state = factory.rootState({
@@ -53,7 +54,7 @@ describe("AddDeviceInterfaces", () => {
     expect(screen.queryByTestId("ip-address-field")).not.toBeInTheDocument();
   });
 
-  it("shows the IP address field for external IP assignment", () => {
+  it("shows the standard IP address field for external IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.EXTERNAL;
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -63,11 +64,15 @@ describe("AddDeviceInterfaces", () => {
       { store }
     );
 
-    expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
     expect(screen.getByTestId("ip-address-field")).toBeInTheDocument();
+
+    expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("prefixed-ip-address-field")
+    ).not.toBeInTheDocument();
   });
 
-  it("shows both the subnet and IP address fields for static IP assignment", () => {
+  it("shows the subnet field when static IP assignment is selected", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.STATIC;
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -78,7 +83,25 @@ describe("AddDeviceInterfaces", () => {
     );
 
     expect(screen.getByTestId("subnet-field")).toBeInTheDocument();
-    expect(screen.getByTestId("ip-address-field")).toBeInTheDocument();
+    expect(
+      screen.queryByTestId("prefixed-ip-address-field")
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows the prefixed IP address field when a subnet is selected", () => {
+    interfaces[0].ip_assignment = DeviceIpAssignment.STATIC;
+    interfaces[0].subnet = state.subnet.items[0].id.toString();
+
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <Formik initialValues={{ interfaces }} onSubmit={vi.fn()}>
+        <AddDeviceInterfaces />
+      </Formik>,
+      { store }
+    );
+
+    expect(screen.getByTestId("prefixed-ip-address-field")).toBeInTheDocument();
+    expect(screen.queryByTestId("ip-address-field")).not.toBeInTheDocument();
   });
 
   it("can add and remove interfaces", async () => {

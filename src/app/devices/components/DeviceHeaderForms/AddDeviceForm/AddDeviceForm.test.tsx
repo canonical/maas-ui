@@ -29,7 +29,9 @@ describe("AddDeviceForm", () => {
         loaded: true,
       }),
       subnet: factory.subnetState({
-        items: [factory.subnet({ id: 0, name: "subnet" })],
+        items: [
+          factory.subnet({ id: 0, name: "subnet", cidr: "192.168.1.0/24" }),
+        ],
         loaded: true,
       }),
       zone: factory.zoneState({
@@ -121,10 +123,7 @@ describe("AddDeviceForm", () => {
       "0"
     );
 
-    await userEvent.type(
-      getFieldFromCard(0, "IP address", "textbox"),
-      "192.168.1.1"
-    );
+    await userEvent.type(getFieldFromCard(0, "IP address", "textbox"), "1");
 
     await userEvent.type(
       getFieldFromCard(1, "MAC address", "textbox"),

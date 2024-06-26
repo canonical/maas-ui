@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
+import ipaddr from "ipaddr.js";
+import { isIP, isIPv4 } from "is-ip";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -10,6 +12,7 @@ import type { AddDeviceValues } from "./types";
 import DomainSelect from "@/app/base/components/DomainSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
+import { formatIpAddress } from "@/app/base/components/PrefixedIpInput";
 import ZoneSelect from "@/app/base/components/ZoneSelect";
 import { useFetchActions, useAddMessage } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
@@ -23,34 +26,96 @@ import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import { zoneActions } from "@/app/store/zone";
 import zoneSelectors from "@/app/store/zone/selectors";
+import { isIpInSubnet } from "@/app/utils/subnetIpRange";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;
 };
 
+const AddDeviceInterfaceSchema = Yup.object().shape({
+  mac: Yup.string()
+    .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
+    .required("MAC address is required"),
+  ip_assignment: Yup.string().required("IP assignment is required"),
+  ip_address: Yup.string()
+    .when("ip_assignment", {
+      is: (ipAssignment: DeviceIpAssignment) =>
+        ipAssignment === DeviceIpAssignment.STATIC,
+      then: Yup.string()
+        .test({
+          name: "ip-is-valid",
+          message: "This is not a valid IP address",
+          test: (ip_address, context) => {
+            // Wrap this in a try/catch since the subnet might not be loaded yet
+            try {
+              return isIP(
+                formatIpAddress(
+                  ip_address,
+                  context.parent.subnet_cidr as string
+                )
+              );
+            } catch (e) {
+              return false;
+            }
+          },
+        })
+        .test({
+          name: "ip-is-in-subnet",
+          message: "The IP address is outside of the subnet's range.",
+          test: (ip_address, context) => {
+            // Wrap this in a try/catch since the subnet might not be loaded yet
+            try {
+              const cidr: string = context.parent.subnet_cidr;
+              const networkAddress = cidr.split("/")[0];
+              const prefixLength = parseInt(cidr.split("/")[1]);
+              const subnetIsIpv4 = isIPv4(networkAddress);
+
+              const ip = formatIpAddress(ip_address, cidr);
+              if (subnetIsIpv4) {
+                return isIpInSubnet(ip, cidr);
+              } else {
+                try {
+                  const addr = ipaddr.parse(ip);
+                  const netAddr = ipaddr.parse(networkAddress);
+                  return addr.match(netAddr, prefixLength);
+                } catch (e) {
+                  return false;
+                }
+              }
+            } catch (e) {
+              return false;
+            }
+          },
+        }),
+    })
+    .when("ip_assignment", {
+      is: (ipAssignment: DeviceIpAssignment) =>
+        ipAssignment === DeviceIpAssignment.EXTERNAL,
+      then: Yup.string().test({
+        name: "ip-is-valid",
+        message: "This is not a valid IP address",
+        test: (ip_address) => isIP(`${ip_address}`),
+      }),
+    })
+    .when("ip_assignment", {
+      is: (ipAssignment: DeviceIpAssignment) =>
+        ipAssignment === DeviceIpAssignment.STATIC ||
+        ipAssignment === DeviceIpAssignment.EXTERNAL,
+      then: Yup.string().required("IP address is required"),
+    }),
+  subnet: Yup.number().when("ip_assignment", {
+    is: (ipAssignment: DeviceIpAssignment) =>
+      ipAssignment === DeviceIpAssignment.STATIC,
+    then: Yup.number().required("Subnet is required"),
+  }),
+  subnet_cidr: Yup.string(),
+});
+
 const AddDeviceSchema = Yup.object().shape({
   domain: Yup.string().required("Domain required"),
   hostname: hostnameValidation,
   interfaces: Yup.array()
-    .of(
-      Yup.object().shape({
-        mac: Yup.string()
-          .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
-          .required("MAC address is required"),
-        ip_assignment: Yup.string().required("IP assignment is required"),
-        ip_address: Yup.string().when("ip_assignment", {
-          is: (ipAssignment: DeviceIpAssignment) =>
-            ipAssignment === DeviceIpAssignment.STATIC ||
-            ipAssignment === DeviceIpAssignment.EXTERNAL,
-          then: Yup.string().required("IP address is required"),
-        }),
-        subnet: Yup.number().when("ip_assignment", {
-          is: (ipAssignment: DeviceIpAssignment) =>
-            ipAssignment === DeviceIpAssignment.STATIC,
-          then: Yup.number().required("Subnet is required"),
-        }),
-      })
-    )
+    .of(AddDeviceInterfaceSchema)
     .min(1, "At least one interface must be defined"),
   zone: Yup.string().required("Zone required"),
 });
@@ -111,6 +176,8 @@ export const AddDeviceForm = ({
             mac: "",
             name: "eth0",
             subnet: "",
+            // Capture the subnet CIDR so we can validate the IP address against it.
+            subnet_cidr: "",
           },
         ],
         zone: (zones.length && zones[0].name) || "",
@@ -125,8 +192,16 @@ export const AddDeviceForm = ({
         const { domain, hostname, interfaces, zone } = values;
         const normalisedInterfaces = interfaces.map((iface) => {
           const subnet = parseInt(iface.subnet);
+          const ip =
+            iface.ip_assignment === DeviceIpAssignment.STATIC
+              ? formatIpAddress(iface.ip_address, iface.subnet_cidr)
+              : iface.ip_assignment === DeviceIpAssignment.EXTERNAL
+                ? iface.ip_address
+                : null;
+
+          // subnet_cidr is omitted, since it's only needed for validation.
           return {
-            ip_address: iface.ip_address || null,
+            ip_address: ip || null,
             ip_assignment: iface.ip_assignment,
             mac: iface.mac,
             name: iface.name,
