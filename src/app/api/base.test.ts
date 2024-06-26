@@ -42,3 +42,19 @@ it("should handle errors", async () => {
     .mockResolvedValue({ ok: false, statusText: "Bad Request" });
   await expect(fetchWithAuth(url)).rejects.toThrow("Bad Request");
 });
+
+it("should handle invalid CSRF token", async () => {
+  (getCookie as Mock).mockReturnValue(null);
+
+  const mockResponse = {
+    ok: false,
+    status: 403,
+    statusText: "Forbidden",
+  };
+  global.fetch = vi.fn().mockResolvedValue(mockResponse);
+
+  await expect(fetchWithAuth(url)).rejects.toThrow("Forbidden");
+  expect(fetch).toHaveBeenCalledWith(url, {
+    headers: { ...DEFAULT_HEADERS, "X-CSRFToken": "" },
+  });
+});
