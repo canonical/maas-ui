@@ -162,6 +162,10 @@ export class WebSocketClient {
   connect(): ReconnectingWebSocket {
     this.rws = new ReconnectingWebSocket(this.buildURL(), undefined, {
       debug: import.meta.env.VITE_APP_WEBSOCKET_DEBUG === "true",
+      // Limit message backlog on reconnection to prevent overwhelming the server
+      // with a flood of queued messages when the connection is re-established.
+      // Typical page load generates 5-25 messages; buffer allows for additional user actions.
+      maxEnqueuedMessages: 30,
     });
     return this.rws;
   }
