@@ -4,7 +4,6 @@ import reducers, {
   initialGenericActions,
   initialModelActions,
 } from "./slice";
-import { ZoneMeta } from "./types";
 
 import { ACTION_STATUS } from "@/app/base/constants";
 import * as factory from "@/testing/factories";
@@ -115,80 +114,6 @@ describe("create", () => {
       })
     );
   });
-
-  it("reduces createNotify", () => {
-    const initialState = factory.zoneState({
-      items: [factory.zone()],
-    });
-    const createdZone = factory.zone();
-
-    expect(reducers(initialState, actions.createNotify(createdZone))).toEqual(
-      factory.zoneState({
-        items: [...initialState.items, createdZone],
-      })
-    );
-  });
-});
-
-describe("fetch", () => {
-  it("reduces fetchStart", () => {
-    const initialState = factory.zoneState({
-      genericActions: factory.zoneGenericActions({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.idle,
-      }),
-    });
-
-    expect(reducers(initialState, actions.fetchStart())).toEqual(
-      factory.zoneState({
-        genericActions: factory.zoneGenericActions({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
-        }),
-      })
-    );
-  });
-
-  it("reduces fetchSuccess", () => {
-    const initialState = factory.zoneState({
-      genericActions: factory.zoneGenericActions({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
-      }),
-      items: [],
-    });
-    const fetchedZones = [factory.zone(), factory.zone()];
-
-    expect(reducers(initialState, actions.fetchSuccess(fetchedZones))).toEqual(
-      factory.zoneState({
-        genericActions: factory.zoneGenericActions({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
-        }),
-        items: fetchedZones,
-      })
-    );
-  });
-
-  it("reduces fetchError", () => {
-    const initialState = factory.zoneState({
-      errors: [],
-      genericActions: factory.zoneGenericActions({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
-      }),
-    });
-    const errorMessage = "Unable to fetch zones";
-
-    expect(reducers(initialState, actions.fetchError(errorMessage))).toEqual(
-      factory.zoneState({
-        errors: [
-          factory.zoneError({
-            action: ZONE_ACTIONS.fetch,
-            error: errorMessage,
-          }),
-        ],
-        genericActions: factory.zoneGenericActions({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.error,
-        }),
-      })
-    );
-  });
 });
 
 describe("update", () => {
@@ -224,7 +149,6 @@ describe("update", () => {
   it("reduces updateSuccess", () => {
     const zone = factory.zone({ id: 123 });
     const initialState = factory.zoneState({
-      items: [],
       modelActions: factory.zoneModelActions({
         [ZONE_ACTIONS.update]: factory.zoneModelAction({
           [ACTION_STATUS.loading]: [123],
@@ -290,19 +214,6 @@ describe("update", () => {
             [ACTION_STATUS.loading]: [],
           }),
         }),
-      })
-    );
-  });
-
-  it("reduces updateNotify", () => {
-    const initialState = factory.zoneState({
-      items: [factory.zone({ [ZoneMeta.PK]: 123, name: "danger" })],
-    });
-    const updatedZone = factory.zone({ [ZoneMeta.PK]: 123, name: "twilight" });
-
-    expect(reducers(initialState, actions.updateNotify(updatedZone))).toEqual(
-      factory.zoneState({
-        items: [updatedZone],
       })
     );
   });
@@ -405,18 +316,6 @@ describe("delete", () => {
             [ACTION_STATUS.loading]: [],
           }),
         }),
-      })
-    );
-  });
-
-  it("reduces deleteNotify", () => {
-    const initialState = factory.zoneState({
-      items: [factory.zone({ [ZoneMeta.PK]: 123 })],
-    });
-
-    expect(reducers(initialState, actions.deleteNotify(123))).toEqual(
-      factory.zoneState({
-        items: [],
       })
     );
   });

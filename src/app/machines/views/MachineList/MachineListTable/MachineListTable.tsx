@@ -31,7 +31,6 @@ import { useMachineSelectedCount } from "@/app/store/machine/utils/hooks";
 import { resourcePoolActions } from "@/app/store/resourcepool";
 import { tagActions } from "@/app/store/tag";
 import { userActions } from "@/app/store/user";
-import { zoneActions } from "@/app/store/zone";
 import { generateEmptyStateMsg, getTableStatus } from "@/app/utils";
 
 export enum Label {
@@ -102,7 +101,6 @@ export const MachineListTable = ({
     resourcePoolActions.fetch,
     tagActions.fetch,
     userActions.fetch,
-    zoneActions.fetch,
   ]);
 
   const toggleHandler = useCallback(

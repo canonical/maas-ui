@@ -10,7 +10,6 @@ import {
   watchFetchLicenseKeys,
   watchUploadScript,
   watchAddMachineChassis,
-  watchZonesFetch,
 } from "./http";
 import { watchWebSockets } from "./websockets";
 
@@ -27,5 +26,4 @@ export {
   watchFetchLicenseKeys,
   watchUploadScript,
   watchAddMachineChassis,
-  watchZonesFetch,
 };

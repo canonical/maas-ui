@@ -44,6 +44,5 @@ export type ZoneStateError = StateError<ZoneActionNames, ZonePK>;
 export type ZoneState = {
   errors: ZoneStateError[];
   genericActions: ZoneGenericActions;
-  items: Zone[];
   modelActions: ZoneModelActions;
 };

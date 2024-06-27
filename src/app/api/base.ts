@@ -18,7 +18,7 @@ export const handleErrors = (response: Response) => {
 };
 
 type ApiEndpoint = typeof API_ENDPOINTS;
-type ApiEndpointKey = keyof ApiEndpoint;
+export type ApiEndpointKey = keyof ApiEndpoint;
 type ApiUrl = `${typeof SERVICE_API}${ApiEndpoint[ApiEndpointKey]}`;
 
 export const getFullApiUrl = (endpoint: ApiEndpointKey): ApiUrl =>

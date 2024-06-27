@@ -5,9 +5,9 @@ import type { GeneralState, GenerateCertificateParams } from "./types";
 import { GeneralMeta } from "./types";
 
 const generateInitialState = <K extends keyof GeneralState>(
-  initialData: GeneralState[K]["data"]
+  queryData: GeneralState[K]["data"]
 ) => ({
-  data: initialData,
+  data: queryData,
   errors: null,
   loaded: false,
   loading: false,

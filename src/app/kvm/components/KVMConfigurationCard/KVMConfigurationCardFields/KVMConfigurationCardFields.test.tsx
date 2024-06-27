@@ -7,16 +7,13 @@ import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
 
 describe("KVMConfigurationCardFields", () => {
   let state: RootState;
-
+  const queryData = { zones: [factory.zone({ id: 1, name: "zone-1" })] };
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({ items: [], loaded: true }),
       resourcepool: factory.resourcePoolState({
         loaded: true,
         items: [factory.resourcePool({ id: 1, name: "pool-1" })],
-      }),
-      zone: factory.zoneState({
-        items: [factory.zone({ id: 1, name: "zone-1" })],
       }),
     });
   });
@@ -36,6 +33,7 @@ describe("KVMConfigurationCardFields", () => {
     renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
       route: "/kvm/1/edit",
       state,
+      queryData,
     });
 
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
@@ -78,6 +76,7 @@ describe("KVMConfigurationCardFields", () => {
     renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
       route: "/kvm/1/edit",
       state,
+      queryData,
     });
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
       "LXD"

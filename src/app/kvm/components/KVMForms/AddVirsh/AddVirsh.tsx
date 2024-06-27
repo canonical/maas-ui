@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import AddVirshFields from "./AddVirshFields";
 
+import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import { useFetchActions, useAddMessage } from "@/app/base/hooks";
 import type { ClearSidePanelContent } from "@/app/base/types";
@@ -25,8 +26,6 @@ import type { Pod } from "@/app/store/pod/types";
 import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type { PowerParameters } from "@/app/store/types/node";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;
@@ -49,18 +48,13 @@ export const AddVirsh = ({ clearSidePanelContent }: Props): JSX.Element => {
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
-  const zones = useSelector(zoneSelectors.all);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
+  const zones = useZones();
   const [savingPod, setSavingPod] = useState<string | null>(null);
   const cleanup = useCallback(() => podActions.cleanup(), []);
   const initialPowerParameters = useInitialPowerParameters();
-  const loaded = powerTypesLoaded && resourcePoolsLoaded && zonesLoaded;
+  const loaded = powerTypesLoaded && resourcePoolsLoaded && !zones.isPending;
 
-  useFetchActions([
-    generalActions.fetchPowerTypes,
-    resourcePoolActions.fetch,
-    zoneActions.fetch,
-  ]);
+  useFetchActions([generalActions.fetchPowerTypes, resourcePoolActions.fetch]);
 
   useAddMessage(
     podSaved,
@@ -104,7 +98,7 @@ export const AddVirsh = ({ clearSidePanelContent }: Props): JSX.Element => {
         pool: resourcePools.length ? resourcePools[0].id : "",
         power_parameters: initialPowerParameters,
         type: PodType.VIRSH,
-        zone: zones.length ? zones[0].id : "",
+        zone: zones.data?.length ? zones.data[0].id : "",
       }}
       onCancel={clearSidePanelContent}
       onSaveAnalytics={{

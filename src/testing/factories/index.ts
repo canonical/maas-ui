@@ -225,3 +225,4 @@ export {
   vmHost,
 } from "./vmcluster";
 export { zone } from "./zone";
+export { zonesGet } from "./response";

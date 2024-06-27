@@ -18,6 +18,31 @@ import {
 } from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
+import {
+  handleFileContextRequest,
+  storeFileContextActions,
+} from "./handlers/file-context-requests";
+import { isLoaded, resetLoaded, setLoaded } from "./handlers/loaded-endpoints";
+import {
+  handlePolling,
+  isStartPollingAction,
+  isStopPollingAction,
+} from "./handlers/polling-requests";
+
+import type {
+  MessageHandler,
+  NextActionCreator,
+} from "@/app/base/sagas/actions";
+import {
+  handleNextActions,
+  storeNextActions,
+} from "@/app/base/sagas/websockets/handlers/next-actions";
+import {
+  handleUnsubscribe,
+  isUnsubscribeAction,
+} from "@/app/base/sagas/websockets/handlers/unsubscribe";
+import type { GenericMeta } from "@/app/store/utils/slice";
+import { WebSocketMessageType } from "@/websocket-client";
 import type {
   WebSocketAction,
   WebSocketClient,
@@ -25,27 +50,8 @@ import type {
   WebSocketActionParams,
   WebSocketResponseNotify,
   WebSocketResponsePing,
-} from "../../../../websocket-client";
-import { WebSocketMessageType } from "../../../../websocket-client";
-
-import {
-  handleFileContextRequest,
-  storeFileContextActions,
-} from "./handlers/file-context-requests";
-import { isLoaded, resetLoaded, setLoaded } from "./handlers/loaded-endpoints";
-import { handleNextActions, storeNextActions } from "./handlers/next-actions";
-import {
-  handlePolling,
-  isStartPollingAction,
-  isStopPollingAction,
-} from "./handlers/polling-requests";
-import { handleUnsubscribe, isUnsubscribeAction } from "./handlers/unsubscribe";
-
-import type {
-  MessageHandler,
-  NextActionCreator,
-} from "@/app/base/sagas/actions";
-import type { GenericMeta } from "@/app/store/utils/slice";
+  WebSocketEndpoint,
+} from "@/websocket-client";
 
 export type WebSocketChannel = EventChannel<
   | ReconnectingWebSocketEvent
@@ -330,7 +336,7 @@ export function* sendMessage(
   const { meta, payload, type } = action;
   const params = payload ? payload.params : null;
   const { cache, identifier, method, model, nocache } = meta;
-  const endpoint = `${model}.${method}`;
+  const endpoint: WebSocketEndpoint = `${model}.${method}`;
   const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   // If method is 'list' and data has loaded/is loading, do not fetch again
   // unless 'nocache' is specified.

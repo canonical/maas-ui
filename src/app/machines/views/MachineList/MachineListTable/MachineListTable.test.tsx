@@ -25,7 +25,18 @@ describe("MachineListTable", () => {
   let state: RootState;
   let machines: Machine[] = [];
   let groups: MachineStateListGroup[] = [];
-
+  const queryData = {
+    zones: [
+      factory.zone({
+        id: 0,
+        name: "default",
+      }),
+      factory.zone({
+        id: 1,
+        name: "Backup",
+      }),
+    ],
+  };
   beforeEach(() => {
     machines = [
       factory.machine({
@@ -191,18 +202,6 @@ describe("MachineListTable", () => {
           }),
         ],
       }),
-      zone: factory.zoneState({
-        items: [
-          factory.zone({
-            id: 0,
-            name: "default",
-          }),
-          factory.zone({
-            id: 1,
-            name: "Backup",
-          }),
-        ],
-      }),
     });
   });
 
@@ -231,7 +230,7 @@ describe("MachineListTable", () => {
         sortKey={null}
         totalPages={1}
       />,
-      { state }
+      { state, queryData }
     );
     expect(
       within(

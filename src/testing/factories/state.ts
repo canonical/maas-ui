@@ -662,7 +662,6 @@ export const zoneError = define<ZoneStateError>({
 export const zoneState = define<ZoneState>({
   errors: () => [],
   genericActions: zoneGenericActions,
-  items: () => [],
   modelActions: zoneModelActions,
 });
 

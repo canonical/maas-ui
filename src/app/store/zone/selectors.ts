@@ -12,10 +12,6 @@ import { ZoneMeta } from "./types";
 
 import { ACTION_STATUS } from "@/app/base/constants";
 import type { RootState } from "@/app/store/root/types";
-import { isId } from "@/app/utils";
-
-const all = (state: RootState): ZoneState["items"] =>
-  state[ZoneMeta.MODEL].items;
 
 const errors = (state: RootState): ZoneState["errors"] =>
   state[ZoneMeta.MODEL].errors;
@@ -25,18 +21,6 @@ const genericActions = (state: RootState): ZoneState["genericActions"] =>
 
 const modelActions = (state: RootState): ZoneState["modelActions"] =>
   state[ZoneMeta.MODEL].modelActions;
-
-const count = createSelector([all], (zones) => zones.length);
-
-const getById = createSelector(
-  [all, (_state: RootState, id: ZonePK | null | undefined) => id],
-  (zones, id) => {
-    if (!isId(id)) {
-      return null;
-    }
-    return zones.find((zone) => zone[ZoneMeta.PK] === id) || null;
-  }
-);
 
 const getGenericActionStatus = createSelector(
   (state: RootState, action: keyof ZoneGenericActions) => ({
@@ -65,12 +49,6 @@ const getModelActionStatus = createSelector(
   }
 );
 
-const loaded = (state: RootState): boolean =>
-  getGenericActionStatus(state, ZONE_ACTIONS.fetch) === ACTION_STATUS.success;
-
-const loading = (state: RootState): boolean =>
-  getGenericActionStatus(state, ZONE_ACTIONS.fetch) === ACTION_STATUS.loading;
-
 const created = (state: RootState): boolean =>
   getGenericActionStatus(state, ZONE_ACTIONS.create) === ACTION_STATUS.success;
 
@@ -92,18 +70,13 @@ const getLatestError = createSelector(
 );
 
 const selectors = {
-  all,
-  count,
   created,
   creating,
   errors,
   genericActions,
-  getById,
   getGenericActionStatus,
   getLatestError,
   getModelActionStatus,
-  loaded,
-  loading,
   modelActions,
 };
 

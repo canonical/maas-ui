@@ -15,7 +15,9 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-
+const queryData = {
+  zones: [factory.zone({ id: 0 }), factory.zone({ id: 1 })],
+};
 describe("AddLxd", () => {
   let state: RootState;
 
@@ -48,9 +50,6 @@ describe("AddLxd", () => {
         items: [factory.resourcePool({ id: 0 })],
         loaded: true,
       }),
-      zone: factory.zoneState({
-        items: [factory.zone({ id: 0 })],
-      }),
     });
   });
 
@@ -82,6 +81,9 @@ describe("AddLxd", () => {
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
+      queryData: {
+        zones: [factory.zone({ id: 0 }), factory.zone({ id: 1 })],
+      },
     });
 
     // Submit credentials form
@@ -134,6 +136,7 @@ describe("AddLxd", () => {
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
+      queryData,
     });
 
     // Submit credentials form
@@ -198,6 +201,7 @@ describe("AddLxd", () => {
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
+      queryData,
     });
 
     // Submit credentials form

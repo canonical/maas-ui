@@ -7,12 +7,12 @@ import { getCookie } from "@/app/utils";
 vi.mock("@/app/utils");
 
 const testAction = {
-  meta: { model: "test", method: "test" },
+  meta: { model: "status", method: "ping" },
   payload: {
     params: {},
   },
   type: "TEST_ACTION",
-};
+} as const;
 
 describe("websocket client", () => {
   let client: WebSocketClient;

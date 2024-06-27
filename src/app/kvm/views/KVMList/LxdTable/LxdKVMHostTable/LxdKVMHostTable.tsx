@@ -1,7 +1,7 @@
 import { Icon, MainTable } from "@canonical/react-components";
 import pluralize from "pluralize";
-import { useSelector } from "react-redux";
 
+import { useZones } from "@/app/api/query/zones";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useTableSort } from "@/app/base/hooks";
@@ -17,7 +17,6 @@ import VMsColumn from "@/app/kvm/components/VMsColumn";
 import type { KVMResource, KVMStoragePoolResources } from "@/app/kvm/types";
 import type { Pod, PodMeta } from "@/app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "@/app/store/vmcluster/types";
-import zoneSelectors from "@/app/store/zone/selectors";
 import type { Zone } from "@/app/store/zone/types";
 import { isComparable } from "@/app/utils";
 
@@ -152,7 +151,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
   });
 
 const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
-  const zones = useSelector(zoneSelectors.all);
+  const zones = useZones();
   const { currentSort, sortRows, updateSort } = useTableSort<
     LxdKVMHostTableRow,
     SortKey,
@@ -161,7 +160,7 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
     key: "name",
     direction: SortDirection.DESCENDING,
   });
-  const sortedRows = sortRows(rows, zones);
+  const sortedRows = sortRows(rows, zones.data);
   return (
     <MainTable
       className="lxd-table"

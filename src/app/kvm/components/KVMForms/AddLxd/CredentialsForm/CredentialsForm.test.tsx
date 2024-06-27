@@ -17,6 +17,9 @@ const mockStore = configureStore<RootState>();
 describe("CredentialsForm", () => {
   let state: RootState;
   let newPodValues: NewPodValues;
+  const queryData = {
+    zones: [factory.zone()],
+  };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -31,9 +34,6 @@ describe("CredentialsForm", () => {
       resourcepool: factory.resourcePoolState({
         items: [factory.resourcePool()],
         loaded: true,
-      }),
-      zone: factory.zoneState({
-        items: [factory.zone()],
       }),
     });
     newPodValues = {
@@ -58,7 +58,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
 
     // Submit form
@@ -103,7 +103,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
     // Change radio to provide certificate instead of generating one.
     await userEvent.click(
@@ -169,7 +169,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
@@ -199,7 +199,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -227,7 +227,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
@@ -257,7 +257,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -294,7 +294,7 @@ describe("CredentialsForm", () => {
         setStep={setStep}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
     expect(setStep).not.toHaveBeenCalled();
     expect(screen.getByTestId("notification-title")).toHaveTextContent(
@@ -326,7 +326,7 @@ describe("CredentialsForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={setSubmissionErrors}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", store, queryData }
     );
     unmount();
     expect(

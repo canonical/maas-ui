@@ -5,7 +5,7 @@ import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 
-import { useFetchActions } from "@/app/base/hooks";
+import { useZoneById } from "@/app/api/query/zones";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
@@ -13,8 +13,6 @@ import type { KVMSetSidePanelContent } from "@/app/kvm/types";
 import type { RootState } from "@/app/store/root/types";
 import vmClusterSelectors from "@/app/store/vmcluster/selectors";
 import type { VMCluster } from "@/app/store/vmcluster/types";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clusterId: VMCluster["id"];
@@ -28,13 +26,9 @@ const LXDClusterDetailsHeader = ({
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
-  const zone = useSelector((state: RootState) =>
-    zoneSelectors.getById(state, cluster?.availability_zone)
-  );
+  const zone = useZoneById(cluster?.availability_zone);
   const location = useLocation();
   const canRefresh = !!cluster?.hosts.length;
-
-  useFetchActions([zoneActions.fetch]);
 
   let title: ReactNode = <Spinner text="Loading..." />;
   if (cluster) {
@@ -121,7 +115,7 @@ const LXDClusterDetailsHeader = ({
               },
               {
                 title: "AZ:",
-                subtitle: zone?.name || <Spinner />,
+                subtitle: zone?.data?.name || <Spinner />,
               },
               {
                 title: "LXD project:",
