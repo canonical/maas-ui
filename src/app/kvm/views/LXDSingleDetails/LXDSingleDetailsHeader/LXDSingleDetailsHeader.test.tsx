@@ -1,16 +1,14 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
-const mockStore = configureStore();
+const queryData = {
+  zones: [factory.zone({ id: 101, name: "danger" })],
+};
 
 describe("LXDSingleDetailsHeader", () => {
   let state: RootState;
@@ -40,13 +38,9 @@ describe("LXDSingleDetailsHeader", () => {
 
   it("displays a spinner if pod hasn't loaded", () => {
     state.pod.items = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
+      { route: "/kvm/1/resources", state, queryData }
     );
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -56,15 +50,9 @@ describe("LXDSingleDetailsHeader", () => {
     state.pod.items[0].power_parameters = factory.podPowerParameters({
       project: "Manhattan",
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
+      { route: "/kvm/1/resources", state, queryData }
     );
 
     expect(screen.getAllByTestId("block-subtitle")[3]).toHaveTextContent(
@@ -76,15 +64,9 @@ describe("LXDSingleDetailsHeader", () => {
     state.pod.items[0].resources = factory.podResources({
       vm_count: factory.podVmCount({ tracked: 5 }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
+      { route: "/kvm/1/resources", state, queryData }
     );
 
     expect(screen.getAllByTestId("block-subtitle")[1]).toHaveTextContent(
@@ -93,17 +75,10 @@ describe("LXDSingleDetailsHeader", () => {
   });
 
   it("displays the pod's zone's name", () => {
-    state.zone.items = [factory.zone({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDSingleDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
+      { route: "/kvm/1/resources", state, queryData }
     );
 
     expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
@@ -112,23 +87,16 @@ describe("LXDSingleDetailsHeader", () => {
   });
 
   it("can open the refresh host form", async () => {
-    state.zone.items = [factory.zone({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
     const setSidePanelContent = vi.fn();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
-        >
-          <LXDSingleDetailsHeader
-            id={1}
-            setSidePanelContent={setSidePanelContent}
-          />
-        </MemoryRouter>
-      </Provider>
+    const queryData = { zones: [factory.zone({ id: 101, name: "danger" })] };
+    renderWithBrowserRouter(
+      <LXDSingleDetailsHeader
+        id={1}
+        setSidePanelContent={setSidePanelContent}
+      />,
+      { route: "/kvm/1/resources", state, queryData }
     );
-
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({

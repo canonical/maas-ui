@@ -1,14 +1,8 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import VirshSettings from "./VirshSettings";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("VirshSettings", () => {
   let state: RootState;
@@ -30,14 +24,9 @@ describe("VirshSettings", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <VirshSettings id={1} />
-        </Provider>
-      </MemoryRouter>
-    );
+    const { store } = renderWithBrowserRouter(<VirshSettings id={1} />, {
+      state,
+    });
     const expectedActionTypes = [
       "resourcepool/fetch",
       "tag/fetch",
@@ -55,14 +44,8 @@ describe("VirshSettings", () => {
 
   it("displays a spinner if data has not loaded", () => {
     state.resourcepool.loaded = false;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <VirshSettings id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithBrowserRouter(<VirshSettings id={1} />, { state });
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });
 });

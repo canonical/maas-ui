@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useZones } from "@/app/api/query/zones";
 import Definition from "@/app/base/components/Definition";
 import EditableSection from "@/app/base/components/EditableSection";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -19,8 +18,6 @@ import type { Device, DeviceMeta } from "@/app/store/device/types";
 import { FilterDevices, isDeviceDetails } from "@/app/store/device/utils";
 import type { RootState } from "@/app/store/root/types";
 import tagSelectors from "@/app/store/tag/selectors";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   systemId: Device[DeviceMeta.PK];
@@ -45,13 +42,9 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
   const deviceTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, device?.tags || null)
   );
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const loaded = isDeviceDetails(device) && zonesLoaded;
+  const zones = useZones();
+  const loaded = isDeviceDetails(device) && !zones.isPending;
   useWindowTitle(`${`${device?.hostname}` || "Device"} configuration`);
-
-  useEffect(() => {
-    dispatch(zoneActions.fetch());
-  });
 
   if (!loaded) {
     return (

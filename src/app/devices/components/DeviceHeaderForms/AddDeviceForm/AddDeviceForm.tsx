@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import AddDeviceInterfaces from "./AddDeviceInterfaces";
 import type { AddDeviceValues } from "./types";
 
+import { useZones } from "@/app/api/query/zones";
 import DomainSelect from "@/app/base/components/DomainSelect";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
@@ -24,8 +25,6 @@ import { domainActions } from "@/app/store/domain";
 import domainSelectors from "@/app/store/domain/selectors";
 import { subnetActions } from "@/app/store/subnet";
 import subnetSelectors from "@/app/store/subnet/selectors";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 import { isIpInSubnet } from "@/app/utils/subnetIpRange";
 
 type Props = {
@@ -130,18 +129,13 @@ export const AddDeviceForm = ({
   const domains = useSelector(domainSelectors.all);
   const domainsLoaded = useSelector(domainSelectors.loaded);
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
-  const zones = useSelector(zoneSelectors.all);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
+  const zones = useZones();
 
   const [secondarySubmit, setSecondarySubmit] = useState(false);
   const [savingDevice, setSavingDevice] = useState<string | null>(null);
 
   // Fetch all data required for the form.
-  useFetchActions([
-    domainActions.fetch,
-    subnetActions.fetch,
-    zoneActions.fetch,
-  ]);
+  useFetchActions([domainActions.fetch, subnetActions.fetch]);
 
   useAddMessage(
     devicesSaved,
@@ -150,7 +144,7 @@ export const AddDeviceForm = ({
     () => setSavingDevice(null)
   );
 
-  const loaded = domainsLoaded && subnetsLoaded && zonesLoaded;
+  const loaded = domainsLoaded && subnetsLoaded && !zones.isPending;
 
   if (!loaded) {
     return (
@@ -180,7 +174,7 @@ export const AddDeviceForm = ({
             subnet_cidr: "",
           },
         ],
-        zone: (zones.length && zones[0].name) || "",
+        zone: zones.data?.length ? zones.data[0].name : "",
       }}
       onCancel={clearSidePanelContent}
       onSaveAnalytics={{

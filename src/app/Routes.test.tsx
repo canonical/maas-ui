@@ -109,7 +109,9 @@ const routes: { title: string; path: string }[] = [
 describe("Routes", () => {
   let state: RootState;
   let scrollToSpy: Mock;
-
+  const queryData = {
+    zones: [factory.zone({ id: 1, name: "test-zone" })],
+  };
   beforeEach(() => {
     state = factory.rootState({
       user: factory.userState({
@@ -146,14 +148,7 @@ describe("Routes", () => {
           }),
         ],
       }),
-      zone: factory.zoneState({
-        items: [
-          factory.zone({
-            id: 1,
-            name: "test-zone",
-          }),
-        ],
-      }),
+      zone: factory.zoneState({}),
     });
     scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
@@ -168,6 +163,7 @@ describe("Routes", () => {
       renderWithBrowserRouter(<Routes />, {
         route: path,
         state,
+        queryData,
         routePattern: "/*",
       });
       await waitFor(() => expect(document.title).toBe(`${title} | MAAS`), {

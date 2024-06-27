@@ -14,6 +14,7 @@ import SidePanelContextProvider from "./app/base/side-panel-context";
 import { store, history } from "./redux-store";
 import * as serviceWorker from "./serviceWorker";
 
+import { WebSocketProvider } from "@/app/base/websocket-context";
 import "./scss/index.scss";
 
 const queryClient = createQueryClient();
@@ -21,21 +22,23 @@ const queryClient = createQueryClient();
 export const RootProviders = ({ children }: { children: JSX.Element }) => {
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <Router
-          basename={`${import.meta.env.VITE_APP_BASENAME}${
-            import.meta.env.VITE_APP_VITE_BASENAME
-          }`}
-          history={history}
-        >
-          <SidePanelContextProvider>{children}</SidePanelContextProvider>
-        </Router>
-        <ReactQueryDevtools
-          initialIsOpen={
-            import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"
-          }
-        />
-      </QueryClientProvider>
+      <WebSocketProvider>
+        <QueryClientProvider client={queryClient}>
+          <Router
+            basename={`${import.meta.env.VITE_APP_BASENAME}${
+              import.meta.env.VITE_APP_VITE_BASENAME
+            }`}
+            history={history}
+          >
+            <SidePanelContextProvider>{children}</SidePanelContextProvider>
+          </Router>
+          <ReactQueryDevtools
+            initialIsOpen={
+              import.meta.env.VITE_APP_REACT_QUERY_DEVTOOLS === "true"
+            }
+          />
+        </QueryClientProvider>
+      </WebSocketProvider>
     </Provider>
   );
 };

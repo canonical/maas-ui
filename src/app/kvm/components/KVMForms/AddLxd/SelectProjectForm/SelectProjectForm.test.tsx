@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { AddLxdSteps } from "../AddLxd";
 import type { NewPodValues } from "../types";
 
@@ -16,12 +14,12 @@ import {
   fireEvent,
 } from "@/testing/utils";
 
-const mockStore = configureStore<RootState>();
-
 describe("SelectProjectForm", () => {
   let state: RootState;
   let newPodValues: NewPodValues;
-
+  const queryData = {
+    zones: [factory.zone()],
+  };
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({
@@ -30,9 +28,6 @@ describe("SelectProjectForm", () => {
       resourcepool: factory.resourcePoolState({
         items: [factory.resourcePool()],
         loaded: true,
-      }),
-      zone: factory.zoneState({
-        items: [factory.zone()],
       }),
     });
     newPodValues = {
@@ -78,7 +73,7 @@ describe("SelectProjectForm", () => {
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", state }
+      { route: "/kvm/add", state, queryData }
     );
 
     const nameInput = screen.getByRole("textbox", {
@@ -97,16 +92,15 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    const { store } = renderWithBrowserRouter(
       <SelectProjectForm
         clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", state, queryData }
     );
 
     const nameInput = screen.getByRole("textbox", {
@@ -141,16 +135,15 @@ describe("SelectProjectForm", () => {
     state.pod.projects = {
       "192.168.1.1": [project],
     };
-    const store = mockStore(state);
 
-    renderWithBrowserRouter(
+    const { store } = renderWithBrowserRouter(
       <SelectProjectForm
         clearSidePanelContent={vi.fn()}
         newPodValues={newPodValues}
         setStep={vi.fn()}
         setSubmissionErrors={vi.fn()}
       />,
-      { route: "/kvm/add", store }
+      { route: "/kvm/add", state, queryData }
     );
 
     await userEvent.click(
@@ -191,7 +184,7 @@ describe("SelectProjectForm", () => {
         setStep={setStep}
         setSubmissionErrors={setSubmissionErrors}
       />,
-      { route: "/kvm/add", state }
+      { route: "/kvm/add", state, queryData }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);

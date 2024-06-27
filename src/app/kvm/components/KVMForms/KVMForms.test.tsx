@@ -3,7 +3,7 @@ import KVMForms from "./KVMForms";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { PodType } from "@/app/store/pod/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
+import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
   getByTextContent,
@@ -12,12 +12,12 @@ import {
 } from "@/testing/utils";
 
 describe("KVMForms", () => {
-  let state = factory.rootState();
+  let state: RootState;
+  const queryData = {
+    zones: [factory.zone({ id: 1 })],
+  };
 
   beforeEach(() => {
-    // "loaded" doesn't exist on ZoneState type, so we have to mock the return value here
-    vi.spyOn(zoneSelectors, "loaded").mockReturnValue(true);
-
     state = factory.rootState({
       domain: factory.domainState({
         loaded: true,
@@ -57,16 +57,13 @@ describe("KVMForms", () => {
       vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: factory.zoneState({
-        items: [factory.zone({ id: 1 })],
-      }),
     });
   });
 
   it("does not render if sidePanelContent is not defined", () => {
     renderWithBrowserRouter(
       <KVMForms setSidePanelContent={vi.fn()} sidePanelContent={null} />,
-      { state }
+      { state, queryData }
     );
     expect(
       screen.queryByTestId("kvm-action-form-wrapper")
@@ -79,7 +76,7 @@ describe("KVMForms", () => {
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_LXD_HOST }}
       />,
-      { state }
+      { state, queryData }
     );
     // Ensure AddLxd fields are shown
     expect(screen.getByText("Credentials")).toBeInTheDocument();
@@ -104,7 +101,7 @@ describe("KVMForms", () => {
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_VIRSH_HOST }}
       />,
-      { state }
+      { state, queryData }
     );
 
     expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
@@ -130,7 +127,7 @@ describe("KVMForms", () => {
           extras: { hostId: 1 },
         }}
       />,
-      { state }
+      { state, queryData }
     );
 
     expect(
@@ -160,7 +157,7 @@ describe("KVMForms", () => {
           extras: { hostId: 1 },
         }}
       />,
-      { state }
+      { state, queryData }
     );
 
     expect(
@@ -189,7 +186,7 @@ describe("KVMForms", () => {
           extras: { clusterId: 1 },
         }}
       />,
-      { state }
+      { state, queryData }
     );
     expect(
       screen.getByText(
@@ -217,7 +214,7 @@ describe("KVMForms", () => {
           extras: { hostIds: [1] },
         }}
       />,
-      { state }
+      { state, queryData }
     );
 
     expect(

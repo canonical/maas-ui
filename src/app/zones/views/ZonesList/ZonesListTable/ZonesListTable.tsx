@@ -1,22 +1,17 @@
 import { MainTable } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useFetchActions } from "@/app/base/hooks";
+import { useZones } from "@/app/api/query/zones";
 import urls from "@/app/base/urls";
 import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 export enum TestIds {
   ZonesTable = "zones-table",
 }
 
 const ZonesListTable = (): JSX.Element => {
-  const zones = useSelector(zoneSelectors.all);
-
-  useFetchActions([zoneActions.fetch]);
+  const zones = useZones();
 
   const headers = [
     { content: "Name", sortKey: "name" },
@@ -29,7 +24,8 @@ const ZonesListTable = (): JSX.Element => {
       className: "u-align--right",
     },
   ];
-  const rows = zones.map((zone) => {
+
+  const rows = zones?.data?.map?.((zone) => {
     const devicesFilter = FilterDevices.filtersToQueryString({
       zone: [zone.name],
     });

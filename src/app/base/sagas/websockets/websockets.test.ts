@@ -23,6 +23,7 @@ import {
   watchWebSockets,
 } from "./websockets";
 
+import type { Config } from "@/app/store/config/types";
 import { machineActions } from "@/app/store/machine";
 import { getCookie } from "@/app/utils";
 import * as factory from "@/testing/factories";
@@ -163,23 +164,23 @@ describe("websocket sagas", () => {
 
   it("can send a WebSocket message", () => {
     const action = {
-      type: "test/action",
+      type: "machine/action",
       meta: {
-        model: "test",
-        method: "method",
+        model: "machine",
+        method: "action",
         type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: { foo: "bar" },
       },
-    };
+    } as const;
     const saga = sendMessage(socketClient, action);
     expect(saga.next().value).toEqual(
-      put({ meta: { item: { foo: "bar" } }, type: "test/actionStart" })
+      put({ meta: { item: { foo: "bar" } }, type: "machine/actionStart" })
     );
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
-        method: "test.method",
+        method: "machine.action",
         type: WebSocketMessageType.REQUEST,
         params: { foo: "bar" },
       })
@@ -195,7 +196,7 @@ describe("websocket sagas", () => {
         type: WebSocketMessageType.PING,
       },
       payload: null,
-    };
+    } as const;
     const saga = sendMessage(socketClient, action);
     expect(saga.next().value).toEqual(
       put({
@@ -213,27 +214,27 @@ describe("websocket sagas", () => {
 
   it("can send a WebSocket message with a request id", () => {
     const action = {
-      type: "test/action",
+      type: "machine/action",
       meta: {
-        model: "test",
-        method: "method",
+        model: "machine",
+        method: "action",
         callId: "123456",
         type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: { foo: "bar" },
       },
-    };
+    } as const;
     const saga = sendMessage(socketClient, action);
     expect(saga.next().value).toEqual(
       put({
         meta: { item: { foo: "bar" }, callId: "123456" },
-        type: "test/actionStart",
+        type: "machine/actionStart",
       })
     );
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
-        method: "test.method",
+        method: "machine.action",
         type: WebSocketMessageType.REQUEST,
         params: { foo: "bar" },
       })
@@ -242,16 +243,16 @@ describe("websocket sagas", () => {
 
   it("can store a next action when sending a WebSocket message", () => {
     const action = {
-      type: "test/action",
+      type: "machine/action",
       meta: {
-        model: "test",
-        method: "method",
+        model: "machine",
+        method: "action",
         type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: { foo: "bar" },
       },
-    };
+    } as const;
     const nextActionCreators = [vi.fn()];
     return expectSaga(sendMessage, socketClient, action, nextActionCreators)
       .provide([[matchers.call.fn(socketClient.send), 808]])
@@ -261,16 +262,16 @@ describe("websocket sagas", () => {
 
   it("continues if data has already been fetched for list methods", () => {
     const action = {
-      type: "test/fetch",
+      type: "machine/fetch",
       meta: {
-        model: "test",
-        method: "test.list",
+        model: "machine",
+        method: "list",
         type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: {},
       },
-    };
+    } as const;
     const previous = sendMessage(socketClient, action);
     previous.next();
     const saga = sendMessage(socketClient, action);
@@ -280,17 +281,17 @@ describe("websocket sagas", () => {
 
   it("continues if data has already been fetched for methods with cache", () => {
     const action = {
-      type: "test/fetch",
+      type: "machine/fetch",
       meta: {
         cache: true,
-        model: "test",
-        method: "test.getAll",
+        model: "machine",
+        method: "get",
         type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: {},
       },
-    };
+    } as const;
     const previous = sendMessage(socketClient, action);
     previous.next();
     const saga = sendMessage(socketClient, action);
@@ -300,17 +301,17 @@ describe("websocket sagas", () => {
 
   it("fetches list methods if no-cache is set", () => {
     const action = {
-      type: "test/fetch",
+      type: "machine/fetch",
       meta: {
-        model: "test",
-        method: "test.list",
+        model: "machine",
+        method: "list",
         type: WebSocketMessageType.REQUEST,
         nocache: true,
       },
       payload: {
         params: {},
       },
-    };
+    } as const;
     const previous = sendMessage(socketClient, action);
     previous.next();
     const saga = sendMessage(socketClient, action);
@@ -320,20 +321,20 @@ describe("websocket sagas", () => {
 
   it("can handle dispatching for each param in an array", () => {
     const action = {
-      type: "test/action",
+      type: "config/update",
       meta: {
         dispatchMultiple: true,
-        model: "test",
-        method: "method",
+        model: "config",
+        method: "update",
         type: WebSocketMessageType.REQUEST,
       },
       payload: {
         params: [
           { name: "foo", value: "bar" },
           { name: "baz", value: "qux" },
-        ],
+        ] as Array<{ name: string; value: Config<string>["value"] }>,
       },
-    };
+    } as const;
     const saga = sendMessage(socketClient, action);
     expect(saga.next().value).toEqual(
       put({
@@ -343,35 +344,35 @@ describe("websocket sagas", () => {
             { name: "baz", value: "qux" },
           ],
         },
-        type: "test/actionStart",
+        type: "config/updateStart",
       })
     );
 
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
-        method: "test.method",
+        method: "config.update",
         type: WebSocketMessageType.REQUEST,
         params: { name: "foo", value: "bar" },
       })
     );
-    expect(saga.next().value).toEqual(take("test/actionNotify"));
+    expect(saga.next().value).toEqual(take("config/updateNotify"));
 
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
-        method: "test.method",
+        method: "config.update",
         type: WebSocketMessageType.REQUEST,
         params: { name: "baz", value: "qux" },
       })
     );
-    expect(saga.next().value).toEqual(take("test/actionNotify"));
+    expect(saga.next().value).toEqual(take("config/updateNotify"));
   });
 
   it("can handle errors when sending a WebSocket message", () => {
     const saga = sendMessage(socketClient, {
-      type: "test/action",
+      type: "machine/action",
       meta: {
-        model: "test",
-        method: "method",
+        model: "machine",
+        method: "action",
       },
       payload: {
         params: { foo: "bar" },
@@ -383,7 +384,7 @@ describe("websocket sagas", () => {
       put({
         error: true,
         meta: { item: { foo: "bar" } },
-        type: "test/actionError",
+        type: "machine/actionError",
         payload: "error!",
       })
     );
@@ -398,14 +399,14 @@ describe("websocket sagas", () => {
       }).value
     ).toStrictEqual(call([socketClient, socketClient.getRequest], 99));
     saga.next({
-      type: "test/action",
+      type: "machine/action",
       payload: { id: 808 },
       meta: { identifier: 123 },
     });
     expect(saga.next(false).value).toEqual(
       put({
         meta: { item: { id: 808 }, identifier: 123 },
-        type: "test/actionSuccess",
+        type: "machine/actionSuccess",
         payload: { response: "here" },
       })
     );
@@ -420,14 +421,14 @@ describe("websocket sagas", () => {
       }).value
     ).toStrictEqual(call([socketClient, socketClient.getRequest], 99));
     saga.next({
-      type: "test/action",
+      type: "machine/action",
       payload: { id: 808 },
       meta: { identifier: 123, callId: "456" },
     });
     expect(saga.next(false).value).toEqual(
       put({
         meta: { item: { id: 808 }, identifier: 123, callId: "456" },
-        type: "test/actionSuccess",
+        type: "machine/actionSuccess",
         payload: { response: "here" },
       })
     );
@@ -463,7 +464,7 @@ describe("websocket sagas", () => {
         }),
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "test/action", payload: { id: 808 } });
+    saga.next({ type: "machine/action", payload: { id: 808 } });
     expect(saga.next(false).value).toEqual(
       put({
         error: true,
@@ -471,7 +472,7 @@ describe("websocket sagas", () => {
           item: { id: 808 },
         },
         payload: { Message: "catastrophic failure" },
-        type: "test/actionError",
+        type: "machine/actionError",
       })
     );
   });
@@ -487,7 +488,7 @@ describe("websocket sagas", () => {
         }),
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "test/action", payload: { id: 808 } });
+    saga.next({ type: "machine/action", payload: { id: 808 } });
     expect(saga.next(false).value).toEqual(
       put({
         error: true,
@@ -495,7 +496,7 @@ describe("websocket sagas", () => {
           item: { id: 808 },
         },
         payload: '("catastrophic failure")',
-        type: "test/actionError",
+        type: "machine/actionError",
       })
     );
   });
@@ -566,18 +567,18 @@ describe("websocket sagas", () => {
 
   it("can store a file context action when sending a WebSocket message", () => {
     const action = {
-      type: "test/action",
+      type: "controller/get_summary_xml",
       meta: {
         fileContextKey: "file1",
-        method: "method",
-        model: "test",
+        method: "get_summary_xml",
+        model: "controller",
         type: WebSocketMessageType.REQUEST,
         useFileContext: true,
       },
       payload: {
         params: { system_id: "abc123" },
       },
-    };
+    } as const;
     return expectSaga(sendMessage, socketClient, action)
       .provide([[matchers.call.fn(socketClient.send), "abc123"]])
       .call(storeFileContextActions, action, ["abc123"])
@@ -607,11 +608,11 @@ describe("websocket sagas", () => {
       }),
     });
     saga.next({
-      type: "test/action",
+      type: "machine/action",
       meta: {
         fileContextKey: "file1",
-        method: "method",
-        model: "test",
+        method: "action",
+        model: "machine",
         type: WebSocketMessageType.REQUEST,
         useFileContext: true,
       },
@@ -622,7 +623,7 @@ describe("websocket sagas", () => {
     expect(saga.next(true).value).toEqual(
       put({
         meta: { item: { system_id: "abc123" } },
-        type: "test/actionSuccess",
+        type: "machine/actionSuccess",
         payload: null,
       })
     );
@@ -644,6 +645,7 @@ describe("websocket sagas", () => {
     });
     return expectSaga(
       handleUnsubscribe,
+      // @ts-ignore
       machineActions.cleanupRequest("123456")
     )
       .withState(state)
@@ -668,6 +670,7 @@ describe("websocket sagas", () => {
     });
     return expectSaga(
       handleUnsubscribe,
+      // @ts-ignore
       machineActions.cleanupRequest("123456")
     )
       .withState(state)
@@ -680,14 +683,14 @@ describe("websocket sagas", () => {
       const action = {
         type: "testAction",
         meta: {
-          model: "test",
-          method: "method",
+          model: "machine",
+          method: "action",
           poll: true,
         },
         payload: {
           params: {},
         },
-      };
+      } as const;
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStarted",
@@ -700,14 +703,14 @@ describe("websocket sagas", () => {
       const action = {
         type: "testAction",
         meta: {
-          model: "test",
-          method: "method",
+          model: "machine",
+          method: "action",
           pollStop: true,
         },
         payload: {
           params: {},
         },
-      };
+      } as const;
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStopped",
@@ -716,8 +719,8 @@ describe("websocket sagas", () => {
         .dispatch({
           type: "testAction",
           meta: {
-            model: "test",
-            method: "method",
+            model: "machine",
+            method: "action",
             pollStop: true,
           },
           payload: null,
@@ -729,15 +732,15 @@ describe("websocket sagas", () => {
       const action = {
         type: "testAction",
         meta: {
-          model: "test",
-          method: "method",
+          model: "machine",
+          method: "action",
           poll: true,
           pollId: "poll123",
         },
         payload: {
           params: {},
         },
-      };
+      } as const;
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStarted",
@@ -750,15 +753,15 @@ describe("websocket sagas", () => {
       const action = {
         type: "testAction",
         meta: {
-          model: "test",
-          method: "method",
+          model: "machine",
+          method: "action",
           pollStop: true,
           pollId: "poll123",
         },
         payload: {
           params: {},
         },
-      };
+      } as const;
       return expectSaga(handlePolling, action)
         .put({
           type: "testActionPollingStopped",
@@ -767,8 +770,8 @@ describe("websocket sagas", () => {
         .dispatch({
           type: "testAction",
           meta: {
-            model: "test",
-            method: "method",
+            model: "machine",
+            method: "action",
             pollStop: true,
             pollId: "poll123",
           },
@@ -778,16 +781,16 @@ describe("websocket sagas", () => {
 
     it("sends the action after the interval", () => {
       const action = {
-        type: "testAction",
+        type: "machine/list",
         meta: {
-          model: "test",
-          method: "method",
+          model: "machine",
+          method: "list",
           poll: true,
         },
         payload: {
           params: {},
         },
-      };
+      } as const;
       const saga = pollAction(action);
       // Skip the delay:
       saga.next();

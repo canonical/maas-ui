@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import AddVirsh from "./AddVirsh";
 
 import { ConfigNames } from "@/app/store/config/types";
@@ -7,11 +5,13 @@ import { generalActions } from "@/app/store/general";
 import { PodType } from "@/app/store/pod/constants";
 import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("AddVirsh", () => {
   let state: RootState;
@@ -44,21 +44,24 @@ describe("AddVirsh", () => {
       }),
       zone: factory.zoneState({
         genericActions: factory.zoneGenericActions({ fetch: "success" }),
-        items: [factory.zone({ id: 0 })],
       }),
     });
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
-      store,
-    });
+    const { store } = renderWithBrowserRouter(
+      <AddVirsh clearSidePanelContent={vi.fn()} />,
+      {
+        route: "/kvm/add",
+        state,
+        queryData: {
+          zones: [factory.zone({ id: 0 })],
+        },
+      }
+    );
     const expectedActions = [
       generalActions.fetchPowerTypes(),
       resourcePoolActions.fetch(),
-      zoneActions.fetch(),
     ];
     const actualActions = store.getActions();
     expectedActions.forEach((expectedAction) => {
@@ -72,10 +75,9 @@ describe("AddVirsh", () => {
 
   it("displays a spinner if data hasn't loaded yet", () => {
     state.general.powerTypes.loaded = false;
-    const store = mockStore(state);
     renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
-      store,
+      state,
     });
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
@@ -83,26 +85,32 @@ describe("AddVirsh", () => {
   it("displays a message if virsh is not supported", () => {
     state.general.powerTypes.data = [];
     state.general.powerTypes.loaded = true;
-    const store = mockStore(state);
     renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
-      store,
+      state,
     });
     expect(screen.getByTestId("virsh-unsupported")).toBeInTheDocument();
   });
 
   it("can handle saving a virsh KVM", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
-      route: "/kvm/add",
-      store,
+    const { store } = renderWithBrowserRouter(
+      <AddVirsh clearSidePanelContent={vi.fn()} />,
+      {
+        route: "/kvm/add",
+        state,
+        queryData: { zones: [factory.zone({ id: 0 })] },
+      }
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading/i)).not.toBeInTheDocument();
     });
     await userEvent.type(
-      screen.getByRole("textbox", { name: /Name/i }),
+      await screen.findByRole("textbox", { name: /Name/i }),
       "my-favourite-kvm"
     );
     await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: /Resource pool/i }),
+      await screen.findByRole("combobox", { name: /Resource pool/i }),
       "0"
     );
     await userEvent.selectOptions(screen.getByLabelText(/Zone/i), "0");

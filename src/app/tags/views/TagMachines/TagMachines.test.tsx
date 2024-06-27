@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import TagMachines, { Label } from "./TagMachines";
 
 import urls from "@/app/base/urls";
@@ -13,11 +9,14 @@ import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import { NodeStatus, FetchNodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 const callId = "mocked-nanoid";
-const mockStore = configureStore();
 let state: RootState;
+const routeOptions = {
+  route: urls.tags.tag.index({ id: 1 }),
+  routePattern: urls.tags.tag.index(null),
+};
 
 beforeEach(() => {
   vi.spyOn(query, "generateCallId").mockReturnValue(callId);
@@ -61,18 +60,11 @@ afterEach(() => {
 });
 
 it("dispatches actions to fetch necessary data", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  const { store } = renderWithBrowserRouter(<TagMachines />, {
+    state,
+    ...routeOptions,
+  });
+
   const expectedActions = [
     machineActions.fetch(callId, {
       filter: {
@@ -105,18 +97,10 @@ it("displays a message if the tag does not exist", () => {
       loading: false,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<TagMachines />, {
+    state,
+    ...routeOptions,
+  });
   expect(screen.getByText("Tag not found")).toBeInTheDocument();
 });
 
@@ -127,38 +111,22 @@ it("shows a spinner if the tag has not loaded yet", () => {
       loading: true,
     }),
   });
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<TagMachines />, {
+    state,
+    ...routeOptions,
+  });
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });
 
-it("displays the machine list", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
-      >
-        <Routes>
-          <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+it("displays the machine list", async () => {
+  renderWithBrowserRouter(<TagMachines />, {
+    state,
+    ...routeOptions,
+  });
   expect(
-    screen.getByRole("grid", { name: Label.Machines })
+    await screen.findByRole("grid", { name: Label.Machines })
   ).toBeInTheDocument();
-  const rows = screen.getAllByRole("gridcell", {
+  const rows = await screen.findAllByRole("gridcell", {
     name: columnLabels[MachineColumns.FQDN],
   });
   expect(rows).toHaveLength(1);

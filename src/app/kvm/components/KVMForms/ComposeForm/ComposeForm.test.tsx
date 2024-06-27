@@ -12,6 +12,9 @@ import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const queryData = {
+  zones: [factory.zone({ id: 3, name: "danger-zone" })],
+};
 
 describe("ComposeForm", () => {
   let state: RootState;
@@ -58,7 +61,6 @@ describe("ComposeForm", () => {
       }),
       zone: factory.zoneState({
         genericActions: factory.zoneGenericActions({ fetch: "success" }),
-        items: [factory.zone({ id: 3, name: "danger-zone" })],
       }),
     });
   });
@@ -67,7 +69,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { route: "/kvm/1", store, queryData }
     );
     const expectedActions = [
       "FETCH_DOMAIN",
@@ -87,7 +89,7 @@ describe("ComposeForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.zone.genericActions.fetch = "idle";
+    state.domain.loaded = false;
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
       { route: "/kvm/1", state }
@@ -139,7 +141,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { route: "/kvm/1", store, queryData }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));
@@ -255,7 +257,7 @@ describe("ComposeForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { route: "/kvm/1", store, queryData }
     );
 
     await userEvent.clear(screen.getByRole("textbox", { name: "VM name" }));

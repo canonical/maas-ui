@@ -237,7 +237,7 @@ const generateActionParams = <P extends BaseMachineActionParams>(
       payload: {
         params: actionParams,
       },
-    };
+    } as const;
   },
   reducer: () => {},
 });
@@ -1118,14 +1118,15 @@ const machineSlice = createSlice({
       },
     },
     cleanupRequest: {
-      prepare: (callId: string) => ({
-        meta: {
-          callId,
-          model: MachineMeta.MODEL,
-          unsubscribe: true,
-        },
-        payload: null,
-      }),
+      prepare: (callId: string) =>
+        ({
+          meta: {
+            callId,
+            model: MachineMeta.MODEL,
+            unsubscribe: true,
+          },
+          payload: null,
+        }) as const,
       reducer: () => {},
     },
     get: {
@@ -1360,12 +1361,13 @@ const machineSlice = createSlice({
     [`${NodeActions.RELEASE}Start`]: statusHandlers.release.start,
     [`${NodeActions.RELEASE}Success`]: statusHandlers.release.success,
     removeRequest: {
-      prepare: (callId: string) => ({
-        meta: {
-          callId,
-        },
-        payload: null,
-      }),
+      prepare: (callId: string) =>
+        ({
+          meta: {
+            callId,
+          },
+          payload: null,
+        }) as const,
       reducer: (
         state: MachineState,
         action: PayloadAction<null, string, GenericMeta>
@@ -1572,15 +1574,16 @@ const machineSlice = createSlice({
       reducer: () => {},
     },
     unsubscribe: {
-      prepare: (ids: Machine[MachineMeta.PK][]) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "unsubscribe",
-        },
-        payload: {
-          params: { system_ids: ids },
-        },
-      }),
+      prepare: (ids: Machine[MachineMeta.PK][]) =>
+        ({
+          meta: {
+            model: MachineMeta.MODEL,
+            method: "unsubscribe",
+          },
+          payload: {
+            params: { system_ids: ids },
+          },
+        }) as const,
       reducer: () => {},
     },
     unsubscribeError: (

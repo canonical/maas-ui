@@ -1,14 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import LXDSingleSettings from "./LXDSingleSettings";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "@/testing/utils";
 
 describe("LXDSingleSettings", () => {
   let state: RootState;
@@ -30,13 +26,9 @@ describe("LXDSingleSettings", () => {
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-        </Provider>
-      </MemoryRouter>
+    const { store } = renderWithBrowserRouter(
+      <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />,
+      { state }
     );
     const expectedActionTypes = [
       "resourcepool/fetch",
@@ -55,13 +47,9 @@ describe("LXDSingleSettings", () => {
 
   it("displays a spinner if data has not loaded", () => {
     state.resourcepool.loaded = false;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDSingleSettings id={1} setSidePanelContent={vi.fn()} />,
+      { state }
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });

@@ -4,6 +4,7 @@ import { Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { useZones } from "@/app/api/query/zones";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import urls from "@/app/base/urls";
 import { useToggleMenu } from "@/app/machines/hooks";
@@ -13,7 +14,6 @@ import machineSelectors from "@/app/store/machine/selectors";
 import type { Machine, MachineMeta } from "@/app/store/machine/types";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
-import zoneSelectors from "@/app/store/zone/selectors";
 import type { Zone, ZoneMeta } from "@/app/store/zone/types";
 
 type Props = {
@@ -46,13 +46,15 @@ export const ZoneColumn = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const zones = useSelector(zoneSelectors.all);
+  const zones = useZones();
   const toggleMenu = useToggleMenu(onToggleMenu || null);
   let zoneLinks;
-  const machineZones = zones.filter((zone) => zone.id !== machine?.zone.id);
+  const machineZones = zones.data?.filter(
+    (zone) => zone.id !== machine?.zone.id
+  );
   if (machine?.actions.includes(NodeActions.SET_ZONE)) {
-    if (machineZones.length !== 0) {
-      zoneLinks = machineZones.map((zone) => ({
+    if (machineZones?.length !== 0) {
+      zoneLinks = machineZones?.map((zone) => ({
         children: zone.name,
         "data-testid": "change-zone-link",
         onClick: () => {

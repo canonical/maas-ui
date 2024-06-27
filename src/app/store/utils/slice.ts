@@ -225,15 +225,16 @@ export const generateCommonReducers = <
       state.items = action.payload;
     },
     create: {
-      prepare: (params: CreateParams) => ({
-        meta: {
-          model: modelName,
-          method: "create",
-        },
-        payload: {
-          params,
-        },
-      }),
+      prepare: (params: CreateParams) =>
+        ({
+          meta: {
+            model: modelName,
+            method: "create",
+          },
+          payload: {
+            params,
+          },
+        }) as const,
       reducer: () => {},
     },
     createStart: (state: S) => {

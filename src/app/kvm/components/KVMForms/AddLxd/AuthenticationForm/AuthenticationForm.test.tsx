@@ -17,6 +17,9 @@ const mockStore = configureStore<RootState>();
 describe("AuthenticationForm", () => {
   let state: RootState;
   let newPodValues: NewPodValues;
+  const queryData = {
+    zones: [factory.zone()],
+  };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -31,9 +34,6 @@ describe("AuthenticationForm", () => {
       resourcepool: factory.resourcePoolState({
         items: [factory.resourcePool()],
         loaded: true,
-      }),
-      zone: factory.zoneState({
-        items: [factory.zone()],
       }),
     });
     newPodValues = {
@@ -59,7 +59,7 @@ describe("AuthenticationForm", () => {
         setNewPodValues={vi.fn()}
         setStep={vi.fn()}
       />,
-      { route: "/kvm/add", state }
+      { route: "/kvm/add", state, queryData }
     );
     // Trusting via certificate is selected by default, so spinner should show
     // after submitting the form.
@@ -164,7 +164,7 @@ describe("AuthenticationForm", () => {
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state }
+      { route: "/kvm/add", state, queryData }
     );
     // Change to trusting via password and submit the form.
     await userEvent.click(
@@ -188,7 +188,7 @@ describe("AuthenticationForm", () => {
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state }
+      { route: "/kvm/add", state, queryData }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Check authentication" })
@@ -208,7 +208,7 @@ describe("AuthenticationForm", () => {
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state }
+      { route: "/kvm/add", state, queryData }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Check authentication" })
@@ -232,7 +232,7 @@ describe("AuthenticationForm", () => {
         setNewPodValues={vi.fn()}
         setStep={setStep}
       />,
-      { route: "/kvm/add", state }
+      { route: "/kvm/add", state, queryData }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);

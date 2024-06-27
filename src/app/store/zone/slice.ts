@@ -120,17 +120,6 @@ const zoneSlice = createSlice({
       addError(state, create, action.payload);
       updateGenericAction(state, create, error);
     },
-    createNotify: (state, action: PayloadAction<Zone>) => {
-      const existingIdx = state.items.findIndex(
-        (existingItem) =>
-          existingItem[ZoneMeta.PK] === action.payload[ZoneMeta.PK]
-      );
-      if (existingIdx !== -1) {
-        state.items[existingIdx] = action.payload;
-      } else {
-        state.items.push(action.payload);
-      }
-    },
     createStart: (state) => {
       updateGenericAction(state, create, loading);
     },
@@ -157,12 +146,6 @@ const zoneSlice = createSlice({
         updateModelAction(state, deleteAction, error, action.meta.identifier);
       },
     },
-    deleteNotify: (state, action: PayloadAction<ZonePK>) => {
-      const index = state.items.findIndex(
-        (item) => item[ZoneMeta.PK] === action.payload
-      );
-      state.items.splice(index, 1);
-    },
     deleteStart: {
       prepare: (action: ZonePayloadActionWithIdentifier) => action,
       reducer: (state, action: ZonePayloadActionWithIdentifier) => {
@@ -174,23 +157,6 @@ const zoneSlice = createSlice({
       reducer: (state, action: ZonePayloadActionWithIdentifier<ZonePK>) => {
         updateModelAction(state, deleteAction, success, action.meta.identifier);
       },
-    },
-    [fetch]: {
-      prepare: () => ({
-        payload: null,
-      }),
-      reducer: () => {},
-    },
-    fetchError: (state, action: PayloadAction<APIError>) => {
-      addError(state, fetch, action.payload);
-      updateGenericAction(state, fetch, error);
-    },
-    fetchStart: (state) => {
-      updateGenericAction(state, fetch, loading);
-    },
-    fetchSuccess: (state, action: PayloadAction<Zone[]>) => {
-      state.items = action.payload;
-      updateGenericAction(state, fetch, success);
     },
     [update]: {
       prepare: (params: UpdateParams) => ({
@@ -211,13 +177,6 @@ const zoneSlice = createSlice({
         addError(state, update, action.payload, action.meta.identifier);
         updateModelAction(state, update, error, action.meta.identifier);
       },
-    },
-    updateNotify: (state, action: PayloadAction<Zone>) => {
-      state.items.forEach((zone, i) => {
-        if (zone[ZoneMeta.PK] === action.payload[ZoneMeta.PK]) {
-          state.items[i] = action.payload;
-        }
-      });
     },
     updateStart: {
       prepare: (action: ZonePayloadActionWithIdentifier) => action,

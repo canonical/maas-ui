@@ -9,7 +9,7 @@ import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("AddVirshFields", () => {
   let state: RootState;
-
+  const queryData = { zones: [factory.zone()] };
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
@@ -34,7 +34,6 @@ describe("AddVirshFields", () => {
       }),
       zone: factory.zoneState({
         genericActions: factory.zoneGenericActions({ fetch: "success" }),
-        items: [factory.zone()],
       }),
     });
   });
@@ -62,6 +61,7 @@ describe("AddVirshFields", () => {
 
     renderWithBrowserRouter(<AddVirsh clearSidePanelContent={vi.fn()} />, {
       state,
+      queryData,
       route: "/machines/chassis/add",
     });
 
