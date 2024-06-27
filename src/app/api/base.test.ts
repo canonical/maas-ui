@@ -1,6 +1,6 @@
 import { it, expect, vi, type Mock } from "vitest";
 
-import { DEFAULT_HEADERS, fetchWithAuth } from "./base";
+import { DEFAULT_HEADERS, fetchWithAuth, getFullApiUrl } from "./base";
 
 import { getCookie } from "@/app/utils";
 
@@ -57,4 +57,8 @@ it("should handle invalid CSRF token", async () => {
   expect(fetch).toHaveBeenCalledWith(url, {
     headers: { ...DEFAULT_HEADERS, "X-CSRFToken": "" },
   });
+});
+
+it("should generate correct full API URL", () => {
+  expect(getFullApiUrl("zones")).toBe("/MAAS/a/v2/zones");
 });

@@ -1,6 +1,9 @@
+import { SERVICE_API } from "@/app/base/sagas/http";
 import { getCookie } from "@/app/utils";
 
-export const ROOT_API = "/MAAS/api/2.0/";
+export const API_ENDPOINTS = {
+  zones: "zones",
+} as const;
 
 export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
@@ -13,6 +16,13 @@ export const handleErrors = (response: Response) => {
   }
   return response;
 };
+
+type ApiEndpoint = typeof API_ENDPOINTS;
+type ApiEndpointKey = keyof ApiEndpoint;
+type ApiUrl = `${typeof SERVICE_API}${ApiEndpoint[ApiEndpointKey]}`;
+
+export const getFullApiUrl = (endpoint: ApiEndpointKey): ApiUrl =>
+  `${SERVICE_API}${API_ENDPOINTS[endpoint]}`;
 
 export const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   const csrftoken = getCookie("csrftoken");

@@ -6,6 +6,8 @@ import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { produce } from "immer";
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -41,13 +43,19 @@ import {
   zoneState as zoneStateFactory,
 } from "@/testing/factories";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
+export const setupQueryClient = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
     },
-  },
-});
+  });
+  beforeEach(() => {
+    queryClient.resetQueries();
+  });
+  return queryClient;
+};
 
 /**
  * Replace objects in an array with objects that have new values, given a match
@@ -128,7 +136,7 @@ export const BrowserRouterWithProvider = ({
 
   const route = <Route element={children} path={routePattern} />;
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={setupQueryClient()}>
       <Provider store={store ?? getMockStore(state || rootStateFactory())}>
         <SidePanelContextProvider
           initialSidePanelContent={sidePanelContent}
@@ -163,7 +171,7 @@ const WithMockStoreProvider = ({
     return mockStore(state);
   };
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={setupQueryClient()}>
       <Provider store={store ?? getMockStore(state || rootStateFactory())}>
         <SidePanelContextProvider>{children}</SidePanelContextProvider>
       </Provider>
@@ -212,7 +220,7 @@ export const renderWithMockStore = (
 
   const rendered = render(ui, {
     wrapper: (props) => (
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={setupQueryClient()}>
         <WithMockStoreProvider {...props} state={initialState} store={store} />
       </QueryClientProvider>
     ),
@@ -348,6 +356,33 @@ export const renderHookWithMockStore = (
 ) => {
   const store = configureStore()(options?.initialState || rootStateFactory());
   return renderHook(hook, { wrapper: generateWrapper(store) });
+};
+
+export const renderHookWithQueryClient = (hook: Hook) => {
+  const queryClient = setupQueryClient();
+  return renderHook(hook, {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={queryClient}>
+        <Provider store={configureStore()(rootStateFactory())}>
+          {children}
+        </Provider>
+      </QueryClientProvider>
+    ),
+  });
+};
+
+export const setupMockServer = () => {
+  const server = setupServer();
+
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
+  return {
+    server,
+    http,
+    HttpResponse,
+  };
 };
 
 export const waitFor = vi.waitFor;
