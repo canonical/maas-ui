@@ -4,17 +4,6 @@ import zone from "./selectors";
 import { ACTION_STATUS } from "@/app/base/constants";
 import * as factory from "@/testing/factories";
 
-it("can get all zones", () => {
-  const items = [factory.zone(), factory.zone()];
-  const state = factory.rootState({
-    zone: factory.zoneState({
-      items,
-    }),
-  });
-
-  expect(zone.all(state)).toEqual(items);
-});
-
 it("can get zone errors", () => {
   const errors = [factory.zoneError(), factory.zoneError()];
   const state = factory.rootState({
@@ -48,31 +37,6 @@ it("can get zone model actions", () => {
   expect(zone.modelActions(state)).toEqual(modelActions);
 });
 
-it("can get the zone count", () => {
-  const items = [factory.zone(), factory.zone()];
-  const state = factory.rootState({
-    zone: factory.zoneState({
-      items,
-    }),
-  });
-
-  expect(zone.count(state)).toEqual(items.length);
-});
-
-it("can get a zone by id", () => {
-  const [thisZone, otherZone] = [
-    factory.zone({ id: 1 }),
-    factory.zone({ id: 2 }),
-  ];
-  const state = factory.rootState({
-    zone: factory.zoneState({
-      items: [thisZone, otherZone],
-    }),
-  });
-
-  expect(zone.getById(state, 1)).toStrictEqual(thisZone);
-});
-
 it("can get a zone generic action's status", () => {
   const genericActions = factory.zoneGenericActions({
     [ZONE_ACTIONS.fetch]: ACTION_STATUS.error,
@@ -103,30 +67,6 @@ it("can get a zone's model action status", () => {
   expect(zone.getModelActionStatus(state, ZONE_ACTIONS.update, 123)).toBe(
     ACTION_STATUS.loading
   );
-});
-
-it("can get the zone loading state", () => {
-  const state = factory.rootState({
-    zone: factory.zoneState({
-      genericActions: factory.zoneGenericActions({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
-      }),
-    }),
-  });
-
-  expect(zone.loading(state)).toEqual(true);
-});
-
-it("can get the zone loaded state", () => {
-  const state = factory.rootState({
-    zone: factory.zoneState({
-      genericActions: factory.zoneGenericActions({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
-      }),
-    }),
-  });
-
-  expect(zone.loaded(state)).toEqual(true);
 });
 
 it("can get the zone creating state", () => {

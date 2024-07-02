@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import AddMachineFormFields from "../AddMachineFormFields";
 import type { AddMachineValues } from "../types";
 
+import { useZones } from "@/app/api/query/zones";
 import FormikForm from "@/app/base/components/FormikForm";
 import docsUrls from "@/app/base/docsUrls";
 import { useFetchActions, useAddMessage } from "@/app/base/hooks";
@@ -33,8 +34,6 @@ import { machineActions } from "@/app/store/machine";
 import machineSelectors from "@/app/store/machine/selectors";
 import { resourcePoolActions } from "@/app/store/resourcepool";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;
@@ -60,8 +59,7 @@ export const AddMachineForm = ({
   const powerTypesLoaded = useSelector(powerTypesSelectors.loaded);
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
-  const zones = useSelector(zoneSelectors.all);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
+  const zones = useZones();
 
   const [powerType, setPowerType] = useState<PowerType | null>(null);
   const [secondarySubmit, setSecondarySubmit] = useState(false);
@@ -75,7 +73,6 @@ export const AddMachineForm = ({
     generalActions.fetchHweKernels,
     generalActions.fetchPowerTypes,
     resourcePoolActions.fetch,
-    zoneActions.fetch,
   ]);
 
   useAddMessage(
@@ -115,7 +112,7 @@ export const AddMachineForm = ({
     hweKernelsLoaded &&
     powerTypesLoaded &&
     resourcePoolsLoaded &&
-    zonesLoaded;
+    !zones.isPending;
 
   return (
     <>
@@ -145,7 +142,7 @@ export const AddMachineForm = ({
             power_parameters: initialPowerParameters,
             power_type: "",
             pxe_mac: "",
-            zone: (zones.length && zones[0].name) || "",
+            zone: (zones?.data?.length && zones?.data[0].name) || "",
           }}
           onCancel={clearSidePanelContent}
           onSaveAnalytics={{

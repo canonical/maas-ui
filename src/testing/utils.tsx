@@ -6,6 +6,7 @@ import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render, screen, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { produce } from "immer";
+import type { JsonBodyType } from "msw";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
@@ -13,13 +14,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
+import type { ApiEndpointKey } from "@/app/api/base";
+import { getFullApiUrl } from "@/app/api/base";
+import type { QueryModel } from "@/app/api/query-client";
 import type {
   SidePanelContent,
   SidePanelSize,
 } from "@/app/base/side-panel-context";
 import SidePanelContextProvider from "@/app/base/side-panel-context";
+import { WebSocketProvider } from "@/app/base/websocket-context";
 import { ConfigNames } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
+import * as factory from "@/testing/factories";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -43,19 +49,52 @@ import {
   zoneState as zoneStateFactory,
 } from "@/testing/factories";
 
-export const setupQueryClient = () => {
+export type InitialData = Record<QueryModel, unknown>;
+
+export const setupQueryClient = (queryData?: InitialData) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         retry: false,
+        staleTime: Infinity,
       },
     },
   });
-  beforeEach(() => {
-    queryClient.resetQueries();
-  });
+
+  if (queryData) {
+    Object.entries(queryData).forEach(([key, value]) => {
+      queryClient.setQueryData([key], value);
+    });
+  }
+
   return queryClient;
 };
+
+type TestSetup = {
+  state: RootState;
+  queryData: InitialData;
+};
+
+const createBaseState = () => factory.rootState();
+
+export const setupInitialState = (state?: Partial<RootState>) =>
+  structuredClone({ ...createBaseState(), ...state });
+export const setupInitialData = (queryData?: Partial<InitialData>) =>
+  structuredClone({ ...createInitialData(), ...queryData });
+
+const createInitialData = (): InitialData => ({
+  zones: [],
+});
+export const setupTest = ({
+  state = {},
+  queryData = {},
+}: {
+  state?: Partial<RootState>;
+  queryData?: Partial<InitialData>;
+} = {}): TestSetup => ({
+  state: setupInitialState(state),
+  queryData: setupInitialData(queryData),
+});
 
 /**
  * Replace objects in an array with objects that have new values, given a match
@@ -116,12 +155,14 @@ type WrapperProps = {
   routePattern?: string;
   state?: RootState;
   store?: MockStoreEnhanced<RootState | unknown, {}>;
+  queryData?: InitialData;
   sidePanelContent?: SidePanelContent;
   sidePanelSize?: SidePanelSize;
 };
 
 export const BrowserRouterWithProvider = ({
   children,
+  queryData,
   parentRoute,
   routePattern,
   sidePanelContent,
@@ -136,27 +177,29 @@ export const BrowserRouterWithProvider = ({
 
   const route = <Route element={children} path={routePattern} />;
   return (
-    <QueryClientProvider client={setupQueryClient()}>
-      <Provider store={store ?? getMockStore(state || rootStateFactory())}>
-        <SidePanelContextProvider
-          initialSidePanelContent={sidePanelContent}
-          initialSidePanelSize={sidePanelSize}
-        >
-          <BrowserRouter>
-            {routePattern ? (
-              <Routes>
-                {parentRoute ? (
-                  <Route path={parentRoute}>{route}</Route>
-                ) : (
-                  route
-                )}
-              </Routes>
-            ) : (
-              children
-            )}
-          </BrowserRouter>
-        </SidePanelContextProvider>
-      </Provider>
+    <QueryClientProvider client={setupQueryClient(queryData)}>
+      <WebSocketProvider>
+        <Provider store={store ?? getMockStore(state || rootStateFactory())}>
+          <SidePanelContextProvider
+            initialSidePanelContent={sidePanelContent}
+            initialSidePanelSize={sidePanelSize}
+          >
+            <BrowserRouter>
+              {routePattern ? (
+                <Routes>
+                  {parentRoute ? (
+                    <Route path={parentRoute}>{route}</Route>
+                  ) : (
+                    route
+                  )}
+                </Routes>
+              ) : (
+                children
+              )}
+            </BrowserRouter>
+          </SidePanelContextProvider>
+        </Provider>
+      </WebSocketProvider>
     </QueryClientProvider>
   );
 };
@@ -179,31 +222,54 @@ const WithMockStoreProvider = ({
   );
 };
 
+interface EnhancedRenderResult extends RenderResult {
+  store: MockStoreEnhanced<RootState | unknown, {}>;
+}
+
 export const renderWithBrowserRouter = (
   ui: React.ReactElement,
   options?: RenderOptions &
     WrapperProps & {
       route?: string;
+      queryData?: Record<string, unknown>;
     }
-): RenderResult => {
-  const { route, ...wrapperProps } = options || {};
+): EnhancedRenderResult => {
+  const {
+    route,
+    queryData,
+    state,
+    store: initialStore,
+    ...wrapperProps
+  } = options || {};
   window.history.pushState({}, "", route);
 
+  const store = initialStore ?? configureStore()(rootStateFactory(state));
+  const initialData = setupInitialData(queryData);
   const rendered = render(ui, {
-    wrapper: (props) => (
-      <BrowserRouterWithProvider {...props} {...wrapperProps} />
-    ),
+    wrapper: (props) => {
+      const Wrapper = (
+        <BrowserRouterWithProvider
+          {...props}
+          {...wrapperProps}
+          queryData={initialData}
+          store={store}
+        />
+      );
+      return Wrapper;
+    },
     ...options,
   });
 
   return {
     ...rendered,
+    store,
   };
 };
 
 interface WithStoreRenderOptions extends RenderOptions {
   state?: RootState | ((stateDraft: RootState) => void);
   store?: WrapperProps["store"];
+  queryData?: WrapperProps["queryData"];
 }
 
 export const renderWithMockStore = (
@@ -212,17 +278,27 @@ export const renderWithMockStore = (
 ): Omit<RenderResult, "rerender"> & {
   rerender: (ui: React.ReactNode, newOptions?: WithStoreRenderOptions) => void;
 } => {
-  const { state, store, ...renderOptions } = options ?? {};
+  const { state, store, queryData, ...renderOptions } = options ?? {};
   const initialState =
     typeof state === "function"
       ? produce(rootStateFactory(), state)
       : state || rootStateFactory();
 
+  const initialData = setupInitialData(queryData);
+  const queryClient = setupQueryClient(initialData);
+
   const rendered = render(ui, {
     wrapper: (props) => (
-      <QueryClientProvider client={setupQueryClient()}>
-        <WithMockStoreProvider {...props} state={initialState} store={store} />
-      </QueryClientProvider>
+      <WebSocketProvider>
+        <QueryClientProvider client={queryClient}>
+          <WithMockStoreProvider
+            {...props}
+            queryData={initialData}
+            state={initialState}
+            store={store}
+          />
+        </QueryClientProvider>
+      </WebSocketProvider>
     ),
     ...renderOptions,
   });
@@ -237,6 +313,7 @@ export const renderWithMockStore = (
           state && typeof newOptions?.state === "function"
             ? produce(state, newOptions.state)
             : newOptions?.state || state,
+        queryData: newOptions?.queryData || queryData,
       }),
   };
 };
@@ -244,7 +321,7 @@ export const renderWithMockStore = (
 export const getUrlParam: URLSearchParams["get"] = (param: string) =>
   new URLSearchParams(window.location.search).get(param);
 
-// Complete initial test state with all data loaded and no errors
+// Complete initial test state with all queryData loaded and no errors
 export const getTestState = (): RootState => {
   const config = configFactory({
     name: ConfigNames.SESSION_LENGTH,
@@ -345,7 +422,9 @@ export const expectTooltipOnHover = async (
 const generateWrapper =
   (store = configureStore()(rootStateFactory())) =>
   ({ children }: { children: ReactNode }) => (
-    <Provider store={store}>{children}</Provider>
+    <WebSocketProvider>
+      <Provider store={store}>{children}</Provider>
+    </WebSocketProvider>
   );
 
 type Hook = Parameters<typeof renderHook>[0];
@@ -362,11 +441,13 @@ export const renderHookWithQueryClient = (hook: Hook) => {
   const queryClient = setupQueryClient();
   return renderHook(hook, {
     wrapper: ({ children }) => (
-      <QueryClientProvider client={queryClient}>
-        <Provider store={configureStore()(rootStateFactory())}>
-          {children}
-        </Provider>
-      </QueryClientProvider>
+      <WebSocketProvider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={configureStore()(rootStateFactory())}>
+            {children}
+          </Provider>
+        </QueryClientProvider>
+      </WebSocketProvider>
     ),
   });
 };
@@ -378,8 +459,25 @@ export const setupMockServer = () => {
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
+  const mockGet = (endpoint: ApiEndpointKey, response?: JsonBodyType) => {
+    server.use(
+      http.get(getFullApiUrl(endpoint), () => {
+        if (typeof response !== "undefined") {
+          return HttpResponse.json(response);
+        }
+        // Use factory.[endpoint]Get() when no response is provided
+        const factoryMethod = factory[`${endpoint}Get`];
+        if (typeof factoryMethod === "function") {
+          return HttpResponse.json(factoryMethod());
+        }
+        throw new Error(`No factory method found for endpoint: ${endpoint}`);
+      })
+    );
+  };
+
   return {
     server,
+    mockGet,
     http,
     HttpResponse,
   };
@@ -395,5 +493,6 @@ export {
   render,
   renderHook,
   within,
+  waitForElementToBeRemoved,
 } from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";

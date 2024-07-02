@@ -8,10 +8,17 @@ import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, fireEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  fireEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
+const queryData = { zones: [factory.zone({ id: 3 })] };
 
 beforeEach(() => {
   state = factory.rootState({
@@ -25,7 +32,6 @@ beforeEach(() => {
     }),
     zone: factory.zoneState({
       genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      items: [factory.zone({ id: 3 })],
     }),
   });
 });
@@ -37,15 +43,11 @@ it("can handle updating a lxd KVM", async () => {
     type: PodType.LXD,
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-      >
-        <KVMConfigurationCard pod={pod} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
+    route: "/kvm/1/edit",
+    queryData,
+    state,
+  });
 
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Zone" }),
@@ -90,15 +92,11 @@ it("can handle updating a virsh KVM", async () => {
     type: PodType.VIRSH,
   });
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-      >
-        <KVMConfigurationCard pod={pod} />
-      </MemoryRouter>
-    </Provider>
-  );
+  renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
+    route: "/kvm/1/edit",
+    queryData,
+    state,
+  });
 
   await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Zone" }),
@@ -147,14 +145,13 @@ it("enables the submit button if form values are different to pod values", async
     id: 1,
   });
   const store = mockStore(state);
-  const { rerender } = render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
-      >
-        <KVMConfigurationCard pod={pod} />
-      </MemoryRouter>
-    </Provider>
+  const { rerender } = renderWithBrowserRouter(
+    <KVMConfigurationCard pod={pod} />,
+    {
+      route: "/kvm/1/edit",
+      queryData,
+      state,
+    }
   );
 
   // Submit should be disabled by default.

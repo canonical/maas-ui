@@ -1,8 +1,8 @@
-import type { JsonBodyType } from "msw";
+import type { UseQueryResult } from "@tanstack/react-query";
+import { type JsonBodyType } from "msw";
 
-import { useZonesCount } from "./zones";
+import { useZoneCount, useZoneById, useZones } from "./zones";
 
-import { getFullApiUrl } from "@/app/api/base";
 import * as factory from "@/testing/factories";
 import {
   renderHookWithQueryClient,
@@ -10,27 +10,61 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const { server, http, HttpResponse } = setupMockServer();
+const { mockGet } = setupMockServer();
 
-const setupZonesTest = (mockData: JsonBodyType) => {
-  server.use(
-    http.get(getFullApiUrl("zones"), () => HttpResponse.json(mockData))
-  );
-  return renderHookWithQueryClient(() => useZonesCount());
+const setupTest = (
+  hook: () => ReturnType<
+    typeof useZoneCount | typeof useZoneById | typeof useZones
+  >,
+  mockData: JsonBodyType
+) => {
+  mockGet("zones", mockData);
+  return renderHookWithQueryClient(() => hook()) as {
+    result: { current: UseQueryResult<number> };
+  };
 };
 
-it("should return 0 when zones data is undefined", async () => {
-  const { result } = setupZonesTest(null);
-  await waitFor(() => expect(result.current).toBe(0));
+describe("useZones", () => {
+  it("should return zones data when query succeeds", async () => {
+    const mockZones = [factory.zone(), factory.zone()];
+    const { result } = setupTest(useZones, mockZones);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(mockZones);
+  });
 });
 
-it("should return the correct count when zones data is available", async () => {
-  const mockZonesData = [factory.zone(), factory.zone(), factory.zone()];
-  const { result } = setupZonesTest(mockZonesData);
-  await waitFor(() => expect(result.current).toBe(3));
+describe("useZoneById", () => {
+  it("should return specific zone when query succeeds", async () => {
+    const mockZones = [factory.zone({ id: 1 }), factory.zone({ id: 2 })];
+    const { result } = setupTest(() => useZoneById(1), mockZones);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(mockZones[0]);
+  });
+
+  it("should return null when zone is not found", async () => {
+    const mockZones = [factory.zone({ id: 1 })];
+    const { result } = setupTest(() => useZoneById(2), mockZones);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBeNull();
+  });
 });
 
-it("should return 0 when zones data is an empty array", async () => {
-  const { result } = setupZonesTest([]);
-  await waitFor(() => expect(result.current).toBe(0));
+describe("useZoneCount", () => {
+  it("should return correct count when query succeeds", async () => {
+    const mockZones = [factory.zone(), factory.zone(), factory.zone()];
+    const { result } = setupTest(useZoneCount, mockZones);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBe(3);
+  });
+
+  it("should return 0 when zones array is empty", async () => {
+    const { result } = setupTest(useZoneCount, []);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toBe(0);
+  });
 });

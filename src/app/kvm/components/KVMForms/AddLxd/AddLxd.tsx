@@ -9,10 +9,10 @@ import CredentialsForm from "./CredentialsForm";
 import SelectProjectForm from "./SelectProjectForm";
 import type { AddLxdStepValues, NewPodValues } from "./types";
 
+import { useZones } from "@/app/api/query/zones";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { podActions } from "@/app/store/pod";
 import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   clearSidePanelContent: ClearSidePanelContent;
@@ -27,7 +27,7 @@ export const AddLxdSteps = {
 export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const resourcePools = useSelector(resourcePoolSelectors.all);
-  const zones = useSelector(zoneSelectors.all);
+  const zones = useZones();
   const [step, setStep] = useState<AddLxdStepValues>(AddLxdSteps.CREDENTIALS);
   const stepIndex = Object.values(AddLxdSteps).indexOf(step);
   const [submissionErrors, setSubmissionErrors] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
     password: "",
     pool: resourcePools.length ? `${resourcePools[0].id}` : "",
     power_address: "",
-    zone: zones.length ? `${zones[0].id}` : "",
+    zone: zones.data?.length ? `${zones.data[0].id}` : "",
   });
 
   // We run the cleanup function here rather than in each form component

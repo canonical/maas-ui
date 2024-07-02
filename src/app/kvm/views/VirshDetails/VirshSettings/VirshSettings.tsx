@@ -1,6 +1,7 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import { useZones } from "@/app/api/query/zones";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import KVMConfigurationCard from "@/app/kvm/components/KVMConfigurationCard";
 import podSelectors from "@/app/store/pod/selectors";
@@ -11,8 +12,6 @@ import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
@@ -28,15 +27,11 @@ const VirshSettings = ({ id }: Props): JSX.Element | null => {
   );
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
+  const zones = useZones();
+  const loaded = resourcePoolsLoaded && tagsLoaded && !zones.isPending;
   useWindowTitle(`Virsh ${`${pod?.name} ` || ""} settings`);
 
-  useFetchActions([
-    resourcePoolActions.fetch,
-    tagActions.fetch,
-    zoneActions.fetch,
-  ]);
+  useFetchActions([resourcePoolActions.fetch, tagActions.fetch]);
 
   if (!isPodDetails(pod) || !loaded) {
     return <Spinner text="Loading..." />;

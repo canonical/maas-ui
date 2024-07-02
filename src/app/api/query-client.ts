@@ -13,6 +13,9 @@ type QueryKeySubcategories<T extends QueryKeyCategories> = keyof QueryKeys[T];
 export type QueryKey =
   QueryKeys[QueryKeyCategories][QueryKeySubcategories<QueryKeyCategories>];
 
+// first element of the queryKeys array
+export type QueryModel = QueryKey[number];
+
 export const defaultQueryOptions = {
   staleTime: 5 * 60 * 1000, // 5 minutes
   cacheTime: 15 * 60 * 1000, // 15 minutes

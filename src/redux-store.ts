@@ -31,9 +31,8 @@ export const store = configureStore({
   middleware,
   devTools: import.meta.env.NODE_ENV !== "production",
 });
-
 export const history = createReduxHistory(store);
 
-const websocketClient = new WebSocketClient();
+export const websocketClient = new WebSocketClient();
 
 sagaMiddleware.run(rootSaga, websocketClient);

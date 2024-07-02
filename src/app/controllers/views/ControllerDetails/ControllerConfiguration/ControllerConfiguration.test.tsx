@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import ControllerConfiguration from "./ControllerConfiguration";
 import { Label as ConfigurationLabel } from "./ControllerConfigurationForm";
 import { Label as PowerConfigurationLabel } from "./ControllerPowerConfiguration";
@@ -10,15 +6,27 @@ import { Labels as EditableSectionLabels } from "@/app/base/components/EditableS
 import { Label as NodeConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
 import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneSelect";
+import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
 import { PodType } from "@/app/store/pod/constants";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
-const mockStore = configureStore();
-let state: RootState;
 const controller = factory.controllerDetails({ system_id: "abc123" });
+const route = urls.controllers.controller.index({ id: controller.system_id });
+
+let state: ReturnType<typeof factory.rootState>;
+const queryData = {
+  zones: [
+    factory.zone({ id: 1, name: "default" }),
+    factory.zone({ id: 2, name: "twilight" }),
+  ],
+};
 
 beforeEach(() => {
   state = factory.rootState({
@@ -51,21 +59,17 @@ beforeEach(() => {
         factory.tag({ id: 2, name: "tag2" }),
       ],
     }),
-    zone: factory.zoneState({
-      genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      items: [factory.zone({ name: "twilight" })],
-    }),
   });
 });
 
 it("displays controller configuration sections", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerConfiguration systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <ControllerConfiguration systemId={controller.system_id} />,
+    {
+      state,
+      queryData,
+      route,
+    }
   );
 
   expect(
@@ -78,28 +82,27 @@ it("displays controller configuration sections", async () => {
 
 it("displays a loading indicator if the controller has not loaded", () => {
   state.controller.items = [];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerConfiguration systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <ControllerConfiguration systemId={controller.system_id} />,
+    {
+      state,
+      queryData,
+      route,
+    }
   );
-
   expect(
     screen.getByRole("alert", { name: /loading controller configuration/ })
   ).toBeInTheDocument();
 });
 
 it("displays non-editable controller details by default", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerConfiguration systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <ControllerConfiguration systemId={controller.system_id} />,
+    {
+      state,
+      queryData,
+      route,
+    }
   );
 
   expect(
@@ -117,13 +120,13 @@ it("displays non-editable controller details by default", () => {
 });
 
 it("can switch to controller configuration forms", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerConfiguration systemId={controller.system_id} />
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <ControllerConfiguration systemId={controller.system_id} />,
+    {
+      state,
+      queryData,
+      route,
+    }
   );
 
   await userEvent.click(
@@ -153,13 +156,13 @@ it("can switch to controller configuration forms", async () => {
 });
 
 it("correctly dispatches an action to update a controller", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerConfiguration systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithBrowserRouter(
+    <ControllerConfiguration systemId={controller.system_id} />,
+    {
+      state,
+      queryData,
+      route,
+    }
   );
   await userEvent.click(
     screen.getAllByRole("button", {
@@ -198,14 +201,14 @@ it("correctly dispatches an action to update a controller", async () => {
 });
 
 it("displays an alert on edit when controller manages more than 1 node", async () => {
-  const store = mockStore(state);
   state.controller.items = [{ ...controller, power_bmc_node_count: 3 }];
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <ControllerConfiguration systemId="abc123" />
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <ControllerConfiguration systemId={controller.system_id} />,
+    {
+      state,
+      queryData,
+      route,
+    }
   );
   await userEvent.click(
     screen.getAllByRole("button", {

@@ -418,10 +418,9 @@ describe("ComposeFormFields", () => {
       cores: factory.podResource({ free: 1 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
-    const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { route: "/kvm/1", state }
     );
 
     // Switch to pinning cores

@@ -3,10 +3,10 @@ import { useCallback } from "react";
 import { Row, Col, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useZoneById } from "@/app/api/query/zones";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 import { ACTION_STATUS } from "@/app/base/constants";
-import { useFetchActions } from "@/app/base/hooks";
 import type { RootState } from "@/app/store/root/types";
 import { zoneActions } from "@/app/store/zone";
 import { ZONE_ACTIONS } from "@/app/store/zone/constants";
@@ -28,17 +28,13 @@ const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
     () => zoneActions.cleanup([ZONE_ACTIONS.update]),
     []
   );
-  const zone = useSelector((state: RootState) =>
-    zoneSelectors.getById(state, id)
-  );
+  const { data: zone } = useZoneById(id);
   const errors = useSelector((state: RootState) =>
     zoneSelectors.getLatestError(state, ZONE_ACTIONS.update, id)
   );
   const updateStatus = useSelector((state: RootState) =>
     zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.update, id)
   );
-
-  useFetchActions([zoneActions.fetch]);
 
   if (zone) {
     return (

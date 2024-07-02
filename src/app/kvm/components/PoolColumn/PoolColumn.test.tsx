@@ -1,19 +1,23 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import PoolColumn from "./PoolColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "@/testing/utils";
 
 describe("PoolColumn", () => {
-  let initialState: RootState;
-
+  let state: RootState;
+  const queryData = {
+    zones: [
+      factory.zone({
+        id: 1,
+        name: "alone-zone",
+      }),
+    ],
+  };
   beforeEach(() => {
-    initialState = factory.rootState({
+    state = factory.rootState({
       pod: factory.podState({
         items: [
           factory.pod({
@@ -31,27 +35,16 @@ describe("PoolColumn", () => {
           }),
         ],
       }),
-      zone: factory.zoneState({
-        items: [
-          factory.zone({
-            id: 1,
-            name: "alone-zone",
-          }),
-        ],
-      }),
     });
   });
 
   it("can display the pod's resource pool and zone", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <PoolColumn
-          poolId={state.pod.items[0].pool}
-          zoneId={state.pod.items[0].zone}
-        />
-      </Provider>
+    renderWithBrowserRouter(
+      <PoolColumn
+        poolId={state.pod.items[0].pool}
+        zoneId={state.pod.items[0].zone}
+      />,
+      { state, queryData }
     );
     expect(screen.getByTestId("pool")).toHaveTextContent("swimming-pool");
     expect(screen.getByTestId("zone")).toHaveTextContent("alone-zone");

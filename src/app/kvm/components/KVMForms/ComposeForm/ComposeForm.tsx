@@ -14,6 +14,7 @@ import ComposeFormFields from "./ComposeFormFields";
 import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
+import { useZones } from "@/app/api/query/zones";
 import ActionForm from "@/app/base/components/ActionForm";
 import type { ClearSidePanelContent } from "@/app/base/types";
 import { hostnameValidation, RANGE_REGEX } from "@/app/base/validation";
@@ -46,8 +47,6 @@ import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
 import { vlanActions } from "@/app/store/vlan";
 import vlanSelectors from "@/app/store/vlan/selectors";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 import { arrayFromRangesString, getRanges } from "@/app/utils";
 
 export type Disk = {
@@ -202,8 +201,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
   const subnetsLoaded = useSelector(subnetSelectors.loaded);
   const vlans = useSelector(vlanSelectors.all);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
-  const zones = useSelector(zoneSelectors.all);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
+  const zones = useZones();
   const [machineName, setMachineName] = useState("");
   const cleanup = useCallback(() => podActions.cleanup(), []);
   useActivePod(hostId);
@@ -217,9 +215,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
     dispatch(spaceActions.fetch());
     dispatch(subnetActions.fetch());
     dispatch(vlanActions.fetch());
-    dispatch(zoneActions.fetch());
   }, [dispatch, hostId]);
-
   const loaded =
     domainsLoaded &&
     fabricsLoaded &&
@@ -228,7 +224,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
     spacesLoaded &&
     subnetsLoaded &&
     vlansLoaded &&
-    zonesLoaded;
+    !zones.isPending;
 
   if (isPodDetails(pod) && loaded) {
     const powerType = powerTypes.find((type) => type.name === pod.type);
@@ -456,7 +452,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
           memory: defaults.memory,
           pinnedCores: "",
           pool: `${pools[0]?.id}` || "",
-          zone: `${zones[0]?.id}` || "",
+          zone: `${zones.data?.[0]?.id}` || "",
         }}
         modelName="machine"
         onCancel={clearSidePanelContent}

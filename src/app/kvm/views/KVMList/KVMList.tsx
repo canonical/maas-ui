@@ -20,7 +20,6 @@ import podSelectors from "@/app/store/pod/selectors";
 import { resourcePoolActions } from "@/app/store/resourcepool";
 import { vmClusterActions } from "@/app/store/vmcluster";
 import vmclusterSelectors from "@/app/store/vmcluster/selectors";
-import { zoneActions } from "@/app/store/zone";
 
 export enum Label {
   Title = "KVM list",
@@ -46,7 +45,6 @@ const KVMList = (): JSX.Element => {
     podActions.fetch,
     resourcePoolActions.fetch,
     vmClusterActions.fetch,
-    zoneActions.fetch,
   ]);
 
   // Redirect to the appropriate tab when arriving at /kvm.

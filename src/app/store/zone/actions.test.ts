@@ -24,13 +24,6 @@ it("can create an action for creating a zone", () => {
   });
 });
 
-it("can create an action for fetching zones", () => {
-  expect(zoneActions[ZONE_ACTIONS.fetch]()).toEqual({
-    type: `${ZoneMeta.MODEL}/${ZONE_ACTIONS.fetch}`,
-    payload: null,
-  });
-});
-
 it("can create an action for deleting a zone", () => {
   expect(zoneActions[ZONE_ACTIONS.delete]({ [ZoneMeta.PK]: 123 })).toEqual({
     type: `${ZoneMeta.MODEL}/${ZONE_ACTIONS.delete}`,
