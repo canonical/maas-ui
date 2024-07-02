@@ -2141,10 +2141,10 @@
   dependencies:
     statuses "^2.0.1"
 
-"@canonical/maas-react-components@1.28.0":
-  version "1.28.0"
-  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-1.28.0.tgz#32a775611f182446c4153ebf275390e61558c704"
-  integrity sha512-XG8bQTVJv9MhpwNRJoY/HLR3of74lvhcKnpP5lO9NVs8nxFncKfRcvswnAePe9IucBBLUbpMFjKSx0qEr657jw==
+"@canonical/maas-react-components@1.28.1":
+  version "1.28.1"
+  resolved "https://registry.yarnpkg.com/@canonical/maas-react-components/-/maas-react-components-1.28.1.tgz#a0c784b746c8b613326ace70df0e7c54e3086db2"
+  integrity sha512-cL5MtwmdN9Xek1UUFzYCHSRJmtGN63ZxTe0lvOJ2rEN9b+5JoOR6gBDWPR0IHtj8Gj7KD//oaaRZ0emB5AaqsQ==
 
 "@canonical/macaroon-bakery@1.3.2":
   version "1.3.2"
@@ -2154,10 +2154,10 @@
     "@types/sjcl" "1.0.30"
     macaroon "3.0.4"
 
-"@canonical/react-components@0.55.0":
-  version "0.55.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.55.0.tgz#803545bbed83f75a824927430fff2e2a8f2dc5bc"
-  integrity sha512-6SVuQhq3nFsYqOxL65IYgfWds5vGH7IHB8OrEs6d4jVzmkgjisNyPwlAMj64hsCulOVGSXOgg5cbHk/FI8Wjwg==
+"@canonical/react-components@0.59.0":
+  version "0.59.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.59.0.tgz#7a0b22643c728b388d7af8cda8c7e72446503552"
+  integrity sha512-zvDSd42aEshaXXo7gFsVqjJPRjm2tISnjxC1cZHu/IEqLGuExuohpVjeYyhHzV/i5VJHfOYvzZMONGgfYkW6eQ==
   dependencies:
     "@types/jest" "29.5.12"
     "@types/node" "20.12.11"
@@ -13936,10 +13936,10 @@ validate-npm-package-name@^5.0.1:
   resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-5.0.1.tgz#a316573e9b49f3ccd90dbb6eb52b3f06c6d604e8"
   integrity sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==
 
-vanilla-framework@4.13.0:
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.13.0.tgz#3901952faf819be42b24d2efc719c73de384a8ab"
-  integrity sha512-mUSJqs56ycxpEZwplTOiy4SfihjWsPiAddnQZ9b0s0ak8mLHVxnJF1aNIpPixPWK/NvhD9jVACn5qa2pGabRMQ==
+vanilla-framework@4.14.0:
+  version "4.14.0"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.14.0.tgz#dca425c806462179467030ac30ef496997e2d8cb"
+  integrity sha512-YctHWwH1SbIltBMMVdeiVW1QtxVjaU15jLKiubgVjE9AByuK/EriyZnPQkXtb/+Rwf1mtF24rae+mmG8aFqUJw==
 
 vary@~1.1.2:
   version "1.1.2"
