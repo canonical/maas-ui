@@ -3,20 +3,20 @@ import { useSelector } from "react-redux";
 import DomainListHeader from "./DomainListHeader";
 import DomainsTable from "./DomainsTable";
 
+import { useZones } from "@/app/api/query/zones";
 import PageContent from "@/app/base/components/PageContent";
-import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
 import DomainForm from "@/app/domains/components/DomainForm";
 import domainsSelectors from "@/app/store/domain/selectors";
 import { getSidePanelTitle } from "@/app/store/utils/node/base";
-import { zoneActions } from "@/app/store/zone";
+
 const DomainsList = (): JSX.Element => {
   const domains = useSelector(domainsSelectors.all);
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle("DNS");
-
-  useFetchActions([zoneActions.fetch]);
+  useZones();
 
   return (
     <PageContent

@@ -7,7 +7,6 @@ import { DeviceIpAssignment } from "@/app/store/device/types";
 import { domainActions } from "@/app/store/domain";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
-import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
@@ -21,7 +20,7 @@ const mockStore = configureStore<RootState>();
 
 describe("AddDeviceForm", () => {
   let state: RootState;
-
+  const queryData = { zones: [factory.zone({ id: 0, name: "default" })] };
   beforeEach(() => {
     state = factory.rootState({
       domain: factory.domainState({
@@ -36,22 +35,20 @@ describe("AddDeviceForm", () => {
       }),
       zone: factory.zoneState({
         genericActions: factory.zoneGenericActions({ fetch: "success" }),
-        items: [factory.zone({ id: 0, name: "default" })],
       }),
     });
   });
 
   it("fetches the necessary data on load", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
-      store,
-    });
+    const { store } = renderWithBrowserRouter(
+      <AddDeviceForm clearSidePanelContent={vi.fn()} />,
+      {
+        state,
+        queryData,
+      }
+    );
 
-    const expectedActions = [
-      domainActions.fetch(),
-      subnetActions.fetch(),
-      zoneActions.fetch(),
-    ];
+    const expectedActions = [domainActions.fetch(), subnetActions.fetch()];
     const actualActions = store.getActions();
     expectedActions.forEach((expectedAction) => {
       expect(
@@ -67,6 +64,7 @@ describe("AddDeviceForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
       store,
+      queryData: {},
     });
 
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
@@ -76,6 +74,7 @@ describe("AddDeviceForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearSidePanelContent={vi.fn()} />, {
       store,
+      queryData,
     });
 
     await userEvent.type(

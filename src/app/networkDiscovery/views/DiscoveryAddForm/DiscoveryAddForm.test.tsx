@@ -165,7 +165,9 @@ describe("DiscoveryAddForm", () => {
     // Change the device state to included the errors (as if it has changed via an API response).
     state.device.errors = { name: error };
     // Rerender the form to simulate the state change.
-    rerender(<DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />);
+    rerender(<DiscoveryAddForm discovery={discovery} onClose={vi.fn()} />, {
+      state,
+    });
     expect(
       screen.getByRole("textbox", {
         name: `${FormFieldLabels.Hostname}`,

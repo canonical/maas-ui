@@ -61,5 +61,6 @@ it("returns the result of useQuery", () => {
   const { result } = renderHookWithMockStore(() =>
     useWebsocketAwareQuery(mockQueryKey, mockQueryFn)
   );
+  expect(result.current).not.toBeNull();
   expect(result.current).toEqual({ data: "testData", isLoading: false });
 });

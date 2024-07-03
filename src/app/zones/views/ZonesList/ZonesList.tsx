@@ -1,23 +1,18 @@
-import { useSelector } from "react-redux";
-
 import ZonesListForm from "./ZonesListForm";
 import ZonesListHeader from "./ZonesListHeader";
 import ZonesListTable from "./ZonesListTable";
 
+import { useZoneCount } from "@/app/api/query/zones";
 import PageContent from "@/app/base/components/PageContent";
-import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
+import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
 const ZonesList = (): JSX.Element => {
-  const zonesCount = useSelector(zoneSelectors.count);
+  const zonesCount = useZoneCount();
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
 
   useWindowTitle("Zones");
-
-  useFetchActions([zoneActions.fetch]);
 
   let content = null;
 
@@ -41,7 +36,7 @@ const ZonesList = (): JSX.Element => {
       sidePanelContent={content}
       sidePanelTitle="Add AZ"
     >
-      {zonesCount > 0 && <ZonesListTable />}
+      {zonesCount?.data && zonesCount.data > 0 && <ZonesListTable />}
     </PageContent>
   );
 };

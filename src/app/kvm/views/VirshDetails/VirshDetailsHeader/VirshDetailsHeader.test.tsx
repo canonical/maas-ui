@@ -7,6 +7,7 @@ import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("VirshDetailsHeader", () => {
   let state: RootState;
+  const route = "/kvm/1/resources";
 
   beforeEach(() => {
     state = factory.rootState({
@@ -46,7 +47,7 @@ describe("VirshDetailsHeader", () => {
     });
     renderWithBrowserRouter(
       <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route: "/kvm/1/resources", state }
+      { route, state }
     );
     expect(screen.getAllByTestId("block-subtitle")[0]).toHaveTextContent(
       "qemu+ssh://ubuntu@192.168.1.1/system"
@@ -59,7 +60,7 @@ describe("VirshDetailsHeader", () => {
     });
     renderWithBrowserRouter(
       <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route: "/kvm/1/resources", state }
+      { route, state }
     );
     expect(screen.getAllByTestId("block-subtitle")[1]).toHaveTextContent(
       "5 available"
@@ -67,11 +68,11 @@ describe("VirshDetailsHeader", () => {
   });
 
   it("displays the pod zone name", () => {
-    state.zone.items = [factory.zone({ id: 101, name: "danger" })];
+    const queryData = { zones: [factory.zone({ id: 101, name: "danger" })] };
     state.pod.items[0].zone = 101;
     renderWithBrowserRouter(
       <VirshDetailsHeader id={1} setSidePanelContent={vi.fn()} />,
-      { route: "/kvm/1/resources", state }
+      { route, state, queryData }
     );
     expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
       "danger"

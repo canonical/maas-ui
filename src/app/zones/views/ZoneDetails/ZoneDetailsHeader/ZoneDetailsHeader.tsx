@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 import DeleteConfirm from "./DeleteConfirm";
 
+import { useZoneById } from "@/app/api/query/zones";
 import SectionHeader from "@/app/base/components/SectionHeader";
-import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
 import type { RootState } from "@/app/store/root/types";
@@ -21,17 +21,19 @@ type Props = {
 
 const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   const [showConfirm, setShowConfirm] = useState(false);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
   const deleteStatus = useSelector((state: RootState) =>
     zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.delete, id)
   );
-  const zone = useSelector((state: RootState) =>
-    zoneSelectors.getById(state, Number(id))
-  );
+  const zone = useZoneById(id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let title = "";
 
-  useFetchActions([zoneActions.fetch]);
+  if (!zone.isPending) {
+    title = zone.data
+      ? `Availability zone: ${zone.data.name}`
+      : "Availability zone not found";
+  }
 
   useEffect(() => {
     if (deleteStatus === "success") {
@@ -65,8 +67,6 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     buttons = null;
   }
 
-  let title = "";
-
   let confirmDelete = null;
 
   if (showConfirm && isAdmin && !isDefaultZone) {
@@ -84,16 +84,20 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     );
   }
 
-  if (zonesLoaded && zone) {
-    title = `Availability zone: ${zone.name}`;
-  } else if (zonesLoaded) {
+  if (!zone.isPending && zone.data) {
+    title = `Availability zone: ${zone.data.name}`;
+  } else if (zone.isFetched) {
     title = "Availability zone not found";
     buttons = null;
   }
 
   return (
     <>
-      <SectionHeader buttons={buttons} loading={!zonesLoaded} title={title} />
+      <SectionHeader
+        buttons={buttons}
+        loading={!zone.isFetched}
+        title={title}
+      />
 
       {confirmDelete}
     </>
