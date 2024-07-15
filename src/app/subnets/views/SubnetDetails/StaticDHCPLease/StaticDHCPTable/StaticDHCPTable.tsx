@@ -53,7 +53,7 @@ const generateRows = (
             ? getNodeTypeDisplay(reservedIp.node_summary.node_type)
             : "—"}
         </td>
-        <td>{reservedIp.comment || "—"}</td>
+        <td title={reservedIp.comment}>{reservedIp.comment || "—"}</td>
         <td>
           <TableActions
             onDelete={() =>
