@@ -11,10 +11,4 @@ describe("formatMacAddress", () => {
     expect(formatMacAddress("123")).toEqual("12:3");
     expect(formatMacAddress("123456789abc")).toEqual("12:34:56:78:9a:bc");
   });
-
-  it("truncates correctly", () => {
-    expect(formatMacAddress("12:34:56:78:9a:bc:de")).toEqual(
-      "12:34:56:78:9a:bc"
-    );
-  });
 });

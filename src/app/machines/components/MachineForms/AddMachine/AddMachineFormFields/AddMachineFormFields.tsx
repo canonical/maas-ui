@@ -63,7 +63,6 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
             <Input
               aria-label={`Extra MAC address ${i + 1}`}
               error={errors?.extra_macs && errors.extra_macs[i]}
-              maxLength={17}
               onChange={(e) => {
                 const newExtraMACs = [...extraMACs];
                 newExtraMACs[i] = formatMacAddress(e.target.value);
