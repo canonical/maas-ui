@@ -19,6 +19,7 @@ import { reservedIpActions } from "@/app/store/reservedip";
 import reservedIpSelectors from "@/app/store/reservedip/selectors";
 import type { RootState } from "@/app/store/root/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
+import { isSubnetDetails } from "@/app/store/subnet/utils";
 import {
   getImmutableAndEditableOctets,
   getIpRangeFromCidr,
@@ -49,6 +50,19 @@ const ReserveDHCPLease = ({
   const reservedIp = useSelector((state: RootState) =>
     reservedIpSelectors.getById(state, reservedIpId)
   );
+  const subnetReservedIps = useSelector((state: RootState) =>
+    reservedIpSelectors.getBySubnet(state, subnetId)
+  );
+
+  const subnetReservedIpList = subnetReservedIps
+    .map((reservedIp) => reservedIp.ip)
+    .filter((ipAddress) => ipAddress !== reservedIp?.ip);
+  const subnetUsedIps = isSubnetDetails(subnet)
+    ? subnet.ip_addresses
+        .map((address) => address.ip)
+        .filter((ipAddress) => ipAddress !== reservedIp?.ip)
+    : [];
+
   const subnetLoading = useSelector(subnetSelectors.loading);
   const reservedIpLoading = useSelector(reservedIpSelectors.loading);
   const errors = useSelector(reservedIpSelectors.errors);
@@ -122,6 +136,16 @@ const ReserveDHCPLease = ({
               return false;
             }
           }
+        },
+      })
+      .test({
+        name: "ip-already-reserved",
+        message: "This IP address is already used or reserved.",
+        test: (ip_address) => {
+          const ip = formatIpAddress(ip_address, subnet.cidr);
+          return (
+            !subnetReservedIpList.includes(ip) && !subnetUsedIps.includes(ip)
+          );
         },
       }),
     mac_address: Yup.string().matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
