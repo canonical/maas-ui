@@ -1,5 +1,5 @@
 import type { ReactNode, AriaAttributes } from "react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useId, useRef } from "react";
 
 import { ContentSection } from "@canonical/maas-react-components";
 import { Form, Notification } from "@canonical/react-components";
@@ -110,6 +110,7 @@ const FormikFormContent = <V extends object, E = null>({
     allowUnchanged,
   });
   const [hasSaved, resetHasSaved] = useCycled(saved);
+  const notificationId = useId();
   const hasErrors = !!errors;
 
   // Run onValuesChanged function whenever formik values change.
@@ -168,10 +169,18 @@ const FormikFormContent = <V extends object, E = null>({
     }
   }, [navigate, savedRedirect, saved]);
 
+  useEffect(() => {
+    if (nonFieldError) {
+      document
+        .getElementById(notificationId)
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [nonFieldError, notificationId]);
+
   const renderFormContent = () => (
     <>
       {!!nonFieldError && (
-        <Notification severity="negative" title="Error:">
+        <Notification id={notificationId} severity="negative" title="Error:">
           {nonFieldError}
         </Notification>
       )}
