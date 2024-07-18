@@ -2,6 +2,7 @@ import { Field, Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
+import type { Mock } from "vitest";
 import * as Yup from "yup";
 
 import FormikFormContent from "./FormikFormContent";
@@ -31,7 +32,12 @@ vi.mock("react-router-dom", async () => {
 
 describe("FormikFormContent", () => {
   let state: RootState;
+  let scrollIntoViewSpy: Mock;
+
   beforeEach(() => {
+    scrollIntoViewSpy = vi.fn();
+    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewSpy;
+
     state = factory.rootState({
       config: factory.configState({
         items: [
@@ -99,6 +105,18 @@ describe("FormikFormContent", () => {
     );
 
     expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+  });
+
+  it("scrolls non-field errors into view when present", () => {
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
+      </Formik>,
+      { state }
+    );
+
+    expect(screen.getByText("Uh oh!")).toBeInTheDocument();
+    expect(scrollIntoViewSpy).toHaveBeenCalledTimes(1);
   });
 
   it("can display non-field errors from the __all__ key", () => {
