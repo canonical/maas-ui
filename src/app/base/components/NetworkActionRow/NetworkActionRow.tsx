@@ -40,7 +40,7 @@ const NetworkActionRow = ({
   setSelected,
 }: Props): JSX.Element | null => {
   const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
-  const { setSidePanelContent } = useSidePanel();
+  const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const { pathname } = useLocation();
   const isMachinesPage = pathname.startsWith("/machine");
 
@@ -63,16 +63,20 @@ const NetworkActionRow = ({
             })
         : () =>
             setSidePanelContent({ view: DeviceSidePanelViews.ADD_INTERFACE }),
-      [ExpandedState.ADD_BOND]: () =>
+      [ExpandedState.ADD_BOND]: () => {
         setSidePanelContent({
           view: MachineSidePanelViews.ADD_BOND,
           extras: { systemId: node.system_id, selected: selected, setSelected },
-        }),
-      [ExpandedState.ADD_BRIDGE]: () =>
+        });
+        setSidePanelSize("large");
+      },
+      [ExpandedState.ADD_BRIDGE]: () => {
         setSidePanelContent({
           view: MachineSidePanelViews.ADD_BRIDGE,
           extras: { systemId: node.system_id, selected: selected, setSelected },
-        }),
+        });
+        setSidePanelSize("large");
+      },
     };
     return expandedStateMap[state]?.();
   };
