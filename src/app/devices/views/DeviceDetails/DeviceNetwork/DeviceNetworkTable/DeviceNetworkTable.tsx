@@ -279,7 +279,7 @@ const DeviceNetworkTable = ({ systemId }: Props): JSX.Element => {
               onClick={() => updateSort("ip_mode")}
               sortKey="ip_mode"
             >
-              IP mode
+              IP assignment
             </TableHeader>
           ),
         },
