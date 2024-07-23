@@ -1,22 +1,50 @@
 # Hacking
 
-- Project conventions
-  - [TypeScript](#Typescript)
-    - [Dealing with problems](#dealing-with-problems)
-- Development setup
-  - [Development setup](#development-setup)
-  - [Running a branch](#running-a-branch)
-  - [Setting up or connecting to a MAAS](#maas-deployments)
-  - [Creating a Multipass instance](#creating-a-multipass-instance)
-  - [Creating a LXD instance](#creating-a-lxd-instance)
-  - [Building a production bundle](#building)
-  - [Creating a fake windows image](#creating-a-fake-windows-image)
-  - [Show intro](#show-intro)
-  - [Sample data](#sample-data)
-- Testing
-  - [Integration tests](#integration-tests)
-  - [Unit tests](#unit-tests)
-  - [Performance tests](#performance-tests)
+-   [Project conventions](#project-conventions){#toc-project-conventions}
+    -   [TypeScript](#typescript){#toc-typescript}
+    -   [Code style](#code-style){#toc-code-style}
+    -   [React Components](#react-components){#toc-react-components}
+        -   [Dealing with problems](#dealing-with-problems){#toc-dealing-with-problems}
+-   [Development setup](#development-setup){#toc-development-setup}
+    -   [Run MAAS-UI on your local machine](#run-maas-ui-on-your-local-machine){#toc-run-maas-ui-on-your-local-machine}
+        -   [Setup MAAS-UI, node and yarn](#setup-maas-ui-node-and-yarn){#toc-setup-maas-ui-node-and-yarn}
+        -   [How to run tests](#how-to-run-tests){#toc-how-to-run-tests}
+        -   [How to build the bundle](#how-to-build-the-bundle){#toc-how-to-build-the-bundle}
+        -   [How to contribute](#how-to-contribute){#toc-how-to-contribute}
+        -   [Setup MAAS React Components](#setup-maas-react-components){#toc-setup-maas-react-components}
+        -   [Setup Canonical React Components](#setup-canonical-react-components){#toc-setup-canonical-react-components}
+    -   [Set up a development container](#set-up-a-development-container){#toc-set-up-a-development-container}
+        -   [Start the instance](#start-the-instance){#toc-start-the-instance}
+        -   [Clone the repository](#clone-the-repository){#toc-clone-the-repository}
+        -   [Edit local config](#edit-local-config){#toc-edit-local-config}
+        -   [Running a branch](#running-a-branch){#toc-running-a-branch}
+-   [MAAS deployments](#maas-deployments){#toc-maas-deployments}
+    -   [Snap deployment](#snap-deployment){#toc-snap-deployment}
+        -   [Multipass](#multipass-1){#toc-multipass-1}
+        -   [LXD](#lxd-1){#toc-lxd-1}
+        -   [Updating a snap MAAS](#updating-a-snap-maas){#toc-updating-a-snap-maas}
+        -   [Development deployment](#development-deployment){#toc-development-deployment}
+-   [Creating a Multipass
+    instance](#creating-a-multipass-instance){#toc-creating-a-multipass-instance}
+    -   [Install Multipass](#install-multipass){#toc-install-multipass}
+    -   [Create the instance:](#create-the-instance){#toc-create-the-instance}
+    -   [SSH credentials](#ssh-credentials){#toc-ssh-credentials}
+        -   [Host credentials](#host-credentials){#toc-host-credentials}
+        -   [Instance credentials](#instance-credentials){#toc-instance-credentials}
+        -   [macOS](#macos){#toc-macos}
+-   [Creating a LXD
+    instance](#creating-a-lxd-instance){#toc-creating-a-lxd-instance}
+    -   [Install LXD on Linux](#install-lxd-on-linux){#toc-install-lxd-on-linux}
+    -   [Initialise LXD](#initialise-lxd){#toc-initialise-lxd}
+    -   [Launch the instance](#launch-the-instance){#toc-launch-the-instance}
+    -   [Container credentials](#container-credentials){#toc-container-credentials}
+-   [Creating a fake windows image](#creating-a-fake-windows-image){#toc-creating-a-fake-windows-image}
+    -   [Create the image](#create-the-image){#toc-create-the-image}
+    -   [Login to MAAS](#login-to-maas){#toc-login-to-maas}
+    -   [Upload the image](#upload-the-image){#toc-upload-the-image}
+    -   [License keys](#license-keys){#toc-license-keys}
+-   [Show intro](#show-intro){#toc-show-intro}
+-   [Sample data](#sample-data){#toc-sample-data}
 
 # Project conventions
 
@@ -53,6 +81,121 @@ There are cases where determining a type for a particular object can be difficul
 # Development setup
 
 **Note: You will need access to a running instance of MAAS in order to run maas-ui.**
+
+## Run MAAS-UI on your local machine
+
+You can run MAAS-UI on your local machine assuming that you already have an instance of MAAS running somewhere that you can connect to.
+
+In the following sections we assume that you're having your MAAS back-end running on `http:/10.10.0.30:5240`. This can easily be adapted to other IPs, names, or `https`.
+
+### Setup MAAS-UI, node and yarn
+
+These instructions have been tested on Ubuntu 24.04 (Noble Numbat).
+
+You need at least 5GB of free space to setup MAAS-UI (about 2.6gb of node modules and 2gb for Cypress cache). 
+
+- Go to your source folder (e.g. `mkdir $HOME/src && cd src`)
+- `git clone git@github.com:canonical/maas-ui.git` if you are using SSH
+	- or `git clone https://github.com/canonical/maas-ui.git` if you want to clone without logging in to GitHub
+- Install the [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm) `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`
+- Log out of shell and log in again
+- In your `maas-ui` folder (`cd maas-ui`) do
+	- [*optional if you have the correct node version*] `nvm install` to install the version of node that is specified in `.nvmrc`
+	- [*optional if you have `yarn` installed*] `npm --global install yarn` to install yarn
+	-  `yarn` to install dependencies
+	- create/edit `.env.local` and set `MAAS_URL="http://10.10.0.30:5240"` assuming you have a MAAS backend running on IP `10.10.0.30`
+	- Run `yarn start` to start your front-end
+		- Make sure to use the bottom address (ending in `:8400`) to connect to MAAS-UI as this one proxies websocket connections properly to your back-end.
+
+### How to run tests
+
+#### Unit tests
+
+- To run the entire unit test suite run `yarn test`
+- To run a sigle unit test run `yarn test path/to/test-file.jxs`
+	- Fuzzy matching works, e.g `yarn test FormikFormButtons` finds the appropriate file to test automatically
+
+#### Integration tests
+
+- To run cypress end to end test run `yarn cypress-open`
+- Click `start e2e testing`
+- Click the browser you'd like to use for our test
+
+#### Performance tests
+
+Performance tests use [Sitespeed.io](https://www.sitespeed.io/) and are run when
+PRs are merged.
+
+Sitespeed can also be run manually, though the tests expect a MAAS with a
+specific dataset. For best results a [local MAAS](#local-deployments) can be set
+up using [sample data](#sample-data).
+
+To run against a MAAS deployment you can use:
+
+```shell
+yarn sitespeed --browsertime.domain=[maas.ip.or.hostname]
+```
+
+To run against a local UI you will also need to set the port:
+
+```shell
+yarn sitespeed --browsertime.domain=[maas-ui.ip.or.hostname] --browsertime.port=8400
+```
+
+### How to build the bundle
+
+Usually you do not have to care about manually building the bundle as our CI will do this. However, if you want to test a production version of MAAS UI just run `yarn build`.
+
+An optimised production bundle will be created in `./build`.
+
+### How to contribute
+
+Make sure you've signed the [Contributor agreement](https://ubuntu.com/legal/contributors/agreement) (CLA). If you do not sign the CLA your contributions cannot be accepted, unfortunately. Please note that our CI is going to check if you signed the CLA for the email address that you used to commit your contributions or your email belongs to a company that signed the agreement on your behalf.
+
+To contribute, you will need to make a fork of the [maas-ui project](https://github.com/canonical/maas-ui) in GitHub and clone this one to  your workstation. Then do the following to be able to upstream your changes:
+
+```shell
+cd maas-ui
+git remote add origin git@github.com:<github-username>/maas-ui
+git remote update <github-username>
+git checkout -b <my-branch>
+git push <mybranch> 
+git push <github-username> <my-branch>
+```
+
+Now you are ready to create a PR from GitHub by browsing to the branch that you just set up.
+
+*Important tips*:
+- We use conventional commits and conventional PRs and the format will be enforced by our CI. To make your life easy, you should commit using them right from the start
+- Although you can technically make a PR for contributions that you created on on the `main` branch, we encourage you to create a branch for your work and commit often.
+- Now all you need to do is open a PR and we will check your code. If there is nothing malicious in it we will run our CI over it, start testing and will get back to you.
+
+### Setup MAAS React Components
+
+Some re-usable components for MAAS reside in the [maas-react-components](https://github.com/canonical/maas-react-components) repository. If you need or want to change any of these components you can link your local `maas-react-components` 
+
+- Move out of your `maas-ui` source folder: `cd ..`
+- `git clone https://github.com/canonical/maas-react-components`
+- `cd maas-react-components`
+- `npm install`
+- `npm run build:watch` <-- leave this running in the background so that changes in this repository get synced to the `maas-ui` repository
+- `yarn link` 
+- Move back to MAAS-UI `cd ../maas-ui` 
+- `yarn link "@canonical/maas-react-components"`
+
+### Setup Canonical React Components
+
+We are also upstreaming some components for other projects. If you want or need to change those components, you will need to link this repository again. We recommend not doing this for beginners as it is unlikely that you will need to change any of those components for most of your development tasks. 
+
+- Move out of your `maas-ui` source folder: `cd ..`
+- `git clone https://github.com/canonical/react-components`
+- `yarn`
+- `yarn run link-packages`
+- `yarn build-watch`
+- Go back to MAAS-UI`cd ../maas-ui`
+- `yarn link react`
+- `yarn link react-dom`
+- `yarn link @canonical/react-components`
 
 ## Set up a development container
 
@@ -167,23 +310,7 @@ dotrun
 
 # MAAS deployments
 
-## Canonical VPN deployments
-
-If you have access to the Canonical VPN you can use one of the following MAAS deployments. You may need to do some [additional configuration](#vpn-configuration) inside your multipass instance.
-
-Once connected to the VPN you can connect to one of the following MAAS deployments using the [credentials](https://wiki.canonical.com/WebAndDesign/DesignMaasLab).
-
-### Karura
-
-[karura.internal](http://karura.internal:5240/MAAS) (last stable release).
-
-### Bolla
-
-[bolla.internal](http://bolla.internal:5240/MAAS) (main)
-
-## Local deployments
-
-### Snap deployment
+## Snap deployment
 
 The easiest way to run a MAAS locally is using a snap. However, this method does not provide sample data and therefore will not have everything e.g. there will be no machines.
 
@@ -191,13 +318,13 @@ First you'll need to either [create a Multipass instance](#creating-a-multipass-
 
 Then enter the shell for that instance:
 
-#### Multipass
+### Multipass
 
 ```shell
 multipass shell snap-maas
 ```
 
-#### LXD
+### LXD
 
 ```shell
 lxc exec snap-maas bash -- su ubuntu
@@ -227,7 +354,7 @@ You should now be able to access the MAAS in your browser:
 
 You might now need to [configure maas-ui](#edit-local-config) to use this MAAS.
 
-#### Updating a snap MAAS
+### Updating a snap MAAS
 
 To update your MAAS manually you can run:
 
@@ -243,74 +370,7 @@ sudo snap refresh --channel=2.8 maas
 
 ### Development deployment
 
-First you'll need to either [create a Multipass instance](#creating-a-multipass-instance) or [create a LXD container](#creating-a-lxd-instance), call it something like "dev-maas".
-
-Then enter the shell for that instance:
-
-#### Multipass
-
-```shell
-multipass shell dev-maas
-```
-
-#### LXD
-
-```
-lxc exec dev-maas bash -- su ubuntu
-```
-
-You'll need to fetch the current MAAS main:
-
-```shell
-git clone http://git.launchpad.net/maas
-```
-
-And then build and install a MAAS snap:
-
-```shell
-cd maas
-sudo snap install maas-test-db
-sudo apt install make
-make install-dependencies
-git config --file=.gitmodules submodule.src/maasui/src.branch main
-git submodule sync
-git submodule update --init --recursive --remote
-make snap-prime
-sudo snap try build/dev-snap/prime
-utilities/connect-snap-interfaces
-sudo maas init region+rack --maas-url=http://localhost:5240/MAAS --database-uri maas-test-db:///
-```
-
-You'll also need to create a user:
-
-```shell
-sudo maas createadmin
-```
-
-At this point you can [configure maas-ui](#edit-local-config) to use this maas with the default credentials (admin/test). If you wish to view the ui from that MAAS deployment you'll need to [build the UI](#running-maas-ui-from-a-development-maas).
-
-#### Updating a development MAAS
-
-To see any changes you've made inside the maas folder you'll need to run the
-following:
-
-#### Multipass
-
-```shell
-multipass shell dev-maas
-```
-
-#### LXD
-
-```shell
-lxc exec dev-maas -- su ubuntu
-```
-
-```shell
-cd ~/maas
-make sync-dev-snap
-sudo service snap.maas.supervisor restart
-```
+See the [MAAS Dev Setup](https://github.com/canonical/maas-dev-setup) project for a way to set up a single node development setup for MAAS easily.
 
 #### Running maas-ui from a development maas
 
@@ -479,17 +539,6 @@ lxc exec [container-name] bash -- su ubuntu
 
 Then [generate a new SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add it to your Github account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account).
 
-# Building
-
-Ensure both node (current LTS) and yarn are installed.
-
-From the root of the MAAS UI project run:
-
-```shell
-yarn build
-```
-
-An optimised production bundle will be built, and output to `./build`.
 
 # Creating a fake windows image
 
@@ -581,65 +630,3 @@ sudo snap restart maas
 
 Once MAAS has restarted you should be able to access the MAAS and see the data.
 
-# Testing
-
-## Integration tests
-
-Integration tests currently run against the maas edge snap (main) [on github actions](https://github.com/canonical/maas-ui/actions?query=workflow%3ACypress) with [Cypress](https://cypress.io).
-
-For details on developing integration tests, see the integration testing [README](/docs/INTEGRATION.md).
-
-## Unit tests
-
-Unit/integration tests use [Jest](https://jestjs.io/) and [React Testing
-Library](https://testing-library.com/).
-
-Tests can be run with:
-
-```shell
-dotrun test
-```
-
-To run tests and watch for changes you can pass `--watchAll=true` e.g.:
-
-```shell
-dotrun test --watchAll=true
-```
-
-You can run tests against a single file:
-
-```shell
-dotrun test NodeTestsTable.test.tsx
-dotrun test NodeTestsTable
-dotrun test --watchAll=true NodeTestsTable
-```
-
-To run a single test you can add `.only` to the test case or block.
-
-_Note: this only limits the tests in a single file. You will also need to make sure you are only running that file._
-
-```javascript
-describe.only("NetworkTable", () => {
-it.only("displays a spinner when loading", () => {
-```
-
-## Performance tests
-
-Performance tests use [Sitespeed.io](https://www.sitespeed.io/) and are run when
-PRs are merged.
-
-Sitespeed can also be run manually, though the tests expect a MAAS with a
-specific dataset. For best results a [local MAAS](#local-deployments) can be set
-up using [sample data](#sample-data).
-
-To run against a MAAS deployment you can use:
-
-```shell
-yarn sitespeed --browsertime.domain=[maas.ip.or.hostname]
-```
-
-To run against a local UI you will also need to set the port:
-
-```shell
-yarn sitespeed --browsertime.domain=[maas-ui.ip.or.hostname] --browsertime.port=8400
-```
