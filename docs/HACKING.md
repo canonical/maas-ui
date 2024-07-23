@@ -1,50 +1,48 @@
 # Hacking
 
--   [Project conventions](#project-conventions){#toc-project-conventions}
-    -   [TypeScript](#typescript){#toc-typescript}
-    -   [Code style](#code-style){#toc-code-style}
-    -   [React Components](#react-components){#toc-react-components}
-        -   [Dealing with problems](#dealing-with-problems){#toc-dealing-with-problems}
--   [Development setup](#development-setup){#toc-development-setup}
-    -   [Run MAAS-UI on your local machine](#run-maas-ui-on-your-local-machine){#toc-run-maas-ui-on-your-local-machine}
-        -   [Setup MAAS-UI, node and yarn](#setup-maas-ui-node-and-yarn){#toc-setup-maas-ui-node-and-yarn}
-        -   [How to run tests](#how-to-run-tests){#toc-how-to-run-tests}
-        -   [How to build the bundle](#how-to-build-the-bundle){#toc-how-to-build-the-bundle}
-        -   [How to contribute](#how-to-contribute){#toc-how-to-contribute}
-        -   [Setup MAAS React Components](#setup-maas-react-components){#toc-setup-maas-react-components}
-        -   [Setup Canonical React Components](#setup-canonical-react-components){#toc-setup-canonical-react-components}
-    -   [Set up a development container](#set-up-a-development-container){#toc-set-up-a-development-container}
-        -   [Start the instance](#start-the-instance){#toc-start-the-instance}
-        -   [Clone the repository](#clone-the-repository){#toc-clone-the-repository}
-        -   [Edit local config](#edit-local-config){#toc-edit-local-config}
-        -   [Running a branch](#running-a-branch){#toc-running-a-branch}
--   [MAAS deployments](#maas-deployments){#toc-maas-deployments}
-    -   [Snap deployment](#snap-deployment){#toc-snap-deployment}
-        -   [Multipass](#multipass-1){#toc-multipass-1}
-        -   [LXD](#lxd-1){#toc-lxd-1}
-        -   [Updating a snap MAAS](#updating-a-snap-maas){#toc-updating-a-snap-maas}
-        -   [Development deployment](#development-deployment){#toc-development-deployment}
--   [Creating a Multipass
-    instance](#creating-a-multipass-instance){#toc-creating-a-multipass-instance}
-    -   [Install Multipass](#install-multipass){#toc-install-multipass}
-    -   [Create the instance:](#create-the-instance){#toc-create-the-instance}
-    -   [SSH credentials](#ssh-credentials){#toc-ssh-credentials}
-        -   [Host credentials](#host-credentials){#toc-host-credentials}
-        -   [Instance credentials](#instance-credentials){#toc-instance-credentials}
-        -   [macOS](#macos){#toc-macos}
--   [Creating a LXD
-    instance](#creating-a-lxd-instance){#toc-creating-a-lxd-instance}
-    -   [Install LXD on Linux](#install-lxd-on-linux){#toc-install-lxd-on-linux}
-    -   [Initialise LXD](#initialise-lxd){#toc-initialise-lxd}
-    -   [Launch the instance](#launch-the-instance){#toc-launch-the-instance}
-    -   [Container credentials](#container-credentials){#toc-container-credentials}
--   [Creating a fake windows image](#creating-a-fake-windows-image){#toc-creating-a-fake-windows-image}
-    -   [Create the image](#create-the-image){#toc-create-the-image}
-    -   [Login to MAAS](#login-to-maas){#toc-login-to-maas}
-    -   [Upload the image](#upload-the-image){#toc-upload-the-image}
-    -   [License keys](#license-keys){#toc-license-keys}
--   [Show intro](#show-intro){#toc-show-intro}
--   [Sample data](#sample-data){#toc-sample-data}
+-   [Project conventions](#project-conventions)
+    -   [TypeScript](#typescript)
+    -   [Code style](#code-style)
+    -   [React Components](#react-components)
+        -   [Dealing with problems](#dealing-with-problems)
+-   [Development setup](#development-setup)
+    -   [Run MAAS-UI on your local machine](#run-maas-ui-on-your-local-machine)
+        -   [Setup MAAS-UI, node and yarn](#setup-maas-ui-node-and-yarn)
+        -   [How to run tests](#how-to-run-tests)
+        -   [How to build the bundle](#how-to-build-the-bundle)
+        -   [How to contribute](#how-to-contribute)
+        -   [Setup MAAS React Components](#setup-maas-react-components)
+        -   [Setup Canonical React Components](#setup-canonical-react-components)
+    -   [Set up a development container](#set-up-a-development-container)
+        -   [Start the instance](#start-the-instance)
+        -   [Clone the repository](#clone-the-repository)
+        -   [Edit local config](#edit-local-config)
+        -   [Running a branch](#running-a-branch)
+-   [MAAS deployments](#maas-deployments)
+    -   [Snap deployment](#snap-deployment)
+        -   [Multipass](#multipass-1)
+        -   [LXD](#lxd-1)
+        -   [Updating a snap MAAS](#updating-a-snap-maas)
+        -   [Development deployment](#development-deployment)
+-   [Creating a Multipass instance](#creating-a-multipass-instance)
+    -   [Install Multipass](#install-multipass)
+    -   [Create the instance:](#create-the-instance)
+    -   [SSH credentials](#ssh-credentials)
+        -   [Host credentials](#host-credentials)
+        -   [Instance credentials](#instance-credentials)
+        -   [macOS](#macos)
+-   [Creating a LXD instance](#creating-a-lxd-instance)
+    -   [Install LXD on Linux](#install-lxd-on-linux)
+    -   [Initialise LXD](#initialise-lxd)
+    -   [Launch the instance](#launch-the-instance)
+    -   [Container credentials](#container-credentials)
+-   [Creating a fake windows image](#creating-a-fake-windows-image)
+    -   [Create the image](#create-the-image)
+    -   [Login to MAAS](#login-to-maas)
+    -   [Upload the image](#upload-the-image)
+    -   [License keys](#license-keys)
+-   [Show intro](#show-intro)
+-   [Sample data](#sample-data)
 
 # Project conventions
 
@@ -86,7 +84,7 @@ There are cases where determining a type for a particular object can be difficul
 
 You can run MAAS-UI on your local machine assuming that you already have an instance of MAAS running somewhere that you can connect to.
 
-In the following sections we assume that you're having your MAAS back-end running on `http:/10.10.0.30:5240`. This can easily be adapted to other IPs, names, or `https`.
+In the following sections we assume that you're having your MAAS back-end running on `http://10.10.0.30:5240`. This can easily be adapted to other IPs, names, or `https`.
 
 ### Setup MAAS-UI, node and yarn
 
@@ -117,7 +115,7 @@ You need at least 5GB of free space to setup MAAS-UI (about 2.6gb of node module
 
 #### Integration tests
 
-- To run cypress end to end test run `yarn cypress-open`
+- To run Cypress end-to-end tests run `yarn cypress-open`
 - Click `start e2e testing`
 - Click the browser you'd like to use for our test
 
@@ -166,7 +164,7 @@ git push <github-username> <my-branch>
 Now you are ready to create a PR from GitHub by browsing to the branch that you just set up.
 
 *Important tips*:
-- We use conventional commits and conventional PRs and the format will be enforced by our CI. To make your life easy, you should commit using them right from the start
+- We use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) and conventional PRs and the format will be enforced by our CI. To make your life easy, you should commit using them right from the start. You can see a list of valid scopes [here](https://github.com/canonical/maas-ui/blob/main/.github/workflows/pr-lint.yml#L19-L37)
 - Although you can technically make a PR for contributions that you created on on the `main` branch, we encourage you to create a branch for your work and commit often.
 - Now all you need to do is open a PR and we will check your code. If there is nothing malicious in it we will run our CI over it, start testing and will get back to you.
 
@@ -327,7 +325,7 @@ multipass shell snap-maas
 ### LXD
 
 ```shell
-lxc exec snap-maas bash -- su ubuntu
+lxc exec snap-maas -- su ubuntu
 ```
 
 Now install MAAS and a test database:
