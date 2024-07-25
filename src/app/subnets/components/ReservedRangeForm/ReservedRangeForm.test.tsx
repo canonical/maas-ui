@@ -8,6 +8,7 @@ import { ipRangeActions } from "@/app/store/iprange";
 import type { IPRange } from "@/app/store/iprange/types";
 import { IPRangeType } from "@/app/store/iprange/types";
 import type { RootState } from "@/app/store/root/types";
+import type { Subnet } from "@/app/store/subnet/types";
 import * as factory from "@/testing/factories";
 import {
   userEvent,
@@ -22,17 +23,23 @@ const mockStore = configureStore();
 describe("ReservedRangeForm", () => {
   let state: RootState;
   let ipRange: IPRange;
+  let subnet: Subnet;
 
   beforeEach(() => {
     ipRange = factory.ipRange({
       comment: "what a beaut",
-      start_ip: "11.1.1.1",
+      start_ip: "10.10.0.1",
+      end_ip: "10.10.0.100",
       type: IPRangeType.Reserved,
       user: "wombat",
     });
+    subnet = factory.subnet({ cidr: "10.10.0.0/24" });
     state = factory.rootState({
       iprange: factory.ipRangeState({
         items: [ipRange],
+      }),
+      subnet: factory.subnetState({
+        items: [subnet],
       }),
     });
   });
@@ -48,6 +55,7 @@ describe("ReservedRangeForm", () => {
           <ReservedRangeForm
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
+            subnetId={subnet.id}
           />
         </MemoryRouter>
       </Provider>
@@ -62,7 +70,10 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm setSidePanelContent={vi.fn()} />
+          <ReservedRangeForm
+            setSidePanelContent={vi.fn()}
+            subnetId={subnet.id}
+          />
         </MemoryRouter>
       </Provider>
     );
@@ -79,16 +90,17 @@ describe("ReservedRangeForm", () => {
           <ReservedRangeForm
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
+            subnetId={subnet.id}
           />
         </MemoryRouter>
       </Provider>
     );
     expect(
       screen.getByRole("textbox", { name: Labels.StartIp })
-    ).toHaveAttribute("value", ipRange.start_ip);
+    ).toHaveAttribute("value", ipRange.start_ip.split(".")[-1]); // value should only be the last octet of the address
     expect(screen.getByRole("textbox", { name: Labels.EndIp })).toHaveAttribute(
       "value",
-      ipRange.end_ip
+      ipRange.end_ip.split(".")[-1] // value should only be the last octet of the address
     );
     expect(
       screen.getByRole("textbox", { name: Labels.Comment })
@@ -107,6 +119,7 @@ describe("ReservedRangeForm", () => {
           <ReservedRangeForm
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
+            subnetId={subnet.id}
           />
         </MemoryRouter>
       </Provider>
@@ -129,18 +142,18 @@ describe("ReservedRangeForm", () => {
           <ReservedRangeForm
             createType={IPRangeType.Reserved}
             setSidePanelContent={vi.fn()}
-            subnetId={1}
+            subnetId={subnet.id}
           />
         </MemoryRouter>
       </Provider>
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.StartIp }),
-      "1.1.1.1"
+      "1"
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.EndIp }),
-      "1.1.1.2"
+      "99"
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: Labels.Comment }),
@@ -149,9 +162,9 @@ describe("ReservedRangeForm", () => {
     await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
     const expected = ipRangeActions.create({
       comment: "reserved",
-      end_ip: "1.1.1.2",
-      start_ip: "1.1.1.1",
-      subnet: 1,
+      start_ip: "10.10.0.1",
+      end_ip: "10.10.0.99",
+      subnet: subnet.id,
       type: IPRangeType.Reserved,
     });
     await waitFor(() =>
@@ -171,19 +184,20 @@ describe("ReservedRangeForm", () => {
           <ReservedRangeForm
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
+            subnetId={subnet.id}
           />
         </MemoryRouter>
       </Provider>
     );
     const startIpField = screen.getByRole("textbox", { name: Labels.StartIp });
     await userEvent.clear(startIpField);
-    await userEvent.type(startIpField, "1.2.3.4");
+    await userEvent.type(startIpField, "20");
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     const expected = ipRangeActions.update({
       comment: ipRange.comment,
       end_ip: ipRange.end_ip,
       id: ipRange.id,
-      start_ip: "1.2.3.4",
+      start_ip: "10.10.0.20",
     });
     await waitFor(() =>
       expect(
@@ -204,19 +218,20 @@ describe("ReservedRangeForm", () => {
           <ReservedRangeForm
             ipRangeId={ipRange.id}
             setSidePanelContent={vi.fn()}
+            subnetId={subnet.id}
           />
         </MemoryRouter>
       </Provider>
     );
     const startIpField = screen.getByRole("textbox", { name: Labels.StartIp });
     await userEvent.clear(startIpField);
-    await userEvent.type(startIpField, "1.2.3.4");
+    await userEvent.type(startIpField, "4");
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     const expected = ipRangeActions.update({
       comment: ipRange.comment,
       end_ip: ipRange.end_ip,
       id: ipRange.id,
-      start_ip: "1.2.3.4",
+      start_ip: "10.10.0.4",
     });
     await waitFor(() => {
       const actual = store
@@ -238,6 +253,7 @@ describe("ReservedRangeForm", () => {
           <ReservedRangeForm
             createType={IPRangeType.Dynamic}
             setSidePanelContent={vi.fn()}
+            subnetId={subnet.id}
           />
         </MemoryRouter>
       </Provider>
@@ -249,7 +265,7 @@ describe("ReservedRangeForm", () => {
 
   it("displays an error when start and end IP addresses are not provided", async () => {
     renderWithBrowserRouter(
-      <ReservedRangeForm setSidePanelContent={vi.fn()} />,
+      <ReservedRangeForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
       {
         state,
         route: "/machines",
@@ -266,5 +282,59 @@ describe("ReservedRangeForm", () => {
     expect(
       await screen.findByLabelText(Labels.EndIp)
     ).toHaveAccessibleErrorMessage(/End IP is required/);
+  });
+
+  it("displays an error when an invalid IP address is entered", async () => {
+    renderWithBrowserRouter(
+      <ReservedRangeForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
+      {
+        state,
+        route: "/machines",
+      }
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.StartIp }),
+      "abc"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.EndIp }),
+      "abc"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
+    expect(
+      await screen.findByLabelText(Labels.StartIp)
+    ).toHaveAccessibleErrorMessage(/This is not a valid IP address/);
+    expect(
+      await screen.findByLabelText(Labels.EndIp)
+    ).toHaveAccessibleErrorMessage(/This is not a valid IP address/);
+  });
+
+  it("displays an error when an out-of-range IP address is entered", async () => {
+    renderWithBrowserRouter(
+      <ReservedRangeForm setSidePanelContent={vi.fn()} subnetId={subnet.id} />,
+      {
+        state,
+        route: "/machines",
+      }
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.StartIp }),
+      "0"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.EndIp }),
+      "255"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
+    expect(
+      await screen.findByLabelText(Labels.StartIp)
+    ).toHaveAccessibleErrorMessage(
+      /The IP address is outside of the subnet's range/
+    );
+    expect(
+      await screen.findByLabelText(Labels.EndIp)
+    ).toHaveAccessibleErrorMessage(
+      /The IP address is outside of the subnet's range/
+    );
   });
 });
