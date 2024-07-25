@@ -98,15 +98,10 @@ const ReservedRangeForm = ({
     );
   }
 
-  if (!subnet) {
+  if (!subnet && subnetId) {
+    // Return null if subnet ID is provided but subnet has not been loaded yet
     return null;
   }
-
-  const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
-  const [immutableOctets, _] = getImmutableAndEditableOctets(startIp, endIp);
-  const networkAddress = subnet.cidr.split("/")[0];
-  const prefixLength = parseInt(subnet.cidr.split("/")[1]);
-  const subnetIsIpv4 = isIPv4(networkAddress);
 
   const ReservedRangeSchema = Yup.object().shape({
     comment: Yup.string(),
@@ -115,23 +110,34 @@ const ReservedRangeForm = ({
       .test({
         name: "ip-is-valid",
         message: "This is not a valid IP address",
-        test: (ip_address) => isIP(formatIpAddress(ip_address, subnet.cidr)),
+        test: (ip_address) =>
+          subnet
+            ? isIP(formatIpAddress(ip_address, subnet.cidr))
+            : isIP(`${ip_address}`),
       })
       .test({
         name: "ip-is-in-subnet",
         message: "The IP address is outside of the subnet's range.",
         test: (ip_address) => {
-          const ip = formatIpAddress(ip_address, subnet.cidr);
-          if (subnetIsIpv4) {
-            return isIpInSubnet(ip, subnet.cidr as string);
-          } else {
-            try {
-              const addr = ipaddr.parse(ip);
-              const netAddr = ipaddr.parse(networkAddress);
-              return addr.match(netAddr, prefixLength);
-            } catch (e) {
-              return false;
+          if (subnet) {
+            const ip = formatIpAddress(ip_address, subnet.cidr);
+            const networkAddress = subnet.cidr.split("/")[0];
+            const subnetIsIpv4 = isIPv4(networkAddress);
+            if (subnetIsIpv4) {
+              return isIpInSubnet(ip, subnet.cidr as string);
+            } else {
+              try {
+                const prefixLength = parseInt(subnet.cidr.split("/")[1]);
+                const addr = ipaddr.parse(ip);
+                const netAddr = ipaddr.parse(networkAddress);
+                return addr.match(netAddr, prefixLength);
+              } catch (e) {
+                return false;
+              }
             }
+          } else {
+            // Return "true" if there is no subnet - we only need this validation when reserving a range for a subnet
+            return true;
           }
         },
       }),
@@ -140,23 +146,34 @@ const ReservedRangeForm = ({
       .test({
         name: "ip-is-valid",
         message: "This is not a valid IP address",
-        test: (ip_address) => isIP(formatIpAddress(ip_address, subnet.cidr)),
+        test: (ip_address) =>
+          subnet
+            ? isIP(formatIpAddress(ip_address, subnet.cidr))
+            : isIP(`${ip_address}`),
       })
       .test({
         name: "ip-is-in-subnet",
         message: "The IP address is outside of the subnet's range.",
         test: (ip_address) => {
-          const ip = formatIpAddress(ip_address, subnet.cidr);
-          if (subnetIsIpv4) {
-            return isIpInSubnet(ip, subnet.cidr as string);
-          } else {
-            try {
-              const addr = ipaddr.parse(ip);
-              const netAddr = ipaddr.parse(networkAddress);
-              return addr.match(netAddr, prefixLength);
-            } catch (e) {
-              return false;
+          if (subnet) {
+            const ip = formatIpAddress(ip_address, subnet.cidr);
+            const networkAddress = subnet.cidr.split("/")[0];
+            const subnetIsIpv4 = isIPv4(networkAddress);
+            if (subnetIsIpv4) {
+              return isIpInSubnet(ip, subnet.cidr as string);
+            } else {
+              try {
+                const prefixLength = parseInt(subnet.cidr.split("/")[1]);
+                const addr = ipaddr.parse(ip);
+                const netAddr = ipaddr.parse(networkAddress);
+                return addr.match(netAddr, prefixLength);
+              } catch (e) {
+                return false;
+              }
             }
+          } else {
+            // Return "true" if there is no subnet - we only need this validation when reserving a range for a subnet
+            return true;
           }
         },
       }),
@@ -174,12 +191,25 @@ const ReservedRangeForm = ({
     let endIp = "";
 
     if (isEditing && ipRange) {
-      startIp = subnetIsIpv4
-        ? ipRange?.start_ip.replace(`${immutableOctets}.`, "")
-        : ipRange?.start_ip.replace(`${networkAddress}`, "");
-      endIp = subnetIsIpv4
-        ? ipRange?.end_ip.replace(`${immutableOctets}.`, "")
-        : ipRange?.end_ip.replace(`${networkAddress}`, "");
+      if (subnet) {
+        const networkAddress = subnet.cidr.split("/")[0];
+        const subnetIsIpv4 = isIPv4(networkAddress);
+        const [firstIP, lastIp] = getIpRangeFromCidr(subnet.cidr);
+        const [immutableOctets, _] = getImmutableAndEditableOctets(
+          firstIP,
+          lastIp
+        );
+
+        startIp = subnetIsIpv4
+          ? ipRange?.start_ip.replace(`${immutableOctets}.`, "")
+          : ipRange?.start_ip.replace(`${networkAddress}`, "");
+        endIp = subnetIsIpv4
+          ? ipRange?.end_ip.replace(`${immutableOctets}.`, "")
+          : ipRange?.end_ip.replace(`${networkAddress}`, "");
+      } else {
+        startIp = ipRange.start_ip;
+        endIp = ipRange.end_ip;
+      }
     }
 
     return {
@@ -202,9 +232,15 @@ const ReservedRangeForm = ({
         label: `${isEditing ? "Edit" : "Create"} reserved range form`,
       }}
       onSubmit={(values) => {
+        // If a subnet is provided, PrefixedIpInput fields are used and the IP addresses need to be formatted
+        const startIp = subnet
+          ? formatIpAddress(values.start_ip, subnet.cidr)
+          : values.start_ip;
+        const endIp = subnet
+          ? formatIpAddress(values.end_ip, subnet.cidr)
+          : values.end_ip;
+
         // Clear the errors from the previous submission.
-        const startIp = formatIpAddress(values.start_ip, subnet.cidr);
-        const endIp = formatIpAddress(values.end_ip, subnet.cidr);
         dispatch(cleanup());
         if (!isEditing && computedCreateType) {
           dispatch(
@@ -237,24 +273,47 @@ const ReservedRangeForm = ({
       {...props}
     >
       <Row>
-        <Col size={12}>
-          <FormikField
-            cidr={subnet.cidr}
-            component={PrefixedIpInput}
-            label={Labels.StartIp}
-            name="start_ip"
-            required
-          />
-        </Col>
-        <Col size={12}>
-          <FormikField
-            cidr={subnet.cidr}
-            component={PrefixedIpInput}
-            label={Labels.EndIp}
-            name="end_ip"
-            required
-          />
-        </Col>
+        {subnet ? (
+          <>
+            <Col size={12}>
+              <FormikField
+                cidr={subnet.cidr}
+                component={PrefixedIpInput}
+                label={Labels.StartIp}
+                name="start_ip"
+                required
+              />
+            </Col>
+            <Col size={12}>
+              <FormikField
+                cidr={subnet.cidr}
+                component={PrefixedIpInput}
+                label={Labels.EndIp}
+                name="end_ip"
+                required
+              />
+            </Col>
+          </>
+        ) : (
+          <>
+            <Col size={12}>
+              <FormikField
+                label={Labels.StartIp}
+                name="start_ip"
+                required
+                type="text"
+              />
+            </Col>
+            <Col size={12}>
+              <FormikField
+                label={Labels.EndIp}
+                name="end_ip"
+                required
+                type="text"
+              />
+            </Col>
+          </>
+        )}
         {isEditing || computedCreateType === IPRangeType.Reserved ? (
           <Col size={12}>
             <FormikField
