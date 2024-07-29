@@ -2,11 +2,9 @@ import { useEffect, useCallback, useContext } from "react";
 
 import type { QueryFunction, UseQueryOptions } from "@tanstack/react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
 
 import type { QueryKey } from "@/app/api/query-client";
 import { WebSocketContext } from "@/app/base/websocket-context";
-import statusSelectors from "@/app/store/status/selectors";
 import type { WebSocketEndpointModel } from "@/websocket-client";
 import { WebSocketMessageType } from "@/websocket-client";
 
@@ -52,14 +50,16 @@ export function useWebsocketAwareQuery<
   >
 ) {
   const queryClient = useQueryClient();
-  const connectedCount = useSelector(statusSelectors.connectedCount);
   const { subscribe } = useWebSocket();
-
   const queryModelKey = Array.isArray(queryKey) ? queryKey[0] : "";
 
-  useEffect(() => {
-    queryClient.invalidateQueries();
-  }, [connectedCount, queryClient, queryKey]);
+  // TODO: Investigate why the code below causes the zones endpoint to be polled 50 times on page load
+  // https://warthogs.atlassian.net/browse/MAASENG-3558
+
+  // const connectedCount = useSelector(statusSelectors.connectedCount);
+  // useEffect(() => {
+  //   queryClient.invalidateQueries();
+  // }, [connectedCount, queryClient, queryKey]);
 
   useEffect(() => {
     return subscribe(
