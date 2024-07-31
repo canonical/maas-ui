@@ -35,7 +35,14 @@ describe("EditPhysicalForm", () => {
         }),
       }),
       subnet: factory.subnetState({
-        items: [factory.subnet({ id: 1, vlan: 1 }), factory.subnet()],
+        items: [
+          factory.subnet({
+            id: 1,
+            vlan: 1,
+            cidr: "10.0.0.0/24",
+            statistics: factory.subnetStatistics({ ip_version: 4 }),
+          }),
+        ],
         loaded: true,
       }),
       vlan: factory.vlanState({
@@ -67,6 +74,68 @@ describe("EditPhysicalForm", () => {
       { route: "/machines", state }
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  });
+
+  it("displays an error if an IP address is not valid", async () => {
+    renderWithBrowserRouter(
+      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
+      { route: "/machines", state }
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Subnet" }),
+      state.subnet.items[0].id.toString()
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "IP assignment" }),
+      "Static (Client configured)"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "IP address" }),
+      "abc"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
+
+    expect(
+      screen.getByText("This is not a valid IP address")
+    ).toBeInTheDocument();
+  });
+
+  it("displays an error if an IP address is out of range", async () => {
+    renderWithBrowserRouter(
+      <EditPhysicalForm close={vi.fn()} nicId={1} systemId="abc123" />,
+      { route: "/machines", state }
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Subnet" }),
+      state.subnet.items[0].id.toString()
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "IP assignment" }),
+      "Static (Client configured)"
+    );
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "IP address" }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "IP address" }),
+      "255"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
+
+    expect(
+      screen.getByText("The IP address is outside of the subnet's range.")
+    ).toBeInTheDocument();
   });
 
   it("correctly dispatches actions to edit a physical interface", async () => {
