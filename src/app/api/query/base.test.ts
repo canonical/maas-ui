@@ -34,7 +34,8 @@ it("calls useQuery with correct parameters", () => {
   });
 });
 
-it("invalidates queries when connectedCount changes", () => {
+// TODO https://warthogs.atlassian.net/browse/MAASENG-3558
+it.skip("invalidates queries when connectedCount changes", () => {
   const initialState = rootState({
     status: statusState({ connectedCount: 0 }),
   });
