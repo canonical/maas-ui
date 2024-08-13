@@ -218,9 +218,10 @@ const EditPhysicalForm = ({
         // Clear the errors from the previous submission.
         dispatch(cleanup());
 
-        const ip = values.ip_address
-          ? formatIpAddress(values.ip_address, values.subnet_cidr)
-          : "";
+        const ip =
+          values.ip_address && values.subnet_cidr
+            ? formatIpAddress(values.ip_address, values.subnet_cidr)
+            : "";
         type Payload = EditPhysicalValues & {
           interface_id: NetworkInterface["id"];
           system_id: Machine["system_id"];

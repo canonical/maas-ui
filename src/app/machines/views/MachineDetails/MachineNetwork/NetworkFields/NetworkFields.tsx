@@ -33,7 +33,7 @@ export type NetworkValues = {
   mode?: NetworkLinkMode | "";
   fabric: NodeVlan["fabric_id"] | "";
   subnet?: NetworkLink["subnet_id"] | "";
-  subnet_cidr: Subnet["cidr"] | "";
+  subnet_cidr?: Subnet["cidr"] | "";
   vlan: NetworkInterface["vlan_id"] | "";
 };
 
