@@ -181,7 +181,11 @@ const NetworkFields = ({
               const subnet = subnets.find(
                 ({ id }) => id === toFormikNumber(values.subnet)
               );
-              if (interfaceType === NetworkInterfaceTypes.PHYSICAL && subnet) {
+              if (
+                interfaceType === NetworkInterfaceTypes.PHYSICAL &&
+                subnet &&
+                editing
+              ) {
                 const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
                 const [immutableOctets, _] = getImmutableAndEditableOctets(
                   startIp,
@@ -222,7 +226,7 @@ const NetworkFields = ({
         />
       ) : null}
       {values.mode === NetworkLinkMode.STATIC ? (
-        interfaceType === NetworkInterfaceTypes.PHYSICAL ? (
+        interfaceType === NetworkInterfaceTypes.PHYSICAL && editing ? (
           values.subnet_cidr ? (
             <FormikField
               cidr={values.subnet_cidr}
