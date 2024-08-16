@@ -88,10 +88,10 @@ sudo nano /etc/netplan/99-maas-kvm-net.yaml
 12. Paste the following config, and save
 ```yaml
 network:     
- ethernets:    
-   eth1:    
-     addresses: [10.20.0.2/24]  
- version: 2
+  ethernets:    
+    eth1:    
+      addresses: [10.20.0.2/24]  
+  version: 2
 ```
 13. Apply the new netplan configuration
 ```sh
