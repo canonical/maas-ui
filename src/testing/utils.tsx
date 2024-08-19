@@ -413,22 +413,35 @@ export const expectTooltipOnHover = async (
   }
 };
 
-const generateWrapper =
-  (store = configureStore()(rootStateFactory())) =>
-  ({ children }: { children: ReactNode }) => (
+type Hook = Parameters<typeof renderHook>[0];
+export const renderHookWithMockStore = (
+  hook: Hook,
+  options?: { initialState?: RootState }
+) => {
+  let store = configureStore()(options?.initialState || rootStateFactory());
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <WebSocketProvider>
       <Provider store={store}>{children}</Provider>
     </WebSocketProvider>
   );
 
-type Hook = Parameters<typeof renderHook>[0];
+  const result = renderHook(hook, { wrapper });
 
-export const renderHookWithMockStore = (
-  hook: Hook,
-  options?: { initialState?: RootState }
-) => {
-  const store = configureStore()(options?.initialState || rootStateFactory());
-  return renderHook(hook, { wrapper: generateWrapper(store) });
+  const customRerender = (
+    newHook?: Hook,
+    { state: newState }: { state?: Partial<RootState> } = {}
+  ) => {
+    if (newState) {
+      store = configureStore()({ ...newState });
+    }
+    result.rerender(newHook);
+  };
+
+  return {
+    ...result,
+    rerender: customRerender,
+    store,
+  };
 };
 
 export const renderHookWithQueryClient = (hook: Hook) => {

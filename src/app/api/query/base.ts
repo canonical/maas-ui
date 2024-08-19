@@ -1,5 +1,6 @@
 import { useEffect, useCallback, useContext } from "react";
 
+import { usePrevious } from "@canonical/react-components";
 import type { QueryFunction, UseQueryOptions } from "@tanstack/react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
@@ -56,10 +57,13 @@ export function useWebsocketAwareQuery<
   const { subscribe } = useWebSocket();
 
   const queryModelKey = Array.isArray(queryKey) ? queryKey[0] : "";
+  const previousConnectedCount = usePrevious(connectedCount);
 
   useEffect(() => {
-    queryClient.invalidateQueries();
-  }, [connectedCount, queryClient, queryKey]);
+    if (connectedCount !== previousConnectedCount) {
+      queryClient.invalidateQueries({ queryKey });
+    }
+  }, [connectedCount, previousConnectedCount, queryClient, queryKey]);
 
   useEffect(() => {
     return subscribe(
