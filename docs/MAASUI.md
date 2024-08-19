@@ -196,7 +196,7 @@ You can directly pass `state` as an option to both of these functions, and a moc
 
 - `getByTextContent`: Helps locate text content that may be split across multiple DOM nodes. Returns `true` if the provided text is found in the DOM, even if it's broken up across multiple nodes.
 
-You can see the full suite of test utils [here](https://github.com/canonical/maas-ui/blob/main/src/testing/utils.tsx).
+You can see the full suite in the [test utils file on GitHub](https://github.com/canonical/maas-ui/blob/main/src/testing/utils.tsx).
 
 #### Test attributes
 
