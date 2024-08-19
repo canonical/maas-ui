@@ -178,15 +178,23 @@ As a general rule, we concentrate on user-centric testing and avoid testing impl
 
 #### Vitest and testing-library
 
-Vitest is the native testing framework for Vite. The Vitest API is (mostly) a drop-in replacement for Jest, which we used in the past. We use Vitest for our integration/unit tests (files that end in `.test.tsx`). By default, when running these tests, Vitest will enter "watch" mode - as soon as file changes are detected, the test(s) will automatically re-run.
+We use [Vitest](https://vitest.dev/) for unit and integration tests (`.test.tsx` files). Vitest is the native testing framework for Vite. Its API is (mostly) a drop-in replacement for Jest, which we used in the past.
 
-React Testing Library is a package from the `testing-library` collection - it's a library of functions that help us test our React code. React Testing Library focuses on accessible testing, and discourages testing implementation details (internal component state, component lifecycle functions etc.). To this end, it renders the React code into actual DOM nodes, as opposed to libraries like Enzyme (the previous standard for testing React) which render the React DOM. Components should be accessed through accessible attributes such as roles, names, and labels.
+When running these tests Vitest enters the "watch" mode by default - as soon as file changes are detected, the test(s) will automatically re-run.
+
+[React Testing Library](https://testing-library.com/docs/) is our primary tool for testing React components. It encourages testing user interactions rather than implementation details (internal component state, component lifecycle functions etc.).
+
+To this end, it renders the React code into actual DOM nodes, as opposed to libraries like Enzyme (the previous standard for testing React) which render the React DOM. Components should be accessed through accessible attributes such as roles, names, and labels.
 
 #### Testing utility functions
 
-Many of our tests require providers for the Redux store and the React router. In order to avoid code repetition, we've created some utility functions that automatically wrap the code you want to render with these providers - `renderWithMockStore`, and `renderWithBrowserRouter`. You can directly pass `state` as an option to both of these functions, and a mock store will be created internally and provided to the rendered components. `renderWithBrowserRouter` can also take a `route` option to specify a route that the DOM should be rendered on.
+Many of our tests require providers for the Redux store and the React router. We provide utility functions that automatically wrap the code you want to render with these providers:
+- `renderWithMockStore`: Wraps components with a Redux store provider.
+- `renderWithBrowserRouter`: Wraps components with both Redux and React Router providers.
 
-Due to the complex nature of some components, text content is sometimes broken up across multiple elements in the DOM. To get around this when checking for the presence of specific text content, you can use `getByTextContent" - this function will return `true` if the provided text is found in the DOM, even if it's broken up across multiple nodes.
+You can directly pass `state` as an option to both of these functions, and a mock store will be created internally and provided to the rendered components. `renderWithBrowserRouter` can also take a `route` option to specify a route that the DOM should be rendered on.
+
+- `getByTextContent`: Helps locate text content that may be split across multiple DOM nodes. Returns `true` if the provided text is found in the DOM, even if it's broken up across multiple nodes.
 
 You can see the full suite of test utils [here](https://github.com/canonical/maas-ui/blob/main/src/testing/utils.tsx).
 
