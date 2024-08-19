@@ -1,6 +1,6 @@
 ---
 name: '{{ env.WORKFLOW }} failure'
-about: ''
+about: 'CI failure'
 title: '{{ env.BRANCH_NAME }} {{ env.WORKFLOW }} run failed'
 assignees: ''
 
