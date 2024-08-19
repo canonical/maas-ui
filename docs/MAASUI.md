@@ -176,6 +176,28 @@ You should avoid using \`TSFixMe\` unless you really get stuck.
 
 As a general rule, we concentrate on user-centric testing and avoid testing implementation details. For that reason usage of test attributes such as `data-testid` should be avoided. Any occurrence of such will usually be for historical reasons.
 
+#### Vitest and testing-library
+
+We use [Vitest](https://vitest.dev/) for unit and integration tests (`.test.tsx` files). Vitest is the native testing framework for Vite. Its API is (mostly) a drop-in replacement for Jest, which we used in the past.
+
+When running these tests Vitest enters the "watch" mode by default - as soon as file changes are detected, the test(s) will automatically re-run.
+
+[React Testing Library](https://testing-library.com/docs/) is our primary tool for testing React components. It encourages testing user interactions rather than implementation details (internal component state, component lifecycle functions etc.).
+
+To this end, it renders the React code into actual DOM nodes, as opposed to libraries like Enzyme (the previous standard for testing React) which render the React DOM. Components should be accessed through accessible attributes such as roles, names, and labels.
+
+#### Testing utility functions
+
+Many of our tests require providers for the Redux store and the React router. We provide utility functions that automatically wrap the code you want to render with these providers:
+- `renderWithMockStore`: Wraps components with a Redux store provider.
+- `renderWithBrowserRouter`: Wraps components with both Redux and React Router providers.
+
+You can directly pass `state` as an option to both of these functions, and a mock store will be created internally and provided to the rendered components. `renderWithBrowserRouter` can also take a `route` option to specify a route that the DOM should be rendered on.
+
+- `getByTextContent`: Helps locate text content that may be split across multiple DOM nodes. Returns `true` if the provided text is found in the DOM, even if it's broken up across multiple nodes.
+
+You can see the full suite in the [test utils file on GitHub](https://github.com/canonical/maas-ui/blob/main/src/testing/utils.tsx).
+
 #### Test attributes
 
 **Note: This is an OUTDATED practice**
