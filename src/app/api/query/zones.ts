@@ -4,8 +4,12 @@ import { fetchZones } from "@/app/api/endpoints";
 import { useWebsocketAwareQuery } from "@/app/api/query/base";
 import type { Zone, ZonePK } from "@/app/store/zone/types";
 
+const zoneKeys = {
+  list: ["zones"] as const,
+};
+
 export const useZones = () => {
-  return useWebsocketAwareQuery(["zones"], fetchZones);
+  return useWebsocketAwareQuery(zoneKeys.list, fetchZones);
 };
 
 export const useZoneCount = () =>
@@ -14,6 +18,6 @@ export const useZoneCount = () =>
   });
 
 export const useZoneById = (id?: ZonePK | null) =>
-  useWebsocketAwareQuery(["zones"], fetchZones, {
+  useWebsocketAwareQuery(zoneKeys.list, fetchZones, {
     select: selectById<Zone>(id ?? null),
   });

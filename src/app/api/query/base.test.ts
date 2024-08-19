@@ -34,6 +34,31 @@ it("calls useQuery with correct parameters", () => {
   });
 });
 
+it("skips query invalidation when connectedCount is unchanged", () => {
+  const initialState = rootState({
+    status: statusState({ connectedCount: 0 }),
+  });
+  const { rerender } = renderHookWithMockStore(
+    () => useWebsocketAwareQuery(mockQueryKey, mockQueryFn),
+    { initialState }
+  );
+
+  const mockInvalidateQueries = vi.fn();
+  const mockQueryClient: Partial<reactQuery.QueryClient> = {
+    invalidateQueries: mockInvalidateQueries,
+  };
+  vi.mocked(reactQuery.useQueryClient).mockReturnValue(
+    mockQueryClient as reactQuery.QueryClient
+  );
+
+  rerender(() => useWebsocketAwareQuery(mockQueryKey, mockQueryFn), {
+    state: rootState({
+      status: statusState({ connectedCount: 0 }),
+    }),
+  });
+  expect(mockInvalidateQueries).not.toHaveBeenCalled();
+});
+
 it("invalidates queries when connectedCount changes", () => {
   const initialState = rootState({
     status: statusState({ connectedCount: 0 }),
@@ -51,8 +76,10 @@ it("invalidates queries when connectedCount changes", () => {
     mockQueryClient as reactQuery.QueryClient
   );
 
-  rerender({
-    initialState: rootState({ status: statusState({ connectedCount: 1 }) }),
+  rerender(() => useWebsocketAwareQuery(mockQueryKey, mockQueryFn), {
+    state: rootState({
+      status: statusState({ connectedCount: 1 }),
+    }),
   });
   expect(mockInvalidateQueries).toHaveBeenCalled();
 });
