@@ -39,9 +39,15 @@ The high-level interactions between the React side of the frontend and the API a
 
 ## React
 
+### Vite
+
+MAAS UI is bootstrapped with [Vite](https://vitejs.dev/). Vite runs the development server while you make changes to the app locally, and builds the app for production when pull requests are merged. Rather than bundling everything with Webpack every time changes are made, Vite serves the TypeScript modules directly to the browser when running in development mode, so you'll see requests for these modules in the network tab of your browser's dev tools. If you make a change to a file, Vite will only request the updated file, and keep the other necessary files loaded, which means that changes are displayed almost instantly in the browser. 
+
+We also make use of lazy-loading for our routes - this means that Vite will only request the modules it needs for a given route, and nothing else, resulting in faster initial load times for the app. At build time, each route is minified and bundled into its own chunk. In order to keep all the chunks small, we've also defined some [manual chunks](https://github.com/canonical/maas-ui/blob/main/vite.config.ts#L7-L12) for larger modules and dependencies.
+
 ### Hooks
 
-We use React >v17.0.0 which has support for [React hooks](https://reactjs.org/docs/hooks-intro.html). While it’s still possible to write components using the class syntax, all new components should be function components that use state hooks where appropriate.
+We use React >v18.0.0 which has support for [React hooks](https://reactjs.org/docs/hooks-intro.html). While it’s still possible to write components using the class syntax, all new components should be function components that use state hooks where appropriate.
 
 ### Components
 
