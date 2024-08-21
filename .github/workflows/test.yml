@@ -103,7 +103,7 @@ jobs:
           ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
           installTics: true
           tmpdir: /tmp/tics
-          branchdir: ${{ GITHUB_WORKSPACE }}
+          branchdir: ${{ github.workspace }}
 
       - name: Upload TICS Report
         if: always()
