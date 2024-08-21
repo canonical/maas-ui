@@ -88,6 +88,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: .coverage
       - uses: actions/checkout@v4
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
