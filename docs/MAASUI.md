@@ -39,9 +39,18 @@ The high-level interactions between the React side of the frontend and the API a
 
 ## React
 
+### Vite
+
+MAAS UI is bootstrapped with [Vite](https://vitejs.dev/). The main features that MAAS UI uses are:
+
+ - Hot module replacement
+ - [Manual chunks](https://github.com/canonical/maas-ui/blob/main/vite.config.ts#L7-L12) at build time
+ - Native ES modules
+ - Lazy-loading / route-based code splitting
+
 ### Hooks
 
-We use React >v17.0.0 which has support for [React hooks](https://reactjs.org/docs/hooks-intro.html). While it’s still possible to write components using the class syntax, all new components should be function components that use state hooks where appropriate.
+We use React >v18.0.0 which has support for [React hooks](https://reactjs.org/docs/hooks-intro.html). While it’s still possible to write components using the class syntax, all new components should be function components that use state hooks where appropriate.
 
 ### Components
 
