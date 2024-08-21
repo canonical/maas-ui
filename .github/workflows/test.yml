@@ -93,6 +93,8 @@ jobs:
         with:
           name: coverage-report
           path: .coverage
+      - name: Display structure of downloaded files
+        run: ls -R .coverage
       - uses: actions/checkout@v4
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
