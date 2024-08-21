@@ -97,6 +97,7 @@ jobs:
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
         with:
+          # Use 'qserver' for push to main branch, 'client' for others. See: https://github.com/tiobe/tics-github-action?tab=readme-ov-file#client-default
           mode: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'qserver' || 'client' }}
           project: maas-ui
           viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
