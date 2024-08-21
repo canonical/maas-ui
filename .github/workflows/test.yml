@@ -92,7 +92,7 @@ jobs:
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
         with:
-          mode: qserver
+          mode: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'qserver' || 'client' }}
           project: maas-ui
           viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
           ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
