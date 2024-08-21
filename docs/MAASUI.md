@@ -1,8 +1,11 @@
 # MAAS UI
 
-## Content
+## Contents
 
-- [Usability](#usability)
+- [Project conventions](#project-conventions)
+  - [Usability](#usability)
+  - [Code style](#code-style)
+  - [React components](#react-components)
 - [Code structure](#code-structure)
 - [React](#react)
   - [Hooks](#hooks)
@@ -26,10 +29,34 @@
   - [Cypress](#cypress)
   - [Playwright](#playwright)
 
-## Usability
+## Project conventions
+
+### Usability
 
 Our unofficial policy on responsive design in MAAS-UI is that everything should be clearly visible on all screen sizes, but it doesn't necessarily have to be the most visually appealing on small screens.
 Only a small percentage of users interact with the MAAS client on mobile devices, but it's not uncommon for people to use it on one half of their monitor viewport.
+
+### Code style
+
+Prioritize clear, self-explanatory code, and only use JSDoc to provide context or additional information that cannot be inferred from the code itself.
+
+### React Components
+
+We encourage [component-driven](https://www.componentdriven.org/) development, and use of [Storybook](https://storybook.js.org/) for interactive documentation.
+
+Follow the presentational and container components pattern where appropriate. Read more on good component design in the  [React documentation](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state).
+
+When developing new features or extending existing ones, consider the following:
+
+- Think of all the variations of a UI component and how each can be represented using props.
+- Prefer a single `variant` prop for representing visual variations of a component.
+
+```tsx
+<Button variant="primary" />
+```
+
+- Create stories for each variant in [Storybook](https://storybook.js.org/).
+- Add state management, side effects, and application-specific logic into container component passing the state as props to the presentational component.
 
 ## Code structure
 
@@ -172,6 +199,8 @@ The `sendMessage` function handles sending WebSocket messages. It first dispatch
 `setupWebSocket` and `watchWebSockets` are used for setting up and managing the WebSocket connection. When the WebSocket connection is requested (status/websocketConnect action is dispatched), watchWebSockets calls setupWebSocket. Inside setupWebSocket, it tries to create a WebSocket connection and then sets up several watchers inside a race block, which means it's waiting for either these watchers to finish or for the status/websocketDisconnect action to be dispatched.
 
 ### TypeScript
+
+maas-ui built with TypeScript in strict mode. Any new modules in should be written in [TypeScript](https://www.typescriptlang.org/).
 
 #### TSFixMe
 
