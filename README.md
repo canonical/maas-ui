@@ -7,6 +7,7 @@
 ![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Code Coverage](https://img.shields.io/badge/code--coverage-report-brightgreen.svg)](https://canonical.github.io/maas-ui/)
+[![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml)
 
 - [About](#about)
 - [MAAS UI Overview](#maas-ui-overview)
