@@ -16,6 +16,7 @@ import type { DeviceMeta, DeviceStatus } from "@/app/store/device/types";
 import type { GeneralMeta } from "@/app/store/general/types";
 import type { MachineMeta, MachineStatus } from "@/app/store/machine/types";
 import type { MessageMeta } from "@/app/store/message/types";
+import type { MsmMeta } from "@/app/store/msm/types/enum";
 import type { NodeScriptResultMeta } from "@/app/store/nodescriptresult/types";
 import type { PodMeta, PodStatus } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
@@ -50,6 +51,7 @@ export type CommonStates = Omit<
   | ConfigMeta.MODEL
   | GeneralMeta.MODEL
   | MessageMeta.MODEL
+  | MsmMeta.MODEL
   | NodeScriptResultMeta.MODEL
   | StatusMeta.MODEL
   | ZoneMeta.MODEL
@@ -223,15 +225,16 @@ export const generateCommonReducers = <
       state.items = action.payload;
     },
     create: {
-      prepare: (params: CreateParams) => ({
-        meta: {
-          model: modelName,
-          method: "create",
-        },
-        payload: {
-          params,
-        },
-      }),
+      prepare: (params: CreateParams) =>
+        ({
+          meta: {
+            model: modelName,
+            method: "create",
+          },
+          payload: {
+            params,
+          },
+        }) as const,
       reducer: () => {},
     },
     createStart: (state: S) => {

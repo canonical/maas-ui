@@ -47,7 +47,7 @@ const NetworkTableActions = ({
   selected,
   setSelected,
 }: Props): JSX.Element | null => {
-  const { setSidePanelContent } = useSidePanel();
+  const { setSidePanelContent, setSidePanelSize } = useSidePanel();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -149,16 +149,21 @@ const NetworkTableActions = ({
           disabled: item.disabled,
           onClick: () => {
             item.state === ExpandedState.EDIT
-              ? setSidePanelContent({
-                  view: item.view,
-                  extras: {
-                    linkId: link?.id,
-                    nicId: nic?.id,
-                    selected,
-                    setSelected,
-                    systemId: machine.system_id,
-                  },
-                })
+              ? (() => {
+                  setSidePanelContent({
+                    view: item.view,
+                    extras: {
+                      linkId: link?.id,
+                      nicId: nic?.id,
+                      selected,
+                      setSelected,
+                      systemId: machine.system_id,
+                    },
+                  });
+                  if (nic.type === NetworkInterfaceTypes.BOND) {
+                    setSidePanelSize("large");
+                  }
+                })()
               : setSidePanelContent({
                   view: item.view,
                   extras: {

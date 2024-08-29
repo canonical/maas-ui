@@ -467,10 +467,10 @@ export const isInterfaceConnected = (
 };
 
 export const LINK_MODE_DISPLAY = {
-  [NetworkLinkMode.AUTO]: "Auto assign",
-  [NetworkLinkMode.DHCP]: "DHCP",
+  [NetworkLinkMode.AUTO]: "Automatic",
+  [NetworkLinkMode.DHCP]: "Dynamic",
   [NetworkLinkMode.LINK_UP]: "Unconfigured",
-  [NetworkLinkMode.STATIC]: "Static assign",
+  [NetworkLinkMode.STATIC]: "Static (Client configured)",
 };
 
 /**

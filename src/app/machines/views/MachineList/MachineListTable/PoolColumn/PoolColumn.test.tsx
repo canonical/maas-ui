@@ -86,7 +86,7 @@ describe("PoolColumn", () => {
     await userEvent.click(screen.getByRole("button", { name: "Change pool:" }));
     expect(
       screen.getByRole("button", { name: "No other pools available" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("displays a message if the machine cannot have its pool changed", async () => {
@@ -104,7 +104,7 @@ describe("PoolColumn", () => {
       screen.getByRole("button", {
         name: "Cannot change pool of this machine",
       })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("can change pools", async () => {

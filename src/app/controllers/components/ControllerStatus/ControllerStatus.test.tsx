@@ -3,7 +3,12 @@ import { ControllerStatus } from "./ControllerStatus";
 import type { RootState } from "@/app/store/root/types";
 import { ServiceStatus } from "@/app/store/service/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "@/testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const getIcon = () => screen.getByTestId("controller-status-icon");
 
@@ -41,7 +46,7 @@ describe("ControllerStatus", () => {
     });
     expect(getIcon()).toHaveClass("p-icon--power-error");
     await userEvent.hover(getIcon());
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("2 dead");
     });
   });
@@ -65,7 +70,7 @@ describe("ControllerStatus", () => {
     });
     expect(getIcon()).toHaveClass("p-icon--warning");
     await userEvent.hover(getIcon());
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("2 degraded");
     });
   });
@@ -89,7 +94,7 @@ describe("ControllerStatus", () => {
     });
     expect(getIcon()).toHaveClass("p-icon--success");
     await userEvent.hover(getIcon());
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
     });
   });
@@ -113,7 +118,7 @@ describe("ControllerStatus", () => {
     });
     expect(getIcon()).toHaveClass("p-icon--power-off");
     await userEvent.hover(getIcon());
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("2 off");
     });
   });

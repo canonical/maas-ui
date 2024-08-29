@@ -55,12 +55,13 @@ export const ControllerActionFormWrapper = ({
   const processingControllers = useSelector(
     actionStatus ? statusSelectors[actionStatus] : () => []
   );
+  const controllerSystemIds = controllers.map(({ system_id }) => system_id);
   // The form expects one error, so we only show the latest error with the
   // assumption that all selected controllers fail in the same way.
   const errors = useSelector((state: RootState) =>
     controllerSelectors.eventErrorsForControllers(
       state,
-      controllers.map(({ system_id }) => system_id),
+      controllerSystemIds,
       kebabToCamelCase(action)
     )
   )[0]?.error;

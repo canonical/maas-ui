@@ -1,18 +1,21 @@
+import { useEffect } from "react";
+
 import { useFormikContext } from "formik";
+import { isIPv4 } from "is-ip";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FabricSelect from "@/app/base/components/FabricSelect";
 import FormikField from "@/app/base/components/FormikField";
 import LinkModeSelect from "@/app/base/components/LinkModeSelect";
+import PrefixedIpInput from "@/app/base/components/PrefixedIpInput";
 import SubnetSelect from "@/app/base/components/SubnetSelect";
 import VLANSelect from "@/app/base/components/VLANSelect";
 import fabricSelectors from "@/app/store/fabric/selectors";
 import type { Fabric } from "@/app/store/fabric/types";
 import subnetSelectors from "@/app/store/subnet/selectors";
 import type { Subnet } from "@/app/store/subnet/types";
-import { NetworkLinkMode } from "@/app/store/types/enum";
-import type { NetworkInterfaceTypes } from "@/app/store/types/enum";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "@/app/store/types/enum";
 import type {
   NetworkInterface,
   NetworkLink,
@@ -20,12 +23,17 @@ import type {
 } from "@/app/store/types/node";
 import type { VLAN } from "@/app/store/vlan/types";
 import { toFormikNumber } from "@/app/utils";
+import {
+  getImmutableAndEditableOctets,
+  getIpRangeFromCidr,
+} from "@/app/utils/subnetIpRange";
 
 export type NetworkValues = {
   ip_address?: NetworkLink["ip_address"];
   mode?: NetworkLinkMode | "";
   fabric: NodeVlan["fabric_id"] | "";
   subnet?: NetworkLink["subnet_id"] | "";
+  subnet_cidr?: Subnet["cidr"] | "";
   vlan: NetworkInterface["vlan_id"] | "";
 };
 
@@ -42,6 +50,7 @@ export const networkFieldsInitialValues = {
   mode: "",
   fabric: "",
   subnet: "",
+  subnet_cidr: "",
   vlan: "",
 } as NetworkValues;
 
@@ -74,6 +83,22 @@ const NetworkFields = ({
   const subnets: Subnet[] = useSelector(subnetSelectors.all);
   const { handleChange, setFieldValue, values } =
     useFormikContext<NetworkValues>();
+
+  useEffect(() => {
+    if (
+      interfaceType === NetworkInterfaceTypes.PHYSICAL &&
+      subnets &&
+      values.subnet
+    ) {
+      const subnet = subnets.find(
+        ({ id }) => id === toFormikNumber(values.subnet)
+      );
+      if (subnet) {
+        setFieldValue("subnet_cidr", subnet.cidr);
+      }
+    }
+  }, [interfaceType, setFieldValue, subnets, values.subnet]);
+
   const resetFollowingFields = (
     name: keyof NetworkValues,
     hasSubnet?: boolean
@@ -92,6 +117,7 @@ const NetworkFields = ({
       setFieldValue(fieldOrder[i], value);
     }
   };
+
   return (
     <>
       <FabricSelect
@@ -155,10 +181,43 @@ const NetworkFields = ({
               const subnet = subnets.find(
                 ({ id }) => id === toFormikNumber(values.subnet)
               );
-              setFieldValue(
-                "ip_address",
-                subnet?.statistics.first_address || ""
-              );
+              if (
+                interfaceType === NetworkInterfaceTypes.PHYSICAL &&
+                subnet &&
+                editing
+              ) {
+                const [startIp, endIp] = getIpRangeFromCidr(subnet.cidr);
+                const [immutableOctets, _] = getImmutableAndEditableOctets(
+                  startIp,
+                  endIp
+                );
+                const networkAddress = subnet.cidr.split("/")[0];
+                const ipv6Prefix = networkAddress.substring(
+                  0,
+                  networkAddress.lastIndexOf(":")
+                );
+                const subnetIsIpv4 = isIPv4(networkAddress);
+
+                if (subnetIsIpv4) {
+                  setFieldValue(
+                    "ip_address",
+                    subnet.statistics.first_address.replace(
+                      `${immutableOctets}.`,
+                      ""
+                    )
+                  );
+                } else {
+                  setFieldValue(
+                    "ip_address",
+                    subnet.statistics.first_address.replace(`${ipv6Prefix}`, "")
+                  );
+                }
+              } else {
+                setFieldValue(
+                  "ip_address",
+                  subnet?.statistics.first_address || ""
+                );
+              }
             } else {
               setFieldValue("ip_address", "");
             }
@@ -167,7 +226,18 @@ const NetworkFields = ({
         />
       ) : null}
       {values.mode === NetworkLinkMode.STATIC ? (
-        <FormikField label={Label.IPAddress} name="ip_address" type="text" />
+        interfaceType === NetworkInterfaceTypes.PHYSICAL && editing ? (
+          values.subnet_cidr ? (
+            <FormikField
+              cidr={values.subnet_cidr}
+              component={PrefixedIpInput}
+              label={Label.IPAddress}
+              name="ip_address"
+            />
+          ) : null
+        ) : (
+          <FormikField label={Label.IPAddress} name="ip_address" type="text" />
+        )
       ) : null}
     </>
   );

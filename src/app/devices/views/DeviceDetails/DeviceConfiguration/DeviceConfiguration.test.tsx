@@ -1,7 +1,3 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import DeviceConfiguration, { Label } from "./DeviceConfiguration";
 
 import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
@@ -11,12 +7,16 @@ import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneS
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 describe("DeviceConfiguration", () => {
   let state: RootState;
+  const queryData = { zones: [factory.zone({ name: "twilight" })] };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -32,34 +32,25 @@ describe("DeviceConfiguration", () => {
       }),
       zone: factory.zoneState({
         genericActions: factory.zoneGenericActions({ fetch: "success" }),
-        items: [factory.zone({ name: "twilight" })],
       }),
     });
   });
 
   it("displays a spinner if the device has not loaded yet", () => {
     state.device.items = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceConfiguration systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
+      state,
+      queryData,
+    });
 
     expect(screen.getByTestId("loading-device")).toBeInTheDocument();
   });
 
   it("shows the device details by default", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceConfiguration systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
+      state,
+      queryData,
+    });
 
     expect(screen.getByTestId("device-details")).toBeInTheDocument();
     expect(
@@ -68,14 +59,10 @@ describe("DeviceConfiguration", () => {
   });
 
   it("can switch to showing the device configuration form", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceConfiguration systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DeviceConfiguration systemId="abc123" />, {
+      state,
+      queryData,
+    });
 
     await userEvent.click(
       screen.getAllByRole("button", {
@@ -88,13 +75,12 @@ describe("DeviceConfiguration", () => {
   });
 
   it("correctly dispatches an action to update a device", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <DeviceConfiguration systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    const { store } = renderWithBrowserRouter(
+      <DeviceConfiguration systemId="abc123" />,
+      {
+        state,
+        queryData,
+      }
     );
     await userEvent.click(
       screen.getAllByRole("button", {

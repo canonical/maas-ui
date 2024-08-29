@@ -4,8 +4,199 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 import type { AnyObject } from "@/app/base/types";
 import { getCookie } from "@/app/utils";
 
-// A model and method (e.g. 'users.list')
-export type WebSocketEndpoint = string;
+const WebSocketEndpoints = {
+  bootresource: [
+    "delete_image",
+    "fetch",
+    "poll",
+    "save_other",
+    "save_ubuntu",
+    "save_ubuntu_core",
+    "stop_import",
+  ],
+  config: ["bulk_update", "get", "list", "update"],
+  controller: [
+    "action",
+    "check_images",
+    "create",
+    "get",
+    "get_latest_failed_testing_script_results",
+    "get_summary_xml",
+    "get_summary_yaml",
+    "list",
+    "set_active",
+    "set_script_result_suppressed",
+    "set_script_result_unsuppressed",
+    "update",
+    "update_interface",
+  ],
+  device: [
+    "action",
+    "create",
+    "create_interface",
+    "create_physical",
+    "delete_interface",
+    "get",
+    "link_subnet",
+    "list",
+    "set_active",
+    "unlink_subnet",
+    "update",
+    "update_interface",
+  ],
+  dhcpsnippet: ["create", "delete", "get", "list", "revert", "update"],
+  discovery: ["clear", "delete_by_mac_and_ip", "get", "list"],
+  domain: [
+    "create",
+    "create_address_record",
+    "create_dnsdata",
+    "create_dnsresource",
+    "delete",
+    "delete_address_record",
+    "delete_dnsdata",
+    "delete_dnsresource",
+    "get",
+    "list",
+    "set_active",
+    "set_default",
+    "update",
+    "update_address_record",
+    "update_dnsdata",
+    "update_dnsresource",
+  ],
+  event: ["clear", "list"],
+  fabric: ["create", "delete", "get", "list", "set_active", "update"],
+  general: [
+    "architectures",
+    "bond_options",
+    "components_to_disable",
+    "default_min_hwe_kernel",
+    "device_actions",
+    "generate_client_certificate",
+    "hwe_kernels",
+    "known_architectures",
+    "known_boot_architectures",
+    "machine_actions",
+    "min_hwe_kernels",
+    "osinfo",
+    "pockets_to_disable",
+    "power_types",
+    "rack_controller_actions",
+    "random_hostname",
+    "region_and_rack_controller_actions",
+    "region_controller_actions",
+    "release_options",
+    "target_version",
+    "tls_certificate",
+    "vault_enabled",
+    "version",
+  ],
+  iprange: ["create", "delete", "get", "list", "update"],
+  machine: [
+    "action",
+    "apply_storage_layout",
+    "check_power",
+    "count",
+    "create",
+    "create_bcache",
+    "create_bond",
+    "create_bridge",
+    "create_cache_set",
+    "create_logical_volume",
+    "create_partition",
+    "create_physical",
+    "create_raid",
+    "create_vlan",
+    "create_vmfs_datastore",
+    "create_volume_group",
+    "default_user",
+    "delete_cache_set",
+    "delete_disk",
+    "delete_filesystem",
+    "delete_interface",
+    "delete_partition",
+    "delete_vmfs_datastore",
+    "delete_volume_group",
+    "filter_groups",
+    "filter_options",
+    "get",
+    "get_latest_failed_testing_script_results",
+    "get_summary_xml",
+    "get_summary_yaml",
+    "get_workload_annotations",
+    "link_subnet",
+    "list",
+    "list_ids",
+    "mount_special",
+    "set_active",
+    "set_boot_disk",
+    "set_script_result_suppressed",
+    "set_script_result_unsuppressed",
+    "set_workload_annotations",
+    "unlink_subnet",
+    "unmount_special",
+    "unsubscribe",
+    "update",
+    "update_disk",
+    "update_filesystem",
+    "update_interface",
+    "update_vmfs_datastore",
+  ],
+  node_device: ["delete", "list"],
+  node_result: ["clear", "get", "get_history", "get_result_data", "list"],
+  packagerepository: ["create", "delete", "get", "list", "update"],
+  pod: [
+    "compose",
+    "create",
+    "delete",
+    "get",
+    "get_projects",
+    "list",
+    "refresh",
+    "set_active",
+    "update",
+  ],
+  resourcepool: ["create", "delete", "get", "list", "update"],
+  script: ["delete", "get_script", "list"],
+  service: ["get", "list", "set_active"],
+  space: ["create", "delete", "get", "list", "set_active", "update"],
+  sshkey: ["create", "delete", "get", "import_keys", "list"],
+  sslkey: ["create", "delete", "get", "list"],
+  staticroute: ["create", "delete", "get", "list", "update"],
+  status: ["ping"],
+  subnet: ["create", "delete", "get", "list", "scan", "set_active", "update"],
+  tag: ["create", "delete", "get", "list", "update"],
+  token: ["create", "delete", "get", "list", "update"],
+  user: [
+    "admin_change_password",
+    "auth_user",
+    "change_password",
+    "create",
+    "delete",
+    "get",
+    "list",
+    "mark_intro_complete",
+    "update",
+  ],
+  vlan: [
+    "configure_dhcp",
+    "create",
+    "delete",
+    "get",
+    "list",
+    "set_active",
+    "update",
+  ],
+  vmcluster: ["delete", "get", "list", "list_by_physical_cluster", "update"],
+  zone: ["create", "delete", "get", "list", "set_active", "update"],
+} as const;
+
+export type WebSocketEndpointModel = keyof typeof WebSocketEndpoints;
+export type WebSocketEndpointMethod =
+  (typeof WebSocketEndpoints)[WebSocketEndpointModel][number];
+
+export type WebSocketEndpoint =
+  `${WebSocketEndpointModel}.${WebSocketEndpointMethod}`;
 
 // Message types defined by MAAS websocket API.
 export enum WebSocketMessageType {
@@ -81,9 +272,9 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     // key of a model in order to track a its loading/success/error states.
     identifier?: number | string;
     // The endpoint method e.g. "list".
-    method?: string;
+    method: WebSocketEndpointMethod;
     // The endpoint model e.g. "machine".
-    model: string;
+    model: WebSocketEndpointModel;
     // Whether the request should be fetched every time.
     nocache?: boolean;
     // Whether the request should be polled.
@@ -162,6 +353,10 @@ export class WebSocketClient {
   connect(): ReconnectingWebSocket {
     this.rws = new ReconnectingWebSocket(this.buildURL(), undefined, {
       debug: import.meta.env.VITE_APP_WEBSOCKET_DEBUG === "true",
+      // Limit message backlog on reconnection to prevent overwhelming the server
+      // with a flood of queued messages when the connection is re-established.
+      // Typical page load generates 5-25 messages; buffer allows for additional user actions.
+      maxEnqueuedMessages: 30,
     });
     return this.rws;
   }

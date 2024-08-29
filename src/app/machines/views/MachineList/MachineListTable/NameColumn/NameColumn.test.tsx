@@ -3,7 +3,12 @@ import { NameColumn } from "./NameColumn";
 import type { RootState } from "@/app/store/root/types";
 import { NodeStatus } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("NameColumn", () => {
   let state: RootState;
@@ -70,8 +75,11 @@ describe("NameColumn", () => {
     expect(screen.getByTestId("ip-addresses")).toHaveTextContent("127.0.0.1");
     const button = screen.getByRole("button", { name: "+1" });
     expect(button).toBeInTheDocument();
+
     await userEvent.hover(button);
-    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole("tooltip")).toBeInTheDocument();
+    });
   });
 
   it("can show a PXE ip address", () => {

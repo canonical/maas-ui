@@ -248,3 +248,93 @@ it("hides the feedback link in development environment", () => {
     screen.queryByRole("button", { name: "Give feedback" })
   ).not.toBeInTheDocument();
 });
+
+it("displays the status message when connected to MAAS Site Manager", () => {
+  state.msm = factory.msmState({
+    status: factory.msmStatus({
+      running: "not_connected",
+    }),
+  });
+
+  const { rerender } = renderWithMockStore(<StatusBar />, { state });
+
+  expect(
+    screen.queryByText("Connected to MAAS Site Manager")
+  ).not.toBeInTheDocument();
+
+  rerender(<StatusBar />, {
+    state: (draft) => {
+      draft.msm = factory.msmState({
+        status: factory.msmStatus({
+          running: "connected",
+        }),
+      });
+    },
+  });
+
+  expect(
+    screen.getByText("Connected to MAAS Site Manager")
+  ).toBeInTheDocument();
+});
+
+it("correctly calculates the last commissioned time when multiple commissioning events are present", () => {
+  state.machine.items = [
+    factory.machineDetails({
+      fqdn: "multi-event.maas",
+      enable_hw_sync: false,
+      status: NodeStatus.DEPLOYED,
+      system_id: "abc123",
+      events: [
+        factory.machineEvent({
+          type: factory.machineEventType({
+            description: NodeStatus.COMMISSIONING,
+          }),
+          created: factory.timestamp("Thu, 31 Dec. 2020 21:00:00"),
+        }),
+        factory.machineEvent({
+          type: factory.machineEventType({
+            description: NodeStatus.COMMISSIONING,
+          }),
+          created: factory.timestamp("Thu, 31 Dec. 2020 22:00:00"),
+        }),
+        factory.machineEvent({
+          type: factory.machineEventType({
+            description: NodeStatus.COMMISSIONING,
+          }),
+          created: factory.timestamp("Thu, 31 Dec. 2020 20:00:00"),
+        }),
+      ],
+    }),
+  ];
+
+  renderWithMockStore(<StatusBar />, { state });
+
+  expect(
+    screen.getByText(/Last commissioned: about 1 hour ago/)
+  ).toBeInTheDocument();
+});
+
+it("handles invalid commissioning event timestamp", () => {
+  state.machine.items = [
+    factory.machineDetails({
+      fqdn: "invalid-timestamp.maas",
+      status: NodeStatus.DEPLOYED,
+      system_id: "abc123",
+      enable_hw_sync: false,
+      events: [
+        factory.machineEvent({
+          type: factory.machineEventType({
+            description: NodeStatus.COMMISSIONING,
+          }),
+          created: factory.timestamp("invalid-date"),
+        }),
+      ],
+    }),
+  ];
+
+  renderWithMockStore(<StatusBar />, { state });
+
+  expect(
+    screen.getByText(/Unable to parse commissioning timestamp/)
+  ).toBeInTheDocument();
+});

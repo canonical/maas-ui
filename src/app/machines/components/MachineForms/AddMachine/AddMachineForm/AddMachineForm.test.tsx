@@ -1,18 +1,18 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import AddMachineForm from "./AddMachineForm";
 
 import { PowerFieldType } from "@/app/store/general/types";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 let state: RootState;
+const queryData = { zones: [factory.zone({ id: 1, name: "twilight" })] };
 
 beforeEach(() => {
   state = factory.rootState({
@@ -72,26 +72,18 @@ beforeEach(() => {
     }),
     zone: factory.zoneState({
       genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      items: [
-        factory.zone({
-          name: "twilight",
-        }),
-      ],
     }),
   });
 });
 
 it("fetches the necessary data on load if not already loaded", () => {
-  state.resourcepool.loaded = false;
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-      >
-        <AddMachineForm clearSidePanelContent={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithBrowserRouter(
+    <AddMachineForm clearSidePanelContent={vi.fn()} />,
+    {
+      state,
+      queryData,
+      route: "/machines/add",
+    }
   );
   const expectedActions = [
     "FETCH_DOMAIN",
@@ -110,55 +102,46 @@ it("fetches the necessary data on load if not already loaded", () => {
 
 it("displays a spinner if data has not loaded", () => {
   state.resourcepool.loaded = false;
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-      >
-        <AddMachineForm clearSidePanelContent={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
-
+  renderWithBrowserRouter(<AddMachineForm clearSidePanelContent={vi.fn()} />, {
+    state,
+    queryData,
+    route: "/machines/add",
+  });
   expect(screen.getByTestId("loading")).toBeInTheDocument();
 });
 
 it("enables submit when a power type with no fields is chosen", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-      >
-        <AddMachineForm clearSidePanelContent={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
-
+  renderWithBrowserRouter(<AddMachineForm clearSidePanelContent={vi.fn()} />, {
+    state,
+    queryData,
+    route: "/machines/add",
+  });
   // Choose the "manual" power type which has no power fields, and fill in other
   // required fields.
+  await waitFor(() => {
+    expect(screen.queryByTestId(/Loading/)).not.toBeInTheDocument();
+  });
   await userEvent.selectOptions(
-    screen.getByRole("combobox", { name: "Power type" }),
+    await screen.findByRole("combobox", { name: "Power type" }),
     "manual"
   );
   await userEvent.type(
     screen.getByRole("textbox", { name: "MAC address" }),
     "11:11:11:11:11:11"
   );
-  expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled();
+  await waitFor(() =>
+    expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled()
+  );
 });
 
 it("can handle saving a machine", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-      >
-        <AddMachineForm clearSidePanelContent={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithBrowserRouter(
+    <AddMachineForm clearSidePanelContent={vi.fn()} />,
+    {
+      state,
+      queryData,
+      route: "/machines/add",
+    }
   );
 
   await userEvent.type(
@@ -215,15 +198,13 @@ it("can handle saving a machine", async () => {
 });
 
 it("correctly trims power parameters before dispatching action", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-      >
-        <AddMachineForm clearSidePanelContent={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithBrowserRouter(
+    <AddMachineForm clearSidePanelContent={vi.fn()} />,
+    {
+      state,
+      queryData,
+      route: "/machines/add",
+    }
   );
 
   // Choose initial power type and fill in fields.
@@ -272,15 +253,13 @@ it("correctly trims power parameters before dispatching action", async () => {
 });
 
 it("correctly filters empty extra mac fields", async () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
-      >
-        <AddMachineForm clearSidePanelContent={vi.fn()} />
-      </MemoryRouter>
-    </Provider>
+  const { store } = renderWithBrowserRouter(
+    <AddMachineForm clearSidePanelContent={vi.fn()} />,
+    {
+      state,
+      queryData,
+      route: "/machines/add",
+    }
   );
 
   // Submit the form with two extra macs, where one is an empty string

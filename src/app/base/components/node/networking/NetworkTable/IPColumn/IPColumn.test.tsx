@@ -102,7 +102,7 @@ describe("IPColumn", () => {
     renderWithMockStore(<IPColumn link={links[0]} nic={nic} node={machine} />, {
       state,
     });
-    expect(screen.getByText("Auto assign")).toBeInTheDocument();
+    expect(screen.getByText("Automatic")).toBeInTheDocument();
   });
 
   it("can display the failed network status for multiple tests", () => {

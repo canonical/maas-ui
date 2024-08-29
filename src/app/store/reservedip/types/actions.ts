@@ -14,4 +14,5 @@ export type UpdateParams = Partial<CreateParams> & {
 
 export type DeleteParams = {
   [ReservedIpMeta.PK]: ReservedIp[ReservedIpMeta.PK];
+  ip: ReservedIp["ip"];
 };

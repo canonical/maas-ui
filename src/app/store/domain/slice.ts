@@ -176,7 +176,7 @@ const domainSlice = createSlice({
           payload: {
             params: params,
           },
-        };
+        } as const;
       },
       reducer: () => {},
     },
@@ -206,7 +206,7 @@ const domainSlice = createSlice({
           payload: {
             params,
           },
-        };
+        } as const;
       },
       reducer: () => {},
     },
@@ -236,7 +236,7 @@ const domainSlice = createSlice({
           payload: {
             params: params,
           },
-        };
+        } as const;
       },
       reducer: () => {},
     },
@@ -267,7 +267,7 @@ const domainSlice = createSlice({
           payload: {
             params,
           },
-        };
+        } as const;
       },
       reducer: () => {},
     },
@@ -297,7 +297,7 @@ const domainSlice = createSlice({
           payload: {
             params,
           },
-        };
+        } as const;
       },
       reducer: () => {},
     },
@@ -327,7 +327,7 @@ const domainSlice = createSlice({
           payload: {
             params: params,
           },
-        };
+        } as const;
       },
       reducer: () => {},
     },

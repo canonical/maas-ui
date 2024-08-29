@@ -1,6 +1,4 @@
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import NodeConfigurationFields, { Label } from "./NodeConfigurationFields";
@@ -12,7 +10,12 @@ import type { Tag, TagMeta } from "@/app/store/tag/types";
 import { Label as AddTagFormLabel } from "@/app/tags/components/AddTagForm/AddTagForm";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -47,14 +50,11 @@ afterEach(() => {
 
 it("can open a create tag form", async () => {
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
-          <NodeConfigurationFields />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
+      <NodeConfigurationFields />
+    </Formik>,
+    { store }
   );
   await userEvent.type(
     screen.getByRole("textbox", { name: TagFieldLabel.Input }),
@@ -76,14 +76,11 @@ it("does not display automatic tags on the list", async () => {
   });
   state.tag.items = [manualTag, automaticTag];
   const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
-          <NodeConfigurationFields />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(
+    <Formik initialValues={{ tags: [] }} onSubmit={vi.fn()}>
+      <NodeConfigurationFields />
+    </Formik>,
+    { store }
   );
   await userEvent.click(
     screen.getByRole("textbox", { name: TagFieldLabel.Input })
@@ -99,17 +96,12 @@ it("does not display automatic tags on the list", async () => {
 });
 
 it("updates the new tags after creating a tag", async () => {
-  const store = mockStore(state);
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
-          <NodeConfigurationFields />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
+    <Formik initialValues={{ tags: tags }} onSubmit={vi.fn()}>
+      <NodeConfigurationFields />
+    </Formik>
   );
-  const { rerender } = render(<Form tags={[]} />);
+  const { rerender } = renderWithBrowserRouter(<Form tags={[]} />, { state });
   expect(
     screen.queryByRole("button", { name: /new-tag/i })
   ).not.toBeInTheDocument();

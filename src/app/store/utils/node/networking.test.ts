@@ -716,10 +716,10 @@ describe("machine networking utils", () => {
     it("maps the link modes to display text", () => {
       expect(
         getLinkModeDisplay(factory.networkLink({ mode: NetworkLinkMode.AUTO }))
-      ).toBe("Auto assign");
+      ).toBe("Automatic");
       expect(
         getLinkModeDisplay(factory.networkLink({ mode: NetworkLinkMode.DHCP }))
-      ).toBe("DHCP");
+      ).toBe("Dynamic");
       expect(
         getLinkModeDisplay(
           factory.networkLink({ mode: NetworkLinkMode.LINK_UP })
@@ -730,7 +730,7 @@ describe("machine networking utils", () => {
         getLinkModeDisplay(
           factory.networkLink({ mode: NetworkLinkMode.STATIC })
         )
-      ).toBe("Static assign");
+      ).toBe("Static (Client configured)");
     });
   });
 
@@ -865,7 +865,7 @@ describe("machine networking utils", () => {
       const machine = factory.machineDetails({ interfaces: [nic] });
       expect(
         getInterfaceIPAddressOrMode(machine, [fabric], [vlan], null, link)
-      ).toStrictEqual("Auto assign");
+      ).toStrictEqual("Automatic");
     });
   });
 

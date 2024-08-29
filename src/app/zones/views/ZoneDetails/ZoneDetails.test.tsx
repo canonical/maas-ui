@@ -1,53 +1,36 @@
-import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import ZoneDetails from "./ZoneDetails";
 
 import { Labels } from "@/app/base/components/EditableSection";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { render, screen } from "@/testing/utils";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "@/testing/utils";
 
 describe("ZoneDetails", () => {
-  let initialState: RootState;
-
-  const testZones = factory.zoneState({
-    items: [
-      factory.zone({
-        id: 1,
-        name: "zone-name",
-      }),
-    ],
-  });
-
+  const testZones = [
+    factory.zone({
+      id: 1,
+      name: "zone-name",
+    }),
+  ];
+  let state: RootState;
+  const queryData = { zones: testZones };
   beforeEach(() => {
-    initialState = factory.rootState({
+    state = factory.rootState({
       user: factory.userState({
         auth: factory.authState({
           user: factory.user({ is_superuser: true }),
         }),
       }),
-      zone: testZones,
     });
   });
 
   it("shows Edit button if user is admin", () => {
-    const state = initialState;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<ZoneDetails />} path="/zone/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ZoneDetails />, {
+      route: "/zone/1",
+      routePattern: "/zone/:id",
+      queryData,
+      state,
+    });
 
     const editButtons = screen.getAllByRole("button", {
       name: Labels.EditButton,
@@ -62,20 +45,13 @@ describe("ZoneDetails", () => {
           user: factory.user({ is_superuser: false }),
         }),
       }),
-      zone: testZones,
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
-        >
-          <Routes>
-            <Route element={<ZoneDetails />} path="/zone/:id" />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ZoneDetails />, {
+      route: "/zone/1",
+      routePattern: "/zone/:id",
+      queryData,
+      state,
+    });
 
     const editButtons = screen.queryAllByRole("button", {
       name: Labels.EditButton,

@@ -44,6 +44,8 @@ export {
   machineStatus,
   machineStatuses,
   messageState,
+  msmState,
+  msmStatus,
   nodeDeviceState,
   nodeScriptResultState,
   notificationState,
@@ -223,3 +225,4 @@ export {
   vmHost,
 } from "./vmcluster";
 export { zone } from "./zone";
+export { zonesGet } from "./response";

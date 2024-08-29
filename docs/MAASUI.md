@@ -1,8 +1,11 @@
 # MAAS UI
 
-## Content
+## Contents
 
-- [Usability](#usability)
+- [Project conventions](#project-conventions)
+  - [Usability](#usability)
+  - [Code style](#code-style)
+  - [React components](#react-components)
 - [Code structure](#code-structure)
 - [React](#react)
   - [Hooks](#hooks)
@@ -26,10 +29,34 @@
   - [Cypress](#cypress)
   - [Playwright](#playwright)
 
-## Usability
+## Project conventions
+
+### Usability
 
 Our unofficial policy on responsive design in MAAS-UI is that everything should be clearly visible on all screen sizes, but it doesn't necessarily have to be the most visually appealing on small screens.
 Only a small percentage of users interact with the MAAS client on mobile devices, but it's not uncommon for people to use it on one half of their monitor viewport.
+
+### Code style
+
+Prioritize clear, self-explanatory code, and only use JSDoc to provide context or additional information that cannot be inferred from the code itself.
+
+### React Components
+
+We encourage [component-driven](https://www.componentdriven.org/) development, and use of [Storybook](https://storybook.js.org/) for interactive documentation.
+
+Follow the presentational and container components pattern where appropriate. Read more on good component design in the  [React documentation](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state).
+
+When developing new features or extending existing ones, consider the following:
+
+- Think of all the variations of a UI component and how each can be represented using props.
+- Prefer a single `variant` prop for representing visual variations of a component.
+
+```tsx
+<Button variant="primary" />
+```
+
+- Create stories for each variant in [Storybook](https://storybook.js.org/).
+- Add state management, side effects, and application-specific logic into container component passing the state as props to the presentational component.
 
 ## Code structure
 
@@ -39,9 +66,18 @@ The high-level interactions between the React side of the frontend and the API a
 
 ## React
 
+### Vite
+
+MAAS UI is bootstrapped with [Vite](https://vitejs.dev/). The main features that MAAS UI uses are:
+
+ - Hot module replacement
+ - [Manual chunks](https://github.com/canonical/maas-ui/blob/main/vite.config.ts#L7-L12) at build time
+ - Native ES modules
+ - Lazy-loading / route-based code splitting
+
 ### Hooks
 
-We use React >v17.0.0 which has support for [React hooks](https://reactjs.org/docs/hooks-intro.html). While it’s still possible to write components using the class syntax, all new components should be function components that use state hooks where appropriate.
+We use React >v18.0.0 which has support for [React hooks](https://reactjs.org/docs/hooks-intro.html). While it’s still possible to write components using the class syntax, all new components should be function components that use state hooks where appropriate.
 
 ### Components
 
@@ -164,6 +200,8 @@ The `sendMessage` function handles sending WebSocket messages. It first dispatch
 
 ### TypeScript
 
+maas-ui built with TypeScript in strict mode. Any new modules in should be written in [TypeScript](https://www.typescriptlang.org/).
+
 #### TSFixMe
 
 There may occasionally be times where you can’t type something. In those cases you might be able to use \`any\` to handle all types. However, our linter will not let you use \`any\` directly.
@@ -175,6 +213,28 @@ You should avoid using \`TSFixMe\` unless you really get stuck.
 ### Testing
 
 As a general rule, we concentrate on user-centric testing and avoid testing implementation details. For that reason usage of test attributes such as `data-testid` should be avoided. Any occurrence of such will usually be for historical reasons.
+
+#### Vitest and testing-library
+
+We use [Vitest](https://vitest.dev/) for unit and integration tests (`.test.tsx` files). Vitest is the native testing framework for Vite. Its API is (mostly) a drop-in replacement for Jest, which we used in the past.
+
+When running these tests Vitest enters the "watch" mode by default - as soon as file changes are detected, the test(s) will automatically re-run.
+
+[React Testing Library](https://testing-library.com/docs/) is our primary tool for testing React components. It encourages testing user interactions rather than implementation details (internal component state, component lifecycle functions etc.).
+
+To this end, it renders the React code into actual DOM nodes, as opposed to libraries like Enzyme (the previous standard for testing React) which render the React DOM. Components should be accessed through accessible attributes such as roles, names, and labels.
+
+#### Testing utility functions
+
+Many of our tests require providers for the Redux store and the React router. We provide utility functions that automatically wrap the code you want to render with these providers:
+- `renderWithMockStore`: Wraps components with a Redux store provider.
+- `renderWithBrowserRouter`: Wraps components with both Redux and React Router providers.
+
+You can directly pass `state` as an option to both of these functions, and a mock store will be created internally and provided to the rendered components. `renderWithBrowserRouter` can also take a `route` option to specify a route that the DOM should be rendered on.
+
+- `getByTextContent`: Helps locate text content that may be split across multiple DOM nodes. Returns `true` if the provided text is found in the DOM, even if it's broken up across multiple nodes.
+
+You can see the full suite in the [test utils file on GitHub](https://github.com/canonical/maas-ui/blob/main/src/testing/utils.tsx).
 
 #### Test attributes
 

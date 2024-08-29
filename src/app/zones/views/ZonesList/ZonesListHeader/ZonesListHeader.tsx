@@ -1,14 +1,11 @@
 import { MainToolbar } from "@canonical/maas-react-components";
 import { Button, Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 
 import ZonesListTitle from "./ZonesListTitle";
 
+import { useZoneCount } from "@/app/api/query/zones";
 import ModelListSubtitle from "@/app/base/components/ModelListSubtitle";
-import { useFetchActions } from "@/app/base/hooks";
 import type { SetSidePanelContent } from "@/app/base/side-panel-context";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 
 const ZonesListHeader = ({
@@ -16,18 +13,15 @@ const ZonesListHeader = ({
 }: {
   setSidePanelContent: SetSidePanelContent;
 }): JSX.Element => {
-  const zonesCount = useSelector(zoneSelectors.count);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
-
-  useFetchActions([zoneActions.fetch]);
+  const zonesCount = useZoneCount();
 
   return (
     <MainToolbar>
       <MainToolbar.Title>
         <ZonesListTitle />
       </MainToolbar.Title>
-      {zonesLoaded ? (
-        <ModelListSubtitle available={zonesCount} modelName="AZ" />
+      {zonesCount.isSuccess ? (
+        <ModelListSubtitle available={zonesCount.data} modelName="AZ" />
       ) : (
         <Spinner text="Loading..." />
       )}

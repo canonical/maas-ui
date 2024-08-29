@@ -168,7 +168,6 @@ export const SubnetSelect = ({
       />
       {subnetError && (
         <p className="p-form-validation__message" data-testid="no-pxe">
-          <strong>Error: </strong>
           {subnetError}
         </p>
       )}

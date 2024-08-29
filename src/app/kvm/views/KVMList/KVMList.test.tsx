@@ -22,7 +22,6 @@ describe("KVMList", () => {
       "pod/fetch",
       "resourcepool/fetch",
       "vmcluster/fetch",
-      "zone/fetch",
     ];
     const actualActions = store.getActions();
     expect(

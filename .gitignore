@@ -29,6 +29,9 @@ cypress.env.json
 # Visual Studio Code
 .vscode
 
+# Vim
+*.swp
+
 # WebStorm
 .idea
 
@@ -36,7 +39,9 @@ cypress.env.json
 *.DS_Store
 *.fuse*
 
+# test results
 sitespeed.io/results
 /test-results/
 /playwright-report/
 /playwright/.cache/
+coverage/

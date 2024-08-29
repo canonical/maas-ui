@@ -128,7 +128,7 @@ describe("DiscoveryAddFormFields", () => {
 
     expect(
       within(ipAssignment).getByRole("option", {
-        name: "Static",
+        name: "Static (Client configured)",
       })
     ).toBeInTheDocument();
   });

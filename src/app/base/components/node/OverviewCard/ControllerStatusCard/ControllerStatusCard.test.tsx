@@ -10,7 +10,7 @@ import {
 } from "@/app/store/controller/types";
 import { NodeType } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { render, screen, userEvent, within } from "@/testing/utils";
+import { render, screen, userEvent, waitFor, within } from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -109,12 +109,17 @@ it("renders correct version info for a deb install", async () => {
   await userEvent.hover(
     screen.getByRole("button", { name: Labels.VersionDetails })
   );
-  expect(screen.getByLabelText(Labels.Version).textContent).toBe(
-    "Version: 1.2.3"
-  );
-  expect(screen.getByLabelText(Labels.Origin).textContent).toBe(
-    "Deb: ppa:some/ppa"
-  );
+  await waitFor(() => {
+    expect(screen.getByLabelText(Labels.Version).textContent).toBe(
+      "Version: 1.2.3"
+    );
+  });
+
+  await waitFor(() => {
+    expect(screen.getByLabelText(Labels.Origin).textContent).toBe(
+      "Deb: ppa:some/ppa"
+    );
+  });
 });
 
 it("renders correct version info for a snap install", async () => {
@@ -138,12 +143,18 @@ it("renders correct version info for a snap install", async () => {
   await userEvent.hover(
     screen.getByRole("button", { name: Labels.VersionDetails })
   );
-  expect(screen.getByLabelText(Labels.Version).textContent).toBe(
-    "Version: 1.2.3"
-  );
-  expect(screen.getByLabelText(Labels.Origin).textContent).toBe(
-    "Channel: 1.2/edge"
-  );
+
+  await waitFor(() => {
+    expect(screen.getByLabelText(Labels.Version).textContent).toBe(
+      "Version: 1.2.3"
+    );
+  });
+
+  await waitFor(() => {
+    expect(screen.getByLabelText(Labels.Origin).textContent).toBe(
+      "Channel: 1.2/edge"
+    );
+  });
 });
 
 it("renders correct version info for an unknown install type", async () => {
@@ -167,12 +178,17 @@ it("renders correct version info for an unknown install type", async () => {
   await userEvent.hover(
     screen.getByRole("button", { name: Labels.VersionDetails })
   );
-  expect(
-    within(screen.getByRole("tooltip")).getByLabelText(Labels.Version)
-  ).toHaveTextContent("Version: Unknown (less than 2.3.0)");
-  expect(
-    within(screen.getByRole("tooltip")).getByLabelText(Labels.Origin)
-  ).toHaveTextContent("Origin: nowhere");
+  await waitFor(() => {
+    expect(
+      within(screen.getByRole("tooltip")).getByLabelText(Labels.Version)
+    ).toHaveTextContent("Version: Unknown (less than 2.3.0)");
+  });
+
+  await waitFor(() => {
+    expect(
+      within(screen.getByRole("tooltip")).getByLabelText(Labels.Origin)
+    ).toHaveTextContent("Origin: nowhere");
+  });
 });
 
 it("renders OS info", () => {

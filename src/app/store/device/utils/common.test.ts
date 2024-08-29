@@ -33,12 +33,14 @@ describe("device utils", () => {
 
     it("handles external IP assignement", () => {
       expect(getIpAssignmentDisplay(DeviceIpAssignment.EXTERNAL)).toBe(
-        "External"
+        "Static (Externally managed)"
       );
     });
 
     it("handles static IP assignment", () => {
-      expect(getIpAssignmentDisplay(DeviceIpAssignment.STATIC)).toBe("Static");
+      expect(getIpAssignmentDisplay(DeviceIpAssignment.STATIC)).toBe(
+        "Static (Client configured)"
+      );
     });
 
     it("handles unknown IP assignment", () => {

@@ -6,7 +6,12 @@ import { ConfigNames, NetworkDiscovery } from "@/app/store/config/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { mockFormikFormSaved } from "@/testing/mockFormikFormSaved";
-import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithBrowserRouter,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -95,7 +100,7 @@ describe("ClearAllForm", () => {
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(
         store.getActions().some(({ type }) => type === "message/add")
       ).toBe(true);

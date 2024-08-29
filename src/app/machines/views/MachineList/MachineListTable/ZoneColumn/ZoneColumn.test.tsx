@@ -1,16 +1,29 @@
-import configureStore from "redux-mock-store";
-
 import { ZoneColumn } from "./ZoneColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 describe("ZoneColumn", () => {
   let state: RootState;
+  const queryData = {
+    zones: [
+      factory.zone({
+        id: 0,
+        name: "default",
+      }),
+      factory.zone({
+        id: 1,
+        name: "Backup",
+      }),
+    ],
+  };
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
@@ -24,18 +37,6 @@ describe("ZoneColumn", () => {
           }),
         ],
       }),
-      zone: factory.zoneState({
-        items: [
-          factory.zone({
-            id: 0,
-            name: "default",
-          }),
-          factory.zone({
-            id: 1,
-            name: "Backup",
-          }),
-        ],
-      }),
     });
   });
 
@@ -44,7 +45,7 @@ describe("ZoneColumn", () => {
 
     renderWithBrowserRouter(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { route: "/machines", state, queryData }
     );
     expect(screen.getByTestId("zone")).toHaveTextContent("zone-one");
   });
@@ -54,7 +55,7 @@ describe("ZoneColumn", () => {
 
     renderWithBrowserRouter(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { route: "/machines", state, queryData }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("space1");
   });
@@ -64,7 +65,7 @@ describe("ZoneColumn", () => {
 
     renderWithBrowserRouter(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { route: "/machines", state, queryData }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("2 spaces");
   });
@@ -74,11 +75,11 @@ describe("ZoneColumn", () => {
 
     renderWithBrowserRouter(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { route: "/machines", state, queryData }
     );
 
     await userEvent.hover(screen.getByTestId("spaces"));
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
         /space1 space2 space3/i
       );
@@ -90,24 +91,24 @@ describe("ZoneColumn", () => {
 
     renderWithBrowserRouter(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { route: "/machines", state, queryData }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
 
     expect(
       screen.getByRole("button", { name: "Cannot change zone of this machine" })
-    ).toBeDisabled();
+    ).toBeAriaDisabled();
   });
 
   it("can change zones", async () => {
-    const store = mockStore(state);
-
-    renderWithBrowserRouter(
+    const { store } = renderWithBrowserRouter(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", store }
+      { route: "/machines", state, queryData }
     );
-    await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
-    await userEvent.click(screen.getByTestId("change-zone-link"));
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Change AZ:" })
+    );
+    await userEvent.click(await screen.findByTestId("change-zone-link"));
 
     expect(
       store.getActions().find((action) => action.type === "machine/setZone")
@@ -132,10 +133,10 @@ describe("ZoneColumn", () => {
   it("shows a spinner when changing zones", async () => {
     renderWithBrowserRouter(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state }
+      { route: "/machines", state, queryData }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
-    await userEvent.click(screen.getByTestId("change-zone-link"));
+    await userEvent.click(await screen.findByTestId("change-zone-link"));
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 

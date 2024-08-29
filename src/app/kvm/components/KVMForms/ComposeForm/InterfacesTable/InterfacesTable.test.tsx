@@ -8,6 +8,7 @@ import {
   renderWithBrowserRouter,
   userEvent,
   within,
+  expectTooltipOnHover,
 } from "@/testing/utils";
 
 describe("InterfacesTable", () => {
@@ -66,11 +67,13 @@ describe("InterfacesTable", () => {
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
 
-    expect(screen.queryByRole("button", { name: /define/i })).toBeDisabled();
-    await userEvent.hover(screen.getByRole("button", { name: /define/i }));
-    expect(
-      screen.getByText("There are no available networks seen by this KVM host.")
-    ).toBeInTheDocument();
+    const button = screen.getByRole("button", { name: /define/i });
+    expect(button).toBeAriaDisabled();
+
+    await expectTooltipOnHover(
+      button,
+      "There are no available networks seen by this KVM host."
+    );
   });
 
   it("disables add interface button with tooltip if KVM host has no PXE-enabled networks", async () => {
@@ -91,13 +94,12 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    expect(screen.getByRole("button", { name: /define/i })).toBeDisabled();
-    await userEvent.hover(screen.getByRole("button", { name: /define/i }));
-    expect(
-      screen.getByText(
-        "There are no PXE-enabled networks seen by this KVM host."
-      )
-    ).toBeInTheDocument();
+    const button = screen.getByRole("button", { name: /define/i });
+    expect(button).toBeAriaDisabled();
+    await expectTooltipOnHover(
+      button,
+      "There are no PXE-enabled networks seen by this KVM host."
+    );
   });
 
   it("disables add interface button if pod is composing a machine", () => {
@@ -116,7 +118,9 @@ describe("InterfacesTable", () => {
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
       { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    expect(screen.queryByRole("button", { name: /define/i })).toBeDisabled();
+    expect(
+      screen.queryByRole("button", { name: /define/i })
+    ).toBeAriaDisabled();
   });
 
   it("can add and remove interfaces if KVM has PXE-enabled subnets", async () => {

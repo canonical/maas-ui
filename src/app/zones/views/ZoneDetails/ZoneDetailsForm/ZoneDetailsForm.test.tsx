@@ -1,37 +1,23 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import ZoneDetailsForm from "./ZoneDetailsForm";
 
-import type { RootState } from "@/app/store/root/types";
 import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
-
-const mockStore = configureStore();
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 describe("ZoneDetailsForm", () => {
   const testZone = factory.zone();
-  let initialState: RootState;
-
-  beforeEach(() => {
-    initialState = factory.rootState({
-      zone: factory.zoneState({
-        items: [testZone],
-      }),
-    });
-  });
+  const queryData = { zones: [testZone] };
 
   it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = vi.fn();
-    const store = mockStore(initialState);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ZoneDetailsForm closeForm={closeForm} id={testZone.id} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ZoneDetailsForm closeForm={closeForm} id={testZone.id} />,
+      { queryData }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -39,13 +25,9 @@ describe("ZoneDetailsForm", () => {
   });
 
   it("calls actions.update on save click", async () => {
-    const store = mockStore(initialState);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ZoneDetailsForm closeForm={vi.fn()} id={testZone.id} />
-        </MemoryRouter>
-      </Provider>
+    const { store } = renderWithBrowserRouter(
+      <ZoneDetailsForm closeForm={vi.fn()} id={testZone.id} />,
+      { queryData }
     );
 
     await userEvent.clear(screen.getByLabelText("Name"));

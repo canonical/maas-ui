@@ -12,7 +12,12 @@ import {
   ScriptResultType,
 } from "@/app/store/scriptresult/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -135,7 +140,7 @@ describe("NodeTestsTable", () => {
     const checkbox = screen.getByTestId("suppress-script-results");
     expect(checkbox).toBeDisabled();
     await userEvent.hover(checkbox);
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
         "Only failed testing scripts can be suppressed."
       );

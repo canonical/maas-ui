@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import AuthenticationCard from "./AuthenticationCard";
 import DangerZoneCard from "./DangerZoneCard";
 
+import { useZones } from "@/app/api/query/zones";
 import { useFetchActions, useWindowTitle } from "@/app/base/hooks";
 import KVMConfigurationCard from "@/app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "@/app/kvm/components/LXDHostToolbar";
@@ -16,8 +17,6 @@ import resourcePoolSelectors from "@/app/store/resourcepool/selectors";
 import type { RootState } from "@/app/store/root/types";
 import { tagActions } from "@/app/store/tag";
 import tagSelectors from "@/app/store/tag/selectors";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
@@ -37,15 +36,11 @@ const LXDSingleSettings = ({
   );
   const resourcePoolsLoaded = useSelector(resourcePoolSelectors.loaded);
   const tagsLoaded = useSelector(tagSelectors.loaded);
-  const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const loaded = resourcePoolsLoaded && tagsLoaded && zonesLoaded;
+  const zones = useZones();
+  const loaded = resourcePoolsLoaded && tagsLoaded && !zones.isPending;
   useWindowTitle(`LXD ${`${pod?.name} ` || ""} settings`);
 
-  useFetchActions([
-    resourcePoolActions.fetch,
-    tagActions.fetch,
-    zoneActions.fetch,
-  ]);
+  useFetchActions([resourcePoolActions.fetch, tagActions.fetch]);
 
   if (!isPodDetails(pod) || !loaded) {
     return <Spinner text="Loading..." />;

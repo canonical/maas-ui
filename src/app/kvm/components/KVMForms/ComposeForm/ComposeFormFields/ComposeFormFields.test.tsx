@@ -15,6 +15,8 @@ import {
   renderWithMockStore,
   userEvent,
   fireEvent,
+  expectTooltipOnHover,
+  waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
@@ -201,7 +203,7 @@ describe("ComposeFormFields", () => {
     const enableHugepages = screen.getByLabelText("Enable hugepages");
     expect(enableHugepages).toBeDisabled();
     await userEvent.hover(enableHugepages);
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(
         screen.getByRole("tooltip", {
           name: "Hugepages are only supported on LXD KVMs.",
@@ -239,14 +241,11 @@ describe("ComposeFormFields", () => {
     );
 
     expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
-    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.mouseOver(screen.getByLabelText("Enable hugepages"));
-    expect(
-      screen.getByRole("tooltip", {
-        name: "There are no free hugepages on this system.",
-      })
-    ).toBeInTheDocument();
+
+    await expectTooltipOnHover(
+      screen.getByLabelText("Enable hugepages"),
+      "There are no free hugepages on this system."
+    );
   });
 
   it("shows the input for any available cores by default", () => {
@@ -360,16 +359,11 @@ describe("ComposeFormFields", () => {
     expect(
       screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     ).toBeDisabled();
-    // TODO: //warthogs.atlassian.net/browse/MAASENG-2122
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.mouseOver(
-      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+
+    await expectTooltipOnHover(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" }),
+      "Core pinning is only supported on LXD KVMs"
     );
-    expect(
-      screen.getByRole("tooltip", {
-        name: "Core pinning is only supported on LXD KVMs",
-      })
-    ).toBeInTheDocument();
   });
 
   it("can detect duplicate core indices", async () => {
@@ -424,10 +418,9 @@ describe("ComposeFormFields", () => {
       cores: factory.podResource({ free: 1 }),
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
-    const store = mockStore(state);
     renderWithBrowserRouter(
       <ComposeForm clearSidePanelContent={vi.fn()} hostId={1} />,
-      { route: "/kvm/1", store }
+      { route: "/kvm/1", state }
     );
 
     // Switch to pinning cores

@@ -1,19 +1,23 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineForm from "./MachineForm";
 
 import { Labels } from "@/app/base/components/EditableSection";
 import { machineActions } from "@/app/store/machine";
-import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
-
 describe("MachineForm", () => {
-  let state: RootState;
+  let state: ReturnType<typeof factory.rootState>;
+  const queryData = {
+    zones: [factory.zone()],
+  };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -38,14 +42,11 @@ describe("MachineForm", () => {
 
   it("is not editable if machine does not have edit permission", () => {
     state.machine.items[0].permissions = [];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <MachineForm systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+      state,
+      queryData,
+      route: "/machine/abc123",
+    });
 
     expect(
       screen.queryByRole("button", { name: Labels.EditButton })
@@ -54,14 +55,11 @@ describe("MachineForm", () => {
 
   it("is editable if machine has edit permission", () => {
     state.machine.items[0].permissions = ["edit"];
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <MachineForm systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+      state,
+      queryData,
+      route: "/machine/abc123",
+    });
 
     expect(
       screen.getAllByRole("button", { name: Labels.EditButton }).length
@@ -69,14 +67,11 @@ describe("MachineForm", () => {
   });
 
   it("renders read-only text fields until edit button is pressed", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <MachineForm systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+      state,
+      queryData,
+      route: "/machine/abc123",
+    });
 
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
 
@@ -95,13 +90,12 @@ describe("MachineForm", () => {
     });
     state.machine.items = [machine];
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <MachineForm systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithBrowserRouter(<MachineForm systemId="abc123" />, {
+      store,
+      queryData,
+      route: "/machine/abc123",
+    });
 
     await userEvent.click(
       screen.getAllByRole("button", { name: Labels.EditButton })[0]

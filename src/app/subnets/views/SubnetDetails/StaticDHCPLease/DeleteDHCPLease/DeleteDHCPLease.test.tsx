@@ -63,6 +63,7 @@ it("dispatches an action to delete a reserved IP", async () => {
     payload: {
       params: {
         id: 1,
+        ip: state.reservedip.items[0].ip,
       },
     },
     type: "reservedip/delete",

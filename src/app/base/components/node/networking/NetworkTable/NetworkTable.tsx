@@ -1,3 +1,4 @@
+import type { ValueOf } from "@canonical/react-components";
 import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
@@ -105,6 +106,93 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) => {
   return isComparable(value) ? value : null;
 };
 
+const generateColumnData = (
+  checkboxHandler: CheckboxHandlers<Selected> | null,
+  hasActions: boolean,
+  isABondOrBridgeParent: boolean,
+  link: NetworkLink | null,
+  nic: NetworkInterface,
+  node: MachineDetails | ControllerDetails,
+  selected: Props["selected"],
+  setExpanded?: SetExpanded,
+  setSelected?: Props["setSelected"]
+) => [
+  {
+    "aria-label": Label.Name,
+    content: (
+      <NameColumn
+        checkSelected={checkboxHandler?.checkSelected}
+        checkboxSpace={
+          // When interfaces can't be selected then we still need to add space so
+          // the parent rows appear nested under the bond or bridge.
+          (!hasActions && isABondOrBridgeParent) || isABondOrBridgeParent
+        }
+        handleRowCheckbox={checkboxHandler?.handleRowCheckbox}
+        link={link}
+        nic={nic}
+        node={node}
+        selected={selected}
+        showCheckbox={!isABondOrBridgeParent && hasActions}
+      />
+    ),
+  },
+  {
+    "aria-label": Label.PXE,
+    content: !isABondOrBridgeParent && (
+      <PXEColumn link={link} nic={nic} node={node} />
+    ),
+    className: "u-align--center",
+  },
+  {
+    "aria-label": Label.Speed,
+    content: <SpeedColumn link={link} nic={nic} node={node} />,
+  },
+  {
+    "aria-label": Label.Type,
+    content: <TypeColumn link={link} nic={nic} node={node} />,
+  },
+  {
+    "aria-label": Label.Fabric,
+    content: !isABondOrBridgeParent && (
+      <FabricColumn link={link} nic={nic} node={node} />
+    ),
+  },
+  {
+    "aria-label": Label.Subnet,
+    content: !isABondOrBridgeParent && (
+      <SubnetColumn link={link} nic={nic} node={node} />
+    ),
+  },
+  {
+    "aria-label": Label.IP,
+    content: !isABondOrBridgeParent && (
+      <IPColumn link={link} nic={nic} node={node} />
+    ),
+  },
+  {
+    "aria-label": Label.DHCP,
+    content: !isABondOrBridgeParent && <DHCPColumn nic={nic} />,
+  },
+  ...(hasActions
+    ? [
+        {
+          "aria-label": Label.Actions,
+          className: "u-align--right",
+          content:
+            !isABondOrBridgeParent && nodeIsMachine(node) && setExpanded ? (
+              <NetworkTableActions
+                link={link}
+                nic={nic}
+                selected={selected}
+                setSelected={setSelected}
+                systemId={node.system_id}
+              />
+            ) : null,
+        },
+      ]
+    : []),
+];
+
 const generateRow = (
   checkboxHandler: CheckboxHandlers<Selected> | null,
   fabrics: Fabric[],
@@ -147,96 +235,29 @@ const generateRow = (
     nic,
     link
   );
-  const showCheckbox = !isABondOrBridgeParent && hasActions;
-  const select = showCheckbox
-    ? {
-        linkId: link?.id,
-        nicId: nic?.id,
-      }
-    : null;
+  const columns = generateColumnData(
+    checkboxHandler,
+    hasActions,
+    isABondOrBridgeParent,
+    link,
+    nic,
+    node,
+    selected,
+    setExpanded,
+    setSelected
+  );
+
   return {
     className: classNames("p-table__row", {
       "truncated-border": isABondOrBridgeParent,
     }),
-    columns: [
-      {
-        "aria-label": Label.Name,
-        content: (
-          <NameColumn
-            checkSelected={checkboxHandler?.checkSelected}
-            checkboxSpace={
-              // When interfaces can't be selected then we still need to add space so
-              // the parent rows appear nested under the bond or bridge.
-              (!showCheckbox && hasActions) || isABondOrBridgeParent
-            }
-            handleRowCheckbox={checkboxHandler?.handleRowCheckbox}
-            link={link}
-            nic={nic}
-            node={node}
-            selected={selected}
-            showCheckbox={showCheckbox}
-          />
-        ),
-      },
-      {
-        "aria-label": Label.PXE,
-        content: !isABondOrBridgeParent && (
-          <PXEColumn link={link} nic={nic} node={node} />
-        ),
-        className: "u-align--center",
-      },
-      {
-        "aria-label": Label.Speed,
-        content: <SpeedColumn link={link} nic={nic} node={node} />,
-      },
-      {
-        "aria-label": Label.Type,
-        content: <TypeColumn link={link} nic={nic} node={node} />,
-      },
-      {
-        "aria-label": Label.Fabric,
-        content: !isABondOrBridgeParent && (
-          <FabricColumn link={link} nic={nic} node={node} />
-        ),
-      },
-      {
-        "aria-label": Label.Subnet,
-        content: !isABondOrBridgeParent && (
-          <SubnetColumn link={link} nic={nic} node={node} />
-        ),
-      },
-      {
-        "aria-label": Label.IP,
-        content: !isABondOrBridgeParent && (
-          <IPColumn link={link} nic={nic} node={node} />
-        ),
-      },
-      {
-        "aria-label": Label.DHCP,
-        content: !isABondOrBridgeParent && <DHCPColumn nic={nic} />,
-      },
-      ...(hasActions
-        ? [
-            {
-              "aria-label": Label.Actions,
-              className: "u-align--right",
-              content:
-                !isABondOrBridgeParent && nodeIsMachine(node) && setExpanded ? (
-                  <NetworkTableActions
-                    link={link}
-                    nic={nic}
-                    selected={selected}
-                    setSelected={setSelected}
-                    systemId={node.system_id}
-                  />
-                ) : null,
-            },
-          ]
-        : []),
-    ],
+    columns,
     "data-testid": name,
     key: name,
-    select,
+    select:
+      !isABondOrBridgeParent && hasActions
+        ? { linkId: link?.id, nicId: nic?.id }
+        : null,
     sortData: {
       bondOrBridge:
         (isABondOrBridgeParent && nic.children[0]) ||
@@ -323,53 +344,11 @@ const getChild = (row: NetworkRow, rows: NetworkRow[]): NetworkRow | null => {
   );
 };
 
-const rowSort = (
-  rowA: NetworkRow,
-  rowB: NetworkRow,
-  key: Sort<SortKey>["key"],
-  _args: unknown,
-  direction: Sort<SortKey>["direction"],
-  rows: NetworkRow[]
+const compareValues = (
+  rowAValue: string | number | null,
+  rowBValue: string | number | null,
+  direction: ValueOf<typeof SortDirection>
 ) => {
-  // By default sort by bonds and bridges.
-  if (direction === SortDirection.NONE) {
-    key = "bondOrBridge";
-    direction = SortDirection.ASCENDING;
-  }
-  // Get the bond or bridge child rows.
-  const childA = getChild(rowA, rows);
-  const childB = getChild(rowB, rows);
-  const inSameBondOrBridge =
-    rowA.sortData.bondOrBridge === rowB.sortData.bondOrBridge;
-  // Get the values to sort by. When comparing bond or bridge parents (the
-  // "siblings" of the bond or bridge) then use the row values, otherwise use
-  // the value from the child (the main row that preceeds the parents) so that all
-  // the rows for a bond or bridge end up together.
-  let rowAValue = key
-    ? getSortValue(key, childA && !inSameBondOrBridge ? childA : rowA)
-    : null;
-  let rowBValue = key
-    ? getSortValue(key, childB && !inSameBondOrBridge ? childB : rowB)
-    : null;
-  // If the rows are in the same bond or bridge then put the child first.
-  if (inSameBondOrBridge) {
-    if (
-      rowA.sortData.isABondOrBridgeChild &&
-      !rowB.sortData.isABondOrBridgeChild
-    ) {
-      return -1;
-    }
-    if (rowB.sortData.isABondOrBridgeChild) {
-      return 0;
-    }
-  }
-  if (rowAValue === rowBValue) {
-    // Rows that have the same value need to be sorted by the bond or bridge id
-    // so that they don't lose their grouping.
-    rowAValue = getSortValue("bondOrBridge", rowA);
-    rowBValue = getSortValue("bondOrBridge", rowB);
-  }
-  // From this point on compare the values as normal.
   if (!rowAValue && !rowBValue) {
     return 0;
   }
@@ -390,6 +369,56 @@ const rowSort = (
     return direction === SortDirection.DESCENDING ? 1 : -1;
   }
   return 0;
+};
+
+const rowSort = (
+  rowA: NetworkRow,
+  rowB: NetworkRow,
+  key: Sort<SortKey>["key"],
+  _args: unknown,
+  direction: Sort<SortKey>["direction"],
+  rows: NetworkRow[]
+) => {
+  // By default sort by bonds and bridges.
+  if (direction === SortDirection.NONE) {
+    key = "bondOrBridge";
+    direction = SortDirection.ASCENDING;
+  }
+
+  // Get the bond or bridge child rows.
+  const childA = getChild(rowA, rows);
+  const childB = getChild(rowB, rows);
+  const inSameBondOrBridge =
+    rowA.sortData.bondOrBridge === rowB.sortData.bondOrBridge;
+
+  let rowAValue = key
+    ? getSortValue(key, childA && !inSameBondOrBridge ? childA : rowA)
+    : null;
+  let rowBValue = key
+    ? getSortValue(key, childB && !inSameBondOrBridge ? childB : rowB)
+    : null;
+
+  // If the rows are in the same bond or bridge then put the child first.
+  if (inSameBondOrBridge) {
+    if (
+      rowA.sortData.isABondOrBridgeChild &&
+      !rowB.sortData.isABondOrBridgeChild
+    ) {
+      return -1;
+    }
+    if (rowB.sortData.isABondOrBridgeChild) {
+      return 0;
+    }
+  }
+
+  if (rowAValue === rowBValue) {
+    // Rows that have the same value need to be sorted by the bond or bridge id
+    // so that they don't lose their grouping.
+    rowAValue = getSortValue("bondOrBridge", rowA);
+    rowBValue = getSortValue("bondOrBridge", rowB);
+  }
+
+  return compareValues(rowAValue, rowBValue, direction);
 };
 
 export const generateUniqueId = ({ linkId, nicId }: Selected): string =>

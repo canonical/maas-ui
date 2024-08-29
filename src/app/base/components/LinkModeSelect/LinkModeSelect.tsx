@@ -12,7 +12,7 @@ type Props = {
 
 export enum Label {
   DefaultOption = "Select IP mode",
-  Select = "IP mode",
+  Select = "IP assignment",
 }
 
 const getAvailableLinkModes = (

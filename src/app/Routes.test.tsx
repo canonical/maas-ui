@@ -109,7 +109,9 @@ const routes: { title: string; path: string }[] = [
 describe("Routes", () => {
   let state: RootState;
   let scrollToSpy: Mock;
-
+  const queryData = {
+    zones: [factory.zone({ id: 1, name: "test-zone" })],
+  };
   beforeEach(() => {
     state = factory.rootState({
       user: factory.userState({
@@ -146,14 +148,7 @@ describe("Routes", () => {
           }),
         ],
       }),
-      zone: factory.zoneState({
-        items: [
-          factory.zone({
-            id: 1,
-            name: "test-zone",
-          }),
-        ],
-      }),
+      zone: factory.zoneState({}),
     });
     scrollToSpy = vi.fn();
     global.scrollTo = scrollToSpy;
@@ -168,6 +163,7 @@ describe("Routes", () => {
       renderWithBrowserRouter(<Routes />, {
         route: path,
         state,
+        queryData,
         routePattern: "/*",
       });
       await waitFor(() => expect(document.title).toBe(`${title} | MAAS`), {
@@ -202,8 +198,14 @@ describe("Routes", () => {
       route: urls.settings.index,
       state,
     });
-    await waitFor(() =>
-      expect(window.location.pathname).toBe(urls.settings.configuration.general)
+    await waitFor(
+      () =>
+        expect(window.location.pathname).toBe(
+          urls.settings.configuration.general
+        ),
+      {
+        timeout: LONG_TIMEOUT,
+      }
     );
   });
 

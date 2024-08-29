@@ -82,7 +82,9 @@ describe("DownloadMenu", () => {
     renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
-    expect(screen.getByRole("button", { name: Label.Toggle })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: Label.Toggle })
+    ).toBeAriaDisabled();
   });
 
   it("does not display a YAML output item when it does not exist", async () => {

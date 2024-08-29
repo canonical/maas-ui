@@ -23,9 +23,9 @@ export const getIpAssignmentDisplay = (
     case DeviceIpAssignment.DYNAMIC:
       return "Dynamic";
     case DeviceIpAssignment.EXTERNAL:
-      return "External";
+      return "Static (Externally managed)";
     case DeviceIpAssignment.STATIC:
-      return "Static";
+      return "Static (Client configured)";
     default:
       return "Unknown";
   }

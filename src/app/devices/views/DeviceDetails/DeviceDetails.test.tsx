@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import { Label as DeviceConfigurationLabel } from "./DeviceConfiguration/DeviceConfiguration";
 import DeviceDetails from "./DeviceDetails";
 import { Label as DeviceNetworkLabel } from "./DeviceNetwork/DeviceNetwork";
@@ -10,8 +8,6 @@ import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import { screen, renderWithBrowserRouter } from "@/testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("DeviceDetails", () => {
   const device = factory.deviceDetails({ system_id: "abc123" });
@@ -44,13 +40,13 @@ describe("DeviceDetails", () => {
       path: urls.devices.device.configuration({ id: "abc123" }),
     },
   ].forEach(({ label, path }) => {
-    it(`Displays: ${label} at: ${path}`, () => {
+    it(`Displays: ${label} at: ${path}`, async () => {
       renderWithBrowserRouter(<DeviceDetails />, {
         route: path,
         state,
         routePattern: `${urls.devices.device.index(null)}/*`,
       });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
+      expect(await screen.findByLabelText(label)).toBeInTheDocument();
     });
   });
 
@@ -66,10 +62,9 @@ describe("DeviceDetails", () => {
   });
 
   it("gets and sets the device as active", () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(<DeviceDetails />, {
+    const { store } = renderWithBrowserRouter(<DeviceDetails />, {
       route: urls.devices.device.index({ id: device.system_id }),
-      store,
+      state,
       routePattern: `${urls.devices.device.index(null)}/*`,
     });
 
@@ -88,10 +83,9 @@ describe("DeviceDetails", () => {
   });
 
   it("unsets active device and cleans up when unmounting", () => {
-    const store = mockStore(state);
-    const { unmount } = renderWithBrowserRouter(<DeviceDetails />, {
+    const { unmount, store } = renderWithBrowserRouter(<DeviceDetails />, {
       route: urls.devices.device.index({ id: device.system_id }),
-      store,
+      state,
       routePattern: `${urls.devices.device.index(null)}/*`,
     });
 
@@ -116,10 +110,9 @@ describe("DeviceDetails", () => {
 
   it("displays a message if the device does not exist", () => {
     state.device.items = [];
-    const store = mockStore(state);
     renderWithBrowserRouter(<DeviceDetails />, {
       route: urls.devices.device.index({ id: device.system_id }),
-      store,
+      state,
       routePattern: `${urls.devices.device.index(null)}/*`,
     });
 

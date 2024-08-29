@@ -53,8 +53,17 @@ const AddInterface = ({ closeForm, systemId }: Props): JSX.Element => {
         onSubmit={(values) => {
           resetCreatedInterface();
           dispatch(deviceActions.cleanup());
+
+          // Ensure we only submit the necessary values, and not submit the tag selector input.
+          const { ip_address, ip_assignment, mac_address, name, subnet, tags } =
+            values;
           const payload = preparePayload({
-            ...values,
+            ip_address,
+            ip_assignment,
+            mac_address,
+            name,
+            subnet,
+            tags,
             system_id: device.system_id,
           }) as CreateInterfaceParams;
           dispatch(deviceActions.createInterface(payload));

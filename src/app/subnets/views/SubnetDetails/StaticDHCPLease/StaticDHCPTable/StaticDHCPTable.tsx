@@ -53,7 +53,9 @@ const generateRows = (
             ? getNodeTypeDisplay(reservedIp.node_summary.node_type)
             : "—"}
         </td>
-        <td>{reservedIp.comment || "—"}</td>
+        <td className="u-no-wrap" title={reservedIp.comment}>
+          {reservedIp.comment || "—"}
+        </td>
         <td>
           <TableActions
             onDelete={() =>

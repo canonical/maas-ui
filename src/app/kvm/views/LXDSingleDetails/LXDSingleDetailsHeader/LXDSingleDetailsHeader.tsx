@@ -4,6 +4,7 @@ import { Button, Icon, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 
+import { useZoneById } from "@/app/api/query/zones";
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
@@ -13,8 +14,6 @@ import { podActions } from "@/app/store/pod";
 import podSelectors from "@/app/store/pod/selectors";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
@@ -29,11 +28,9 @@ const LXDSingleDetailsHeader = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const zone = useSelector((state: RootState) =>
-    zoneSelectors.getById(state, pod?.zone)
-  );
+  const zone = useZoneById(pod?.zone);
 
-  useFetchActions([podActions.fetch, zoneActions.fetch]);
+  useFetchActions([podActions.fetch]);
 
   let title: ReactNode = <Spinner text="Loading..." />;
   if (pod) {
@@ -101,7 +98,7 @@ const LXDSingleDetailsHeader = ({
               },
               {
                 title: "AZ:",
-                subtitle: zone?.name || <Spinner />,
+                subtitle: zone?.data?.name || <Spinner />,
               },
               {
                 title: "LXD project:",
