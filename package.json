@@ -165,7 +165,7 @@
     "vitest": "1.6.0",
     "vitest-fetch-mock": "0.2.2",
     "wait-on": "7.2.0",
-    "webpack": "5.91.0"
+    "webpack": "5.94.0"
   },
   "resolutions": {
     "node_modules/@types/react-router-dom/@types/react": "18.3.3",
