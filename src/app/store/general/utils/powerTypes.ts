@@ -1,3 +1,4 @@
+import { isIP } from "is-ip";
 import * as Yup from "yup";
 import type { ObjectShape } from "yup/lib/object";
 
@@ -50,6 +51,23 @@ export const formatPowerParameters = (
     return params;
   }, {}) || {};
 
+const getPowerFieldSchema = (fieldType: PowerFieldType) => {
+  switch (fieldType) {
+    case PowerFieldType.MULTIPLE_CHOICE:
+      return Yup.array().of(Yup.string());
+    case PowerFieldType.IP_ADDRESS:
+    case PowerFieldType.VIRSH_ADDRESS:
+    case PowerFieldType.LXD_ADDRESS:
+      return Yup.string().test({
+        name: "is-ip-address",
+        message: "Please enter a valid IP address.",
+        test: (value) => isIP(value as string),
+      });
+    default:
+      return Yup.string();
+  }
+};
+
 /**
  * Generates a Yup validation object shape for power parameters based on the
  * selected power type and the field scopes.
@@ -63,10 +81,7 @@ export const generatePowerParametersSchema = (
 ): ObjectShape =>
   powerType?.fields?.reduce<ObjectShape>((schema, field) => {
     if (fieldScopes.includes(field.scope)) {
-      let fieldSchema =
-        field.field_type === PowerFieldType.MULTIPLE_CHOICE
-          ? Yup.array().of(Yup.string())
-          : Yup.string();
+      let fieldSchema = getPowerFieldSchema(field.field_type);
       if (field.required) {
         fieldSchema = fieldSchema.required(`${field.label} required`);
       }
