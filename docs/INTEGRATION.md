@@ -1,6 +1,10 @@
-# Integration testing with cypress
+# Integration testing
 
-[Cypress](https://www.cypress.io/) is an end-to-end Javascript testing framework that executes in the browser, and therefore in the same run loop as the device under test. It includes features such as time travel (through the use of UI snapshots), real-time reloads and automatic/intuitive waiting.
+We use Cypress and Playwright for integration testing in MAAS UI. Before running any of these tests, it is highly reccomended that you have your own MAAS instance up and running, as both of these frameworks need a real MAAS to test on. They will perform actions that will affect the MAAS setup, so you should not run these tests with a production MAAS.
+
+# Integration testing with Cypress
+
+[Cypress](https://www.Cypress.io/) is an end-to-end Javascript testing framework that executes in the browser, and therefore in the same run loop as the device under test. It includes features such as time travel (through the use of UI snapshots), real-time reloads and automatic/intuitive waiting.
 
 ⚠️ Cypress tests assume that the user `admin` with password `test` exists on the maas server.
 
@@ -9,24 +13,24 @@
 To run headless Cypress tests, enter the following command from the root of the project:
 
 ```shell
-yarn test-cypress
+yarn test-Cypress
 ```
 
 This will automatically start the React and proxy servers and run the Cypress tests, in which results are logged to the console. After running the tests, the servers and process will close.
 
 ## Edit local configuration
 
-By default, cypress will run tests using the configuration defined in [cypress.json](/cypress/cypress.json).
+By default, Cypress will run tests using the configuration defined in [Cypress.json](/Cypress/Cypress.json).
 
 If you wish to overwrite any of the settings (e.g. MAAS URL or username/password) you can create a local configuration file:
 
 ```shell
-touch cypress.env.json
+touch Cypress.env.json
 ```
 
-Values from `cypress.env.json` will overwrite conflicting variables in the main `cypress.json` configuration file.
+Values from `Cypress.env.json` will overwrite conflicting variables in the main `Cypress.json` configuration file.
 
-## Developing cypress tests
+## Developing Cypress tests
 
 ### On your host machine
 
@@ -38,19 +42,19 @@ This is the most straightforward process, and generally what we would recommend.
 yarn serve
 ```
 
-2. Start cypress
+2. Start Cypress
 
 Then open the Cypress Test Runner by running:
 
 ```shell
-yarn cypress-open
+yarn Cypress-open
 ```
 
 You should then see a list of test specs in maas-ui. You can run all interactive tests by clicking "Run all specs" in the top-right of the window.
 
 ### On LXD or Multipass
 
-Running Cypress in LXD or multipass is _not_ recommended as the setup is more complex, but if you'd rather not run cypress on your host, the follow options are available:
+Running Cypress in LXD or multipass is _not_ recommended as the setup is more complex, but if you'd rather not run Cypress on your host, the follow options are available:
 
 #### LXD
 
@@ -119,13 +123,13 @@ sudo apt-get install xvfb libgtk-3-dev libnotify-dev libgconf-2-4 libnss3 libxss
 You may need to install Cypress explicitly if you've set up file-sharing with your host/container.
 
 ```shell
-node_modules/.bin/cypress install
+node_modules/.bin/Cypress install
 ```
 
 You should now be able to open the Cypress Test Runner in your container by running:
 
 ```shell
-yarn cypress-open
+yarn Cypress-open
 ```
 
 If you encounter an error with file watchers e.g. `ENOSPC: System limit for number of file watchers reached`, run:
@@ -197,4 +201,51 @@ You should now be able to run the Cypress Test Runner by running:
 
 ```shell
 yarn cypress-open
+```
+
+# Integration testing with Playwright
+
+Like Cypress, [Playwright](https://playwright.dev/) is also an end-to-end testing framework that uses a browser. Playwright uses the Chrome DevTools Protocol to execute actions in the browser, unlike Cypress which injects code directly into the browser's execution loop. The result of this is that Playwright tests more accurately reflect an apps behaviour in the browser, since it's using standardised APIs and does not need to modify the browser to run its tests.
+
+## Setup
+
+_Note: This was tested on Ubuntu 24.04_
+
+First, you'll need to install Playwright and its dependencies. Assuming you have NodeJS and Yarn installed (see [HACKING.md](./HACKING.md#setup-maas-ui-node-and-yarn)), run the following command:
+
+```sh
+yarn playwright install --with-deps
+```
+
+You might need to restart your system after running this command. You'll also need to make sure you have a MAAS instance up and running - take note of the URL.
+
+## Running tests
+
+**Playwright expects a MAAS instance to be running at `http://0.0.0.0:5240` to test against.** If you've already got a local MAAS instance, then you should be good to go. If you followed the [LXD backend guide](./LXD.md) or have your MAAS running on another system, you'll need to change a few things before your tests will run.
+
+1. In `[playwright.config.ts](../playwright.config.ts)`, change `baseUrl` to your MAAS URL.
+2. Some cookies are set at the top of test files - you'll need to change the URL of these to your MAAS URL.
+
+Make sure you don't commit these changes, as our CI will run MAAS on `http://0.0.0.0:5240`.
+
+### Headless tests
+
+To run headless tests with playwright, you can run the following command:
+
+```sh
+yarn playwright test
+```
+
+You can test a specific file by specifying it after `test`:
+
+```sh
+yarn playwright test machines.spec.ts
+```
+
+### With the Playwright UI
+
+You can open the Playwright UI with the following command:
+
+```sh
+yarn playwright test --ui
 ```
