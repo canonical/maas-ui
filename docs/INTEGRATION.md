@@ -20,15 +20,15 @@ This will automatically start the React and proxy servers and run the Cypress te
 
 ## Edit local configuration
 
-By default, Cypress will run tests using the configuration defined in [Cypress.json](/Cypress/Cypress.json).
+By default, Cypress will run tests using the configuration defined in [cypress.config.ts](../cypress.config.ts).
 
 If you wish to overwrite any of the settings (e.g. MAAS URL or username/password) you can create a local configuration file:
 
 ```shell
-touch Cypress.env.json
+touch cypress.env.json
 ```
 
-Values from `Cypress.env.json` will overwrite conflicting variables in the main `Cypress.json` configuration file.
+Values from `cypress.env.json` will overwrite conflicting variables in the main `cypress.config.ts` configuration file.
 
 ## Developing Cypress tests
 
@@ -47,7 +47,7 @@ yarn serve
 Then open the Cypress Test Runner by running:
 
 ```shell
-yarn Cypress-open
+yarn cypress-open
 ```
 
 You should then see a list of test specs in maas-ui. You can run all interactive tests by clicking "Run all specs" in the top-right of the window.
@@ -206,6 +206,8 @@ yarn cypress-open
 # Integration testing with Playwright
 
 Like Cypress, [Playwright](https://playwright.dev/) is also an end-to-end testing framework that uses a browser. Playwright uses the Chrome DevTools Protocol to execute actions in the browser, unlike Cypress which injects code directly into the browser's execution loop. The result of this is that Playwright tests more accurately reflect an apps behaviour in the browser, since it's using standardised APIs and does not need to modify the browser to run its tests.
+
+⚠️ Playwright tests assume that the user `admin` with password `test` exists on the maas server.
 
 ## Setup
 
