@@ -68,7 +68,7 @@ const GroupCheckbox = ({
           newSelected.grouping = grouping;
         } else if (
           !checked &&
-          group.items.every((item) => newSelected.items?.includes(item))
+          group.items.some((item) => newSelected.items?.includes(item))
         ) {
           // If the checkbox has been unchecked and the group's visible items are
           // in the list then remove them.
