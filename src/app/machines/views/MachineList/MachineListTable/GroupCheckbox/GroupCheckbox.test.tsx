@@ -30,7 +30,7 @@ beforeEach(() => {
   });
 });
 
-it.skip("is disabled if all machines are selected", () => {
+it("is disabled if all machines are selected", () => {
   state.machine.selected = {
     filter: {
       owner: "admin",
@@ -50,7 +50,7 @@ it.skip("is disabled if all machines are selected", () => {
   expect(screen.getByRole("checkbox")).toBeDisabled();
 });
 
-it.skip("is disabled if there are no machines in the group", () => {
+it("is disabled if there are no machines in the group", () => {
   const group = factory.machineStateListGroup({
     count: 0,
     name: "admin2",
@@ -71,7 +71,7 @@ it.skip("is disabled if there are no machines in the group", () => {
   expect(screen.getByRole("checkbox")).toBeDisabled();
 });
 
-it.skip("is not disabled if there are machines in the group", () => {
+it("is not disabled if there are machines in the group", () => {
   state.machine.lists[callId].groups = [
     factory.machineStateListGroup({
       count: 1,
@@ -93,7 +93,7 @@ it.skip("is not disabled if there are machines in the group", () => {
   expect(screen.getByRole("checkbox")).not.toBeDisabled();
 });
 
-it.skip("is unchecked if there are no filters, groups or items selected", () => {
+it("is unchecked if there are no filters, groups or items selected", () => {
   state.machine.selected = null;
   renderWithMockStore(
     <GroupCheckbox
@@ -109,7 +109,7 @@ it.skip("is unchecked if there are no filters, groups or items selected", () => 
   expect(screen.getByRole("checkbox")).not.toBeChecked();
 });
 
-it.skip("is checked if all machines are selected", () => {
+it("is checked if all machines are selected", () => {
   state.machine.selected = {
     filter: {
       owner: "admin",
@@ -129,9 +129,9 @@ it.skip("is checked if all machines are selected", () => {
   expect(screen.getByRole("checkbox")).toBeChecked();
 });
 
-it.skip("is checked if the group is selected", () => {
+it("is checked if the group is selected", () => {
   state.machine.selected = {
-    groups: ["admin-2"],
+    items: ["machine1", "machine2", "machine3"],
   };
   renderWithMockStore(
     <GroupCheckbox
@@ -147,7 +147,7 @@ it.skip("is checked if the group is selected", () => {
   expect(screen.getByRole("checkbox")).toBeChecked();
 });
 
-it.skip("is partially checked if a machine in the group is selected", () => {
+it("is partially checked if a machine in the group is selected", () => {
   const group = factory.machineStateListGroup({
     count: 2,
     items: ["abc123", "def456"],
@@ -172,7 +172,7 @@ it.skip("is partially checked if a machine in the group is selected", () => {
   expect(screen.getByRole("checkbox")).toBePartiallyChecked();
 });
 
-it.skip("is not checked if a selected machine is in another group", () => {
+it("is not checked if a selected machine is in another group", () => {
   const group = factory.machineStateListGroup({
     count: 2,
     items: ["abc123"],
