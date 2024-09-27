@@ -317,3 +317,47 @@ it("can dispatch an action to unselect the group", async () => {
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
 });
+
+it("can dispatch an action to unselect the group when it's partially selected", async () => {
+  const group = factory.machineStateListGroup({
+    count: 2,
+    items: ["abc123", "ghi789"],
+    name: "admin2",
+    value: "admin-2",
+  });
+  state.machine.lists[callId].groups = [
+    factory.machineStateListGroup({
+      count: 2,
+      items: ["def456"],
+      name: "admin1",
+      value: "admin-1",
+    }),
+    group,
+  ];
+  state.machine.selected = {
+    items: ["def456", "abc123"],
+  };
+
+  const store = mockStore(state);
+  renderWithMockStore(
+    <GroupCheckbox
+      callId={callId}
+      group={group}
+      groupName="admin2"
+      grouping={FetchGroupKey.AgentName}
+    />,
+    {
+      store,
+    }
+  );
+
+  await userEvent.click(screen.getByRole("checkbox"));
+
+  const expected = machineActions.setSelected({
+    items: ["def456"],
+  });
+
+  expect(
+    store.getActions().find((action) => action.type === expected.type)
+  ).toStrictEqual(expected);
+});
