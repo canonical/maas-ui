@@ -276,6 +276,46 @@ export const DeployFormFields = (): JSX.Element => {
               name="enableHwSync"
               type="checkbox"
             />
+
+            {import.meta.env.VITE_APP_KERNEL_CRASH_DUMP_ENABLED === "true" && (
+              <FormikField
+                help={
+                  <>
+                    To enable kernel crash dump, the hardware{" "}
+                    <TooltipButton
+                      iconName="help-mid-dark"
+                      message={
+                        <span className="u-align-text--center u-flex--center">
+                          {" "}
+                          &gt;= 4 CPU threads, <br /> &gt;= 6GB RAM, <br />
+                          Reserve &gt;5x RAM size as free disk space in /var.
+                        </span>
+                      }
+                    />{" "}
+                    and OS{" "}
+                    <TooltipButton
+                      iconName="help-mid-dark"
+                      message="Ubuntu 24.04 LTS or higher."
+                    />{" "}
+                    must meet the minimum requirements and secure boot must be
+                    disabled. Check crash dump status in machine details.{" "}
+                    <ExternalLink to="https://ubuntu.com/server/docs/kernel-crash-dump">
+                      More about kernel crash dump
+                    </ExternalLink>
+                  </>
+                }
+                label={
+                  <>
+                    Try to enable kernel crash dump{" "}
+                    <ExternalLink to="https://ubuntu.com/server/docs/kernel-crash-dump">
+                      Kernel crash dump docs
+                    </ExternalLink>
+                  </>
+                }
+                name="kernel_crash_dump"
+                type="checkbox"
+              />
+            )}
           </Col>
         </Row>
         {user && user.sshkeys_count === 0 && (
