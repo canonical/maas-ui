@@ -248,4 +248,6 @@ describe("node is a machine", () => {
     expect(screen.getByText(DetailsCardLabels.Pool)).toBeInTheDocument();
     expect(screen.getByText("swimming")).toBeInTheDocument();
   });
+
+  it.todo("shows the status of kernel crash dumps on the machine");
 });
