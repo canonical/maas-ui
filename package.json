@@ -50,7 +50,7 @@
     "@canonical/react-components": "0.55.0",
     "@redux-devtools/extension": "3.3.0",
     "@reduxjs/toolkit": "1.9.7",
-    "@sentry/browser": "5.30.0",
+    "@sentry/browser": "8.33.0",
     "@vitejs/plugin-react-swc": "3.6.0",
     "classnames": "2.5.1",
     "clone-deep": "4.0.1",
