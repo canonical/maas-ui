@@ -298,10 +298,7 @@ export const DeployFormFields = (): JSX.Element => {
                       message="Ubuntu 24.04 LTS or higher."
                     />{" "}
                     must meet the minimum requirements and secure boot must be
-                    disabled. Check crash dump status in machine details.{" "}
-                    <ExternalLink to="https://ubuntu.com/server/docs/kernel-crash-dump">
-                      More about kernel crash dump
-                    </ExternalLink>
+                    disabled. Check crash dump status in machine details.
                   </>
                 }
                 label={
