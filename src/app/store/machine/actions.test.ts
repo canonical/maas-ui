@@ -449,6 +449,7 @@ describe("machine actions", () => {
         install_kvm: false,
         osystem: "ubuntu",
         system_id: "abc123",
+        enable_kernel_crash_dump: false,
       })
     ).toEqual({
       type: "machine/deploy",
@@ -465,6 +466,7 @@ describe("machine actions", () => {
             hwe_kernel: "ga-16.04",
             install_kvm: false,
             osystem: "ubuntu",
+            enable_kernel_crash_dump: false,
           },
           system_id: "abc123",
         },
@@ -480,6 +482,7 @@ describe("machine actions", () => {
         hwe_kernel: "ga-16.04",
         install_kvm: false,
         osystem: "ubuntu",
+        enable_kernel_crash_dump: false,
         filter: { hostname: ["ringtail-possum", "easter-rosella"] },
       })
     ).toEqual({
@@ -497,6 +500,7 @@ describe("machine actions", () => {
             hwe_kernel: "ga-16.04",
             install_kvm: false,
             osystem: "ubuntu",
+            enable_kernel_crash_dump: false,
           },
           filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
