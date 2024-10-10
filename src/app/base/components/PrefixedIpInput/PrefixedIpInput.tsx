@@ -20,7 +20,7 @@ type Props = Omit<
   name: string;
 };
 
-const PrefixedIpInput = ({ cidr, name, ...props }: Props) => {
+const PrefixedIpInput = ({ cidr, name, help, ...props }: Props) => {
   const [networkAddress] = cidr.split("/");
   const ipv6Prefix = networkAddress.substring(
     0,
@@ -67,14 +67,18 @@ const PrefixedIpInput = ({ cidr, name, ...props }: Props) => {
   return (
     <PrefixedInput
       help={
-        subnetIsIpv4 ? (
-          <>
-            The available range in this subnet is{" "}
-            <code>
-              {immutable}.{editable}
-            </code>
-          </>
-        ) : null
+        !help ? (
+          subnetIsIpv4 ? (
+            <>
+              The available range in this subnet is{" "}
+              <code>
+                {immutable}.{editable}
+              </code>
+            </>
+          ) : null
+        ) : (
+          help
+        )
       }
       immutableText={subnetIsIpv4 ? `${immutable}.` : ipv6Prefix}
       maxLength={getMaxLength()}
