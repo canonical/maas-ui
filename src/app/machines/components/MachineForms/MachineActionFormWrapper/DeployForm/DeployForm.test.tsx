@@ -17,6 +17,7 @@ describe("DeployForm", () => {
   beforeEach(() => {
     state = factory.rootState({
       config: factory.configState({
+        loaded: true,
         items: [
           factory.config({
             name: ConfigNames.DEFAULT_OSYSTEM,
@@ -29,6 +30,10 @@ describe("DeployForm", () => {
           factory.config({
             name: ConfigNames.ENABLE_ANALYTICS,
             value: true,
+          }),
+          factory.config({
+            name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP,
+            value: false,
           }),
         ],
       }),
@@ -101,6 +106,7 @@ describe("DeployForm", () => {
     const expectedActions = [
       "general/fetchDefaultMinHweKernel",
       "general/fetchOsInfo",
+      "config/fetch",
     ];
 
     expectedActions.forEach((expectedAction) => {
@@ -116,6 +122,9 @@ describe("DeployForm", () => {
         osInfo: factory.osInfoState({
           loaded: false,
         }),
+      }),
+      config: factory.configState({
+        loaded: false,
       }),
     });
     const store = mockStore(state);
@@ -163,6 +172,7 @@ describe("DeployForm", () => {
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
+        enable_kernel_crash_dump: false,
       }),
       machineActions.deploy({
         distro_series: "bionic",
@@ -170,6 +180,7 @@ describe("DeployForm", () => {
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "def456",
+        enable_kernel_crash_dump: false,
       }),
     ]);
   });
@@ -215,6 +226,7 @@ describe("DeployForm", () => {
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
+        enable_kernel_crash_dump: false,
         user_data: "test script",
       }),
     ]);
@@ -249,6 +261,7 @@ describe("DeployForm", () => {
         ephemeral_deploy: false,
         hwe_kernel: "",
         osystem: "ubuntu",
+        enable_kernel_crash_dump: false,
         system_id: "abc123",
       })
     );
@@ -288,6 +301,7 @@ describe("DeployForm", () => {
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
+        enable_kernel_crash_dump: false,
       })
     );
   });
@@ -320,6 +334,7 @@ describe("DeployForm", () => {
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
+        enable_kernel_crash_dump: false,
       }),
     ]);
   });
@@ -468,6 +483,7 @@ describe("DeployForm", () => {
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "abc123",
+        enable_kernel_crash_dump: false,
       }),
       machineActions.deploy({
         distro_series: "bionic",
@@ -475,7 +491,30 @@ describe("DeployForm", () => {
         hwe_kernel: "",
         osystem: "ubuntu",
         system_id: "def456",
+        enable_kernel_crash_dump: false,
       }),
     ]);
+  });
+
+  it("checks the kernel crash dump checkbox if it's enabled in the settings", () => {
+    state.config.items = [
+      { name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: true },
+    ];
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
+    );
+
+    expect(
+      screen.getByRole("checkbox", {
+        name: /Try to enable kernel crash dump/i,
+      })
+    ).toBeChecked();
   });
 });

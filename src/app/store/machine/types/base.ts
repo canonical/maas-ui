@@ -84,6 +84,7 @@ export type MachineDetails = BaseMachine &
     devices: NodeDeviceRef[];
     dhcp_on: boolean;
     disks: Disk[];
+    enable_kernel_crash_dump: boolean;
     error: string;
     events: NodeEvent[];
     grouped_storages: GroupedStorage[];

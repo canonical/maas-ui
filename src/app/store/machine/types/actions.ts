@@ -257,6 +257,7 @@ export type DeployParams = BaseMachineActionParams & {
   osystem?: Machine["osystem"];
   register_vmhost?: boolean;
   user_data?: string;
+  enable_kernel_crash_dump?: boolean;
 };
 
 export enum FetchSortDirection {

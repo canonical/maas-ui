@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
-import { test } from "vitest";
 
 import KernelParametersForm, {
   Labels as FormLabels,
@@ -18,9 +17,6 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const kernelCrashDumpEnabled =
-  process.env.VITE_APP_KERNEL_CRASH_DUMP_ENABLED === "true";
-
 const mockStore = configureStore();
 
 describe("KernelParametersForm", () => {
@@ -33,6 +29,10 @@ describe("KernelParametersForm", () => {
           {
             name: ConfigNames.KERNEL_OPTS,
             value: "foo",
+          },
+          {
+            name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP,
+            value: false,
           },
         ],
       }),
@@ -57,7 +57,29 @@ describe("KernelParametersForm", () => {
     ).toHaveValue("foo");
   });
 
-  it("dispatches an action to update the kernel_opts value", async () => {
+  it("sets enable_kernel_crash_dump value", () => {
+    const state = {
+      ...initialState,
+      config: {
+        items: [{ name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP, value: true }],
+      },
+    };
+    const store = mockStore(state);
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <KernelParametersForm />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      screen.getByRole("checkbox", { name: FormLabels.KernelCrashDump })
+    ).toBeChecked();
+  });
+
+  it("dispatches an action to update kernel parameters", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
@@ -69,6 +91,10 @@ describe("KernelParametersForm", () => {
     await userEvent.type(
       screen.getByRole("textbox", { name: FormLabels.GlobalBootParams }),
       "bar"
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: FormLabels.KernelCrashDump })
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -83,6 +109,7 @@ describe("KernelParametersForm", () => {
       payload: {
         params: {
           items: {
+            enable_kernel_crash_dump: true,
             kernel_opts: "bar",
           },
         },
@@ -90,41 +117,35 @@ describe("KernelParametersForm", () => {
     });
   });
 
-  test.runIf(kernelCrashDumpEnabled)(
-    "shows a tooltip for minimum OS requirements",
-    async () => {
-      renderWithBrowserRouter(<KernelParametersForm />, {
-        state: { ...initialState },
-      });
+  it("shows a tooltip for minimum OS requirements", async () => {
+    renderWithBrowserRouter(<KernelParametersForm />, {
+      state: { ...initialState },
+    });
 
-      await userEvent.hover(
-        screen.getAllByRole("button", { name: "help-mid-dark" })[1]
+    await userEvent.hover(
+      screen.getAllByRole("button", { name: "help-mid-dark" })[1]
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        "Ubuntu 24.04 LTS or higher."
       );
+    });
+  });
 
-      await waitFor(() => {
-        expect(screen.getByRole("tooltip")).toHaveTextContent(
-          "Ubuntu 24.04 LTS or higher."
-        );
-      });
-    }
-  );
+  it("shows a tooltip for minimum hardware requirements", async () => {
+    renderWithBrowserRouter(<KernelParametersForm />, {
+      state: { ...initialState },
+    });
 
-  test.runIf(kernelCrashDumpEnabled)(
-    "shows a tooltip for minimum hardware requirements",
-    async () => {
-      renderWithBrowserRouter(<KernelParametersForm />, {
-        state: { ...initialState },
-      });
+    await userEvent.hover(
+      screen.getAllByRole("button", { name: "help-mid-dark" })[0]
+    );
 
-      await userEvent.hover(
-        screen.getAllByRole("button", { name: "help-mid-dark" })[0]
+    await waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        ">= 4 CPU threads, >= 6GB RAM, Reserve >5x RAM size as free disk space in /var."
       );
-
-      await waitFor(() => {
-        expect(screen.getByRole("tooltip")).toHaveTextContent(
-          ">= 4 CPU threads, >= 6GB RAM, Reserve >5x RAM size as free disk space in /var."
-        );
-      });
-    }
-  );
+    });
+  });
 });

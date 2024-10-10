@@ -27,6 +27,7 @@ export enum ConfigNames {
   ENABLE_ANALYTICS = "enable_analytics",
   ENABLE_DISK_ERASING_ON_RELEASE = "enable_disk_erasing_on_release",
   ENABLE_HTTP_PROXY = "enable_http_proxy",
+  ENABLE_KERNEL_CRASH_DUMP = "enable_kernel_crash_dump",
   ENABLE_THIRD_PARTY_DRIVERS = "enable_third_party_drivers",
   ENLIST_COMMISSIONING = "enlist_commissioning",
   FORCE_V1_NETWORK_YAML = "force_v1_network_yaml",

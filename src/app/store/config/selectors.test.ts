@@ -640,4 +640,20 @@ describe("config selectors", () => {
       expect(config.tlsCertExpirationNotificationInterval(state)).toBe(45);
     });
   });
+
+  describe("kernelCrashDump", () => {
+    it("returns MAAS config for kernel crash dump", () => {
+      const state = factory.rootState({
+        config: factory.configState({
+          items: [
+            factory.config({
+              name: ConfigNames.ENABLE_KERNEL_CRASH_DUMP,
+              value: true,
+            }),
+          ],
+        }),
+      });
+      expect(config.enableKernelCrashDump(state)).toBe(true);
+    });
+  });
 });
