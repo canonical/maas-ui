@@ -561,6 +561,10 @@ const tlsCertExpirationNotificationInterval = createSelector([all], (configs) =>
   )
 );
 
+const enableKernelCrashDump = createSelector([all], (configs) =>
+  getValueFromName<boolean>(configs, ConfigNames.ENABLE_KERNEL_CRASH_DUMP)
+);
+
 const config = {
   activeDiscoveryInterval,
   all,
@@ -582,6 +586,7 @@ const config = {
   dnsTrustedAcl,
   enableDiskErasing,
   enableHttpProxy,
+  enableKernelCrashDump,
   errors,
   hardwareSyncInterval,
   httpProxy,

@@ -7,6 +7,8 @@ import DeployFormFields from "./DeployFormFields";
 import ActionForm from "@/app/base/components/ActionForm";
 import { useFetchActions, useSendAnalytics } from "@/app/base/hooks";
 import type { MachineActionFormProps } from "@/app/machines/types";
+import { configActions } from "@/app/store/config";
+import configSelectors from "@/app/store/config/selectors";
 import { generalActions } from "@/app/store/general";
 import {
   defaultMinHweKernel as defaultMinHweKernelSelectors,
@@ -37,6 +39,7 @@ export type DeployFormValues = {
   userData?: string;
   vmHostType: string;
   enableHwSync: boolean;
+  enableKernelCrashDump: boolean;
 };
 
 type Props = MachineActionFormProps;
@@ -66,12 +69,18 @@ export const DeployForm = ({
   const osInfoLoaded = useSelector(osInfoSelectors.loaded);
   const sendAnalytics = useSendAnalytics();
 
+  const enableKernelCrashDump = useSelector(
+    configSelectors.enableKernelCrashDump
+  );
+  const configLoaded = useSelector(configSelectors.loaded);
+
   useFetchActions([
     generalActions.fetchDefaultMinHweKernel,
     generalActions.fetchOsInfo,
+    configActions.fetch,
   ]);
 
-  if (!defaultMinHweKernelLoaded || !osInfoLoaded) {
+  if (!defaultMinHweKernelLoaded || !osInfoLoaded || !configLoaded) {
     return (
       <Strip data-testid="loading-deploy-data">
         <Spinner text="Loading..." />
@@ -112,6 +121,7 @@ export const DeployForm = ({
         userData: "",
         vmHostType: "",
         enableHwSync: false,
+        enableKernelCrashDump: enableKernelCrashDump || false,
       }}
       modelName="machine"
       onCancel={clearSidePanelContent}
@@ -137,6 +147,7 @@ export const DeployForm = ({
             ephemeral_deploy: values.ephemeralDeploy,
             hwe_kernel: values.kernel,
             osystem: values.oSystem,
+            enable_kernel_crash_dump: values.enableKernelCrashDump,
             ...(values.enableHwSync && { enable_hw_sync: true }),
             ...(values.vmHostType === PodType.LXD && {
               register_vmhost: true,
@@ -154,6 +165,7 @@ export const DeployForm = ({
                 ephemeral_deploy: values.ephemeralDeploy,
                 hwe_kernel: values.kernel,
                 osystem: values.oSystem,
+                enable_kernel_crash_dump: values.enableKernelCrashDump,
                 system_id: machine.system_id,
                 ...(values.enableHwSync && { enable_hw_sync: true }),
                 ...(values.vmHostType === PodType.LXD && {
