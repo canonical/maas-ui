@@ -67,18 +67,16 @@ const PrefixedIpInput = ({ cidr, name, help, ...props }: Props) => {
   return (
     <PrefixedInput
       help={
-        !help ? (
-          subnetIsIpv4 ? (
-            <>
-              The available range in this subnet is{" "}
-              <code>
-                {immutable}.{editable}
-              </code>
-            </>
-          ) : null
-        ) : (
+        help ? (
           help
-        )
+        ) : subnetIsIpv4 ? (
+          <>
+            The available range in this subnet is{" "}
+            <code>
+              {immutable}.{editable}
+            </code>
+          </>
+        ) : null
       }
       immutableText={subnetIsIpv4 ? `${immutable}.` : ipv6Prefix}
       maxLength={getMaxLength()}
