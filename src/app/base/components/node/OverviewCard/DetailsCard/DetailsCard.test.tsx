@@ -130,7 +130,7 @@ it("renders a list of tags once loaded", () => {
 });
 
 describe("node is a controller", () => {
-  it("does not render owner, host or pool information", () => {
+  it("does not render owner, host, pool, or kernel crash dump information", () => {
     const controller = factory.controllerDetails();
     state.controller.items = [controller];
 
@@ -142,6 +142,9 @@ describe("node is a controller", () => {
     expect(screen.queryByText(DetailsCardLabels.Host)).not.toBeInTheDocument();
     expect(
       screen.queryByText(DetailsCardLabels.PoolLink)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(DetailsCardLabels.KernelCrashDump)
     ).not.toBeInTheDocument();
   });
 });
@@ -249,5 +252,20 @@ describe("node is a machine", () => {
     expect(screen.getByText("swimming")).toBeInTheDocument();
   });
 
-  it.todo("shows the status of kernel crash dumps on the machine");
+  it("shows the status of kernel crash dumps on the machine", () => {
+    const machine = factory.machineDetails({
+      enable_kernel_crash_dump: true,
+    });
+    state.machine.items = [machine];
+
+    renderWithBrowserRouter(<DetailsCard node={machine} />, {
+      route: "/machine/abc123",
+      state,
+    });
+
+    expect(
+      screen.getByText(DetailsCardLabels.KernelCrashDump)
+    ).toBeInTheDocument();
+    expect(screen.getByText("enabled")).toBeInTheDocument();
+  });
 });

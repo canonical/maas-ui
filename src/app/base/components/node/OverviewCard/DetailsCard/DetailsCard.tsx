@@ -60,7 +60,9 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
     node.power_type
   );
   const tagsDisplay = getTagsDisplay(machineTags);
-  const kernelCrashDumpEnabled = true;
+  const kernelCrashDumpEnabled = isMachine
+    ? node.enable_kernel_crash_dump
+    : false;
 
   useFetchActions([generalActions.fetchPowerTypes, tagActions.fetch]);
 
@@ -198,7 +200,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           <Spinner data-testid="loading-tags" />
         )}
       </div>
-      {import.meta.env.VITE_APP_KERNEL_CRASH_DUMP_ENABLED === "true" && (
+      {isMachine && (
         <div>
           <div className="u-text--muted">{Labels.KernelCrashDump}</div>
           <span>

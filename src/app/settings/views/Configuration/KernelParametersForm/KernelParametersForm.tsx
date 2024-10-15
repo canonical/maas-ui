@@ -10,6 +10,7 @@ import configSelectors from "@/app/store/config/selectors";
 
 type KernelParametersValues = {
   kernel_opts: string;
+  enable_kernel_crash_dump: boolean;
 };
 
 export enum Labels {
@@ -33,6 +34,9 @@ const KernelParametersForm = (): JSX.Element => {
   const errors = useSelector(configSelectors.errors);
 
   const kernelParams = useSelector(configSelectors.kernelParams);
+  const enableKernelCrashDump = useSelector(
+    configSelectors.enableKernelCrashDump
+  );
 
   return (
     <FormikForm<KernelParametersValues>
@@ -41,6 +45,7 @@ const KernelParametersForm = (): JSX.Element => {
       errors={errors}
       initialValues={{
         kernel_opts: kernelParams || "",
+        enable_kernel_crash_dump: enableKernelCrashDump || false,
       }}
       onSaveAnalytics={{
         action: "Saved",
@@ -48,7 +53,12 @@ const KernelParametersForm = (): JSX.Element => {
         label: "Kernel parameters form",
       }}
       onSubmit={(values, { resetForm }) => {
-        dispatch(updateConfig({ kernel_opts: values.kernel_opts }));
+        dispatch(
+          updateConfig({
+            kernel_opts: values.kernel_opts,
+            enable_kernel_crash_dump: values.enable_kernel_crash_dump,
+          })
+        );
         resetForm({ values });
       }}
       saved={saved}
@@ -61,41 +71,37 @@ const KernelParametersForm = (): JSX.Element => {
         name="kernel_opts"
         type="text"
       />
-      {import.meta.env.VITE_APP_KERNEL_CRASH_DUMP_ENABLED === "true" && (
-        <>
-          <span className="p-heading--5">Kernel crash dump</span>
-          <FormikField
-            help={
-              <>
-                To enable kernel crash dump, the hardware{" "}
-                <TooltipButton
-                  iconName="help-mid-dark"
-                  message={
-                    <span className="u-align-text--center u-flex--center">
-                      {" "}
-                      &gt;= 4 CPU threads, <br /> &gt;= 6GB RAM, <br />
-                      Reserve &gt;5x RAM size as free disk space in /var.
-                    </span>
-                  }
-                />{" "}
-                and OS{" "}
-                <TooltipButton
-                  iconName="help-mid-dark"
-                  message="Ubuntu 24.04 LTS or higher."
-                />{" "}
-                must meet the minimum requirements and secure boot must be
-                disabled. Check crash dump status in machine details.{" "}
-                <ExternalLink to="https://ubuntu.com/server/docs/kernel-crash-dump">
-                  More about kernel crash dump
-                </ExternalLink>
-              </>
-            }
-            label={Labels.KernelCrashDump}
-            name="kernel_crash_dump"
-            type="checkbox"
-          />
-        </>
-      )}
+      <span className="p-heading--5">Kernel crash dump</span>
+      <FormikField
+        help={
+          <>
+            To enable kernel crash dump, the hardware{" "}
+            <TooltipButton
+              iconName="help-mid-dark"
+              message={
+                <span className="u-align-text--center u-flex--center">
+                  {" "}
+                  &gt;= 4 CPU threads, <br /> &gt;= 6GB RAM, <br />
+                  Reserve &gt;5x RAM size as free disk space in /var.
+                </span>
+              }
+            />{" "}
+            and OS{" "}
+            <TooltipButton
+              iconName="help-mid-dark"
+              message="Ubuntu 24.04 LTS or higher."
+            />{" "}
+            must meet the minimum requirements and secure boot must be disabled.
+            Check crash dump status in machine details.{" "}
+            <ExternalLink to="https://ubuntu.com/server/docs/kernel-crash-dump">
+              More about kernel crash dump
+            </ExternalLink>
+          </>
+        }
+        label={Labels.KernelCrashDump}
+        name="enable_kernel_crash_dump"
+        type="checkbox"
+      />
     </FormikForm>
   );
 };
