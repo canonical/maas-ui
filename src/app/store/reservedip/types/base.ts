@@ -6,7 +6,7 @@ import type { GenericState } from "@/app/store/types/state";
 
 export type ReservedIp = TimestampedModel & {
   ip: string;
-  mac_address?: string;
+  mac_address: string;
   comment?: string;
   subnet: Subnet[SubnetMeta.PK];
   node_summary?: ReservedIpNodeSummary;
