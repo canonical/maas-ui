@@ -216,7 +216,7 @@ const ReserveDHCPLease = ({
             disabled={!!reservedIpId}
             help={
               !!reservedIpId
-                ? "You cannot edit a reserved IP MAC address."
+                ? "You cannot edit a reserved IP's MAC address."
                 : null
             }
             label="MAC address"
