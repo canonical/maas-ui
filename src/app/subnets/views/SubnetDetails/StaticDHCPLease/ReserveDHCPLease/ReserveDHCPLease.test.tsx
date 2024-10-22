@@ -86,8 +86,8 @@ it("displays an error if the IP address or the MAC address are not entered", asy
     { state }
   );
 
-  await userEvent.tab();
-  await userEvent.tab();
+  await userEvent.click(screen.getByRole("textbox", { name: "IP address" }));
+  await userEvent.click(screen.getByRole("textbox", { name: "MAC address" }));
   await userEvent.tab();
 
   expect(screen.getByText("IP address is required")).toBeInTheDocument();
