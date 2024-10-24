@@ -123,9 +123,7 @@ const SubnetDetails = (): JSX.Element => {
         <Route
           element={
             <>
-              {import.meta.env.VITE_APP_STATIC_IPS_ENABLED === "true" && (
-                <StaticDHCPLease subnetId={id} />
-              )}
+              <StaticDHCPLease subnetId={id} />
               <ReservedRanges subnetId={id} />
             </>
           }
