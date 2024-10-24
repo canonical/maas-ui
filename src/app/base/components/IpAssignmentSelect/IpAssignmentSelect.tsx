@@ -22,11 +22,7 @@ export const IpAssignmentSelect = ({
   return (
     <FormikField
       component={Select}
-      help={
-        import.meta.env.VITE_APP_STATIC_IPS_ENABLED === "true"
-          ? "To manage static DHCP leases for a device, go to the address reservation tab of a subnet."
-          : null
-      }
+      help="To manage static DHCP leases for a device, go to the address reservation tab of a subnet."
       label={label}
       options={[
         { label: Labels.DefaultOption, value: "", disabled: true },

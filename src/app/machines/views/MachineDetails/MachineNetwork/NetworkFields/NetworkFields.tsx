@@ -172,11 +172,7 @@ const NetworkFields = ({
       {values.subnet ? (
         <LinkModeSelect
           defaultOption={null}
-          help={
-            import.meta.env.VITE_APP_STATIC_IPS_ENABLED === "true"
-              ? "To manage static DHCP leases for a machine, go to the address reservation tab of a subnet."
-              : null
-          }
+          help="To manage static DHCP leases for a machine, go to the address reservation tab of a subnet."
           interfaceType={interfaceType}
           name="mode"
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
