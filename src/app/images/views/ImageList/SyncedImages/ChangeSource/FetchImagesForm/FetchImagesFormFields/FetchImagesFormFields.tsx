@@ -74,7 +74,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                 help="Path to the keyring to validate the mirror path."
                 label={Labels.KeyringFilename}
                 name="keyring_filename"
-                placeholder="e.g. /usr/share/keyrings/ubuntu-clooudimage-keyring.gpg"
+                placeholder="e.g. /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg"
                 type="text"
               />
               <FormikField
