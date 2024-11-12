@@ -25,11 +25,12 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - name: Install
+      - name: Yarn Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: |
-          CYPRESS_INSTALL_BINARY=0 yarn install
-          yarn test-coverage
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
+
+      - name: Run tests with coverage
+        run: yarn test-coverage
 
       - name: Upload coverage report
         if: always()
