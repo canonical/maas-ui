@@ -63,7 +63,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: coverage
 
@@ -89,9 +89,8 @@ jobs:
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
         with:
-          # Use 'qserver' for push to main branch, 'client' for others. See:
+          # Use 'qserver' for weekly runs, 'client' for runs on ci-tics-main. See:
           # https://github.com/tiobe/tics-github-action?tab=readme-ov-file#client-default
-          # mode: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'qserver' || 'client' }}
           mode: ${{ github.ref == 'refs/heads/main' && 'qserver' || 'client' }}
           #mode: diagnostic
           project: maas-ui
