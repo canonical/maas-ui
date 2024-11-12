@@ -3,9 +3,8 @@ on:
   push:
     branches:
       - ci-tics-main
-  on:
-    schedule:
-      - cron: "30 0 * * 6" # At 0:30 on Saturday
+  schedule:  # uses last commit on default branch (main)
+    - cron: "30 0 * * 6" # At 0:30 on Saturday
 
 jobs:
   test-coverage:
