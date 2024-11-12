@@ -148,7 +148,9 @@ const ReserveDHCPLease = ({
           );
         },
       }),
-    mac_address: Yup.string().matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
+    mac_address: Yup.string()
+      .required("MAC address is required")
+      .matches(MAC_ADDRESS_REGEX, "Invalid MAC address"),
     comment: Yup.string(),
   });
 
@@ -158,8 +160,8 @@ const ReserveDHCPLease = ({
     if (isEditing) {
       dispatch(
         reservedIpActions.update({
+          // IP address cannot be changed, ommitted here
           comment: values.comment,
-          ip,
           mac_address: values.mac_address,
           subnet: subnetId,
           id: reservedIpId,
@@ -202,11 +204,25 @@ const ReserveDHCPLease = ({
           <FormikField
             cidr={subnet.cidr}
             component={PrefixedIpInput}
-            label="IP address"
+            disabled={!!reservedIpId}
+            help={
+              !!reservedIpId ? "You cannot edit a reserved IP address." : null
+            }
+            label={"IP address"}
             name="ip_address"
             required
           />
-          <MacAddressField label="MAC address" name="mac_address" />
+          <MacAddressField
+            disabled={!!reservedIpId}
+            help={
+              !!reservedIpId
+                ? "You cannot edit a reserved IP's MAC address."
+                : null
+            }
+            label="MAC address"
+            name="mac_address"
+            required
+          />
           <FormikField
             className="u-margin-bottom--x-small"
             label="Comment"

@@ -82,3 +82,22 @@ it("trims the network address and subnet ID from a pasted IPv6 address", async (
 
   expect(screen.getByRole("textbox")).toHaveValue(":1");
 });
+
+it("displays provided help text instead of the IP address range", () => {
+  render(
+    <Formik initialValues={{}} onSubmit={vi.fn()}>
+      <PrefixedIpInput
+        cidr="10.0.0.0/24"
+        help="A great song by the Beatles."
+        name="ip"
+      />
+    </Formik>
+  );
+
+  expect(
+    screen.queryByText(/The available range in this subnet is/i)
+  ).not.toBeInTheDocument();
+  expect(screen.queryByText("10.0.0.[1-254]")).not.toBeInTheDocument();
+
+  expect(screen.getByText("A great song by the Beatles.")).toBeInTheDocument();
+});

@@ -708,4 +708,48 @@ describe("DeployFormFields", () => {
       screen.queryByRole("checkbox", { name: "Register as MAAS KVM host" })
     ).not.toBeInTheDocument();
   });
+
+  it("shows a tooltip for minimum OS requirements", async () => {
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines/add", state }
+    );
+
+    await userEvent.hover(
+      screen.getAllByRole("button", { name: "help-mid-dark" })[1]
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        "Ubuntu 24.04 LTS or higher."
+      );
+    });
+  });
+
+  it("shows a tooltip for minimum hardware requirements", async () => {
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={vi.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines/add", state }
+    );
+
+    await userEvent.hover(
+      screen.getAllByRole("button", { name: "help-mid-dark" })[0]
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("tooltip")).toHaveTextContent(
+        ">= 4 CPU threads, >= 6GB RAM, Reserve >5x RAM size as free disk space in /var."
+      );
+    });
+  });
 });

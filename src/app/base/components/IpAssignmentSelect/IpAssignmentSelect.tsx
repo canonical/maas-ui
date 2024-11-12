@@ -22,6 +22,7 @@ export const IpAssignmentSelect = ({
   return (
     <FormikField
       component={Select}
+      help="To manage static DHCP leases for a device, go to the address reservation tab of a subnet."
       label={label}
       options={[
         { label: Labels.DefaultOption, value: "", disabled: true },

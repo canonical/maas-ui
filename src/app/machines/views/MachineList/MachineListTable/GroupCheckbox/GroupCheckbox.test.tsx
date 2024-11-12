@@ -16,6 +16,7 @@ const group = factory.machineStateListGroup({
   count: 2,
   name: "admin2",
   value: "admin-2",
+  items: ["machine1", "machine2", "machine3"],
 });
 beforeEach(() => {
   state = factory.rootState({
@@ -130,7 +131,7 @@ it("is checked if all machines are selected", () => {
 
 it("is checked if the group is selected", () => {
   state.machine.selected = {
-    groups: ["admin-2"],
+    items: ["machine1", "machine2", "machine3"],
   };
   renderWithMockStore(
     <GroupCheckbox
@@ -216,44 +217,14 @@ it("can dispatch an action to select the group", async () => {
       store,
     }
   );
+
   await userEvent.click(screen.getByRole("checkbox"));
+
   const expected = machineActions.setSelected({
     grouping: FetchGroupKey.AgentName,
-    groups: ["admin-2"],
+    items: ["machine1", "machine2", "machine3"],
   });
-  expect(
-    store.getActions().find((action) => action.type === expected.type)
-  ).toStrictEqual(expected);
-});
 
-it("removes selected machines that are in the group that was clicked", async () => {
-  const group = factory.machineStateListGroup({
-    count: 2,
-    items: ["abc123"],
-    name: "admin2",
-    value: "admin-2",
-  });
-  state.machine.lists[callId].groups = [group];
-  state.machine.selected = {
-    items: ["abc123", "def456"],
-  };
-  const store = mockStore(state);
-  renderWithMockStore(
-    <GroupCheckbox
-      callId={callId}
-      group={group}
-      groupName="admin2"
-      grouping={FetchGroupKey.AgentName}
-    />,
-    {
-      store,
-    }
-  );
-  await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelected({
-    items: ["def456"],
-    groups: [],
-  });
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
@@ -277,6 +248,7 @@ it("does not overwrite selected machines in different groups", async () => {
   state.machine.selected = {
     items: ["def456"],
   };
+
   const store = mockStore(state);
   renderWithMockStore(
     <GroupCheckbox
@@ -289,12 +261,14 @@ it("does not overwrite selected machines in different groups", async () => {
       store,
     }
   );
+
   await userEvent.click(screen.getByRole("checkbox"));
+
   const expected = machineActions.setSelected({
     grouping: FetchGroupKey.AgentName,
-    groups: ["admin-2"],
-    items: ["def456"],
+    items: ["def456", "abc123"],
   });
+
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
@@ -317,9 +291,9 @@ it("can dispatch an action to unselect the group", async () => {
     group,
   ];
   state.machine.selected = {
-    groups: ["admin-1", "admin-2"],
-    items: ["def456"],
+    items: ["def456", "abc123"],
   };
+
   const store = mockStore(state);
   renderWithMockStore(
     <GroupCheckbox
@@ -332,11 +306,57 @@ it("can dispatch an action to unselect the group", async () => {
       store,
     }
   );
+
   await userEvent.click(screen.getByRole("checkbox"));
+
   const expected = machineActions.setSelected({
-    groups: ["admin-1"],
     items: ["def456"],
   });
+
+  expect(
+    store.getActions().find((action) => action.type === expected.type)
+  ).toStrictEqual(expected);
+});
+
+it("can dispatch an action to unselect the group when it's partially selected", async () => {
+  const group = factory.machineStateListGroup({
+    count: 2,
+    items: ["abc123", "ghi789"],
+    name: "admin2",
+    value: "admin-2",
+  });
+  state.machine.lists[callId].groups = [
+    factory.machineStateListGroup({
+      count: 2,
+      items: ["def456"],
+      name: "admin1",
+      value: "admin-1",
+    }),
+    group,
+  ];
+  state.machine.selected = {
+    items: ["def456", "abc123"],
+  };
+
+  const store = mockStore(state);
+  renderWithMockStore(
+    <GroupCheckbox
+      callId={callId}
+      group={group}
+      groupName="admin2"
+      grouping={FetchGroupKey.AgentName}
+    />,
+    {
+      store,
+    }
+  );
+
+  await userEvent.click(screen.getByRole("checkbox"));
+
+  const expected = machineActions.setSelected({
+    items: ["def456"],
+  });
+
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);

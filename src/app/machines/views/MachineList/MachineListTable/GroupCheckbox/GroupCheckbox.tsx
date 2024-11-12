@@ -30,8 +30,8 @@ const GroupCheckbox = ({
   // Whether this group is currently selected.
   const groupSelected =
     !!selected &&
-    "groups" in selected &&
-    selected.groups?.includes(group.value);
+    "items" in selected &&
+    group.items.every((item) => selected.items?.includes(item));
   // Whether some of the machines in the group are selected.
   const childrenSelected =
     !!selected &&
@@ -54,29 +54,29 @@ const GroupCheckbox = ({
       onGenerateSelected={(checked) => {
         let newSelected =
           !selected || "filter" in selected
-            ? { groups: [] }
+            ? { items: [] }
             : cloneDeep(selected);
-        newSelected.groups = newSelected.groups ?? [];
+        newSelected.items = newSelected.items ?? [];
 
-        if (checked && !newSelected.groups?.includes(group.value)) {
-          // If the checkbox has been checked and the group is not in the list
-          // then add it.
-          newSelected.groups.push(group.value);
+        if (
+          checked &&
+          !group.items.every((item) => newSelected.items?.includes(item))
+        ) {
+          // If the checkbox has been checked and the group's visible items are not
+          // in the list, add them.
+          newSelected.items = newSelected.items.concat(group.items);
           newSelected.grouping = grouping;
-        } else if (!checked && newSelected.groups?.includes(group.value)) {
-          // If the checkbox has been unchecked and the group is in the list
-          // then remove it.
-          newSelected.groups = newSelected.groups.filter(
-            (selectedGroup) => selectedGroup !== group.value
+        } else if (
+          !checked &&
+          group.items.some((item) => newSelected.items?.includes(item))
+        ) {
+          // If the checkbox has been unchecked and the group's visible items are
+          // in the list then remove them.
+          newSelected.items = newSelected.items.filter(
+            (selectedItem) => !group.items.includes(selectedItem)
           );
         }
-        // Remove any individually selected machines that are in the group that has
-        // just been selected
-        if (selected && "items" in selected) {
-          newSelected.items = selected.items?.filter(
-            (systemId) => !group?.items.includes(systemId)
-          );
-        }
+
         return newSelected;
       }}
     />

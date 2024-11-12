@@ -171,6 +171,11 @@
     @include maas-icon-sidebar-collapse();
   }
 
+  .p-icon--help-mid-dark {
+    @extend %icon;
+    @include vf-icon-help($color-mid-dark);
+  }
+
   [class*="p-circle--"].is-inline,
   [class*="p-icon--"].is-inline {
     margin-right: $sph--small;

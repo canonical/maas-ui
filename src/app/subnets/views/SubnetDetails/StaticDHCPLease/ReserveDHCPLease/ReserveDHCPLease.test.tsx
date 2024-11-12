@@ -76,6 +76,24 @@ it("displays an error if an out-of-range IP address is entered", async () => {
   ).toBeInTheDocument();
 });
 
+it("displays an error if the IP address or the MAC address are not entered", async () => {
+  state.subnet.items = [factory.subnet({ id: 1, cidr: "10.0.0.0/25" })];
+  renderWithBrowserRouter(
+    <ReserveDHCPLease
+      setSidePanelContent={vi.fn()}
+      subnetId={state.subnet.items[0].id}
+    />,
+    { state }
+  );
+
+  await userEvent.click(screen.getByRole("textbox", { name: "IP address" }));
+  await userEvent.click(screen.getByRole("textbox", { name: "MAC address" }));
+  await userEvent.tab();
+
+  expect(screen.getByText("IP address is required")).toBeInTheDocument();
+  expect(screen.getByText("MAC address is required")).toBeInTheDocument();
+});
+
 it("closes the side panel when the cancel button is clicked", async () => {
   const setSidePanelContent = vi.fn();
   renderWithBrowserRouter(
@@ -202,6 +220,33 @@ it("pre-fills the form if a reserved IPv6 address's ID is present", async () => 
   );
 });
 
+it("disables the IP address and MAC address fields when editing a lease", async () => {
+  const reservedIp = factory.reservedIp({
+    id: 1,
+    ip: "10.0.0.69",
+    mac_address: "FF:FF:FF:FF:FF:FF",
+    comment: "bla bla bla",
+  });
+  state.reservedip = factory.reservedIpState({
+    loading: false,
+    loaded: true,
+    items: [reservedIp],
+  });
+
+  const store = mockStore(state);
+  renderWithBrowserRouter(
+    <ReserveDHCPLease
+      reservedIpId={reservedIp.id}
+      setSidePanelContent={vi.fn()}
+      subnetId={state.subnet.items[0].id}
+    />,
+    { store }
+  );
+
+  expect(screen.getByRole("textbox", { name: "IP address" })).toBeDisabled();
+  expect(screen.getByRole("textbox", { name: "MAC address" })).toBeDisabled();
+});
+
 it("dispatches an action to update a reserved IP", async () => {
   const reservedIp = factory.reservedIp({
     id: 1,
@@ -247,7 +292,6 @@ it("dispatches an action to update a reserved IP", async () => {
       params: {
         subnet: 1,
         id: reservedIp.id,
-        ip: "10.0.0.69",
         mac_address: "FF:FF:FF:FF:FF:FF",
         comment: "something imaginative and funny",
       },

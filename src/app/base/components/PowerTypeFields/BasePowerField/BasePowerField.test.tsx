@@ -34,6 +34,46 @@ describe("BasePowerField", () => {
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
 
+  it("correctly renders a IP address field type", () => {
+    const field = factory.powerField({ field_type: PowerFieldType.IP_ADDRESS });
+    render(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <BasePowerField field={field} />
+      </Formik>
+    );
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("type", "password");
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+  });
+
+  it("correctly renders a Virsh address field type", () => {
+    const field = factory.powerField({
+      field_type: PowerFieldType.VIRSH_ADDRESS,
+    });
+    render(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <BasePowerField field={field} />
+      </Formik>
+    );
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("type", "password");
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+  });
+
+  it("correctly renders a LXD address field type", () => {
+    const field = factory.powerField({
+      field_type: PowerFieldType.LXD_ADDRESS,
+    });
+    render(
+      <Formik initialValues={{}} onSubmit={vi.fn()}>
+        <BasePowerField field={field} />
+      </Formik>
+    );
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("type", "password");
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+  });
+
   it("correctly renders a password field type", () => {
     const field = factory.powerField({
       field_type: PowerFieldType.PASSWORD,

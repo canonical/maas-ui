@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Icon, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -36,6 +36,7 @@ export enum Labels {
   PowerTypeLink = "Power type ›",
   Tags = "Tags",
   TagsLink = "Tags ›",
+  KernelCrashDump = "Kernel crash dump",
 }
 
 const DetailsCard = ({ node }: Props): JSX.Element => {
@@ -59,6 +60,9 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
     node.power_type
   );
   const tagsDisplay = getTagsDisplay(machineTags);
+  const kernelCrashDumpEnabled = isMachine
+    ? node.enable_kernel_crash_dump
+    : false;
 
   useFetchActions([generalActions.fetchPowerTypes, tagActions.fetch]);
 
@@ -196,6 +200,22 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           <Spinner data-testid="loading-tags" />
         )}
       </div>
+      {isMachine && (
+        <div>
+          <div className="u-text--muted">{Labels.KernelCrashDump}</div>
+          <span>
+            {kernelCrashDumpEnabled ? (
+              <>
+                <Icon name="success-grey" /> enabled
+              </>
+            ) : (
+              <>
+                <Icon name="error-grey" /> disabled
+              </>
+            )}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

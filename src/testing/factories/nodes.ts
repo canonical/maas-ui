@@ -347,6 +347,7 @@ export const machineDetails = extend<BaseMachine, MachineDetails>(machine, {
   dhcp_on: false,
   disks: () => [],
   enable_hw_sync: true,
+  enable_kernel_crash_dump: false,
   error_description: "",
   error: "",
   events: () => [],
