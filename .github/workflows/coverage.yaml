@@ -5,27 +5,30 @@ on:
       - ci-tics-main
   schedule:  # uses last commit on default branch (main)
     - cron: "30 0 * * 6" # At 0:30 on Saturday
+  # temporarily disabling client mode due to quota
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
 
 jobs:
-  test-coverage:
-    name: Test with Coverage
+  test-coverage-tics:
+    name: Run tests with coverage and generate TiCS report
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore node_modules
+      - name: Restore node_modules from cache
         id: yarn-cache
         uses: actions/cache@v4
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Use Node.js from .nvmrc
+      - name: Setup Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
 
-      - name: Yarn Install
+      - name: Install packages if cache is outdated
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
 
@@ -39,6 +42,34 @@ jobs:
           name: coverage-report
           path: coverage
           retention-days: 1
+
+      - name: Display structure of coverage files
+        run: ls -R coverage
+
+      - name: Run TICS Analyzer
+        uses: tiobe/tics-github-action@v3
+        with:
+          # Use 'qserver' mode for weekly runs and on push to ci-tics-main to
+          #    generate reference points
+          # Use 'client' mode for runs on PRs. Client is a quality gate comparing
+          #    changed files to the reference points and can fail if quality degrades
+          # See:
+          # https://github.com/tiobe/tics-github-action?tab=readme-ov-file#tics-github-action
+          mode: ${{ github.event_name == 'pull_request' && 'client' || 'qserver' }}
+          project: maas-ui
+          viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
+          ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
+          installTics: true
+          tmpdir: /tmp/tics
+          branchdir: ${{ github.workspace }}
+
+      - name: Upload TICS Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tics-report
+          path: /tmp/tics
+          retention-days: 7
 
   publish-coverage-report:
     name: Publish Coverage Report
@@ -71,44 +102,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-  tics-report:
-    name: TiCS Report
-    runs-on: ubuntu-latest
-    needs: publish-coverage-report
-    steps:
-      # needed to fix: Please perform a checkout before running the TICS Action.
-      - uses: actions/checkout@v4
-
-      - name: Download coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage  # was .coverage, why?
-
-      - name: Display structure of downloaded files
-        # uses: actions/checkout@v4
-        run: ls -R coverage  # was .coverage, why?
-
-      - name: Run TICS Analyzer
-        uses: tiobe/tics-github-action@v3
-        with:
-          # Use 'qserver' for weekly runs, 'client' for runs on ci-tics-main. See:
-          # https://github.com/tiobe/tics-github-action?tab=readme-ov-file#client-default
-          mode: ${{ github.ref == 'refs/heads/main' && 'qserver' || 'client' }}
-          #mode: diagnostic
-          project: maas-ui
-          viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
-          ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
-          installTics: true
-          tmpdir: /tmp/tics
-          branchdir: ${{ github.workspace }}
-          filelist: .
-
-      - name: Upload TICS Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tics-report
-          path: /tmp/tics
-          retention-days: 7
