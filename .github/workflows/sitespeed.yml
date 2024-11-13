@@ -21,8 +21,8 @@ jobs:
         uses: canonical/setup-maas@main
         with:
           maas-url: ${{ env.MAAS_URL }}/MAAS
-          use-maasdb-dump: true
-          maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
+          # use-maasdb-dump: true
+          # maasdb-dump-url: https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-1000.dump
       - name: Create MAAS admin
         run: |
           sleep 30
