@@ -43,8 +43,8 @@ jobs:
           path: coverage
           retention-days: 1
 
-      - name: Display structure of coverage files
-        run: ls -R coverage
+      - name: Link coverage to .coverage for TiCS to pick up
+        run: ln -s coverage .coverage
 
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
@@ -64,7 +64,6 @@ jobs:
           branchdir: ${{ github.workspace }}
 
       - name: Upload TICS Report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tics-report
