@@ -75,7 +75,7 @@ jobs:
     name: Publish Coverage Report
     # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: test-coverage
+    needs: test-coverage-tics
     continue-on-error: true
 
     permissions:
