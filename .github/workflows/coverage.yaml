@@ -13,6 +13,7 @@ jobs:
   test-coverage-tics:
     name: Run tests with coverage and generate TiCS report
     runs-on: ubuntu-latest
+    timeout-minutes: 720
     steps:
       - uses: actions/checkout@v4
 
