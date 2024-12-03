@@ -86,7 +86,7 @@
     "vite": "5.2.14",
     "vite-plugin-svgr": "4.2.0",
     "vite-tsconfig-paths": "4.3.2",
-    "yup": "0.32.11"
+    "yup": "1.5.0"
   },
   "devDependencies": {
     "@percy/cli": "1.28.8",
