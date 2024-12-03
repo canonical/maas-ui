@@ -49,7 +49,7 @@ export const DeployFormFields = (): JSX.Element => {
   );
   const canBeKVMHost =
     values.oSystem === "ubuntu" &&
-    ["bionic", "focal", "jammy"].includes(values.release);
+    ["bionic", "focal", "jammy", "noble"].includes(values.release);
   const noImages = osystems.length === 0 || releases.length === 0;
   const clearVmHostOptions = () => {
     setDeployVmHost(false);
