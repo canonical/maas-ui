@@ -726,7 +726,7 @@ describe("DeployFormFields", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
-        "Ubuntu 16.04 LTS or higher."
+        "Ubuntu Tested with Ubuntu 24.04 LTS or higher."
       );
     });
   });
