@@ -294,7 +294,7 @@ export const DeployFormFields = (): JSX.Element => {
                   and OS{" "}
                   <TooltipButton
                     iconName="help-mid-dark"
-                    message="Ubuntu 24.04 LTS or higher."
+                    message="Ubuntu 16.04 LTS or higher."
                   />{" "}
                   must meet the minimum requirements and secure boot must be
                   disabled. Check crash dump status in machine details.
