@@ -89,7 +89,7 @@ const KernelParametersForm = (): JSX.Element => {
             and OS{" "}
             <TooltipButton
               iconName="help-mid-dark"
-              message="Ubuntu Tested with Ubuntu 24.04 LTS or higher."
+              message="Tested with Ubuntu 24.04 LTS or higher."
             />{" "}
             must meet the minimum requirements and secure boot must be disabled.
             Check crash dump status in machine details.{" "}
