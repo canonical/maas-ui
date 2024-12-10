@@ -5,6 +5,7 @@ import type { ObjectShape } from "yup/lib/object";
 import type { PowerField, PowerType } from "@/app/store/general/types";
 import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import type { PowerParameters } from "@/app/store/types/node";
+import { isValidPortNumber } from "@/app/utils/isValidPortNumber";
 
 /**
  * Formats power parameters by what is expected by the api. Also, React expects
@@ -63,6 +64,10 @@ const getPowerFieldSchema = (fieldType: PowerFieldType) => {
           if (typeof value !== "string") {
             return false;
           }
+          // reject if value contains whitespace
+          if (value.includes(" ")) {
+            return false;
+          }
           if (value.includes("[") && value.includes("]")) {
             // This is an IPv6 address with a port number
             const openingBracketIndex = value.indexOf("[");
@@ -73,11 +78,19 @@ const getPowerFieldSchema = (fieldType: PowerFieldType) => {
             );
             // We use +2 here to include the `:` before the port number
             const port = value.slice(closingBracketIndex + 2);
-            return isIPv6(ip) && !isNaN(parseInt(port));
+            return (
+              isIPv6(ip) &&
+              !isNaN(parseInt(port)) &&
+              isValidPortNumber(parseInt(port))
+            );
           } else if (value.split(":").length === 2) {
             // This is an IPv4 address with a port number
             const [ip, port] = value.split(":");
-            return isIP(ip) && !isNaN(parseInt(port));
+            return (
+              isIP(ip) &&
+              !isNaN(parseInt(port)) &&
+              isValidPortNumber(parseInt(port))
+            );
           } else {
             return isIP(value);
           }
