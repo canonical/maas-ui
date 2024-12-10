@@ -36,3 +36,4 @@ export {
   timeSpanToMinutes,
 } from "./timeSpan";
 export { parseCommaSeparatedValues } from "./parseCommaSeparatedValues";
+export { isValidPortNumber } from "./isValidPortNumber";
