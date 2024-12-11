@@ -179,6 +179,7 @@ export enum NodeActions {
   OFF = "off",
   ON = "on",
   OVERRIDE_FAILED_TESTING = "override-failed-testing",
+  POWER_CYCLE = "power-cycle", // TODO: Verify string with backend https://warthogs.atlassian.net/browse/MAASENG-4185
   RELEASE = "release",
   RESCUE_MODE = "rescue-mode",
   SET_POOL = "set-pool",
