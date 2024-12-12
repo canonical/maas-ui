@@ -189,6 +189,7 @@ it("can handle saving a machine", async () => {
     power_type: "manual",
     pxe_mac: "11:11:11:11:11:11",
     zone: { name: "twilight" },
+    // TODO: Add `is_dpu` field to params https://warthogs.atlassian.net/browse/MAASENG-4186
   });
   await waitFor(() => {
     expect(
