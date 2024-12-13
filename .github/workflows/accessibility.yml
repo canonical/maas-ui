@@ -2,8 +2,7 @@ name: Accessibility
 on:
   push:
     branches:
-      - main
-      - "3.*"
+      - "3.6"
 jobs:
   cypress-axe:
     name: cypress-axe

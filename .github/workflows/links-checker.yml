@@ -4,8 +4,7 @@ on:
     - cron: "0 14 * * 1-5" # At 14:00 every day-of-week from Monday through Friday.
   push:
     branches:
-      - main
-      - "3.5"
+      - "3.6"
 
 jobs:
   docs:
