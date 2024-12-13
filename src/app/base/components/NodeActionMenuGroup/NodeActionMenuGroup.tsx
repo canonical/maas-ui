@@ -65,6 +65,7 @@ const actionGroups: ActionGroup[] = [
     actions: [
       NodeActions.ON,
       NodeActions.OFF,
+      NodeActions.POWER_CYCLE,
       NodeActions.SOFT_OFF,
       NodeActions.CHECK_POWER,
     ],
@@ -124,6 +125,15 @@ const generateActionMenus = (
 
         if (action === NodeActions.DELETE) {
           // Delete is displayed as a discrete button
+          return groupLinks;
+        }
+
+        // Only show "Power cycle" if the feature flag is enabled.
+        // TODO: Remove DPU provisioning feature flag https://warthogs.atlassian.net/browse/MAASENG-4186
+        if (
+          action === NodeActions.POWER_CYCLE &&
+          import.meta.env.VITE_APP_DPU_PROVISIONING !== "true"
+        ) {
           return groupLinks;
         }
 

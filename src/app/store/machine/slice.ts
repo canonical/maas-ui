@@ -1360,6 +1360,11 @@ const machineSlice = createSlice({
     [`${NodeActions.RELEASE}Error`]: statusHandlers.release.error,
     [`${NodeActions.RELEASE}Start`]: statusHandlers.release.start,
     [`${NodeActions.RELEASE}Success`]: statusHandlers.release.success,
+    // TODO: Add actual functionality here once the backend is ready https://warthogs.atlassian.net/browse/MAASENG-4185
+    powerCycle: {
+      prepare: () => ({ payload: null }),
+      reducer: () => {},
+    },
     removeRequest: {
       prepare: (callId: string) =>
         ({
