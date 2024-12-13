@@ -2,9 +2,7 @@ name: Cypress
 on:
   push:
     branches:
-      - main
-      - "3.*"
-      - "*cypress*"
+      - "3.6"
   pull_request:
     types: [opened, synchronize, reopened]
 
