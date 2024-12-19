@@ -128,7 +128,7 @@ describe("KernelParametersForm", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("tooltip")).toHaveTextContent(
-        "Ubuntu 24.04 LTS or higher."
+        "Tested with Ubuntu 24.04 LTS or higher."
       );
     });
   });

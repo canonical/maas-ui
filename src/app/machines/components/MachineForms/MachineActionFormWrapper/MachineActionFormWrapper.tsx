@@ -99,97 +99,147 @@ export const MachineActionForm = ({
     if (!filter) {
       return null;
     }
-    switch (action) {
-      case NodeActions.CLONE:
-        return (
-          <CloneForm
-            setSearchFilter={setSearchFilter}
-            {...commonMachineFormProps}
-          />
-        );
-      case NodeActions.COMMISSION:
-        return <CommissionForm {...commonMachineFormProps} />;
-      case NodeActions.DELETE:
-        return (
-          <DeleteForm
-            onAfterSuccess={clearSelectedMachines}
-            onSubmit={() => {
-              dispatchForSelectedMachines(machineActions.delete);
-            }}
-            redirectURL={urls.machines.index}
-            {...commonNodeFormProps}
-          />
-        );
-      case NodeActions.DEPLOY:
-        return <DeployForm {...commonMachineFormProps} />;
-      case NodeActions.MARK_BROKEN:
-        return <MarkBrokenForm {...commonMachineFormProps} />;
-      case NodeActions.OVERRIDE_FAILED_TESTING:
-        return <OverrideTestForm {...commonMachineFormProps} />;
-      case NodeActions.RELEASE:
-        return <ReleaseForm {...commonMachineFormProps} />;
-      case NodeActions.SET_POOL:
-        return <SetPoolForm {...commonMachineFormProps} />;
-      case NodeActions.SET_ZONE:
-        return (
-          <SetZoneForm<MachineEventErrors>
-            onSubmit={(zoneID) => {
-              dispatch(machineActions.cleanup());
-              dispatchForSelectedMachines(machineActions.setZone, {
-                zone_id: zoneID,
-              });
-            }}
-            {...commonNodeFormProps}
-          />
-        );
-      case NodeActions.TAG:
-      case NodeActions.UNTAG:
-        return <TagForm {...commonMachineFormProps} />;
-      case NodeActions.TEST:
-        return (
-          <TestForm<MachineEventErrors>
-            applyConfiguredNetworking={applyConfiguredNetworking}
-            hardwareType={hardwareType}
-            onTest={(args) => {
-              dispatchForSelectedMachines(machineActions.test, {
-                enable_ssh: args.enableSSH,
-                script_input: args.scriptInputs,
-                testing_scripts: args.scripts.map((script) => script.name),
-              });
-            }}
-            {...commonNodeFormProps}
-          />
-        );
-      case NodeActions.ABORT:
-      case NodeActions.ACQUIRE:
-      case NodeActions.EXIT_RESCUE_MODE:
-      case NodeActions.LOCK:
-      case NodeActions.MARK_FIXED:
-      case NodeActions.ON:
-      case NodeActions.RESCUE_MODE:
-      case NodeActions.UNLOCK:
-        return (
-          <FieldlessForm
-            action={action}
-            actions={machineActions}
-            {...commonNodeFormProps}
-          />
-        );
-      case NodeActions.OFF:
-      case NodeActions.SOFT_OFF:
-        return (
-          <PowerOffForm
-            action={action}
-            actions={machineActions}
-            {...commonNodeFormProps}
-          />
-        );
-      // No form should be opened for this, as it should only
-      // be available for machine details, and will be dispatched
-      // immediately on click.
-      case NodeActions.CHECK_POWER:
-        return null;
-    }
+
+    return formComponents[action]();
+  };
+
+  const formComponents = {
+    [NodeActions.CLONE]: () => (
+      <CloneForm
+        setSearchFilter={setSearchFilter}
+        {...commonMachineFormProps}
+      />
+    ),
+    [NodeActions.COMMISSION]: () => (
+      <CommissionForm {...commonMachineFormProps} />
+    ),
+    [NodeActions.DELETE]: () => (
+      <DeleteForm
+        onAfterSuccess={clearSelectedMachines}
+        onSubmit={() => {
+          dispatchForSelectedMachines(machineActions.delete);
+        }}
+        redirectURL={urls.machines.index}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.DEPLOY]: () => <DeployForm {...commonMachineFormProps} />,
+    [NodeActions.MARK_BROKEN]: () => (
+      <MarkBrokenForm {...commonMachineFormProps} />
+    ),
+    [NodeActions.OVERRIDE_FAILED_TESTING]: () => (
+      <OverrideTestForm {...commonMachineFormProps} />
+    ),
+    [NodeActions.RELEASE]: () => <ReleaseForm {...commonMachineFormProps} />,
+    [NodeActions.SET_POOL]: () => <SetPoolForm {...commonMachineFormProps} />,
+    [NodeActions.SET_ZONE]: () => (
+      <SetZoneForm<MachineEventErrors>
+        onSubmit={(zoneID) => {
+          dispatch(machineActions.cleanup());
+          dispatchForSelectedMachines(machineActions.setZone, {
+            zone_id: zoneID,
+          });
+        }}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.TAG]: () => <TagForm {...commonMachineFormProps} />,
+    [NodeActions.UNTAG]: () => <TagForm {...commonMachineFormProps} />,
+    [NodeActions.TEST]: () => (
+      <TestForm<MachineEventErrors>
+        applyConfiguredNetworking={applyConfiguredNetworking}
+        hardwareType={hardwareType}
+        onTest={(args) => {
+          dispatchForSelectedMachines(machineActions.test, {
+            enable_ssh: args.enableSSH,
+            script_input: args.scriptInputs,
+            testing_scripts: args.scripts.map((script) => script.name),
+          });
+        }}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.ABORT]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.ACQUIRE]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.EXIT_RESCUE_MODE]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.LOCK]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.MARK_FIXED]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.ON]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.RESCUE_MODE]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.UNLOCK]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.POWER_CYCLE]: () => (
+      <FieldlessForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.OFF]: () => (
+      <PowerOffForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    [NodeActions.SOFT_OFF]: () => (
+      <PowerOffForm
+        action={action}
+        actions={machineActions}
+        {...commonNodeFormProps}
+      />
+    ),
+    // No form should be opened for this, as it should only
+    // be available for machine details, and will be dispatched
+    // immediately on click.
+    [NodeActions.CHECK_POWER]: () => null,
   };
 
   if (selectedCountLoading) {

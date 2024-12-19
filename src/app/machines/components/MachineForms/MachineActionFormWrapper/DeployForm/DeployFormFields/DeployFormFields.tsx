@@ -49,7 +49,7 @@ export const DeployFormFields = (): JSX.Element => {
   );
   const canBeKVMHost =
     values.oSystem === "ubuntu" &&
-    ["bionic", "focal", "jammy"].includes(values.release);
+    ["bionic", "focal", "jammy", "noble"].includes(values.release);
   const noImages = osystems.length === 0 || releases.length === 0;
   const clearVmHostOptions = () => {
     setDeployVmHost(false);
@@ -291,13 +291,15 @@ export const DeployFormFields = (): JSX.Element => {
                       </span>
                     }
                   />{" "}
-                  and OS{" "}
+                  must meet the minimum requirements and the OS{" "}
                   <TooltipButton
                     iconName="help-mid-dark"
-                    message="Ubuntu 24.04 LTS or higher."
+                    message="Tested with Ubuntu 24.04 LTS or higher."
                   />{" "}
-                  must meet the minimum requirements and secure boot must be
-                  disabled. Check crash dump status in machine details.
+                  must support it. Check crash dump status in machine details.{" "}
+                  <ExternalLink to="https://ubuntu.com/server/docs/kernel-crash-dump">
+                    More about kernel crash dump
+                  </ExternalLink>
                 </>
               }
               label={

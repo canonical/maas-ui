@@ -17,6 +17,7 @@ export const MachineActionSidePanelViews = {
   POWER_OFF_MACHINE: ["machineActionForm", NodeActions.OFF],
   POWER_OFF_MACHINE_SOFT: ["machineActionForm", NodeActions.SOFT_OFF],
   POWER_ON_MACHINE: ["machineActionForm", NodeActions.ON],
+  POWER_CYCLE_MACHINE: ["machineActionForm", NodeActions.POWER_CYCLE],
   OVERRIDE_FAILED_TESTING_MACHINE: [
     "machineActionForm",
     NodeActions.OVERRIDE_FAILED_TESTING,

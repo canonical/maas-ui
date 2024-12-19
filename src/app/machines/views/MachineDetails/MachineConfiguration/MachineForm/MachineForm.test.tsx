@@ -114,6 +114,7 @@ describe("MachineForm", () => {
       pxe_mac: machine.pxe_mac,
       system_id: machine.system_id,
       zone: { name: machine.zone.name },
+      // TODO: add "is_dpu" here https://warthogs.atlassian.net/browse/MAASENG-4190
     });
     const actualActions = store.getActions();
     await waitFor(() => {

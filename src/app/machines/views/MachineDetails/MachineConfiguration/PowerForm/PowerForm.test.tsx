@@ -10,7 +10,13 @@ import { PowerFieldScope, PowerFieldType } from "@/app/store/general/types";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen, waitFor } from "@/testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "@/testing/utils";
 
 const mockStore = configureStore();
 
@@ -42,6 +48,17 @@ beforeEach(() => {
             ],
             name: PowerTypeNames.APC,
           }),
+          factory.powerType({
+            fields: [
+              factory.powerField({
+                name: "ip_address",
+                label: "IP address",
+                field_type: PowerFieldType.IP_ADDRESS,
+                scope: PowerFieldScope.NODE,
+              }),
+            ],
+            name: PowerTypeNames.IPMI,
+          }),
         ],
         loaded: true,
       }),
@@ -53,9 +70,15 @@ beforeEach(() => {
           power_type: PowerTypeNames.AMT,
           system_id: "abc123",
         }),
+        factory.machineDetails({
+          permissions: ["edit"],
+          power_type: PowerTypeNames.IPMI,
+          system_id: "def456",
+        }),
       ],
       statuses: factory.machineStatuses({
         abc123: factory.machineStatus(),
+        def456: factory.machineStatus(),
       }),
     }),
   });
@@ -116,6 +139,83 @@ it("renders read-only text fields until edit button is pressed", async () => {
   ).toBeInTheDocument();
 });
 
+it("can validate IPv6 addresses with a port for IPMI power type", async () => {
+  const store = mockStore(state);
+  renderWithBrowserRouter(<PowerForm systemId="def456" />, { store });
+
+  await userEvent.click(
+    screen.getAllByRole("button", { name: Labels.EditButton })[0]
+  );
+
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    PowerTypeNames.IPMI
+  );
+
+  await userEvent.clear(screen.getByRole("textbox", { name: "IP address" }));
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "IP address" }),
+    "not an ip address"
+  );
+
+  await userEvent.tab();
+
+  expect(
+    screen.getByText("Please enter a valid IP address.")
+  ).toBeInTheDocument();
+
+  await userEvent.clear(screen.getByRole("textbox", { name: "IP address" }));
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "IP address" }),
+    // This is entered as [2001:db8::1]:8080, since square brackets are
+    // special characters in testing-library user events and can be escaped by doubling.
+    "[[2001:db8::1]:8080"
+  );
+
+  await userEvent.tab();
+
+  expect(
+    screen.queryByText("Please enter a valid IP address.")
+  ).not.toBeInTheDocument();
+});
+
+it("can validate IPv4 addresses with a port for IPMI power type", async () => {
+  const store = mockStore(state);
+  renderWithBrowserRouter(<PowerForm systemId="def456" />, { store });
+
+  await userEvent.click(
+    screen.getAllByRole("button", { name: Labels.EditButton })[0]
+  );
+
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    PowerTypeNames.IPMI
+  );
+
+  await userEvent.clear(screen.getByRole("textbox", { name: "IP address" }));
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "IP address" }),
+    "not an ip address"
+  );
+
+  await userEvent.tab();
+
+  expect(
+    screen.getByText("Please enter a valid IP address.")
+  ).toBeInTheDocument();
+
+  await userEvent.clear(screen.getByRole("textbox", { name: "IP address" }));
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "IP address" }),
+    "192.168.0.2:8080"
+  );
+
+  await userEvent.tab();
+
+  expect(
+    screen.queryByText("Please enter a valid IP address.")
+  ).not.toBeInTheDocument();
+});
 it("correctly dispatches an action to update a machine's power", async () => {
   const machine = factory.machineDetails({
     permissions: ["edit"],

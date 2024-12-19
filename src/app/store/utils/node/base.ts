@@ -63,15 +63,16 @@ export const getNodeActionTitle = (actionName: NodeActions): string => {
     [NodeActions.MARK_FIXED]: "Mark fixed",
     [NodeActions.OFF]: "Power off",
     [NodeActions.ON]: "Power on",
-    [NodeActions.SOFT_OFF]: "Soft power off",
     [NodeActions.OVERRIDE_FAILED_TESTING]: "Override failed testing",
+    [NodeActions.POWER_CYCLE]: "Power cycle",
     [NodeActions.RELEASE]: "Release",
     [NodeActions.RESCUE_MODE]: "Enter rescue mode",
     [NodeActions.SET_POOL]: "Set pool",
     [NodeActions.SET_ZONE]: "Set zone",
+    [NodeActions.SOFT_OFF]: "Soft power off",
     [NodeActions.TAG]: "Tag",
-    [NodeActions.UNTAG]: "Untag",
     [NodeActions.TEST]: "Test",
+    [NodeActions.UNTAG]: "Untag",
     [NodeActions.UNLOCK]: "Unlock",
   };
 
@@ -127,6 +128,10 @@ export const getNodeActionLabel = (
     [NodeActions.OVERRIDE_FAILED_TESTING]: [
       `Override failed tests for ${modelString}`,
       `Overriding failed tests for ${modelString}`,
+    ],
+    [NodeActions.POWER_CYCLE]: [
+      `Power cycle ${modelString}`,
+      `Power cycling ${modelString}`,
     ],
     [NodeActions.RELEASE]: [
       `Release ${modelString}`,
