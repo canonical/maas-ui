@@ -44,9 +44,6 @@ jobs:
           path: coverage
           retention-days: 1
 
-      - name: Link coverage to .coverage for TiCS to pick up
-        run: ln -s coverage .coverage
-
       - name: Run TICS Analyzer
         uses: tiobe/tics-github-action@v3
         with:
