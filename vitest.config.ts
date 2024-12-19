@@ -14,6 +14,17 @@ export default defineConfig({
     coverage: {
       // use instrumented coverage via istanbul instead of v8
       provider: "istanbul",
+      thresholds: {
+        branches: 80,
+        lines: 80,
+        functions: 80,
+        statements: 80,
+      },
+      reporter: [
+        ["text"],
+        ["html"],
+        ["cobertura", { file: "../.coverage/cobertura-coverage.xml" }],
+      ],
     },
   },
 });
