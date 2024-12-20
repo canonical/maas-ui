@@ -12,7 +12,13 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, "**/tests/**"],
     clearMocks: true,
     coverage: {
+      // use instrumented coverage via istanbul instead of v8
       provider: "istanbul",
+      reporter: [
+        ["text"],
+        ["html"],
+        ["cobertura", { file: "../.coverage/cobertura-coverage.xml" }],
+      ],
     },
   },
 });
