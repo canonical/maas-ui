@@ -1,0 +1,101 @@
+name: Test coverage and TiCS Report
+on:
+  push:
+    branches:
+      - ci-tics-main
+  schedule:  # uses last commit on default branch (main)
+    - cron: "30 0 * * 6" # At 0:30 on Saturday
+  # temporarily disabling client mode due to quota
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+
+jobs:
+  test-coverage-tics:
+    name: Run tests with coverage and generate TiCS report
+    runs-on: ubuntu-latest
+    timeout-minutes: 720
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore node_modules from cache
+        id: yarn-cache
+        uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setup Node.js from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install packages if cache is outdated
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: CYPRESS_INSTALL_BINARY=0 yarn install
+
+      - name: Run tests with coverage
+        run: yarn test-coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 1
+
+      - name: Run TICS Analyzer
+        uses: tiobe/tics-github-action@v3
+        with:
+          # Use 'qserver' mode for weekly runs and on push to ci-tics-main to
+          #    generate reference points
+          # Use 'client' mode for runs on PRs. Client is a quality gate comparing
+          #    changed files to the reference points and can fail if quality degrades
+          # See:
+          # https://github.com/tiobe/tics-github-action?tab=readme-ov-file#tics-github-action
+          mode: ${{ github.event_name == 'pull_request' && 'client' || 'qserver' }}
+          project: maas-ui
+          viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
+          ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
+          installTics: true
+          tmpdir: /tmp/tics
+          branchdir: ${{ github.workspace }}
+
+      - name: Upload TICS Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tics-report
+          path: /tmp/tics
+          retention-days: 7
+
+  publish-coverage-report:
+    name: Publish Coverage Report
+    # if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: test-coverage-tics
+    continue-on-error: true
+
+    permissions:
+      id-token: write
+      pages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: coverage
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

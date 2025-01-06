@@ -11,16 +11,19 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v4
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
+
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
@@ -44,77 +47,7 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - run: yarn test:ci
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage
-          retention-days: 1
-
-  publish-coverage-report:
-    name: Publish Coverage Report
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    needs: test
-
-    permissions:
-      id-token: write
-      pages: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: coverage
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-  tics-report:
-    name: TICS Report
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Download coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: .coverage
-      - name: Display structure of downloaded files
-        run: ls -R .coverage
-      - uses: actions/checkout@v4
-      - name: Run TICS Analyzer
-        uses: tiobe/tics-github-action@v3
-        with:
-          # Use 'qserver' for push to main branch, 'client' for others. See: https://github.com/tiobe/tics-github-action?tab=readme-ov-file#client-default
-          mode: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'qserver' || 'client' }}
-          project: maas-ui
-          viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
-          ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
-          installTics: true
-          tmpdir: /tmp/tics
-          branchdir: ${{ github.workspace }}
-
-      - name: Upload TICS Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tics-report
-          path: /tmp/tics
-          retention-days: 7
+      - run: yarn test
 
   build:
     name: Build
