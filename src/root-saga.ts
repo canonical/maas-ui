@@ -17,7 +17,7 @@ import {
 } from "./app/base/sagas";
 
 import type { MessageHandler } from "@/app/base/sagas/actions";
-import type WebSocketClient from "websocket-client";
+import type WebSocketClient from "@/websocket-client";
 
 export default function* rootSaga(
   websocketClient: WebSocketClient

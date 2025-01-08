@@ -415,7 +415,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      rerender(null);
+      rerender({});
       const expected = machineActions.fetch(mockCallId);
       const getDispatches = store
         .getActions()

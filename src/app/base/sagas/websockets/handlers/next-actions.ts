@@ -6,7 +6,7 @@ import type { NextActionCreator } from "../../actions";
 import type {
   WebSocketRequest,
   WebSocketResponseResult,
-} from "websocket-client";
+} from "@/websocket-client";
 
 // A map of request ids to action creators. This is used to dispatch actions
 // when a response is received.
