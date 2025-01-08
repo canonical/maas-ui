@@ -340,8 +340,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="disks-header"
-          // TODO: enable sorting by "physical_disk_count" when the API supports it:
-          // https://github.com/canonical/app-tribe/issues/1268
+          onClick={() => updateSort(FetchGroupKey.PhysicalDiskCount)}
+          sortKey={FetchGroupKey.PhysicalDiskCount}
         >
           {columnLabels[MachineColumns.DISKS]}
         </TableHeader>
@@ -355,8 +355,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="storage-header"
-          // TODO: enable sorting by "storage" when the API supports it:
-          // https://github.com/canonical/app-tribe/issues/1268
+          onClick={() => updateSort(FetchGroupKey.TotalStorage)}
+          sortKey={FetchGroupKey.TotalStorage}
         >
           {columnLabels[MachineColumns.STORAGE]}
         </TableHeader>
