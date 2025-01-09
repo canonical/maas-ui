@@ -1,4 +1,4 @@
-import type { WebSocketEndpoint } from "websocket-client";
+import type { WebSocketEndpoint } from "@/websocket-client";
 
 let loadedEndpoints: WebSocketEndpoint[] = [];
 
