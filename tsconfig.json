@@ -1,9 +1,8 @@
 {
+  "extends": "@canonical/typescript-config-react",
   "compilerOptions": {
-    "baseUrl": "src",
-    "paths": { "@/*": ["./*"] },
-    "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] },
     "allowJs": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
@@ -12,16 +11,18 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "alwaysStrict": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["vite/client", "vite-plugin-svgr/client", "node", "vitest/globals"]
+    "types": [
+      "vite/client",
+      "vite-plugin-svgr/client",
+      "node",
+      "vitest/globals"
+    ]
   },
   "exclude": ["dist", "public", "node_modules"],
   "include": ["src"]

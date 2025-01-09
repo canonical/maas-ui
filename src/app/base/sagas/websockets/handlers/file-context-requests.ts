@@ -6,7 +6,7 @@ import type {
   WebSocketAction,
   WebSocketRequest,
   WebSocketResponseResult,
-} from "websocket-client";
+} from "@/websocket-client";
 
 // A store of websocket requests that need to store their responses in the file
 // context. The map is between request id and redux action object.
