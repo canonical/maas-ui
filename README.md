@@ -1,10 +1,11 @@
 ## MAAS UI
 
-![CI](https://github.com/canonical/maas-ui/workflows/CI/badge.svg)
-![Playwright Tests](https://github.com/canonical/maas-ui/workflows/Playwright%20Tests/badge.svg)
-![accessibility](https://github.com/canonical/maas-ui/workflows/accessibility/badge.svg)
-![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg)
-![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg)
+[![CI](https://github.com/canonical/maas-ui/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/test.yml)
+[![Playwright Tests](https://github.com/canonical/maas-ui/actions/workflows/playwright.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/playwright.yml)
+[![Accessibility](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/accessibility.yml)
+[![Cypress](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/cypress.yml)
+[![sitespeed.io](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/sitespeed.yml)
+[![MAAS Docs link checker](https://github.com/canonical/maas-ui/actions/workflows/links-checker.yml/badge.svg?branch=main)](https://github.com/canonical/maas-ui/actions/workflows/links-checker.yml)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Code Coverage](https://img.shields.io/badge/code--coverage-report-brightgreen.svg)](https://canonical.github.io/maas-ui/)
 [![Build upload](https://github.com/canonical/maas-ui/actions/workflows/upload.yml/badge.svg)](https://github.com/canonical/maas-ui/actions/workflows/upload.yml)
