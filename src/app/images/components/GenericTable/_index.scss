@@ -1,14 +1,18 @@
 .generic-table {
-  .custom {
-    width: 5rem;
+  th.release {
+    width: 12rem;
   }
 
-  .action, .size {
-    width: 4rem;
+  td.release {
+    width: 11rem;
   }
 
   .architecture, .size {
-    width: 7rem;
+    width: 9rem;
+  }
+
+  .status {
+    width: 17rem;
   }
 
   .individual-row {

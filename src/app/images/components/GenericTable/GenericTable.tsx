@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState } from "react";
 
-import { DynamicTable } from "@canonical/maas-react-components";
+import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import type {
   Column,
@@ -137,42 +137,46 @@ const GenericTable = <T,>({
           </tr>
         ))}
       </thead>
-      {
-        // Error and pending states need to be implemented when integrating with the backend
-        table.getRowModel().rows.length < 1 ? (
-          <caption className="u-visually-hidden">No data</caption> // TableCaption.Title and TableCaption.Description implementation in Site Manager pretty clean, could copy over
-        ) : (
-          <DynamicTable.Body>
-            {table.getRowModel().rows.map((row) => {
-              const { getIsGrouped, id, index, getVisibleCells } = row;
-              const isIndividualRow = !getIsGrouped();
-              return (
-                <tr
-                  className={classNames({
-                    "individual-row": isIndividualRow,
-                    "group-row": !isIndividualRow,
+      {table.getRowModel().rows.length < 1 ? (
+        <TableCaption>
+          <TableCaption.Title>No images</TableCaption.Title>
+          <TableCaption.Description>
+            There are no images stored in Site Manager at the moment. You can
+            either upload images, or connect to an upstream image source to
+            download images from.
+          </TableCaption.Description>
+        </TableCaption>
+      ) : (
+        <DynamicTable.Body>
+          {table.getRowModel().rows.map((row) => {
+            const { getIsGrouped, id, index, getVisibleCells } = row;
+            const isIndividualRow = !getIsGrouped();
+            return (
+              <tr
+                className={classNames({
+                  "individual-row": isIndividualRow,
+                  "group-row": !isIndividualRow,
+                })}
+                key={id + index}
+              >
+                {getVisibleCells()
+                  .filter((cell) => filterCells(row, cell.column))
+                  .map((cell) => {
+                    const { column, id: cellId } = cell;
+                    return (
+                      <td
+                        className={classNames(`${cell.column.id}`)}
+                        key={cellId}
+                      >
+                        {flexRender(column.columnDef.cell, cell.getContext())}
+                      </td>
+                    );
                   })}
-                  key={id + index}
-                >
-                  {getVisibleCells()
-                    .filter((cell) => filterCells(row, cell.column))
-                    .map((cell) => {
-                      const { column, id: cellId } = cell;
-                      return (
-                        <td
-                          className={classNames(`${cell.column.id}`)}
-                          key={cellId}
-                        >
-                          {flexRender(column.columnDef.cell, cell.getContext())}
-                        </td>
-                      );
-                    })}
-                </tr>
-              );
-            })}
-          </DynamicTable.Body>
-        )
-      }
+              </tr>
+            );
+          })}
+        </DynamicTable.Body>
+      )}
     </DynamicTable>
   );
 };
