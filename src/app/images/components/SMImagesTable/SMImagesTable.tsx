@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { TableCaption } from "@canonical/maas-react-components";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
@@ -81,6 +82,16 @@ export const SMImagesTable: React.FC = () => {
         filterHeaders={filterHeaders}
         getRowId={(row) => `${row.id}`}
         groupBy={["name"]}
+        noData={
+          <TableCaption>
+            <TableCaption.Title>No images</TableCaption.Title>
+            <TableCaption.Description>
+              There are no images stored in Site Manager at the moment. You can
+              either upload images, or connect to an upstream image source to
+              download images from.
+            </TableCaption.Description>
+          </TableCaption>
+        }
         rowSelection={selectedRows}
         setRowSelection={setSelectedRows}
         sortBy={[{ id: "release", desc: true }]}

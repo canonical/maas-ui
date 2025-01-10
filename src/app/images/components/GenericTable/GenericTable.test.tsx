@@ -92,6 +92,7 @@ describe("GenericTable", () => {
         filterCells={mockFilterCells}
         filterHeaders={mockFilterHeaders}
         getRowId={mockGetRowId}
+        noData={<span>No data</span>}
         rowSelection={{}}
         setRowSelection={vi.fn}
       />

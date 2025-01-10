@@ -1,7 +1,7 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { useMemo, useState } from "react";
 
-import { DynamicTable, TableCaption } from "@canonical/maas-react-components";
+import { DynamicTable } from "@canonical/maas-react-components";
 import { Button } from "@canonical/react-components";
 import type {
   Column,
@@ -38,6 +38,7 @@ type GenericTableProps<T> = {
     parent?: Row<T> | undefined
   ) => string;
   groupBy?: string[];
+  noData?: ReactNode;
   sortBy?: ColumnSort[];
   rowSelection: RowSelectionState;
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
@@ -52,6 +53,7 @@ const GenericTable = <T,>({
   getRowId,
   groupBy,
   sortBy,
+  noData,
   rowSelection,
   setRowSelection,
 }: GenericTableProps<T>) => {
@@ -138,14 +140,7 @@ const GenericTable = <T,>({
         ))}
       </thead>
       {table.getRowModel().rows.length < 1 ? (
-        <TableCaption>
-          <TableCaption.Title>No images</TableCaption.Title>
-          <TableCaption.Description>
-            There are no images stored in Site Manager at the moment. You can
-            either upload images, or connect to an upstream image source to
-            download images from.
-          </TableCaption.Description>
-        </TableCaption>
+        <div data-testid="no-data">{noData}</div>
       ) : (
         <DynamicTable.Body>
           {table.getRowModel().rows.map((row) => {
