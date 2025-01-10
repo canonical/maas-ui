@@ -46,8 +46,8 @@ it("returns the correct number of columns", () => {
     "release",
     "architecture",
     "size",
-    "status",
     "canDeployToMemory",
+    "status",
     "action",
   ]);
 });

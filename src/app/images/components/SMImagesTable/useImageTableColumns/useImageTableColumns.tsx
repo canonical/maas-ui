@@ -11,10 +11,10 @@ import type {
 import pluralize from "pluralize";
 
 import DoubleRow from "@/app/base/components/DoubleRow";
+import GroupRowActions from "@/app/base/components/GenericTable/GroupRowActions";
+import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
-import GroupRowActions from "@/app/images/components/GenericTable/GroupRowActions";
-import TableCheckbox from "@/app/images/components/GenericTable/TableCheckbox";
 import type { Image } from "@/app/images/types";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
@@ -102,6 +102,30 @@ const useImageTableColumns = ({
           header: () => "Size",
         },
         {
+          id: "canDeployToMemory",
+          accessorKey: "canDeployToMemory",
+          enableSorting: false,
+          header: () => "Deployable",
+          cell: ({
+            getValue,
+          }: {
+            getValue: Getter<Image["canDeployToMemory"]>;
+          }) =>
+            getValue() ? (
+              <TooltipButton
+                iconName="task-outstanding"
+                iconProps={{ "aria-label": "supported" }}
+                message="This image can be deployed in memory."
+              />
+            ) : (
+              <TooltipButton
+                iconName="close"
+                iconProps={{ "aria-label": "not supported" }}
+                message="This image cannot be deployed in memory."
+              />
+            ),
+        },
+        {
           id: "status",
           accessorKey: "status",
           enableSorting: false,
@@ -125,30 +149,6 @@ const useImageTableColumns = ({
               />
             );
           },
-        },
-        {
-          id: "canDeployToMemory",
-          accessorKey: "canDeployToMemory",
-          enableSorting: false,
-          header: () => "Deployable",
-          cell: ({
-            getValue,
-          }: {
-            getValue: Getter<Image["canDeployToMemory"]>;
-          }) =>
-            getValue() ? (
-              <TooltipButton
-                iconName="task-outstanding"
-                iconProps={{ "aria-label": "supported" }}
-                message="This image can be deployed in memory."
-              />
-            ) : (
-              <TooltipButton
-                iconName="close"
-                iconProps={{ "aria-label": "not supported" }}
-                message="This image cannot be deployed in memory."
-              />
-            ),
         },
         {
           id: "action",

@@ -10,14 +10,16 @@ import useImageTableColumns, {
   filterHeaders,
 } from "./useImageTableColumns/useImageTableColumns";
 
+import GenericTable from "@/app/base/components/GenericTable";
 import { useSidePanel } from "@/app/base/side-panel-context";
-import GenericTable from "@/app/images/components/GenericTable";
 import { ImageSidePanelViews } from "@/app/images/constants";
 import type { Image } from "@/app/images/types";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
 import type { BootResource } from "@/app/store/bootresource/types";
 import { splitResourceName } from "@/app/store/bootresource/utils";
 import configSelectors from "@/app/store/config/selectors";
+
+import "./_index.scss";
 
 const getImages = (resources: BootResource[]): Image[] => {
   return resources.map((resource) => {

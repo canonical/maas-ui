@@ -2,7 +2,8 @@ import type { Row } from "@tanstack/react-table";
 import type { Mock } from "vitest";
 import { describe } from "vitest";
 
-import TableCheckbox from "@/app/images/components/GenericTable/TableCheckbox/TableCheckbox";
+import TableCheckbox from "./TableCheckbox";
+
 import type { Image } from "@/app/images/types";
 import * as factory from "@/testing/factories";
 import { render, userEvent, screen } from "@/testing/utils";

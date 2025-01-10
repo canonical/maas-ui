@@ -140,7 +140,7 @@ const GenericTable = <T,>({
         ))}
       </thead>
       {table.getRowModel().rows.length < 1 ? (
-        <div data-testid="no-data">{noData}</div>
+        noData
       ) : (
         <DynamicTable.Body>
           {table.getRowModel().rows.map((row) => {
