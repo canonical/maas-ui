@@ -1,0 +1,18 @@
+.generic-table {
+  .custom {
+    width: 5rem;
+  }
+
+  .action, .size {
+    width: 4rem;
+  }
+
+  .architecture, .size {
+    width: 7rem;
+  }
+
+  .individual-row {
+    width: calc(100% - 1rem);
+    margin-left: 1rem;
+  }
+}
