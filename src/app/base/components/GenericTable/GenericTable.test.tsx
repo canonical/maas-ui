@@ -3,6 +3,7 @@ import { vi } from "vitest";
 import GenericTable from "./GenericTable";
 
 import type { Image } from "@/app/images/types";
+import type { UtcDatetime } from "@/app/store/types/model";
 import * as factory from "@/testing/factories";
 import { userEvent, screen, render } from "@/testing/utils";
 
@@ -37,6 +38,8 @@ describe("GenericTable", () => {
       lastSynced: "Mon, 06 Jan. 2025 10:45:24",
       canDeployToMemory: true,
       status: "Synced",
+      lastDeployed: "Thu, 15 Aug. 2019 06:21:39" as UtcDatetime,
+      machines: 2,
       resource: factory.bootResource({
         name: "ubuntu/xenial",
         arch: "amd64",
@@ -52,6 +55,8 @@ describe("GenericTable", () => {
       lastSynced: "Mon, 06 Jan. 2025 10:45:24",
       canDeployToMemory: true,
       status: "Synced",
+      lastDeployed: "Thu, 15 Aug. 2019 06:21:39" as UtcDatetime,
+      machines: 2,
       resource: factory.bootResource({
         name: "ubuntu/bionic",
         arch: "amd64",

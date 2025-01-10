@@ -48,6 +48,8 @@ it("returns the correct number of columns", () => {
     "size",
     "canDeployToMemory",
     "status",
+    "lastDeployed",
+    "machines",
     "action",
   ]);
 });
