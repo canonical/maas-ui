@@ -33,6 +33,8 @@ const getImages = (resources: BootResource[]): Image[] => {
       lastSynced: resource.lastUpdate,
       canDeployToMemory: resource.canDeployToMemory,
       status: resource.status,
+      lastDeployed: resource.lastDeployed,
+      machines: resource.machineCount,
       resource: resource,
     };
   });

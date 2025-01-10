@@ -10,6 +10,7 @@ import type {
   BootResource,
   BootResourceMeta,
 } from "@/app/store/bootresource/types";
+import type { UtcDatetime } from "@/app/store/types/model";
 
 export type Image = {
   id: number;
@@ -20,6 +21,8 @@ export type Image = {
   lastSynced: string | null;
   canDeployToMemory: boolean;
   status: string;
+  lastDeployed: UtcDatetime;
+  machines: number;
   resource: BootResource;
 };
 

@@ -16,6 +16,7 @@ import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
 import TableActions from "@/app/base/components/TableActions";
 import TooltipButton from "@/app/base/components/TooltipButton";
 import type { Image } from "@/app/images/types";
+import { formatUtcDatetime, getTimeDistanceString } from "@/app/utils/time";
 
 export type ImageColumnDef = ColumnDef<Image, Partial<Image>>;
 
@@ -105,7 +106,7 @@ const useImageTableColumns = ({
           id: "canDeployToMemory",
           accessorKey: "canDeployToMemory",
           enableSorting: false,
-          header: () => "Deployable",
+          header: () => "Deployable in Memory",
           cell: ({
             getValue,
           }: {
@@ -148,6 +149,31 @@ const useImageTableColumns = ({
                 secondary={row.original.lastSynced ?? ""}
               />
             );
+          },
+        },
+        {
+          id: "lastDeployed",
+          accessorKey: "lastDeployed",
+          enableSorting: false,
+          header: () => "Last deployed",
+          cell: ({ row }) => {
+            return row.original.lastDeployed ? (
+              <DoubleRow
+                primary={getTimeDistanceString(row.original.lastDeployed)}
+                secondary={formatUtcDatetime(row.original.lastDeployed)}
+              />
+            ) : (
+              "—"
+            );
+          },
+        },
+        {
+          id: "machines",
+          accessorKey: "machines",
+          enableSorting: false,
+          header: () => "Machines",
+          cell: ({ row }) => {
+            return row.original.machines || "—";
           },
         },
         {
