@@ -1,0 +1,17 @@
+.download-images-table {
+  border-collapse: separate;
+
+  thead {
+    th:first-child {
+      width: 30%;
+    }
+
+    th:last-child {
+      width: 70%;
+    }
+  }
+
+  td {
+    overflow: visible;
+  }
+}
