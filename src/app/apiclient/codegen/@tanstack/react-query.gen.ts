@@ -37,6 +37,7 @@ import {
   getSpace,
   updateSpace,
   getUserSslkeys,
+  createUserSslkey,
   listFabricVlanSubnets,
   createFabricVlanSubnet,
   deleteFabricVlanSubnet,
@@ -125,6 +126,9 @@ import type {
   UpdateSpaceError,
   UpdateSpaceResponse,
   GetUserSslkeysData,
+  CreateUserSslkeyData,
+  CreateUserSslkeyError,
+  CreateUserSslkeyResponse,
   ListFabricVlanSubnetsData,
   CreateFabricVlanSubnetData,
   CreateFabricVlanSubnetError,
@@ -983,6 +987,47 @@ export const getUserSslkeysOptions = (
     },
     queryKey: getUserSslkeysQueryKey(options),
   });
+};
+
+export const createUserSslkeyQueryKey = (
+  options: Options<CreateUserSslkeyData>
+) => [createQueryKey("createUserSslkey", options)];
+
+export const createUserSslkeyOptions = (
+  options: Options<CreateUserSslkeyData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createUserSslkey({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createUserSslkeyQueryKey(options),
+  });
+};
+
+export const createUserSslkeyMutation = (
+  options?: Partial<Options<CreateUserSslkeyData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreateUserSslkeyResponse,
+    CreateUserSslkeyError,
+    Options<CreateUserSslkeyData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createUserSslkey({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
 };
 
 export const listFabricVlanSubnetsQueryKey = (

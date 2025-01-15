@@ -1,6 +1,6 @@
 import { Row, Col } from "@canonical/react-components";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useGetZone } from "@/app/api/query/zones";
 import Definition from "@/app/base/components/Definition";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 const ZoneDetailsContent = ({ id }: Props): JSX.Element | null => {
-  const zone = useZoneById(id);
+  const zone = useGetZone({ path: { zone_id: id } });
 
   if (zone.data) {
     return (

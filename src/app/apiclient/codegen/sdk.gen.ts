@@ -107,6 +107,9 @@ import type {
   GetUserSslkeysData,
   GetUserSslkeysResponse,
   GetUserSslkeysError,
+  CreateUserSslkeyData,
+  CreateUserSslkeyResponse,
+  CreateUserSslkeyError,
   ListFabricVlanSubnetsData,
   ListFabricVlanSubnetsResponse,
   ListFabricVlanSubnetsError,
@@ -952,6 +955,32 @@ export const getUserSslkeys = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys",
+  });
+};
+
+/**
+ * Create User Sslkey
+ */
+export const createUserSslkey = <ThrowOnError extends boolean = false>(
+  options: Options<CreateUserSslkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateUserSslkeyResponse,
+    CreateUserSslkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
     security: [
       {
         scheme: "bearer",

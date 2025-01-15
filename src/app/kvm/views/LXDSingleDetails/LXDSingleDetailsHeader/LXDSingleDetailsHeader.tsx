@@ -4,7 +4,7 @@ import { Button, Icon, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useGetZone } from "@/app/api/query/zones";
 import { useFetchActions } from "@/app/base/hooks";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
@@ -28,7 +28,7 @@ const LXDSingleDetailsHeader = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const zone = useZoneById(pod?.zone);
+  const zone = useGetZone({ path: { zone_id: pod?.zone! } });
 
   useFetchActions([podActions.fetch]);
 

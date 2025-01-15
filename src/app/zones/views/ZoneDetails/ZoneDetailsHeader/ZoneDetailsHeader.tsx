@@ -1,31 +1,26 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Button } from "@canonical/react-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import DeleteConfirm from "./DeleteConfirm";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useDeleteZone, useGetZone } from "@/app/api/query/zones";
+import type { DeleteZoneData } from "@/app/apiclient/codegen";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";
-import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
 
-type Props = {
+type ZoneDetailsHeaderProps = {
   id: number;
 };
 
-const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
+const ZoneDetailsHeader: React.FC<ZoneDetailsHeaderProps> = ({ id }) => {
   const [showConfirm, setShowConfirm] = useState(false);
-  const deleteStatus = useSelector((state: RootState) =>
-    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.delete, id)
-  );
-  const zone = useZoneById(id);
-  const dispatch = useDispatch();
+
+  const zone = useGetZone({ path: { zone_id: id } });
+  const deleteZone = useDeleteZone({ path: { zone_id: id } });
   const navigate = useNavigate();
   let title = "";
 
@@ -35,25 +30,36 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
       : "Availability zone not found";
   }
 
-  useEffect(() => {
-    if (deleteStatus === "success") {
-      dispatch(zoneActions.cleanup([ZONE_ACTIONS.delete]));
-      navigate({ pathname: urls.zones.index });
-    }
-  }, [dispatch, deleteStatus, navigate]);
+  const [deleting, setDeleting] = useState(false);
 
   const isAdmin = useSelector(authSelectors.isAdmin);
   const isDefaultZone = id === 1;
 
-  const deleteZone = () => {
+  const onDelete = () => {
     if (isAdmin && !isDefaultZone) {
-      dispatch(zoneActions.delete({ id }));
+      setDeleting(true);
+      deleteZone.mutate(
+        {
+          path: {
+            zone_id: id,
+          },
+        } as DeleteZoneData,
+        {
+          onSuccess: () => {
+            setDeleting(false);
+            navigate({ pathname: urls.zones.index });
+          },
+          onError: () => {
+            setDeleting(false);
+          },
+        }
+      );
     }
   };
 
   const closeExpanded = () => setShowConfirm(false);
 
-  let buttons: JSX.Element[] | null = [
+  let buttons: React.ReactElement[] | null = [
     <Button
       data-testid="delete-zone"
       key="delete-zone"
@@ -76,9 +82,9 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
         <DeleteConfirm
           closeExpanded={closeExpanded}
           confirmLabel="Delete AZ"
-          deleting={deleteStatus === "loading"}
+          deleting={deleting}
           message="Are you sure you want to delete this AZ?"
-          onConfirm={deleteZone}
+          onConfirm={onDelete}
         />
       </>
     );

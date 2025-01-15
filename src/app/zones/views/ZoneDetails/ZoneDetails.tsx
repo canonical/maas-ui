@@ -4,7 +4,7 @@ import ZoneDetailsContent from "./ZoneDetailsContent";
 import ZoneDetailsForm from "./ZoneDetailsForm";
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useGetZone } from "@/app/api/query/zones";
 import EditableSection from "@/app/base/components/EditableSection";
 import ModelNotFound from "@/app/base/components/ModelNotFound";
 import PageContent from "@/app/base/components/PageContent";
@@ -18,7 +18,7 @@ import { isId } from "@/app/utils";
 const ZoneDetails = (): JSX.Element => {
   const zoneID = useGetURLId(ZoneMeta.PK);
   const isAdmin = useSelector(authSelectors.isAdmin);
-  const zone = useZoneById(zoneID);
+  const zone = useGetZone({ path: { zone_id: zoneID! } });
 
   useWindowTitle(zone?.data?.name ?? "Loading...");
 

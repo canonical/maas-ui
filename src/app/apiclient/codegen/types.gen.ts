@@ -585,6 +585,13 @@ export type SslKeyListResponse = {
   kind?: string;
 };
 
+export type SslKeyRequest = {
+  /**
+   * A valid SSL key.
+   */
+  key: string;
+};
+
 /**
  * Base HAL response class that every response object must extend. The response object will look like
  * {
@@ -2114,6 +2121,37 @@ export type GetUserSslkeysResponses = {
 
 export type GetUserSslkeysResponse =
   GetUserSslkeysResponses[keyof GetUserSslkeysResponses];
+
+export type CreateUserSslkeyData = {
+  body: SslKeyRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sslkeys";
+};
+
+export type CreateUserSslkeyErrors = {
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateUserSslkeyError =
+  CreateUserSslkeyErrors[keyof CreateUserSslkeyErrors];
+
+export type CreateUserSslkeyResponses = {
+  /**
+   * Successful Response
+   */
+  201: SslKeyResponse;
+};
+
+export type CreateUserSslkeyResponse =
+  CreateUserSslkeyResponses[keyof CreateUserSslkeyResponses];
 
 export type ListFabricVlanSubnetsData = {
   body?: never;

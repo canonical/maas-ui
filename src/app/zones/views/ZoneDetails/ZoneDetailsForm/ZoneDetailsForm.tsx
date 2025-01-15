@@ -1,45 +1,57 @@
-import { useCallback } from "react";
+import React, { useState } from "react";
 
 import { Row, Col, Textarea } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useGetZone, useUpdateZone } from "@/app/api/query/zones";
+import type {
+  UpdateZoneData,
+  UpdateZoneError,
+  ZoneRequest,
+} from "@/app/apiclient/codegen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { ACTION_STATUS } from "@/app/base/constants";
-import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
 
-type Props = {
+type ZoneDetailsFormProps = {
   id: number;
   closeForm: () => void;
 };
 
-export type CreateZoneValues = {
-  description: string;
-  name: string;
-};
+const ZoneDetailsForm: React.FC<ZoneDetailsFormProps> = ({ id, closeForm }) => {
+  const { data: zone } = useGetZone({ path: { zone_id: id } });
 
-const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
-  const cleanup = useCallback(
-    () => zoneActions.cleanup([ZONE_ACTIONS.update]),
-    []
-  );
-  const { data: zone } = useZoneById(id);
-  const errors = useSelector((state: RootState) =>
-    zoneSelectors.getLatestError(state, ZONE_ACTIONS.update, id)
-  );
-  const updateStatus = useSelector((state: RootState) =>
-    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.update, id)
-  );
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string> | null>(null);
+
+  const updateZone = useUpdateZone({ path: { zone_id: id } });
+
+  const onSubmit = (data: ZoneRequest) => {
+    setSaving(true);
+    setErrors(null);
+    updateZone.mutate(
+      {
+        body: data,
+        path: {
+          zone_id: id,
+        },
+      } as UpdateZoneData,
+      {
+        onSuccess: () => {
+          setSaved(true);
+          setSaving(false);
+          closeForm();
+        },
+        onError: (error: UpdateZoneError) => {
+          setSaving(false);
+          setErrors({ general: error.message! });
+        },
+      }
+    );
+  };
 
   if (zone) {
     return (
-      <FormikForm<CreateZoneValues>
-        cleanup={cleanup}
+      <FormikForm<ZoneRequest>
         errors={errors}
         initialValues={{
           description: zone.description,
@@ -47,18 +59,11 @@ const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
         }}
         onCancel={closeForm}
         onSubmit={(values) => {
-          dispatch(cleanup());
-          dispatch(
-            zoneActions.update({
-              id: id,
-              description: values.description,
-              name: values.name,
-            })
-          );
+          onSubmit({ name: values.name, description: values.description });
         }}
         onSuccess={closeForm}
-        saved={updateStatus === ACTION_STATUS.success}
-        saving={updateStatus === ACTION_STATUS.loading}
+        saved={saved}
+        saving={saving}
         submitLabel="Update AZ"
       >
         <Row>

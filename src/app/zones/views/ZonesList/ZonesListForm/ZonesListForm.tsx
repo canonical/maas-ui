@@ -1,40 +1,51 @@
-import { useCallback } from "react";
+import React, { useState } from "react";
 
 import { Row, Col, Textarea } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 
+import { useCreateZone } from "@/app/api/query/zones";
+import type {
+  CreateZoneData,
+  CreateZoneError,
+  ZoneRequest,
+} from "@/app/apiclient/codegen/types.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
 
-type Props = {
+type ZoneListFormProps = {
   closeForm: () => void;
 };
 
-export type CreateZoneValues = {
-  description: string;
-  name: string;
-};
+const ZonesListForm: React.FC<ZoneListFormProps> = ({ closeForm }) => {
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string> | null>(null);
 
-const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const cleanup = useCallback(
-    () => zoneActions.cleanup([ZONE_ACTIONS.create]),
-    []
-  );
-  const created = useSelector(zoneSelectors.created);
-  const creating = useSelector(zoneSelectors.creating);
-  const errors = useSelector((state: RootState) =>
-    zoneSelectors.getLatestError(state, ZONE_ACTIONS.create)
-  );
+  const createZone = useCreateZone();
+
+  const onSubmit = (data: ZoneRequest) => {
+    setSaving(true);
+    setErrors(null);
+    createZone.mutate(
+      {
+        body: data,
+      } as CreateZoneData,
+      {
+        onSuccess: () => {
+          setSaved(true);
+          setSaving(false);
+          closeForm();
+        },
+        onError: (error: CreateZoneError) => {
+          setSaving(false);
+          setErrors({ general: error.message! });
+        },
+      }
+    );
+  };
 
   return (
-    <FormikForm<CreateZoneValues>
+    <FormikForm<ZoneRequest>
       aria-label="Add AZ"
-      cleanup={cleanup}
       errors={errors}
       initialValues={{
         description: "",
@@ -42,17 +53,12 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
       }}
       onCancel={closeForm}
       onSubmit={(values) => {
-        dispatch(
-          zoneActions.create({
-            description: values.description,
-            name: values.name,
-          })
-        );
+        onSubmit({ name: values.name, description: values.description });
       }}
       onSuccess={closeForm}
       resetOnSave={true}
-      saved={created}
-      saving={creating}
+      saved={saved}
+      saving={saving}
       submitLabel="Add AZ"
     >
       <Row>
