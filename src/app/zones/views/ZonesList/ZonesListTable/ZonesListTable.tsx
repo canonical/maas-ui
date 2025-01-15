@@ -25,7 +25,8 @@ const ZonesListTable = (): JSX.Element => {
     },
   ];
 
-  const rows = zones?.data?.map?.((zone) => {
+  // TODO: missing properties will be added by backend
+  const rows = zones?.data?.items.map((zone) => {
     const devicesFilter = FilterDevices.filtersToQueryString({
       zone: [zone.name],
     });
