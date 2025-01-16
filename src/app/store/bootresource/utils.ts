@@ -4,7 +4,10 @@ export const splitResourceName = (
   name: BootResource["name"]
 ): { os: string; release: string } => {
   const split = name.split("/");
-  return split.length === 2
+  if (name.length === 0) {
+    return { os: "", release: "" };
+  }
+  return split.length > 1
     ? { os: split[0], release: split[1] }
     : { os: "custom", release: name };
 };
