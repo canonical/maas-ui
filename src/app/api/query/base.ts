@@ -9,6 +9,11 @@ import { WebSocketContext } from "@/app/base/websocket-context";
 import statusSelectors from "@/app/store/status/selectors";
 import { WebSocketMessageType } from "@/websocket-client";
 
+/**
+ * Provides a hook to subscribe to NOTIFY messages from the websocket.
+ *
+ * @returns An object with a subscribe function that takes a callback to run when a NOTIFY message is received.
+ */
 export const useWebSocket = () => {
   const websocketClient = useContext(WebSocketContext);
 
@@ -16,15 +21,20 @@ export const useWebSocket = () => {
     throw new Error("useWebSocket must be used within a WebSocketProvider");
   }
 
+  // Listen for NOTIFY messages and run a callback when received
   const subscribe = useCallback(
     (callback: (msg: any) => void) => {
       if (!websocketClient.rws) return;
 
       const messageHandler = (messageEvent: MessageEvent) => {
         const data = JSON.parse(messageEvent.data);
+        // if we get a NOTIFY, run the provided callback
         if (data.type === WebSocketMessageType.NOTIFY) callback(data);
       };
+      // add an event listener for NOTIFY messages
       websocketClient.rws.addEventListener("message", messageHandler);
+
+      // this is a function to remove that event listener, it gets called in a cleanup effect down below.
       return () =>
         websocketClient.rws?.removeEventListener("message", messageHandler);
     },
