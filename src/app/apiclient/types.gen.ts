@@ -31,7 +31,7 @@ export type BaseHref = {
   href: string;
 };
 
-export type BodyLoginMaasAV3AuthLoginPost = {
+export type BodyLogin = {
   grant_type?: string;
   username: string;
   password: string;
@@ -654,6 +654,24 @@ export type SpacesListResponse = {
   kind?: string;
 };
 
+export type SshKeyImportFromSourceRequest = {
+  /**
+   * The source from where to fetch the key.
+   */
+  protocol: SshKeysProtocolType;
+  /**
+   * The username related to the source.
+   */
+  auth_id: string;
+};
+
+export type SshKeyManualUploadRequest = {
+  /**
+   * The SSH public key to be added.
+   */
+  key: string;
+};
+
 /**
  * Base HAL response class that every response object must extend. The response object will look like
  * {
@@ -672,7 +690,6 @@ export type SshKeyResponse = {
   key: string;
   protocol?: SshKeysProtocolType;
   auth_id?: string;
-  user_id: number;
   kind?: string;
 };
 
@@ -1058,7 +1075,7 @@ export type AccessTokenResponse2 =
   AccessTokenResponses[keyof AccessTokenResponses];
 
 export type LoginData = {
-  body: BodyLoginMaasAV3AuthLoginPost;
+  body: BodyLogin;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/auth/login";
@@ -2088,6 +2105,174 @@ export type UpdateSpaceResponses = {
 export type UpdateSpaceResponse =
   UpdateSpaceResponses[keyof UpdateSpaceResponses];
 
+export type ListUserSshkeysData = {
+  body?: never;
+  path?: never;
+  query?: {
+    token?: string;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/users/me/sshkeys";
+};
+
+export type ListUserSshkeysErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type ListUserSshkeysError =
+  ListUserSshkeysErrors[keyof ListUserSshkeysErrors];
+
+export type ListUserSshkeysResponses = {
+  /**
+   * Successful Response
+   */
+  200: SshKeysListResponse;
+};
+
+export type ListUserSshkeysResponse =
+  ListUserSshkeysResponses[keyof ListUserSshkeysResponses];
+
+export type CreateUserSshkeysData = {
+  body: SshKeyManualUploadRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sshkeys";
+};
+
+export type CreateUserSshkeysErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateUserSshkeysError =
+  CreateUserSshkeysErrors[keyof CreateUserSshkeysErrors];
+
+export type CreateUserSshkeysResponses = {
+  /**
+   * Successful Response
+   */
+  201: SshKeyResponse;
+};
+
+export type CreateUserSshkeysResponse =
+  CreateUserSshkeysResponses[keyof CreateUserSshkeysResponses];
+
+export type DeleteUserSshkeyData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sshkeys/{id}";
+};
+
+export type DeleteUserSshkeyErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type DeleteUserSshkeyError =
+  DeleteUserSshkeyErrors[keyof DeleteUserSshkeyErrors];
+
+export type DeleteUserSshkeyResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteUserSshkeyResponse =
+  DeleteUserSshkeyResponses[keyof DeleteUserSshkeyResponses];
+
+export type GetUserSshkeyData = {
+  body?: never;
+  path: {
+    sshkey_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}";
+};
+
+export type GetUserSshkeyErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type GetUserSshkeyError = GetUserSshkeyErrors[keyof GetUserSshkeyErrors];
+
+export type GetUserSshkeyResponses = {
+  /**
+   * Successful Response
+   */
+  200: SshKeyResponse;
+};
+
+export type GetUserSshkeyResponse =
+  GetUserSshkeyResponses[keyof GetUserSshkeyResponses];
+
+export type ImportUserSshkeysData = {
+  body: SshKeyImportFromSourceRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sshkeys:import";
+};
+
+export type ImportUserSshkeysErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ImportUserSshkeysError =
+  ImportUserSshkeysErrors[keyof ImportUserSshkeysErrors];
+
+export type ImportUserSshkeysResponses = {
+  /**
+   * Successful Response
+   */
+  201: SshKeysListResponse;
+};
+
+export type ImportUserSshkeysResponse =
+  ImportUserSshkeysResponses[keyof ImportUserSshkeysResponses];
+
 export type GetUserSslkeysData = {
   body?: never;
   path?: never;
@@ -2152,6 +2337,42 @@ export type CreateUserSslkeyResponses = {
 
 export type CreateUserSslkeyResponse =
   CreateUserSslkeyResponses[keyof CreateUserSslkeyResponses];
+
+export type DeleteUserSslkeyData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    sslkey_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}";
+};
+
+export type DeleteUserSslkeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type DeleteUserSslkeyError =
+  DeleteUserSslkeyErrors[keyof DeleteUserSslkeyErrors];
+
+export type DeleteUserSslkeyResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteUserSslkeyResponse =
+  DeleteUserSslkeyResponses[keyof DeleteUserSslkeyResponses];
 
 export type ListFabricVlanSubnetsData = {
   body?: never;
@@ -2353,72 +2574,6 @@ export type GetUserInfoResponses = {
 
 export type GetUserInfoResponse =
   GetUserInfoResponses[keyof GetUserInfoResponses];
-
-export type ListUserSshkeysData = {
-  body?: never;
-  path?: never;
-  query?: {
-    token?: string;
-    size?: number;
-  };
-  url: "/MAAS/a/v3/users/me/sshkeys";
-};
-
-export type ListUserSshkeysErrors = {
-  /**
-   * Unauthorized
-   */
-  401: UnauthorizedBodyResponse;
-  /**
-   * Validation Error
-   */
-  422: HttpValidationError;
-};
-
-export type ListUserSshkeysError =
-  ListUserSshkeysErrors[keyof ListUserSshkeysErrors];
-
-export type ListUserSshkeysResponses = {
-  /**
-   * Successful Response
-   */
-  200: SshKeysListResponse;
-};
-
-export type ListUserSshkeysResponse =
-  ListUserSshkeysResponses[keyof ListUserSshkeysResponses];
-
-export type GetUserSshkeyData = {
-  body?: never;
-  path: {
-    sshkey_id: number;
-  };
-  query?: never;
-  url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}";
-};
-
-export type GetUserSshkeyErrors = {
-  /**
-   * Unauthorized
-   */
-  401: UnauthorizedBodyResponse;
-  /**
-   * Validation Error
-   */
-  422: HttpValidationError;
-};
-
-export type GetUserSshkeyError = GetUserSshkeyErrors[keyof GetUserSshkeyErrors];
-
-export type GetUserSshkeyResponses = {
-  /**
-   * Successful Response
-   */
-  200: SshKeyResponse;
-};
-
-export type GetUserSshkeyResponse =
-  GetUserSshkeyResponses[keyof GetUserSshkeyResponses];
 
 export type ListUsersData = {
   body?: never;

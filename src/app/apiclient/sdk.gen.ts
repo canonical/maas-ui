@@ -104,12 +104,30 @@ import type {
   UpdateSpaceData,
   UpdateSpaceResponse,
   UpdateSpaceError,
+  ListUserSshkeysData,
+  ListUserSshkeysResponse,
+  ListUserSshkeysError,
+  CreateUserSshkeysData,
+  CreateUserSshkeysResponse,
+  CreateUserSshkeysError,
+  DeleteUserSshkeyData,
+  DeleteUserSshkeyResponse,
+  DeleteUserSshkeyError,
+  GetUserSshkeyData,
+  GetUserSshkeyResponse,
+  GetUserSshkeyError,
+  ImportUserSshkeysData,
+  ImportUserSshkeysResponse,
+  ImportUserSshkeysError,
   GetUserSslkeysData,
   GetUserSslkeysResponse,
   GetUserSslkeysError,
   CreateUserSslkeyData,
   CreateUserSslkeyResponse,
   CreateUserSslkeyError,
+  DeleteUserSslkeyData,
+  DeleteUserSslkeyResponse,
+  DeleteUserSslkeyError,
   ListFabricVlanSubnetsData,
   ListFabricVlanSubnetsResponse,
   ListFabricVlanSubnetsError,
@@ -128,12 +146,6 @@ import type {
   GetUserInfoData,
   GetUserInfoResponse,
   GetUserInfoError,
-  ListUserSshkeysData,
-  ListUserSshkeysResponse,
-  ListUserSshkeysError,
-  GetUserSshkeyData,
-  GetUserSshkeyResponse,
-  GetUserSshkeyError,
   ListUsersData,
   ListUsersResponse,
   ListUsersError,
@@ -944,6 +956,124 @@ export const updateSpace = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * List User Sshkeys
+ */
+export const listUserSshkeys = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUserSshkeysData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListUserSshkeysResponse,
+    ListUserSshkeysError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys",
+  });
+};
+
+/**
+ * Create User Sshkeys
+ */
+export const createUserSshkeys = <ThrowOnError extends boolean = false>(
+  options: Options<CreateUserSshkeysData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateUserSshkeysResponse,
+    CreateUserSshkeysError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys",
+  });
+};
+
+/**
+ * Delete User Sshkey
+ */
+export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteUserSshkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteUserSshkeyResponse,
+    DeleteUserSshkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys/{id}",
+  });
+};
+
+/**
+ * Get User Sshkey
+ */
+export const getUserSshkey = <ThrowOnError extends boolean = false>(
+  options: Options<GetUserSshkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetUserSshkeyResponse,
+    GetUserSshkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}",
+  });
+};
+
+/**
+ * Import User Sshkeys
+ */
+export const importUserSshkeys = <ThrowOnError extends boolean = false>(
+  options: Options<ImportUserSshkeysData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    ImportUserSshkeysResponse,
+    ImportUserSshkeysError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys:import",
+  });
+};
+
+/**
  * Get User Sslkeys
  */
 export const getUserSslkeys = <ThrowOnError extends boolean = false>(
@@ -988,6 +1118,28 @@ export const createUserSslkey = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/users/me/sslkeys",
+  });
+};
+
+/**
+ * Delete User Sslkey
+ */
+export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteUserSslkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteUserSslkeyResponse,
+    DeleteUserSslkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
   });
 };
 
@@ -1128,50 +1280,6 @@ export const getUserInfo = <ThrowOnError extends boolean = false>(
       },
     ],
     url: "/MAAS/a/v3/users/me",
-  });
-};
-
-/**
- * List User Sshkeys
- */
-export const listUserSshkeys = <ThrowOnError extends boolean = false>(
-  options?: Options<ListUserSshkeysData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
-    ListUserSshkeysResponse,
-    ListUserSshkeysError,
-    ThrowOnError
-  >({
-    ...options,
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/users/me/sshkeys",
-  });
-};
-
-/**
- * Get User Sshkey
- */
-export const getUserSshkey = <ThrowOnError extends boolean = false>(
-  options: Options<GetUserSshkeyData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
-    GetUserSshkeyResponse,
-    GetUserSshkeyError,
-    ThrowOnError
-  >({
-    ...options,
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}",
   });
 };
 

@@ -19,7 +19,7 @@ import type {
   UpdateZoneData,
   UpdateZoneError,
   UpdateZoneResponse,
-} from "@/app/apiclient/codegen";
+} from "@/app/apiclient";
 import {
   createZoneMutation,
   deleteZoneMutation,
@@ -28,7 +28,7 @@ import {
   listZonesOptions,
   listZonesQueryKey,
   updateZoneMutation,
-} from "@/app/apiclient/codegen/@tanstack/react-query.gen";
+} from "@/app/apiclient/@tanstack/react-query.gen";
 
 export const useZones = (options?: Options<ListZonesData>) => {
   return useWebsocketAwareQuery(

@@ -36,16 +36,20 @@ import {
   deleteSpace,
   getSpace,
   updateSpace,
+  listUserSshkeys,
+  createUserSshkeys,
+  deleteUserSshkey,
+  getUserSshkey,
+  importUserSshkeys,
   getUserSslkeys,
   createUserSslkey,
+  deleteUserSslkey,
   listFabricVlanSubnets,
   createFabricVlanSubnet,
   deleteFabricVlanSubnet,
   updateFabricVlanSubnet,
   getFabricVlanSubnet,
   getUserInfo,
-  listUserSshkeys,
-  getUserSshkey,
   listUsers,
   createUser,
   getUser,
@@ -125,10 +129,24 @@ import type {
   UpdateSpaceData,
   UpdateSpaceError,
   UpdateSpaceResponse,
+  ListUserSshkeysData,
+  CreateUserSshkeysData,
+  CreateUserSshkeysError,
+  CreateUserSshkeysResponse,
+  DeleteUserSshkeyData,
+  DeleteUserSshkeyError,
+  DeleteUserSshkeyResponse,
+  GetUserSshkeyData,
+  ImportUserSshkeysData,
+  ImportUserSshkeysError,
+  ImportUserSshkeysResponse,
   GetUserSslkeysData,
   CreateUserSslkeyData,
   CreateUserSslkeyError,
   CreateUserSslkeyResponse,
+  DeleteUserSslkeyData,
+  DeleteUserSslkeyError,
+  DeleteUserSslkeyResponse,
   ListFabricVlanSubnetsData,
   CreateFabricVlanSubnetData,
   CreateFabricVlanSubnetError,
@@ -141,8 +159,6 @@ import type {
   UpdateFabricVlanSubnetResponse,
   GetFabricVlanSubnetData,
   GetUserInfoData,
-  ListUserSshkeysData,
-  GetUserSshkeyData,
   ListUsersData,
   CreateUserData,
   CreateUserError,
@@ -968,6 +984,148 @@ export const updateSpaceMutation = (
   return mutationOptions;
 };
 
+export const listUserSshkeysQueryKey = (
+  options?: Options<ListUserSshkeysData>
+) => [createQueryKey("listUserSshkeys", options)];
+
+export const listUserSshkeysOptions = (
+  options?: Options<ListUserSshkeysData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await listUserSshkeys({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: listUserSshkeysQueryKey(options),
+  });
+};
+
+export const createUserSshkeysQueryKey = (
+  options: Options<CreateUserSshkeysData>
+) => [createQueryKey("createUserSshkeys", options)];
+
+export const createUserSshkeysOptions = (
+  options: Options<CreateUserSshkeysData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await createUserSshkeys({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: createUserSshkeysQueryKey(options),
+  });
+};
+
+export const createUserSshkeysMutation = (
+  options?: Partial<Options<CreateUserSshkeysData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    CreateUserSshkeysResponse,
+    CreateUserSshkeysError,
+    Options<CreateUserSshkeysData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await createUserSshkeys({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteUserSshkeyMutation = (
+  options?: Partial<Options<DeleteUserSshkeyData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteUserSshkeyResponse,
+    DeleteUserSshkeyError,
+    Options<DeleteUserSshkeyData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteUserSshkey({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getUserSshkeyQueryKey = (options: Options<GetUserSshkeyData>) => [
+  createQueryKey("getUserSshkey", options),
+];
+
+export const getUserSshkeyOptions = (options: Options<GetUserSshkeyData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getUserSshkey({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getUserSshkeyQueryKey(options),
+  });
+};
+
+export const importUserSshkeysQueryKey = (
+  options: Options<ImportUserSshkeysData>
+) => [createQueryKey("importUserSshkeys", options)];
+
+export const importUserSshkeysOptions = (
+  options: Options<ImportUserSshkeysData>
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await importUserSshkeys({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: importUserSshkeysQueryKey(options),
+  });
+};
+
+export const importUserSshkeysMutation = (
+  options?: Partial<Options<ImportUserSshkeysData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    ImportUserSshkeysResponse,
+    ImportUserSshkeysError,
+    Options<ImportUserSshkeysData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await importUserSshkeys({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getUserSslkeysQueryKey = (
   options?: Options<GetUserSslkeysData>
 ) => [createQueryKey("getUserSslkeys", options)];
@@ -1020,6 +1178,26 @@ export const createUserSslkeyMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await createUserSslkey({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const deleteUserSslkeyMutation = (
+  options?: Partial<Options<DeleteUserSslkeyData>>
+) => {
+  const mutationOptions: UseMutationOptions<
+    DeleteUserSslkeyResponse,
+    DeleteUserSslkeyError,
+    Options<DeleteUserSslkeyData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteUserSslkey({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1169,46 +1347,6 @@ export const getUserInfoOptions = (options?: Options<GetUserInfoData>) => {
       return data;
     },
     queryKey: getUserInfoQueryKey(options),
-  });
-};
-
-export const listUserSshkeysQueryKey = (
-  options?: Options<ListUserSshkeysData>
-) => [createQueryKey("listUserSshkeys", options)];
-
-export const listUserSshkeysOptions = (
-  options?: Options<ListUserSshkeysData>
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await listUserSshkeys({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: listUserSshkeysQueryKey(options),
-  });
-};
-
-export const getUserSshkeyQueryKey = (options: Options<GetUserSshkeyData>) => [
-  createQueryKey("getUserSshkey", options),
-];
-
-export const getUserSshkeyOptions = (options: Options<GetUserSshkeyData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getUserSshkey({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getUserSshkeyQueryKey(options),
   });
 };
 
