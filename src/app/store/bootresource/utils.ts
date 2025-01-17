@@ -9,7 +9,7 @@ export const splitResourceName = (
   }
   return split.length > 1
     ? { os: split[0], release: split[1] }
-    : { os: "custom", release: name };
+    : { os: "other", release: name };
 };
 
 export const splitImageName = (
