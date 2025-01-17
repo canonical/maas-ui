@@ -41,7 +41,7 @@ describe("bootresource utils", () => {
         release: "centos70",
       });
       expect(splitResourceName("rocky9")).toStrictEqual({
-        os: "custom",
+        os: "other",
         release: "rocky9",
       });
       expect(splitResourceName("ubuntu/focal/amd64/generic")).toStrictEqual({
