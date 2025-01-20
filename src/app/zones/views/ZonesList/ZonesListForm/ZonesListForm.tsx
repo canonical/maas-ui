@@ -7,7 +7,7 @@ import type {
   CreateZoneData,
   CreateZoneError,
   ZoneRequest,
-} from "@/app/apiclient/codegen/types.gen";
+} from "@/app/apiclient/types.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import DeleteConfirm from "./DeleteConfirm";
 
 import { useDeleteZone, useGetZone } from "@/app/api/query/zones";
-import type { DeleteZoneData } from "@/app/apiclient/codegen";
+import type { DeleteZoneData } from "@/app/apiclient";
 import SectionHeader from "@/app/base/components/SectionHeader";
 import urls from "@/app/base/urls";
 import authSelectors from "@/app/store/auth/selectors";

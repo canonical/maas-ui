@@ -1035,6 +1035,9 @@ export type ZoneResponse = {
   id: number;
   name: string;
   description: string;
+  controllers_count: number;
+  devices_count: number;
+  machines_count: number;
   kind?: string;
 };
 

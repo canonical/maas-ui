@@ -7,7 +7,7 @@ import type {
   UpdateZoneData,
   UpdateZoneError,
   ZoneRequest,
-} from "@/app/apiclient/codegen";
+} from "@/app/apiclient";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 

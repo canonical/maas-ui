@@ -2,7 +2,7 @@ import { Icon, MainTable } from "@canonical/react-components";
 import pluralize from "pluralize";
 
 import { useZones } from "@/app/api/query/zones";
-import type { ZoneResponse } from "@/app/apiclient/codegen";
+import type { ZoneResponse } from "@/app/apiclient";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import TableHeader from "@/app/base/components/TableHeader";
 import { useTableSort } from "@/app/base/hooks";

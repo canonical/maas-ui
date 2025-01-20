@@ -452,7 +452,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
           memory: defaults.memory,
           pinnedCores: "",
           pool: `${pools[0]?.id}` || "",
-          zone: `${zones.data?.[0]?.id}` || "",
+          zone: `${zones.data?.items[0]?.id}` || "",
         }}
         modelName="machine"
         onCancel={clearSidePanelContent}

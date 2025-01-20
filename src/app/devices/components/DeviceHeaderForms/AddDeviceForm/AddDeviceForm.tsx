@@ -174,7 +174,7 @@ export const AddDeviceForm = ({
             subnet_cidr: "",
           },
         ],
-        zone: zones.data?.length ? zones.data[0].name : "",
+        zone: zones.data?.items.length ? zones.data.items[0].name : "",
       }}
       onCancel={clearSidePanelContent}
       onSaveAnalytics={{
