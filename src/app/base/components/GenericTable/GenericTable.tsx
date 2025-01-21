@@ -30,8 +30,8 @@ type GenericTableProps<T> = {
   ariaLabel?: string;
   columns: ColumnDef<T, Partial<T>>[];
   data: T[];
-  filterCells: (row: Row<T>, column: Column<T>) => boolean;
-  filterHeaders: (header: Header<T, unknown>) => boolean;
+  filterCells?: (row: Row<T>, column: Column<T>) => boolean;
+  filterHeaders?: (header: Header<T, unknown>) => boolean;
   getRowId: (
     originalRow: T,
     index: number,
@@ -60,6 +60,14 @@ const GenericTable = <T,>({
   const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
+
+  if (filterCells === undefined) {
+    filterCells = () => true;
+  }
+
+  if (filterHeaders === undefined) {
+    filterHeaders = () => true;
+  }
 
   const sortedData = useMemo(() => {
     return [...data].sort((a, b) => {
