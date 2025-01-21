@@ -57,9 +57,7 @@ const useImageTableColumns = ({
           }) => {
             return row.getIsGrouped() ? (
               <TableCheckbox.Group aria-label={getValue()} row={row} />
-            ) : (
-              <TableCheckbox aria-label={getValue()} row={row} />
-            );
+            ) : null;
           },
         },
         {
@@ -89,6 +87,20 @@ const useImageTableColumns = ({
           accessorKey: "release",
           enableSorting: true,
           header: () => "Release title",
+          cell: ({
+            row,
+            getValue,
+          }: {
+            row: Row<Image>;
+            getValue: Getter<Image["release"]>;
+          }) => {
+            return (
+              <>
+                <TableCheckbox aria-label={getValue()} row={row} />
+                <div>{getValue()}</div>
+              </>
+            );
+          },
         },
         {
           id: "architecture",

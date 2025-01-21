@@ -1,11 +1,20 @@
 .generic-table {
-  table-layout: auto;
-  th:not(th:nth-of-type(1), th:nth-of-type(2), th:last-of-type) {
-    padding-left: 1.5rem;
+  thead {
+    width: 100%;
   }
 
-  .individual-row {
-    width: calc(100% - 1rem);
-    margin-left: 1rem;
+  td:has(.table-checkbox) {
+    display: inline-flex;
+
+    .table-checkbox {
+      padding-top: 0;
+    }
+  }
+
+  &.p-table-dynamic--with-select {
+    td:first-child, th:first-child {
+      width: 2rem !important;
+      padding-right: 0;
+    }
   }
 }

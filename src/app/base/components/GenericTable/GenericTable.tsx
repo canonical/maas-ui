@@ -40,7 +40,7 @@ type GenericTableProps<T> = {
   groupBy?: string[];
   noData?: ReactNode;
   sortBy?: ColumnSort[];
-  rowSelection: RowSelectionState;
+  rowSelection?: RowSelectionState;
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
@@ -112,10 +112,17 @@ const GenericTable = <T,>({
     getRowId,
   });
 
+  const isRowsSelectable =
+    rowSelection !== undefined && setRowSelection !== undefined;
+
   return (
     <DynamicTable
       aria-label={ariaLabel}
-      className="p-table-dynamic--with-select generic-table"
+      className={classNames({
+        "p-table-dynamic": true,
+        "p-table-dynamic--with-select": isRowsSelectable,
+        "generic-table": true,
+      })}
       variant={"full-height"}
     >
       <thead>

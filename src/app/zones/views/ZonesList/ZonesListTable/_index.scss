@@ -1,5 +1,5 @@
 .generic-table {
-  .name {
-    width: 15rem;
+  th:is(.machines, .devices, .controllers) {
+    text-align: right;
   }
 }
