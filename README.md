@@ -41,7 +41,7 @@ Community contributions are most welcome, and there are a number of ways to part
 - [Submit bugs and feature requests](https://maas.io/docs/how-to-review-and-report-bugs)
 - [Assist with code review](https://github.com/canonical/maas-ui/pulls)
 - [Submit bugs for the MAAS website](https://github.com/canonical/maas.io)
-- [Contribute to MAAS documentation](https://maas.io/docs/writing-guide)
+- [Contribute to MAAS documentation](https://maas.io/docs/how-to-contribute-to-maas-documentation)
 
 When submitting a PR, please take note that MAAS UI uses the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) format. To help you conform to this, you can run `yarn commit` instead of `git commit` for an interactive prompt.
 
