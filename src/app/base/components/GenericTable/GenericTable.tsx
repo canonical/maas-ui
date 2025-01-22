@@ -39,6 +39,7 @@ type GenericTableProps<T> = {
   filterHeaders?: (header: Header<T, unknown>) => boolean;
   group?: string[];
   noData?: ReactNode;
+  pin?: { value: string; top: boolean }[];
   select?: boolean;
   sort?: ColumnSort[];
   rowSelection?: RowSelectionState;
@@ -52,6 +53,7 @@ const GenericTable = <T,>({
   filterHeaders = () => true,
   group,
   noData,
+  pin,
   select = false,
   sort,
   rowSelection,
@@ -91,6 +93,32 @@ const GenericTable = <T,>({
 
   data = useMemo(() => {
     return [...data].sort((a, b) => {
+      if (pin && pin.length > 0 && grouping.length > 0) {
+        for (const { value, top } of pin) {
+          const groupId = grouping[0];
+          const aValue = a[groupId as keyof typeof a];
+          const bValue = b[groupId as keyof typeof b];
+
+          if (aValue === value && bValue !== value) {
+            return top ? -1 : 1;
+          }
+          if (bValue === value && aValue !== value) {
+            return top ? 1 : -1;
+          }
+        }
+      }
+
+      for (const groupId of grouping) {
+        const aGroupValue = a[groupId as keyof typeof a];
+        const bGroupValue = b[groupId as keyof typeof b];
+        if (aGroupValue < bGroupValue) {
+          return -1;
+        }
+        if (aGroupValue > bGroupValue) {
+          return 1;
+        }
+      }
+
       for (const { id, desc } of sorting) {
         const aValue = a[id as keyof typeof a];
         const bValue = b[id as keyof typeof b];
@@ -103,7 +131,7 @@ const GenericTable = <T,>({
       }
       return 0;
     });
-  }, [data, sorting]);
+  }, [data, sorting, grouping, pin]);
 
   const table = useReactTable<T>({
     data,

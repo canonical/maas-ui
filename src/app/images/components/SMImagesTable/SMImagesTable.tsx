@@ -95,6 +95,10 @@ export const SMImagesTable: React.FC = () => {
             </TableCaption.Description>
           </TableCaption>
         }
+        pin={[
+          { value: "Ubuntu", top: true },
+          { value: "Other", top: false },
+        ]}
         rowSelection={selectedRows}
         select
         setRowSelection={setSelectedRows}
