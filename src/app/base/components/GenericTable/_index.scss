@@ -1,20 +1,10 @@
-.generic-table {
-  thead {
+.p-table-dynamic {
+  thead, tbody {
+    display: table-row-group;
     width: 100%;
   }
 
-  td:has(.table-checkbox) {
-    display: inline-flex;
-
-    .table-checkbox {
-      padding-top: 0;
-    }
-  }
-
-  &.p-table-dynamic--with-select {
-    td:first-child, th:first-child {
-      width: 2rem !important;
-      padding-right: 0;
-    }
+  .group-select, .select {
+    width: 2rem;
   }
 }

@@ -1,75 +1,95 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
-import { useMemo, useState } from "react";
+import {
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useMemo,
+  useState,
+} from "react";
 
 import { DynamicTable } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import type {
   Column,
+  Row,
   ColumnDef,
   ColumnSort,
-  ExpandedState,
   GroupingState,
-  Header,
-  Row,
-  RowSelectionState,
+  ExpandedState,
   SortingState,
+  Header,
+  RowSelectionState,
 } from "@tanstack/react-table";
 import {
+  flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getGroupedRowModel,
   useReactTable,
-  flexRender,
 } from "@tanstack/react-table";
 import classNames from "classnames";
 
+import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
+import TableHeader from "@/app/base/components/GenericTable/TableHeader";
+
 import "./_index.scss";
-import SortingIndicator from "./SortingIndicator";
 
 type GenericTableProps<T> = {
-  ariaLabel?: string;
   columns: ColumnDef<T, Partial<T>>[];
   data: T[];
   filterCells?: (row: Row<T>, column: Column<T>) => boolean;
   filterHeaders?: (header: Header<T, unknown>) => boolean;
-  getRowId: (
-    originalRow: T,
-    index: number,
-    parent?: Row<T> | undefined
-  ) => string;
-  groupBy?: string[];
+  group?: string[];
   noData?: ReactNode;
-  sortBy?: ColumnSort[];
+  select?: boolean;
+  sort?: ColumnSort[];
   rowSelection?: RowSelectionState;
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
 const GenericTable = <T,>({
-  ariaLabel,
   columns,
   data,
-  filterCells,
-  filterHeaders,
-  getRowId,
-  groupBy,
-  sortBy,
+  filterCells = () => true,
+  filterHeaders = () => true,
+  group,
   noData,
+  select = false,
+  sort,
   rowSelection,
   setRowSelection,
 }: GenericTableProps<T>) => {
-  const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
+  const [grouping, setGrouping] = useState<GroupingState>(group ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
-  const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
+  const [sorting, setSorting] = useState<SortingState>(sort ?? []);
 
-  if (filterCells === undefined) {
-    filterCells = () => true;
+  if (select) {
+    columns = [
+      {
+        id: "select",
+        accessorKey: "id",
+        enableSorting: false,
+        header: "",
+        cell: ({ row }) =>
+          !row.getIsGrouped() ? <TableCheckbox row={row} /> : null,
+      },
+      ...columns,
+    ];
+
+    if (group) {
+      columns = [
+        {
+          id: "group-select",
+          accessorKey: "id",
+          enableSorting: false,
+          header: ({ table }) => <TableCheckbox.All table={table} />,
+          cell: ({ row }) =>
+            row.getIsGrouped() ? <TableCheckbox.Group row={row} /> : null,
+        },
+        ...columns,
+      ];
+    }
   }
 
-  if (filterHeaders === undefined) {
-    filterHeaders = () => true;
-  }
-
-  const sortedData = useMemo(() => {
+  data = useMemo(() => {
     return [...data].sort((a, b) => {
       for (const { id, desc } of sorting) {
         const aValue = a[id as keyof typeof a];
@@ -86,7 +106,7 @@ const GenericTable = <T,>({
   }, [data, sorting]);
 
   const table = useReactTable<T>({
-    data: sortedData,
+    data,
     columns,
     state: {
       grouping,
@@ -109,47 +129,15 @@ const GenericTable = <T,>({
     groupedColumnMode: false,
     enableRowSelection: true,
     enableMultiRowSelection: true,
-    getRowId,
   });
 
-  const isRowsSelectable =
-    rowSelection !== undefined && setRowSelection !== undefined;
-
   return (
-    <DynamicTable
-      aria-label={ariaLabel}
-      className={classNames({
-        "p-table-dynamic": true,
-        "p-table-dynamic--with-select": isRowsSelectable,
-        "generic-table": true,
-      })}
-      variant={"full-height"}
-    >
+    <DynamicTable variant="full-height">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.filter(filterHeaders).map((header) => (
-              <th className={classNames(`${header.column.id}`)} key={header.id}>
-                {header.column.getCanSort() ? (
-                  <Button
-                    appearance="link"
-                    className="p-button--table-header"
-                    onClick={header.column.getToggleSortingHandler()}
-                    type="button"
-                  >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    <SortingIndicator header={header} />
-                  </Button>
-                ) : (
-                  flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )
-                )}
-              </th>
+              <TableHeader header={header} key={header.id} />
             ))}
           </tr>
         ))}
