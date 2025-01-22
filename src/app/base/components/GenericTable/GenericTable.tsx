@@ -193,6 +193,7 @@ const GenericTable = <T,>({
                       <td
                         className={classNames(`${cell.column.id}`)}
                         key={cellId}
+                        role="gridcell"
                       >
                         {flexRender(column.columnDef.cell, cell.getContext())}
                       </td>

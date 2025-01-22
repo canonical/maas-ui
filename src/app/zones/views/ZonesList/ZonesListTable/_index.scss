@@ -1,5 +1,5 @@
 .generic-table {
-  th:is(.machines, .devices, .controllers) {
+  th, td:is(.machines, .devices, .controllers) {
     text-align: right;
   }
 }
