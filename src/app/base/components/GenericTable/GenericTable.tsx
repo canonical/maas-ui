@@ -132,7 +132,7 @@ const GenericTable = <T,>({
   });
 
   return (
-    <DynamicTable variant="full-height">
+    <DynamicTable className="generic-table" variant="full-height">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>

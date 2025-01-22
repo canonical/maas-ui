@@ -98,6 +98,7 @@ export const SMImagesTable: React.FC = () => {
         rowSelection={selectedRows}
         select
         setRowSelection={setSelectedRows}
+        sort={[{ id: "release", desc: true }]}
       />
     </>
   );
