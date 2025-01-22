@@ -80,11 +80,12 @@ export const SMImagesTable: React.FC = () => {
         />
       )}
       <GenericTable
+        canSelect
         columns={columns}
         data={images}
         filterCells={filterCells}
         filterHeaders={filterHeaders}
-        group={["name"]}
+        groupBy={["name"]}
         noData={
           <TableCaption>
             <TableCaption.Title>No images</TableCaption.Title>
@@ -96,13 +97,12 @@ export const SMImagesTable: React.FC = () => {
           </TableCaption>
         }
         pin={[
-          { value: "Ubuntu", top: true },
-          { value: "Other", top: false },
+          { value: "Ubuntu", isTop: true },
+          { value: "Other", isTop: false },
         ]}
         rowSelection={selectedRows}
-        select
         setRowSelection={setSelectedRows}
-        sort={[{ id: "release", desc: true }]}
+        sortBy={[{ id: "release", desc: true }]}
       />
     </>
   );

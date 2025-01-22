@@ -4,7 +4,7 @@ import { TableCaption } from "@canonical/maas-react-components";
 
 import { useZones } from "@/app/api/query/zones";
 import GenericTable from "@/app/base/components/GenericTable";
-import useZonesTableColumns from "@/app/zones/views/ZonesList/useZonesTableColumns";
+import useZonesTableColumns from "@/app/zones/views/ZonesList/ZonesListTable/useZonesTableColumns/useZonesTableColumns";
 
 import "./_index.scss";
 

@@ -24,7 +24,7 @@ const TableAllCheckbox = <T,>({ table, ...props }: TableCheckboxProps<T>) => {
   }
 
   return (
-    <label className="p-checkbox--inline table-checkbox--all">
+    <label className="p-checkbox--inline p-table-checkbox--all">
       <input
         aria-checked={checked}
         aria-label="select all"
@@ -54,7 +54,7 @@ const TableGroupCheckbox = <T,>({ row, ...props }: TableCheckboxProps<T>) => {
   const isSomeSubRowsSelected =
     !row.getIsAllSubRowsSelected() && row.getIsSomeSelected();
   return (
-    <label className="p-checkbox--inline table-checkbox--group">
+    <label className="p-checkbox--inline p-table-checkbox--group">
       <input
         aria-checked={isSomeSubRowsSelected ? "mixed" : undefined}
         className="p-checkbox__input"
@@ -84,7 +84,7 @@ const TableCheckbox = <T,>({ row, ...props }: TableCheckboxProps<T>) => {
     return null;
   }
   return (
-    <label className="p-checkbox--inline table-checkbox">
+    <label className="p-checkbox--inline p-table-checkbox">
       <input
         className="p-checkbox__input"
         type="checkbox"

@@ -1,4 +1,4 @@
-.generic-table {
+.p-generic-table {
   th, td {
     &:is(.machines, .devices, .controllers) {
       text-align: right;

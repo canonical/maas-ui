@@ -33,37 +33,37 @@ import TableHeader from "@/app/base/components/GenericTable/TableHeader";
 import "./_index.scss";
 
 type GenericTableProps<T> = {
+  canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
   data: T[];
   filterCells?: (row: Row<T>, column: Column<T>) => boolean;
   filterHeaders?: (header: Header<T, unknown>) => boolean;
-  group?: string[];
+  groupBy?: string[];
   noData?: ReactNode;
-  pin?: { value: string; top: boolean }[];
-  select?: boolean;
-  sort?: ColumnSort[];
+  pin?: { value: string; isTop: boolean }[];
+  sortBy?: ColumnSort[];
   rowSelection?: RowSelectionState;
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
 const GenericTable = <T,>({
+  canSelect = false,
   columns,
   data,
   filterCells = () => true,
   filterHeaders = () => true,
-  group,
+  groupBy,
   noData,
   pin,
-  select = false,
-  sort,
+  sortBy,
   rowSelection,
   setRowSelection,
 }: GenericTableProps<T>) => {
-  const [grouping, setGrouping] = useState<GroupingState>(group ?? []);
+  const [grouping, setGrouping] = useState<GroupingState>(groupBy ?? []);
   const [expanded, setExpanded] = useState<ExpandedState>(true);
-  const [sorting, setSorting] = useState<SortingState>(sort ?? []);
+  const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
 
-  if (select) {
+  if (canSelect) {
     columns = [
       {
         id: "select",
@@ -76,7 +76,7 @@ const GenericTable = <T,>({
       ...columns,
     ];
 
-    if (group) {
+    if (groupBy) {
       columns = [
         {
           id: "group-select",
@@ -94,16 +94,16 @@ const GenericTable = <T,>({
   data = useMemo(() => {
     return [...data].sort((a, b) => {
       if (pin && pin.length > 0 && grouping.length > 0) {
-        for (const { value, top } of pin) {
+        for (const { value, isTop } of pin) {
           const groupId = grouping[0];
           const aValue = a[groupId as keyof typeof a];
           const bValue = b[groupId as keyof typeof b];
 
           if (aValue === value && bValue !== value) {
-            return top ? -1 : 1;
+            return isTop ? -1 : 1;
           }
           if (bValue === value && aValue !== value) {
-            return top ? 1 : -1;
+            return isTop ? 1 : -1;
           }
         }
       }
@@ -160,7 +160,7 @@ const GenericTable = <T,>({
   });
 
   return (
-    <DynamicTable className="generic-table" variant="full-height">
+    <DynamicTable className="p-generic-table" variant="full-height">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
@@ -193,7 +193,6 @@ const GenericTable = <T,>({
                       <td
                         className={classNames(`${cell.column.id}`)}
                         key={cellId}
-                        role="gridcell"
                       >
                         {flexRender(column.columnDef.cell, cell.getContext())}
                       </td>
