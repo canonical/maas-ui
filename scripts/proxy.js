@@ -33,6 +33,7 @@ app.use(
     onProxyReq(proxyReq) {
       // Django's CSRF protection requires requests to come from the correct
       // protocol, so this makes XHR requests work when using TLS certs.
+      proxyReq.setHeader("Origin", `${process.env.MAAS_URL.replace(/\/$/, "")}`);
       proxyReq.setHeader("Referer", `${process.env.MAAS_URL}${proxyReq.path}`);
     },
     secure: false,
