@@ -57,44 +57,4 @@ describe("ZoneDetailsHeader", () => {
     );
     expect(await findByText("Availability zone not found")).toBeInTheDocument();
   });
-
-  it("shows delete az button when zone id isn't 1", async () => {
-    renderWithBrowserRouter(<ZoneDetailsHeader id={2} />, {
-      state,
-      queryData,
-      route: "/zone/2",
-    });
-
-    expect(
-      await screen.findByRole("button", { name: "Delete AZ" })
-    ).toBeInTheDocument();
-  });
-
-  it("hides delete button when zone id is 1 (as this is the default)", () => {
-    renderWithBrowserRouter(<ZoneDetailsHeader id={1} />, {
-      state,
-      queryData,
-      route: "/zone/1",
-    });
-
-    expect(screen.queryByTestId("delete-zone")).not.toBeInTheDocument();
-  });
-
-  it("hides delete button for all zones when user isn't admin", () => {
-    const nonAdminState = factory.rootState({
-      user: factory.userState({
-        auth: factory.authState({
-          user: factory.user({ is_superuser: false }),
-        }),
-      }),
-    });
-
-    renderWithBrowserRouter(<ZoneDetailsHeader id={2} />, {
-      state: nonAdminState,
-      queryData,
-      route: "/zone/2",
-    });
-
-    expect(screen.queryByTestId("delete-zone")).not.toBeInTheDocument();
-  });
 });

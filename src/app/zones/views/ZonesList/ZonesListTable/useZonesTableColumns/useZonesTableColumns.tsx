@@ -1,6 +1,7 @@
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
 
+import TableActions from "@/app/base/components/TableActions";
 import urls from "@/app/base/urls";
 import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
@@ -18,7 +19,13 @@ const machinesFilter = (name: string) =>
     zone: [name],
   });
 
-const useZonesTableColumns = (): ZoneColumnDef[] => {
+const useZonesTableColumns = ({
+  isAdmin,
+  onDelete,
+}: {
+  isAdmin: boolean;
+  onDelete: (row: Row<Zone>) => void;
+}): ZoneColumnDef[] => {
   return [
     {
       id: "name",
@@ -81,6 +88,25 @@ const useZonesTableColumns = (): ZoneColumnDef[] => {
           <Link className="u-align--right" to={`${urls.controllers.index}`}>
             {row.original.controllers_count}
           </Link>
+        );
+      },
+    },
+    {
+      id: "action",
+      accessorKey: "id",
+      enableSorting: false,
+      header: "Action",
+      cell: ({ row }: { row: Row<Zone> }) => {
+        const canBeDeleted = isAdmin && row.original.id !== 1;
+        return (
+          <TableActions
+            data-testid="zone-actions"
+            deleteDisabled={!canBeDeleted}
+            deleteTooltip={
+              !canBeDeleted ? "Cannot delete the default zone." : null
+            }
+            onDelete={() => onDelete(row)}
+          />
         );
       },
     },
