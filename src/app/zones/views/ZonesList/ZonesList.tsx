@@ -8,6 +8,7 @@ import { useZoneCount } from "@/app/api/query/zones";
 import PageContent from "@/app/base/components/PageContent";
 import { useWindowTitle } from "@/app/base/hooks";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import { getSidePanelTitle } from "@/app/store/utils/node/base";
 import { ZoneActionSidePanelViews } from "@/app/zones/constants";
 import DeleteZone from "@/app/zones/views/ZonesList/ZonesListTable/DeleteZone";
 
@@ -53,7 +54,7 @@ const ZonesList: React.FC = () => {
     <PageContent
       header={<ZonesListHeader setSidePanelContent={setSidePanelContent} />}
       sidePanelContent={content}
-      sidePanelTitle="Add AZ"
+      sidePanelTitle={getSidePanelTitle("Zones", sidePanelContent)}
     >
       {zonesCount?.data && zonesCount.data > 0 && <ZonesListTable />}
     </PageContent>
