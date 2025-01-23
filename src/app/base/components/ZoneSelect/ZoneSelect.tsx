@@ -21,7 +21,6 @@ export const ZoneSelect = ({
   disabled = false,
   label = Label.Zone,
   name,
-  valueKey = "name",
   ...props
 }: Props): JSX.Element => {
   const zones = useZones();
@@ -34,10 +33,10 @@ export const ZoneSelect = ({
       name={name}
       options={[
         { label: "Select zone", value: "", disabled: true },
-        ...(zones.data?.map?.((zone) => ({
+        ...(zones.data?.items?.map((zone) => ({
           key: `zone-${zone.id}`,
           label: zone.name,
-          value: zone[valueKey],
+          value: zone.id,
         })) || []),
       ]}
       {...props}

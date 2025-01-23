@@ -98,7 +98,7 @@ export const AddVirsh = ({ clearSidePanelContent }: Props): JSX.Element => {
         pool: resourcePools.length ? resourcePools[0].id : "",
         power_parameters: initialPowerParameters,
         type: PodType.VIRSH,
-        zone: zones.data?.length ? zones.data[0].id : "",
+        zone: zones.data?.items?.length ? zones.data?.items[0].id : "",
       }}
       onCancel={clearSidePanelContent}
       onSaveAnalytics={{

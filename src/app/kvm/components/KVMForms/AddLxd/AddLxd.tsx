@@ -38,7 +38,7 @@ export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
     password: "",
     pool: resourcePools.length ? `${resourcePools[0].id}` : "",
     power_address: "",
-    zone: zones.data?.length ? `${zones.data[0].id}` : "",
+    zone: zones.data?.items?.length ? `${zones.data?.items[0].id}` : "",
   });
 
   // We run the cleanup function here rather than in each form component
