@@ -5,13 +5,13 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import { useSelector } from "react-redux";
 
 import ImagesTableHeader from "./ImagesTableHeader";
-import useImageTableColumns, {
-  filterCells,
-  filterHeaders,
-} from "./useImageTableColumns/useImageTableColumns";
 
 import GenericTable from "@/app/base/components/GenericTable";
 import { useSidePanel } from "@/app/base/side-panel-context";
+import useImageTableColumns, {
+  filterCells,
+  filterHeaders,
+} from "@/app/images/components/SMImagesTable/useImageTableColumns/useImageTableColumns";
 import { ImageSidePanelViews } from "@/app/images/constants";
 import type { Image } from "@/app/images/types";
 import bootResourceSelectors from "@/app/store/bootresource/selectors";
@@ -80,11 +80,11 @@ export const SMImagesTable: React.FC = () => {
         />
       )}
       <GenericTable
+        canSelect
         columns={columns}
         data={images}
         filterCells={filterCells}
         filterHeaders={filterHeaders}
-        getRowId={(row) => `${row.id}`}
         groupBy={["name"]}
         noData={
           <TableCaption>
@@ -96,6 +96,10 @@ export const SMImagesTable: React.FC = () => {
             </TableCaption.Description>
           </TableCaption>
         }
+        pin={[
+          { value: "Ubuntu", isTop: true },
+          { value: "Other", isTop: false },
+        ]}
         rowSelection={selectedRows}
         setRowSelection={setSelectedRows}
         sortBy={[{ id: "release", desc: true }]}

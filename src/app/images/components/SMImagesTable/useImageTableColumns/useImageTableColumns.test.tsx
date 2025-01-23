@@ -3,7 +3,7 @@ import { vi } from "vitest";
 
 import useImageTableColumns from "@/app/images/components/SMImagesTable/useImageTableColumns/useImageTableColumns";
 import type { Image } from "@/app/images/types";
-import { screen, renderHook, render } from "@/testing/utils";
+import { renderHook } from "@/testing/utils";
 
 vi.mock("@/context", async () => {
   const actual = await vi.importActual("@/context");
@@ -41,7 +41,6 @@ it("returns the correct number of columns", () => {
   const { result } = setupTestCase();
   expect(result.current).toBeInstanceOf(Array);
   expect(result.current.map((column) => column.id)).toStrictEqual([
-    "select",
     "name",
     "release",
     "architecture",
@@ -52,16 +51,4 @@ it("returns the correct number of columns", () => {
     "machines",
     "action",
   ]);
-});
-
-it("input has correct accessible label", () => {
-  const { result, props } = setupTestCase("Ubuntu");
-
-  const selectColumn = result.current.find((column) => column.id === "select");
-  // @ts-ignore-next-line
-  const cellValue = selectColumn.cell(props);
-  render(cellValue);
-
-  const inputElement = screen.getByRole("checkbox");
-  expect(inputElement).toHaveAccessibleName("Ubuntu");
 });
