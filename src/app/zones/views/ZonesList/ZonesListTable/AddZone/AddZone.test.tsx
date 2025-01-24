@@ -18,7 +18,7 @@ describe("AddZone", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = vi.fn();
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddZone closeForm={vi.fn()} />, {
+    renderWithBrowserRouter(<AddZone closeForm={closeForm} />, {
       store,
     });
 
