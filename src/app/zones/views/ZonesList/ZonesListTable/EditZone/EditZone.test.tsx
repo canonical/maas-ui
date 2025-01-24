@@ -1,4 +1,4 @@
-import ZoneDetailsForm from "./ZoneDetailsForm";
+import EditZone from "./EditZone";
 
 import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
@@ -9,14 +9,14 @@ import {
   renderWithBrowserRouter,
 } from "@/testing/utils";
 
-describe("ZoneDetailsForm", () => {
+describe("EditZone", () => {
   const testZone = factory.zone();
   const queryData = { zones: [testZone] };
 
   it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = vi.fn();
     renderWithBrowserRouter(
-      <ZoneDetailsForm closeForm={closeForm} id={testZone.id} />,
+      <EditZone closeForm={closeForm} id={testZone.id} />,
       { queryData }
     );
 
@@ -26,7 +26,7 @@ describe("ZoneDetailsForm", () => {
 
   it("calls actions.update on save click", async () => {
     const { store } = renderWithBrowserRouter(
-      <ZoneDetailsForm closeForm={vi.fn()} id={testZone.id} />,
+      <EditZone closeForm={vi.fn()} id={testZone.id} />,
       { queryData }
     );
 

@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ZonesListForm from "./ZonesListForm";
+import AddZone from "./AddZone";
 
 import type { RootState } from "@/app/store/root/types";
 import { zoneActions } from "@/app/store/zone";
@@ -11,7 +11,7 @@ import { userEvent, render, screen } from "@/testing/utils";
 
 const mockStore = configureStore();
 
-describe("ZonesListForm", () => {
+describe("AddZone", () => {
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState();
@@ -23,7 +23,7 @@ describe("ZonesListForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <ZonesListForm closeForm={closeForm} />
+          <AddZone closeForm={closeForm} />
         </MemoryRouter>
       </Provider>
     );
@@ -37,7 +37,7 @@ describe("ZonesListForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <ZonesListForm closeForm={vi.fn()} />
+          <AddZone closeForm={vi.fn()} />
         </MemoryRouter>
       </Provider>
     );

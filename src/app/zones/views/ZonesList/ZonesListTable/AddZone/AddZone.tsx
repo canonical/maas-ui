@@ -19,7 +19,7 @@ export type CreateZoneValues = {
   name: string;
 };
 
-const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
+const AddZone = ({ closeForm }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const cleanup = useCallback(
     () => zoneActions.cleanup([ZONE_ACTIONS.create]),
@@ -75,4 +75,4 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
   );
 };
 
-export default ZonesListForm;
+export default AddZone;

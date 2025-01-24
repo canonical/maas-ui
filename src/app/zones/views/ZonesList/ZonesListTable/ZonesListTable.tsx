@@ -19,6 +19,14 @@ const ZonesListTable: React.FC = () => {
   const isAdmin = useSelector(authSelectors.isAdmin);
   const columns = useZonesTableColumns({
     isAdmin,
+    onEdit: (row) => {
+      setSidePanelContent({
+        view: ZoneActionSidePanelViews.EDIT_ZONE,
+        extras: {
+          zoneId: row.original.id,
+        },
+      });
+    },
     onDelete: (row) => {
       setSidePanelContent({
         view: ZoneActionSidePanelViews.DELETE_ZONE,

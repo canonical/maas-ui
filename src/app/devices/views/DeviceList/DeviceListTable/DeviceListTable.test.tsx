@@ -76,7 +76,7 @@ describe("DeviceListTable", () => {
 
     expect(screen.getAllByTestId("device-zone-link")[0]).toHaveAttribute(
       "href",
-      urls.zones.details({ id: device.zone.id })
+      urls.zones.index
     );
   });
 
