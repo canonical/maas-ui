@@ -213,6 +213,7 @@ const sidePanelTitleMap: Record<string, string> = {
   [SidePanelViews.DOWNLOAD_IMAGE[1]]: "Download image",
   [SidePanelViews.EDIT_INTERFACE[1]]: "Edit interface",
   [SidePanelViews.CREATE_ZONE[1]]: "Add AZ",
+  [SidePanelViews.DELETE_ZONE[1]]: "Delete AZ",
   [SidePanelViews.EDIT_DISK[1]]: "Edit disk",
   [SidePanelViews.EDIT_PARTITION[1]]: "Edit partition",
   [SidePanelViews.EDIT_PHYSICAL[1]]: "Edit physical",
