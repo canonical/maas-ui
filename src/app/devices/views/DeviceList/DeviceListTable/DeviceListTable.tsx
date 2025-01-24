@@ -64,7 +64,7 @@ const generateRows = (
       ip_assignment,
       primary_mac,
       system_id,
-      zone: { id: zoneId, name: zoneName },
+      zone: { name: zoneName },
     } = device;
     const macDisplay = extra_macs.length
       ? `${primary_mac} (+${extra_macs.length})`
@@ -122,7 +122,7 @@ const generateRows = (
             <Link
               className="p-link--soft"
               data-testid="device-zone-link"
-              to={urls.zones.details({ id: zoneId })}
+              to={urls.zones.index}
             >
               {zoneName}
             </Link>

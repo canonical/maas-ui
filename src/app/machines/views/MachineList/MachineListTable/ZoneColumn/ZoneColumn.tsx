@@ -96,10 +96,7 @@ export const ZoneColumn = ({
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <Link
-            className="p-link--soft"
-            to={urls.zones.details({ id: machine.zone.id })}
-          >
+          <Link className="p-link--soft" to={urls.zones.index}>
             {machine.zone.name}
           </Link>
         </span>

@@ -21,9 +21,11 @@ const machinesFilter = (name: string) =>
 
 const useZonesTableColumns = ({
   isAdmin,
+  onEdit,
   onDelete,
 }: {
   isAdmin: boolean;
+  onEdit: (row: Row<Zone>) => void;
   onDelete: (row: Row<Zone>) => void;
 }): ZoneColumnDef[] => {
   return [
@@ -32,13 +34,6 @@ const useZonesTableColumns = ({
       accessorKey: "name",
       enableSorting: true,
       header: "Name",
-      cell: ({ row }) => {
-        return (
-          <Link to={`${urls.zones.details({ id: row.original.id })}`}>
-            {row.original.name}
-          </Link>
-        );
-      },
     },
     {
       id: "description",
@@ -106,6 +101,7 @@ const useZonesTableColumns = ({
               !canBeDeleted ? "Cannot delete the default zone." : null
             }
             onDelete={() => onDelete(row)}
+            onEdit={() => onEdit(row)}
           />
         );
       },

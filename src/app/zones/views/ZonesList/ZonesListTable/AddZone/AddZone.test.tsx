@@ -1,17 +1,15 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ZonesListForm from "./ZonesListForm";
+import AddZone from "./AddZone";
 
 import type { RootState } from "@/app/store/root/types";
 import { zoneActions } from "@/app/store/zone";
 import * as factory from "@/testing/factories";
-import { userEvent, render, screen } from "@/testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "@/testing/utils";
 
 const mockStore = configureStore();
 
-describe("ZonesListForm", () => {
+describe("AddZone", () => {
   let state: RootState;
   beforeEach(() => {
     state = factory.rootState();
@@ -20,13 +18,9 @@ describe("ZonesListForm", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = vi.fn();
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ZonesListForm closeForm={closeForm} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<AddZone closeForm={closeForm} />, {
+      store,
+    });
 
     await userEvent.click(screen.getByRole("button", { name: /Cancel/i }));
     expect(closeForm).toHaveBeenCalled();
@@ -34,13 +28,9 @@ describe("ZonesListForm", () => {
 
   it("calls actions.create on save click", async () => {
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ZonesListForm closeForm={vi.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<AddZone closeForm={vi.fn()} />, {
+      store,
+    });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: /name/i }),
