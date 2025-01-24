@@ -57,7 +57,7 @@ const Routes = (): JSX.Element => (
           <ZonesList />
         </ErrorBoundary>
       }
-      path={`${urls.zones.index}/*`}
+      path={`${urls.zones.index}`}
     />
     <Route
       element={
