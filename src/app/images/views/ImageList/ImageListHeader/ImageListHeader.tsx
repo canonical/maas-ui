@@ -181,27 +181,39 @@ const ImageListHeader = ({
             <i className="p-icon--begin-downloading" />
             <span>Select upstream images</span>
           </Button>
-          <Button
-            data-testid="change-source-button"
-            disabled={!canChangeSource}
-            onClick={() =>
-              setSidePanelContent({
-                view: ImageSidePanelViews.CHANGE_SOURCE,
-                extras: { hasSources },
-              })
-            }
-          >
-            Change source
-            {!canChangeSource && (
-              <Tooltip
-                className="u-nudge-right--small"
-                message="Cannot change source while images are downloading."
-                position="top-right"
+
+          {!canChangeSource ? (
+            <Tooltip
+              message="Cannot change source while images are downloading."
+              position="top-right"
+            >
+              <Button
+                data-testid="change-source-button"
+                disabled={!canChangeSource}
+                onClick={() =>
+                  setSidePanelContent({
+                    view: ImageSidePanelViews.CHANGE_SOURCE,
+                    extras: { hasSources },
+                  })
+                }
               >
-                <Icon name="information" />
-              </Tooltip>
-            )}
-          </Button>
+                Change source
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button
+              data-testid="change-source-button"
+              disabled={!canChangeSource}
+              onClick={() =>
+                setSidePanelContent({
+                  view: ImageSidePanelViews.CHANGE_SOURCE,
+                  extras: { hasSources },
+                })
+              }
+            >
+              Change source
+            </Button>
+          )}
         </MainToolbar.Controls>
       )}
     </MainToolbar>
