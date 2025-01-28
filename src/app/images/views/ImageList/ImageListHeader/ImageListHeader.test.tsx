@@ -1,4 +1,5 @@
 import configureStore from "redux-mock-store";
+import { vi } from "vitest";
 
 import ImageListHeader, {
   Labels as ImageListHeaderLabels,
@@ -21,10 +22,13 @@ describe("ImageListHeader", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(<ImageListHeader />, {
-      route: "/images",
-      state,
-    });
+    renderWithBrowserRouter(
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
+      {
+        route: "/images",
+        state,
+      }
+    );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
@@ -39,10 +43,13 @@ describe("ImageListHeader", () => {
         loaded: false,
       }),
     });
-    renderWithBrowserRouter(<ImageListHeader />, {
-      route: "/images",
-      state,
-    });
+    renderWithBrowserRouter(
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
+      {
+        route: "/images",
+        state,
+      }
+    );
 
     expect(
       screen.queryByRole("checkbox", {
@@ -64,7 +71,13 @@ describe("ImageListHeader", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithBrowserRouter(<ImageListHeader />, { route: "/images", store });
+    renderWithBrowserRouter(
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
+      {
+        route: "/images",
+        store,
+      }
+    );
 
     await userEvent.click(
       screen.getByRole("checkbox", {
@@ -89,10 +102,13 @@ describe("ImageListHeader", () => {
         rackImportRunning: true,
       }),
     });
-    renderWithBrowserRouter(<ImageListHeader />, {
-      route: "/images",
-      state,
-    });
+    renderWithBrowserRouter(
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
+      {
+        route: "/images",
+        state,
+      }
+    );
 
     expect(
       screen.getByText(ImageListHeaderLabels.RackControllersImporting)
@@ -108,10 +124,13 @@ describe("ImageListHeader", () => {
         regionImportRunning: true,
       }),
     });
-    renderWithBrowserRouter(<ImageListHeader />, {
-      route: "/images",
-      state,
-    });
+    renderWithBrowserRouter(
+      <ImageListHeader selectedRows={{}} setSelectedRows={vi.fn} />,
+      {
+        route: "/images",
+        state,
+      }
+    );
 
     expect(
       screen.getByText(ImageListHeaderLabels.RegionControllerImporting)

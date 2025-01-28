@@ -65,7 +65,10 @@ beforeEach(() => {
 });
 
 it("renders the correct status for an image", () => {
-  renderWithMockStore(<SMImagesTable />, { state });
+  renderWithMockStore(
+    <SMImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
+    { state }
+  );
 
   const cell = screen.getByText("20.04 LTS");
 
@@ -87,9 +90,12 @@ it("renders the time of last update", () => {
     lastUpdate,
   });
   state.bootresource.resources = [resource];
-  renderWithMockStore(<SMImagesTable />, {
-    state,
-  });
+  renderWithMockStore(
+    <SMImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
+    {
+      state,
+    }
+  );
 
   const cell = screen.getByText("20.04 LTS");
 
@@ -127,9 +133,12 @@ it("can open the delete image confirmation if the image does not use the default
     }),
   });
 
-  renderWithMockStore(<SMImagesTable />, {
-    state,
-  });
+  renderWithMockStore(
+    <SMImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
+    {
+      state,
+    }
+  );
 
   const cell = screen.getByText("18.04 LTS");
 
@@ -168,9 +177,12 @@ it("disables delete for default commissioning release images", async () => {
     }),
   });
 
-  renderWithMockStore(<SMImagesTable />, {
-    state,
-  });
+  renderWithMockStore(
+    <SMImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
+    {
+      state,
+    }
+  );
 
   const cell = screen.getByText("18.04 LTS");
 
@@ -197,9 +209,12 @@ it("disables delete action for images being downloaded", async () => {
       downloading: true,
     }),
   ];
-  renderWithMockStore(<SMImagesTable />, {
-    state,
-  });
+  renderWithMockStore(
+    <SMImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
+    {
+      state,
+    }
+  );
 
   const cell = screen.getByText("18.04 LTS");
 
@@ -255,9 +270,12 @@ it("sorts by release by default", () => {
     }),
   });
 
-  renderWithMockStore(<SMImagesTable />, {
-    state,
-  });
+  renderWithMockStore(
+    <SMImagesTable selectedRows={{}} setSelectedRows={vi.fn} />,
+    {
+      state,
+    }
+  );
 
   const colHeader = screen.getByRole("columnheader", {
     name: /Release title/i,
