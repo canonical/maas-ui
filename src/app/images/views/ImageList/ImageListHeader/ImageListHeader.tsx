@@ -121,23 +121,6 @@ const ImageListHeader = ({
             <>
               <Spinner data-testid="region-importing" />{" "}
               {Labels.RegionControllerImporting}
-              {canStopImport || stoppingImport ? (
-                <Button
-                  appearance="link"
-                  className="stop-image-import"
-                  disabled={stoppingImport}
-                  onClick={() => {
-                    dispatch(cleanup());
-                    dispatch(bootResourceActions.stopImport());
-                    dispatch(bootResourceActions.saveUbuntuSuccess());
-                    dispatch(bootResourceActions.poll({ continuous: false }));
-                  }}
-                >
-                  {stoppingImport
-                    ? "Stopping image import..."
-                    : "Stop image import"}
-                </Button>
-              ) : null}
             </>
           ) : rackImportRunning ? (
             <>
@@ -147,6 +130,21 @@ const ImageListHeader = ({
           ) : null}
         </span>
       )}
+      {canStopImport || stoppingImport ? (
+        <Button
+          appearance="link"
+          className="stop-image-import"
+          disabled={stoppingImport}
+          onClick={() => {
+            dispatch(cleanup());
+            dispatch(bootResourceActions.stopImport());
+            dispatch(bootResourceActions.saveUbuntuSuccess());
+            dispatch(bootResourceActions.poll({ continuous: false }));
+          }}
+        >
+          {stoppingImport ? "Stopping image import..." : "Stop image import"}
+        </Button>
+      ) : null}
       {!!ubuntu && (
         <MainToolbar.Controls>
           <Button
