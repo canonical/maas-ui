@@ -21,6 +21,7 @@ const ZonesList: React.FC = () => {
 
   const closeForm = () => {
     setSidePanelContent(null);
+    void zonesCount.refetch();
   };
 
   let content = null;

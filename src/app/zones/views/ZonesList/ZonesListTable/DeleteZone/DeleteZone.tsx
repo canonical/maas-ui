@@ -1,12 +1,7 @@
 import React from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-
+import { useDeleteZone } from "@/app/api/query/zones";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type DeleteZoneProps = {
   closeForm: () => void;
@@ -14,10 +9,7 @@ type DeleteZoneProps = {
 };
 
 const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
-  const dispatch = useDispatch();
-  const deleteStatus = useSelector((state: RootState) =>
-    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.delete, id)
-  );
+  const deleteZone = useDeleteZone();
 
   return (
     <ModelActionForm
@@ -27,14 +19,11 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
       modelType="zone"
       onCancel={closeForm}
       onSubmit={() => {
-        dispatch(zoneActions.delete({ id }));
+        deleteZone.mutate({ path: { zone_id: id } });
       }}
-      onSuccess={() => {
-        dispatch(zoneActions.cleanup([ZONE_ACTIONS.delete]));
-        closeForm();
-      }}
-      saved={deleteStatus === "success"}
-      saving={deleteStatus === "loading"}
+      onSuccess={closeForm}
+      saved={deleteZone.isSuccess}
+      saving={deleteZone.isPending}
     />
   );
 };

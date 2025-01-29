@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useGetZone } from "@/app/api/query/zones";
 import DoubleRow from "@/app/base/components/DoubleRow";
 import poolSelectors from "@/app/store/resourcepool/selectors";
 import type {
@@ -19,7 +19,7 @@ const PoolColumn = ({ poolId, zoneId }: Props): JSX.Element | null => {
   const pool = useSelector((state: RootState) =>
     poolSelectors.getById(state, poolId)
   );
-  const { data: zone } = useZoneById(zoneId);
+  const { data: zone } = useGetZone({ path: { zone_id: zoneId! } });
 
   return (
     <DoubleRow

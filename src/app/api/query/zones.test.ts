@@ -1,7 +1,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { type JsonBodyType } from "msw";
 
-import { useZoneCount, useZoneById, useZones } from "./zones";
+import { useZoneCount, useGetZone, useZones } from "./zones";
 
 import * as factory from "@/testing/factories";
 import {
@@ -14,7 +14,7 @@ const { mockGet } = setupMockServer();
 
 const setupTest = (
   hook: () => ReturnType<
-    typeof useZoneCount | typeof useZoneById | typeof useZones
+    typeof useZoneCount | typeof useGetZone | typeof useZones
   >,
   mockData: JsonBodyType
 ) => {
@@ -37,7 +37,10 @@ describe("useZones", () => {
 describe("useZoneById", () => {
   it("should return specific zone when query succeeds", async () => {
     const mockZones = [factory.zone({ id: 1 }), factory.zone({ id: 2 })];
-    const { result } = setupTest(() => useZoneById(1), mockZones);
+    const { result } = setupTest(
+      () => useGetZone({ path: { zone_id: 1 } }),
+      mockZones
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toEqual(mockZones[0]);
@@ -45,7 +48,10 @@ describe("useZoneById", () => {
 
   it("should return null when zone is not found", async () => {
     const mockZones = [factory.zone({ id: 1 })];
-    const { result } = setupTest(() => useZoneById(2), mockZones);
+    const { result } = setupTest(
+      () => useGetZone({ path: { zone_id: 2 } }),
+      mockZones
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeNull();

@@ -9,4 +9,5 @@ export default defineConfig({
     lint: "eslint",
   },
   experimentalParser: true,
+  plugins: ["@hey-api/typescript", "@hey-api/sdk", "@tanstack/react-query"],
 });

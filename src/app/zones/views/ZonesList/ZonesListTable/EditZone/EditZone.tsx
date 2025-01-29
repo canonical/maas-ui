@@ -1,16 +1,8 @@
-import { useCallback } from "react";
-
 import { Row, Col, Textarea } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useGetZone, useUpdateZone } from "@/app/api/query/zones";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import { ACTION_STATUS } from "@/app/base/constants";
-import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   id: number;
@@ -23,42 +15,28 @@ export type CreateZoneValues = {
 };
 
 const EditZone = ({ id, closeForm }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
-  const cleanup = useCallback(
-    () => zoneActions.cleanup([ZONE_ACTIONS.update]),
-    []
-  );
-  const { data: zone } = useZoneById(id);
-  const errors = useSelector((state: RootState) =>
-    zoneSelectors.getLatestError(state, ZONE_ACTIONS.update, id)
-  );
-  const updateStatus = useSelector((state: RootState) =>
-    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.update, id)
-  );
+  const { data: zone } = useGetZone({ path: { zone_id: id } });
+
+  const editZone = useUpdateZone();
 
   if (zone) {
     return (
       <FormikForm<CreateZoneValues>
-        cleanup={cleanup}
-        errors={errors}
+        aria-label="Edit AZ"
         initialValues={{
           description: zone.description,
           name: zone.name,
         }}
         onCancel={closeForm}
         onSubmit={(values) => {
-          dispatch(cleanup());
-          dispatch(
-            zoneActions.update({
-              id: id,
-              description: values.description,
-              name: values.name,
-            })
-          );
+          editZone.mutate({
+            body: { name: values.name, description: values.description },
+            path: { zone_id: id },
+          });
         }}
         onSuccess={closeForm}
-        saved={updateStatus === ACTION_STATUS.success}
-        saving={updateStatus === ACTION_STATUS.loading}
+        saved={editZone.isSuccess}
+        saving={editZone.isPending}
         submitLabel="Update AZ"
       >
         <Row>

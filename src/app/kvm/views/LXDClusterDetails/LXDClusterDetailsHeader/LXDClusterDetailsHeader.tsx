@@ -5,7 +5,7 @@ import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 
-import { useZoneById } from "@/app/api/query/zones";
+import { useGetZone } from "@/app/api/query/zones";
 import urls from "@/app/base/urls";
 import KVMDetailsHeader from "@/app/kvm/components/KVMDetailsHeader";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
@@ -26,7 +26,7 @@ const LXDClusterDetailsHeader = ({
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
-  const zone = useZoneById(cluster?.availability_zone);
+  const zone = useGetZone({ path: { zone_id: cluster?.availability_zone! } });
   const location = useLocation();
   const canRefresh = !!cluster?.hosts.length;
 

@@ -31,7 +31,7 @@ export type BaseHref = {
   href: string;
 };
 
-export type BodyLoginMaasAV3AuthLoginPost = {
+export type BodyLogin = {
   grant_type?: string;
   username: string;
   password: string;
@@ -94,11 +94,12 @@ export type EventTypeResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type EventsListResponse = {
   items: Array<EventResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -138,11 +139,12 @@ export type FabricResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type FabricsListResponse = {
   items: Array<FabricResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -180,11 +182,12 @@ export type IpRangeCreateRequest = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type IpRangeListResponse = {
   items: Array<IpRangeResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -246,11 +249,12 @@ export type IpRangeUpdateRequest = {
 export type InterfaceLinkType = "auto" | "dhcp" | "static" | "link_up";
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type InterfaceListResponse = {
   items: Array<InterfaceResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -332,11 +336,12 @@ export type MachineResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type MachinesListResponse = {
   items: Array<MachineResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -404,11 +409,12 @@ export type PciDeviceResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type PciDevicesListResponse = {
   items: Array<PciDeviceResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -462,6 +468,13 @@ export type PowerTypeEnum =
   | "vmware"
   | "webhook"
   | "wedge";
+
+export type PreconditionFailedBodyResponse = {
+  code?: number;
+  message?: string;
+  details?: Array<BaseExceptionDetail>;
+  kind?: string;
+};
 
 /**
  * The vocabulary of a `Subnet`'s possible reverse DNS modes.
@@ -520,11 +533,12 @@ export type ReservedIpUpdateRequest = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type ReservedIpsListResponse = {
   items: Array<ReservedIpResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -534,7 +548,7 @@ export type ResourcePoolRequest = {
    * The unique name of the entity.
    */
   name: string;
-  description: string;
+  description?: string;
 };
 
 /**
@@ -557,21 +571,51 @@ export type ResourcePoolResponse = {
   kind?: string;
 };
 
-export type ResourcePoolUpdateRequest = {
-  /**
-   * The unique name of the entity.
-   */
-  name?: string;
-  description?: string;
-};
-
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type ResourcePoolsListResponse = {
   items: Array<ResourcePoolResponse>;
+  total: number;
   next?: string;
+  kind?: string;
+};
+
+/**
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type SslKeyListResponse = {
+  items: Array<SslKeyResponse>;
+  total: number;
+  next?: string;
+  kind?: string;
+};
+
+export type SslKeyRequest = {
+  /**
+   * A valid SSL key.
+   */
+  key: string;
+};
+
+/**
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type SslKeyResponse = {
+  _links?: BaseHal;
+  _embedded?: {
+    [key: string]: unknown;
+  };
+  id: number;
+  key: string;
   kind?: string;
 };
 
@@ -609,13 +653,32 @@ export type SpaceResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type SpacesListResponse = {
   items: Array<SpaceResponse>;
+  total: number;
   next?: string;
   kind?: string;
+};
+
+export type SshKeyImportFromSourceRequest = {
+  /**
+   * The source from where to fetch the key.
+   */
+  protocol: SshKeysProtocolType;
+  /**
+   * The username related to the source.
+   */
+  auth_id: string;
+};
+
+export type SshKeyManualUploadRequest = {
+  /**
+   * The SSH public key to be added.
+   */
+  key: string;
 };
 
 /**
@@ -636,16 +699,16 @@ export type SshKeyResponse = {
   key: string;
   protocol?: SshKeysProtocolType;
   auth_id?: string;
-  user_id: number;
   kind?: string;
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type SshKeysListResponse = {
   items: Array<SshKeyResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -732,11 +795,12 @@ export type SubnetResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type SubnetsListResponse = {
   items: Array<SubnetResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -775,11 +839,12 @@ export type UsbDeviceResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type UsbDevicesListResponse = {
   items: Array<UsbDeviceResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -828,11 +893,12 @@ export type UserResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type UsersListResponse = {
   items: Array<UserResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -862,7 +928,7 @@ export type VlanCreateRequest = {
   /**
    * The VLAN ID of the VLAN. Valid values are within the range [0, 4094].
    */
-  vid: number;
+  vid?: number;
   /**
    * The MTU to use on the VLAN. Valid values are within the range [552, 65535].
    */
@@ -913,7 +979,7 @@ export type VlanUpdateRequest = {
   /**
    * The VLAN ID of the VLAN. Valid values are within the range [0, 4094].
    */
-  vid: number;
+  vid?: number;
   /**
    * The MTU to use on the VLAN. Valid values are within the range [552, 65535].
    */
@@ -945,11 +1011,12 @@ export type VlanUpdateRequest = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type VlansListResponse = {
   items: Array<VlanResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
@@ -986,50 +1053,84 @@ export type ZoneResponse = {
 };
 
 /**
- * Base class for token-paginated responses.
+ * Base HAL response class that every response object must extend. The response object will look like
+ * {
+ * '_links': {
+ * 'self': {'href': '/api/v3/'}
+ * },
+ * '_embedded': {}
+ * }
+ */
+export type ZoneWithSummaryResponse = {
+  _links?: BaseHal;
+  _embedded?: {
+    [key: string]: unknown;
+  };
+  id: number;
+  name: string;
+  description: string;
+  kind?: string;
+  devices_count: number;
+  machines_count: number;
+  controllers_count: number;
+};
+
+/**
+ * Base class for offset-paginated responses.
  * Derived classes should overwrite the items property
  */
 export type ZonesListResponse = {
   items: Array<ZoneResponse>;
+  total: number;
   next?: string;
   kind?: string;
 };
 
-export type AccessTokenMaasAv3AuthAccessTokenGetData = {
+/**
+ * Base class for offset-paginated responses.
+ * Derived classes should overwrite the items property
+ */
+export type ZonesWithSummaryListResponse = {
+  items: Array<ZoneWithSummaryResponse>;
+  total: number;
+  next?: string;
+  kind?: string;
+};
+
+export type AccessTokenData = {
   body?: never;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/auth/access_token";
 };
 
-export type AccessTokenMaasAv3AuthAccessTokenGetErrors = {
+export type AccessTokenErrors = {
   /**
    * Unauthorized
    */
   401: UnauthorizedBodyResponse;
 };
 
-export type AccessTokenMaasAv3AuthAccessTokenGetError =
-  AccessTokenMaasAv3AuthAccessTokenGetErrors[keyof AccessTokenMaasAv3AuthAccessTokenGetErrors];
+export type AccessTokenError = AccessTokenErrors[keyof AccessTokenErrors];
 
-export type AccessTokenMaasAv3AuthAccessTokenGetResponses = {
+export type AccessTokenResponses = {
   /**
    * Successful Response
    */
   200: AccessTokenResponse;
 };
 
-export type AccessTokenMaasAv3AuthAccessTokenGetResponse =
-  AccessTokenMaasAv3AuthAccessTokenGetResponses[keyof AccessTokenMaasAv3AuthAccessTokenGetResponses];
+export type AccessTokenResponse2 =
+  AccessTokenResponses[keyof AccessTokenResponses];
 
-export type LoginMaasAv3AuthLoginPostData = {
-  body: BodyLoginMaasAV3AuthLoginPost;
+export type LoginData = {
+  body: BodyLogin;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/auth/login";
 };
 
-export type LoginMaasAv3AuthLoginPostErrors = {
+export type LoginErrors = {
   /**
    * Unauthorized
    */
@@ -1040,88 +1141,83 @@ export type LoginMaasAv3AuthLoginPostErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type LoginMaasAv3AuthLoginPostError =
-  LoginMaasAv3AuthLoginPostErrors[keyof LoginMaasAv3AuthLoginPostErrors];
+export type LoginError = LoginErrors[keyof LoginErrors];
 
-export type LoginMaasAv3AuthLoginPostResponses = {
+export type LoginResponses = {
   /**
    * Successful Response
    */
   200: AccessTokenResponse;
 };
 
-export type LoginMaasAv3AuthLoginPostResponse =
-  LoginMaasAv3AuthLoginPostResponses[keyof LoginMaasAv3AuthLoginPostResponses];
+export type LoginResponse = LoginResponses[keyof LoginResponses];
 
-export type ListEventsMaasAv3EventsGetData = {
+export type ListEventsData = {
   body?: never;
   path?: never;
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
     system_id?: Array<string>;
   };
   url: "/MAAS/a/v3/events";
 };
 
-export type ListEventsMaasAv3EventsGetErrors = {
+export type ListEventsErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListEventsMaasAv3EventsGetError =
-  ListEventsMaasAv3EventsGetErrors[keyof ListEventsMaasAv3EventsGetErrors];
+export type ListEventsError = ListEventsErrors[keyof ListEventsErrors];
 
-export type ListEventsMaasAv3EventsGetResponses = {
+export type ListEventsResponses = {
   /**
    * Successful Response
    */
   200: EventsListResponse;
 };
 
-export type ListEventsMaasAv3EventsGetResponse =
-  ListEventsMaasAv3EventsGetResponses[keyof ListEventsMaasAv3EventsGetResponses];
+export type ListEventsResponse = ListEventsResponses[keyof ListEventsResponses];
 
-export type ListFabricsMaasAv3FabricsGetData = {
+export type ListFabricsData = {
   body?: never;
   path?: never;
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/fabrics";
 };
 
-export type ListFabricsMaasAv3FabricsGetErrors = {
+export type ListFabricsErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListFabricsMaasAv3FabricsGetError =
-  ListFabricsMaasAv3FabricsGetErrors[keyof ListFabricsMaasAv3FabricsGetErrors];
+export type ListFabricsError = ListFabricsErrors[keyof ListFabricsErrors];
 
-export type ListFabricsMaasAv3FabricsGetResponses = {
+export type ListFabricsResponses = {
   /**
    * Successful Response
    */
   200: FabricsListResponse;
 };
 
-export type ListFabricsMaasAv3FabricsGetResponse =
-  ListFabricsMaasAv3FabricsGetResponses[keyof ListFabricsMaasAv3FabricsGetResponses];
+export type ListFabricsResponse =
+  ListFabricsResponses[keyof ListFabricsResponses];
 
-export type CreateFabricMaasAv3FabricsPostData = {
+export type CreateFabricData = {
   body: FabricRequest;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/fabrics";
 };
 
-export type CreateFabricMaasAv3FabricsPostErrors = {
+export type CreateFabricErrors = {
   /**
    * Conflict
    */
@@ -1132,20 +1228,19 @@ export type CreateFabricMaasAv3FabricsPostErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type CreateFabricMaasAv3FabricsPostError =
-  CreateFabricMaasAv3FabricsPostErrors[keyof CreateFabricMaasAv3FabricsPostErrors];
+export type CreateFabricError = CreateFabricErrors[keyof CreateFabricErrors];
 
-export type CreateFabricMaasAv3FabricsPostResponses = {
+export type CreateFabricResponses = {
   /**
    * Successful Response
    */
   201: FabricResponse;
 };
 
-export type CreateFabricMaasAv3FabricsPostResponse =
-  CreateFabricMaasAv3FabricsPostResponses[keyof CreateFabricMaasAv3FabricsPostResponses];
+export type CreateFabricResponse =
+  CreateFabricResponses[keyof CreateFabricResponses];
 
-export type DeleteFabricMaasAv3FabricsFabricIdDeleteData = {
+export type DeleteFabricData = {
   body?: never;
   headers?: {
     "if-match"?: string;
@@ -1157,7 +1252,7 @@ export type DeleteFabricMaasAv3FabricsFabricIdDeleteData = {
   url: "/MAAS/a/v3/fabrics/{fabric_id}";
 };
 
-export type DeleteFabricMaasAv3FabricsFabricIdDeleteErrors = {
+export type DeleteFabricErrors = {
   /**
    * Bad Request
    */
@@ -1172,20 +1267,19 @@ export type DeleteFabricMaasAv3FabricsFabricIdDeleteErrors = {
   422: HttpValidationError;
 };
 
-export type DeleteFabricMaasAv3FabricsFabricIdDeleteError =
-  DeleteFabricMaasAv3FabricsFabricIdDeleteErrors[keyof DeleteFabricMaasAv3FabricsFabricIdDeleteErrors];
+export type DeleteFabricError = DeleteFabricErrors[keyof DeleteFabricErrors];
 
-export type DeleteFabricMaasAv3FabricsFabricIdDeleteResponses = {
+export type DeleteFabricResponses = {
   /**
    * Successful Response
    */
   204: void;
 };
 
-export type DeleteFabricMaasAv3FabricsFabricIdDeleteResponse =
-  DeleteFabricMaasAv3FabricsFabricIdDeleteResponses[keyof DeleteFabricMaasAv3FabricsFabricIdDeleteResponses];
+export type DeleteFabricResponse =
+  DeleteFabricResponses[keyof DeleteFabricResponses];
 
-export type GetFabricMaasAv3FabricsFabricIdGetData = {
+export type GetFabricData = {
   body?: never;
   path: {
     fabric_id: number;
@@ -1194,7 +1288,7 @@ export type GetFabricMaasAv3FabricsFabricIdGetData = {
   url: "/MAAS/a/v3/fabrics/{fabric_id}";
 };
 
-export type GetFabricMaasAv3FabricsFabricIdGetErrors = {
+export type GetFabricErrors = {
   /**
    * Not Found
    */
@@ -1205,20 +1299,18 @@ export type GetFabricMaasAv3FabricsFabricIdGetErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetFabricMaasAv3FabricsFabricIdGetError =
-  GetFabricMaasAv3FabricsFabricIdGetErrors[keyof GetFabricMaasAv3FabricsFabricIdGetErrors];
+export type GetFabricError = GetFabricErrors[keyof GetFabricErrors];
 
-export type GetFabricMaasAv3FabricsFabricIdGetResponses = {
+export type GetFabricResponses = {
   /**
    * Successful Response
    */
   200: FabricResponse;
 };
 
-export type GetFabricMaasAv3FabricsFabricIdGetResponse =
-  GetFabricMaasAv3FabricsFabricIdGetResponses[keyof GetFabricMaasAv3FabricsFabricIdGetResponses];
+export type GetFabricResponse = GetFabricResponses[keyof GetFabricResponses];
 
-export type UpdateFabricMaasAv3FabricsFabricIdPutData = {
+export type UpdateFabricData = {
   body: FabricRequest;
   path: {
     fabric_id: number;
@@ -1227,7 +1319,7 @@ export type UpdateFabricMaasAv3FabricsFabricIdPutData = {
   url: "/MAAS/a/v3/fabrics/{fabric_id}";
 };
 
-export type UpdateFabricMaasAv3FabricsFabricIdPutErrors = {
+export type UpdateFabricErrors = {
   /**
    * Not Found
    */
@@ -1238,618 +1330,581 @@ export type UpdateFabricMaasAv3FabricsFabricIdPutErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type UpdateFabricMaasAv3FabricsFabricIdPutError =
-  UpdateFabricMaasAv3FabricsFabricIdPutErrors[keyof UpdateFabricMaasAv3FabricsFabricIdPutErrors];
+export type UpdateFabricError = UpdateFabricErrors[keyof UpdateFabricErrors];
 
-export type UpdateFabricMaasAv3FabricsFabricIdPutResponses = {
+export type UpdateFabricResponses = {
   /**
    * Successful Response
    */
   200: FabricResponse;
 };
 
-export type UpdateFabricMaasAv3FabricsFabricIdPutResponse =
-  UpdateFabricMaasAv3FabricsFabricIdPutResponses[keyof UpdateFabricMaasAv3FabricsFabricIdPutResponses];
+export type UpdateFabricResponse =
+  UpdateFabricResponses[keyof UpdateFabricResponses];
 
-export type ListInterfacesMaasAv3MachinesNodeIdInterfacesGetData = {
+export type ListInterfacesData = {
   body?: never;
   path: {
     node_id: number;
   };
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/machines/{node_id}/interfaces";
 };
 
-export type ListInterfacesMaasAv3MachinesNodeIdInterfacesGetErrors = {
+export type ListInterfacesErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListInterfacesMaasAv3MachinesNodeIdInterfacesGetError =
-  ListInterfacesMaasAv3MachinesNodeIdInterfacesGetErrors[keyof ListInterfacesMaasAv3MachinesNodeIdInterfacesGetErrors];
+export type ListInterfacesError =
+  ListInterfacesErrors[keyof ListInterfacesErrors];
 
-export type ListInterfacesMaasAv3MachinesNodeIdInterfacesGetResponses = {
+export type ListInterfacesResponses = {
   /**
    * Successful Response
    */
   200: InterfaceListResponse;
 };
 
-export type ListInterfacesMaasAv3MachinesNodeIdInterfacesGetResponse =
-  ListInterfacesMaasAv3MachinesNodeIdInterfacesGetResponses[keyof ListInterfacesMaasAv3MachinesNodeIdInterfacesGetResponses];
+export type ListInterfacesResponse =
+  ListInterfacesResponses[keyof ListInterfacesResponses];
 
-export type ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetData =
-  {
-    body?: never;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-    };
-    query?: {
-      token?: string;
-      size?: number;
-    };
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges";
+export type ListFabricVlanSubnetIprangeData = {
+  body?: never;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
   };
-
-export type ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetErrors =
-  {
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
+  query?: {
+    page?: number;
+    size?: number;
   };
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges";
+};
 
-export type ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetError =
-  ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetErrors[keyof ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetErrors];
+export type ListFabricVlanSubnetIprangeErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
 
-export type ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: IpRangeListResponse;
+export type ListFabricVlanSubnetIprangeError =
+  ListFabricVlanSubnetIprangeErrors[keyof ListFabricVlanSubnetIprangeErrors];
+
+export type ListFabricVlanSubnetIprangeResponses = {
+  /**
+   * Successful Response
+   */
+  200: IpRangeListResponse;
+};
+
+export type ListFabricVlanSubnetIprangeResponse =
+  ListFabricVlanSubnetIprangeResponses[keyof ListFabricVlanSubnetIprangeResponses];
+
+export type CreateFabricVlanSubnetIprangeData = {
+  body: IpRangeCreateRequest;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
   };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges";
+};
 
-export type ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetResponse =
-  ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetResponses[keyof ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetResponses];
+export type CreateFabricVlanSubnetIprangeErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
 
-export type CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostData =
-  {
-    body: IpRangeCreateRequest;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges";
+export type CreateFabricVlanSubnetIprangeError =
+  CreateFabricVlanSubnetIprangeErrors[keyof CreateFabricVlanSubnetIprangeErrors];
+
+export type CreateFabricVlanSubnetIprangeResponses = {
+  /**
+   * Successful Response
+   */
+  201: IpRangeResponse;
+};
+
+export type CreateFabricVlanSubnetIprangeResponse =
+  CreateFabricVlanSubnetIprangeResponses[keyof CreateFabricVlanSubnetIprangeResponses];
+
+export type DeleteFabricVlanSubnetIprangeData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
   };
-
-export type CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+    iprange_id: number;
   };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}";
+};
 
-export type CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostError =
-  CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostErrors[keyof CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostErrors];
+export type DeleteFabricVlanSubnetIprangeErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
 
-export type CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostResponses =
-  {
-    /**
-     * Successful Response
-     */
-    201: IpRangeResponse;
+export type DeleteFabricVlanSubnetIprangeError =
+  DeleteFabricVlanSubnetIprangeErrors[keyof DeleteFabricVlanSubnetIprangeErrors];
+
+export type DeleteFabricVlanSubnetIprangeResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteFabricVlanSubnetIprangeResponse =
+  DeleteFabricVlanSubnetIprangeResponses[keyof DeleteFabricVlanSubnetIprangeResponses];
+
+export type UpdateFabricVlanSubnetIprangeData = {
+  body: IpRangeUpdateRequest;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+    iprange_id: number;
   };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}";
+};
 
-export type CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostResponse =
-  CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostResponses[keyof CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostResponses];
+export type UpdateFabricVlanSubnetIprangeErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
 
-export type DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteData =
-  {
-    body?: never;
-    headers?: {
-      "if-match"?: string;
-    };
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-      iprange_id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}";
+export type UpdateFabricVlanSubnetIprangeError =
+  UpdateFabricVlanSubnetIprangeErrors[keyof UpdateFabricVlanSubnetIprangeErrors];
+
+export type UpdateFabricVlanSubnetIprangeResponses = {
+  /**
+   * Successful Response
+   */
+  200: IpRangeResponse;
+};
+
+export type UpdateFabricVlanSubnetIprangeResponse =
+  UpdateFabricVlanSubnetIprangeResponses[keyof UpdateFabricVlanSubnetIprangeResponses];
+
+export type GetFabricVlanSubnetIprangeData = {
+  body?: never;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+    id: number;
   };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}";
+};
 
-export type DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
+export type GetFabricVlanSubnetIprangeErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetFabricVlanSubnetIprangeError =
+  GetFabricVlanSubnetIprangeErrors[keyof GetFabricVlanSubnetIprangeErrors];
+
+export type GetFabricVlanSubnetIprangeResponses = {
+  /**
+   * Successful Response
+   */
+  200: IpRangeResponse;
+};
+
+export type GetFabricVlanSubnetIprangeResponse =
+  GetFabricVlanSubnetIprangeResponses[keyof GetFabricVlanSubnetIprangeResponses];
+
+export type GetMachinePowerParametersData = {
+  body?: never;
+  path: {
+    system_id: string;
   };
+  query?: never;
+  url: "/MAAS/a/v3/machines/{system_id}/power_parameters";
+};
 
-export type DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteError =
-  DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteErrors[keyof DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteErrors];
+export type GetMachinePowerParametersErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
 
-export type DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteResponses =
-  {
-    /**
-     * Successful Response
-     */
-    204: void;
-  };
+export type GetMachinePowerParametersError =
+  GetMachinePowerParametersErrors[keyof GetMachinePowerParametersErrors];
 
-export type DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteResponse =
-  DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteResponses[keyof DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteResponses];
+export type GetMachinePowerParametersResponses = {
+  /**
+   * Successful Response
+   */
+  200: PowerDriverResponse;
+};
 
-export type UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutData =
-  {
-    body: IpRangeUpdateRequest;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-      iprange_id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}";
-  };
+export type GetMachinePowerParametersResponse =
+  GetMachinePowerParametersResponses[keyof GetMachinePowerParametersResponses];
 
-export type UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutError =
-  UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutErrors[keyof UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutErrors];
-
-export type UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: IpRangeResponse;
-  };
-
-export type UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutResponse =
-  UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutResponses[keyof UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutResponses];
-
-export type GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetData =
-  {
-    body?: never;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-      id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}";
-  };
-
-export type GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetError =
-  GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetErrors[keyof GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetErrors];
-
-export type GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: IpRangeResponse;
-  };
-
-export type GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetResponse =
-  GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetResponses[keyof GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetResponses];
-
-export type GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetData =
-  {
-    body?: never;
-    path: {
-      system_id: string;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/machines/{system_id}/power_parameters";
-  };
-
-export type GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetError =
-  GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetErrors[keyof GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetErrors];
-
-export type GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: PowerDriverResponse;
-  };
-
-export type GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetResponse =
-  GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetResponses[keyof GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetResponses];
-
-export type ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetData = {
+export type ListMachinePciDevicesData = {
   body?: never;
   path: {
     system_id: string;
   };
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/machines/{system_id}/pci_devices";
 };
 
-export type ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetErrors = {
+export type ListMachinePciDevicesErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetError =
-  ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetErrors[keyof ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetErrors];
+export type ListMachinePciDevicesError =
+  ListMachinePciDevicesErrors[keyof ListMachinePciDevicesErrors];
 
-export type ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: PciDevicesListResponse;
-  };
+export type ListMachinePciDevicesResponses = {
+  /**
+   * Successful Response
+   */
+  200: PciDevicesListResponse;
+};
 
-export type ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetResponse =
-  ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetResponses[keyof ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetResponses];
+export type ListMachinePciDevicesResponse =
+  ListMachinePciDevicesResponses[keyof ListMachinePciDevicesResponses];
 
-export type ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetData = {
+export type ListMachineUsbDevicesData = {
   body?: never;
   path: {
     system_id: string;
   };
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/machines/{system_id}/usb_devices";
 };
 
-export type ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetErrors = {
+export type ListMachineUsbDevicesErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetError =
-  ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetErrors[keyof ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetErrors];
+export type ListMachineUsbDevicesError =
+  ListMachineUsbDevicesErrors[keyof ListMachineUsbDevicesErrors];
 
-export type ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: UsbDevicesListResponse;
-  };
+export type ListMachineUsbDevicesResponses = {
+  /**
+   * Successful Response
+   */
+  200: UsbDevicesListResponse;
+};
 
-export type ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetResponse =
-  ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetResponses[keyof ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetResponses];
+export type ListMachineUsbDevicesResponse =
+  ListMachineUsbDevicesResponses[keyof ListMachineUsbDevicesResponses];
 
-export type ListMachinesMaasAv3MachinesGetData = {
+export type ListMachinesData = {
   body?: never;
   path?: never;
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/machines";
 };
 
-export type ListMachinesMaasAv3MachinesGetErrors = {
+export type ListMachinesErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListMachinesMaasAv3MachinesGetError =
-  ListMachinesMaasAv3MachinesGetErrors[keyof ListMachinesMaasAv3MachinesGetErrors];
+export type ListMachinesError = ListMachinesErrors[keyof ListMachinesErrors];
 
-export type ListMachinesMaasAv3MachinesGetResponses = {
+export type ListMachinesResponses = {
   /**
    * Successful Response
    */
   200: MachinesListResponse;
 };
 
-export type ListMachinesMaasAv3MachinesGetResponse =
-  ListMachinesMaasAv3MachinesGetResponses[keyof ListMachinesMaasAv3MachinesGetResponses];
+export type ListMachinesResponse =
+  ListMachinesResponses[keyof ListMachinesResponses];
 
-export type ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetData =
-  {
-    body?: never;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-    };
-    query?: {
-      token?: string;
-      size?: number;
-    };
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips";
-  };
-
-export type ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetErrors =
-  {
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetError =
-  ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetErrors[keyof ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetErrors];
-
-export type ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: ReservedIpsListResponse;
-  };
-
-export type ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetResponse =
-  ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetResponses[keyof ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetResponses];
-
-export type CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostData =
-  {
-    body: ReservedIpCreateRequest;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips";
-  };
-
-export type CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostError =
-  CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostErrors[keyof CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostErrors];
-
-export type CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostResponses =
-  {
-    /**
-     * Successful Response
-     */
-    201: ReservedIpResponse;
-  };
-
-export type CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostResponse =
-  CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostResponses[keyof CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostResponses];
-
-export type DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteData =
-  {
-    body?: never;
-    headers?: {
-      "if-match"?: string;
-    };
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-      id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}";
-  };
-
-export type DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteError =
-  DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteErrors[keyof DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteErrors];
-
-export type DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: unknown;
-    /**
-     * No Content
-     */
-    204: void;
-  };
-
-export type DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteResponse =
-  DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteResponses[keyof DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteResponses];
-
-export type UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutData =
-  {
-    body: ReservedIpUpdateRequest;
-    headers?: {
-      "if-match"?: string;
-    };
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-      id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}";
-  };
-
-export type UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutError =
-  UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutErrors[keyof UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutErrors];
-
-export type UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: ReservedIpResponse;
-  };
-
-export type UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutResponse =
-  UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutResponses[keyof UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutResponses];
-
-export type GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetData =
-  {
-    body?: never;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-      reservedip_id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{reservedip_id}";
-  };
-
-export type GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetError =
-  GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetErrors[keyof GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetErrors];
-
-export type GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: ReservedIpResponse;
-  };
-
-export type GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetResponse =
-  GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetResponses[keyof GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetResponses];
-
-export type ListResourcePoolsMaasAv3ResourcePoolsGetData = {
+export type ListFabricVlanSubnetReservedIpsData = {
   body?: never;
-  path?: never;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+  };
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
-  url: "/MAAS/a/v3/resource_pools";
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips";
 };
 
-export type ListResourcePoolsMaasAv3ResourcePoolsGetErrors = {
+export type ListFabricVlanSubnetReservedIpsErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListResourcePoolsMaasAv3ResourcePoolsGetError =
-  ListResourcePoolsMaasAv3ResourcePoolsGetErrors[keyof ListResourcePoolsMaasAv3ResourcePoolsGetErrors];
+export type ListFabricVlanSubnetReservedIpsError =
+  ListFabricVlanSubnetReservedIpsErrors[keyof ListFabricVlanSubnetReservedIpsErrors];
 
-export type ListResourcePoolsMaasAv3ResourcePoolsGetResponses = {
+export type ListFabricVlanSubnetReservedIpsResponses = {
+  /**
+   * Successful Response
+   */
+  200: ReservedIpsListResponse;
+};
+
+export type ListFabricVlanSubnetReservedIpsResponse =
+  ListFabricVlanSubnetReservedIpsResponses[keyof ListFabricVlanSubnetReservedIpsResponses];
+
+export type CreateFabricVlanSubnetReservedIpData = {
+  body: ReservedIpCreateRequest;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips";
+};
+
+export type CreateFabricVlanSubnetReservedIpErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateFabricVlanSubnetReservedIpError =
+  CreateFabricVlanSubnetReservedIpErrors[keyof CreateFabricVlanSubnetReservedIpErrors];
+
+export type CreateFabricVlanSubnetReservedIpResponses = {
+  /**
+   * Successful Response
+   */
+  201: ReservedIpResponse;
+};
+
+export type CreateFabricVlanSubnetReservedIpResponse =
+  CreateFabricVlanSubnetReservedIpResponses[keyof CreateFabricVlanSubnetReservedIpResponses];
+
+export type DeleteFabricVlanSubnetReservedIpData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}";
+};
+
+export type DeleteFabricVlanSubnetReservedIpErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteFabricVlanSubnetReservedIpError =
+  DeleteFabricVlanSubnetReservedIpErrors[keyof DeleteFabricVlanSubnetReservedIpErrors];
+
+export type DeleteFabricVlanSubnetReservedIpResponses = {
+  /**
+   * Successful Response
+   */
+  200: unknown;
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type DeleteFabricVlanSubnetReservedIpResponse =
+  DeleteFabricVlanSubnetReservedIpResponses[keyof DeleteFabricVlanSubnetReservedIpResponses];
+
+export type UpdateFabricVlanSubnetReservedIpData = {
+  body: ReservedIpUpdateRequest;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}";
+};
+
+export type UpdateFabricVlanSubnetReservedIpErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateFabricVlanSubnetReservedIpError =
+  UpdateFabricVlanSubnetReservedIpErrors[keyof UpdateFabricVlanSubnetReservedIpErrors];
+
+export type UpdateFabricVlanSubnetReservedIpResponses = {
+  /**
+   * Successful Response
+   */
+  200: ReservedIpResponse;
+};
+
+export type UpdateFabricVlanSubnetReservedIpResponse =
+  UpdateFabricVlanSubnetReservedIpResponses[keyof UpdateFabricVlanSubnetReservedIpResponses];
+
+export type GetFabricVlanSubnetReservedIpData = {
+  body?: never;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+    reservedip_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{reservedip_id}";
+};
+
+export type GetFabricVlanSubnetReservedIpErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetFabricVlanSubnetReservedIpError =
+  GetFabricVlanSubnetReservedIpErrors[keyof GetFabricVlanSubnetReservedIpErrors];
+
+export type GetFabricVlanSubnetReservedIpResponses = {
+  /**
+   * Successful Response
+   */
+  200: ReservedIpResponse;
+};
+
+export type GetFabricVlanSubnetReservedIpResponse =
+  GetFabricVlanSubnetReservedIpResponses[keyof GetFabricVlanSubnetReservedIpResponses];
+
+export type ListResourcePoolsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/resource_pools";
+};
+
+export type ListResourcePoolsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListResourcePoolsError =
+  ListResourcePoolsErrors[keyof ListResourcePoolsErrors];
+
+export type ListResourcePoolsResponses = {
   /**
    * Successful Response
    */
   200: ResourcePoolsListResponse;
 };
 
-export type ListResourcePoolsMaasAv3ResourcePoolsGetResponse =
-  ListResourcePoolsMaasAv3ResourcePoolsGetResponses[keyof ListResourcePoolsMaasAv3ResourcePoolsGetResponses];
+export type ListResourcePoolsResponse =
+  ListResourcePoolsResponses[keyof ListResourcePoolsResponses];
 
-export type CreateResourcePoolMaasAv3ResourcePoolsPostData = {
+export type CreateResourcePoolData = {
   body: ResourcePoolRequest;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/resource_pools";
 };
 
-export type CreateResourcePoolMaasAv3ResourcePoolsPostErrors = {
+export type CreateResourcePoolErrors = {
   /**
    * Conflict
    */
@@ -1860,20 +1915,20 @@ export type CreateResourcePoolMaasAv3ResourcePoolsPostErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type CreateResourcePoolMaasAv3ResourcePoolsPostError =
-  CreateResourcePoolMaasAv3ResourcePoolsPostErrors[keyof CreateResourcePoolMaasAv3ResourcePoolsPostErrors];
+export type CreateResourcePoolError =
+  CreateResourcePoolErrors[keyof CreateResourcePoolErrors];
 
-export type CreateResourcePoolMaasAv3ResourcePoolsPostResponses = {
+export type CreateResourcePoolResponses = {
   /**
    * Successful Response
    */
   201: ResourcePoolResponse;
 };
 
-export type CreateResourcePoolMaasAv3ResourcePoolsPostResponse =
-  CreateResourcePoolMaasAv3ResourcePoolsPostResponses[keyof CreateResourcePoolMaasAv3ResourcePoolsPostResponses];
+export type CreateResourcePoolResponse =
+  CreateResourcePoolResponses[keyof CreateResourcePoolResponses];
 
-export type GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetData = {
+export type GetResourcePoolData = {
   body?: never;
   path: {
     resource_pool_id: number;
@@ -1882,7 +1937,7 @@ export type GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetData = {
   url: "/MAAS/a/v3/resource_pools/{resource_pool_id}";
 };
 
-export type GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetErrors = {
+export type GetResourcePoolErrors = {
   /**
    * Not Found
    */
@@ -1893,21 +1948,21 @@ export type GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetError =
-  GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetErrors[keyof GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetErrors];
+export type GetResourcePoolError =
+  GetResourcePoolErrors[keyof GetResourcePoolErrors];
 
-export type GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetResponses = {
+export type GetResourcePoolResponses = {
   /**
    * Successful Response
    */
   200: ResourcePoolResponse;
 };
 
-export type GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetResponse =
-  GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetResponses[keyof GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetResponses];
+export type GetResourcePoolResponse =
+  GetResourcePoolResponses[keyof GetResourcePoolResponses];
 
-export type UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutData = {
-  body: ResourcePoolUpdateRequest;
+export type UpdateResourcePoolData = {
+  body: ResourcePoolRequest;
   path: {
     resource_pool_id: number;
   };
@@ -1915,7 +1970,7 @@ export type UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutData = {
   url: "/MAAS/a/v3/resource_pools/{resource_pool_id}";
 };
 
-export type UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutErrors = {
+export type UpdateResourcePoolErrors = {
   /**
    * Not Found
    */
@@ -1926,57 +1981,55 @@ export type UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutError =
-  UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutErrors[keyof UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutErrors];
+export type UpdateResourcePoolError =
+  UpdateResourcePoolErrors[keyof UpdateResourcePoolErrors];
 
-export type UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutResponses = {
+export type UpdateResourcePoolResponses = {
   /**
    * Successful Response
    */
   200: ResourcePoolResponse;
 };
 
-export type UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutResponse =
-  UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutResponses[keyof UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutResponses];
+export type UpdateResourcePoolResponse =
+  UpdateResourcePoolResponses[keyof UpdateResourcePoolResponses];
 
-export type ListSpacesMaasAv3SpacesGetData = {
+export type ListSpacesData = {
   body?: never;
   path?: never;
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/spaces";
 };
 
-export type ListSpacesMaasAv3SpacesGetErrors = {
+export type ListSpacesErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListSpacesMaasAv3SpacesGetError =
-  ListSpacesMaasAv3SpacesGetErrors[keyof ListSpacesMaasAv3SpacesGetErrors];
+export type ListSpacesError = ListSpacesErrors[keyof ListSpacesErrors];
 
-export type ListSpacesMaasAv3SpacesGetResponses = {
+export type ListSpacesResponses = {
   /**
    * Successful Response
    */
   200: SpacesListResponse;
 };
 
-export type ListSpacesMaasAv3SpacesGetResponse =
-  ListSpacesMaasAv3SpacesGetResponses[keyof ListSpacesMaasAv3SpacesGetResponses];
+export type ListSpacesResponse = ListSpacesResponses[keyof ListSpacesResponses];
 
-export type CreateSpaceMaasAv3SpacesPostData = {
+export type CreateSpaceData = {
   body: SpaceRequest;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/spaces";
 };
 
-export type CreateSpaceMaasAv3SpacesPostErrors = {
+export type CreateSpaceErrors = {
   /**
    * Conflict
    */
@@ -1987,20 +2040,19 @@ export type CreateSpaceMaasAv3SpacesPostErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type CreateSpaceMaasAv3SpacesPostError =
-  CreateSpaceMaasAv3SpacesPostErrors[keyof CreateSpaceMaasAv3SpacesPostErrors];
+export type CreateSpaceError = CreateSpaceErrors[keyof CreateSpaceErrors];
 
-export type CreateSpaceMaasAv3SpacesPostResponses = {
+export type CreateSpaceResponses = {
   /**
    * Successful Response
    */
   201: SpaceResponse;
 };
 
-export type CreateSpaceMaasAv3SpacesPostResponse =
-  CreateSpaceMaasAv3SpacesPostResponses[keyof CreateSpaceMaasAv3SpacesPostResponses];
+export type CreateSpaceResponse =
+  CreateSpaceResponses[keyof CreateSpaceResponses];
 
-export type DeleteSpaceMaasAv3SpacesSpaceIdDeleteData = {
+export type DeleteSpaceData = {
   body?: never;
   headers?: {
     "if-match"?: string;
@@ -2012,7 +2064,7 @@ export type DeleteSpaceMaasAv3SpacesSpaceIdDeleteData = {
   url: "/MAAS/a/v3/spaces/{space_id}";
 };
 
-export type DeleteSpaceMaasAv3SpacesSpaceIdDeleteErrors = {
+export type DeleteSpaceErrors = {
   /**
    * Bad Request
    */
@@ -2027,20 +2079,19 @@ export type DeleteSpaceMaasAv3SpacesSpaceIdDeleteErrors = {
   422: HttpValidationError;
 };
 
-export type DeleteSpaceMaasAv3SpacesSpaceIdDeleteError =
-  DeleteSpaceMaasAv3SpacesSpaceIdDeleteErrors[keyof DeleteSpaceMaasAv3SpacesSpaceIdDeleteErrors];
+export type DeleteSpaceError = DeleteSpaceErrors[keyof DeleteSpaceErrors];
 
-export type DeleteSpaceMaasAv3SpacesSpaceIdDeleteResponses = {
+export type DeleteSpaceResponses = {
   /**
    * Successful Response
    */
   204: void;
 };
 
-export type DeleteSpaceMaasAv3SpacesSpaceIdDeleteResponse =
-  DeleteSpaceMaasAv3SpacesSpaceIdDeleteResponses[keyof DeleteSpaceMaasAv3SpacesSpaceIdDeleteResponses];
+export type DeleteSpaceResponse =
+  DeleteSpaceResponses[keyof DeleteSpaceResponses];
 
-export type GetSpaceMaasAv3SpacesSpaceIdGetData = {
+export type GetSpaceData = {
   body?: never;
   path: {
     space_id: number;
@@ -2049,7 +2100,7 @@ export type GetSpaceMaasAv3SpacesSpaceIdGetData = {
   url: "/MAAS/a/v3/spaces/{space_id}";
 };
 
-export type GetSpaceMaasAv3SpacesSpaceIdGetErrors = {
+export type GetSpaceErrors = {
   /**
    * Not Found
    */
@@ -2060,20 +2111,18 @@ export type GetSpaceMaasAv3SpacesSpaceIdGetErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetSpaceMaasAv3SpacesSpaceIdGetError =
-  GetSpaceMaasAv3SpacesSpaceIdGetErrors[keyof GetSpaceMaasAv3SpacesSpaceIdGetErrors];
+export type GetSpaceError = GetSpaceErrors[keyof GetSpaceErrors];
 
-export type GetSpaceMaasAv3SpacesSpaceIdGetResponses = {
+export type GetSpaceResponses = {
   /**
    * Successful Response
    */
   200: SpaceResponse;
 };
 
-export type GetSpaceMaasAv3SpacesSpaceIdGetResponse =
-  GetSpaceMaasAv3SpacesSpaceIdGetResponses[keyof GetSpaceMaasAv3SpacesSpaceIdGetResponses];
+export type GetSpaceResponse = GetSpaceResponses[keyof GetSpaceResponses];
 
-export type UpdateSpaceMaasAv3SpacesSpaceIdPutData = {
+export type UpdateSpaceData = {
   body: SpaceRequest;
   path: {
     space_id: number;
@@ -2082,7 +2131,7 @@ export type UpdateSpaceMaasAv3SpacesSpaceIdPutData = {
   url: "/MAAS/a/v3/spaces/{space_id}";
 };
 
-export type UpdateSpaceMaasAv3SpacesSpaceIdPutErrors = {
+export type UpdateSpaceErrors = {
   /**
    * Not Found
    */
@@ -2093,247 +2142,29 @@ export type UpdateSpaceMaasAv3SpacesSpaceIdPutErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type UpdateSpaceMaasAv3SpacesSpaceIdPutError =
-  UpdateSpaceMaasAv3SpacesSpaceIdPutErrors[keyof UpdateSpaceMaasAv3SpacesSpaceIdPutErrors];
+export type UpdateSpaceError = UpdateSpaceErrors[keyof UpdateSpaceErrors];
 
-export type UpdateSpaceMaasAv3SpacesSpaceIdPutResponses = {
+export type UpdateSpaceResponses = {
   /**
    * Successful Response
    */
   200: SpaceResponse;
 };
 
-export type UpdateSpaceMaasAv3SpacesSpaceIdPutResponse =
-  UpdateSpaceMaasAv3SpacesSpaceIdPutResponses[keyof UpdateSpaceMaasAv3SpacesSpaceIdPutResponses];
+export type UpdateSpaceResponse =
+  UpdateSpaceResponses[keyof UpdateSpaceResponses];
 
-export type ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetData =
-  {
-    body?: never;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-    };
-    query?: {
-      token?: string;
-      size?: number;
-    };
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets";
-  };
-
-export type ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetErrors =
-  {
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetError =
-  ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetErrors[keyof ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetErrors];
-
-export type ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: SubnetsListResponse;
-  };
-
-export type ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetResponse =
-  ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetResponses[keyof ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetResponses];
-
-export type CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostData =
-  {
-    body: SubnetRequest;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets";
-  };
-
-export type CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostError =
-  CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostErrors[keyof CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostErrors];
-
-export type CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostResponses =
-  {
-    /**
-     * Successful Response
-     */
-    201: SubnetResponse;
-  };
-
-export type CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostResponse =
-  CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostResponses[keyof CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostResponses];
-
-export type DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteData =
-  {
-    body?: never;
-    headers?: {
-      "if-match"?: string;
-    };
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}";
-  };
-
-export type DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteError =
-  DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteErrors[keyof DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteErrors];
-
-export type DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteResponses =
-  {
-    /**
-     * Successful Response
-     */
-    204: void;
-  };
-
-export type DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteResponse =
-  DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteResponses[keyof DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteResponses];
-
-export type UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutData =
-  {
-    body: SubnetRequest;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}";
-  };
-
-export type UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutError =
-  UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutErrors[keyof UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutErrors];
-
-export type UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: SubnetResponse;
-  };
-
-export type UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutResponse =
-  UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutResponses[keyof UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutResponses];
-
-export type GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetData =
-  {
-    body?: never;
-    path: {
-      fabric_id: number;
-      vlan_id: number;
-      subnet_id: number;
-    };
-    query?: never;
-    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}";
-  };
-
-export type GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetErrors =
-  {
-    /**
-     * Not Found
-     */
-    404: NotFoundBodyResponse;
-    /**
-     * Unprocessable Entity
-     */
-    422: ValidationErrorBodyResponse;
-  };
-
-export type GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetError =
-  GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetErrors[keyof GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetErrors];
-
-export type GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetResponses =
-  {
-    /**
-     * Successful Response
-     */
-    200: SubnetResponse;
-  };
-
-export type GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetResponse =
-  GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetResponses[keyof GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetResponses];
-
-export type GetUserInfoMaasAv3UsersMeGetData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: "/MAAS/a/v3/users/me";
-};
-
-export type GetUserInfoMaasAv3UsersMeGetErrors = {
-  /**
-   * Unauthorized
-   */
-  401: UnauthorizedBodyResponse;
-};
-
-export type GetUserInfoMaasAv3UsersMeGetError =
-  GetUserInfoMaasAv3UsersMeGetErrors[keyof GetUserInfoMaasAv3UsersMeGetErrors];
-
-export type GetUserInfoMaasAv3UsersMeGetResponses = {
-  /**
-   * Successful Response
-   */
-  200: UserInfoResponse;
-};
-
-export type GetUserInfoMaasAv3UsersMeGetResponse =
-  GetUserInfoMaasAv3UsersMeGetResponses[keyof GetUserInfoMaasAv3UsersMeGetResponses];
-
-export type ListUserSshkeysMaasAv3UsersMeSshkeysGetData = {
+export type ListUserSshkeysData = {
   body?: never;
   path?: never;
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/users/me/sshkeys";
 };
 
-export type ListUserSshkeysMaasAv3UsersMeSshkeysGetErrors = {
+export type ListUserSshkeysErrors = {
   /**
    * Unauthorized
    */
@@ -2344,20 +2175,91 @@ export type ListUserSshkeysMaasAv3UsersMeSshkeysGetErrors = {
   422: HttpValidationError;
 };
 
-export type ListUserSshkeysMaasAv3UsersMeSshkeysGetError =
-  ListUserSshkeysMaasAv3UsersMeSshkeysGetErrors[keyof ListUserSshkeysMaasAv3UsersMeSshkeysGetErrors];
+export type ListUserSshkeysError =
+  ListUserSshkeysErrors[keyof ListUserSshkeysErrors];
 
-export type ListUserSshkeysMaasAv3UsersMeSshkeysGetResponses = {
+export type ListUserSshkeysResponses = {
   /**
    * Successful Response
    */
   200: SshKeysListResponse;
 };
 
-export type ListUserSshkeysMaasAv3UsersMeSshkeysGetResponse =
-  ListUserSshkeysMaasAv3UsersMeSshkeysGetResponses[keyof ListUserSshkeysMaasAv3UsersMeSshkeysGetResponses];
+export type ListUserSshkeysResponse =
+  ListUserSshkeysResponses[keyof ListUserSshkeysResponses];
 
-export type GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetData = {
+export type CreateUserSshkeysData = {
+  body: SshKeyManualUploadRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sshkeys";
+};
+
+export type CreateUserSshkeysErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateUserSshkeysError =
+  CreateUserSshkeysErrors[keyof CreateUserSshkeysErrors];
+
+export type CreateUserSshkeysResponses = {
+  /**
+   * Successful Response
+   */
+  201: SshKeyResponse;
+};
+
+export type CreateUserSshkeysResponse =
+  CreateUserSshkeysResponses[keyof CreateUserSshkeysResponses];
+
+export type DeleteUserSshkeyData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sshkeys/{id}";
+};
+
+export type DeleteUserSshkeyErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type DeleteUserSshkeyError =
+  DeleteUserSshkeyErrors[keyof DeleteUserSshkeyErrors];
+
+export type DeleteUserSshkeyResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteUserSshkeyResponse =
+  DeleteUserSshkeyResponses[keyof DeleteUserSshkeyResponses];
+
+export type GetUserSshkeyData = {
   body?: never;
   path: {
     sshkey_id: number;
@@ -2366,7 +2268,7 @@ export type GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetData = {
   url: "/MAAS/a/v3/users/me/sshkeys/{sshkey_id}";
 };
 
-export type GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetErrors = {
+export type GetUserSshkeyErrors = {
   /**
    * Unauthorized
    */
@@ -2377,57 +2279,91 @@ export type GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetErrors = {
   422: HttpValidationError;
 };
 
-export type GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetError =
-  GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetErrors[keyof GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetErrors];
+export type GetUserSshkeyError = GetUserSshkeyErrors[keyof GetUserSshkeyErrors];
 
-export type GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetResponses = {
+export type GetUserSshkeyResponses = {
   /**
    * Successful Response
    */
   200: SshKeyResponse;
 };
 
-export type GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetResponse =
-  GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetResponses[keyof GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetResponses];
+export type GetUserSshkeyResponse =
+  GetUserSshkeyResponses[keyof GetUserSshkeyResponses];
 
-export type ListUsersMaasAv3UsersGetData = {
-  body?: never;
+export type ImportUserSshkeysData = {
+  body: SshKeyImportFromSourceRequest;
   path?: never;
-  query?: {
-    token?: string;
-    size?: number;
-  };
-  url: "/MAAS/a/v3/users";
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sshkeys:import";
 };
 
-export type ListUsersMaasAv3UsersGetErrors = {
+export type ImportUserSshkeysErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListUsersMaasAv3UsersGetError =
-  ListUsersMaasAv3UsersGetErrors[keyof ListUsersMaasAv3UsersGetErrors];
+export type ImportUserSshkeysError =
+  ImportUserSshkeysErrors[keyof ImportUserSshkeysErrors];
 
-export type ListUsersMaasAv3UsersGetResponses = {
+export type ImportUserSshkeysResponses = {
   /**
    * Successful Response
    */
-  200: UsersListResponse;
+  201: SshKeysListResponse;
 };
 
-export type ListUsersMaasAv3UsersGetResponse =
-  ListUsersMaasAv3UsersGetResponses[keyof ListUsersMaasAv3UsersGetResponses];
+export type ImportUserSshkeysResponse =
+  ImportUserSshkeysResponses[keyof ImportUserSshkeysResponses];
 
-export type CreateUserMaasAv3UsersPostData = {
-  body: UserRequest;
+export type GetUserSslkeysData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/users/me/sslkeys";
+};
+
+export type GetUserSslkeysErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type GetUserSslkeysError =
+  GetUserSslkeysErrors[keyof GetUserSslkeysErrors];
+
+export type GetUserSslkeysResponses = {
+  /**
+   * Successful Response
+   */
+  200: SslKeyListResponse;
+};
+
+export type GetUserSslkeysResponse =
+  GetUserSslkeysResponses[keyof GetUserSslkeysResponses];
+
+export type CreateUserSslkeyData = {
+  body: SslKeyRequest;
   path?: never;
   query?: never;
-  url: "/MAAS/a/v3/users";
+  url: "/MAAS/a/v3/users/me/sslkeys";
 };
 
-export type CreateUserMaasAv3UsersPostErrors = {
+export type CreateUserSslkeyErrors = {
   /**
    * Conflict
    */
@@ -2438,29 +2374,131 @@ export type CreateUserMaasAv3UsersPostErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type CreateUserMaasAv3UsersPostError =
-  CreateUserMaasAv3UsersPostErrors[keyof CreateUserMaasAv3UsersPostErrors];
+export type CreateUserSslkeyError =
+  CreateUserSslkeyErrors[keyof CreateUserSslkeyErrors];
 
-export type CreateUserMaasAv3UsersPostResponses = {
+export type CreateUserSslkeyResponses = {
   /**
    * Successful Response
    */
-  201: UserResponse;
+  201: SslKeyResponse;
 };
 
-export type CreateUserMaasAv3UsersPostResponse =
-  CreateUserMaasAv3UsersPostResponses[keyof CreateUserMaasAv3UsersPostResponses];
+export type CreateUserSslkeyResponse =
+  CreateUserSslkeyResponses[keyof CreateUserSslkeyResponses];
 
-export type GetUserMaasAv3UsersUserIdGetData = {
+export type DeleteUserSslkeyData = {
   body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
   path: {
-    user_id: number;
+    sslkey_id: number;
   };
   query?: never;
-  url: "/MAAS/a/v3/users/{user_id}";
+  url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}";
 };
 
-export type GetUserMaasAv3UsersUserIdGetErrors = {
+export type DeleteUserSslkeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type DeleteUserSslkeyError =
+  DeleteUserSslkeyErrors[keyof DeleteUserSslkeyErrors];
+
+export type DeleteUserSslkeyResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteUserSslkeyResponse =
+  DeleteUserSslkeyResponses[keyof DeleteUserSslkeyResponses];
+
+export type GetUserSslkeyData = {
+  body?: never;
+  path: {
+    sslkey_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}";
+};
+
+export type GetUserSslkeyErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type GetUserSslkeyError = GetUserSslkeyErrors[keyof GetUserSslkeyErrors];
+
+export type GetUserSslkeyResponses = {
+  /**
+   * Successful Response
+   */
+  200: SslKeyResponse;
+};
+
+export type GetUserSslkeyResponse =
+  GetUserSslkeyResponses[keyof GetUserSslkeyResponses];
+
+export type ListFabricVlanSubnetsData = {
+  body?: never;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+  };
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets";
+};
+
+export type ListFabricVlanSubnetsErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListFabricVlanSubnetsError =
+  ListFabricVlanSubnetsErrors[keyof ListFabricVlanSubnetsErrors];
+
+export type ListFabricVlanSubnetsResponses = {
+  /**
+   * Successful Response
+   */
+  200: SubnetsListResponse;
+};
+
+export type ListFabricVlanSubnetsResponse =
+  ListFabricVlanSubnetsResponses[keyof ListFabricVlanSubnetsResponses];
+
+export type CreateFabricVlanSubnetData = {
+  body: SubnetRequest;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets";
+};
+
+export type CreateFabricVlanSubnetErrors = {
   /**
    * Not Found
    */
@@ -2471,20 +2509,289 @@ export type GetUserMaasAv3UsersUserIdGetErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetUserMaasAv3UsersUserIdGetError =
-  GetUserMaasAv3UsersUserIdGetErrors[keyof GetUserMaasAv3UsersUserIdGetErrors];
+export type CreateFabricVlanSubnetError =
+  CreateFabricVlanSubnetErrors[keyof CreateFabricVlanSubnetErrors];
 
-export type GetUserMaasAv3UsersUserIdGetResponses = {
+export type CreateFabricVlanSubnetResponses = {
+  /**
+   * Successful Response
+   */
+  201: SubnetResponse;
+};
+
+export type CreateFabricVlanSubnetResponse =
+  CreateFabricVlanSubnetResponses[keyof CreateFabricVlanSubnetResponses];
+
+export type DeleteFabricVlanSubnetData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}";
+};
+
+export type DeleteFabricVlanSubnetErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteFabricVlanSubnetError =
+  DeleteFabricVlanSubnetErrors[keyof DeleteFabricVlanSubnetErrors];
+
+export type DeleteFabricVlanSubnetResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteFabricVlanSubnetResponse =
+  DeleteFabricVlanSubnetResponses[keyof DeleteFabricVlanSubnetResponses];
+
+export type UpdateFabricVlanSubnetData = {
+  body: SubnetRequest;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}";
+};
+
+export type UpdateFabricVlanSubnetErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type UpdateFabricVlanSubnetError =
+  UpdateFabricVlanSubnetErrors[keyof UpdateFabricVlanSubnetErrors];
+
+export type UpdateFabricVlanSubnetResponses = {
+  /**
+   * Successful Response
+   */
+  200: SubnetResponse;
+};
+
+export type UpdateFabricVlanSubnetResponse =
+  UpdateFabricVlanSubnetResponses[keyof UpdateFabricVlanSubnetResponses];
+
+export type GetFabricVlanSubnetData = {
+  body?: never;
+  path: {
+    fabric_id: number;
+    vlan_id: number;
+    subnet_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}";
+};
+
+export type GetFabricVlanSubnetErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetFabricVlanSubnetError =
+  GetFabricVlanSubnetErrors[keyof GetFabricVlanSubnetErrors];
+
+export type GetFabricVlanSubnetResponses = {
+  /**
+   * Successful Response
+   */
+  200: SubnetResponse;
+};
+
+export type GetFabricVlanSubnetResponse =
+  GetFabricVlanSubnetResponses[keyof GetFabricVlanSubnetResponses];
+
+export type GetUserInfoData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users/me";
+};
+
+export type GetUserInfoErrors = {
+  /**
+   * Unauthorized
+   */
+  401: UnauthorizedBodyResponse;
+};
+
+export type GetUserInfoError = GetUserInfoErrors[keyof GetUserInfoErrors];
+
+export type GetUserInfoResponses = {
+  /**
+   * Successful Response
+   */
+  200: UserInfoResponse;
+};
+
+export type GetUserInfoResponse =
+  GetUserInfoResponses[keyof GetUserInfoResponses];
+
+export type ListUsersData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/users";
+};
+
+export type ListUsersErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListUsersError = ListUsersErrors[keyof ListUsersErrors];
+
+export type ListUsersResponses = {
+  /**
+   * Successful Response
+   */
+  200: UsersListResponse;
+};
+
+export type ListUsersResponse = ListUsersResponses[keyof ListUsersResponses];
+
+export type CreateUserData = {
+  body: UserRequest;
+  path?: never;
+  query?: never;
+  url: "/MAAS/a/v3/users";
+};
+
+export type CreateUserErrors = {
+  /**
+   * Conflict
+   */
+  409: ConflictBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type CreateUserError = CreateUserErrors[keyof CreateUserErrors];
+
+export type CreateUserResponses = {
+  /**
+   * Successful Response
+   */
+  201: UserResponse;
+};
+
+export type CreateUserResponse = CreateUserResponses[keyof CreateUserResponses];
+
+export type DeleteUserData = {
+  body?: never;
+  headers?: {
+    "if-match"?: string;
+  };
+  path: {
+    user_id: number;
+  };
+  query?: {
+    /**
+     * The id of the user to transfer the resources to.
+     */
+    transfer_resources_to?: number;
+  };
+  url: "/MAAS/a/v3/users/{user_id}";
+};
+
+export type DeleteUserErrors = {
+  /**
+   * Bad Request
+   */
+  400: BadRequestBodyResponse;
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Precondition Failed
+   */
+  412: PreconditionFailedBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type DeleteUserError = DeleteUserErrors[keyof DeleteUserErrors];
+
+export type DeleteUserResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type DeleteUserResponse = DeleteUserResponses[keyof DeleteUserResponses];
+
+export type GetUserData = {
+  body?: never;
+  path: {
+    user_id: number;
+  };
+  query?: never;
+  url: "/MAAS/a/v3/users/{user_id}";
+};
+
+export type GetUserErrors = {
+  /**
+   * Not Found
+   */
+  404: NotFoundBodyResponse;
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type GetUserError = GetUserErrors[keyof GetUserErrors];
+
+export type GetUserResponses = {
   /**
    * Successful Response
    */
   200: UserResponse;
 };
 
-export type GetUserMaasAv3UsersUserIdGetResponse =
-  GetUserMaasAv3UsersUserIdGetResponses[keyof GetUserMaasAv3UsersUserIdGetResponses];
+export type GetUserResponse = GetUserResponses[keyof GetUserResponses];
 
-export type UpdateUserMaasAv3UsersUserIdPutData = {
+export type UpdateUserData = {
   body: UserRequest;
   path: {
     user_id: number;
@@ -2493,7 +2800,7 @@ export type UpdateUserMaasAv3UsersUserIdPutData = {
   url: "/MAAS/a/v3/users/{user_id}";
 };
 
-export type UpdateUserMaasAv3UsersUserIdPutErrors = {
+export type UpdateUserErrors = {
   /**
    * Not Found
    */
@@ -2504,52 +2811,50 @@ export type UpdateUserMaasAv3UsersUserIdPutErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type UpdateUserMaasAv3UsersUserIdPutError =
-  UpdateUserMaasAv3UsersUserIdPutErrors[keyof UpdateUserMaasAv3UsersUserIdPutErrors];
+export type UpdateUserError = UpdateUserErrors[keyof UpdateUserErrors];
 
-export type UpdateUserMaasAv3UsersUserIdPutResponses = {
+export type UpdateUserResponses = {
   /**
    * Successful Response
    */
   200: UserResponse;
 };
 
-export type UpdateUserMaasAv3UsersUserIdPutResponse =
-  UpdateUserMaasAv3UsersUserIdPutResponses[keyof UpdateUserMaasAv3UsersUserIdPutResponses];
+export type UpdateUserResponse = UpdateUserResponses[keyof UpdateUserResponses];
 
-export type ListFabricVlansMaasAv3FabricsFabricIdVlansGetData = {
+export type ListFabricVlansData = {
   body?: never;
   path: {
     fabric_id: number;
   };
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
   };
   url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans";
 };
 
-export type ListFabricVlansMaasAv3FabricsFabricIdVlansGetErrors = {
+export type ListFabricVlansErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListFabricVlansMaasAv3FabricsFabricIdVlansGetError =
-  ListFabricVlansMaasAv3FabricsFabricIdVlansGetErrors[keyof ListFabricVlansMaasAv3FabricsFabricIdVlansGetErrors];
+export type ListFabricVlansError =
+  ListFabricVlansErrors[keyof ListFabricVlansErrors];
 
-export type ListFabricVlansMaasAv3FabricsFabricIdVlansGetResponses = {
+export type ListFabricVlansResponses = {
   /**
    * Successful Response
    */
   200: VlansListResponse;
 };
 
-export type ListFabricVlansMaasAv3FabricsFabricIdVlansGetResponse =
-  ListFabricVlansMaasAv3FabricsFabricIdVlansGetResponses[keyof ListFabricVlansMaasAv3FabricsFabricIdVlansGetResponses];
+export type ListFabricVlansResponse =
+  ListFabricVlansResponses[keyof ListFabricVlansResponses];
 
-export type CreateFabricVlanMaasAv3FabricsFabricIdVlansPostData = {
+export type CreateFabricVlanData = {
   body: VlanCreateRequest;
   path: {
     fabric_id: number;
@@ -2558,17 +2863,17 @@ export type CreateFabricVlanMaasAv3FabricsFabricIdVlansPostData = {
   url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans";
 };
 
-export type CreateFabricVlanMaasAv3FabricsFabricIdVlansPostErrors = {
+export type CreateFabricVlanErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type CreateFabricVlanMaasAv3FabricsFabricIdVlansPostError =
-  CreateFabricVlanMaasAv3FabricsFabricIdVlansPostErrors[keyof CreateFabricVlanMaasAv3FabricsFabricIdVlansPostErrors];
+export type CreateFabricVlanError =
+  CreateFabricVlanErrors[keyof CreateFabricVlanErrors];
 
-export type CreateFabricVlanMaasAv3FabricsFabricIdVlansPostResponses = {
+export type CreateFabricVlanResponses = {
   /**
    * OK
    */
@@ -2579,10 +2884,10 @@ export type CreateFabricVlanMaasAv3FabricsFabricIdVlansPostResponses = {
   201: unknown;
 };
 
-export type CreateFabricVlanMaasAv3FabricsFabricIdVlansPostResponse =
-  CreateFabricVlanMaasAv3FabricsFabricIdVlansPostResponses[keyof CreateFabricVlanMaasAv3FabricsFabricIdVlansPostResponses];
+export type CreateFabricVlanResponse =
+  CreateFabricVlanResponses[keyof CreateFabricVlanResponses];
 
-export type DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteData = {
+export type DeleteFabricVlanData = {
   body?: never;
   headers?: {
     "if-match"?: string;
@@ -2595,7 +2900,7 @@ export type DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteData = {
   url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}";
 };
 
-export type DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteErrors = {
+export type DeleteFabricVlanErrors = {
   /**
    * Bad Request
    */
@@ -2610,20 +2915,20 @@ export type DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteErrors = {
   422: HttpValidationError;
 };
 
-export type DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteError =
-  DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteErrors[keyof DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteErrors];
+export type DeleteFabricVlanError =
+  DeleteFabricVlanErrors[keyof DeleteFabricVlanErrors];
 
-export type DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteResponses = {
+export type DeleteFabricVlanResponses = {
   /**
    * Successful Response
    */
   204: void;
 };
 
-export type DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteResponse =
-  DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteResponses[keyof DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteResponses];
+export type DeleteFabricVlanResponse =
+  DeleteFabricVlanResponses[keyof DeleteFabricVlanResponses];
 
-export type GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetData = {
+export type GetFabricVlanData = {
   body?: never;
   path: {
     fabric_id: number;
@@ -2633,7 +2938,7 @@ export type GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetData = {
   url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}";
 };
 
-export type GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetErrors = {
+export type GetFabricVlanErrors = {
   /**
    * Not Found
    */
@@ -2644,20 +2949,19 @@ export type GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetError =
-  GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetErrors[keyof GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetErrors];
+export type GetFabricVlanError = GetFabricVlanErrors[keyof GetFabricVlanErrors];
 
-export type GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetResponses = {
+export type GetFabricVlanResponses = {
   /**
    * Successful Response
    */
   200: VlanResponse;
 };
 
-export type GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetResponse =
-  GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetResponses[keyof GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetResponses];
+export type GetFabricVlanResponse =
+  GetFabricVlanResponses[keyof GetFabricVlanResponses];
 
-export type UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutData = {
+export type UpdateFabricVlanData = {
   body: VlanUpdateRequest;
   path: {
     fabric_id: number;
@@ -2667,7 +2971,7 @@ export type UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutData = {
   url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}";
 };
 
-export type UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutErrors = {
+export type UpdateFabricVlanErrors = {
   /**
    * Not Found
    */
@@ -2678,58 +2982,56 @@ export type UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutError =
-  UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutErrors[keyof UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutErrors];
+export type UpdateFabricVlanError =
+  UpdateFabricVlanErrors[keyof UpdateFabricVlanErrors];
 
-export type UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutResponses = {
+export type UpdateFabricVlanResponses = {
   /**
    * Successful Response
    */
   200: VlanResponse;
 };
 
-export type UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutResponse =
-  UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutResponses[keyof UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutResponses];
+export type UpdateFabricVlanResponse =
+  UpdateFabricVlanResponses[keyof UpdateFabricVlanResponses];
 
-export type ListZonesMaasAv3ZonesGetData = {
+export type ListZonesData = {
   body?: never;
   path?: never;
   query?: {
-    token?: string;
+    page?: number;
     size?: number;
     id?: Array<number>;
   };
   url: "/MAAS/a/v3/zones";
 };
 
-export type ListZonesMaasAv3ZonesGetErrors = {
+export type ListZonesErrors = {
   /**
    * Unprocessable Entity
    */
   422: ValidationErrorBodyResponse;
 };
 
-export type ListZonesMaasAv3ZonesGetError =
-  ListZonesMaasAv3ZonesGetErrors[keyof ListZonesMaasAv3ZonesGetErrors];
+export type ListZonesError = ListZonesErrors[keyof ListZonesErrors];
 
-export type ListZonesMaasAv3ZonesGetResponses = {
+export type ListZonesResponses = {
   /**
    * Successful Response
    */
   200: ZonesListResponse;
 };
 
-export type ListZonesMaasAv3ZonesGetResponse =
-  ListZonesMaasAv3ZonesGetResponses[keyof ListZonesMaasAv3ZonesGetResponses];
+export type ListZonesResponse = ListZonesResponses[keyof ListZonesResponses];
 
-export type CreateZoneMaasAv3ZonesPostData = {
+export type CreateZoneData = {
   body: ZoneRequest;
   path?: never;
   query?: never;
   url: "/MAAS/a/v3/zones";
 };
 
-export type CreateZoneMaasAv3ZonesPostErrors = {
+export type CreateZoneErrors = {
   /**
    * Conflict
    */
@@ -2740,20 +3042,18 @@ export type CreateZoneMaasAv3ZonesPostErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type CreateZoneMaasAv3ZonesPostError =
-  CreateZoneMaasAv3ZonesPostErrors[keyof CreateZoneMaasAv3ZonesPostErrors];
+export type CreateZoneError = CreateZoneErrors[keyof CreateZoneErrors];
 
-export type CreateZoneMaasAv3ZonesPostResponses = {
+export type CreateZoneResponses = {
   /**
    * Successful Response
    */
   201: ZoneResponse;
 };
 
-export type CreateZoneMaasAv3ZonesPostResponse =
-  CreateZoneMaasAv3ZonesPostResponses[keyof CreateZoneMaasAv3ZonesPostResponses];
+export type CreateZoneResponse = CreateZoneResponses[keyof CreateZoneResponses];
 
-export type DeleteZoneMaasAv3ZonesZoneIdDeleteData = {
+export type DeleteZoneData = {
   body?: never;
   headers?: {
     "if-match"?: string;
@@ -2765,7 +3065,7 @@ export type DeleteZoneMaasAv3ZonesZoneIdDeleteData = {
   url: "/MAAS/a/v3/zones/{zone_id}";
 };
 
-export type DeleteZoneMaasAv3ZonesZoneIdDeleteErrors = {
+export type DeleteZoneErrors = {
   /**
    * Bad Request
    */
@@ -2780,20 +3080,18 @@ export type DeleteZoneMaasAv3ZonesZoneIdDeleteErrors = {
   422: HttpValidationError;
 };
 
-export type DeleteZoneMaasAv3ZonesZoneIdDeleteError =
-  DeleteZoneMaasAv3ZonesZoneIdDeleteErrors[keyof DeleteZoneMaasAv3ZonesZoneIdDeleteErrors];
+export type DeleteZoneError = DeleteZoneErrors[keyof DeleteZoneErrors];
 
-export type DeleteZoneMaasAv3ZonesZoneIdDeleteResponses = {
+export type DeleteZoneResponses = {
   /**
    * Successful Response
    */
   204: void;
 };
 
-export type DeleteZoneMaasAv3ZonesZoneIdDeleteResponse =
-  DeleteZoneMaasAv3ZonesZoneIdDeleteResponses[keyof DeleteZoneMaasAv3ZonesZoneIdDeleteResponses];
+export type DeleteZoneResponse = DeleteZoneResponses[keyof DeleteZoneResponses];
 
-export type GetZoneMaasAv3ZonesZoneIdGetData = {
+export type GetZoneData = {
   body?: never;
   path: {
     zone_id: number;
@@ -2802,7 +3100,7 @@ export type GetZoneMaasAv3ZonesZoneIdGetData = {
   url: "/MAAS/a/v3/zones/{zone_id}";
 };
 
-export type GetZoneMaasAv3ZonesZoneIdGetErrors = {
+export type GetZoneErrors = {
   /**
    * Not Found
    */
@@ -2813,20 +3111,18 @@ export type GetZoneMaasAv3ZonesZoneIdGetErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type GetZoneMaasAv3ZonesZoneIdGetError =
-  GetZoneMaasAv3ZonesZoneIdGetErrors[keyof GetZoneMaasAv3ZonesZoneIdGetErrors];
+export type GetZoneError = GetZoneErrors[keyof GetZoneErrors];
 
-export type GetZoneMaasAv3ZonesZoneIdGetResponses = {
+export type GetZoneResponses = {
   /**
    * Successful Response
    */
   200: ZoneResponse;
 };
 
-export type GetZoneMaasAv3ZonesZoneIdGetResponse =
-  GetZoneMaasAv3ZonesZoneIdGetResponses[keyof GetZoneMaasAv3ZonesZoneIdGetResponses];
+export type GetZoneResponse = GetZoneResponses[keyof GetZoneResponses];
 
-export type UpdateZoneMaasAv3ZonesZoneIdPutData = {
+export type UpdateZoneData = {
   body: ZoneRequest;
   path: {
     zone_id: number;
@@ -2835,7 +3131,7 @@ export type UpdateZoneMaasAv3ZonesZoneIdPutData = {
   url: "/MAAS/a/v3/zones/{zone_id}";
 };
 
-export type UpdateZoneMaasAv3ZonesZoneIdPutErrors = {
+export type UpdateZoneErrors = {
   /**
    * Not Found
    */
@@ -2846,15 +3142,43 @@ export type UpdateZoneMaasAv3ZonesZoneIdPutErrors = {
   422: ValidationErrorBodyResponse;
 };
 
-export type UpdateZoneMaasAv3ZonesZoneIdPutError =
-  UpdateZoneMaasAv3ZonesZoneIdPutErrors[keyof UpdateZoneMaasAv3ZonesZoneIdPutErrors];
+export type UpdateZoneError = UpdateZoneErrors[keyof UpdateZoneErrors];
 
-export type UpdateZoneMaasAv3ZonesZoneIdPutResponses = {
+export type UpdateZoneResponses = {
   /**
    * Successful Response
    */
   200: ZoneResponse;
 };
 
-export type UpdateZoneMaasAv3ZonesZoneIdPutResponse =
-  UpdateZoneMaasAv3ZonesZoneIdPutResponses[keyof UpdateZoneMaasAv3ZonesZoneIdPutResponses];
+export type UpdateZoneResponse = UpdateZoneResponses[keyof UpdateZoneResponses];
+
+export type ListZonesWithSummaryData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    size?: number;
+  };
+  url: "/MAAS/a/v3/zones_with_summary";
+};
+
+export type ListZonesWithSummaryErrors = {
+  /**
+   * Unprocessable Entity
+   */
+  422: ValidationErrorBodyResponse;
+};
+
+export type ListZonesWithSummaryError =
+  ListZonesWithSummaryErrors[keyof ListZonesWithSummaryErrors];
+
+export type ListZonesWithSummaryResponses = {
+  /**
+   * Successful Response
+   */
+  200: ZonesWithSummaryListResponse;
+};
+
+export type ListZonesWithSummaryResponse =
+  ListZonesWithSummaryResponses[keyof ListZonesWithSummaryResponses];

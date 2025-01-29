@@ -49,7 +49,7 @@ export const ZoneColumn = ({
   const zones = useZones();
   const toggleMenu = useToggleMenu(onToggleMenu || null);
   let zoneLinks;
-  const machineZones = zones.data?.filter(
+  const machineZones = zones.data?.items?.filter(
     (zone) => zone.id !== machine?.zone.id
   );
   if (machine?.actions.includes(NodeActions.SET_ZONE)) {

@@ -8,168 +8,195 @@ import {
 } from "@hey-api/client-fetch";
 
 import type {
-  AccessTokenMaasAv3AuthAccessTokenGetData,
-  AccessTokenMaasAv3AuthAccessTokenGetResponse,
-  AccessTokenMaasAv3AuthAccessTokenGetError,
-  LoginMaasAv3AuthLoginPostData,
-  LoginMaasAv3AuthLoginPostResponse,
-  LoginMaasAv3AuthLoginPostError,
-  ListEventsMaasAv3EventsGetData,
-  ListEventsMaasAv3EventsGetResponse,
-  ListEventsMaasAv3EventsGetError,
-  ListFabricsMaasAv3FabricsGetData,
-  ListFabricsMaasAv3FabricsGetResponse,
-  ListFabricsMaasAv3FabricsGetError,
-  CreateFabricMaasAv3FabricsPostData,
-  CreateFabricMaasAv3FabricsPostResponse,
-  CreateFabricMaasAv3FabricsPostError,
-  DeleteFabricMaasAv3FabricsFabricIdDeleteData,
-  DeleteFabricMaasAv3FabricsFabricIdDeleteResponse,
-  DeleteFabricMaasAv3FabricsFabricIdDeleteError,
-  GetFabricMaasAv3FabricsFabricIdGetData,
-  GetFabricMaasAv3FabricsFabricIdGetResponse,
-  GetFabricMaasAv3FabricsFabricIdGetError,
-  UpdateFabricMaasAv3FabricsFabricIdPutData,
-  UpdateFabricMaasAv3FabricsFabricIdPutResponse,
-  UpdateFabricMaasAv3FabricsFabricIdPutError,
-  ListInterfacesMaasAv3MachinesNodeIdInterfacesGetData,
-  ListInterfacesMaasAv3MachinesNodeIdInterfacesGetResponse,
-  ListInterfacesMaasAv3MachinesNodeIdInterfacesGetError,
-  ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetData,
-  ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetResponse,
-  ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetError,
-  CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostData,
-  CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostResponse,
-  CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostError,
-  DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteData,
-  DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteResponse,
-  DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteError,
-  UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutData,
-  UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutResponse,
-  UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutError,
-  GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetData,
-  GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetResponse,
-  GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetError,
-  GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetData,
-  GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetResponse,
-  GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetError,
-  ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetData,
-  ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetResponse,
-  ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetError,
-  ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetData,
-  ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetResponse,
-  ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetError,
-  ListMachinesMaasAv3MachinesGetData,
-  ListMachinesMaasAv3MachinesGetResponse,
-  ListMachinesMaasAv3MachinesGetError,
-  ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetData,
-  ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetResponse,
-  ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetError,
-  CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostData,
-  CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostResponse,
-  CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostError,
-  DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteData,
-  DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteResponse,
-  DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteError,
-  UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutData,
-  UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutResponse,
-  UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutError,
-  GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetData,
-  GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetResponse,
-  GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetError,
-  ListResourcePoolsMaasAv3ResourcePoolsGetData,
-  ListResourcePoolsMaasAv3ResourcePoolsGetResponse,
-  ListResourcePoolsMaasAv3ResourcePoolsGetError,
-  CreateResourcePoolMaasAv3ResourcePoolsPostData,
-  CreateResourcePoolMaasAv3ResourcePoolsPostResponse,
-  CreateResourcePoolMaasAv3ResourcePoolsPostError,
-  GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetData,
-  GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetResponse,
-  GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetError,
-  UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutData,
-  UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutResponse,
-  UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutError,
-  ListSpacesMaasAv3SpacesGetData,
-  ListSpacesMaasAv3SpacesGetResponse,
-  ListSpacesMaasAv3SpacesGetError,
-  CreateSpaceMaasAv3SpacesPostData,
-  CreateSpaceMaasAv3SpacesPostResponse,
-  CreateSpaceMaasAv3SpacesPostError,
-  DeleteSpaceMaasAv3SpacesSpaceIdDeleteData,
-  DeleteSpaceMaasAv3SpacesSpaceIdDeleteResponse,
-  DeleteSpaceMaasAv3SpacesSpaceIdDeleteError,
-  GetSpaceMaasAv3SpacesSpaceIdGetData,
-  GetSpaceMaasAv3SpacesSpaceIdGetResponse,
-  GetSpaceMaasAv3SpacesSpaceIdGetError,
-  UpdateSpaceMaasAv3SpacesSpaceIdPutData,
-  UpdateSpaceMaasAv3SpacesSpaceIdPutResponse,
-  UpdateSpaceMaasAv3SpacesSpaceIdPutError,
-  ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetData,
-  ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetResponse,
-  ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetError,
-  CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostData,
-  CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostResponse,
-  CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostError,
-  DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteData,
-  DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteResponse,
-  DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteError,
-  UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutData,
-  UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutResponse,
-  UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutError,
-  GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetData,
-  GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetResponse,
-  GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetError,
-  GetUserInfoMaasAv3UsersMeGetData,
-  GetUserInfoMaasAv3UsersMeGetResponse,
-  GetUserInfoMaasAv3UsersMeGetError,
-  ListUserSshkeysMaasAv3UsersMeSshkeysGetData,
-  ListUserSshkeysMaasAv3UsersMeSshkeysGetResponse,
-  ListUserSshkeysMaasAv3UsersMeSshkeysGetError,
-  GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetData,
-  GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetResponse,
-  GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetError,
-  ListUsersMaasAv3UsersGetData,
-  ListUsersMaasAv3UsersGetResponse,
-  ListUsersMaasAv3UsersGetError,
-  CreateUserMaasAv3UsersPostData,
-  CreateUserMaasAv3UsersPostResponse,
-  CreateUserMaasAv3UsersPostError,
-  GetUserMaasAv3UsersUserIdGetData,
-  GetUserMaasAv3UsersUserIdGetResponse,
-  GetUserMaasAv3UsersUserIdGetError,
-  UpdateUserMaasAv3UsersUserIdPutData,
-  UpdateUserMaasAv3UsersUserIdPutResponse,
-  UpdateUserMaasAv3UsersUserIdPutError,
-  ListFabricVlansMaasAv3FabricsFabricIdVlansGetData,
-  ListFabricVlansMaasAv3FabricsFabricIdVlansGetResponse,
-  ListFabricVlansMaasAv3FabricsFabricIdVlansGetError,
-  CreateFabricVlanMaasAv3FabricsFabricIdVlansPostData,
-  CreateFabricVlanMaasAv3FabricsFabricIdVlansPostResponse,
-  CreateFabricVlanMaasAv3FabricsFabricIdVlansPostError,
-  DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteData,
-  DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteResponse,
-  DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteError,
-  GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetData,
-  GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetResponse,
-  GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetError,
-  UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutData,
-  UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutResponse,
-  UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutError,
-  ListZonesMaasAv3ZonesGetData,
-  ListZonesMaasAv3ZonesGetResponse,
-  ListZonesMaasAv3ZonesGetError,
-  CreateZoneMaasAv3ZonesPostData,
-  CreateZoneMaasAv3ZonesPostResponse,
-  CreateZoneMaasAv3ZonesPostError,
-  DeleteZoneMaasAv3ZonesZoneIdDeleteData,
-  DeleteZoneMaasAv3ZonesZoneIdDeleteResponse,
-  DeleteZoneMaasAv3ZonesZoneIdDeleteError,
-  GetZoneMaasAv3ZonesZoneIdGetData,
-  GetZoneMaasAv3ZonesZoneIdGetResponse,
-  GetZoneMaasAv3ZonesZoneIdGetError,
-  UpdateZoneMaasAv3ZonesZoneIdPutData,
-  UpdateZoneMaasAv3ZonesZoneIdPutResponse,
-  UpdateZoneMaasAv3ZonesZoneIdPutError,
+  AccessTokenData,
+  AccessTokenResponse2,
+  AccessTokenError,
+  LoginData,
+  LoginResponse,
+  LoginError,
+  ListEventsData,
+  ListEventsResponse,
+  ListEventsError,
+  ListFabricsData,
+  ListFabricsResponse,
+  ListFabricsError,
+  CreateFabricData,
+  CreateFabricResponse,
+  CreateFabricError,
+  DeleteFabricData,
+  DeleteFabricResponse,
+  DeleteFabricError,
+  GetFabricData,
+  GetFabricResponse,
+  GetFabricError,
+  UpdateFabricData,
+  UpdateFabricResponse,
+  UpdateFabricError,
+  ListInterfacesData,
+  ListInterfacesResponse,
+  ListInterfacesError,
+  ListFabricVlanSubnetIprangeData,
+  ListFabricVlanSubnetIprangeResponse,
+  ListFabricVlanSubnetIprangeError,
+  CreateFabricVlanSubnetIprangeData,
+  CreateFabricVlanSubnetIprangeResponse,
+  CreateFabricVlanSubnetIprangeError,
+  DeleteFabricVlanSubnetIprangeData,
+  DeleteFabricVlanSubnetIprangeResponse,
+  DeleteFabricVlanSubnetIprangeError,
+  UpdateFabricVlanSubnetIprangeData,
+  UpdateFabricVlanSubnetIprangeResponse,
+  UpdateFabricVlanSubnetIprangeError,
+  GetFabricVlanSubnetIprangeData,
+  GetFabricVlanSubnetIprangeResponse,
+  GetFabricVlanSubnetIprangeError,
+  GetMachinePowerParametersData,
+  GetMachinePowerParametersResponse,
+  GetMachinePowerParametersError,
+  ListMachinePciDevicesData,
+  ListMachinePciDevicesResponse,
+  ListMachinePciDevicesError,
+  ListMachineUsbDevicesData,
+  ListMachineUsbDevicesResponse,
+  ListMachineUsbDevicesError,
+  ListMachinesData,
+  ListMachinesResponse,
+  ListMachinesError,
+  ListFabricVlanSubnetReservedIpsData,
+  ListFabricVlanSubnetReservedIpsResponse,
+  ListFabricVlanSubnetReservedIpsError,
+  CreateFabricVlanSubnetReservedIpData,
+  CreateFabricVlanSubnetReservedIpResponse,
+  CreateFabricVlanSubnetReservedIpError,
+  DeleteFabricVlanSubnetReservedIpData,
+  DeleteFabricVlanSubnetReservedIpResponse,
+  DeleteFabricVlanSubnetReservedIpError,
+  UpdateFabricVlanSubnetReservedIpData,
+  UpdateFabricVlanSubnetReservedIpResponse,
+  UpdateFabricVlanSubnetReservedIpError,
+  GetFabricVlanSubnetReservedIpData,
+  GetFabricVlanSubnetReservedIpResponse,
+  GetFabricVlanSubnetReservedIpError,
+  ListResourcePoolsData,
+  ListResourcePoolsResponse,
+  ListResourcePoolsError,
+  CreateResourcePoolData,
+  CreateResourcePoolResponse,
+  CreateResourcePoolError,
+  GetResourcePoolData,
+  GetResourcePoolResponse,
+  GetResourcePoolError,
+  UpdateResourcePoolData,
+  UpdateResourcePoolResponse,
+  UpdateResourcePoolError,
+  ListSpacesData,
+  ListSpacesResponse,
+  ListSpacesError,
+  CreateSpaceData,
+  CreateSpaceResponse,
+  CreateSpaceError,
+  DeleteSpaceData,
+  DeleteSpaceResponse,
+  DeleteSpaceError,
+  GetSpaceData,
+  GetSpaceResponse,
+  GetSpaceError,
+  UpdateSpaceData,
+  UpdateSpaceResponse,
+  UpdateSpaceError,
+  ListUserSshkeysData,
+  ListUserSshkeysResponse,
+  ListUserSshkeysError,
+  CreateUserSshkeysData,
+  CreateUserSshkeysResponse,
+  CreateUserSshkeysError,
+  DeleteUserSshkeyData,
+  DeleteUserSshkeyResponse,
+  DeleteUserSshkeyError,
+  GetUserSshkeyData,
+  GetUserSshkeyResponse,
+  GetUserSshkeyError,
+  ImportUserSshkeysData,
+  ImportUserSshkeysResponse,
+  ImportUserSshkeysError,
+  GetUserSslkeysData,
+  GetUserSslkeysResponse,
+  GetUserSslkeysError,
+  CreateUserSslkeyData,
+  CreateUserSslkeyResponse,
+  CreateUserSslkeyError,
+  DeleteUserSslkeyData,
+  DeleteUserSslkeyResponse,
+  DeleteUserSslkeyError,
+  GetUserSslkeyData,
+  GetUserSslkeyResponse,
+  GetUserSslkeyError,
+  ListFabricVlanSubnetsData,
+  ListFabricVlanSubnetsResponse,
+  ListFabricVlanSubnetsError,
+  CreateFabricVlanSubnetData,
+  CreateFabricVlanSubnetResponse,
+  CreateFabricVlanSubnetError,
+  DeleteFabricVlanSubnetData,
+  DeleteFabricVlanSubnetResponse,
+  DeleteFabricVlanSubnetError,
+  UpdateFabricVlanSubnetData,
+  UpdateFabricVlanSubnetResponse,
+  UpdateFabricVlanSubnetError,
+  GetFabricVlanSubnetData,
+  GetFabricVlanSubnetResponse,
+  GetFabricVlanSubnetError,
+  GetUserInfoData,
+  GetUserInfoResponse,
+  GetUserInfoError,
+  ListUsersData,
+  ListUsersResponse,
+  ListUsersError,
+  CreateUserData,
+  CreateUserResponse,
+  CreateUserError,
+  DeleteUserData,
+  DeleteUserResponse,
+  DeleteUserError,
+  GetUserData,
+  GetUserResponse,
+  GetUserError,
+  UpdateUserData,
+  UpdateUserResponse,
+  UpdateUserError,
+  ListFabricVlansData,
+  ListFabricVlansResponse,
+  ListFabricVlansError,
+  CreateFabricVlanData,
+  CreateFabricVlanResponse,
+  CreateFabricVlanError,
+  DeleteFabricVlanData,
+  DeleteFabricVlanResponse,
+  DeleteFabricVlanError,
+  GetFabricVlanData,
+  GetFabricVlanResponse,
+  GetFabricVlanError,
+  UpdateFabricVlanData,
+  UpdateFabricVlanResponse,
+  UpdateFabricVlanError,
+  ListZonesData,
+  ListZonesResponse,
+  ListZonesError,
+  CreateZoneData,
+  CreateZoneResponse,
+  CreateZoneError,
+  DeleteZoneData,
+  DeleteZoneResponse,
+  DeleteZoneError,
+  GetZoneData,
+  GetZoneResponse,
+  GetZoneError,
+  UpdateZoneData,
+  UpdateZoneResponse,
+  UpdateZoneError,
+  ListZonesWithSummaryData,
+  ListZonesWithSummaryResponse,
+  ListZonesWithSummaryError,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -177,14 +204,12 @@ export const client = createClient(createConfig());
 /**
  * Access Token
  */
-export const accessTokenMaasAV3AuthAccessTokenGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<AccessTokenMaasAv3AuthAccessTokenGetData, ThrowOnError>
+export const accessToken = <ThrowOnError extends boolean = false>(
+  options?: Options<AccessTokenData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    AccessTokenMaasAv3AuthAccessTokenGetResponse,
-    AccessTokenMaasAv3AuthAccessTokenGetError,
+    AccessTokenResponse2,
+    AccessTokenError,
     ThrowOnError
   >({
     ...options,
@@ -201,12 +226,12 @@ export const accessTokenMaasAV3AuthAccessTokenGet = <
 /**
  * Login
  */
-export const loginMaasAV3AuthLoginPost = <ThrowOnError extends boolean = false>(
-  options: Options<LoginMaasAv3AuthLoginPostData, ThrowOnError>
+export const login = <ThrowOnError extends boolean = false>(
+  options: Options<LoginData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
-    LoginMaasAv3AuthLoginPostResponse,
-    LoginMaasAv3AuthLoginPostError,
+    LoginResponse,
+    LoginError,
     ThrowOnError
   >({
     ...options,
@@ -222,14 +247,12 @@ export const loginMaasAV3AuthLoginPost = <ThrowOnError extends boolean = false>(
 /**
  * List Events
  */
-export const listEventsMaasAV3EventsGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<ListEventsMaasAv3EventsGetData, ThrowOnError>
+export const listEvents = <ThrowOnError extends boolean = false>(
+  options?: Options<ListEventsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListEventsMaasAv3EventsGetResponse,
-    ListEventsMaasAv3EventsGetError,
+    ListEventsResponse,
+    ListEventsError,
     ThrowOnError
   >({
     ...options,
@@ -246,14 +269,12 @@ export const listEventsMaasAV3EventsGet = <
 /**
  * List Fabrics
  */
-export const listFabricsMaasAV3FabricsGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<ListFabricsMaasAv3FabricsGetData, ThrowOnError>
+export const listFabrics = <ThrowOnError extends boolean = false>(
+  options?: Options<ListFabricsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListFabricsMaasAv3FabricsGetResponse,
-    ListFabricsMaasAv3FabricsGetError,
+    ListFabricsResponse,
+    ListFabricsError,
     ThrowOnError
   >({
     ...options,
@@ -270,14 +291,12 @@ export const listFabricsMaasAV3FabricsGet = <
 /**
  * Create Fabric
  */
-export const createFabricMaasAV3FabricsPost = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<CreateFabricMaasAv3FabricsPostData, ThrowOnError>
+export const createFabric = <ThrowOnError extends boolean = false>(
+  options: Options<CreateFabricData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
-    CreateFabricMaasAv3FabricsPostResponse,
-    CreateFabricMaasAv3FabricsPostError,
+    CreateFabricResponse,
+    CreateFabricError,
     ThrowOnError
   >({
     ...options,
@@ -298,14 +317,12 @@ export const createFabricMaasAV3FabricsPost = <
 /**
  * Delete Fabric
  */
-export const deleteFabricMaasAV3FabricsFabricIdDelete = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<DeleteFabricMaasAv3FabricsFabricIdDeleteData, ThrowOnError>
+export const deleteFabric = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteFabricData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
-    DeleteFabricMaasAv3FabricsFabricIdDeleteResponse,
-    DeleteFabricMaasAv3FabricsFabricIdDeleteError,
+    DeleteFabricResponse,
+    DeleteFabricError,
     ThrowOnError
   >({
     ...options,
@@ -322,14 +339,12 @@ export const deleteFabricMaasAV3FabricsFabricIdDelete = <
 /**
  * Get Fabric
  */
-export const getFabricMaasAV3FabricsFabricIdGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<GetFabricMaasAv3FabricsFabricIdGetData, ThrowOnError>
+export const getFabric = <ThrowOnError extends boolean = false>(
+  options: Options<GetFabricData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetFabricMaasAv3FabricsFabricIdGetResponse,
-    GetFabricMaasAv3FabricsFabricIdGetError,
+    GetFabricResponse,
+    GetFabricError,
     ThrowOnError
   >({
     ...options,
@@ -346,14 +361,12 @@ export const getFabricMaasAV3FabricsFabricIdGet = <
 /**
  * Update Fabric
  */
-export const updateFabricMaasAV3FabricsFabricIdPut = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<UpdateFabricMaasAv3FabricsFabricIdPutData, ThrowOnError>
+export const updateFabric = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateFabricData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
-    UpdateFabricMaasAv3FabricsFabricIdPutResponse,
-    UpdateFabricMaasAv3FabricsFabricIdPutError,
+    UpdateFabricResponse,
+    UpdateFabricError,
     ThrowOnError
   >({
     ...options,
@@ -374,17 +387,12 @@ export const updateFabricMaasAV3FabricsFabricIdPut = <
 /**
  * List Interfaces
  */
-export const listInterfacesMaasAV3MachinesNodeIdInterfacesGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    ListInterfacesMaasAv3MachinesNodeIdInterfacesGetData,
-    ThrowOnError
-  >
+export const listInterfaces = <ThrowOnError extends boolean = false>(
+  options: Options<ListInterfacesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListInterfacesMaasAv3MachinesNodeIdInterfacesGetResponse,
-    ListInterfacesMaasAv3MachinesNodeIdInterfacesGetError,
+    ListInterfacesResponse,
+    ListInterfacesError,
     ThrowOnError
   >({
     ...options,
@@ -401,181 +409,162 @@ export const listInterfacesMaasAV3MachinesNodeIdInterfacesGet = <
 /**
  * List Fabric Vlan Subnet Iprange
  */
-export const listFabricVlanSubnetIprangeMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGet =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).get<
-      ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetResponse,
-      ListFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesGetError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
-    });
-  };
+export const listFabricVlanSubnetIprange = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ListFabricVlanSubnetIprangeData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListFabricVlanSubnetIprangeResponse,
+    ListFabricVlanSubnetIprangeError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
+  });
+};
 
 /**
  * Create Fabric Vlan Subnet Iprange
  */
-export const createFabricVlanSubnetIprangeMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPost =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).post<
-      CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostResponse,
-      CreateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesPostError,
-      ThrowOnError
-    >({
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
+export const createFabricVlanSubnetIprange = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<CreateFabricVlanSubnetIprangeData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateFabricVlanSubnetIprangeResponse,
+    CreateFabricVlanSubnetIprangeError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
       },
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
-    });
-  };
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges",
+  });
+};
 
 /**
  * Delete Fabric Vlan Subnet Iprange
  */
-export const deleteFabricVlanSubnetIprangeMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDelete =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).delete<
-      DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteResponse,
-      DeleteFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdDeleteError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
-    });
-  };
+export const deleteFabricVlanSubnetIprange = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<DeleteFabricVlanSubnetIprangeData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteFabricVlanSubnetIprangeResponse,
+    DeleteFabricVlanSubnetIprangeError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
+  });
+};
 
 /**
  * Update Fabric Vlan Subnet Iprange
  */
-export const updateFabricVlanSubnetIprangeMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPut =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).put<
-      UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutResponse,
-      UpdateFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIprangeIdPutError,
-      ThrowOnError
-    >({
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
+export const updateFabricVlanSubnetIprange = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<UpdateFabricVlanSubnetIprangeData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    UpdateFabricVlanSubnetIprangeResponse,
+    UpdateFabricVlanSubnetIprangeError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
       },
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
-    });
-  };
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{iprange_id}",
+  });
+};
 
 /**
  * Get Fabric Vlan Subnet Iprange
  */
-export const getFabricVlanSubnetIprangeMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGet =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).get<
-      GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetResponse,
-      GetFabricVlanSubnetIprangeMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdIprangesIdGetError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}",
-    });
-  };
+export const getFabricVlanSubnetIprange = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetFabricVlanSubnetIprangeData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetFabricVlanSubnetIprangeResponse,
+    GetFabricVlanSubnetIprangeError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/ipranges/{id}",
+  });
+};
 
 /**
  * Get Machine Power Parameters
  */
-export const getMachinePowerParametersMaasAV3MachinesSystemIdPowerParametersGet =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).get<
-      GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetResponse,
-      GetMachinePowerParametersMaasAv3MachinesSystemIdPowerParametersGetError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/machines/{system_id}/power_parameters",
-    });
-  };
+export const getMachinePowerParameters = <ThrowOnError extends boolean = false>(
+  options: Options<GetMachinePowerParametersData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetMachinePowerParametersResponse,
+    GetMachinePowerParametersError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/machines/{system_id}/power_parameters",
+  });
+};
 
 /**
  * List Machine Pci Devices
  */
-export const listMachinePciDevicesMaasAV3MachinesSystemIdPciDevicesGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetData,
-    ThrowOnError
-  >
+export const listMachinePciDevices = <ThrowOnError extends boolean = false>(
+  options: Options<ListMachinePciDevicesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetResponse,
-    ListMachinePciDevicesMaasAv3MachinesSystemIdPciDevicesGetError,
+    ListMachinePciDevicesResponse,
+    ListMachinePciDevicesError,
     ThrowOnError
   >({
     ...options,
@@ -592,17 +581,12 @@ export const listMachinePciDevicesMaasAV3MachinesSystemIdPciDevicesGet = <
 /**
  * List Machine Usb Devices
  */
-export const listMachineUsbDevicesMaasAV3MachinesSystemIdUsbDevicesGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetData,
-    ThrowOnError
-  >
+export const listMachineUsbDevices = <ThrowOnError extends boolean = false>(
+  options: Options<ListMachineUsbDevicesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetResponse,
-    ListMachineUsbDevicesMaasAv3MachinesSystemIdUsbDevicesGetError,
+    ListMachineUsbDevicesResponse,
+    ListMachineUsbDevicesError,
     ThrowOnError
   >({
     ...options,
@@ -619,14 +603,12 @@ export const listMachineUsbDevicesMaasAV3MachinesSystemIdUsbDevicesGet = <
 /**
  * List Machines
  */
-export const listMachinesMaasAV3MachinesGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<ListMachinesMaasAv3MachinesGetData, ThrowOnError>
+export const listMachines = <ThrowOnError extends boolean = false>(
+  options?: Options<ListMachinesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListMachinesMaasAv3MachinesGetResponse,
-    ListMachinesMaasAv3MachinesGetError,
+    ListMachinesResponse,
+    ListMachinesError,
     ThrowOnError
   >({
     ...options,
@@ -643,152 +625,140 @@ export const listMachinesMaasAV3MachinesGet = <
 /**
  * List Fabric Vlan Subnet Reserved Ips
  */
-export const listFabricVlanSubnetReservedIpsMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGet =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).get<
-      ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetResponse,
-      ListFabricVlanSubnetReservedIpsMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsGetError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips",
-    });
-  };
+export const listFabricVlanSubnetReservedIps = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ListFabricVlanSubnetReservedIpsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListFabricVlanSubnetReservedIpsResponse,
+    ListFabricVlanSubnetReservedIpsError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips",
+  });
+};
 
 /**
  * Create Fabric Vlan Subnet Reserved Ip
  */
-export const createFabricVlanSubnetReservedIpMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPost =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).post<
-      CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostResponse,
-      CreateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsPostError,
-      ThrowOnError
-    >({
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
+export const createFabricVlanSubnetReservedIp = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<CreateFabricVlanSubnetReservedIpData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateFabricVlanSubnetReservedIpResponse,
+    CreateFabricVlanSubnetReservedIpError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
       },
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips",
-    });
-  };
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips",
+  });
+};
 
 /**
  * Delete Fabric Vlan Subnet Reserved Ip
  */
-export const deleteFabricVlanSubnetReservedIpMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDelete =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).delete<
-      DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteResponse,
-      DeleteFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdDeleteError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}",
-    });
-  };
+export const deleteFabricVlanSubnetReservedIp = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<DeleteFabricVlanSubnetReservedIpData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteFabricVlanSubnetReservedIpResponse,
+    DeleteFabricVlanSubnetReservedIpError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}",
+  });
+};
 
 /**
  * Update Fabric Vlan Subnet Reserved Ip
  */
-export const updateFabricVlanSubnetReservedIpMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPut =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).put<
-      UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutResponse,
-      UpdateFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsIdPutError,
-      ThrowOnError
-    >({
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
+export const updateFabricVlanSubnetReservedIp = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<UpdateFabricVlanSubnetReservedIpData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    UpdateFabricVlanSubnetReservedIpResponse,
+    UpdateFabricVlanSubnetReservedIpError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
       },
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}",
-    });
-  };
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{id}",
+  });
+};
 
 /**
  * Get Fabric Vlan Subnet Reserved Ip
  */
-export const getFabricVlanSubnetReservedIpMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGet =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).get<
-      GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetResponse,
-      GetFabricVlanSubnetReservedIpMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdReservedIpsReservedipIdGetError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{reservedip_id}",
-    });
-  };
+export const getFabricVlanSubnetReservedIp = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetFabricVlanSubnetReservedIpData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetFabricVlanSubnetReservedIpResponse,
+    GetFabricVlanSubnetReservedIpError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}/reserved_ips/{reservedip_id}",
+  });
+};
 
 /**
  * List Resource Pools
  */
-export const listResourcePoolsMaasAV3ResourcePoolsGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<ListResourcePoolsMaasAv3ResourcePoolsGetData, ThrowOnError>
+export const listResourcePools = <ThrowOnError extends boolean = false>(
+  options?: Options<ListResourcePoolsData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListResourcePoolsMaasAv3ResourcePoolsGetResponse,
-    ListResourcePoolsMaasAv3ResourcePoolsGetError,
+    ListResourcePoolsResponse,
+    ListResourcePoolsError,
     ThrowOnError
   >({
     ...options,
@@ -805,14 +775,12 @@ export const listResourcePoolsMaasAV3ResourcePoolsGet = <
 /**
  * Create Resource Pool
  */
-export const createResourcePoolMaasAV3ResourcePoolsPost = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<CreateResourcePoolMaasAv3ResourcePoolsPostData, ThrowOnError>
+export const createResourcePool = <ThrowOnError extends boolean = false>(
+  options: Options<CreateResourcePoolData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
-    CreateResourcePoolMaasAv3ResourcePoolsPostResponse,
-    CreateResourcePoolMaasAv3ResourcePoolsPostError,
+    CreateResourcePoolResponse,
+    CreateResourcePoolError,
     ThrowOnError
   >({
     ...options,
@@ -833,17 +801,12 @@ export const createResourcePoolMaasAV3ResourcePoolsPost = <
 /**
  * Get Resource Pool
  */
-export const getResourcePoolMaasAV3ResourcePoolsResourcePoolIdGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetData,
-    ThrowOnError
-  >
+export const getResourcePool = <ThrowOnError extends boolean = false>(
+  options: Options<GetResourcePoolData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetResponse,
-    GetResourcePoolMaasAv3ResourcePoolsResourcePoolIdGetError,
+    GetResourcePoolResponse,
+    GetResourcePoolError,
     ThrowOnError
   >({
     ...options,
@@ -860,17 +823,12 @@ export const getResourcePoolMaasAV3ResourcePoolsResourcePoolIdGet = <
 /**
  * Update Resource Pool
  */
-export const updateResourcePoolMaasAV3ResourcePoolsResourcePoolIdPut = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutData,
-    ThrowOnError
-  >
+export const updateResourcePool = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateResourcePoolData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
-    UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutResponse,
-    UpdateResourcePoolMaasAv3ResourcePoolsResourcePoolIdPutError,
+    UpdateResourcePoolResponse,
+    UpdateResourcePoolError,
     ThrowOnError
   >({
     ...options,
@@ -891,14 +849,12 @@ export const updateResourcePoolMaasAV3ResourcePoolsResourcePoolIdPut = <
 /**
  * List Spaces
  */
-export const listSpacesMaasAV3SpacesGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<ListSpacesMaasAv3SpacesGetData, ThrowOnError>
+export const listSpaces = <ThrowOnError extends boolean = false>(
+  options?: Options<ListSpacesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListSpacesMaasAv3SpacesGetResponse,
-    ListSpacesMaasAv3SpacesGetError,
+    ListSpacesResponse,
+    ListSpacesError,
     ThrowOnError
   >({
     ...options,
@@ -915,14 +871,12 @@ export const listSpacesMaasAV3SpacesGet = <
 /**
  * Create Space
  */
-export const createSpaceMaasAV3SpacesPost = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<CreateSpaceMaasAv3SpacesPostData, ThrowOnError>
+export const createSpace = <ThrowOnError extends boolean = false>(
+  options: Options<CreateSpaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
-    CreateSpaceMaasAv3SpacesPostResponse,
-    CreateSpaceMaasAv3SpacesPostError,
+    CreateSpaceResponse,
+    CreateSpaceError,
     ThrowOnError
   >({
     ...options,
@@ -943,14 +897,12 @@ export const createSpaceMaasAV3SpacesPost = <
 /**
  * Delete Space
  */
-export const deleteSpaceMaasAV3SpacesSpaceIdDelete = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<DeleteSpaceMaasAv3SpacesSpaceIdDeleteData, ThrowOnError>
+export const deleteSpace = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteSpaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
-    DeleteSpaceMaasAv3SpacesSpaceIdDeleteResponse,
-    DeleteSpaceMaasAv3SpacesSpaceIdDeleteError,
+    DeleteSpaceResponse,
+    DeleteSpaceError,
     ThrowOnError
   >({
     ...options,
@@ -967,14 +919,12 @@ export const deleteSpaceMaasAV3SpacesSpaceIdDelete = <
 /**
  * Get Space
  */
-export const getSpaceMaasAV3SpacesSpaceIdGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<GetSpaceMaasAv3SpacesSpaceIdGetData, ThrowOnError>
+export const getSpace = <ThrowOnError extends boolean = false>(
+  options: Options<GetSpaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetSpaceMaasAv3SpacesSpaceIdGetResponse,
-    GetSpaceMaasAv3SpacesSpaceIdGetError,
+    GetSpaceResponse,
+    GetSpaceError,
     ThrowOnError
   >({
     ...options,
@@ -991,14 +941,12 @@ export const getSpaceMaasAV3SpacesSpaceIdGet = <
 /**
  * Update Space
  */
-export const updateSpaceMaasAV3SpacesSpaceIdPut = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<UpdateSpaceMaasAv3SpacesSpaceIdPutData, ThrowOnError>
+export const updateSpace = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateSpaceData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
-    UpdateSpaceMaasAv3SpacesSpaceIdPutResponse,
-    UpdateSpaceMaasAv3SpacesSpaceIdPutError,
+    UpdateSpaceResponse,
+    UpdateSpaceError,
     ThrowOnError
   >({
     ...options,
@@ -1017,178 +965,14 @@ export const updateSpaceMaasAV3SpacesSpaceIdPut = <
 };
 
 /**
- * List Fabric Vlan Subnets
- */
-export const listFabricVlanSubnetsMaasAV3FabricsFabricIdVlansVlanIdSubnetsGet =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).get<
-      ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetResponse,
-      ListFabricVlanSubnetsMaasAv3FabricsFabricIdVlansVlanIdSubnetsGetError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets",
-    });
-  };
-
-/**
- * Create Fabric Vlan Subnet
- */
-export const createFabricVlanSubnetMaasAV3FabricsFabricIdVlansVlanIdSubnetsPost =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).post<
-      CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostResponse,
-      CreateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsPostError,
-      ThrowOnError
-    >({
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets",
-    });
-  };
-
-/**
- * Delete Fabric Vlan Subnet
- */
-export const deleteFabricVlanSubnetMaasAV3FabricsFabricIdVlansVlanIdSubnetsIdDelete =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).delete<
-      DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteResponse,
-      DeleteFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdDeleteError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}",
-    });
-  };
-
-/**
- * Update Fabric Vlan Subnet
- */
-export const updateFabricVlanSubnetMaasAV3FabricsFabricIdVlansVlanIdSubnetsIdPut =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).put<
-      UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutResponse,
-      UpdateFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsIdPutError,
-      ThrowOnError
-    >({
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}",
-    });
-  };
-
-/**
- * Get Fabric Vlan Subnet
- */
-export const getFabricVlanSubnetMaasAV3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGet =
-  <ThrowOnError extends boolean = false>(
-    options: Options<
-      GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetData,
-      ThrowOnError
-    >
-  ) => {
-    return (options?.client ?? client).get<
-      GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetResponse,
-      GetFabricVlanSubnetMaasAv3FabricsFabricIdVlansVlanIdSubnetsSubnetIdGetError,
-      ThrowOnError
-    >({
-      ...options,
-      security: [
-        {
-          scheme: "bearer",
-          type: "http",
-        },
-      ],
-      url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}",
-    });
-  };
-
-/**
- * Get User Info
- */
-export const getUserInfoMaasAV3UsersMeGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<GetUserInfoMaasAv3UsersMeGetData, ThrowOnError>
-) => {
-  return (options?.client ?? client).get<
-    GetUserInfoMaasAv3UsersMeGetResponse,
-    GetUserInfoMaasAv3UsersMeGetError,
-    ThrowOnError
-  >({
-    ...options,
-    security: [
-      {
-        scheme: "bearer",
-        type: "http",
-      },
-    ],
-    url: "/MAAS/a/v3/users/me",
-  });
-};
-
-/**
  * List User Sshkeys
  */
-export const listUserSshkeysMaasAV3UsersMeSshkeysGet = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<ListUserSshkeysMaasAv3UsersMeSshkeysGetData, ThrowOnError>
+export const listUserSshkeys = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUserSshkeysData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListUserSshkeysMaasAv3UsersMeSshkeysGetResponse,
-    ListUserSshkeysMaasAv3UsersMeSshkeysGetError,
+    ListUserSshkeysResponse,
+    ListUserSshkeysError,
     ThrowOnError
   >({
     ...options,
@@ -1203,19 +987,62 @@ export const listUserSshkeysMaasAV3UsersMeSshkeysGet = <
 };
 
 /**
+ * Create User Sshkeys
+ */
+export const createUserSshkeys = <ThrowOnError extends boolean = false>(
+  options: Options<CreateUserSshkeysData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateUserSshkeysResponse,
+    CreateUserSshkeysError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys",
+  });
+};
+
+/**
+ * Delete User Sshkey
+ */
+export const deleteUserSshkey = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteUserSshkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteUserSshkeyResponse,
+    DeleteUserSshkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys/{id}",
+  });
+};
+
+/**
  * Get User Sshkey
  */
-export const getUserSshkeyMaasAV3UsersMeSshkeysSshkeyIdGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetData,
-    ThrowOnError
-  >
+export const getUserSshkey = <ThrowOnError extends boolean = false>(
+  options: Options<GetUserSshkeyData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetResponse,
-    GetUserSshkeyMaasAv3UsersMeSshkeysSshkeyIdGetError,
+    GetUserSshkeyResponse,
+    GetUserSshkeyError,
     ThrowOnError
   >({
     ...options,
@@ -1230,14 +1057,272 @@ export const getUserSshkeyMaasAV3UsersMeSshkeysSshkeyIdGet = <
 };
 
 /**
- * List Users
+ * Import User Sshkeys
  */
-export const listUsersMaasAV3UsersGet = <ThrowOnError extends boolean = false>(
-  options?: Options<ListUsersMaasAv3UsersGetData, ThrowOnError>
+export const importUserSshkeys = <ThrowOnError extends boolean = false>(
+  options: Options<ImportUserSshkeysData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    ImportUserSshkeysResponse,
+    ImportUserSshkeysError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sshkeys:import",
+  });
+};
+
+/**
+ * Get User Sslkeys
+ */
+export const getUserSslkeys = <ThrowOnError extends boolean = false>(
+  options?: Options<GetUserSslkeysData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListUsersMaasAv3UsersGetResponse,
-    ListUsersMaasAv3UsersGetError,
+    GetUserSslkeysResponse,
+    GetUserSslkeysError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys",
+  });
+};
+
+/**
+ * Create User Sslkey
+ */
+export const createUserSslkey = <ThrowOnError extends boolean = false>(
+  options: Options<CreateUserSslkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateUserSslkeyResponse,
+    CreateUserSslkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys",
+  });
+};
+
+/**
+ * Delete User Sslkey
+ */
+export const deleteUserSslkey = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteUserSslkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteUserSslkeyResponse,
+    DeleteUserSslkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
+  });
+};
+
+/**
+ * Get User Sslkey
+ */
+export const getUserSslkey = <ThrowOnError extends boolean = false>(
+  options: Options<GetUserSslkeyData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetUserSslkeyResponse,
+    GetUserSslkeyError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me/sslkeys/{sslkey_id}",
+  });
+};
+
+/**
+ * List Fabric Vlan Subnets
+ */
+export const listFabricVlanSubnets = <ThrowOnError extends boolean = false>(
+  options: Options<ListFabricVlanSubnetsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListFabricVlanSubnetsResponse,
+    ListFabricVlanSubnetsError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets",
+  });
+};
+
+/**
+ * Create Fabric Vlan Subnet
+ */
+export const createFabricVlanSubnet = <ThrowOnError extends boolean = false>(
+  options: Options<CreateFabricVlanSubnetData, ThrowOnError>
+) => {
+  return (options?.client ?? client).post<
+    CreateFabricVlanSubnetResponse,
+    CreateFabricVlanSubnetError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets",
+  });
+};
+
+/**
+ * Delete Fabric Vlan Subnet
+ */
+export const deleteFabricVlanSubnet = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteFabricVlanSubnetData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteFabricVlanSubnetResponse,
+    DeleteFabricVlanSubnetError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}",
+  });
+};
+
+/**
+ * Update Fabric Vlan Subnet
+ */
+export const updateFabricVlanSubnet = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateFabricVlanSubnetData, ThrowOnError>
+) => {
+  return (options?.client ?? client).put<
+    UpdateFabricVlanSubnetResponse,
+    UpdateFabricVlanSubnetError,
+    ThrowOnError
+  >({
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{id}",
+  });
+};
+
+/**
+ * Get Fabric Vlan Subnet
+ */
+export const getFabricVlanSubnet = <ThrowOnError extends boolean = false>(
+  options: Options<GetFabricVlanSubnetData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetFabricVlanSubnetResponse,
+    GetFabricVlanSubnetError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/fabrics/{fabric_id}/vlans/{vlan_id}/subnets/{subnet_id}",
+  });
+};
+
+/**
+ * Get User Info
+ */
+export const getUserInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetUserInfoData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    GetUserInfoResponse,
+    GetUserInfoError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/me",
+  });
+};
+
+/**
+ * List Users
+ */
+export const listUsers = <ThrowOnError extends boolean = false>(
+  options?: Options<ListUsersData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListUsersResponse,
+    ListUsersError,
     ThrowOnError
   >({
     ...options,
@@ -1254,14 +1339,12 @@ export const listUsersMaasAV3UsersGet = <ThrowOnError extends boolean = false>(
 /**
  * Create User
  */
-export const createUserMaasAV3UsersPost = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<CreateUserMaasAv3UsersPostData, ThrowOnError>
+export const createUser = <ThrowOnError extends boolean = false>(
+  options: Options<CreateUserData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
-    CreateUserMaasAv3UsersPostResponse,
-    CreateUserMaasAv3UsersPostError,
+    CreateUserResponse,
+    CreateUserError,
     ThrowOnError
   >({
     ...options,
@@ -1280,16 +1363,36 @@ export const createUserMaasAV3UsersPost = <
 };
 
 /**
+ * Delete User
+ */
+export const deleteUser = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteUserData, ThrowOnError>
+) => {
+  return (options?.client ?? client).delete<
+    DeleteUserResponse,
+    DeleteUserError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/users/{user_id}",
+  });
+};
+
+/**
  * Get User
  */
-export const getUserMaasAV3UsersUserIdGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<GetUserMaasAv3UsersUserIdGetData, ThrowOnError>
+export const getUser = <ThrowOnError extends boolean = false>(
+  options: Options<GetUserData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetUserMaasAv3UsersUserIdGetResponse,
-    GetUserMaasAv3UsersUserIdGetError,
+    GetUserResponse,
+    GetUserError,
     ThrowOnError
   >({
     ...options,
@@ -1306,14 +1409,12 @@ export const getUserMaasAV3UsersUserIdGet = <
 /**
  * Update User
  */
-export const updateUserMaasAV3UsersUserIdPut = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<UpdateUserMaasAv3UsersUserIdPutData, ThrowOnError>
+export const updateUser = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateUserData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
-    UpdateUserMaasAv3UsersUserIdPutResponse,
-    UpdateUserMaasAv3UsersUserIdPutError,
+    UpdateUserResponse,
+    UpdateUserError,
     ThrowOnError
   >({
     ...options,
@@ -1334,17 +1435,12 @@ export const updateUserMaasAV3UsersUserIdPut = <
 /**
  * List Fabric Vlans
  */
-export const listFabricVlansMaasAV3FabricsFabricIdVlansGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    ListFabricVlansMaasAv3FabricsFabricIdVlansGetData,
-    ThrowOnError
-  >
+export const listFabricVlans = <ThrowOnError extends boolean = false>(
+  options: Options<ListFabricVlansData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListFabricVlansMaasAv3FabricsFabricIdVlansGetResponse,
-    ListFabricVlansMaasAv3FabricsFabricIdVlansGetError,
+    ListFabricVlansResponse,
+    ListFabricVlansError,
     ThrowOnError
   >({
     ...options,
@@ -1361,17 +1457,12 @@ export const listFabricVlansMaasAV3FabricsFabricIdVlansGet = <
 /**
  * Create Fabric Vlan
  */
-export const createFabricVlanMaasAV3FabricsFabricIdVlansPost = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    CreateFabricVlanMaasAv3FabricsFabricIdVlansPostData,
-    ThrowOnError
-  >
+export const createFabricVlan = <ThrowOnError extends boolean = false>(
+  options: Options<CreateFabricVlanData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
-    CreateFabricVlanMaasAv3FabricsFabricIdVlansPostResponse,
-    CreateFabricVlanMaasAv3FabricsFabricIdVlansPostError,
+    CreateFabricVlanResponse,
+    CreateFabricVlanError,
     ThrowOnError
   >({
     ...options,
@@ -1392,17 +1483,12 @@ export const createFabricVlanMaasAV3FabricsFabricIdVlansPost = <
 /**
  * Delete Fabric Vlan
  */
-export const deleteFabricVlanMaasAV3FabricsFabricIdVlansVlanIdDelete = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteData,
-    ThrowOnError
-  >
+export const deleteFabricVlan = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteFabricVlanData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
-    DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteResponse,
-    DeleteFabricVlanMaasAv3FabricsFabricIdVlansVlanIdDeleteError,
+    DeleteFabricVlanResponse,
+    DeleteFabricVlanError,
     ThrowOnError
   >({
     ...options,
@@ -1419,17 +1505,12 @@ export const deleteFabricVlanMaasAV3FabricsFabricIdVlansVlanIdDelete = <
 /**
  * Get Fabric Vlan
  */
-export const getFabricVlanMaasAV3FabricsFabricIdVlansVlanIdGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetData,
-    ThrowOnError
-  >
+export const getFabricVlan = <ThrowOnError extends boolean = false>(
+  options: Options<GetFabricVlanData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetResponse,
-    GetFabricVlanMaasAv3FabricsFabricIdVlansVlanIdGetError,
+    GetFabricVlanResponse,
+    GetFabricVlanError,
     ThrowOnError
   >({
     ...options,
@@ -1446,17 +1527,12 @@ export const getFabricVlanMaasAV3FabricsFabricIdVlansVlanIdGet = <
 /**
  * Update Fabric Vlan
  */
-export const updateFabricVlanMaasAV3FabricsFabricIdVlansVlanIdPut = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<
-    UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutData,
-    ThrowOnError
-  >
+export const updateFabricVlan = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateFabricVlanData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
-    UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutResponse,
-    UpdateFabricVlanMaasAv3FabricsFabricIdVlansVlanIdPutError,
+    UpdateFabricVlanResponse,
+    UpdateFabricVlanError,
     ThrowOnError
   >({
     ...options,
@@ -1477,12 +1553,12 @@ export const updateFabricVlanMaasAV3FabricsFabricIdVlansVlanIdPut = <
 /**
  * List Zones
  */
-export const listZonesMaasAV3ZonesGet = <ThrowOnError extends boolean = false>(
-  options?: Options<ListZonesMaasAv3ZonesGetData, ThrowOnError>
+export const listZones = <ThrowOnError extends boolean = false>(
+  options?: Options<ListZonesData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    ListZonesMaasAv3ZonesGetResponse,
-    ListZonesMaasAv3ZonesGetError,
+    ListZonesResponse,
+    ListZonesError,
     ThrowOnError
   >({
     ...options,
@@ -1499,14 +1575,12 @@ export const listZonesMaasAV3ZonesGet = <ThrowOnError extends boolean = false>(
 /**
  * Create Zone
  */
-export const createZoneMaasAV3ZonesPost = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<CreateZoneMaasAv3ZonesPostData, ThrowOnError>
+export const createZone = <ThrowOnError extends boolean = false>(
+  options: Options<CreateZoneData, ThrowOnError>
 ) => {
   return (options?.client ?? client).post<
-    CreateZoneMaasAv3ZonesPostResponse,
-    CreateZoneMaasAv3ZonesPostError,
+    CreateZoneResponse,
+    CreateZoneError,
     ThrowOnError
   >({
     ...options,
@@ -1528,14 +1602,12 @@ export const createZoneMaasAV3ZonesPost = <
  * Delete Zone
  * Deletes a zone. All the resources belonging to this zone will be moved to the default zone.
  */
-export const deleteZoneMaasAV3ZonesZoneIdDelete = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<DeleteZoneMaasAv3ZonesZoneIdDeleteData, ThrowOnError>
+export const deleteZone = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteZoneData, ThrowOnError>
 ) => {
   return (options?.client ?? client).delete<
-    DeleteZoneMaasAv3ZonesZoneIdDeleteResponse,
-    DeleteZoneMaasAv3ZonesZoneIdDeleteError,
+    DeleteZoneResponse,
+    DeleteZoneError,
     ThrowOnError
   >({
     ...options,
@@ -1552,14 +1624,12 @@ export const deleteZoneMaasAV3ZonesZoneIdDelete = <
 /**
  * Get Zone
  */
-export const getZoneMaasAV3ZonesZoneIdGet = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<GetZoneMaasAv3ZonesZoneIdGetData, ThrowOnError>
+export const getZone = <ThrowOnError extends boolean = false>(
+  options: Options<GetZoneData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    GetZoneMaasAv3ZonesZoneIdGetResponse,
-    GetZoneMaasAv3ZonesZoneIdGetError,
+    GetZoneResponse,
+    GetZoneError,
     ThrowOnError
   >({
     ...options,
@@ -1576,14 +1646,12 @@ export const getZoneMaasAV3ZonesZoneIdGet = <
 /**
  * Update Zone
  */
-export const updateZoneMaasAV3ZonesZoneIdPut = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<UpdateZoneMaasAv3ZonesZoneIdPutData, ThrowOnError>
+export const updateZone = <ThrowOnError extends boolean = false>(
+  options: Options<UpdateZoneData, ThrowOnError>
 ) => {
   return (options?.client ?? client).put<
-    UpdateZoneMaasAv3ZonesZoneIdPutResponse,
-    UpdateZoneMaasAv3ZonesZoneIdPutError,
+    UpdateZoneResponse,
+    UpdateZoneError,
     ThrowOnError
   >({
     ...options,
@@ -1598,5 +1666,28 @@ export const updateZoneMaasAV3ZonesZoneIdPut = <
       },
     ],
     url: "/MAAS/a/v3/zones/{zone_id}",
+  });
+};
+
+/**
+ * List zones with a summary. ONLY FOR INTERNAL USAGE.
+ * List zones with a summary. This endpoint is only for internal usage and might be changed or removed without notice.
+ */
+export const listZonesWithSummary = <ThrowOnError extends boolean = false>(
+  options?: Options<ListZonesWithSummaryData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    ListZonesWithSummaryResponse,
+    ListZonesWithSummaryError,
+    ThrowOnError
+  >({
+    ...options,
+    security: [
+      {
+        scheme: "bearer",
+        type: "http",
+      },
+    ],
+    url: "/MAAS/a/v3/zones_with_summary",
   });
 };
