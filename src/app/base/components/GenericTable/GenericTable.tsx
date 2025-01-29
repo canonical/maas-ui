@@ -32,7 +32,7 @@ import TableHeader from "@/app/base/components/GenericTable/TableHeader";
 
 import "./_index.scss";
 
-type GenericTableProps<T> = {
+type GenericTableProps<T extends { id: string | number }> = {
   canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
   data: T[];
@@ -46,7 +46,7 @@ type GenericTableProps<T> = {
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
-const GenericTable = <T,>({
+const GenericTable = <T extends { id: string | number }>({
   canSelect = false,
   columns,
   data,
@@ -155,8 +155,9 @@ const GenericTable = <T,>({
     getCoreRowModel: getCoreRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
     groupedColumnMode: false,
-    enableRowSelection: true,
-    enableMultiRowSelection: true,
+    enableRowSelection: canSelect,
+    enableMultiRowSelection: canSelect,
+    getRowId: (originalRow) => originalRow.id.toString(),
   });
 
   return (
@@ -175,7 +176,7 @@ const GenericTable = <T,>({
       ) : (
         <DynamicTable.Body>
           {table.getRowModel().rows.map((row) => {
-            const { getIsGrouped, id, index, getVisibleCells } = row;
+            const { getIsGrouped, id, getVisibleCells } = row;
             const isIndividualRow = !getIsGrouped();
             return (
               <tr
@@ -183,7 +184,7 @@ const GenericTable = <T,>({
                   "individual-row": isIndividualRow,
                   "group-row": !isIndividualRow,
                 })}
-                key={id + index}
+                key={id}
               >
                 {getVisibleCells()
                   .filter((cell) => filterCells(row, cell.column))
