@@ -3,29 +3,36 @@ import configureStore from "redux-mock-store";
 
 import ZoneSelect from "./ZoneSelect";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithMockStore, screen, setupMockServer } from "@/testing/utils";
+import {
+  renderWithMockStore,
+  screen,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const mockZonesData = [
-  factory.zone({ id: 1, name: "Zone 1" }),
-  factory.zone({ id: 2, name: "Zone 2" }),
-];
-const { mockGet } = setupMockServer();
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
 
 describe("ZoneSelect", () => {
   it("renders a list of all zones", async () => {
-    mockGet("zones", mockZonesData);
-
     renderWithMockStore(
       <Formik initialValues={{ zone: "" }} onSubmit={vi.fn()}>
         <ZoneSelect name="zone" />
       </Formik>
     );
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
-    expect(await screen.findByText("Zone 1")).toBeInTheDocument();
-    expect(screen.getByText("Zone 2")).toBeInTheDocument();
+    expect(await screen.findByText("zone-1")).toBeInTheDocument();
+    expect(screen.getByText("zone-2")).toBeInTheDocument();
   });
 
   it("disables select if zones have not loaded", () => {

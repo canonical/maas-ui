@@ -1,31 +1,40 @@
 import ZonesList from "./ZonesListTable/ZonesListTable";
 
-import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { zoneResolvers } from "@/app/api/query/zones.test";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
 
 describe("ZonesList", () => {
   it("correctly fetches the necessary data", async () => {
-    const queryData = { zones: [factory.zone({ name: "zone-1" })] };
     renderWithBrowserRouter(<ZonesList />, {
       route: "/zones",
-      queryData,
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     expect(await screen.findByText("zone-1")).toBeInTheDocument();
   });
 
-  it("shows a zones table if there are any zones", () => {
-    const queryData = {
-      zones: [factory.zone({ name: "test" })],
-    };
-    renderWithBrowserRouter(<ZonesList />, { route: "/zones", queryData });
+  it("shows a zones table if there are any zones", async () => {
+    renderWithBrowserRouter(<ZonesList />, { route: "/zones" });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     expect(screen.getByRole("table")).toBeInTheDocument();
   });
 
-  it("shows a message if there are no zones", () => {
-    const queryData = { zones: [] };
-    renderWithBrowserRouter(<ZonesList />, { route: "/zones", queryData });
+  it("shows a message if there are no zones", async () => {
+    renderWithBrowserRouter(<ZonesList />, { route: "/zones" });
 
     expect(screen.getByText("No zones available.")).toBeInTheDocument();
   });

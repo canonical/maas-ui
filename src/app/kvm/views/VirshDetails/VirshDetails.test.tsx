@@ -1,12 +1,26 @@
 import VirshDetails from "./VirshDetails";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import urls from "@/app/base/urls";
 import { Label as VirshResourcesLabel } from "@/app/kvm/views/VirshDetails/VirshResources/VirshResources";
 import { Label as VirshSettingsLabel } from "@/app/kvm/views/VirshDetails/VirshSettings/VirshSettings";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
 
 describe("VirshDetails", () => {
   let state: RootState;
@@ -29,24 +43,25 @@ describe("VirshDetails", () => {
     });
   });
 
-  [
-    {
-      label: VirshResourcesLabel.Title,
-      path: urls.kvm.virsh.details.resources({ id: 1 }),
-    },
-    {
-      label: VirshSettingsLabel.Title,
-      path: urls.kvm.virsh.details.edit({ id: 1 }),
-    },
-  ].forEach(({ label, path }) => {
-    it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<VirshDetails />, {
-        route: path,
-        state,
-        routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
-      });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
+  it(`Displays: ${VirshResourcesLabel.Title} at: ${urls.kvm.virsh.details.resources({ id: 1 })}`, () => {
+    renderWithBrowserRouter(<VirshDetails />, {
+      route: urls.kvm.virsh.details.resources({ id: 1 }),
+      state,
+      routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
+    expect(
+      screen.getByLabelText(VirshResourcesLabel.Title)
+    ).toBeInTheDocument();
+  });
+
+  it(`Displays: ${VirshSettingsLabel.Title} at: ${urls.kvm.virsh.details.edit({ id: 1 })}`, async () => {
+    renderWithBrowserRouter(<VirshDetails />, {
+      route: urls.kvm.virsh.details.edit({ id: 1 }),
+      state,
+      routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
+    });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    expect(screen.getByLabelText(VirshSettingsLabel.Title)).toBeInTheDocument();
   });
 
   it("redirects to resources", () => {

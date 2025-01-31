@@ -1,5 +1,6 @@
 import KVMForms from "./KVMForms";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { PodType } from "@/app/store/pod/constants";
@@ -9,13 +10,19 @@ import {
   getByTextContent,
   renderWithBrowserRouter,
   screen,
+  setupMockServer, waitFor,
 } from "@/testing/utils";
+
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
 
 describe("KVMForms", () => {
   let state: RootState;
-  const queryData = {
-    zones: [factory.zone({ id: 1 })],
-  };
 
   beforeEach(() => {
     state = factory.rootState({
@@ -63,7 +70,7 @@ describe("KVMForms", () => {
   it("does not render if sidePanelContent is not defined", () => {
     renderWithBrowserRouter(
       <KVMForms setSidePanelContent={vi.fn()} sidePanelContent={null} />,
-      { state, queryData }
+      { state }
     );
     expect(
       screen.queryByTestId("kvm-action-form-wrapper")
@@ -76,7 +83,7 @@ describe("KVMForms", () => {
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_LXD_HOST }}
       />,
-      { state, queryData }
+      { state }
     );
     // Ensure AddLxd fields are shown
     expect(screen.getByText("Credentials")).toBeInTheDocument();
@@ -95,15 +102,15 @@ describe("KVMForms", () => {
     expect(screen.getByText("Certificate")).toBeInTheDocument();
   });
 
-  it("renders AddVirsh if Add Virsh host side panel content provided", () => {
+  it("renders AddVirsh if Add Virsh host side panel content provided", async () => {
     renderWithBrowserRouter(
       <KVMForms
         setSidePanelContent={vi.fn()}
         sidePanelContent={{ view: KVMSidePanelViews.ADD_VIRSH_HOST }}
       />,
-      { state, queryData }
+      { state }
     );
-
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     expect(screen.getByRole("textbox", { name: "Name" })).toBeInTheDocument();
     expect(screen.getByRole("combobox", { name: "Zone" })).toBeInTheDocument();
     expect(
@@ -118,7 +125,7 @@ describe("KVMForms", () => {
     });
   });
 
-  it("renders ComposeForm if Compose side panel content and host id provided", () => {
+  it("renders ComposeForm if Compose side panel content and host id provided", async () => {
     renderWithBrowserRouter(
       <KVMForms
         setSidePanelContent={vi.fn()}
@@ -127,9 +134,9 @@ describe("KVMForms", () => {
           extras: { hostId: 1 },
         }}
       />,
-      { state, queryData }
+      { state }
     );
-
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     expect(
       screen.getByRole("textbox", { name: "VM name" })
     ).toBeInTheDocument();
@@ -157,7 +164,7 @@ describe("KVMForms", () => {
           extras: { hostId: 1 },
         }}
       />,
-      { state, queryData }
+      { state }
     );
 
     expect(
@@ -186,7 +193,7 @@ describe("KVMForms", () => {
           extras: { clusterId: 1 },
         }}
       />,
-      { state, queryData }
+      { state }
     );
     expect(
       screen.getByText(
@@ -214,7 +221,7 @@ describe("KVMForms", () => {
           extras: { hostIds: [1] },
         }}
       />,
-      { state, queryData }
+      { state }
     );
 
     expect(

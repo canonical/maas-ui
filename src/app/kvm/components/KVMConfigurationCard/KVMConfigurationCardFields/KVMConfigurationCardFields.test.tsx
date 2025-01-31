@@ -1,13 +1,27 @@
 import KVMConfigurationCard from "../KVMConfigurationCard";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen, within } from "@/testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  waitFor,
+  within,
+} from "@/testing/utils";
+
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
 
 describe("KVMConfigurationCardFields", () => {
   let state: RootState;
-  const queryData = { zones: [factory.zone({ id: 1, name: "zone-1" })] };
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({ items: [], loaded: true }),
@@ -18,7 +32,7 @@ describe("KVMConfigurationCardFields", () => {
     });
   });
 
-  it("correctly sets initial values for virsh pods", () => {
+  it("correctly sets initial values for virsh pods", async () => {
     const pod = factory.podDetails({
       id: 1,
       power_parameters: factory.podPowerParameters({
@@ -33,8 +47,8 @@ describe("KVMConfigurationCardFields", () => {
     renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
       route: "/kvm/1/edit",
       state,
-      queryData,
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
       "Virsh"
@@ -62,7 +76,7 @@ describe("KVMConfigurationCardFields", () => {
     ).toHaveValue(pod.memory_over_commit_ratio);
   });
 
-  it("correctly sets initial values for lxd pods", () => {
+  it("correctly sets initial values for lxd pods", async () => {
     const pod = factory.podDetails({
       id: 1,
       power_parameters: factory.podPowerParameters({
@@ -76,8 +90,8 @@ describe("KVMConfigurationCardFields", () => {
     renderWithBrowserRouter(<KVMConfigurationCard pod={pod} />, {
       route: "/kvm/1/edit",
       state,
-      queryData,
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     expect(screen.getByRole("textbox", { name: "KVM host type" })).toHaveValue(
       "LXD"
     );

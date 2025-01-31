@@ -2,6 +2,7 @@ import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import { ConfigNames } from "@/app/store/config/types";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
@@ -10,14 +11,20 @@ import * as factory from "@/testing/factories";
 import {
   renderWithBrowserRouter,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const queryData = {
-  zones: [factory.zone({ id: 0 }), factory.zone({ id: 1 })],
-};
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
+
 describe("AddLxd", () => {
   let state: RootState;
 
@@ -81,10 +88,8 @@ describe("AddLxd", () => {
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
-      queryData: {
-        zones: [factory.zone({ id: 0 }), factory.zone({ id: 1 })],
-      },
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     // Submit credentials form
     await userEvent.type(
@@ -97,7 +102,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
-      "0"
+      "1"
     );
     await userEvent.type(
       screen.getByRole("combobox", { name: "LXD address" }),
@@ -136,8 +141,8 @@ describe("AddLxd", () => {
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
-      queryData,
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     // Submit credentials form
     await userEvent.type(
@@ -150,7 +155,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
-      "0"
+      "1"
     );
     await userEvent.type(
       screen.getByRole("combobox", { name: "LXD address" }),
@@ -201,8 +206,8 @@ describe("AddLxd", () => {
     renderWithBrowserRouter(<AddLxd clearSidePanelContent={vi.fn()} />, {
       route: "/kvm/add",
       state,
-      queryData,
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     // Submit credentials form
     await userEvent.type(
@@ -215,7 +220,7 @@ describe("AddLxd", () => {
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
-      "0"
+      "1"
     );
     await userEvent.type(
       screen.getByRole("combobox", { name: "LXD address" }),

@@ -40,7 +40,7 @@ const ZonesListTable: React.FC = () => {
   return (
     <GenericTable
       columns={columns}
-      data={zones.data?.items!}
+      data={zones.data?.items ?? []}
       noData={<TableCaption>No zones available.</TableCaption>}
     />
   );

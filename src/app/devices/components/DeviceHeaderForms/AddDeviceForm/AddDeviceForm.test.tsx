@@ -2,6 +2,7 @@ import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import { deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import { domainActions } from "@/app/store/domain";
@@ -14,9 +15,17 @@ import {
   within,
   renderWithBrowserRouter,
   waitFor,
+  setupMockServer,
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
 
 describe("AddDeviceForm", () => {
   let state: RootState;
@@ -76,6 +85,7 @@ describe("AddDeviceForm", () => {
       store,
       queryData,
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Device name" }),
@@ -89,7 +99,7 @@ describe("AddDeviceForm", () => {
 
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Zone" }),
-      "default"
+      "zone-1"
     );
 
     // Add interfaces
@@ -179,7 +189,7 @@ describe("AddDeviceForm", () => {
         },
       ],
       primary_mac: "11:11:11:11:11:11",
-      zone: { name: "default" },
+      zone: { name: "1" },
     });
     const actualActions = store.getActions();
     await waitFor(() =>

@@ -2,6 +2,7 @@ import ControllerConfiguration from "./ControllerConfiguration";
 import { Label as ConfigurationLabel } from "./ControllerConfigurationForm";
 import { Label as PowerConfigurationLabel } from "./ControllerPowerConfiguration";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
 import { Label as NodeConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
@@ -15,212 +16,210 @@ import {
   screen,
   waitFor,
   renderWithBrowserRouter,
+  setupMockServer,
 } from "@/testing/utils";
 
 const controller = factory.controllerDetails({ system_id: "abc123" });
 const route = urls.controllers.controller.index({ id: controller.system_id });
 
 let state: ReturnType<typeof factory.rootState>;
-const queryData = {
-  zones: [
-    factory.zone({ id: 1, name: "default" }),
-    factory.zone({ id: 2, name: "twilight" }),
-  ],
-};
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
 
-beforeEach(() => {
-  state = factory.rootState({
-    controller: factory.controllerState({
-      items: [controller],
-      loaded: true,
-      loading: false,
-    }),
-    general: factory.generalState({
-      generatedCertificate: factory.generatedCertificateState({
-        data: null,
-      }),
-      powerTypes: factory.powerTypesState({
-        data: [
-          factory.powerType({
-            name: PodType.LXD,
-            fields: [
-              factory.powerField({ name: "power_address" }),
-              factory.powerField({ name: "password" }),
-            ],
-          }),
-        ],
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
+
+describe("ControllerConfiguration", () => {
+  beforeEach(() => {
+    state = factory.rootState({
+      controller: factory.controllerState({
+        items: [controller],
         loaded: true,
+        loading: false,
       }),
-    }),
-    tag: factory.tagState({
-      loaded: true,
-      items: [
-        factory.tag({ id: 1, name: "tag1" }),
-        factory.tag({ id: 2, name: "tag2" }),
-      ],
-    }),
+      general: factory.generalState({
+        generatedCertificate: factory.generatedCertificateState({
+          data: null,
+        }),
+        powerTypes: factory.powerTypesState({
+          data: [
+            factory.powerType({
+              name: PodType.LXD,
+              fields: [
+                factory.powerField({ name: "power_address" }),
+                factory.powerField({ name: "password" }),
+              ],
+            }),
+          ],
+          loaded: true,
+        }),
+      }),
+      tag: factory.tagState({
+        loaded: true,
+        items: [
+          factory.tag({ id: 1, name: "tag1" }),
+          factory.tag({ id: 2, name: "tag2" }),
+        ],
+      }),
+    });
   });
-});
 
-it("displays controller configuration sections", async () => {
-  renderWithBrowserRouter(
-    <ControllerConfiguration systemId={controller.system_id} />,
-    {
-      state,
-      queryData,
-      route,
-    }
-  );
+  it("displays controller configuration sections", async () => {
+    renderWithBrowserRouter(
+      <ControllerConfiguration systemId={controller.system_id} />,
+      {
+        state,
+        route,
+      }
+    );
 
-  expect(
-    screen.getByRole("heading", { name: /Controller configuration/i })
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole("heading", { name: /Power configuration/i })
-  ).toBeInTheDocument();
-});
-
-it("displays a loading indicator if the controller has not loaded", () => {
-  state.controller.items = [];
-  renderWithBrowserRouter(
-    <ControllerConfiguration systemId={controller.system_id} />,
-    {
-      state,
-      queryData,
-      route,
-    }
-  );
-  expect(
-    screen.getByRole("alert", { name: /loading controller configuration/ })
-  ).toBeInTheDocument();
-});
-
-it("displays non-editable controller details by default", () => {
-  renderWithBrowserRouter(
-    <ControllerConfiguration systemId={controller.system_id} />,
-    {
-      state,
-      queryData,
-      route,
-    }
-  );
-
-  expect(
-    screen.getByTestId("non-editable-controller-details")
-  ).toBeInTheDocument();
-  expect(
-    screen.getByTestId("non-editable-controller-power-details")
-  ).toBeInTheDocument();
-  expect(
-    screen.queryByRole("form", { name: ConfigurationLabel.Title })
-  ).not.toBeInTheDocument();
-  expect(
-    screen.queryByRole("form", { name: PowerConfigurationLabel.Title })
-  ).not.toBeInTheDocument();
-});
-
-it("can switch to controller configuration forms", async () => {
-  renderWithBrowserRouter(
-    <ControllerConfiguration systemId={controller.system_id} />,
-    {
-      state,
-      queryData,
-      route,
-    }
-  );
-
-  await userEvent.click(
-    screen.getAllByRole("button", {
-      name: EditableSectionLabels.EditButton,
-    })[0]
-  );
-
-  expect(
-    screen.queryByTestId("non-editable-controller-details")
-  ).not.toBeInTheDocument();
-  expect(
-    screen.getByRole("form", { name: ConfigurationLabel.Title })
-  ).toBeInTheDocument();
-
-  await userEvent.click(
-    screen.getAllByRole("button", {
-      name: EditableSectionLabels.EditButton,
-    })[1]
-  );
-  expect(
-    screen.queryByTestId("non-editable-controller-power-details")
-  ).not.toBeInTheDocument();
-  expect(
-    screen.getByRole("form", { name: PowerConfigurationLabel.Title })
-  ).toBeInTheDocument();
-});
-
-it("correctly dispatches an action to update a controller", async () => {
-  const { store } = renderWithBrowserRouter(
-    <ControllerConfiguration systemId={controller.system_id} />,
-    {
-      state,
-      queryData,
-      route,
-    }
-  );
-  await userEvent.click(
-    screen.getAllByRole("button", {
-      name: EditableSectionLabels.EditButton,
-    })[0]
-  );
-  const note = screen.getByRole("textbox", {
-    name: NodeConfigurationFieldsLabel.Note,
-  });
-  await userEvent.clear(note);
-  await userEvent.type(note, "controller's note text");
-  await userEvent.selectOptions(
-    screen.getByRole("combobox", { name: ZoneSelectLabel.Zone }),
-    "twilight"
-  );
-  await userEvent.click(
-    screen.getByRole("textbox", { name: TagFieldLabel.Input })
-  );
-  await userEvent.click(screen.getByRole("option", { name: "tag1" }));
-  await userEvent.click(screen.getByRole("option", { name: "tag2" }));
-  await userEvent.click(screen.getByRole("button", { name: /save/i }));
-
-  const expectedAction = controllerActions.update({
-    description: "controller's note text",
-    tags: [1, 2],
-    system_id: controller.system_id,
-    zone: { name: "twilight" },
-  });
-  const actualActions = store.getActions();
-
-  await waitFor(() =>
     expect(
-      actualActions.find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction)
-  );
-});
+      screen.getByRole("heading", { name: /Controller configuration/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Power configuration/i })
+    ).toBeInTheDocument();
+  });
 
-it("displays an alert on edit when controller manages more than 1 node", async () => {
-  state.controller.items = [{ ...controller, power_bmc_node_count: 3 }];
-  renderWithBrowserRouter(
-    <ControllerConfiguration systemId={controller.system_id} />,
-    {
-      state,
-      queryData,
-      route,
-    }
-  );
-  await userEvent.click(
-    screen.getAllByRole("button", {
-      name: EditableSectionLabels.EditButton,
-    })[2]
-  );
-  await expect(
-    screen.getByText(/This power controller manages 2 other nodes/)
-  ).toBeInTheDocument();
-  await expect(
-    screen.getByText(
-      /Changing the IP address or outlet delay will affect all these nodes./
-    )
-  ).toBeInTheDocument();
+  it("displays a loading indicator if the controller has not loaded", async () => {
+    state.controller.items = [];
+    renderWithBrowserRouter(
+      <ControllerConfiguration systemId={controller.system_id} />,
+      {
+        state,
+        route,
+      }
+    );
+    expect(
+      screen.getByRole("alert", { name: /loading controller configuration/ })
+    ).toBeInTheDocument();
+  });
+
+  it("displays non-editable controller details by default", async () => {
+    renderWithBrowserRouter(
+      <ControllerConfiguration systemId={controller.system_id} />,
+      {
+        state,
+        route,
+      }
+    );
+
+    expect(
+      screen.getByTestId("non-editable-controller-details")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId("non-editable-controller-power-details")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("form", { name: ConfigurationLabel.Title })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("form", { name: PowerConfigurationLabel.Title })
+    ).not.toBeInTheDocument();
+  });
+
+  it("can switch to controller configuration forms", async () => {
+    renderWithBrowserRouter(
+      <ControllerConfiguration systemId={controller.system_id} />,
+      {
+        state,
+        route,
+      }
+    );
+
+    await userEvent.click(
+      screen.getAllByRole("button", {
+        name: EditableSectionLabels.EditButton,
+      })[0]
+    );
+
+    expect(
+      screen.queryByTestId("non-editable-controller-details")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("form", { name: ConfigurationLabel.Title })
+    ).toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getAllByRole("button", {
+        name: EditableSectionLabels.EditButton,
+      })[1]
+    );
+    expect(
+      screen.queryByTestId("non-editable-controller-power-details")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("form", { name: PowerConfigurationLabel.Title })
+    ).toBeInTheDocument();
+  });
+
+  it("correctly dispatches an action to update a controller", async () => {
+    const { store } = renderWithBrowserRouter(
+      <ControllerConfiguration systemId={controller.system_id} />,
+      {
+        state,
+        route,
+      }
+    );
+    await userEvent.click(
+      screen.getAllByRole("button", {
+        name: EditableSectionLabels.EditButton,
+      })[0]
+    );
+    const note = screen.getByRole("textbox", {
+      name: NodeConfigurationFieldsLabel.Note,
+    });
+    await userEvent.clear(note);
+    await userEvent.type(note, "controller's note text");
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: ZoneSelectLabel.Zone }),
+      "zone-1"
+    );
+    await userEvent.click(
+      screen.getByRole("textbox", { name: TagFieldLabel.Input })
+    );
+    await userEvent.click(screen.getByRole("option", { name: "tag1" }));
+    await userEvent.click(screen.getByRole("option", { name: "tag2" }));
+    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    const expectedAction = controllerActions.update({
+      description: "controller's note text",
+      tags: [1, 2],
+      system_id: controller.system_id,
+      zone: { name: "1" },
+    });
+    const actualActions = store.getActions();
+
+    await waitFor(() =>
+      expect(
+        actualActions.find((action) => action.type === expectedAction.type)
+      ).toStrictEqual(expectedAction)
+    );
+  });
+
+  it("displays an alert on edit when controller manages more than 1 node", async () => {
+    state.controller.items = [{ ...controller, power_bmc_node_count: 3 }];
+    renderWithBrowserRouter(
+      <ControllerConfiguration systemId={controller.system_id} />,
+      {
+        state,
+        route,
+      }
+    );
+    await userEvent.click(
+      screen.getAllByRole("button", {
+        name: EditableSectionLabels.EditButton,
+      })[2]
+    );
+    await expect(
+      screen.getByText(/This power controller manages 2 other nodes/)
+    ).toBeInTheDocument();
+    await expect(
+      screen.getByText(
+        /Changing the IP address or outlet delay will affect all these nodes./
+      )
+    ).toBeInTheDocument();
+  });
 });
