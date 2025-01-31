@@ -527,7 +527,7 @@ type TestProviderProps = {
   children: ReactNode;
   state?: Partial<RootState>;
   queryData?: { queryKey: any; data: Partial<Record<any, any>> | undefined }[];
-  store?: MockStoreEnhanced<RootState>;
+  store?: MockStoreEnhanced<RootState | unknown>;
   route?: string;
 };
 

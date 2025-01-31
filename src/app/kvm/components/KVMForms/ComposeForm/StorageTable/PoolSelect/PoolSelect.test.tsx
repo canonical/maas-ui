@@ -4,23 +4,36 @@ import configureStore from "redux-mock-store";
 
 import ComposeForm from "../../ComposeForm";
 
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
+  waitFor,
   within,
 } from "@/testing/utils";
 
 const mockStore = configureStore();
+const mockServer = setupMockServer(zoneResolvers.listZones.handler());
 
-const renderComposeForm = (store: MockStore, pod: Pod) =>
-  renderWithBrowserRouter(
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
+
+const renderComposeForm = async (store: MockStore, pod: Pod) => {
+  const view = renderWithProviders(
     <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { route: `/kvm/${pod.id}`, store }
   );
+  await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+  return view;
+};
 
 describe("PoolSelect", () => {
   let state: RootState;
@@ -58,9 +71,6 @@ describe("PoolSelect", () => {
       vlan: factory.vlanState({
         loaded: true,
       }),
-      zone: factory.zoneState({
-        genericActions: factory.zoneGenericActions({ fetch: "success" }),
-      }),
     });
   });
 
@@ -83,7 +93,7 @@ describe("PoolSelect", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    renderComposeForm(store, pod);
+    await renderComposeForm(store, pod);
 
     // Open PoolSelect dropdown and change disk size to 5GB
     const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
@@ -127,7 +137,7 @@ describe("PoolSelect", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    renderComposeForm(store, pod);
+    await renderComposeForm(store, pod);
 
     // Open PoolSelect dropdown
     await userEvent.click(screen.getByRole("button", { name: "default" }));
@@ -183,7 +193,7 @@ describe("PoolSelect", () => {
     });
     state.pod.items = [pod];
     const store = mockStore(state);
-    renderComposeForm(store, pod);
+    await renderComposeForm(store, pod);
 
     // Open PoolSelect dropdown and change disk size to 50GB
     const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });

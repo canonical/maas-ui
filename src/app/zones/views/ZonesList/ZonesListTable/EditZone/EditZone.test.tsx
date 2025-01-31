@@ -1,23 +1,34 @@
 import EditZone from "./EditZone";
 
-import { zoneActions } from "@/app/store/zone";
-import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/app/api/query/zones.test";
 import {
   userEvent,
   screen,
   waitFor,
-  renderWithBrowserRouter,
+  setupMockServer,
+  renderWithProviders,
 } from "@/testing/utils";
 
+const mockServer = setupMockServer(
+  zoneResolvers.getZone.handler(),
+  zoneResolvers.updateZone.handler()
+);
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+afterEach(() => {
+  mockServer.resetHandlers();
+});
+afterAll(() => mockServer.close());
+
 describe("EditZone", () => {
-  const testZone = factory.zone();
-  const queryData = { zones: [testZone] };
+  const testZoneId = 1;
 
   it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = vi.fn();
-    renderWithBrowserRouter(
-      <EditZone closeForm={closeForm} id={testZone.id} />,
-      { queryData }
+    renderWithProviders(<EditZone closeForm={closeForm} id={testZoneId} />);
+
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument()
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -25,9 +36,10 @@ describe("EditZone", () => {
   });
 
   it("calls actions.update on save click", async () => {
-    const { store } = renderWithBrowserRouter(
-      <EditZone closeForm={vi.fn()} id={testZone.id} />,
-      { queryData }
+    renderWithProviders(<EditZone closeForm={vi.fn()} id={testZoneId} />);
+
+    await waitFor(() =>
+      expect(screen.getByLabelText("Name")).toBeInTheDocument()
     );
 
     await userEvent.clear(screen.getByLabelText("Name"));
@@ -46,16 +58,6 @@ describe("EditZone", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
 
-    const expectedAction = zoneActions.update({
-      id: testZone.id,
-      description: "test description 2",
-      name: "test name 2",
-    });
-
-    await waitFor(() =>
-      expect(
-        store.getActions().find((action) => action.type === expectedAction.type)
-      ).toStrictEqual(expectedAction)
-    );
+    await waitFor(() => expect(zoneResolvers.updateZone.resolved).toBeTruthy());
   });
 });
