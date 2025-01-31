@@ -58,69 +58,116 @@ const isValidZoneRequest = (data: any): data is ZoneRequest =>
   typeof data.name === "string" &&
   (!data.description || typeof data.description === "string");
 
-const zoneResolvers = {
-  listZones: () =>
-    http.get(`${BASE_URL}MAAS/a/v3/zones_with_summary`, () =>
-      HttpResponse.json(mockZones)
-    ),
+export const zoneResolvers = {
+  listZones: {
+    resolved: false,
+    handler: () =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones_with_summary`, () => {
+        zoneResolvers.listZones.resolved = true;
+        return HttpResponse.json(mockZones);
+      }),
+  },
 
-  getZone: (id: number) =>
-    http.get(`${BASE_URL}MAAS/a/v3/zones/${id}`, () => {
-      const zone = mockZones.items.find((zone) => zone.id === id);
-      return zone ? HttpResponse.json(zone) : HttpResponse.error();
-    }),
-
-  createZone: () =>
-    http.post(`${BASE_URL}MAAS/a/v3/zones`, async ({ request }) => {
-      try {
-        const data = await request.json();
-        if (!isValidZoneRequest(data)) return HttpResponse.error();
-        const newZone = {
-          id: mockZones.items.length + 1,
-          name: data.name,
-          description: data.description ?? "",
-          controllers_count: 0,
-          devices_count: 0,
-          machines_count: 0,
-        };
-        mockZones.items.push(newZone);
-        return HttpResponse.json(newZone);
-      } catch {
-        return HttpResponse.error();
-      }
-    }),
-
-  updateZone: (id: number) =>
-    http.put(`${BASE_URL}MAAS/a/v3/zones/${id}`, async ({ request }) => {
-      try {
-        const updates = await request.json();
-        if (!isValidZoneRequest(updates)) return HttpResponse.error();
+  getZone: {
+    resolved: false,
+    handler: () =>
+      http.get(`${BASE_URL}MAAS/a/v3/zones/:id`, ({ params }) => {
+        const id = Number(params.id);
+        if (!id) return HttpResponse.error();
 
         const zone = mockZones.items.find((zone) => zone.id === id);
-        if (!zone) return HttpResponse.error();
+        zoneResolvers.getZone.resolved = true;
+        return zone ? HttpResponse.json(zone) : HttpResponse.error();
+      }),
+  },
 
-        Object.assign(zone, updates);
-        return HttpResponse.json(zone);
-      } catch {
-        return HttpResponse.error();
-      }
-    }),
+  createZone: {
+    resolved: false,
+    handler: () =>
+      http.post(`${BASE_URL}MAAS/a/v3/zones`, async ({ request }) => {
+        zoneResolvers.createZone.resolved = false;
+        try {
+          const data = await request.json();
+          if (!isValidZoneRequest(data)) return HttpResponse.error();
+          const newZone = {
+            id: mockZones.items.length + 1,
+            name: data.name,
+            description: data.description ?? "",
+            controllers_count: 0,
+            devices_count: 0,
+            machines_count: 0,
+          };
+          mockZones.items.push(newZone);
+          zoneResolvers.createZone.resolved = true;
+          return HttpResponse.json(newZone);
+        } catch {
+          return HttpResponse.error();
+        }
+      }),
+  },
 
-  deleteZone: (id: number) =>
-    http.delete(`${BASE_URL}MAAS/a/v3/zones/${id}`, () => {
-      const index = mockZones.items.findIndex((zone) => zone.id === id);
-      if (index === -1) return HttpResponse.error();
-      mockZones.items.splice(index, 1);
-      return HttpResponse.json({ success: true });
-    }),
+  updateZone: {
+    resolved: false,
+    handler: () =>
+      http.put(
+        `${BASE_URL}MAAS/a/v3/zones/:id`,
+        async ({ request, params }) => {
+          const id = Number(params.id);
+          if (!id) return HttpResponse.error();
+
+          zoneResolvers.updateZone.resolved = false;
+          try {
+            const updates = await request.json();
+            if (!isValidZoneRequest(updates)) return HttpResponse.error();
+
+            const zone = mockZones.items.find((zone) => zone.id === id);
+            if (!zone) return HttpResponse.error();
+
+            Object.assign(zone, updates);
+            zoneResolvers.updateZone.resolved = true;
+            return HttpResponse.json(zone);
+          } catch {
+            return HttpResponse.error();
+          }
+        }
+      ),
+  },
+
+  deleteZone: {
+    resolved: false,
+    handler: () =>
+      http.delete(`${BASE_URL}MAAS/a/v3/zones/:id`, ({ params }) => {
+        const id = Number(params.id);
+        if (!id) return HttpResponse.error();
+
+        zoneResolvers.deleteZone.resolved = false;
+        const index = mockZones.items.findIndex((zone) => zone.id === id);
+        if (index === -1) return HttpResponse.error();
+
+        mockZones.items.splice(index, 1);
+        zoneResolvers.deleteZone.resolved = true;
+        return HttpResponse.json({ success: true });
+      }),
+  },
 };
 
-const mockServer = setupMockServer(zoneResolvers.listZones());
+const mockServer = setupMockServer(
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.getZone.handler(),
+  zoneResolvers.createZone.handler(),
+  zoneResolvers.updateZone.handler(),
+  zoneResolvers.deleteZone.handler()
+);
 
 beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
 afterEach(() => {
   mockServer.resetHandlers();
   mockZones = structuredClone(initialMockZones);
+  (Object.keys(zoneResolvers) as (keyof typeof zoneResolvers)[]).forEach(
+    (key) => {
+      zoneResolvers[key].resolved = false;
+    }
+  );
 });
 afterAll(() => mockServer.close());
 
@@ -150,7 +197,6 @@ describe("useZoneCount", () => {
 describe("useGetZone", () => {
   it("should return the correct zone", async () => {
     const expectedZone = mockZones.items[0];
-    mockServer.use(zoneResolvers.getZone(expectedZone.id));
     const { result } = renderHookWithProviders(() =>
       useGetZone({ path: { zone_id: expectedZone.id } })
     );
@@ -159,7 +205,6 @@ describe("useGetZone", () => {
   });
 
   it("should return error if zone does not exist", async () => {
-    mockServer.use(zoneResolvers.getZone(99));
     const { result } = renderHookWithProviders(() =>
       useGetZone({ path: { zone_id: 99 } })
     );
@@ -173,7 +218,6 @@ describe("useCreateZone", () => {
       name: "new-zone",
       description: "This is a new zone.",
     };
-    mockServer.use(zoneResolvers.createZone());
     const { result } = renderHookWithProviders(() => useCreateZone());
     result.current.mutate({ body: newZone });
 
@@ -187,8 +231,6 @@ describe("useCreateZone", () => {
   });
 
   it("should return error if data is missing", async () => {
-    mockServer.use(zoneResolvers.createZone());
-
     const { result } = renderHookWithProviders(() => useCreateZone());
     // @ts-ignore
     result.current.mutate({ body: { description: "Missing name" } });
@@ -197,8 +239,6 @@ describe("useCreateZone", () => {
   });
 
   it("should return error if request body is invalid", async () => {
-    mockServer.use(zoneResolvers.createZone());
-
     const { result } = renderHookWithProviders(() => useCreateZone());
     result.current.mutate({ body: "invalid_string" as any });
 
@@ -209,8 +249,6 @@ describe("useCreateZone", () => {
 describe("useUpdateZone", () => {
   it("should update an existing zone", async () => {
     const updatedZone = { ...mockZones.items[0], description: "Edited" };
-    mockServer.use(zoneResolvers.updateZone(updatedZone.id));
-
     const { result } = renderHookWithProviders(() => useUpdateZone());
     result.current.mutate({
       body: updatedZone,
@@ -227,8 +265,6 @@ describe("useUpdateZone", () => {
   });
 
   it("should return error if data is missing", async () => {
-    mockServer.use(zoneResolvers.updateZone(1));
-
     const { result } = renderHookWithProviders(() => useUpdateZone());
     // @ts-ignore
     result.current.mutate({ body: {}, path: { zone_id: 1 } });
@@ -237,8 +273,6 @@ describe("useUpdateZone", () => {
   });
 
   it("should return error if request body is invalid", async () => {
-    mockServer.use(zoneResolvers.updateZone(1));
-
     const { result } = renderHookWithProviders(() => useUpdateZone());
     result.current.mutate({
       body: "invalid_string" as any,
@@ -252,8 +286,6 @@ describe("useUpdateZone", () => {
 describe("useDeleteZone", () => {
   it("should delete a zone", async () => {
     const zoneToDelete = mockZones.items[0];
-    mockServer.use(zoneResolvers.deleteZone(zoneToDelete.id));
-
     const { result } = renderHookWithProviders(() => useDeleteZone());
     result.current.mutate({ path: { zone_id: zoneToDelete.id } });
 
@@ -267,7 +299,6 @@ describe("useDeleteZone", () => {
   });
 
   it("should return error if zone does not exist", async () => {
-    mockServer.use(zoneResolvers.deleteZone(99));
     const { result } = renderHookWithProviders(() => useDeleteZone());
     result.current.mutate({ path: { zone_id: 99 } });
 
