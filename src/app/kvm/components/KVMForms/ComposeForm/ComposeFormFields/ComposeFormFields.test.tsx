@@ -131,7 +131,7 @@ describe("ComposeFormFields", () => {
   it("shows warnings if available cores/memory is less than the default", async () => {
     const state = { ...initialState };
     const powerType = factory.powerType({
-      defaults: { cores: 2, memory: 2, storage: 2 },
+      defaults: { cores: 2, memory: 2048, storage: 2 },
       driver_type: DriverType.POD,
       name: PodType.VIRSH,
     });
@@ -152,7 +152,7 @@ describe("ComposeFormFields", () => {
             general: factory.podResource({
               allocated_other: 0,
               allocated_tracked: 0,
-              free: 1,
+              free: 1073741824,
             }),
             hugepages: factory.podResource({
               allocated_other: 0,
@@ -176,7 +176,7 @@ describe("ComposeFormFields", () => {
     ).toHaveClass("p-form-validation__message");
     expect(
       screen.getByText(
-        /The available memory \(0MiB\) is less than the recommended default \(2MiB\)/i
+        /The available memory \(1024MiB\) is less than the recommended default \(2048MiB\)/i
       )
     ).toHaveClass("p-form-validation__message");
   });
