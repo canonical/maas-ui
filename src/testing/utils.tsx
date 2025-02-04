@@ -517,6 +517,13 @@ export const renderWithHistoryRouter = (
 
 /* New utils with easier use */
 export const BASE_URL = import.meta.env.VITE_APP_MAAS_URL;
+
+/**
+ * A function for setting up the MSW with the base testing url.
+ *
+ * @param handlers The destructured list of request handlers
+ * @return The mock server instance
+ */
 export const setupMockServer = (...handlers: RequestHandler[]) => {
   client.setConfig({ baseUrl: BASE_URL });
 
@@ -531,6 +538,15 @@ type TestProviderProps = {
   route?: string;
 };
 
+/**
+ * The wrapper component for all test-relevant providers.
+ *
+ * @param children The test components to be wrapped
+ * @param state The app state used for testing
+ * @param store The mock store
+ * @param route The route for the test
+ * @constructor
+ */
 export const TestProvider = ({
   children,
   state = factory.rootState(),
@@ -557,6 +573,12 @@ export const TestProvider = ({
   );
 };
 
+/**
+ * A function for rendering a component with all test-relevant providers.
+ *
+ * @param ui The component to be rendered
+ * @param options The rendering options
+ */
 export const renderWithProviders = (
   ui: ReactNode,
   options?: Omit<RenderOptions, "wrapper"> & Partial<TestProviderProps>
@@ -575,6 +597,12 @@ export const renderWithProviders = (
   });
 };
 
+/**
+ * A function for rendering a hook with all test-relevant providers.
+ *
+ * @param hook The hook to be rendered
+ * @param options The rendering options
+ */
 export const renderHookWithProviders = <T,>(
   hook: () => T,
   options?: Partial<TestProviderProps>

@@ -44,6 +44,16 @@ export const useWebSocket = () => {
   return { subscribe };
 };
 
+/**
+ * A function to run a query which invalidates the query cache when a
+ * websocket message is received, or when the websocket reconnects.
+ *
+ * @template TQueryFnData The type of the data which the query function will return
+ * @template TError The type of error the query function might throw
+ * @template TData The type of query data
+ * @param options The options for useQuery
+ * @returns The return value of useQuery
+ */
 export const useWebsocketAwareQuery = <
   TQueryFnData = unknown,
   TError = unknown,
