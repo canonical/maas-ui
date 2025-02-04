@@ -1,4 +1,4 @@
-import ZonesList, { TestIds } from "./ZonesListTable/ZonesListTable";
+import ZonesList from "./ZonesListTable/ZonesListTable";
 
 import * as factory from "@/testing/factories";
 import { renderWithBrowserRouter, screen } from "@/testing/utils";
@@ -20,7 +20,7 @@ describe("ZonesList", () => {
     };
     renderWithBrowserRouter(<ZonesList />, { route: "/zones", queryData });
 
-    expect(screen.getByTestId(TestIds.ZonesTable)).toBeInTheDocument();
+    expect(screen.getByRole("table")).toBeInTheDocument();
   });
 
   it("shows a message if there are no zones", () => {

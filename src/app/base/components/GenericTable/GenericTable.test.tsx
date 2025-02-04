@@ -67,7 +67,6 @@ describe("GenericTable", () => {
 
   const mockFilterCells = vi.fn(() => true);
   const mockFilterHeaders = vi.fn(() => true);
-  const mockGetRowId = vi.fn((row) => row.id.toString());
 
   it("renders table with headers and rows", () => {
     render(
@@ -76,7 +75,6 @@ describe("GenericTable", () => {
         data={data}
         filterCells={mockFilterCells}
         filterHeaders={mockFilterHeaders}
-        getRowId={mockGetRowId}
         rowSelection={{}}
         setRowSelection={vi.fn}
       />
@@ -96,7 +94,6 @@ describe("GenericTable", () => {
         data={[]}
         filterCells={mockFilterCells}
         filterHeaders={mockFilterHeaders}
-        getRowId={mockGetRowId}
         noData={<span>No data</span>}
         rowSelection={{}}
         setRowSelection={vi.fn}
@@ -113,7 +110,6 @@ describe("GenericTable", () => {
         data={data}
         filterCells={mockFilterCells}
         filterHeaders={mockFilterHeaders}
-        getRowId={mockGetRowId}
         rowSelection={{}}
         setRowSelection={vi.fn}
       />

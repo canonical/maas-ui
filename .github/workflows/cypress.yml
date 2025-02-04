@@ -59,6 +59,15 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
+      - name: Collect MAAS logs
+        if: failure()
+        shell: bash
+        run: journalctl -u snap.maas.pebble.service --since="1 hour ago" > cypress/maas_logs.txt
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: maas_logs
+          path: cypress/maas_logs.txt
       - name: Create issue on failure
         # Create an issue if the job fails on push to main or 3.* branches
         if: failure() && github.event_name == 'push' && contains(fromJson('["main", "3.*"]'), env.BRANCH_NAME)

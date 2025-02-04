@@ -1,59 +1,61 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
-import { useMemo, useState } from "react";
+import {
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useMemo,
+  useState,
+} from "react";
 
 import { DynamicTable } from "@canonical/maas-react-components";
-import { Button } from "@canonical/react-components";
 import type {
   Column,
+  Row,
   ColumnDef,
   ColumnSort,
-  ExpandedState,
   GroupingState,
-  Header,
-  Row,
-  RowSelectionState,
+  ExpandedState,
   SortingState,
+  Header,
+  RowSelectionState,
 } from "@tanstack/react-table";
 import {
+  flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getGroupedRowModel,
   useReactTable,
-  flexRender,
 } from "@tanstack/react-table";
 import classNames from "classnames";
 
-import "./_index.scss";
-import SortingIndicator from "./SortingIndicator";
+import TableCheckbox from "@/app/base/components/GenericTable/TableCheckbox";
+import TableHeader from "@/app/base/components/GenericTable/TableHeader";
 
-type GenericTableProps<T> = {
-  ariaLabel?: string;
+import "./_index.scss";
+
+type GenericTableProps<T extends { id: string | number }> = {
+  canSelect?: boolean;
   columns: ColumnDef<T, Partial<T>>[];
   data: T[];
-  filterCells: (row: Row<T>, column: Column<T>) => boolean;
-  filterHeaders: (header: Header<T, unknown>) => boolean;
-  getRowId: (
-    originalRow: T,
-    index: number,
-    parent?: Row<T> | undefined
-  ) => string;
+  filterCells?: (row: Row<T>, column: Column<T>) => boolean;
+  filterHeaders?: (header: Header<T, unknown>) => boolean;
   groupBy?: string[];
   noData?: ReactNode;
+  pin?: { value: string; isTop: boolean }[];
   sortBy?: ColumnSort[];
-  rowSelection: RowSelectionState;
+  rowSelection?: RowSelectionState;
   setRowSelection?: Dispatch<SetStateAction<RowSelectionState>>;
 };
 
-const GenericTable = <T,>({
-  ariaLabel,
+const GenericTable = <T extends { id: string | number }>({
+  canSelect = false,
   columns,
   data,
-  filterCells,
-  filterHeaders,
-  getRowId,
+  filterCells = () => true,
+  filterHeaders = () => true,
   groupBy,
-  sortBy,
   noData,
+  pin,
+  sortBy,
   rowSelection,
   setRowSelection,
 }: GenericTableProps<T>) => {
@@ -61,8 +63,62 @@ const GenericTable = <T,>({
   const [expanded, setExpanded] = useState<ExpandedState>(true);
   const [sorting, setSorting] = useState<SortingState>(sortBy ?? []);
 
-  const sortedData = useMemo(() => {
+  if (canSelect) {
+    columns = [
+      {
+        id: "select",
+        accessorKey: "id",
+        enableSorting: false,
+        header: "",
+        cell: ({ row }) =>
+          !row.getIsGrouped() ? <TableCheckbox row={row} /> : null,
+      },
+      ...columns,
+    ];
+
+    if (groupBy) {
+      columns = [
+        {
+          id: "group-select",
+          accessorKey: "id",
+          enableSorting: false,
+          header: ({ table }) => <TableCheckbox.All table={table} />,
+          cell: ({ row }) =>
+            row.getIsGrouped() ? <TableCheckbox.Group row={row} /> : null,
+        },
+        ...columns,
+      ];
+    }
+  }
+
+  data = useMemo(() => {
     return [...data].sort((a, b) => {
+      if (pin && pin.length > 0 && grouping.length > 0) {
+        for (const { value, isTop } of pin) {
+          const groupId = grouping[0];
+          const aValue = a[groupId as keyof typeof a];
+          const bValue = b[groupId as keyof typeof b];
+
+          if (aValue === value && bValue !== value) {
+            return isTop ? -1 : 1;
+          }
+          if (bValue === value && aValue !== value) {
+            return isTop ? 1 : -1;
+          }
+        }
+      }
+
+      for (const groupId of grouping) {
+        const aGroupValue = a[groupId as keyof typeof a];
+        const bGroupValue = b[groupId as keyof typeof b];
+        if (aGroupValue < bGroupValue) {
+          return -1;
+        }
+        if (aGroupValue > bGroupValue) {
+          return 1;
+        }
+      }
+
       for (const { id, desc } of sorting) {
         const aValue = a[id as keyof typeof a];
         const bValue = b[id as keyof typeof b];
@@ -75,10 +131,10 @@ const GenericTable = <T,>({
       }
       return 0;
     });
-  }, [data, sorting]);
+  }, [data, sorting, grouping, pin]);
 
   const table = useReactTable<T>({
-    data: sortedData,
+    data,
     columns,
     state: {
       grouping,
@@ -99,42 +155,18 @@ const GenericTable = <T,>({
     getCoreRowModel: getCoreRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
     groupedColumnMode: false,
-    enableRowSelection: true,
-    enableMultiRowSelection: true,
-    getRowId,
+    enableRowSelection: canSelect,
+    enableMultiRowSelection: canSelect,
+    getRowId: (originalRow) => originalRow.id.toString(),
   });
 
   return (
-    <DynamicTable
-      aria-label={ariaLabel}
-      className="p-table-dynamic--with-select generic-table"
-      variant={"full-height"}
-    >
+    <DynamicTable className="p-generic-table" variant="full-height">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.filter(filterHeaders).map((header) => (
-              <th className={classNames(`${header.column.id}`)} key={header.id}>
-                {header.column.getCanSort() ? (
-                  <Button
-                    appearance="link"
-                    className="p-button--table-header"
-                    onClick={header.column.getToggleSortingHandler()}
-                    type="button"
-                  >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    <SortingIndicator header={header} />
-                  </Button>
-                ) : (
-                  flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )
-                )}
-              </th>
+              <TableHeader header={header} key={header.id} />
             ))}
           </tr>
         ))}
@@ -144,7 +176,7 @@ const GenericTable = <T,>({
       ) : (
         <DynamicTable.Body>
           {table.getRowModel().rows.map((row) => {
-            const { getIsGrouped, id, index, getVisibleCells } = row;
+            const { getIsGrouped, id, getVisibleCells } = row;
             const isIndividualRow = !getIsGrouped();
             return (
               <tr
@@ -152,7 +184,7 @@ const GenericTable = <T,>({
                   "individual-row": isIndividualRow,
                   "group-row": !isIndividualRow,
                 })}
-                key={id + index}
+                key={id}
               >
                 {getVisibleCells()
                   .filter((cell) => filterCells(row, cell.column))

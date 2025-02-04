@@ -52,7 +52,7 @@ const navGroups: NavGroup[] = [
         url: urls.tags.index,
       },
       {
-        highlight: [urls.zones.index, urls.zones.details(null)],
+        highlight: [urls.zones.index],
         label: "AZs",
         url: urls.zones.index,
       },

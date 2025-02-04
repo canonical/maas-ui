@@ -22,7 +22,7 @@ export type CreateZoneValues = {
   name: string;
 };
 
-const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
+const EditZone = ({ id, closeForm }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const cleanup = useCallback(
     () => zoneActions.cleanup([ZONE_ACTIONS.update]),
@@ -62,7 +62,7 @@ const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
         submitLabel="Update AZ"
       >
         <Row>
-          <Col size={6}>
+          <Col size={12}>
             <FormikField
               label="Name"
               name="name"
@@ -82,4 +82,4 @@ const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
   return null;
 };
 
-export default ZoneDetailsForm;
+export default EditZone;

@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Notification } from "@canonical/react-components";
+import type { RowSelectionState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 
 import ImageListHeader from "./ImageListHeader";
@@ -24,6 +25,9 @@ const ImageList = (): JSX.Element => {
   const { sidePanelContent, setSidePanelContent } = useSidePanel();
   const autoImport = useSelector(configSelectors.bootImagesAutoImport);
   const configLoaded = useSelector(configSelectors.loaded);
+
+  const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
+
   useWindowTitle("Images");
 
   useEffect(() => {
@@ -36,7 +40,12 @@ const ImageList = (): JSX.Element => {
 
   return (
     <PageContent
-      header={<ImageListHeader />}
+      header={
+        <ImageListHeader
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+        />
+      }
       sidePanelContent={
         sidePanelContent && (
           <ImagesForms
@@ -57,7 +66,10 @@ const ImageList = (): JSX.Element => {
               {Labels.SyncDisabled}
             </Notification>
           )}
-          <SMImagesTable />
+          <SMImagesTable
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+          />
         </>
       )}
     </PageContent>

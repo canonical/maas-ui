@@ -35,7 +35,6 @@ const SubnetDetails = lazy(() => import("@/app/subnets/views/SubnetDetails"));
 const SubnetsList = lazy(() => import("@/app/subnets/views/SubnetsList"));
 const VLANDetails = lazy(() => import("@/app/subnets/views/VLANDetails"));
 const Tags = lazy(() => import("@/app/tags/views/Tags"));
-const ZoneDetails = lazy(() => import("@/app/zones/views/ZoneDetails"));
 const ZonesList = lazy(() => import("@/app/zones/views/ZonesList"));
 
 const Routes = (): JSX.Element => (
@@ -55,18 +54,10 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <ZoneDetails />
-        </ErrorBoundary>
-      }
-      path={`${urls.zones.details(null)}/*`}
-    />
-    <Route
-      element={
-        <ErrorBoundary>
           <ZonesList />
         </ErrorBoundary>
       }
-      path={`${urls.zones.index}/*`}
+      path={`${urls.zones.index}`}
     />
     <Route
       element={
