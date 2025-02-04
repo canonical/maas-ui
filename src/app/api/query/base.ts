@@ -65,9 +65,6 @@ export const useWebsocketAwareQuery = <
   const connectedCount = useSelector(statusSelectors.connectedCount);
   const { subscribe } = useWebSocket();
 
-  const queryModelKey = Array.isArray(options?.queryKey)
-    ? options?.queryKey[0]
-    : "";
   const previousConnectedCount = usePrevious(connectedCount);
 
   useEffect(() => {
@@ -80,7 +77,7 @@ export const useWebsocketAwareQuery = <
     return subscribe(() => {
       void queryClient.invalidateQueries({ queryKey: options?.queryKey });
     });
-  }, [queryClient, subscribe, queryModelKey, options]);
+  }, [queryClient, subscribe, options]);
 
   return useQuery<TQueryFnData, TError, TData>(options!);
 };

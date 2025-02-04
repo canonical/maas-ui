@@ -1,6 +1,8 @@
 import { Row, Col, Textarea } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useGetZone, useUpdateZone } from "@/app/api/query/zones";
+import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
 
@@ -15,6 +17,7 @@ export type CreateZoneValues = {
 };
 
 const EditZone = ({ id, closeForm }: Props): JSX.Element | null => {
+  const queryClient = useQueryClient();
   const { data: zone } = useGetZone({ path: { zone_id: id } });
 
   const editZone = useUpdateZone();
@@ -34,7 +37,15 @@ const EditZone = ({ id, closeForm }: Props): JSX.Element | null => {
             path: { zone_id: id },
           });
         }}
-        onSuccess={closeForm}
+        onSuccess={() => {
+          queryClient
+            .invalidateQueries({
+              queryKey: getZoneQueryKey({
+                path: { zone_id: id },
+              }),
+            })
+            .then(closeForm);
+        }}
         saved={editZone.isSuccess}
         saving={editZone.isPending}
         submitLabel="Update AZ"

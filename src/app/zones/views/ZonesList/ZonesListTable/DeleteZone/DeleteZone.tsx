@@ -1,6 +1,9 @@
 import React from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { useDeleteZone } from "@/app/api/query/zones";
+import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
 
 type DeleteZoneProps = {
@@ -9,6 +12,7 @@ type DeleteZoneProps = {
 };
 
 const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
+  const queryClient = useQueryClient();
   const deleteZone = useDeleteZone();
 
   return (
@@ -21,7 +25,15 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
       onSubmit={() => {
         deleteZone.mutate({ path: { zone_id: id } });
       }}
-      onSuccess={closeForm}
+      onSuccess={() => {
+        queryClient
+          .invalidateQueries({
+            queryKey: getZoneQueryKey({
+              path: { zone_id: id },
+            }),
+          })
+          .then(closeForm);
+      }}
       saved={deleteZone.isSuccess}
       saving={deleteZone.isPending}
     />
