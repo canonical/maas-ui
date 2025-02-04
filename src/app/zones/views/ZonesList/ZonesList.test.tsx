@@ -5,7 +5,6 @@ import {
   renderWithBrowserRouter,
   screen,
   setupMockServer,
-  waitFor,
 } from "@/testing/utils";
 
 setupMockServer(zoneResolvers.listZones.handler());
@@ -15,14 +14,12 @@ describe("ZonesList", () => {
     renderWithBrowserRouter(<ZonesList />, {
       route: "/zones",
     });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     expect(await screen.findByText("zone-1")).toBeInTheDocument();
   });
 
   it("shows a zones table if there are any zones", async () => {
     renderWithBrowserRouter(<ZonesList />, { route: "/zones" });
-    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     expect(screen.getByRole("table")).toBeInTheDocument();
   });

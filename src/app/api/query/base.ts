@@ -78,12 +78,7 @@ export const useWebsocketAwareQuery = <
 
   useEffect(() => {
     return subscribe(() => {
-      const mappedKey = "zones"; // TODO: add support for other endpoints
-      const modelQueryKey = options?.queryKey[0];
-
-      if (mappedKey && mappedKey === modelQueryKey) {
-        void queryClient.invalidateQueries({ queryKey: options?.queryKey });
-      }
+      void queryClient.invalidateQueries({ queryKey: options?.queryKey });
     });
   }, [queryClient, subscribe, queryModelKey, options]);
 
