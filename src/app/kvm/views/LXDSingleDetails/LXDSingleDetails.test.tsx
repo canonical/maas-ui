@@ -7,7 +7,15 @@ import { Label as LXDSingleVMsLabel } from "@/app/kvm/views/LXDSingleDetails/LXD
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { screen, renderWithBrowserRouter } from "@/testing/utils";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  screen,
+  renderWithBrowserRouter,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("LXDSingleDetails", () => {
   let state: RootState;
@@ -30,31 +38,39 @@ describe("LXDSingleDetails", () => {
     });
   });
 
-  [
-    {
-      label: LXDSingleVMsLabel.Title,
-      path: urls.kvm.lxd.single.vms({ id: 1 }),
-    },
-    {
-      label: LXDSingleResourcesLabel.Title,
-      path: urls.kvm.lxd.single.resources({ id: 1 }),
-    },
-    {
-      label: LXDSingleSettingsLabel.Title,
-      path: urls.kvm.lxd.single.edit({ id: 1 }),
-    },
-  ].forEach(({ label, path }) => {
-    it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<LXDSingleDetails />, {
-        route: path,
-        state,
-        routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
-      });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
+  it(`Displays: ${LXDSingleVMsLabel.Title} at: ${urls.kvm.lxd.single.vms({ id: 1 })}`, async () => {
+    renderWithBrowserRouter(<LXDSingleDetails />, {
+      route: urls.kvm.lxd.single.vms({ id: 1 }),
+      state,
+      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
+    expect(screen.getByLabelText(LXDSingleVMsLabel.Title)).toBeInTheDocument();
   });
 
-  it("redirects to vms", () => {
+  it(`Displays: ${LXDSingleResourcesLabel.Title} at: ${urls.kvm.lxd.single.resources({ id: 1 })}`, async () => {
+    renderWithBrowserRouter(<LXDSingleDetails />, {
+      route: urls.kvm.lxd.single.resources({ id: 1 }),
+      state,
+      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
+    });
+    expect(
+      screen.getByLabelText(LXDSingleResourcesLabel.Title)
+    ).toBeInTheDocument();
+  });
+
+  it(`Displays: ${LXDSingleSettingsLabel.Title} at: ${urls.kvm.lxd.single.edit({ id: 1 })}`, async () => {
+    renderWithBrowserRouter(<LXDSingleDetails />, {
+      route: urls.kvm.lxd.single.edit({ id: 1 }),
+      state,
+      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
+    });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+    expect(
+      screen.getByLabelText(LXDSingleSettingsLabel.Title)
+    ).toBeInTheDocument();
+  });
+
+  it("redirects to vms", async () => {
     renderWithBrowserRouter(<LXDSingleDetails />, {
       route: urls.kvm.lxd.single.index({ id: 1 }),
       state,

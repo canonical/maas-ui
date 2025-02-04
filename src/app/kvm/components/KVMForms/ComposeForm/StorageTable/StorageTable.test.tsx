@@ -4,18 +4,24 @@ import { PodType } from "@/app/store/pod/constants";
 import type { Pod } from "@/app/store/pod/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
 
-const generateWrapper = (state: RootState, pod: Pod) =>
+setupMockServer(zoneResolvers.listZones.handler());
+
+const generateWrapper = async (state: RootState, pod: Pod) => {
   renderWithBrowserRouter(
     <ComposeForm clearSidePanelContent={vi.fn()} hostId={pod.id} />,
     { state, route: `/kvm/${pod.id}` }
   );
+  await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
+};
 
 describe("StorageTable", () => {
   let initialState: RootState;
@@ -59,12 +65,12 @@ describe("StorageTable", () => {
     });
   });
 
-  it("disables add disk button if pod is composing a machine", () => {
+  it("disables add disk button if pod is composing a machine", async () => {
     const pod = factory.podDetails({ id: 1 });
     const state = { ...initialState };
     state.pod.items = [pod];
     state.pod.statuses = { [pod.id]: factory.podStatus({ composing: true }) };
-    generateWrapper(state, pod);
+    await generateWrapper(state, pod);
 
     expect(
       screen.getByRole("button", { name: /add disk/i })
@@ -80,7 +86,7 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    generateWrapper(state, pod);
+    await generateWrapper(state, pod);
 
     // One disk should display by default and cannot be deleted
     expect(screen.getAllByLabelText(/disk/i)).toHaveLength(1);
@@ -111,7 +117,7 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    generateWrapper(state, pod);
+    await generateWrapper(state, pod);
 
     const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
 
@@ -131,7 +137,7 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    generateWrapper(state, pod);
+    await generateWrapper(state, pod);
     // Add a disk
     await userEvent.click(screen.getByRole("button", { name: /add disk/i }));
     // Change the second disk size to below 8GB
@@ -154,7 +160,7 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    generateWrapper(state, pod);
+    await generateWrapper(state, pod);
 
     // Change the disk size to above 20GB
     const diskSizeInput = screen.getByRole("spinbutton", { name: "Size (GB)" });
@@ -177,7 +183,7 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    generateWrapper(state, pod);
+    await generateWrapper(state, pod);
 
     // Add a disk
     await userEvent.click(screen.getByRole("button", { name: /add disk/i }));
@@ -209,7 +215,7 @@ describe("StorageTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    generateWrapper(state, pod);
+    await generateWrapper(state, pod);
     await waitFor(() =>
       expect(
         screen.getByText("Only 0GB available in pool.")

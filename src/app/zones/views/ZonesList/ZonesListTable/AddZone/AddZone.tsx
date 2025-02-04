@@ -1,14 +1,8 @@
-import { useCallback } from "react";
-
 import { Row, Col, Textarea } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 
+import { useCreateZone } from "@/app/api/query/zones";
 import FormikField from "@/app/base/components/FormikField";
 import FormikForm from "@/app/base/components/FormikForm";
-import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type Props = {
   closeForm: () => void;
@@ -20,39 +14,25 @@ export type CreateZoneValues = {
 };
 
 const AddZone = ({ closeForm }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const cleanup = useCallback(
-    () => zoneActions.cleanup([ZONE_ACTIONS.create]),
-    []
-  );
-  const created = useSelector(zoneSelectors.created);
-  const creating = useSelector(zoneSelectors.creating);
-  const errors = useSelector((state: RootState) =>
-    zoneSelectors.getLatestError(state, ZONE_ACTIONS.create)
-  );
+  const createZone = useCreateZone();
 
   return (
     <FormikForm<CreateZoneValues>
       aria-label="Add AZ"
-      cleanup={cleanup}
-      errors={errors}
       initialValues={{
         description: "",
         name: "",
       }}
       onCancel={closeForm}
       onSubmit={(values) => {
-        dispatch(
-          zoneActions.create({
-            description: values.description,
-            name: values.name,
-          })
-        );
+        createZone.mutate({
+          body: { name: values.name, description: values.description },
+        });
       }}
       onSuccess={closeForm}
       resetOnSave={true}
-      saved={created}
-      saving={creating}
+      saved={createZone.isSuccess}
+      saving={createZone.isPending}
       submitLabel="Add AZ"
     >
       <Row>

@@ -6,7 +6,6 @@ import {
   Spinner,
   Strip,
 } from "@canonical/react-components";
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -284,7 +283,10 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
           available.cores,
           available.cores <= 0
             ? "No cores available."
-            : `Only ${pluralize("core", available.cores, true)} available.`
+            : available.cores < defaults.cores
+              ? `The available cores (${available.cores}) is less than the
+                recommended default (${defaults.cores}).`
+              : undefined
         ),
       disks: Yup.array()
         .of(
@@ -369,7 +371,10 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
           available.memory,
           available.memory <= 0
             ? "No memory available."
-            : `Only ${available.memory}MiB available.`
+            : available.memory < defaults.memory
+              ? `The available memory (${available.memory}MiB) is less than the
+                recommended default (${defaults.memory}MiB).`
+              : undefined
         ),
       pinnedCores: Yup.string()
         .matches(RANGE_REGEX, 'Cores string must follow format e.g "1,2,4-12"')
@@ -452,7 +457,7 @@ const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
           memory: defaults.memory,
           pinnedCores: "",
           pool: `${pools[0]?.id}` || "",
-          zone: `${zones.data?.[0]?.id}` || "",
+          zone: `${zones.data?.items[0]?.id}` || "",
         }}
         modelName="machine"
         onCancel={clearSidePanelContent}

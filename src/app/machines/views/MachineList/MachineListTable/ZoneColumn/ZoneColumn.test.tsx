@@ -1,29 +1,23 @@
+import configureStore from "redux-mock-store";
+
 import { ZoneColumn } from "./ZoneColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
-  renderWithBrowserRouter,
+  renderWithProviders,
   screen,
+  setupMockServer,
   userEvent,
   waitFor,
 } from "@/testing/utils";
 
+setupMockServer(zoneResolvers.listZones.handler());
+
 describe("ZoneColumn", () => {
   let state: RootState;
-  const queryData = {
-    zones: [
-      factory.zone({
-        id: 0,
-        name: "default",
-      }),
-      factory.zone({
-        id: 1,
-        name: "Backup",
-      }),
-    ],
-  };
   beforeEach(() => {
     state = factory.rootState({
       machine: factory.machineState({
@@ -43,9 +37,9 @@ describe("ZoneColumn", () => {
   it("displays the zone name", () => {
     state.machine.items[0].zone.name = "zone-one";
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, queryData }
+      { route: "/machines", state }
     );
     expect(screen.getByTestId("zone")).toHaveTextContent("zone-one");
   });
@@ -53,9 +47,9 @@ describe("ZoneColumn", () => {
   it("displays single space name", () => {
     state.machine.items[0].spaces = ["space1"];
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, queryData }
+      { route: "/machines", state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("space1");
   });
@@ -63,9 +57,9 @@ describe("ZoneColumn", () => {
   it("displays spaces count for multiple spaces", () => {
     state.machine.items[0].spaces = ["space1", "space2"];
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, queryData }
+      { route: "/machines", state }
     );
     expect(screen.getByTestId("spaces")).toHaveTextContent("2 spaces");
   });
@@ -73,9 +67,9 @@ describe("ZoneColumn", () => {
   it("displays a sorted Tooltip for multiple spaces", async () => {
     state.machine.items[0].spaces = ["space2", "space1", "space3"];
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, queryData }
+      { route: "/machines", state }
     );
 
     await userEvent.hover(screen.getByTestId("spaces"));
@@ -89,9 +83,9 @@ describe("ZoneColumn", () => {
   it("displays a message if the machine cannot have its zone changed", async () => {
     state.machine.items[0].actions = [];
 
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, queryData }
+      { route: "/machines", state }
     );
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
 
@@ -101,14 +95,18 @@ describe("ZoneColumn", () => {
   });
 
   it("can change zones", async () => {
-    const { store } = renderWithBrowserRouter(
+    const mockStore = configureStore();
+    const store = mockStore(state);
+    renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, queryData }
+      { route: "/machines", state, store }
     );
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     await userEvent.click(
       await screen.findByRole("button", { name: "Change AZ:" })
     );
-    await userEvent.click(await screen.findByTestId("change-zone-link"));
+    const changeZoneLinks = await screen.findAllByTestId("change-zone-link");
+    await userEvent.click(changeZoneLinks[0]);
 
     expect(
       store.getActions().find((action) => action.type === "machine/setZone")
@@ -131,17 +129,19 @@ describe("ZoneColumn", () => {
   });
 
   it("shows a spinner when changing zones", async () => {
-    renderWithBrowserRouter(
+    renderWithProviders(
       <ZoneColumn onToggleMenu={vi.fn()} systemId="abc123" />,
-      { route: "/machines", state, queryData }
+      { route: "/machines", state }
     );
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
     await userEvent.click(screen.getByRole("button", { name: "Change AZ:" }));
-    await userEvent.click(await screen.findByTestId("change-zone-link"));
+    const changeZoneLinks = await screen.findAllByTestId("change-zone-link");
+    await userEvent.click(changeZoneLinks[0]);
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {
-    renderWithBrowserRouter(<ZoneColumn systemId="abc123" />, {
+    renderWithProviders(<ZoneColumn systemId="abc123" />, {
       route: "/machines",
       state,
     });

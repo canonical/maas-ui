@@ -4,18 +4,17 @@ import PoolColumn from "./PoolColumn";
 
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter } from "@/testing/utils";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  renderWithBrowserRouter,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(zoneResolvers.getZone.handler());
 
 describe("PoolColumn", () => {
   let state: RootState;
-  const queryData = {
-    zones: [
-      factory.zone({
-        id: 1,
-        name: "alone-zone",
-      }),
-    ],
-  };
   beforeEach(() => {
     state = factory.rootState({
       pod: factory.podState({
@@ -38,15 +37,16 @@ describe("PoolColumn", () => {
     });
   });
 
-  it("can display the pod's resource pool and zone", () => {
+  it("can display the pod's resource pool and zone", async () => {
     renderWithBrowserRouter(
       <PoolColumn
         poolId={state.pod.items[0].pool}
         zoneId={state.pod.items[0].zone}
       />,
-      { state, queryData }
+      { state }
     );
+    await waitFor(() => expect(zoneResolvers.getZone.resolved).toBeTruthy());
     expect(screen.getByTestId("pool")).toHaveTextContent("swimming-pool");
-    expect(screen.getByTestId("zone")).toHaveTextContent("alone-zone");
+    expect(screen.getByTestId("zone")).toHaveTextContent("zone-1");
   });
 });

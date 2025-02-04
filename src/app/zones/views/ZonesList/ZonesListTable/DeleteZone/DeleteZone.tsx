@@ -1,12 +1,10 @@
 import React from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 
+import { useDeleteZone } from "@/app/api/query/zones";
+import { getZoneQueryKey } from "@/app/apiclient/@tanstack/react-query.gen";
 import ModelActionForm from "@/app/base/components/ModelActionForm";
-import type { RootState } from "@/app/store/root/types";
-import { zoneActions } from "@/app/store/zone";
-import { ZONE_ACTIONS } from "@/app/store/zone/constants";
-import zoneSelectors from "@/app/store/zone/selectors";
 
 type DeleteZoneProps = {
   closeForm: () => void;
@@ -14,10 +12,8 @@ type DeleteZoneProps = {
 };
 
 const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
-  const dispatch = useDispatch();
-  const deleteStatus = useSelector((state: RootState) =>
-    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.delete, id)
-  );
+  const queryClient = useQueryClient();
+  const deleteZone = useDeleteZone();
 
   return (
     <ModelActionForm
@@ -27,14 +23,19 @@ const DeleteZone: React.FC<DeleteZoneProps> = ({ closeForm, id }) => {
       modelType="zone"
       onCancel={closeForm}
       onSubmit={() => {
-        dispatch(zoneActions.delete({ id }));
+        deleteZone.mutate({ path: { zone_id: id } });
       }}
       onSuccess={() => {
-        dispatch(zoneActions.cleanup([ZONE_ACTIONS.delete]));
-        closeForm();
+        queryClient
+          .invalidateQueries({
+            queryKey: getZoneQueryKey({
+              path: { zone_id: id },
+            }),
+          })
+          .then(closeForm);
       }}
-      saved={deleteStatus === "success"}
-      saving={deleteStatus === "loading"}
+      saved={deleteZone.isSuccess}
+      saving={deleteZone.isPending}
     />
   );
 };

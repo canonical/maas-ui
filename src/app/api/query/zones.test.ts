@@ -1,70 +1,160 @@
-import type { UseQueryResult } from "@tanstack/react-query";
-import { type JsonBodyType } from "msw";
+import { describe } from "vitest";
 
-import { useZoneCount, useZoneById, useZones } from "./zones";
-
-import * as factory from "@/testing/factories";
 import {
-  renderHookWithQueryClient,
+  useZones,
+  useZoneCount,
+  useGetZone,
+  useCreateZone,
+  useUpdateZone,
+  useDeleteZone,
+} from "@/app/api/query/zones";
+import type { ZoneRequest } from "@/app/apiclient";
+import { mockZones, zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  renderHookWithProviders,
   setupMockServer,
   waitFor,
 } from "@/testing/utils";
 
-const { mockGet } = setupMockServer();
-
-const setupTest = (
-  hook: () => ReturnType<
-    typeof useZoneCount | typeof useZoneById | typeof useZones
-  >,
-  mockData: JsonBodyType
-) => {
-  mockGet("zones", mockData);
-  return renderHookWithQueryClient(() => hook()) as {
-    result: { current: UseQueryResult<number> };
-  };
-};
+setupMockServer(
+  zoneResolvers.listZones.handler(),
+  zoneResolvers.getZone.handler(),
+  zoneResolvers.createZone.handler(),
+  zoneResolvers.updateZone.handler(),
+  zoneResolvers.deleteZone.handler()
+);
 
 describe("useZones", () => {
-  it("should return zones data when query succeeds", async () => {
-    const mockZones = [factory.zone(), factory.zone()];
-    const { result } = setupTest(useZones, mockZones);
-
+  it("should return zones data", async () => {
+    const { result } = renderHookWithProviders(() => useZones());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toEqual(mockZones);
   });
 });
 
-describe("useZoneById", () => {
-  it("should return specific zone when query succeeds", async () => {
-    const mockZones = [factory.zone({ id: 1 }), factory.zone({ id: 2 })];
-    const { result } = setupTest(() => useZoneById(1), mockZones);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toEqual(mockZones[0]);
-  });
-
-  it("should return null when zone is not found", async () => {
-    const mockZones = [factory.zone({ id: 1 })];
-    const { result } = setupTest(() => useZoneById(2), mockZones);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toBeNull();
-  });
-});
-
 describe("useZoneCount", () => {
-  it("should return correct count when query succeeds", async () => {
-    const mockZones = [factory.zone(), factory.zone(), factory.zone()];
-    const { result } = setupTest(useZoneCount, mockZones);
-
+  it("should return correct count", async () => {
+    const { result } = renderHookWithProviders(() => useZoneCount());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBe(3);
   });
 
-  it("should return 0 when zones array is empty", async () => {
-    const { result } = setupTest(useZoneCount, []);
-
+  it("should return 0 when no zones exist", async () => {
+    mockZones.items = [];
+    const { result } = renderHookWithProviders(() => useZoneCount());
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBe(0);
+  });
+});
+
+describe("useGetZone", () => {
+  it("should return the correct zone", async () => {
+    const expectedZone = mockZones.items[0];
+    const { result } = renderHookWithProviders(() =>
+      useGetZone({ path: { zone_id: expectedZone.id } })
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(expectedZone);
+  });
+
+  it("should return error if zone does not exist", async () => {
+    const { result } = renderHookWithProviders(() =>
+      useGetZone({ path: { zone_id: 99 } })
+    );
+    await waitFor(() => expect(result.current.isError).toBe(true));
+  });
+});
+
+describe("useCreateZone", () => {
+  it("should create a new zone", async () => {
+    const newZone: ZoneRequest = {
+      name: "new-zone",
+      description: "This is a new zone.",
+    };
+    const { result } = renderHookWithProviders(() => useCreateZone());
+    result.current.mutate({ body: newZone });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    const { result: listResult } = renderHookWithProviders(() => useZones());
+    await waitFor(() => expect(listResult.current.isSuccess).toBe(true));
+    expect(
+      listResult.current.data?.items.some((zone) => zone.name === newZone.name)
+    ).toBe(true);
+  });
+
+  it("should return error if data is missing", async () => {
+    const { result } = renderHookWithProviders(() => useCreateZone());
+    // @ts-ignore
+    result.current.mutate({ body: { description: "Missing name" } });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+  });
+
+  it("should return error if request body is invalid", async () => {
+    const { result } = renderHookWithProviders(() => useCreateZone());
+    result.current.mutate({ body: "invalid_string" as any });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+  });
+});
+
+describe("useUpdateZone", () => {
+  it("should update an existing zone", async () => {
+    const updatedZone = { ...mockZones.items[0], description: "Edited" };
+    const { result } = renderHookWithProviders(() => useUpdateZone());
+    result.current.mutate({
+      body: updatedZone,
+      path: { zone_id: updatedZone.id },
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    const { result: listResult } = renderHookWithProviders(() => useZones());
+    await waitFor(() => expect(listResult.current.isSuccess).toBe(true));
+    expect(
+      listResult.current.data?.items.find((zone) => zone.id === updatedZone.id)
+    ).toEqual(updatedZone);
+  });
+
+  it("should return error if data is missing", async () => {
+    const { result } = renderHookWithProviders(() => useUpdateZone());
+    // @ts-ignore
+    result.current.mutate({ body: {}, path: { zone_id: 1 } });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+  });
+
+  it("should return error if request body is invalid", async () => {
+    const { result } = renderHookWithProviders(() => useUpdateZone());
+    result.current.mutate({
+      body: "invalid_string" as any,
+      path: { zone_id: 1 },
+    });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+  });
+});
+
+describe("useDeleteZone", () => {
+  it("should delete a zone", async () => {
+    const zoneToDelete = mockZones.items[0];
+    const { result } = renderHookWithProviders(() => useDeleteZone());
+    result.current.mutate({ path: { zone_id: zoneToDelete.id } });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    const { result: listResult } = renderHookWithProviders(() => useZones());
+    await waitFor(() => expect(listResult.current.isSuccess).toBe(true));
+    expect(
+      listResult.current.data?.items.some((zone) => zone.id === zoneToDelete.id)
+    ).toBe(false);
+  });
+
+  it("should return error if zone does not exist", async () => {
+    const { result } = renderHookWithProviders(() => useDeleteZone());
+    result.current.mutate({ path: { zone_id: 99 } });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
   });
 });

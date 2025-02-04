@@ -8,8 +8,7 @@ import userEvent from "@testing-library/user-event";
 import type { MemoryHistory, MemoryHistoryOptions } from "history";
 import { createMemoryHistory } from "history";
 import { produce } from "immer";
-import type { JsonBodyType } from "msw";
-import { http, HttpResponse } from "msw";
+import type { RequestHandler } from "msw";
 import { setupServer } from "msw/node";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -17,9 +16,8 @@ import { HistoryRouter } from "redux-first-history/rr6";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
-import type { ApiEndpointKey } from "@/app/api/base";
-import { API_ENDPOINTS, getFullApiUrl } from "@/app/api/base";
 import type { QueryModel } from "@/app/api/query-client";
+import { client } from "@/app/apiclient";
 import type {
   SidePanelContent,
   SidePanelSize,
@@ -203,6 +201,7 @@ const WithMockStoreProvider = ({
 interface EnhancedRenderResult extends RenderResult {
   store: MockStoreEnhanced<RootState | unknown, {}>;
 }
+
 export interface WithRouterOptions extends RenderOptions, WrapperProps {
   route?: string;
   queryData?: Record<string, unknown>;
@@ -459,51 +458,6 @@ export const renderHookWithQueryClient = (hook: Hook) => {
   });
 };
 
-export const setupMockServer = () => {
-  const server = setupServer();
-  // Mock all existing endpoints by default with infinite loading state
-  const mockAllEndpoints = () => {
-    const endpoints = Object.values(API_ENDPOINTS);
-    endpoints.forEach((endpoint) => {
-      server.use(
-        http.get(getFullApiUrl(endpoint), () => {
-          return new Promise(() => {}); // Never resolve to simulate infinite loading
-        })
-      );
-    });
-  };
-
-  beforeAll(() => server.listen());
-  beforeEach(() => {
-    mockAllEndpoints();
-  });
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
-
-  const mockGet = (endpoint: ApiEndpointKey, response?: JsonBodyType) => {
-    server.use(
-      http.get(getFullApiUrl(endpoint), () => {
-        if (typeof response !== "undefined") {
-          return HttpResponse.json(response);
-        }
-        // Use factory.[endpoint]Get() when no response is provided
-        const factoryMethod = factory[`${endpoint}Get`];
-        if (typeof factoryMethod === "function") {
-          return HttpResponse.json(factoryMethod());
-        }
-        throw new Error(`No factory method found for endpoint: ${endpoint}`);
-      })
-    );
-  };
-
-  return {
-    server,
-    mockGet,
-    http,
-    HttpResponse,
-  };
-};
-
 export const waitFor = vi.waitFor;
 export {
   act,
@@ -524,6 +478,7 @@ interface WithHistoryRouterOptions
     MemoryHistoryOptions {
   history?: MemoryHistory;
 }
+
 export const renderWithHistoryRouter = (
   ui: React.ReactElement,
   options?: WithHistoryRouterOptions
@@ -558,4 +513,109 @@ export const renderWithHistoryRouter = (
     store,
     history,
   };
+};
+
+/* New utils with easier use */
+export const BASE_URL = import.meta.env.VITE_APP_MAAS_URL;
+
+/**
+ * A function for setting up the MSW with the base testing url.
+ *
+ * @param handlers The destructured list of request handlers
+ * @return The mock server instance
+ */
+export const setupMockServer = (...handlers: RequestHandler[]) => {
+  client.setConfig({ baseUrl: BASE_URL });
+
+  const mockServer = setupServer(...handlers);
+
+  beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+  afterEach(() => {
+    mockServer.resetHandlers();
+  });
+  afterAll(() => mockServer.close());
+
+  return mockServer;
+};
+
+type TestProviderProps = {
+  children: ReactNode;
+  state?: Partial<RootState>;
+  queryData?: { queryKey: any; data: Partial<Record<any, any>> | undefined }[];
+  store?: MockStoreEnhanced<RootState | unknown>;
+  route?: string;
+};
+
+/**
+ * The wrapper component for all test-relevant providers.
+ *
+ * @param children The test components to be wrapped
+ * @param state The app state used for testing
+ * @param store The mock store
+ * @param route The route for the test
+ * @constructor
+ */
+export const TestProvider = ({
+  children,
+  state = factory.rootState(),
+  store,
+  route = "/",
+}: TestProviderProps) => {
+  window.history.pushState({}, "Test page", route);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+  });
+
+  const mockStore = store ?? configureStore()(state);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <WebSocketProvider>
+        <Provider store={mockStore}>
+          <SidePanelContextProvider>
+            <BrowserRouter>{children}</BrowserRouter>
+          </SidePanelContextProvider>
+        </Provider>
+      </WebSocketProvider>
+    </QueryClientProvider>
+  );
+};
+
+/**
+ * A function for rendering a component with all test-relevant providers.
+ *
+ * @param ui The component to be rendered
+ * @param options The rendering options
+ */
+export const renderWithProviders = (
+  ui: ReactNode,
+  options?: Omit<RenderOptions, "wrapper"> & Partial<TestProviderProps>
+) => {
+  const { state, queryData, store, ...renderOptions } = options ?? {};
+  return render(ui, {
+    wrapper: (props) => (
+      <TestProvider
+        {...props}
+        queryData={queryData}
+        state={state}
+        store={store}
+      />
+    ),
+    ...renderOptions,
+  });
+};
+
+/**
+ * A function for rendering a hook with all test-relevant providers.
+ *
+ * @param hook The hook to be rendered
+ * @param options The rendering options
+ */
+export const renderHookWithProviders = <T,>(
+  hook: () => T,
+  options?: Partial<TestProviderProps>
+) => {
+  return renderHook(hook, {
+    wrapper: (props) => <TestProvider {...props} {...options} />,
+  });
 };

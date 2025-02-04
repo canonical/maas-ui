@@ -1,13 +1,16 @@
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
 
+import type { ZoneWithSummaryResponse } from "@/app/apiclient";
 import TableActions from "@/app/base/components/TableActions";
 import urls from "@/app/base/urls";
 import { FilterDevices } from "@/app/store/device/utils";
 import { FilterMachines } from "@/app/store/machine/utils";
-import type { Zone } from "@/app/store/zone/types";
 
-export type ZoneColumnDef = ColumnDef<Zone, Partial<Zone>>;
+export type ZoneColumnDef = ColumnDef<
+  ZoneWithSummaryResponse,
+  Partial<ZoneWithSummaryResponse>
+>;
 
 const filterDevices = (name: string) =>
   FilterDevices.filtersToQueryString({
@@ -25,8 +28,8 @@ const useZonesTableColumns = ({
   onDelete,
 }: {
   isAdmin: boolean;
-  onEdit: (row: Row<Zone>) => void;
-  onDelete: (row: Row<Zone>) => void;
+  onEdit: (row: Row<ZoneWithSummaryResponse>) => void;
+  onDelete: (row: Row<ZoneWithSummaryResponse>) => void;
 }): ZoneColumnDef[] => {
   return [
     {
@@ -91,7 +94,7 @@ const useZonesTableColumns = ({
       accessorKey: "id",
       enableSorting: false,
       header: "Action",
-      cell: ({ row }: { row: Row<Zone> }) => {
+      cell: ({ row }: { row: Row<ZoneWithSummaryResponse> }) => {
         const canBeDeleted = isAdmin && row.original.id !== 1;
         return (
           <TableActions

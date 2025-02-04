@@ -5,7 +5,15 @@ import { PowerTypeNames } from "@/app/store/general/constants";
 import { PowerFieldScope } from "@/app/store/general/types";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
-import { renderWithBrowserRouter, screen } from "@/testing/utils";
+import { zoneResolvers } from "@/testing/resolvers/zones";
+import {
+  renderWithBrowserRouter,
+  screen,
+  setupMockServer,
+  waitFor,
+} from "@/testing/utils";
+
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddVirshFields", () => {
   let state: RootState;
@@ -38,7 +46,7 @@ describe("AddVirshFields", () => {
     });
   });
 
-  it("does not show power type fields that are scoped to nodes", () => {
+  it("does not show power type fields that are scoped to nodes", async () => {
     const powerTypes = [
       factory.powerType({
         description: "Virsh (virtual systems)",
@@ -64,6 +72,7 @@ describe("AddVirshFields", () => {
       queryData,
       route: "/machines/chassis/add",
     });
+    await waitFor(() => expect(zoneResolvers.listZones.resolved).toBeTruthy());
 
     expect(
       screen.getByRole("textbox", { name: /test-powerfield-label-1/i })

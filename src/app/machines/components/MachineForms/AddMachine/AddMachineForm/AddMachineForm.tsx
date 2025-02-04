@@ -142,7 +142,8 @@ export const AddMachineForm = ({
             power_parameters: initialPowerParameters,
             power_type: "",
             pxe_mac: "",
-            zone: (zones?.data?.length && zones?.data[0].name) || "",
+            zone:
+              (zones?.data?.items?.length && zones?.data.items[0].name) || "",
           }}
           onCancel={clearSidePanelContent}
           onSaveAnalytics={{
