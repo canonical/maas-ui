@@ -1,12 +1,12 @@
 import AddVirsh from "./AddVirsh";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { ConfigNames } from "@/app/store/config/types";
 import { generalActions } from "@/app/store/general";
 import { PodType } from "@/app/store/pod/constants";
 import { resourcePoolActions } from "@/app/store/resourcepool";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
   screen,
@@ -15,13 +15,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddVirsh", () => {
   let state: RootState;

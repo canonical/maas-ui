@@ -2,12 +2,12 @@ import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { ConfigNames } from "@/app/store/config/types";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
   screen,
@@ -17,13 +17,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddLxd", () => {
   let state: RootState;

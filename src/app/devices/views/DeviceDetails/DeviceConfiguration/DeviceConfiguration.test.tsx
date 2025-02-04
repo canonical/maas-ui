@@ -1,6 +1,5 @@
 import DeviceConfiguration, { Label } from "./DeviceConfiguration";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
 import { Label as DeviceConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
@@ -8,6 +7,7 @@ import { Label as ZoneSelectLabel } from "@/app/base/components/ZoneSelect/ZoneS
 import { deviceActions } from "@/app/store/device";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -16,13 +16,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("DeviceConfiguration", () => {
   let state: RootState;

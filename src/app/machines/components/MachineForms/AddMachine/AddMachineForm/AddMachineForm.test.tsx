@@ -1,10 +1,10 @@
 import AddMachineForm from "./AddMachineForm";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { PowerFieldType } from "@/app/store/general/types";
 import { machineActions } from "@/app/store/machine";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -13,13 +13,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 let state: RootState;
 const queryData = { zones: [factory.zone({ id: 1, name: "twilight" })] };

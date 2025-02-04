@@ -1,10 +1,10 @@
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import urls from "@/app/base/urls";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -13,13 +13,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.getZone.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.getZone.handler());
 
 describe("LXDClusterDetailsHeader", () => {
   let state: RootState;

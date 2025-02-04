@@ -2,7 +2,6 @@ import ControllerConfiguration from "./ControllerConfiguration";
 import { Label as ConfigurationLabel } from "./ControllerConfigurationForm";
 import { Label as PowerConfigurationLabel } from "./ControllerPowerConfiguration";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { Labels as EditableSectionLabels } from "@/app/base/components/EditableSection";
 import { Label as NodeConfigurationFieldsLabel } from "@/app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "@/app/base/components/TagField/TagField";
@@ -11,6 +10,7 @@ import urls from "@/app/base/urls";
 import { controllerActions } from "@/app/store/controller";
 import { PodType } from "@/app/store/pod/constants";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -23,13 +23,7 @@ const controller = factory.controllerDetails({ system_id: "abc123" });
 const route = urls.controllers.controller.index({ id: controller.system_id });
 
 let state: ReturnType<typeof factory.rootState>;
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("ControllerConfiguration", () => {
   beforeEach(() => {

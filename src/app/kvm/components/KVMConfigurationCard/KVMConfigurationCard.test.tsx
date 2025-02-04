@@ -1,10 +1,10 @@
 import KVMConfigurationCard from "./KVMConfigurationCard";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { podActions } from "@/app/store/pod";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   fireEvent,
@@ -15,13 +15,7 @@ import {
 } from "@/testing/utils";
 
 let state: RootState;
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("KVMConfigurationCard", () => {
   beforeEach(() => {

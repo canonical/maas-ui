@@ -1,10 +1,10 @@
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -13,13 +13,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.getZone.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.getZone.handler());
 
 describe("LXDSingleDetailsHeader", () => {
   let state: RootState;

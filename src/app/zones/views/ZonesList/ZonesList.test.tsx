@@ -1,6 +1,6 @@
 import ZonesList from "./ZonesListTable/ZonesListTable";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithBrowserRouter,
   screen,
@@ -8,13 +8,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("ZonesList", () => {
   it("correctly fetches the necessary data", async () => {

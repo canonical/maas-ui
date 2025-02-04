@@ -1,6 +1,5 @@
 import LXDSingleDetails from "./LXDSingleDetails";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import urls from "@/app/base/urls";
 import { Label as LXDSingleResourcesLabel } from "@/app/kvm/views/LXDSingleDetails/LXDSingleResources/LXDSingleResources";
 import { Label as LXDSingleSettingsLabel } from "@/app/kvm/views/LXDSingleDetails/LXDSingleSettings/LXDSingleSettings";
@@ -8,6 +7,7 @@ import { Label as LXDSingleVMsLabel } from "@/app/kvm/views/LXDSingleDetails/LXD
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
   renderWithBrowserRouter,
@@ -15,13 +15,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("LXDSingleDetails", () => {
   let state: RootState;

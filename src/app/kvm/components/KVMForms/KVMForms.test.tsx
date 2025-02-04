@@ -1,11 +1,11 @@
 import KVMForms from "./KVMForms";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { KVMSidePanelViews } from "@/app/kvm/constants";
 import { MachineSidePanelViews } from "@/app/machines/constants";
 import { PodType } from "@/app/store/pod/constants";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   getByTextContent,
   renderWithBrowserRouter,
@@ -14,13 +14,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("KVMForms", () => {
   let state: RootState;

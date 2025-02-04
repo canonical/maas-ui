@@ -2,10 +2,10 @@ import configureStore from "redux-mock-store";
 
 import { ZoneColumn } from "./ZoneColumn";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import type { RootState } from "@/app/store/root/types";
 import { NodeActions } from "@/app/store/types/node";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithProviders,
   screen,
@@ -14,13 +14,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("ZoneColumn", () => {
   let state: RootState;

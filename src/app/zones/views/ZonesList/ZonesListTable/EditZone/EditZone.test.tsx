@@ -1,6 +1,6 @@
 import EditZone from "./EditZone";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -9,16 +9,10 @@ import {
   renderWithProviders,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(
+setupMockServer(
   zoneResolvers.getZone.handler(),
   zoneResolvers.updateZone.handler()
 );
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
 
 describe("EditZone", () => {
   const testZoneId = 1;

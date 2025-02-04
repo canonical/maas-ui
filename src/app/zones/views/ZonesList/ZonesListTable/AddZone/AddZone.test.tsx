@@ -2,7 +2,7 @@ import { vi } from "vitest";
 
 import AddZone from "./AddZone";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -11,13 +11,7 @@ import {
   waitFor,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.createZone.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.createZone.handler());
 
 describe("AddZone", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {

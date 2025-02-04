@@ -3,9 +3,9 @@ import configureStore from "redux-mock-store";
 
 import ZoneSelect from "./ZoneSelect";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import type { RootState } from "@/app/store/root/types";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   renderWithMockStore,
   screen,
@@ -14,13 +14,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("ZoneSelect", () => {
   it("renders a list of all zones", async () => {

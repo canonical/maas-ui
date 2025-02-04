@@ -1,8 +1,8 @@
 import DeviceHeaderForms from "./DeviceHeaderForms";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { DeviceSidePanelViews } from "@/app/devices/constants";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   screen,
   renderWithBrowserRouter,
@@ -10,13 +10,7 @@ import {
   setupMockServer,
 } from "@/testing/utils";
 
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("DeviceHeaderForms", () => {
   it("can render the Add Device form", async () => {

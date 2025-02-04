@@ -2,13 +2,13 @@ import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
 
-import { zoneResolvers } from "@/app/api/query/zones.test";
 import { deviceActions } from "@/app/store/device";
 import { DeviceIpAssignment } from "@/app/store/device/types";
 import { domainActions } from "@/app/store/domain";
 import type { RootState } from "@/app/store/root/types";
 import { subnetActions } from "@/app/store/subnet";
 import * as factory from "@/testing/factories";
+import { zoneResolvers } from "@/testing/resolvers/zones";
 import {
   userEvent,
   screen,
@@ -19,13 +19,7 @@ import {
 } from "@/testing/utils";
 
 const mockStore = configureStore<RootState>();
-const mockServer = setupMockServer(zoneResolvers.listZones.handler());
-
-beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
-afterEach(() => {
-  mockServer.resetHandlers();
-});
-afterAll(() => mockServer.close());
+setupMockServer(zoneResolvers.listZones.handler());
 
 describe("AddDeviceForm", () => {
   let state: RootState;
