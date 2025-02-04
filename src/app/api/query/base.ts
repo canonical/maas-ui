@@ -75,7 +75,14 @@ export const useWebsocketAwareQuery = <
 
   useEffect(() => {
     return subscribe(() => {
-      void queryClient.invalidateQueries({ queryKey: options?.queryKey });
+      // This mapped key is the key for the websocket notifications
+      // TODO: replace with a function call to deduce the key/condition using the parameters
+      const mappedKey = "zones";
+      const modelQueryKey = options?.queryKey[0];
+
+      if (mappedKey && mappedKey === modelQueryKey) {
+        void queryClient.invalidateQueries({ queryKey: options?.queryKey });
+      }
     });
   }, [queryClient, subscribe, options]);
 
