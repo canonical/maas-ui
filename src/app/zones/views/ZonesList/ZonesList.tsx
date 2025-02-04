@@ -21,6 +21,9 @@ const ZonesList: React.FC = () => {
 
   const closeForm = () => {
     setSidePanelContent(null);
+    // useWebsocketAwareQuery filtering the invalidations prevents
+    // the hooks from causing a list update, this line forces it
+    void zonesCount.refetch();
   };
 
   let content = null;
