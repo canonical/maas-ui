@@ -527,7 +527,15 @@ export const BASE_URL = import.meta.env.VITE_APP_MAAS_URL;
 export const setupMockServer = (...handlers: RequestHandler[]) => {
   client.setConfig({ baseUrl: BASE_URL });
 
-  return setupServer(...handlers);
+  const mockServer = setupServer(...handlers);
+
+  beforeAll(() => mockServer.listen({ onUnhandledRequest: "warn" }));
+  afterEach(() => {
+    mockServer.resetHandlers();
+  });
+  afterAll(() => mockServer.close());
+
+  return mockServer;
 };
 
 type TestProviderProps = {
