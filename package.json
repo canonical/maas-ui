@@ -38,6 +38,7 @@
     "test:debug": "vitest --inspect-brk test --runInBand --no-cache  --testTimeout=100000000",
     "test": "TZ=UTC yarn vitest",
     "test-coverage": "yarn test --coverage",
+    "test-docs-links": "yarn playwright test docs-links.spec.ts",
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\"",
     "wait-on-ui": "wait-on http-get://0.0.0.0:8400/MAAS/r",
     "storybook": "storybook dev -p 6006",
