@@ -6,7 +6,7 @@ const docsUrls = {
   autoRenewTLSCert:
     "https://maas.io/docs/how-to-implement-tls#auto-renew-certs-8",
   cloudInit:
-    "https://maas.io/docs/how-to-customise-machines#pre-seed-cloud-init-2",
+    "https://maas.io/docs/how-to-customise-machines#p-9014-cloud-init-pre-seeding",
   configurationJourney:
     "https://maas.io/docs/how-to-install-maas#p-9034-maas-ui-setup",
   customisingDeployedMachines: "https://maas.io/docs/how-to-customise-machines",

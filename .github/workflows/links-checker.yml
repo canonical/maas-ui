@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - "3.5"
+      - "MAASENG-4310-update-docs-links"
 
 jobs:
   docs:
